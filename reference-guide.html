@@ -1,0 +1,1560 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Reference Guide</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="index.html">
+<img src="images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1 class="title" id="main">Abella: Reference Guide</h1>
+</div>
+
+<div class="section">
+<h1>Please Note</h1>
+<p>
+
+This document is not intend to be a tutorial or introduction to
+Abella. For that, we suggest you read the <a
+href="walkthrough.html">walkthrough</a> of an example session in
+Abella. This document is intended as a reference for more details on
+specific features of Abella.
+</p>
+
+</div>
+
+<div class="section">
+<h1>Table of Contents</h1>
+<ol>
+ <li><a href="#syntax">Syntax</a></li>
+ <li><a href="#commands">Top-level Commands</a></li>
+ <li><a href="#tactics">Tactics</a></li>
+ <li><a href="#lemmas">Lemmas</a></li>
+ <li><a href="#typing">Typing</a></li>
+ <li><a href="#built-in">Built-in Constructors and Definitions</a></li>
+ <li><a href="#restrictions">Inductive Restrictions</a></li>
+ <li><a href="#corestrictions">Co-inductive Restrictions</a></li>
+ <li><a href="#mutual-induction">Mutual Induction</a></li>
+ <li><a href="#unknowns">Apply with Unknowns</a></li>
+ <li><a href="#specification-modularity">Specification Modularity</a></li>
+ <li><a href="#compilation">Compilation and Importing</a></li>
+ <li><a href="#emacs">Emacs Support</a></li>
+</ol>
+</div>
+
+
+<div class="section">
+<a name="syntax"></a>
+<h1>Syntax</h1>
+<p>
+The syntax of formulas in Abella supports the following constructs,
+</p>
+
+<blockquote>
+<table cellpadding="2">
+<tr><td><code>forall A B C, ...</code></td></tr>
+<tr><td><code>exists A B C, ...</code></td></tr>
+<tr><td><code>nabla a b c, ...</code></td></tr>
+<tr><td><code>F1 /\ F2</code></td> <td>(and)</td></tr>
+<tr><td><code>F1 \/ F2</code></td> <td>(or)</td></tr>
+<tr><td><code>F1 -> F2</code></td> <td>(implies)</td></tr>
+<tr><td><code>pred t1 t2 t3</code></td> <td>(meta level predicate)</td></tr>
+<tr><td><code>{pred t1 t2 t3}</code></td> <td>(specification level
+predicate)</td></tr>
+<tr><td><code>{hyp t1, hyp t2 |- pred t3 t4 t5}&nbsp;&nbsp;&nbsp;</code></td>
+<td>(specification level predicate with
+    context)</td></tr>
+<tr><td><code>{hyp t1, hyp t2, [hyp t3] |- pred t4 t5 t6}&nbsp;&nbsp;&nbsp;</code></td>
+<td>(specification level predicate that backchains on a formula in the
+    context)</td></tr>
+</table>
+</blockquote>
+
+<p>
+Nominal constants are denoted by <code>n1</code>, <code>n2</code>, ...
+</p>
+
+<p>
+Names for objects such as theorems, variables, and constants can be
+any character string which begins with a letter or one of the
+symbols <code>-/^><=`'?$~</code>, followed by any other letters,
+symbols from the previous list, digits, or symbols
+from <code>_*@+#~!&</code>.
+</p>
+
+<div class="section">
+<h2>For those who aren't familiar with the logic</h2>
+<p>
+  One way to think about the different level of predicates is that
+  everything inside of <code>{...}</code> is at the specification
+  level while things outside are at the reasoning level. For typical
+  reasoning tasks, almost every predicate will be at the specification
+  level, except for a few reasoning level predicates to describe the
+  structure of contexts for specification predicates.
+</p>
+
+<p>
+Nominal constants and the nabla quantifier can be roughly thought of
+as representing "names."
+</p>
+</div>
+
+Comments can be inserted using <code>%</code> for single-line comments
+and <code>/*</code> ... <code>*/</code> for multi-line comments. This
+latter form of comments can be nested.
+
+</div>
+
+
+<div class="section">
+<a name="commands"></a>
+<h1>Top-level commands</h1>
+
+<blockquote>
+<table>
+
+<tr><td>
+  <code>Theorem &lt;THM-NAME&gt; : &lt;FORMULA&gt;.</code>
+</td></tr>
+<tr><td>
+<blockquote>
+Puts the prover in proving mode with the given formula as the goal.
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+<code>
+  Define &lt;PRED&gt; : &lt;TYPE&gt;, ..., &lt;PRED&gt; : &lt;TYPE&gt; by
+    &lt;CLAUSE&gt; ;
+    ... ;
+    &lt;CLAUSE&gt;.
+</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Inductively defines the given predicates at the given types using the
+given clauses.
+
+<br/><br/>
+
+The define command can be used used with nabla in the definition head.
+See <a href="examples/lambda-calculus/type-uniq/type-uniq.html">here</a>
+for an example.
+
+<br/><br/>
+
+The Abella logic requires that all definitions satisfy a
+stratification condition. Various stratification conditions, all of
+which ensure the consistency of the Abella logic, are possible. The
+system does not current enforce any of these conditions since we are
+still experimenting with the best possible choice. Stratification is
+only a concern when definitions have an implication in their body.
+Thus, specific stratification conditions are noted with each such
+definition in the examples suite accompanying this distribution. The
+user is encouraged do identify, document, and adhere to such
+conditions in their own developments. A later version of the system
+will automate conformity to such conditions.
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+<code>
+  CoDefine &lt;PRED&gt; : &lt;TYPE&gt;, ..., &lt;PRED&gt; : &lt;TYPE&gt; by
+    &lt;CLAUSE&gt; ;
+    ... ;
+    &lt;CLAUSE&gt;.
+</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This is the same as <code>Define</code> but introduces co-inductively
+defined predicates.
+
+<br/><br/>
+
+As with the <code>Define</code> command, the <code>CoDefine</code>
+command can be used with nabla in the definition head and all
+definitions must be stratified.
+
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="specification"></a>
+  <code>Specification &lt;QUOTED FILENAME PREFIX&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This command reads in the specification indicated by the given
+filename prefix. The extension <code>.sig</code> is automatically
+added to the provided prefix when looking for the specification
+signature and <code>.mod</code> when looking for the specification
+module. If this command is used it must be the first command used in
+the development because the logic is essentially parameterized by this
+specification.
+
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <code>Import &lt;QUOTED FILENAME PREFIX&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This command imports the definitions and theorems from a compiled
+Abella theorem file. The extension .thc is automatically added to the
+provided prefix. See <a href="#compilation">Compilation and
+    Importing</a> for more information.
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="query"></a>
+  <code>Query &lt;FORMULA&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This command attempts to find a proof of the given formula by applying
+a basic Prolog-like search strategy. Unbound capitalized variables are
+treated as existentially quantified, and their values are displayed
+for each solution which is found. This command is useful for animating
+definitions or specification clauses.
+
+<br/><br/>
+
+Note that this command is not complete in the sense that if a query
+fails, it does not mean that it is not provable. It only means that
+the proof search strategy used has failed to find a solution.
+
+</blockquote>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="split"></a>
+  <code>Split &lt;THM-NAME&gt; as &lt;NAME-1&gt;, ...,
+  &lt;NAME-n&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>Split &lt;THM-NAME&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This command splits a mutually inductive theorem into individual
+pieces using the names given or using automatic naming if names are
+not specified. For example, with theorem <code>(forall N, {even N} -&gt;
+      {nat N}) /\ (forall N, {odd N} -&gt; {nat N})</code> this
+creates the theorems <code>forall N, {even N} -&gt;
+      {nat N}</code> and <code>forall N, {odd N} -&gt; {nat N}</code>.
+</blockquote>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="set"></a>
+  <code>Set &lt;OPTION&gt; &lt;VALUE&gt;.</code>
+</td></tr>
+<tr><td>
+<blockquote>
+Set the value of various options at run-time. This command can also be
+used during proof construction. Possible options and values are listed
+below.
+
+<br/><br/>
+<h2>Option: subgoals</h2>
+This option determines how subgoals are displayed. If set to 'on' then
+all subgoals are printed (default). If set to 'off' then no subgoals
+are printed.
+
+<br/><br/>
+
+For more fine-grained control, this option can be set to a numeric
+value. This value determines what level of related subgoals are
+displayed. For example, suppose we have the following subgoal
+hierarchy and we are currently working on subgoal 1.1.1.
+
+<pre>
+     Subgoal 1.1.1
+     Subgoal 1.1.2
+     Subgoal 1.1.3
+     Subgoal 1.1.4
+
+   Subgoal 1.2
+   Subgoal 1.3
+
+ Subgoal 2
+</pre>
+
+If this option is set to 1 then only subgoals 1.1.2, 1.1.3, and 1.1.4
+will be displayed. If this option is set to 2 then only subgoals
+1.1.2, 1.1.3, 1.1.4, 1.2, and 1.3 will be displayed. If set to 3 then
+all subgoals would be displayed. Note that setting this option to 0 is
+equivalent to 'off', while setting it to a very large number is
+equivalent to 'on'.
+
+<br/><br/>
+<h2>Option: witnesses</h2>
+This can be set to either 'on' or 'off' (default). If set to 'on' then a
+<em>search witness</em> is printed after each successful use of
+the <code>search</code> tactic.
+
+<br/><br/>
+<h2>Option: search_depth</h2>
+This option determines the default depth used by
+the <code>search</code> tactic and all other tactics which implicitly
+use <code>search</code>. The initial value is 5.
+
+<br/><br/>
+<h2>Option: debug</h2>
+This can be set to either 'on' or 'off' (default). If set to 'on' then
+some debugging information is displayed that may be useful, for
+example, to determine why unification fails.
+</blockquote>
+
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="show"></a>
+  <code>Show &lt;THM-NAME&gt;.</code>
+</td></tr>
+<tr><td>
+<blockquote>
+Displays a previously proved theorem.
+This command can be used during proof construction.
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="quit"></a>
+  <code>Quit.</code>
+</td></tr>
+<tr><td>
+<blockquote>
+Exits from Abella. This command can be used during proof construction.
+</blockquote>
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <a name="close"></a>
+  <code>Close &lt;TYPE-1&gt;, ..., &lt;TYPE-n&gt;.</code>
+</td></tr>
+<tr><td>
+<blockquote>
+Declares as closed the set of types which are subordinate to the
+types <code>TYPE-1</code>, ..., <code>TYPE-n</code>.
+See <a href="#subordination">subordination</a> for more information.
+</blockquote>
+</td></tr>
+
+</table>
+
+</blockquote>
+</div>
+
+
+<div class="section">
+<a name="tactics"></a>
+<h1>Tactics</h1>
+<p>
+There are three categories of tactics.
+
+<ul>
+
+<li><a href="#general-tactics">General tactics</a></li>
+
+<li><a href="#specification-tactics">Specification logic tactics</a></li>
+
+<li><a href="#proof-state-tactics">Proof state manipulation
+tactics</a></li>
+
+</ul>
+</p>
+
+<div class="section">
+<a name="general-tactics"></a>
+<h2>General tactics</h2>
+<blockquote>
+<table>
+<tr><td>
+  <code>induction on &lt;NUM&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+  Given a goal of the form <code>forall A B C, H1 -&gt; H2 -&gt; H3
+  -&gt; G</code> the <code>induction</code> tactic allows you to
+  induct on one of <code>H1</code>, <code>H2</code>, or
+  <code>H3</code>. The hypothesis to be inducted on must be
+  inductively defined. The choice of induction is based on the number
+  <code>&lt;NUM&gt;</code>. Applying the <code>induction</code> tactic
+  results in an inductive hypothesis being added to the current set of
+  hypotheses. Specifics on this inductive hypothesis and how it
+  relates to the goal are given in the section <a
+  href="#restrictions">Inductive Restrictions</a>.
+</blockquote>
+
+<blockquote>
+  Abella supports nested induction through repeated calls to the
+  <code>induction</code> tactic. See the <a
+  href="#restrictions">Inductive Restrictions</a> section for
+  more details.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>coinduction.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+  Given a goal of the form <code>forall A B C, H1 -&gt; H2 -&gt; H3
+  -&gt; G</code> the <code>coinduction</code> tactic allows you to use
+  co-induction on <code>G</code>, which must be a coinductively defined
+  predicate. Applying the <code>coinduction</code> tactic results in a
+  co-inductive hypothesis being added to the current set of hypotheses.
+  Specifics on this co-inductive hypothesis and how it relates to the
+  goal are given in the section <a href="#corestrictions">Co-inductive
+  Restrictions</a>.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>intros.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a goal of the form <code>forall A B C, H1 -&gt; H2 -&gt;
+G</code> the <code>intros</code> tactic introduces three new
+eigenvariables <code>A</code>, <code>B</code>, and <code>C</code> and
+adds <code>H1</code> and <code>H2</code> to the hypotheses. The new
+goal is <code>G</code>. </blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>case &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>case</code> tactic performs case analysis on a hypothesis.
+The tactic also removes the hypothesis from the hypothesis list. To
+keep it, use the keep flag, e.g. <code>case H3 (keep).</code>
+See <a href="examples/programming-languages/pcf.html">here</a> for an
+example of where keeping a hypothesis is convenient. </blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>search.</code>
+</td></tr>
+<tr><td>
+  <code>search &lt;NUM&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>search</code> tactic tries to prove the current goal by
+repeatedly unfolding the goal and looking in the list of hypotheses.
+When the goal is a specification level judgment, this corresponds very
+much to the executable search semantics of the specification logic.
+The maximum depth of search is specified by <code>&lt;NUM&gt;</code>
+and defaults to 5.
+
+<br/><br/>
+
+The <a href="#set">Set command</a> can be used to display <em>search
+witnesses</em> on successful uses of this tactic. It can also be used
+to configure the default maximum search depth.
+</blockquote>
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>apply &lt;HYP NAME&gt; to &lt;HYP NAMES&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>apply &lt;HYP NAME&gt; to &lt;HYP NAMES&gt; with X1 = T1, ...,
+  Xn = Tn.</code>
+</td></tr>
+<tr><td>
+  <code>apply &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>apply &lt;HYP NAME&gt; with X1 = T1, ..., Xn = Tn.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>apply</code> tactic applies a hypothesis of the form
+<code>forall A1 ... Ai, nabla z1 ... zj, H1 -&gt; ... -&gt; Hk -&gt;
+G</code> to argument hypotheses which match <code>H1</code>,
+..., <code>Hk</code>. The result is an instantiation
+of <code>G</code>. Either or both of i and j may be zero, that is
+there need not be forall or nabla quantified variables.
+The <code>with</code> clause allows specific instantiations of any of
+the variables <code>A1</code> ... <code>Ai</code> and <code>z1</code>
+... <code>zj</code>. If the <code>to</code> clause is omitted then the
+applied hypothesis is simply added as another hypothesis. This is
+useful for instantiating forall quantifiers in a hypothesis or for
+extracting individual results from a larger result proved
+with <a href="#mutual-induction">Mutual Induction</a>. In the latter
+case, the <a href="#split">Split</a> command may provide a more
+convenient alternative.
+
+<br/><br/>
+
+A previously proved theorem can be used instead of the first
+hypothesis, and then this acts like using a lemma. This tactic also
+triggers some basic case analysis on the resulting hypothesis.
+
+<br/><br/>
+
+A useful feature of apply is that not all of its arguments have to be
+available. See the section <a href="#unknowns">Apply with Unknowns</a>
+for more information.
+</blockquote>
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>backchain &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>backchain &lt;HYP NAME&gt; with X1 = T1, ...,
+  Xn = Tn.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>backchain</code> tactics is dual to the <code>apply</code>
+tactic. That is, it takes a hypothesis of the form
+<code>forall A1 ... Ai, nabla z1 ... zj, H1 -&gt; ... -&gt; Hk -&gt;
+G</code> and tries to match <code>G</code> with the current goal. If
+the match is successful, the current goal is replaced with a subgoal
+for each of <code>H1</code>, ..., <code>Hk</code>, and Abella applies
+the <code>search</code> tactic to each of these subgoals (thus
+finishing the trivial subgoals).
+</blockquote>
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+
+<tr><td>
+  <code>unfold.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>unfold</code> tactic attempts to unfold the current goal by
+matching it against its possible definitions. The first definition to
+match is the one used.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>assert &lt;FORMULA&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>assert</code> tactic changes the current goal to the given
+formula and once that is proven it comes back to the original goal,
+but with the given formula as a hypothesis. If the asserted formula
+can be solved by the <code>search</code> tactic, this is done so
+automatically.
+
+<br/><br/>
+
+This tactic is useful for when the prover is doing a poor job with,
+for example, the <code>search</code> tactic. Using assert allows you
+to "hold the prover's hand" to get to your desired goal. Future
+improvements to the <code>search</code> tactic will therefore lessen
+the need for this tactic.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>exists &lt;TERM&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a goal of the form <code>exists A, ...</code> the
+<code>exists</code> tactic instantiates <code>A</code> with the given
+term.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>split.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a goal of the form <code>G1 /\ G2 /\ ... /\ Gn</code>
+the <code>split</code> tactic creates the n subgoals <code>G1</code>,
+<code>G2</code>, ..., <code>Gn</code>. If <code>split*</code> is used
+instead of <code>split</code>, the later subgoals will accumulate the
+previous subgoals as hypotheses.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>left.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a goal of the form <code>G1 \/ G2</code> the <code>left</code>
+tactic changes the goal to <code>G1</code>.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>right.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a goal of the form <code>G1 \/ G2</code> the <code>right</code>
+tactic changes the goal to <code>G2</code>.
+</blockquote>
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>permute (Z1 Z2 ... Zn) &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>permute (Z1 Z2 ... Zn).</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+This tactic permutes the nominal constants <code>Z1</code>,
+..., <code>Zn</code>. The specified hypothesis is replaced by the
+permuted version. If no hypothesis is specified, then the permutation
+is applied to the goal.
+</blockquote>
+
+</td></tr>
+</table>
+</blockquote>
+</div>
+
+<div class="section">
+<a name="specification-tactics"></a>
+<h2>Specification logic tactics</h2>
+<blockquote>
+<table>
+<tr><td>
+  <code>inst &lt;HYP NAME&gt; with &lt;VAR&gt; = &lt;TERM&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a hypothesis of the form <code>{... &lt;VAR&gt; ...}</code>
+where <code>&lt;VAR&gt;</code> is a nominal constant, the
+<code>inst</code> tactic creates the hypothesis <code>{...
+&lt;TERM&gt; ...}</code>. Thus this tactic implements a meta-level
+substitution property of the specification logic. See subject
+reduction <a href="examples/lambda-calculus/eval.html">here</a> for an
+example.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>cut &lt;HYP NAME&gt; with &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>cut &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>cut (&lt;TERM&gt;) from &lt;HYP NAME&gt; with &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given hypotheses of the form <code>{L1, A |- C}</code> and <code>{L2
+|- A}</code> with <code>L1</code> and <code>L2</code> possibly empty,
+the <code>cut</code> tactic creates the hypothesis <code>{L1, L2 |-
+C}</code>. This corresponds to meta-level cut property of the
+specification logic. See subject reduction <a
+href="examples/lambda-calculus/eval.html">here</a> for an example.
+When used without a '<code>with</code>' argument,
+the <code>search</code> tactic is used to find possible hypotheses to
+cut from the given specification judgment. The last form of cut specifies
+an explicit term to be cut from the context, which is useful when the
+hypothesis to be cut with is normalized and its goal formula is not the desired
+one to be cut from the context.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>monotone &lt;HYP NAME&gt; with &lt;TERM&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Given a hypothesis of the form <code>{L |- C}</code> and the
+term <code>K</code>, the <code>monotone</code> tactic adds the new
+hypothesis <code>{K |- C}</code> to the current subgoal and creates a
+new subgoal with the obligation <code>forall X, member X L -> member X
+K</code>. This corresponds to meta-level monotonicity property of
+contexts in the specification logic. Typically, this tactic does not
+need to be used explicitly since Abella incorporates some notions of
+monotonicity into its unification procedures.
+</blockquote>
+
+</td></tr>
+</table>
+</blockquote>
+</div>
+
+<div class="section">
+<a name="proof-state-tactics"></a>
+<h2>Proof state manipulation tactics</h2>
+<blockquote>
+<table>
+<tr><td>
+  <code>undo.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>undo</code> tactic undoes the previous tactic. This can be
+used repeatedly.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>skip.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>skip</code> tactic skips the current subgoal completely.
+This is logically unsound, but very convenient during proof
+development and exploration.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>abort.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The <code>abort</code> tactic gives up on the current theorem and
+returns the user to the top-level.
+</blockquote>
+
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <code>clear &lt;HYP NAME&gt; ... &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+Removes the given hypotheses.
+</blockquote>
+
+</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td>
+  <a name="abbrev"></a>
+  <code>abbrev &lt;HYP NAME&gt; &lt;QUOTED STRING&gt;.</code>
+</td></tr>
+<tr><td>
+  <code>unabbrev &lt;HYP NAME&gt;.</code>
+</td></tr>
+<tr><td>
+
+<blockquote>
+The abbrev tactic the abbreviates the display of the indicated
+hypothesis to be whatever string is provided. The unabbrev tactic
+reverses this.
+</blockquote>
+
+</td></tr>
+
+</table>
+</blockquote>
+</div>
+
+</div>
+
+<div class="section">
+<a name="typing"></a>
+<h1>Typing</h1>
+<p>
+Abella's specification and reasoning logics are both simply-typed. All
+terms and formulas in these logics must be well-typed.
+</p>
+
+<div class="section">
+<h2>Built-in types</h2>
+<p>
+Abella has the following built-in types:
+<ul>
+<li><code>o</code> - the type of formulas in the specification
+  logic</li>
+<li><code>olist</code> - the type of lists of specification logic
+  formulas</li>
+<li><code>prop</code> - the type of formulas in the reasoning
+  logic</li>
+</p>
+</div>
+
+<div class="section">
+<h2>Specification logic typing</h2>
+<p>
+When Abella reads in a specification it expects to find a signature
+file which describes the types and constants used in the
+specification. For example, consider the following signature for a
+specification called "eval":
+
+<pre>
+sig eval.
+
+kind    tm, ty                 type.
+
+type    app                    tm -> tm -> tm.
+type    abs                    (tm -> tm) -> tm.
+
+type    i                      ty.
+type    arrow                  ty -> ty -> ty.
+
+type    of                     tm -> ty -> o.
+type    eval, step, nstep      tm -> tm -> o.
+</pre>
+
+This signature introduces two types called <code>tm</code>
+and <code>ty</code>. It also introduces the
+constructors <code>app</code>, <code>abs</code>, <code>i</code>,
+and <code>arrow</code> for terms of those types. Finally it introduces
+the
+constructors <code>of</code>, <code>eval</code>, <code>step</code>,
+and <code>nstep</code> for atomic specification logic formulas (which
+will be used to represent judgments from the object system being
+specified).
+</p>
+
+<p>
+<br/>
+<i>Restrictions</i>
+<br>
+Types in the specification logic are not allowed to mention
+<code>olist</code> or <code>prop</code>. Specification logic
+quantification over type <code>o</code> is not allowed. Polymorphism
+is not allowed in Abella. Thus all types must be fully inferred. In
+order to achieve this, it may be necessary to introduce type
+annotations on variables, e.g., using <code>x:t</code> to denote that
+the variable occurrence <code>x</code> has the type <code>t</code> or
+using <code>x:t\ ...</code> to denote that the abstracted
+variable <code>x</code> has type <code>t</code>.
+</p>
+</div>
+
+<div class="section">
+<h2>Reasoning logic typing</h2>
+<p>
+All specification logic types and constants are implicitly mapped to
+corresponding (and identically named) types and constants in the
+reasoning logic. Additional types and constants as shown below.
+
+<pre>
+Kind    nat    type.
+
+Type    z      nat.
+Type    s      nat -> nat.
+</pre>
+
+The types for defined predicates are specified when such predicates
+are defined. For example,
+
+<pre>
+Define lt : nat -> nat -> prop by
+  lt z (s N);
+  lt (s M) (s N) := lt M N.
+</pre>
+</p>
+
+<p>
+<br/>
+<i>Restrictions</i>
+<br>
+Quantification over type <code>prop</code> is not allowed.
+Polymorphism is not allowed in Abella. Thus all types must be fully
+inferred. In order to achieve this, it may be necessary to introduce
+type annotations on variables, e.g., using <code>(x:t)</code> to
+denote that a variable binding for <code>x</code> (say in a "forall")
+has type <code>t</code>, using <code>x:t</code> to denote that the
+variable occurrence <code>x</code> has the type <code>t</code>, or
+using <code>x:t\ ...</code> to denote that the abstracted
+variable <code>x</code> has type <code>t</code>.
+</p>
+</div>
+
+<div class="section">
+<a name="subordination"></a>
+<h2>Subordination</h2>
+<p>
+Abella uses raising to encode dependency information between terms.
+For example, in the term <code>R N</code>, <code>R</code> must be a
+lambda term into which <code>N</code> will be substituted. However,
+sometimes the term <code>R</code> has a vacuous lambda abstraction so
+that it really does not depend on <code>N</code>. More generally, the
+type of <code>R</code> may enforce this vacuity. For instance
+if <code>R</code> has type <code>tm -> nat</code> and we know that
+there is no way to construct a term of type <code>nat</code> using a
+term of type <code>tm</code>, then we should be able to conclude
+that <code>R</code> is a vacuous lambda abstraction. Subordination is
+how Abella tracks such dependency and non-dependency information so
+that vacuity information can be automatically used during reasoning.
+</p>
+<br/>
+
+<p>
+For atomic types <code>a</code> and <code>b</code>, we say
+that <code>a</code> is subordinate to <code>b</code> and write <code>a
+<| b</code> if it is possible for a term of type <code>a</code> to
+appear within a term of type <code>b</code>. Subordination is
+necessarily reflexive and transitive. We extend subordination to
+non-atomic types by saying that <code>t</code> is subordinate
+to <code>s</code> if the target type of <code>t</code> is subordinate
+to the target type of <code>s</code>.
+</p>
+<br/>
+
+<p>
+Abella automatically computes the subordination relation between types
+by examining the types of declared constants. When Abella sees a
+constant declared with type <code>t1 -> ... -> tn -> a</code>
+where <code>a</code> is an atomic type, it infers that we must
+have <code>t1 <| a</code>, ..., <code>tn <| a</code>, and it examines
+each of <code>t1</code>, ..., <code>tn</code> for further
+subordination constraints.
+</p>
+<br/>
+
+<p>
+The <a href="#close">Close</a> command declares that the set of
+subordinates of the provided types is fixed. This allows Abella to
+determine that certain dependencies are vacuous. In particular, if the
+type <code>a</code> is <em>not</em> subordinate to the
+type <code>b</code> where <code>b</code> is closed then Abella knows
+that no term of type <code>a</code> can appear inside a term of
+type <code>b</code>. Furthermore, Abella will not allow a degenerate
+type like <code>a -> b</code> to even be formed. Note that for a type
+to be declared closed, it must be that all of its subordinates are
+also closed due to the transitivity of subordination.
+</p>
+
+<br/>
+<p>
+Consider the following commands as an example:
+</p>
+
+<pre>
+Kind    tm, ty                 type.
+
+Type    app                    tm -> tm -> tm.
+Type    lam                    ty -> (tm -> tm) -> tm.
+
+Type    i                      ty.
+Type    arrow                  ty -> ty -> ty.
+
+Close   tm, ty.
+</pre>
+
+<p>
+From these commands, Abella infers the following subordination
+relation: <code>ty <| ty</code>, <code>ty <| tm</code>, and <code>tm
+<| tm</code>. Thus, Abella knows that a term of type <code>ty</code>
+can appear inside terms of type <code>tm</code> and <code>ty</code>,
+whereas a term of type <code>tm</code> can appear inside terms of
+type <code>tm</code>, but not inside terms of type <code>ty</code>.
+</p>
+
+<br/>
+<p>
+The types <code>o</code>, <code>olist</code>, and <code>prop</code>
+cannot be declared closed for modularity reasons: we always want to be
+able to add more predicates and definitions.
+</p>
+</div>
+</div>
+
+<div class="section">
+<a name="built-in"></a>
+<h1>Built-in Constructors and Definitions</h1>
+<p>
+In addition to the treatment of the specification logic via <code>{_
+    |- _}</code>, Abella assumes the following predefined constants
+and definitions.
+<pre>
+Type   nil     olist.
+Type   ::      o -> olist -> olist.
+
+Define member : o -> olist -> prop by
+  member A (A :: L);
+  member A (B :: L) := member A L.
+</pre>
+Note that <code>::</code> is treated as infix.
+</p>
+</div>
+
+<div class="section">
+<a name="restrictions"></a>
+<h1>Inductive Restrictions</h1>
+<p>
+Inductive restrictions are represented by <code>*</code> (smaller)
+and <code>@</code> (equal). They are used to track the size of
+inductive arguments rather than using explicit numeric values. For
+example, suppose we apply <code>induction on 1.</code> when trying to
+prove the following subject reduction theorem,
+
+<pre>
+
+ ============================
+  forall E V T, {eval E V} -> {of E T} -> {of V T}
+</pre>
+
+We will get the following proof state.
+
+<pre>
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  ============================
+   forall E V T, {eval E V}@ -> {of E T} -> {of V T}
+</pre>
+
+Here we have an inductive hypothesis where the inductive argument is
+flagged with <code>*</code>. This means that we can only apply that
+hypothesis to an argument which also has the <code>*</code>.
+Because <code>*</code> means smaller, in order to get an argument with
+a <code>*</code> we must perform case analysis on an argument that is
+"equal" which we denote by <code>@</code>. Thus the above proof
+proceeds by first doing "intros." and then case analysis on {eval E
+V}<code>@</code>. This will give us two subgoals, one which is trivial
+and the other which has hypotheses tagged with <code>*</code> and thus
+eligible for use with the inductive hypothesis.
+</p>
+
+<div class="section">
+<h2>Nested induction</h2>
+<p>
+Abella supports nested induction through repeated calls to the
+<code>induction</code> tactic. For example, suppose we have a goal
+such as
+
+<blockquote>
+<code>
+outer -> inner -> result.
+</code>
+</blockquote>
+
+If we apply <code>induction on 1</code> followed by <code>induction
+on 2</code> we get the following proof state.
+
+<pre>
+  IH : outer * -> inner -> result
+  IH' : outer @ -> inner ** -> result
+  ============================
+   outer @ -> inner @@ -> result
+</pre>
+
+The outer inductive hypothesis <code>IH</code> can be used like normal.
+It ignores the flags <code>@@</code> and <code>**</code>. The inner
+inductive hypothesis <code>IH'</code> checks two things when applied:
+that whatever is given for <code>outer</code> has a tag of
+<code>@</code> or <code>*</code>, and whatever is used for inner has a
+tag of <code>**</code>.
+</p>
+
+<p>
+See <a href="examples/first-order/ackermann.html">here</a> for a real
+usage of nested induction.
+</p>
+</div>
+
+<div class="section">
+<h2>Inductive restrictions on the goal</h2>
+<p>
+When the <code>backchain</code> tactic is used with an inductive
+hypothesis, the generated subgoals may have goals containing inductive
+restrictions. Such inductively restricted goals can only be proved by
+matching them with a corresponding hypothesis (via
+the <code>search</code> tactic). In all other ways, the goals are
+inert.
+</p>
+</div>
+
+</div>
+
+<div class="section">
+<a name="corestrictions"></a>
+<h1>Co-inductive Restrictions</h1>
+<p>
+Co-inductive restrictions are used to ensure that a co-inductive
+hypothesis is used correctly. That is, to ensure the co-inductive
+hypothesis can only be used to establish results about recursive calls
+to the co-inductive predicate to which co-induction is applied. This is
+best understood through an example.
+</p>
+
+<p>
+Suppose we want to reason about a labeled transition system. As a
+simple example, we will take the following system.
+
+<blockquote>
+<img src="images/ltrans.png" />
+</blockquote>
+
+We assume that the rules of this system are encoded in a predicate
+<code>step P A Q</code> which holds if we can move from
+state <code>P</code> to state <code>Q</code> via the
+label <code>A</code>. The exact definition is therefore,
+
+<pre>
+Define step p0 a p0.
+Define step q0 a q0.
+Define step q0 b q1.
+</pre>
+
+Suppose we want to show that the state <code>q0</code> can simulate,
+or always act like, the state <code>p0</code>. We formalize this
+notion in the following co-inductive definition of <code>sim P
+Q</code>, which holds when <code>P</code> is simulated
+by <code>Q</code>.
+
+<pre>
+CoDefine sim P Q :=
+  forall A P', step P A P' -> exists Q', step Q A Q' /\ sim P' Q'.
+</pre>
+
+Now when we are conducting a proof of <code>sim p0 q0</code> we will
+begin by applying the <code>coinduction</code> tactic which results in
+the following proof state.
+
+<pre>
+  CH : sim p0 q0 +
+  ============================
+   sim p0 q0 #
+</pre>
+
+The restriction <code>+</code> on <code>CH</code> means that it cannot
+match any goal unless that goal also has the <code>+</code>
+restriction. The <code>#</code> on the goal indicates that when this
+goal is unfolded, the recursive calls will be tagged
+with <code>+</code>. The next step in the proof is to apply
+the <code>unfold</code> tactic which results in the following.
+
+<pre>
+  CH : sim p0 q0 +
+  ============================
+   forall A P', step p0 A P' -> exists Q', step q0 A Q' /\ sim P' Q' +
+</pre>
+
+Notice that the recursive call <code>sim P' Q'</code> is tagged
+with <code>+</code> thus it will be able to match with <code>CH</code>
+when the <code>search</code> tactic is eventually used. Before we can
+apply <code>search</code>, however, we must apply
+the <code>intros</code> tactic and then consider all possible cases
+for <code>step p0 A P'</code>. The only case is when <code>A</code>
+is <code>a</code> and <code>P'</code> is <code>p0</code>, which
+results in the following state.
+
+<pre>
+  Variables: A, P'
+  CH : sim p0 q0 +
+  ============================
+   exists Q', step q0 a Q' /\ sim p0 Q' +
+</pre>
+
+The proof is then finished by the <code>search</code> tactic which
+will pick <code>Q'</code> as <code>q0</code> and deduce
+<code>step q0 a q0</code> and <code>sim p0 q0</code>, by matching the
+latter with <code>CH</code>.
+
+<div class="section">
+<h2>Duality with inductive restrictions</h2>
+<p>
+There is a duality between inductive and co-inductive restrictions:
+<ul>
+<li>An
+inductively restricted hypothesis can match with one of the hypotheses
+in an inductive hypothesis via the <code>apply</code> tactic. An
+inductively restricted goal (which arises from <code>backchain</code>
+with an inductive hypothesis) can only match a corresponding
+hypothesis and is otherwise inert.
+</li>
+<li>A co-inductively restricted goal
+can match with the conclusion of a co-inductive hypothesis via
+the <code>backchain</code> tactic. A co-inductively restricted
+hypothesis (which arises from <code>apply</code> with a co-inductive
+hypothesis) can only match a corresponding goal and is otherwise inert.
+</li>
+</ul>
+</p>
+</div>
+</div>
+
+<div class="section">
+<a name="lemmas"></a>
+<h1>Lemmas</h1>
+<p>
+To use a lemma, prove it as a theorem and then refer to it by name in
+another proof using the <code>apply</code> tactic. For example,
+<pre>
+Theorem my_lemma : ...
+...
+
+Theorem my_theorem : ...
+...
+apply my_lemma to H3 H5.
+...
+</pre>
+</p>
+</div>
+
+
+<div class="section">
+<a name="mutual-induction"></a>
+<h1>Mutual Induction</h1>
+<p>
+
+Abella supports mutual induction on specification judgments. We will
+illustrate this ability using the following specification.
+
+<pre>
+nat z.
+nat (s X) :- nat X.
+
+even z.
+even (s X) :- odd X.
+odd (s X) :- even X.
+</pre>
+
+Suppose we want to show that everything recognized
+by <code>even</code> is also recognized by <code>nat</code>, and
+similarly for <code>odd</code>. Although, in this case, these results
+could be established independently, we will use mutual induction. In
+order to do this, we state a single theorem which is the conjunction
+of the mutually recursive theorems we want to prove.
+
+<pre>
+Theorem even_odd_nat :
+  (forall X, {even X} -> {nat X}) /\
+  (forall X, {odd X} -> {nat X}).
+</pre>
+
+We can now call the <code>induction</code> tactic and pass it an
+induction argument for each of the mutually recursive theorems. In
+this case we have two such theorems and we want to induct on the first
+argument in each. Thus we call <code>induction on 1 1.</code> which
+results in the following.
+
+<pre>
+  IH : forall X, {even X}* -> {nat X}
+  IH1 : forall X, {odd X}* -> {nat X}
+  ============================
+   (forall X, {even X}@ -> {nat X}) /\ (forall X, {odd X}@ -> {nat X})
+</pre>
+
+We now have an inductive hypothesis for each of the mutually recursive
+theorems, and these inductive hypotheses share the same inductive
+restriction. At this point we can call <code>split</code> and proceed
+to handle each of the two sub-theorems individually. The complete
+proof script is as follows.
+
+<pre>
+induction on 1 1. split.
+  intros. case H1.
+    search.
+    apply IH1 to H2. search.
+  intros. case H1.
+    apply IH to H2. search.
+</pre>
+
+Finally we may find it useful to state our theorems independently so
+they are easier to apply as lemmas. Thus we may state
+
+<pre>
+Theorem even_nat : forall X, {even X} -> {nat X}.
+</pre>
+
+And we can prove this by using <code>apply</code> with the mutual
+induction version. We apply it to no arguments, which has the effect
+of just introducing the lemma as a hypothesis. Thus the full proof is
+as follows.
+
+<pre>
+apply even_odd_nat. search.
+</pre>
+
+Alternatively, we can use the <a href="#split">Split</a> command to
+directly split the theorem.
+
+<pre>
+Split even_odd_nat as even_nat, odd_nat.
+</pre>
+
+This automatically creates and proves the following
+theorems:
+
+<pre>
+Theorem even_nat : forall X, {even X} -> {nat X}.
+Theorem odd_nat : forall X, {odd X} -> {nat X}.
+</pre>
+
+</p>
+</div>
+
+<div class="section">
+<a name="unknowns"></a>
+<h1>Apply with Unknowns</h1>
+<p>
+
+The <code>apply</code> tactic allows you to leave some arguments
+unspecified by replacing them with an underscore. For example,
+in <a href="examples/lambda-calculus/type-uniq/type-uniq.html">this
+type uniqueness development</a> we at one point have roughly the proof
+state,
+
+<pre>
+  Variables: L, E, T1, T2, U, R, T, U'
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, of n1 T |- of (R n1) U'}
+  ============================
+   arrow T U = arrow T U'
+</pre>
+
+Now we would like to apply <code>IH</code> to <code>H4</code> and
+<code>H5</code>, but for this we would need a hypothesis which says
+<code>ctx (of n1 T :: L)</code>. We could assert this hypothesis and
+the proof of it would follow from <code>ctx L</code>. Another option
+is to say <code>apply IH to _ H4 H5.</code> The prover will then guess
+what needs be proved for the unknown hypothesis and attempt to prove
+it using <code>search</code>. If this fails, the current subgoal will
+be delayed and the unknown hypothesis will become the current goal.
+</p>
+</div>
+
+<div class="section">
+<a name="specification-modularity"></a>
+<h1>Specification Modularity</h1>
+Specification modularity is available in Abella via the
+declarations <code>accum_sig</code> and <code>accumulate</code>. The
+following example shows how a specification of evaluation
+called <code>eval</code> might be based on a specification of terms
+called <code>terms</code>.
+
+<pre>
+sig eval.
+
+accum_sig terms.
+
+type  eval    tm -> tm -> o.
+...
+</pre>
+
+<pre>
+module eval.
+
+accumulate terms.
+
+eval zero zero.
+...
+</pre>
+
+<b>Restriction:</b> If the module <code>Ext</code> accumulates the
+module <code>Base</code>, then the signature <code>Ext</code> must
+accum_sig the signature <code>Base</code>.
+
+</div>
+
+<div class="section">
+<a name="compilation"></a>
+<h1>Compilation and Importing</h1>
+<p>
+It is possible to compile Abella theorem files so that they may be
+imported by other theorem files. This allows some degree of modularity
+and prevents possibly expensive re-checking of theorems in a large
+development.
+
+Theorem files can be compiled using the -c command line flag as
+follows.
+<pre>
+% abella foo.thm -c foo.thc -o foo.out
+</pre>
+This compiles the definitions and theorems in foo.thm into the file
+foo.thc, while redirecting the normal Abella output foo.out. This thc
+file can now be included in another theorem file
+using <code>Import</code> command as follows.
+<pre>
+Import "foo".
+</pre>
+
+<b>Restrictions:</b>
+In order for development <code>Ext</code> to import
+development <code>Base</code>:
+<ul>
+<li><code>Ext</code>'s specification must be a superset of <code>Base</code>'s
+  specification and
+</li>
+<li>If a predicate (ie. a constant whose target type
+  is <code>o</code>) is declared in <code>Base</code>, its clauses
+  cannot be extended in <code>Ext</code>'s specification.
+</ul>
+</p>
+
+</div>
+
+<div class="section">
+<a name="emacs"></a>
+<h1>Emacs Support</h1>
+<p>
+The distribution of Abella includes Emacs modes for mod and thm files.
+You can load these by putting the following into your .emacs file.
+
+<pre>
+(load "/path/to/abella/emacs/lprolog.el")
+(load "/path/to/abella/emacs/abella.el")
+</pre>
+
+Where <code>/path/to/abella</code> is replaced with the actual
+location you have installed Abella.
+</p>
+
+<div class="section">
+<h2>Proof navigation</h2>
+<p>
+The mode for editing thm files provides some basic proof navigation
+support. To use this, type <code>M-x shell</code> and run Abella in
+that shell. At this point it is recommended to do <code>C-x 2</code>
+which splits the emacs buffer into two separate buffers. You can
+toggle between them with <code>C-x C-o</code>. My preference is to put
+the thm file in the top buffer and the shell in the bottom buffer. Now
+back in the thm file there are three proof navigation commands.
+
+<ul>
+
+<li>
+<code>C-c C-n</code> will send the <em>next</em> proof step
+to the <code>*shell*</code> buffer.
+</li>
+
+<li>
+<code>C-c
+C-p</code> will go back to the <em>previous</em> proof step.
+This command is designed only for within proofs since top-level
+commands cannot currently be un-done.
+</li>
+
+<li><code>C-c C-e</code> will <em>execute</em> the previously written
+proof step. This is useful while writing proofs.
+</li>
+</ul>
+
+Since this may be confusing, I've created a <a
+href="screencasts/emacs.html">screencast</a> which demonstrates how I
+use these proof navigation commands.
+</p>
+
+<p>
+Note that the two emacs buffers are not actually linked in any way.
+Thus, for example, if you want to execute many Abella commands at once
+you can just copy them from the file buffer and paste them into the
+shell buffer. It is only important that when you use the
+<code>C-c</code> commands that the cursor position in the file buffer
+is consistent with the current state of Abella in the shell buffer.
+</p>
+</div>
+
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3596815-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
+
+<!--  LocalWords:  README uniq eigen inst prover's IH wip pcf pe poplmark Fsub
+ -->
+<!--  LocalWords:  LLambda tait PRED nabla eval forall ctx subst thm emacs un
+ -->
+<!--  LocalWords:  screencast cr Rosser ccs colist conat codefine CoDefine sim
+ -->
+<!--  LocalWords:  coinductively nd nat debruijn stlc Girard's combinators thc
+ -->
+<!--  LocalWords:  combinator multi filename Prolog subgoals subgoal unabbrev
+ -->
+<!--  LocalWords:  eigenvariables abella eigenvariable intuitionistic gcd GCD
+ -->
+<!--  LocalWords:  bisimulation POPLmark abbrev sig ty nstep lt olist CH accum
+ -->
+<!--  LocalWords:  foo ie
+ -->

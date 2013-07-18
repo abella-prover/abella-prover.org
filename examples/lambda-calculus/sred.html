@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Ralph Loader's proof of standardization</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Ralph Loader's proof of standardization</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="sred.sig">[View sred.sig]</a>
+<a class="view" href="sred.mod">[View sred.mod]</a>
+<pre class="command">
+<span class="comment">%% Ralph Loader's proof of standardization</span>
+<span class="comment">%% See his Lecture Notes on Typed Lambda Calculus</span>
+<span class="comment">%%</span>
+<span class="comment">%% Abella proof by Andreas Abel (October 2009)</span>
+
+sig sred.
+
+kind    tm                          type.
+
+type    app                         tm -> tm -> tm.
+type    abs                         (tm -> tm) -> tm.
+
+type    tm                          tm -> o.
+type    beta, betas, wh, sred       tm -> tm -> o.
+
+</pre>
+<pre class="command">
+<span class="comment">%% Ralph Loader's proof of standardization</span>
+<span class="comment">%%   (Notes on Simply Typed Lambda Calculus, ECS-LFCS-98-381)</span>
+<span class="comment">%% an adaption of Hongwei Xi's arithmetical proof</span>
+<span class="comment">%%   (Upper bounds for standardizations and an application, JSL 1999)</span>
+<span class="comment">%% to Gordon Plotkin's inductive formulation of standard reduction.</span>
+<span class="comment">%%   (Call-by-name, Call-by-value and the Lambda-Calculus, TCS 1975)</span>
+<span class="comment">%%</span>
+<span class="comment">%% Abella proof by Andreas Abel (October 2009)</span>
+
+module sred.
+
+<span class="comment">% pure lambda terms</span>
+tm (app M N) :- tm M, tm N.
+tm (abs R) :- pi x\ tm x => tm (R x).
+
+<span class="comment">% ordinary one-step beta reduction</span>
+beta (app M N) (app M' N) :- beta M M'.
+beta (app M N) (app M N') :- beta N N'.
+beta (abs S1) (abs S2) :- pi x\ beta (S1 x) (S2 x).
+beta (app (abs R) M) (R M).
+
+<span class="comment">% beta sequences as snoc lists</span>
+betas M M.
+betas M N :- betas M P, beta P N.
+
+<span class="comment">% one-step weak head reduction</span>
+wh (app (abs R) M) (R M).
+wh (app M N) (app M' N) :- wh M M'.
+
+<span class="comment">% Plotkin's standard reduction</span>
+sred M1 M3 :- wh M1 M2, sred M2 M3.
+sred (app M1 N1) (app M2 N2) :- sred M1 M2, sred N1 N2.
+sred (abs R1) (abs R2) :- pi x\ sred x x => sred (R1 x) (R2 x).
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="sred.thm">[View sred.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%%   (Notes on Simply Typed Lambda Calculus, ECS-LFCS-98-381)</span>
+<span class="comment">%% an adaption of Hongwei Xi's arithmetical proof</span>
+<span class="comment">%%   (Upper bounds for standardizations and an application, JSL 1999)</span>
+<span class="comment">%% to Gordon Plotkin's inductive formulation of standard reduction.</span>
+<span class="comment">%%   (Call-by-name, Call-by-value and the Lambda-Calculus, TCS 1975)</span>
+<span class="comment">%%</span>
+<span class="comment">%% Abella proof by Andreas Abel (October 2009)</span>
+
+<a href="sred-details.html#1" class="command">Specification "sred".</a>
+
+<span class="comment">%% Technical lemma about fresh variables.</span>
+<a href="sred-details.html#2" class="command">Theorem member_prune : forall E L, nabla (x:tm),
+  member (E x) L -> exists F, E = y\F.</a>
+<div class="proof"><a href="sred-details.html#3" class="tactic">induction on 1.</a> <a href="sred-details.html#4" class="tactic">intros.</a> <a href="sred-details.html#5" class="tactic">case H1.</a>
+  <a href="sred-details.html#6" class="tactic">search.</a>
+  <a href="sred-details.html#7" class="tactic">apply IH to H2.</a> <a href="sred-details.html#8" class="tactic">search.</a></div>
+<span class="comment">%% Matching contexts of term variables x and x -->s x.</span>
+<a href="sred-details.html#9" class="command">Define ctx : olist -> olist -> prop by
+  ctx nil nil ;
+  nabla x, ctx (tm x :: C) (sred x x :: D) := ctx C D.</a>
+
+<a href="sred-details.html#10" class="command">Theorem ctx_member1 : forall C D H,
+  ctx C D -> member H C -> exists X, H = tm X /\ member (sred X X) D.</a>
+<div class="proof"><a href="sred-details.html#11" class="tactic">induction on 2.</a> <a href="sred-details.html#12" class="tactic">intros.</a> <a href="sred-details.html#13" class="tactic">case H2.</a>
+  <a href="sred-details.html#14" class="tactic">case H1.</a> <a href="sred-details.html#15" class="tactic">search.</a>
+  <a href="sred-details.html#16" class="tactic">case H1.</a> <a href="sred-details.html#17" class="tactic">apply IH to H4 H3.</a> <a href="sred-details.html#18" class="tactic">search.</a></div>
+<a href="sred-details.html#19" class="command">Theorem ctx_member2 : forall C D H,
+  ctx C D -> member H D -> exists X, H = sred X X /\ member (tm X) C.</a>
+<div class="proof"><a href="sred-details.html#20" class="tactic">induction on 2.</a> <a href="sred-details.html#21" class="tactic">intros.</a> <a href="sred-details.html#22" class="tactic">case H2.</a>
+  <a href="sred-details.html#23" class="tactic">case H1.</a> <a href="sred-details.html#24" class="tactic">search.</a>
+  <a href="sred-details.html#25" class="tactic">case H1.</a> <a href="sred-details.html#26" class="tactic">apply IH to H4 H3.</a> <a href="sred-details.html#27" class="tactic">search.</a></div>
+<span class="comment">%% Technical lemma: weak head reduction is independent of context.</span>
+<a href="sred-details.html#28" class="command">Theorem wh_ctx : forall C D T T',
+  ctx C D -> {D |- wh T T'} -> {wh T T'}.</a>
+<div class="proof"><a href="sred-details.html#29" class="tactic">induction on 2.</a> <a href="sred-details.html#30" class="tactic">intros.</a> <a href="sred-details.html#31" class="tactic">case H2.</a>
+  <a href="sred-details.html#32" class="tactic">search.</a>
+  <a href="sred-details.html#33" class="tactic">apply IH to H1 H3.</a> <a href="sred-details.html#34" class="tactic">search.</a>
+  <a href="sred-details.html#35" class="tactic">apply ctx_member2 to H1 H4.</a> <a href="sred-details.html#36" class="tactic">case H3.</a></div>
+<span class="comment">%% Standard reduction is reflexive.</span>
+<a href="sred-details.html#37" class="command">Theorem srefl : forall C D T,
+  ctx C D -> {C |- tm T} -> {D |- sred T T}.</a>
+<div class="proof"><a href="sred-details.html#38" class="tactic">induction on 2.</a> <a href="sred-details.html#39" class="tactic">intros.</a> <a href="sred-details.html#40" class="tactic">case H2.</a>
+  <a href="sred-details.html#41" class="tactic">apply IH to H1 H3.</a> <a href="sred-details.html#42" class="tactic">apply IH to H1 H4.</a> <a href="sred-details.html#43" class="tactic">search.</a>
+  <a href="sred-details.html#44" class="tactic">apply IH to _ H3.</a> <a href="sred-details.html#45" class="tactic">search.</a>
+  <a href="sred-details.html#46" class="tactic">apply ctx_member1 to H1 H4.</a> <a href="sred-details.html#47" class="tactic">case H3.</a> <a href="sred-details.html#48" class="tactic">search.</a></div>
+<span class="comment">%% Standard reduction is closed under substitution.</span>
+<a href="sred-details.html#49" class="command">Theorem ssubst : forall C D T T' S S', nabla x, ctx C D ->
+  {D, sred x x |- sred (T x) (T' x)} -> {D |- sred S S'} ->
+  {D |- sred (T S) (T' S')}.</a>
+<div class="proof"><a href="sred-details.html#50" class="tactic">induction on 2.</a> <a href="sred-details.html#51" class="tactic">intros.</a> <a href="sred-details.html#52" class="tactic">case H2.</a>
+  <span class="comment">%% case weak head step</span>
+  <a href="sred-details.html#53" class="tactic">apply IH to H1 H5 H3.</a>
+  <a href="sred-details.html#54" class="tactic">apply wh_ctx to _ H4.</a> <a href="sred-details.html#55" class="tactic">inst H7 with n1 = S.</a> <a href="sred-details.html#56" class="tactic">search.</a>
+
+  <span class="comment">%% case: application</span>
+  <a href="sred-details.html#57" class="tactic">apply IH to H1 H4 H3.</a> <a href="sred-details.html#58" class="tactic">apply IH to H1 H5 H3.</a> <a href="sred-details.html#59" class="tactic">search.</a>
+
+  <span class="comment">%% case: abstraction</span>
+  <a href="sred-details.html#60" class="tactic">apply IH to _ H4 H3.</a> <a href="sred-details.html#61" class="tactic">search.</a>
+
+  <span class="comment">%% case hypothesis</span>
+  <a href="sred-details.html#62" class="tactic">case H5.</a> 
+    <a href="sred-details.html#63" class="tactic">case H4.</a> <a href="sred-details.html#64" class="tactic">search.</a> 
+    <a href="sred-details.html#65" class="tactic">apply ctx_member2 to H1 H6.</a> <a href="sred-details.html#66" class="tactic">case H4.</a>
+    <a href="sred-details.html#67" class="tactic">apply member_prune to H6.</a> <a href="sred-details.html#68" class="tactic">search.</a></div>
+<span class="comment">%% Variables do not beta reduce.</span>
+<a href="sred-details.html#69" class="command">Theorem name_not_beta : forall T, nabla x, {beta x T} -> false.</a>
+<div class="proof"><a href="sred-details.html#70" class="tactic">intros.</a> <a href="sred-details.html#71" class="tactic">case H1.</a></div>
+<a href="sred-details.html#72" class="command">Theorem var_not_beta : forall C D T T', ctx C D ->
+  member (tm T) C -> {beta T T'} -> false.</a>
+<div class="proof"><a href="sred-details.html#73" class="tactic">induction on 2.</a> <a href="sred-details.html#74" class="tactic">intros.</a> <a href="sred-details.html#75" class="tactic">case H2.</a>
+  <a href="sred-details.html#76" class="tactic">case H1.</a> <a href="sred-details.html#77" class="tactic">case H3.</a>
+  <a href="sred-details.html#78" class="tactic">case H1.</a> <a href="sred-details.html#79" class="tactic">apply IH to H5 H4 H3.</a></div>
+<span class="comment">%% Variables are not abstractions.</span>
+<a href="sred-details.html#80" class="command">Theorem var_not_abs : forall C D R, ctx C D ->
+  member (tm (abs R)) C -> false.</a>
+<div class="proof"><a href="sred-details.html#81" class="tactic">induction on 2.</a> <a href="sred-details.html#82" class="tactic">intros.</a> <a href="sred-details.html#83" class="tactic">case H2.</a>
+  <a href="sred-details.html#84" class="tactic">case H1.</a>
+  <a href="sred-details.html#85" class="tactic">case H1.</a> <a href="sred-details.html#86" class="tactic">apply IH to H4 H3.</a></div>
+<span class="comment">%% Applying a sred which ends in a lambda, removing the resulting redex.</span>
+<a href="sred-details.html#87" class="command">Theorem sred_beta : forall C D M N N' R, ctx C D ->
+  {D |- sred M (abs R)} -> {D |- sred N N'} -> {D |- sred (app M N) (R N')}.</a>
+<div class="proof"><a href="sred-details.html#88" class="tactic">induction on 2.</a> <a href="sred-details.html#89" class="tactic">intros.</a> <a href="sred-details.html#90" class="tactic">case H2.</a>
+  <span class="comment">% weak head reduction case</span>
+  <a href="sred-details.html#91" class="tactic">apply IH to H1 H5 H3.</a> <a href="sred-details.html#92" class="tactic">search.</a>
+  <span class="comment">% abstraction case</span>
+  <a href="sred-details.html#93" class="tactic">apply ssubst to H1 H4 H3.</a> <a href="sred-details.html#94" class="tactic">search.</a>
+  <span class="comment">% variable case (impossible)</span>
+  <a href="sred-details.html#95" class="tactic">apply ctx_member2 to H1 H5.</a> <a href="sred-details.html#96" class="tactic">case H4.</a> <a href="sred-details.html#97" class="tactic">apply var_not_abs to H1 H6.</a></div>
+<span class="comment">%% Main Lemma:</span>
+<span class="comment">%% Standard reduction is closed under appending a beta step.</span>
+<a href="sred-details.html#98" class="command">Theorem sappend : forall C D T T' T'', ctx C D ->
+  {D |- sred T T'} -> {beta T' T''} -> {D |- sred T T''}.</a>
+<div class="proof"><a href="sred-details.html#99" class="tactic">induction on 2.</a> <a href="sred-details.html#100" class="tactic">intros.</a> <a href="sred-details.html#101" class="tactic">case H2.</a>
+  <span class="comment">% weak head step case</span>
+  <a href="sred-details.html#102" class="tactic">apply IH to H1 H5 H3.</a> <a href="sred-details.html#103" class="tactic">search.</a>
+  <span class="comment">% application case</span>
+  <a href="sred-details.html#104" class="tactic">case H3.</a> <span class="comment">% cases on beta step.</span>
+    <span class="comment">% subcase reduction in function part</span>
+    <a href="sred-details.html#105" class="tactic">apply IH to H1 H4 H6.</a> <a href="sred-details.html#106" class="tactic">search.</a>
+    <span class="comment">% subcase reduction in argument part</span>
+    <a href="sred-details.html#107" class="tactic">apply IH to H1 H5 H6.</a> <a href="sred-details.html#108" class="tactic">search.</a>
+    <span class="comment">% subcase beta-contraction</span>
+    <a href="sred-details.html#109" class="tactic">apply sred_beta to H1 H4 H5.</a> <a href="sred-details.html#110" class="tactic">search.</a>
+  <span class="comment">% abstraction case</span>
+  <a href="sred-details.html#111" class="tactic">case H3.</a> <a href="sred-details.html#112" class="tactic">apply IH to _ H4 H5.</a> <a href="sred-details.html#113" class="tactic">search.</a>
+  <span class="comment">% variable case</span>
+  <a href="sred-details.html#114" class="tactic">apply ctx_member2 to H1 H5.</a> <a href="sred-details.html#115" class="tactic">case H4.</a> <a href="sred-details.html#116" class="tactic">apply var_not_beta to H1 H6 H3.</a></div>   <span class="comment">%% QED !</span>
+
+<span class="comment">%% Theorem: Each beta reduction sequence can be standardized.</span>
+<a href="sred-details.html#117" class="command">Theorem standardization: forall T T',
+  {tm T} -> {betas T T'} -> {sred T T'}.</a>
+<div class="proof"><a href="sred-details.html#118" class="tactic">induction on 2.</a> <a href="sred-details.html#119" class="tactic">intros.</a> <a href="sred-details.html#120" class="tactic">case H2.</a>
+  <a href="sred-details.html#121" class="tactic">apply srefl to _ H1.</a> <a href="sred-details.html#122" class="tactic">search.</a>
+  <a href="sred-details.html#123" class="tactic">apply IH to H1 H3.</a> <a href="sred-details.html#124" class="tactic">apply sappend to _ H5 H4.</a> <a href="sred-details.html#125" class="tactic">search.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

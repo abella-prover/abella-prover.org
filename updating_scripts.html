@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Update the Proof Scripts to Abella Version 2.0.0</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<div id="logo-small">
+<a href="index.html">
+<img src="images/logo-small.png"/>
+</a>
+</div>
+
+<body>
+<div class="section">
+<h1 id="main"> Updating Old Proof Scripts to Run on  Abella Version 2.0.0 </h1>
+<br/>
+<p>
+Versions of Abella prior to 2.0.0 limited the use of embedded
+implications in specifications: goals in the bodies of specification
+clauses could contain implications only if their lefthand sides were
+atomic. Starting with Abella version 2.0.0, this limitation has been
+lifted. Specification clauses can contain arbitrarily nested
+implications, i.e., these clauses can be of arbitrary order when they
+are construed as types. Unfortunately, the introduction of this
+capability breaks  proof scripts (*.thm files) from previous
+versions. To ease the transition to the new, more versatile version of
+Abella, we provide a guide here for updating old proof scripts to run
+under the new version. 
+</p>
+
+<p>
+When reasoning in the Abella system, specification-level judgments are
+encoded via expressions of the form <code>{L |- G}</code>. We refer to
+<code>L</code> here as the context of the judgment. Differences
+between the old and new versions of Abella arise only when the
+derivation of <code>G</code> depends on backchaining on some clause in
+the context. Thus, if the old proof script does not involve reasoning
+in a situation where the context is non-empty, it should work
+immediately with Abella 2.0.0. Otherwise, they have to be updated. In
+explaining how they should be updated, we use the proof scripts for 
+type uniqueness of the simply typed lambda calculus as an example.
+If you are not familiar with this example, it is perhaps best if you
+first read the proof for it in the distribution of Abella 1.3.5 (in
+'examples/lambda-calculus/type-uniq/type-uniq.thm') and in the <a href
+= "advanced-walkthrough.html">advanced walkthrough</a>.
+</p>
+</div>
+
+<div class="section">
+<h1 id="reorder">The Type Uniqueness Example</h1>
+<br/>
+<p>
+
+<p>
+The typing rules for simply-typed lambda calculus is encoded in Abella as follows:
+<pre>
+of (abs T R) (arrow T U) :- pi x\ (of x T => of (R x) U).  % for abstraction
+of (app M N) T :- of M (arrow U T), of N U.                % for application
+</pre>
+
+The type uniqueness theorem looks like
+<pre>
+Theorem type_uniq : forall L E T1 T2,
+ ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2.
+</pre>
+It is stated relative to the following context definition:
+<pre>
+Define ctx : olist -> prop by
+  ctx nil ;
+  nabla x, ctx (of x T :: L) := ctx L.
+</pre>
+
+</div>
+
+<div class="section">
+<h1 id="reorder">Updating the Script up to the Reordering of Subgoals </h1>
+<br/>
+<p>
+
+The proof for <code>type_uniq</code> starts with an induction on the judgment <code>{L |-
+of E T1}</code> and then a case analysis on it.
+<pre>
+induction on 2. intros. case H2.
+</pre>
+The judgment <code>{L |- of E T1}</code> can be derived by
+backchaining on the program clause for abstraction, for application
+or in the context <code>L</code>.
+
+The result of executing the tactics above in Abella 1.3.5 looks like
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : member (of E T1) L
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ arrow T U = T2
+
+Subgoal 3 is:
+ T1 = T2
+</pre>
+The subgoal 1,2,3 correspond to cases for deriving the goal formula from the
+context, from the abstraction clause and from the application clause, respectively.
+If the same same tactics are executed in Abella 2.0.0, the proof state looks like:
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2, U, R, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (abs T R) T2}
+  H4 : {L, of n1 T |- of (R n1) U}*
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+</pre>
+The subgoal 1,2,3 correspond to cases for deriving the goal formula
+from the abstraction clause, from the application clause and from the
+context, respectively. Note that in Abella 2.0.0, the subgoal for
+deriving goal formulas from the context is presented last, because its
+proof becomes non-trivial and sometimes very complicated.
+</p>
+
+<p>
+Thus the first step for updating the scripts is to
+<em>rearrange the script so that the segments for proving cases that
+judgments are derived by backchaining on the context come last</em>.
+Those cases are abbreviated as <em>backchaining-on-context cases</em> in the
+following discussion.
+</p>
+</div>
+
+<div class="section">
+<h1 id="rewrite">Updating the Script for the Case of Backchaining on Context Clauses</h1>
+<br/>
+<p>
+
+<p>
+After the previous step, we need to update the proof segments for
+backchaining-on-context cases. In Abella 1.3.5 the proof state for the
+case that <code>{L |- of E T1}</code> is derived by backchaining on
+the context looks like:
+<pre>
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : member (of E T1) L
+  ============================
+   T1 = T2
+</pre>
+Since the context <code>L</code> may only contain atomic formulas in HH2,
+<code>of E T1</code> is derived by backchaining on some clause
+in <code>L</code> if and only if it is a member
+of <code>L</code>; thus the hypothesis <code>member (of E T1)
+L</code>. The proof state for the same case in Abella 2.0.0 looks like:
+<pre>
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [F] |- of E T1}*
+  H5 : member F L
+  ============================
+   T1 = T2
+</pre>
+Instead of a single judgment <code>member (of E T1) L</code>, we get
+<code>{L, [F] |- of E T1}</code> and <code>member F L</code>. The
+judgment <code>{L, [F] |- of E T1}</code> is called a <em>backchaining
+judgment</em> which asserts that <code>of E T1</code> is derived by
+backchaining on some formula <code>F</code>.  The
+hypothesis <code>member F L</code> indicates that <code>F</code> is a
+clause in the context <code>L</code>. The two judgments together
+assert that <code>of E T1</code> is derived by backchaining on some
+clause <code>F</code> in <code>L</code>, where <code>F</code> can be
+an arbitrary complex program clause in HH-Omega.
+</p>
+
+<p> Before we can perform case analysis on <code>{L, [F] |- of E
+T1}</code>, we first need to reveal the structure
+of <code>F</code>. The following theorem comes to help, whose proof is
+quite straightforward.
+
+<pre>
+Theorem ctx_mem :
+   forall L E,
+   ctx L -> member E L -> exists N X, E = of X N /\ name X.
+</pre>
+
+It is basically an "inversion" (or "inspection") of the
+context definition. Applying it to <code>H1</code> and <code>H5</code>
+unifies <code>F</code> with <code>of X N</code>, resulting in:
+<pre>
+  Variables: L, E, T1, T2, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [of X N] |- of E T1}*
+  H5 : member (of X N) L
+  H6 : name X
+  ============================
+   T1 = T2
+</pre>
+
+Then we can perform case analysis on <code>H4</code>, resulting in
+<pre>
+  Variables: L, E, T1, T2, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H5 : member (of E T1) L
+  H6 : name E
+  ============================
+   T1 = T2
+</pre>
+At this point, the proof state looks almost like what we got in Abella
+1.3.5, except we have an extra hypothesis <code>name E</code>. In fact, the next step
+in the script for Abella 1.3.5 is to apply the following lemma
+<pre>
+Theorem of_name : forall L E T,
+ ctx L -> member (of E T) L -> name E.
+</pre>
+to get the hypothesis <code>name E</code>. Thus the proof states in
+Abella 1.3.5 and 2.0.0 converge at this point. Then both proofs
+proceed by a symmetric case analysis on <code>{L |- of E T2}</code>
+before their states converge again. The rest proofs for both are
+almost the same.
+</p>
+
+<p>
+In summary, in Abella 2.0.0, every time a judgment <code>{L |-
+G}</code> is derived by backchaining on the context, a
+judgment <code>{L, [F] |- G}</code> and a hypothesis <code>member F
+L</code> are produced. To get to the same state resulting from the
+same backchaing in previous versions of Abella, we need to
+<ul>
+<li>
+Prove a lemma about the form of clauses in the context <code>L</code> and use it to reveal the
+form of <code>F</code>;
+</li>
+<li>
+Then perform case analysis on <code>{L, [F] |- G}</code>.
+</li>
+</ul>
+After that, the proof in the old script should be followed until a
+backchaining-on-context case is encountered again.
+</p>
+
+</div>
+
+<div class="section">
+<h1 id="rewrite">Conclusion</h1>
+<br/>
+<p>
+
+It is relatively easy to update the old scripts to Abella 2.0.0 by
+following the instructions above, since contexts only contain atomic
+formulas in old proofs. If you encounter any
+difficulties in updating your scripts, please contact us at
+the <a href="http://groups.google.com/group/abella-theorem-prover">Abella
+mailing list</a>. You can find some examples for reasoning about
+higher-order specifications that use full power of HH-Omega <a href="examples/index.html#higher-order">here</a>.
+</div>
+
+</body>

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Equivalence of single and double eigenvariable definitions of copy</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Equivalence of single and double eigenvariable definitions of copy</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="copy.sig">[View copy.sig]</a>
+<a class="view" href="copy.mod">[View copy.mod]</a>
+<pre class="command">
+sig copy.
+
+kind    tm             type.
+
+type    app            tm -> tm -> tm.
+type    abs            (tm -> tm) -> tm.
+
+type    copy, copy2    tm -> tm -> o.
+
+</pre>
+<pre class="command">
+module copy.
+
+copy (app N M) (app P Q) :- copy N P, copy M Q.
+copy (abs R) (abs S) :- pi x\ copy x x => copy (R x) (S x).
+
+copy2 (app N M) (app P Q) :- copy2 N P, copy2 M Q.
+copy2 (abs R) (abs S) :- pi x\ pi y\ copy2 x y => copy2 (R x) (S y).
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="copy.thm">[View copy.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="copy-details.html#1" class="command">Specification "copy".</a>
+
+<a href="copy-details.html#2" class="command">Theorem member_fresh : forall L E, nabla (x:tm),
+  member (E x) L -> exists F, E = y\F.</a>
+<div class="proof"><a href="copy-details.html#3" class="tactic">induction on 1.</a> <a href="copy-details.html#4" class="tactic">intros.</a> <a href="copy-details.html#5" class="tactic">case H1.</a>
+  <a href="copy-details.html#6" class="tactic">search.</a>
+  <a href="copy-details.html#7" class="tactic">apply IH to H2.</a> <a href="copy-details.html#8" class="tactic">search.</a></div>
+
+<a href="copy-details.html#9" class="command">Define ctxs : olist -> olist -> prop by
+  ctxs nil nil ;
+  ctxs (copy X Y :: L1) (copy2 X Y :: L2) := ctxs L1 L2.</a>
+
+<a href="copy-details.html#10" class="command">Define name : tm -> prop by
+  nabla x, name x.</a>
+
+<a href="copy-details.html#11" class="command">Theorem ctx_mem1 : forall F L1 L2,
+  ctxs L1 L2 -> member F L1 -> exists X Y, F = copy X Y.</a>
+<div class="proof"><a href="copy-details.html#12" class="tactic">induction on 1.</a> <a href="copy-details.html#13" class="tactic">intros.</a>
+<a href="copy-details.html#14" class="tactic">case H1.</a>
+  <a href="copy-details.html#15" class="tactic">case H2.</a>
+  <a href="copy-details.html#16" class="tactic">case H2.</a> <a href="copy-details.html#17" class="tactic">search.</a> <a href="copy-details.html#18" class="tactic">apply IH to H3 H4.</a> <a href="copy-details.html#19" class="tactic">search.</a></div>
+<a href="copy-details.html#20" class="command">Theorem ctx_mem2 : forall F L1 L2,
+  ctxs L1 L2 -> member F L2 -> exists X Y, F = copy2 X Y.</a>
+<div class="proof"><a href="copy-details.html#21" class="tactic">induction on 1.</a> <a href="copy-details.html#22" class="tactic">intros.</a>
+<a href="copy-details.html#23" class="tactic">case H1.</a>
+  <a href="copy-details.html#24" class="tactic">case H2.</a>
+  <a href="copy-details.html#25" class="tactic">case H2.</a> <a href="copy-details.html#26" class="tactic">search.</a> <a href="copy-details.html#27" class="tactic">apply IH to H3 H4.</a> <a href="copy-details.html#28" class="tactic">search.</a></div>
+
+<span class="comment">%% copy implies copy2</span>
+
+<span class="comment">% show that copy2 could descend under abstractions like copy</span>
+
+<a href="copy-details.html#29" class="command">Theorem copy2_align : forall M N K L, nabla z,
+  ctxs K L ->
+  {L, copy2 z z |- copy2 (M z) (N z)} ->
+    nabla x y, {L, copy2 x y |- copy2 (M x) (N y)}.</a>
+<div class="proof"><a href="copy-details.html#30" class="tactic">induction on 2.</a> <a href="copy-details.html#31" class="tactic">intros.</a> <a href="copy-details.html#32" class="tactic">case H2.</a>
+  <a href="copy-details.html#33" class="tactic">apply IH to H1 H3.</a> <a href="copy-details.html#34" class="tactic">apply IH to H1 H4.</a> <a href="copy-details.html#35" class="tactic">search.</a>
+  <a href="copy-details.html#36" class="tactic">apply IH to _ H3.</a> <a href="copy-details.html#37" class="tactic">search.</a>
+  <a href="copy-details.html#38" class="tactic">case H4.</a>
+    <a href="copy-details.html#39" class="tactic">case H3.</a> <a href="copy-details.html#40" class="tactic">search.</a>
+    <a href="copy-details.html#41" class="tactic">apply member_fresh to H5.</a> <a href="copy-details.html#42" class="tactic">apply ctx_mem2 to H1 H5.</a> <a href="copy-details.html#43" class="tactic">case H3.</a> <a href="copy-details.html#44" class="tactic">search.</a></div>
+<a href="copy-details.html#45" class="command">Theorem ctxs_member1 : forall X Y L K,
+  ctxs L K -> member (copy X Y) L -> member (copy2 X Y) K.</a>
+<div class="proof"><a href="copy-details.html#46" class="tactic">induction on 1.</a> <a href="copy-details.html#47" class="tactic">intros.</a> <a href="copy-details.html#48" class="tactic">case H1.</a>
+  <a href="copy-details.html#49" class="tactic">case H2.</a>
+  <a href="copy-details.html#50" class="tactic">case H2.</a>
+    <a href="copy-details.html#51" class="tactic">search.</a>
+    <a href="copy-details.html#52" class="tactic">apply IH to H3 H4.</a>
+      <a href="copy-details.html#53" class="tactic">search.</a></div>
+<a href="copy-details.html#54" class="command">Theorem copy_copy2 : forall L K M N,
+  ctxs L K -> {L |- copy M N} -> {K |- copy2 M N}.</a>
+<div class="proof"><a href="copy-details.html#55" class="tactic">induction on 2.</a> <a href="copy-details.html#56" class="tactic">intros.</a> <a href="copy-details.html#57" class="tactic">case H2.</a>
+  <a href="copy-details.html#58" class="tactic">apply IH to H1 H3.</a> <a href="copy-details.html#59" class="tactic">apply IH to H1 H4.</a> <a href="copy-details.html#60" class="tactic">search.</a>
+  <a href="copy-details.html#61" class="tactic">apply IH to _ H3.</a> <a href="copy-details.html#62" class="tactic">apply copy2_align to H1 H4.</a> <a href="copy-details.html#63" class="tactic">search.</a>
+  <a href="copy-details.html#64" class="tactic">apply ctx_mem1 to H1 H4.</a> <a href="copy-details.html#65" class="tactic">case H3.</a> <a href="copy-details.html#66" class="tactic">apply ctxs_member1 to H1 H4.</a> <a href="copy-details.html#67" class="tactic">search.</a></div>
+
+<span class="comment">%% copy2 implies copy</span>
+
+<span class="comment">% show that copy could descend under abstractions like copy2</span>
+
+<a href="copy-details.html#68" class="command">Theorem copy_align : forall M N L, nabla x y,
+  {L, copy x y |- copy (M x) (N y)} ->
+    nabla z, {L, copy z z |- copy (M z) (N z)}.</a>
+<div class="proof"><a href="copy-details.html#69" class="tactic">intros.</a> <a href="copy-details.html#70" class="tactic">inst H1 with n2 = n1.</a> <a href="copy-details.html#71" class="tactic">search.</a></div>
+<a href="copy-details.html#72" class="command">Theorem ctxs_member2 : forall X Y L K,
+  ctxs L K -> member (copy2 X Y) K -> member (copy X Y) L.</a>
+<div class="proof"><a href="copy-details.html#73" class="tactic">induction on 1.</a> <a href="copy-details.html#74" class="tactic">intros.</a> <a href="copy-details.html#75" class="tactic">case H1.</a>
+  <a href="copy-details.html#76" class="tactic">case H2.</a>
+  <a href="copy-details.html#77" class="tactic">case H2.</a>
+    <a href="copy-details.html#78" class="tactic">search.</a>
+    <a href="copy-details.html#79" class="tactic">apply IH to H3 H4.</a>
+      <a href="copy-details.html#80" class="tactic">search.</a></div>
+<a href="copy-details.html#81" class="command">Theorem copy2_copy : forall L K M N,
+  ctxs L K -> {K |- copy2 M N} -> {L |- copy M N}.</a>
+<div class="proof"><a href="copy-details.html#82" class="tactic">induction on 2.</a> <a href="copy-details.html#83" class="tactic">intros.</a> <a href="copy-details.html#84" class="tactic">case H2.</a>
+  <a href="copy-details.html#85" class="tactic">apply IH to H1 H3.</a> <a href="copy-details.html#86" class="tactic">apply IH to H1 H4.</a> <a href="copy-details.html#87" class="tactic">search.</a>
+  <a href="copy-details.html#88" class="tactic">apply IH to _ H3.</a> <a href="copy-details.html#89" class="tactic">apply copy_align to H4.</a> <a href="copy-details.html#90" class="tactic">search.</a>
+  <a href="copy-details.html#91" class="tactic">apply ctx_mem2 to H1 H4.</a> <a href="copy-details.html#92" class="tactic">case H3.</a> <a href="copy-details.html#93" class="tactic">apply ctxs_member2 to H1 H4.</a> <a href="copy-details.html#94" class="tactic">search.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

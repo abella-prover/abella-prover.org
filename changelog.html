@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Changelog</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="index.html">
+<img src="images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1 id="main">Changelog</h1>
+</div>
+
+
+<div class="section">
+<h2>Version 2.0.0</h2>
+<ul>
+<li>The specification language now supports full higher-order
+Hereditary Harrop formulas.
+</li>
+<li> 
+Added <a href="examples/index.html#higher-order">new examples</a>
+for reasoning about higher-order specifications. Updated the existing examples to the new version.
+</li>
+<li>
+Old proof scripts that involve reasoning over non-empty contexts are
+broken. A guide for updating your old scripts is given <a href="updating_scripts.html">here</a>.
+</li>
+</ul>
+</div>
+
+
+<div class="section">
+<h2>Version 1.3.5</h2>
+<ul>
+<li>The <code>apply</code> and <code>backchain</code> tactics now
+  produce witnesses when the witnesses option is enabled.</li>
+<li>The <code>unfold</code> tactic applied using a definition with
+  nabla in the head will now use "dummy nominals" in case the nabla
+  bound variables are not used.</li>
+<li><code>/</code> can no longer begin a name.</li>
+<li>Underscore can now be used to represent anonymous variables in
+  &lambda;Prolog specifications.</li>
+<li>Fixed a bug when using <code>apply</code> with no arguments.</li>
+<li>Fixed a bug in the normalization of binder names</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.3.4</h2>
+<ul>
+<li>Added <a href="reference-guide.html#subordination">subordination
+  and the Close command</a>. This makes many pruning lemmas
+  unnecessary, such as showing that a term of type <code>tm</code>
+  cannot appear inside a term of type <code>nat</code>.</li>
+<li>Added case analysis on flex-rigid equalities. For example, one can
+  perform case analysis on an equality like <code>R N = plus A
+  B</code>. The result is that one step of Huet's algorithm is
+  performed (computing the possible imitation and projections) and
+  for each result the standard pattern unification code is
+  called.</li>
+<li>Fixed a unification issue involving the occurs check.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.3.3</h2>
+<ul>
+<li>Optimized the handling of state information. Based on the
+  developments included in the distribution, Version 1.3.3 is 150%
+  faster than Version 1.3.2.</li>
+<li>Added <a href="examples/programming-languages/ees.html">evaluation
+    by explicit substitution</a> development contributed by J. Todd
+    Wilson.</li>
+<li>Added <a href="reference-guide.html#show">Show</a> command to
+  display previously proved theorems.</li>
+<li>Added <a href="reference-guide.html#split">Split</a> command to
+  easily separate mutually inductive theorems.</li>
+<li>Fixed an issue with subgoal numbering.</li>
+<li>The <code>apply</code> tactic no longer requires "dummy nominals"
+  when nabla bound variables in a lemma are not used.</li>
+<li>The <code>search</code> tactic now backtracks over equalities.</li>
+<li>The <code>search</code> tactic now properly considers all nominal
+  constants when trying to instantiate an existential.</li>
+<li>The <code>cut</code> tactic can now be used without a
+  '<code>with</code>' argument in which case the <code>search</code>
+  tactic is used to find possible hypotheses to cut from a
+  specification judgment.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.3.2</h2>
+<ul>
+<li>Added <a href="reference-guide.html#specification-modularity">
+  specification modularity</a> via <code>accum_sig</code>
+  and <code>accumulate</code>.
+</li>
+<li>Loosened the <a href="reference-guide.html#compilation">
+  conditions on importing developments</a> to allow greater use of
+  specification modularity.
+</li>
+<li>Reorganized the examples directory to have a hierarchical
+  structure.
+</li>
+<li>Added the <code>-M</code> flag which can be used to generate
+  makefile style dependency lists for developments. Also
+  added <code>examples/makefile</code> which demonstrates a typical
+  makefile for a development.
+</li>
+<li>The <code>search</code> tactic now descends underneath forall and
+  implication. It now embodies every right rule of the logic.
+</li>
+<li>A 'witnesses' option has been added to
+  the <a href="reference-guide.html#set">Set command</a> which
+  causes <em>search witnesses</em> to be displayed after successful uses
+  of the <code>search</code> tactic.
+</li>
+<li>A warning is now issued when Teyjus keywords (which are not used
+  in Abella) are used in a specification. In all other respects,
+  specifications in Abella should now be a proper subset of those in
+  Teyjus.
+</li>
+</ul>
+
+</div>
+
+<div class="section">
+<h2>Version 1.3.1</h2>
+<ul>
+<li>Fixed a variable capture bug when using <code>apply</code>.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.3</h2>
+<br>
+This version of Abella introduces simple-typing. Documentation is
+available in the <a href="reference-guide.html#typing">reference guide
+section on typing</a>.
+
+<ul>
+<li>The syntax of definitions has been changed so that all clauses are
+  listed in a single command.
+</li>
+<li>Added the <code>backchain</code> tactic which is in some sense
+  dual to the <code>apply</code> tactic. The <code>backchain</code>
+  tactic applies a lemma (or hypothesis) to the current goal and
+  produces new subgoals for each of the hypotheses to the lemma.
+</li>
+<li>Added the <code>permute</code> tactic which permutes the nominal
+  constants in a hypothesis or goal.</li>
+<li>Improved the handling of non-L&lambda; unification and
+  constraints. After case analysis, lingering constraints are added as
+  equality hypotheses.</li>
+<li>Added <code>Quit</code> command.</li>
+<li>Added <a href="examples/process-calculi/pi-calculus/">a
+    development of some meta-theory of the &pi;-calculus</a>
+    contributed by Dale Miller.</li>
+<li>Added <a href="examples/misc/higher-order.html">a
+    development which showcases some of the higher-order logic
+    programming features which are available in Abella's specification
+    logic</a>.
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.2</h2>
+<br>
+This version of Abella is aimed at supporting larger developments.
+Most notably, it introduces a way to compile and import developments.
+This requires a change to way specifications are associated with
+developments which is not backwards compatible.
+
+<ul>
+<li>
+  Specifications are now explicitly loaded into a development via
+  the <code>Specification</code> command as
+  described <a href="reference-guide.html#specification">here</a>.
+</li>
+<li>
+  Developments may now be compiled and imported into other
+  developments as
+  described <a href="reference-guide.html#compilation">here</a>.
+</li>
+<li>
+  The <code>Query</code> command allows the animation of definitions
+  as described <a href="reference-guide.html#query">here</a>.
+</li>
+<li>
+  Command line options have been reorganized. Run <code>abella
+    --help</code> to find out more.
+</li>
+<li>
+  Some run-time options may be configured via the
+  <code>Set</code> command as described
+  <a href="reference-guide.html#set">here</a>.
+</li>
+<li>
+  Subgoals now use hierarchical numbering.
+</li>
+<li>
+  Large hypotheses may now be abbreviated using
+  the <code>abbrev</code> and <code>unabbrev</code> commands as
+  described <a href="reference-guide.html#abbrev">here</a>.
+</li>
+<li>
+  Multi-line comments are now supported via <code>/*</code>
+  ... <code>*/</code>. These comments may be nested.
+</li>
+<li>
+  The annotations for co-induction now use # and + to avoid confusion
+  with the annotations for induction (@ and *).
+</li>
+</ul>
+</div>
+
+
+<div class="section">
+<h2>Version 1.1.3</h2>
+<ul>
+<li>The <code>split</code> tactic now operates on n-ary
+  conjunctions</li>
+<li>Tactic names no longer conflict with terms during parsing</li>
+<li>Added the <a href="reference-guide.html#specification-tactics">monotone
+  tactic</a> which explicitly realizes the monotonicity property of
+  specification logic contexts</li>
+<li>Fixed a couple unification bugs</li>
+<li>New examples
+  <ul>
+  <li><a href="examples/lambda-calculus/term-structure/path.html">
+     path - equivalence of lambda terms based on the paths through
+     terms</a></li>
+  <li><a href="examples/logic/cut.html"> cut - this cut admissibility
+     example has been updated to include all operators of the sequent
+     calculus</a></li>
+  </ul>
+</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.1.2</h2>
+<ul>
+<li>Added <a href="examples/lambda-calculus/normalization/stlc-strong-norm.html">
+    Girard's proof of strong normalization of the simply-typed
+    lambda-calculus</a></li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.1.1</h2>
+<ul>
+<li>Abella now
+  support <a href="reference-guide.html#mutual-induction">mutual
+  induction</a> over specification judgments</li>
+<li>Abella will now issue a warning if a definition might not be
+  stratified</li>
+<li>Better handling of specification contexts when
+  using <code>apply</code></li>
+<li>The <code>search</code> tactic now takes an optional natural
+  number argument specifying the maximum depth of searching (default
+  5)</li>
+<li>New examples
+  <ul>
+  <li><a href="examples/lambda-calculus/term-structure/debruijn.html">
+     debruijn - translation between higher-order and debruijn lambda
+     terms</a></li>
+  <li><a href="examples/logic/focus.html"> focus - soundness and
+     completeness for a focused logic</a></li>
+  </ul>
+</li>
+</ul>
+</div>
+
+
+<div class="section">
+<h2>Version 1.1</h2>
+<ul>
+<li>Added coinductive definitions and coinduction. These are used
+  through the top-level command <code>CoDefine</code>, which works much
+  like <code>Define</code>, and the tactic <code>coinduction</code>,
+  which is similar to <code>induction</code> but takes no arguments. A
+  brief example of these features is discussed in the Abella reference
+  guide in the section on
+  <a href="reference-guide.html#corestrictions">coinductive
+  restrictions</a>. The following examples are now included in the
+  distribution of Abella.
+  <ul>
+    <li><a href="examples/process-calculi/ccs.html"> ccs - results on
+        the calculus of communicating systems</a></li>
+    <li><a href="examples/misc/colist.html"> colist - results on
+        (potentially) infinite lists</a></li>
+    <li><a href="examples/misc/conat.html"> conat - results on the
+        natural numbers with infinity</a></li>
+  </ul>
+  <b>Note:</b> The formal meta-logic underlying Abella with
+  coinduction is still being developed. A paper with the full logic is
+  forthcoming.
+</li>
+
+<li>Definitions now support an arbitrary number of nablas in the
+head.</li>
+
+<li>The example <a href="examples/misc/copy.html">copy</a> has been
+updated to show the equivalence of single and double variable
+definitions of a copy predicate.
+
+<li>Added <code>left</code> and <code>right</code> tactics for
+  selecting the left or right side when the current goal is a
+  disjunction.</li>
+
+<li>Fixed a bug when case-analysis on a definition with nabla in the
+head was used multiple times.</li>
+
+<li>Fixed a bug in the <code>exists</code> tactic where nominal
+  constants were being treated as regular constants.</li>
+
+<li>Changed the emacs highlighting for Abella. The goal is to
+highlight the theorems and definitions in a file while downplaying the
+tactics. Hopefully this makes it easier to skim a file.</li>
+
+<li>Added more checks to definitions such as preventing the use of
+undefined predicates and requiring all clauses for a particular
+predicate to occur together.</li>
+
+<li>Removed the <code>Axiom</code> command since it can be replaced with a
+theorem which uses only the <code>skip</code> tactic.
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.0.2</h2>
+<ul>
+<li>The <code>search</code> tactic now does a better job of
+  backtracking. In particular, each instantiatable variable is now
+  unbound when the event which caused it to be bound is backtracked
+  over.</li>
+<li>The <code>search</code> tactic now delays conflict pairs which
+  fall outside of the pattern unification fragment. Thus this tactic
+  is now more robust.</li>
+<li>The <code>apply</code> tactic now allows specific instantiations
+  for variables. The general form is
+  <blockquote>
+    <code>apply &lt;HYP-NAME&gt; to &lt;HYP-NAMES&gt; with X1 = T1,
+    ..., Xn = Tn.</code>
+  </blockquote>
+  where the <code>X1</code> ... <code>Xn</code> are the variables to
+  be instantiated with <code>T1</code> ... <code>Tn</code>.
+</li>
+<li>Randy Pollack has contributed a formalization of
+  the <a href="examples/lambda-calculus/cr.html">Church-Rosser
+  theorem</a> using Takahashi's proof based on complete
+  developments.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.0.1</h2>
+<ul>
+<li>Slightly extended the ability of the <code>search</code> tactic by
+  adding some corner cases of unification.</li>
+<li>Added definedness and arity checks on the usages of
+  definitions</li>
+<li>The <code>search</code> tactic now uses iterative deepening
+  depth-first search instead of simply depth-first search.</li>
+<li>Fixed some font-locking issues in the emacs files.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 1.0</h2>
+<ul>
+<li>First public release of Abella</li>
+</ul>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3596815-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
+
+<!--  LocalWords:  Changelog definedness arity emacs Rosser Takahashi's Pollack
+ -->
+<!--  LocalWords:  ccs colist conat nablas debruijn Girard's Subgoals uniq ary
+ -->
+<!--  LocalWords:  Huet's nominals
+ -->

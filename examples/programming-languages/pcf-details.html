@@ -1,0 +1,3345 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Properties of PCF - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "pcf".</b>
+Reading specification "pcf"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem subject_reduction : 
+forall E V T, {eval E V} -> {of E T} -> {of V T}.</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+
+  ============================
+   forall E V T, {eval E V} -> {of E T} -> {of V T}
+
+subject_reduction < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  ============================
+   forall E V T, {eval E V}@ -> {of E T} -> {of V T}
+
+subject_reduction < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H1 : {eval E V}@
+  H2 : {of E T}
+  ============================
+   {of V T}
+
+subject_reduction < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of zero T}
+  ============================
+   {of zero T}
+
+Subgoal 2 is:
+ {of tt T}
+
+Subgoal 3 is:
+ {of ff T}
+
+Subgoal 4 is:
+ {of (succ V1) T}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of tt T}
+  ============================
+   {of tt T}
+
+Subgoal 3 is:
+ {of ff T}
+
+Subgoal 4 is:
+ {of (succ V1) T}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 3:
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of ff T}
+  ============================
+   {of ff T}
+
+Subgoal 4 is:
+ {of (succ V1) T}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, V, T, V1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (succ M) T}
+  H3 : {eval M V1}*
+  ============================
+   {of (succ V1) T}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, V, T, V1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M V1}*
+  H4 : {of M num}
+  ============================
+   {of (succ V1) num}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, V, T, V1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M V1}*
+  H4 : {of M num}
+  H5 : {of V1 num}
+  ============================
+   {of (succ V1) num}
+
+Subgoal 5 is:
+ {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (pred M) T}
+  H3 : {eval M zero}*
+  ============================
+   {of zero T}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="13"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M zero}*
+  H4 : {of M num}
+  ============================
+   {of zero num}
+
+Subgoal 6 is:
+ {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 6:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (pred M) T}
+  H3 : {eval M (succ V)}*
+  ============================
+   {of V T}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 6:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (succ V)}*
+  H4 : {of M num}
+  ============================
+   {of V num}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 6:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (succ V)}*
+  H4 : {of M num}
+  H5 : {of (succ V) num}
+  ============================
+   {of V num}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H5.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 6:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (succ V)}*
+  H4 : {of M num}
+  H6 : {of V num}
+  ============================
+   {of V num}
+
+Subgoal 7 is:
+ {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 7:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (is_zero M) T}
+  H3 : {eval M zero}*
+  ============================
+   {of tt T}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 7:
+
+  Variables: E, V, T, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M zero}*
+  H4 : {of M num}
+  ============================
+   {of tt bool}
+
+Subgoal 8 is:
+ {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 8:
+
+  Variables: E, V, T, V1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (is_zero M) T}
+  H3 : {eval M (succ V1)}*
+  ============================
+   {of ff T}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 8:
+
+  Variables: E, V, T, V1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (succ V1)}*
+  H4 : {of M num}
+  ============================
+   {of ff bool}
+
+Subgoal 9 is:
+ {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 9:
+
+  Variables: E, V, T, N1, M, N2
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (if M N1 N2) T}
+  H3 : {eval M tt}*
+  H4 : {eval N1 V}*
+  ============================
+   {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 9:
+
+  Variables: E, V, T, N1, M, N2
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M tt}*
+  H4 : {eval N1 V}*
+  H5 : {of M bool}
+  H6 : {of N1 T}
+  H7 : {of N2 T}
+  ============================
+   {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 9:
+
+  Variables: E, V, T, N1, M, N2
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M tt}*
+  H4 : {eval N1 V}*
+  H5 : {of M bool}
+  H6 : {of N1 T}
+  H7 : {of N2 T}
+  H8 : {of V T}
+  ============================
+   {of V T}
+
+Subgoal 10 is:
+ {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 10:
+
+  Variables: E, V, T, N2, M, N1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (if M N1 N2) T}
+  H3 : {eval M ff}*
+  H4 : {eval N2 V}*
+  ============================
+   {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 10:
+
+  Variables: E, V, T, N2, M, N1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M ff}*
+  H4 : {eval N2 V}*
+  H5 : {of M bool}
+  H6 : {of N1 T}
+  H7 : {of N2 T}
+  ============================
+   {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H4 H7.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 10:
+
+  Variables: E, V, T, N2, M, N1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M ff}*
+  H4 : {eval N2 V}*
+  H5 : {of M bool}
+  H6 : {of N1 T}
+  H7 : {of N2 T}
+  H8 : {of V T}
+  ============================
+   {of V T}
+
+Subgoal 11 is:
+ {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 11:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (abs T1 R) T}
+  ============================
+   {of (abs T1 R) T}
+
+Subgoal 12 is:
+ {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (app M N) T}
+  H3 : {eval M (abs T1 R)}*
+  H4 : {eval (R N) V}*
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H2.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs T1 R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs T1 R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  H7 : {of (abs T1 R) (arr U T)}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>case H7.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs U R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>inst H8 with n1 = N.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs U R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>cut H9 with H6.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs U R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>apply IH to H4 H10.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 12:
+
+  Variables: E, V, T, N, R, T1, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs U R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arr U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  H11 : {of V T}
+  ============================
+   {of V T}
+
+Subgoal 13 is:
+ {of V T}
+
+subject_reduction < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 13:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (rec T1 R) T}
+  H3 : {eval (R (rec T1 R)) V}*
+  ============================
+   {of V T}
+
+subject_reduction < <b>case H2 (keep).</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 13:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (rec T R) T}
+  H3 : {eval (R (rec T R)) V}*
+  H4 : {of n1 T |- of (R n1) T}
+  ============================
+   {of V T}
+
+subject_reduction < <b>inst H4 with n1 = rec T R.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 13:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (rec T R) T}
+  H3 : {eval (R (rec T R)) V}*
+  H4 : {of n1 T |- of (R n1) T}
+  H5 : {of (rec T R) T |- of (R (rec T R)) T}
+  ============================
+   {of V T}
+
+subject_reduction < <b>cut H5 with H2.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 13:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (rec T R) T}
+  H3 : {eval (R (rec T R)) V}*
+  H4 : {of n1 T |- of (R n1) T}
+  H5 : {of (rec T R) T |- of (R (rec T R)) T}
+  H6 : {of (R (rec T R)) T}
+  ============================
+   {of V T}
+
+subject_reduction < <b>apply IH to H3 H6.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 13:
+
+  Variables: E, V, T, R, T1
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (rec T R) T}
+  H3 : {eval (R (rec T R)) V}*
+  H4 : {of n1 T |- of (R n1) T}
+  H5 : {of (rec T R) T |- of (R (rec T R)) T}
+  H6 : {of (R (rec T R)) T}
+  H7 : {of V T}
+  ============================
+   {of V T}
+
+subject_reduction < <b>search.</b>
+Proof completed.
+</pre>
+<a name="41"></a>
+<pre class="code">
+Abella < <b>Theorem member_prune : 
+forall L E, nabla x, member (E x) L -> (exists F, E = x\F).</b>
+</pre>
+<a name="42"></a>
+<pre>
+
+
+  ============================
+   forall L E, nabla x, member (E x) L -> (exists F, E = x\F)
+
+member_prune < <b>induction on 1.</b>
+</pre>
+<a name="43"></a>
+<pre>
+
+
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  ============================
+   forall L E, nabla x, member (E x) L @ -> (exists F, E = x\F)
+
+member_prune < <b>intros.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+  Variables: L, E
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = x\F
+
+member_prune < <b>case H1.</b>
+</pre>
+<a name="45"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  ============================
+   exists F, z1\L2 = x\F
+
+Subgoal 2 is:
+ exists F, E = x\F
+
+member_prune < <b>search.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = x\F
+
+member_prune < <b>apply IH to H2.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, L3, L2, F
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = x\F1
+
+member_prune < <b>search.</b>
+Proof completed.
+</pre>
+<a name="48"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+nabla x, ctx (of x A :: L) := ctx L.</b>
+</pre>
+<a name="49"></a>
+<pre class="code">
+Abella < <b>Define name : tm -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="50"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_member : 
+forall E L, ctx L -> member E L -> (exists X A, E = of X A /\ name X).</b>
+</pre>
+<a name="51"></a>
+<pre>
+
+
+  ============================
+   forall E L, ctx L -> member E L -> (exists X A, E = of X A /\ name X)
+
+ctx_member < <b>induction on 1.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\ name X)
+  ============================
+   forall E L, ctx L @ -> member E L -> (exists X A, E = of X A /\ name X)
+
+ctx_member < <b>intros.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H1 : ctx L @
+  H2 : member E L
+  ============================
+   exists X A, E = of X A /\ name X
+
+ctx_member < <b>case H1.</b>
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H2 : member E nil
+  ============================
+   exists X A, E = of X A /\ name X
+
+Subgoal 2 is:
+ exists X A, E n1 = of X A /\ name X
+
+ctx_member < <b>case H2.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, L, L1, A
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H2 : member (E n1) (of n1 A :: L1)
+  H3 : ctx L1 *
+  ============================
+   exists X A, E n1 = of X A /\ name X
+
+ctx_member < <b>case H2.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, L, L1, A
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H3 : ctx L1 *
+  ============================
+   exists X A1, of n1 A = of X A1 /\ name X
+
+Subgoal 2.2 is:
+ exists X A, E n1 = of X A /\ name X
+
+ctx_member < <b>search.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, L, L1, A
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H3 : ctx L1 *
+  H4 : member (E n1) L1
+  ============================
+   exists X A, E n1 = of X A /\ name X
+
+ctx_member < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, L, L1, A, X, A1
+  IH : forall E L, ctx L * -> member E L -> (exists X A, E = of X A /\
+         name X)
+  H3 : ctx L1 *
+  H4 : member (of (X n1) (A1 n1)) L1
+  H5 : name (X n1)
+  ============================
+   exists X1 A, of (X n1) (A1 n1) = of X1 A /\ name X1
+
+ctx_member < <b>search.</b>
+Proof completed.
+</pre>
+<a name="59"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_uniq : 
+forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+  T1 = T2.</b>
+</pre>
+<a name="60"></a>
+<pre>
+
+
+  ============================
+   forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+     T1 = T2
+
+ctx_uniq < <b>induction on 1.</b>
+</pre>
+<a name="61"></a>
+<pre>
+
+
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L @ -> member (of E T1) L -> member (of E T2) L ->
+     T1 = T2
+
+ctx_uniq < <b>intros.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx L @
+  H2 : member (of E T1) L
+  H3 : member (of E T2) L
+  ============================
+   T1 = T2
+
+ctx_uniq < <b>case H1.</b>
+</pre>
+<a name="63"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H2 : member (of E T1) nil
+  H3 : member (of E T2) nil
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < <b>case H2.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H2 : member (of (E n1) (T1 n1)) (of n1 A :: L1)
+  H3 : member (of (E n1) (T2 n1)) (of n1 A :: L1)
+  H4 : ctx L1 *
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < <b>case H2.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H3 : member (of n1 (T2 n1)) (of n1 A :: L1)
+  H4 : ctx L1 *
+  ============================
+   A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < <b>case H3.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 2.1.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  ============================
+   A = A
+
+Subgoal 2.1.2 is:
+ A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < <b>search.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 2.1.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (of n1 (T2 n1)) L1
+  ============================
+   A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < <b>apply member_prune to H5.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H3 : member (of (E n1) (T2 n1)) (of n1 A :: L1)
+  H4 : ctx L1 *
+  H5 : member (of (E n1) (T1 n1)) L1
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < <b>case H3.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (of n1 (T1 n1)) L1
+  ============================
+   T1 n1 = A
+
+Subgoal 2.2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < <b>apply member_prune to H5.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (of (E n1) (T1 n1)) L1
+  H6 : member (of (E n1) (T2 n1)) L1
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < <b>apply IH to H4 H5 H6.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (of (E n1) (T2 n1)) L1
+  H6 : member (of (E n1) (T2 n1)) L1
+  ============================
+   T2 n1 = T2 n1
+
+ctx_uniq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="72"></a>
+<pre class="code">
+Abella < <b>Theorem type_uniq : 
+forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2.</b>
+</pre>
+<a name="73"></a>
+<pre>
+
+
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2
+
+type_uniq < <b>induction on 2.</b>
+</pre>
+<a name="74"></a>
+<pre>
+
+
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1}@ -> {L |- of E T2} -> T1 = T2
+
+type_uniq < <b>intros.</b>
+</pre>
+<a name="75"></a>
+<pre>
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H2 : {L |- of E T1}@
+  H3 : {L |- of E T2}
+  ============================
+   T1 = T2
+
+type_uniq < <b>case H2.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of zero T2}
+  ============================
+   num = T2
+
+Subgoal 2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  ============================
+   num = num
+
+Subgoal 1.2 is:
+ num = T2
+
+Subgoal 2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [F] |- of zero T2}
+  H5 : member F L
+  ============================
+   num = T2
+
+Subgoal 2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H5.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [of X A] |- of zero T2}
+  H5 : member (of X A) L
+  H6 : name X
+  ============================
+   num = T2
+
+Subgoal 2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H4.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of zero T2) L
+  H6 : name zero
+  ============================
+   num = T2
+
+Subgoal 2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H6.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of tt T2}
+  ============================
+   bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  ============================
+   bool = bool
+
+Subgoal 2.2 is:
+ bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [F] |- of tt T2}
+  H5 : member F L
+  ============================
+   bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H5.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [of X A] |- of tt T2}
+  H5 : member (of X A) L
+  H6 : name X
+  ============================
+   bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H4.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of tt T2) L
+  H6 : name tt
+  ============================
+   bool = T2
+
+Subgoal 3 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H6.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of ff T2}
+  ============================
+   bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  ============================
+   bool = bool
+
+Subgoal 3.2 is:
+ bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [F] |- of ff T2}
+  H5 : member F L
+  ============================
+   bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H5.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, [of X A] |- of ff T2}
+  H5 : member (of X A) L
+  H6 : name X
+  ============================
+   bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H4.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of ff T2) L
+  H6 : name ff
+  ============================
+   bool = T2
+
+Subgoal 4 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H6.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (succ M) T2}
+  H4 : {L |- of M num}*
+  ============================
+   num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L |- of M num}
+  ============================
+   num = num
+
+Subgoal 4.2 is:
+ num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, E, T1, T2, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [F] |- of (succ M) T2}
+  H6 : member F L
+  ============================
+   num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H6.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [of X A] |- of (succ M) T2}
+  H6 : member (of X A) L
+  H7 : name X
+  ============================
+   num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H5.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H6 : member (of (succ M) T2) L
+  H7 : name (succ M)
+  ============================
+   num = T2
+
+Subgoal 5 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 5:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (pred M) T2}
+  H4 : {L |- of M num}*
+  ============================
+   num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 5.1:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L |- of M num}
+  ============================
+   num = num
+
+Subgoal 5.2 is:
+ num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: L, E, T1, T2, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [F] |- of (pred M) T2}
+  H6 : member F L
+  ============================
+   num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H6.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [of X A] |- of (pred M) T2}
+  H6 : member (of X A) L
+  H7 : name X
+  ============================
+   num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H5.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H6 : member (of (pred M) T2) L
+  H7 : name (pred M)
+  ============================
+   num = T2
+
+Subgoal 6 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 6:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (is_zero M) T2}
+  H4 : {L |- of M num}*
+  ============================
+   bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 6.1:
+
+  Variables: L, E, T1, T2, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L |- of M num}
+  ============================
+   bool = bool
+
+Subgoal 6.2 is:
+ bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: L, E, T1, T2, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [F] |- of (is_zero M) T2}
+  H6 : member F L
+  ============================
+   bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H6.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H5 : {L, [of X A] |- of (is_zero M) T2}
+  H6 : member (of X A) L
+  H7 : name X
+  ============================
+   bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H5.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: L, E, T1, T2, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M num}*
+  H6 : member (of (is_zero M) T2) L
+  H7 : name (is_zero M)
+  ============================
+   bool = T2
+
+Subgoal 7 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 7:
+
+  Variables: L, E, T1, T2, N2, N1, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (if M N1 N2) T2}
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T1}*
+  H6 : {L |- of N2 T1}*
+  ============================
+   T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 7.1:
+
+  Variables: L, E, T1, T2, N2, N1, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T1}*
+  H6 : {L |- of N2 T1}*
+  H7 : {L |- of M bool}
+  H8 : {L |- of N1 T2}
+  H9 : {L |- of N2 T2}
+  ============================
+   T1 = T2
+
+Subgoal 7.2 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply IH to H1 H5 H8.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 7.1:
+
+  Variables: L, E, T1, T2, N2, N1, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T2}*
+  H6 : {L |- of N2 T2}*
+  H7 : {L |- of M bool}
+  H8 : {L |- of N1 T2}
+  H9 : {L |- of N2 T2}
+  ============================
+   T2 = T2
+
+Subgoal 7.2 is:
+ T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 7.2:
+
+  Variables: L, E, T1, T2, N2, N1, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T1}*
+  H6 : {L |- of N2 T1}*
+  H7 : {L, [F] |- of (if M N1 N2) T2}
+  H8 : member F L
+  ============================
+   T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H8.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 7.2:
+
+  Variables: L, E, T1, T2, N2, N1, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T1}*
+  H6 : {L |- of N2 T1}*
+  H7 : {L, [of X A] |- of (if M N1 N2) T2}
+  H8 : member (of X A) L
+  H9 : name X
+  ============================
+   T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 7.2:
+
+  Variables: L, E, T1, T2, N2, N1, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M bool}*
+  H5 : {L |- of N1 T1}*
+  H6 : {L |- of N2 T1}*
+  H8 : member (of (if M N1 N2) T2) L
+  H9 : name (if M N1 N2)
+  ============================
+   T1 = T2
+
+Subgoal 8 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H9.</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 8:
+
+  Variables: L, E, T1, T2, U, R, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (abs T R) T2}
+  H4 : {L, of n1 T |- of (R n1) U}*
+  ============================
+   arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 8.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arr T U = arr T U1
+
+Subgoal 8.2 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply IH to _ H4 H5.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 8.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U1}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arr T U1 = arr T U1
+
+Subgoal 8.2 is:
+ arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 8.2:
+
+  Variables: L, E, T1, T2, U, R, T, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [F] |- of (abs T R) T2}
+  H6 : member F L
+  ============================
+   arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H6.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 8.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [of X A] |- of (abs T R) T2}
+  H6 : member (of X A) L
+  H7 : name X
+  ============================
+   arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H5.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 8.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H6 : member (of (abs T R) T2) L
+  H7 : name (abs T R)
+  ============================
+   arr T U = T2
+
+Subgoal 9 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 9:
+
+  Variables: L, E, T1, T2, U, N, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (app M N) T2}
+  H4 : {L |- of M (arr U T1)}*
+  H5 : {L |- of N U}*
+  ============================
+   T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 9.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arr U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L |- of M (arr U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T1 = T2
+
+Subgoal 9.2 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply IH to H1 H4 H6.</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 9.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arr U1 T2)}*
+  H5 : {L |- of N U1}*
+  H6 : {L |- of M (arr U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T2 = T2
+
+Subgoal 9.2 is:
+ T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 9.2:
+
+  Variables: L, E, T1, T2, U, N, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arr U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [F] |- of (app M N) T2}
+  H7 : member F L
+  ============================
+   T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H7.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 9.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arr U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [of X A] |- of (app M N) T2}
+  H7 : member (of X A) L
+  H8 : name X
+  ============================
+   T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H6.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 9.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arr U T1)}*
+  H5 : {L |- of N U}*
+  H7 : member (of (app M N) T2) L
+  H8 : name (app M N)
+  ============================
+   T1 = T2
+
+Subgoal 10 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H8.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 10:
+
+  Variables: L, E, T1, T2, R
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (rec T1 R) T2}
+  H4 : {L, of n1 T1 |- of (R n1) T1}*
+  ============================
+   T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="125"></a>
+<pre>
+Subgoal 10.1:
+
+  Variables: L, E, T1, T2, R
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T2 |- of (R n1) T2}*
+  H5 : {L, of n1 T2 |- of (R n1) T2}
+  ============================
+   T2 = T2
+
+Subgoal 10.2 is:
+ T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>search.</b>
+</pre>
+<a name="126"></a>
+<pre>
+Subgoal 10.2:
+
+  Variables: L, E, T1, T2, R, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T1 |- of (R n1) T1}*
+  H5 : {L, [F] |- of (rec T1 R) T2}
+  H6 : member F L
+  ============================
+   T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H6.</b>
+</pre>
+<a name="127"></a>
+<pre>
+Subgoal 10.2:
+
+  Variables: L, E, T1, T2, R, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T1 |- of (R n1) T1}*
+  H5 : {L, [of X A] |- of (rec T1 R) T2}
+  H6 : member (of X A) L
+  H7 : name X
+  ============================
+   T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H5.</b>
+</pre>
+<a name="128"></a>
+<pre>
+Subgoal 10.2:
+
+  Variables: L, E, T1, T2, R, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T1 |- of (R n1) T1}*
+  H6 : member (of (rec T1 R) T2) L
+  H7 : name (rec T1 R)
+  ============================
+   T1 = T2
+
+Subgoal 11 is:
+ T1 = T2
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="129"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [F] |- of E T1}*
+  H5 : member F L
+  ============================
+   T1 = T2
+
+type_uniq < <b>apply ctx_member to H1 H5.</b>
+</pre>
+<a name="130"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [of X A] |- of E T1}*
+  H5 : member (of X A) L
+  H6 : name X
+  ============================
+   T1 = T2
+
+type_uniq < <b>case H4.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H5 : member (of E T1) L
+  H6 : name E
+  ============================
+   T1 = T2
+
+type_uniq < <b>case H6.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H3 : {L n1 |- of n1 (T2 n1)}
+  H5 : member (of n1 (T1 n1)) (L n1)
+  ============================
+   T1 n1 = T2 n1
+
+type_uniq < <b>case H3.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A, F1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 (T1 n1)) (L n1)
+  H7 : {L n1, [F1 n1] |- of n1 (T2 n1)}
+  H8 : member (F1 n1) (L n1)
+  ============================
+   T1 n1 = T2 n1
+
+type_uniq < <b>apply ctx_member to H1 H8.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A, F1, X1, A1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 (T1 n1)) (L n1)
+  H7 : {L n1, [of (X1 n1) (A1 n1)] |- of n1 (T2 n1)}
+  H8 : member (of (X1 n1) (A1 n1)) (L n1)
+  H9 : name (X1 n1)
+  ============================
+   T1 n1 = T2 n1
+
+type_uniq < <b>case H7.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A, F1, X1, A1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 (T1 n1)) (L n1)
+  H8 : member (of n1 (T2 n1)) (L n1)
+  H9 : name n1
+  ============================
+   T1 n1 = T2 n1
+
+type_uniq < <b>apply ctx_uniq to H1 H5 H8.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 11:
+
+  Variables: L, E, T1, T2, F, X, A, F1, X1, A1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 (T2 n1)) (L n1)
+  H8 : member (of n1 (T2 n1)) (L n1)
+  H9 : name n1
+  ============================
+   T2 n1 = T2 n1
+
+type_uniq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="137"></a>
+<pre class="code">
+Abella < <b>Query Add = rec (arr num (arr num num)) (add\abs num (x\abs num (y\if (is_zero x) y (succ (app (app add (pred x)) y))))) /\
+  Two = succ (succ zero) /\ Three = succ (succ (succ zero)) /\
+  {eval (app (app Add Two) Three) V}.</b>
+Found solution:
+Add = rec (arr num (arr num num)) (add\abs num (x\abs num (y\if (is_zero x) y (succ (app (app add (pred x)) y)))))
+Two = succ (succ zero)
+Three = succ (succ (succ zero))
+V = succ (succ (succ (succ (succ zero))))
+
+No more solutions.
+</pre>
+<a name="138"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

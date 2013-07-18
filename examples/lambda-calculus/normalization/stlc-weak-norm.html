@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Tait's logical relations argument for weak normalization of STLC</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Tait's logical relations argument for weak normalization of STLC</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="stlc-weak-norm.sig">[View stlc-weak-norm.sig]</a>
+<a class="view" href="stlc-weak-norm.mod">[View stlc-weak-norm.mod]</a>
+<pre class="command">
+sig stlc-weak-norm.
+
+kind    tm, ty         type.
+
+type    app            tm -> tm -> tm.
+type    abs            ty -> (tm -> tm) -> tm.
+
+type    top            ty.
+type    arrow          ty -> ty -> ty.
+
+type    value          tm -> o.
+type    of             tm -> ty -> o.
+type    step, steps    tm -> tm -> o.
+
+</pre>
+<pre class="command">
+module stlc-weak-norm.
+
+value (abs A R).
+
+of (app M N) B :- of M (arrow A B), of N A.
+of (abs A R) (arrow A B) :- pi x\ of x A => of (R x) B.
+
+step (app M N) (app M' N) :- step M M'.
+step (app M N) (app M N') :- value M, step N N'.
+step (app (abs A R) M) (R M) :- value M.
+
+steps M M.
+steps M N :- step M P, steps P N.
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="stlc-weak-norm.thm">[View stlc-weak-norm.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%%</span>
+<span class="comment">%% This is based on the presentation in Types and Programming</span>
+<span class="comment">%% Languages by Pierce.</span>
+
+<a href="stlc-weak-norm-details.html#1" class="command">Specification "stlc-weak-norm".</a>
+<a href="stlc-weak-norm-details.html#2" class="command">Close tm, ty.</a>
+
+<span class="comment">%% Conventions:</span>
+<span class="comment">%% Types: A, B, C</span>
+<span class="comment">%% Terms: M, N, P, R</span>
+<span class="comment">%% Values (Terms): V</span>
+<span class="comment">%% Contexts: L</span>
+
+<a href="stlc-weak-norm-details.html#3" class="command">Define halts : tm -> prop by
+  halts M := exists V, {steps M V} /\ {value V}.</a>
+
+<span class="comment">%% Reduce is the logical relation used to prove normalization.</span>
+<span class="comment">%%</span>
+<span class="comment">%% This definition uses itself recursively in a negative context (the</span>
+<span class="comment">%% left side of an implication). In order to guarantee consistency of</span>
+<span class="comment">%% the system we must ensure this definition is stratified. Note the</span>
+<span class="comment">%% second argument to reduce is strictly smaller in the (negative)</span>
+<span class="comment">%% recursive occurrence, thus the definition is indeed stratified.</span>
+
+<a href="stlc-weak-norm-details.html#4" class="command">Define reduce : tm -> ty -> prop by
+  reduce M top := {of M top} /\ halts M ;
+  reduce M (arrow A B) := {of M (arrow A B)} /\
+                          halts M /\
+                          (forall N, reduce N A -> reduce (app M N) B).</a>
+
+<a href="stlc-weak-norm-details.html#5" class="command">Theorem reduce_halts : forall A M, reduce M A -> halts M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#6" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#7" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#8" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#9" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#10" class="command">Theorem reduce_of : forall A M, reduce M A -> {of M A}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#11" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#12" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#13" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#14" class="tactic">search.</a></div>
+
+<span class="comment">%% Properties of evaluation</span>
+
+<a href="stlc-weak-norm-details.html#15" class="command">Theorem absurd_step_value : forall V M,
+  {step V M} -> {value V} -> false.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#16" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#17" class="tactic">case H2.</a> <a href="stlc-weak-norm-details.html#18" class="tactic">case H1.</a></div>
+<a href="stlc-weak-norm-details.html#19" class="command">Theorem step_det : forall M N P,
+  {step M N} -> {step M P} -> N = P.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#20" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#21" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#22" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#23" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#24" class="tactic">apply IH to H3 H4.</a> <a href="stlc-weak-norm-details.html#25" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#26" class="tactic">apply absurd_step_value to H3 H4.</a>
+    <a href="stlc-weak-norm-details.html#27" class="tactic">case H3.</a>
+  <a href="stlc-weak-norm-details.html#28" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#29" class="tactic">apply absurd_step_value to H5 H3.</a>
+    <a href="stlc-weak-norm-details.html#30" class="tactic">apply IH to H4 H6.</a> <a href="stlc-weak-norm-details.html#31" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#32" class="tactic">apply absurd_step_value to H4 H5.</a>
+  <a href="stlc-weak-norm-details.html#33" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#34" class="tactic">case H4.</a>
+    <a href="stlc-weak-norm-details.html#35" class="tactic">apply absurd_step_value to H5 H3.</a>
+    <a href="stlc-weak-norm-details.html#36" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#37" class="command">Theorem step_follows_steps : forall M N V,
+  {step M N} -> {steps M V} -> {value V} -> {steps N V}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#38" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#39" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#40" class="tactic">apply absurd_step_value to H1 H3.</a>
+  <a href="stlc-weak-norm-details.html#41" class="tactic">apply step_det to H1 H4.</a> <a href="stlc-weak-norm-details.html#42" class="tactic">search.</a></div>
+<span class="comment">% steps is defined by left recursion on step, so this lemma tells us</span>
+<span class="comment">% that it acts right recursively as well</span>
+<a href="stlc-weak-norm-details.html#43" class="command">Theorem steps_right : forall M N R,
+  {steps M N} -> {step N R} -> {steps M R}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#44" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#45" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#46" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#47" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#48" class="tactic">apply IH to H4 H2.</a> <a href="stlc-weak-norm-details.html#49" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#50" class="command">Theorem steps_app_value : forall M N R,
+  {value M} -> {steps N R} -> {steps (app M N) (app M R)}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#51" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#52" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#53" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#54" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#55" class="tactic">apply IH to H1 H4.</a> <a href="stlc-weak-norm-details.html#56" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#57" class="command">Theorem halt_step_forward : forall M N,
+  halts M -> {step M N} -> halts N.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#58" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#59" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#60" class="tactic">apply step_follows_steps to H2 H3 H4.</a> <a href="stlc-weak-norm-details.html#61" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#62" class="command">Theorem halt_step_backward : forall M N,
+  halts N -> {step M N} -> halts M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#63" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#64" class="tactic">case H1.</a> <a href="stlc-weak-norm-details.html#65" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#66" class="command">Theorem of_step_forward : forall M N A,
+  {of M A} -> {step M N} -> {of N A}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#67" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#68" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#69" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#70" class="tactic">case H1.</a> <a href="stlc-weak-norm-details.html#71" class="tactic">apply IH to H4 H3.</a> <a href="stlc-weak-norm-details.html#72" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#73" class="tactic">case H1.</a> <a href="stlc-weak-norm-details.html#74" class="tactic">apply IH to H6 H4.</a> <a href="stlc-weak-norm-details.html#75" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#76" class="tactic">case H1.</a> <a href="stlc-weak-norm-details.html#77" class="tactic">case H4.</a>
+    <a href="stlc-weak-norm-details.html#78" class="tactic">inst H6 with n1 = M1.</a>
+      <a href="stlc-weak-norm-details.html#79" class="tactic">cut H7 with H5.</a> <a href="stlc-weak-norm-details.html#80" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#81" class="command">Theorem reduce_step_forward : forall M N A,
+  reduce M A -> {step M N} -> reduce N A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#82" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#83" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#84" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#85" class="tactic">apply of_step_forward to H3 H2.</a>
+    <a href="stlc-weak-norm-details.html#86" class="tactic">apply halt_step_forward to H4 H2.</a>
+      <a href="stlc-weak-norm-details.html#87" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#88" class="tactic">unfold.</a>
+    <a href="stlc-weak-norm-details.html#89" class="tactic">apply of_step_forward to H3 H2.</a> <a href="stlc-weak-norm-details.html#90" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#91" class="tactic">apply halt_step_forward to H4 H2.</a> <a href="stlc-weak-norm-details.html#92" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#93" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#94" class="tactic">apply H5 to H6.</a>
+      <a href="stlc-weak-norm-details.html#95" class="tactic">apply IH to H7 _.</a> <a href="stlc-weak-norm-details.html#96" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#97" class="command">Theorem reduce_steps_forward : forall M N A,
+  reduce M A -> {steps M N} -> reduce N A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#98" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#99" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#100" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#101" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#102" class="tactic">apply reduce_step_forward to H1 H3.</a> <a href="stlc-weak-norm-details.html#103" class="tactic">apply IH to H5 H4.</a> <a href="stlc-weak-norm-details.html#104" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#105" class="command">Theorem reduce_step_backward : forall M N A,
+  reduce N A -> {step M N} -> {of M A} -> reduce M A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#106" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#107" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#108" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#109" class="tactic">apply halt_step_backward to H5 H2.</a> <a href="stlc-weak-norm-details.html#110" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#111" class="tactic">unfold.</a>
+    <a href="stlc-weak-norm-details.html#112" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#113" class="tactic">apply halt_step_backward to H5 H2.</a> <a href="stlc-weak-norm-details.html#114" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#115" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#116" class="tactic">apply H6 to H7.</a>
+      <a href="stlc-weak-norm-details.html#117" class="tactic">apply reduce_of to H7.</a>
+        <a href="stlc-weak-norm-details.html#118" class="tactic">apply IH to H8 _ _.</a> <a href="stlc-weak-norm-details.html#119" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#120" class="command">Theorem reduce_steps_backward : forall M N A,
+  reduce N A -> {steps M N} -> {of M A} -> reduce M A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#121" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#122" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#123" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#124" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#125" class="tactic">apply of_step_forward to H3 H4.</a> <a href="stlc-weak-norm-details.html#126" class="tactic">apply IH to H1 H5 H6.</a>
+    <a href="stlc-weak-norm-details.html#127" class="tactic">apply reduce_step_backward to H7 H4 H3.</a> <a href="stlc-weak-norm-details.html#128" class="tactic">search.</a></div>
+
+<span class="comment">%% Properties about nominal constants, e.g. where they can and cannot occur.</span>
+<span class="comment">%% Also properties about the contexts of judgments.</span>
+
+<a href="stlc-weak-norm-details.html#129" class="command">Define ctx : olist -> prop by
+  ctx nil ;
+  nabla x, ctx (of x A :: L) := ctx L.</a>
+
+<span class="comment">% A term is closed if it can be typed in the empty context</span>
+<a href="stlc-weak-norm-details.html#130" class="command">Define closed : tm -> prop by
+  closed M := exists A, {of M A}.</a>
+
+<a href="stlc-weak-norm-details.html#131" class="command">Define name : tm -> prop by
+  nabla x, name x.</a>
+
+<a href="stlc-weak-norm-details.html#132" class="command">Theorem ctx_member :
+  forall L E,
+  ctx L -> member E L ->
+  exists X A, E = of X A /\ name X.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#133" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#134" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#135" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#136" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#137" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#138" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#139" class="tactic">apply IH to H3 H4.</a> <a href="stlc-weak-norm-details.html#140" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#141" class="command">Theorem member_prune : forall L E, nabla (x:tm),
+  member (E x) L -> exists F, E = y\F.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#142" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#143" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#144" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#145" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#146" class="tactic">apply IH to H2.</a> <a href="stlc-weak-norm-details.html#147" class="tactic">search.</a></div>
+<span class="comment">% A term cannot contain a nominal variable which does not appear in</span>
+<span class="comment">% its typing context L.</span>
+<a href="stlc-weak-norm-details.html#148" class="command">Theorem prune_of : forall L R A, nabla (x:tm),
+  ctx L -> {L |- of (R x) A} -> exists M, R = y\M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#149" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#150" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#151" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#152" class="tactic">apply IH to H1 H3.</a> <a href="stlc-weak-norm-details.html#153" class="tactic">apply IH to H1 H4.</a> <a href="stlc-weak-norm-details.html#154" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#155" class="tactic">apply IH to _ H3.</a> <a href="stlc-weak-norm-details.html#156" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#157" class="tactic">apply ctx_member to H1 H4.</a> <a href="stlc-weak-norm-details.html#158" class="tactic">case H3.</a>
+   <a href="stlc-weak-norm-details.html#159" class="tactic">apply member_prune to H4.</a> <a href="stlc-weak-norm-details.html#160" class="tactic">search.</a></div>
+<span class="comment">% Closed terms cannot contain any nominal constants</span>
+<a href="stlc-weak-norm-details.html#161" class="command">Theorem prune_closed : forall R, nabla (x:tm),
+  closed (R x) -> exists M, R = y\M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#162" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#163" class="tactic">case H1.</a> <a href="stlc-weak-norm-details.html#164" class="tactic">apply prune_of to _ H2.</a> <a href="stlc-weak-norm-details.html#165" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#166" class="command">Theorem reduce_closed : forall M A, reduce M A -> closed M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#167" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#168" class="tactic">apply reduce_of to H1.</a> <a href="stlc-weak-norm-details.html#169" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#170" class="command">Theorem prune_reduce : forall R A, nabla (x:tm),
+  reduce (R x) A -> exists M, R = y\M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#171" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#172" class="tactic">apply reduce_closed to H1.</a> <a href="stlc-weak-norm-details.html#173" class="tactic">apply prune_closed to H2.</a> <a href="stlc-weak-norm-details.html#174" class="tactic">search.</a></div>
+
+<span class="comment">%% Now we need to state the generalize theorem. This will require reasoning</span>
+<span class="comment">%% about all possible closed instantiations of an open term.</span>
+
+<span class="comment">% Suppose that {L |- of M A} is true. Then M is an open term with nominal</span>
+<span class="comment">% constants that are listed in L. The judgment "subst L M N" holds for all</span>
+<span class="comment">% instantiations N of the nominal constants in M with values that satisfy</span>
+<span class="comment">% the reduce relation for their respective types. The key to defining this</span>
+<span class="comment">% judgment is the use of nabla in the head of a definition which extracts</span>
+<span class="comment">% a nominal constant from L and M. The definition of subst then substitutes</span>
+<span class="comment">% for this nominal constant and continues processing the list L.</span>
+<a href="stlc-weak-norm-details.html#175" class="command">Define subst : olist -> tm -> tm -> prop by
+  subst nil M M ;
+  nabla x, subst (of x A :: L) (R x) M :=
+    exists V, reduce V A /\ {value V} /\ subst L (R V) M.</a>
+
+<span class="comment">% Subst on a closed term has no effect</span>
+<a href="stlc-weak-norm-details.html#176" class="command">Theorem closed_subst : forall L M N,
+  closed M -> subst L M N -> M = N.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#177" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#178" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#179" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#180" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#181" class="tactic">apply prune_closed to H1.</a>
+    <a href="stlc-weak-norm-details.html#182" class="tactic">apply IH to H1 H5.</a> <a href="stlc-weak-norm-details.html#183" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#184" class="command">Theorem subst_var : forall L M N A,
+  ctx L -> member (of M A) L -> subst L M N -> reduce N A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#185" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#186" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#187" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#188" class="tactic">case H2.</a>
+  <a href="stlc-weak-norm-details.html#189" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#190" class="tactic">case H3.</a> <a href="stlc-weak-norm-details.html#191" class="tactic">apply reduce_closed to H5.</a>
+      <a href="stlc-weak-norm-details.html#192" class="tactic">apply closed_subst to H8 H7.</a> <a href="stlc-weak-norm-details.html#193" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#194" class="tactic">case H3.</a> <a href="stlc-weak-norm-details.html#195" class="tactic">apply member_prune to H5.</a>
+      <a href="stlc-weak-norm-details.html#196" class="tactic">apply IH to H4 H5 H8.</a> <a href="stlc-weak-norm-details.html#197" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#198" class="command">Theorem subst_app : forall L M N R,
+  ctx L -> subst L (app M N) R ->
+    exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#199" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#200" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#201" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#202" class="tactic">case H2.</a> <a href="stlc-weak-norm-details.html#203" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#204" class="tactic">case H2.</a> <a href="stlc-weak-norm-details.html#205" class="tactic">apply IH to H3 H6.</a> <a href="stlc-weak-norm-details.html#206" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#207" class="command">Theorem subst_abs : forall L M R A,
+  ctx L -> subst L (abs A M) R ->
+      exists MR, R = abs A MR /\
+        (forall V, reduce V A -> {value V} ->
+                     nabla x, subst (of x A :: L) (M x) (MR V)).</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#208" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#209" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#210" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#211" class="tactic">case H2.</a> <a href="stlc-weak-norm-details.html#212" class="tactic">exists M.</a> <a href="stlc-weak-norm-details.html#213" class="tactic">split.</a>
+    <a href="stlc-weak-norm-details.html#214" class="tactic">search.</a>
+    <a href="stlc-weak-norm-details.html#215" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#216" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#217" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#218" class="tactic">apply IH to H3 H6.</a>
+      <a href="stlc-weak-norm-details.html#219" class="tactic">exists MR.</a> <a href="stlc-weak-norm-details.html#220" class="tactic">split.</a>
+        <a href="stlc-weak-norm-details.html#221" class="tactic">search.</a>
+        <a href="stlc-weak-norm-details.html#222" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#223" class="tactic">apply prune_reduce to H8.</a>
+          <a href="stlc-weak-norm-details.html#224" class="tactic">apply H7 to H8 H9.</a> <a href="stlc-weak-norm-details.html#225" class="tactic">case H10.</a> <a href="stlc-weak-norm-details.html#226" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#227" class="command">Theorem subst_preserves_ty : forall L M N A,
+  ctx L -> subst L M N -> {L |- of M A} -> {of N A}.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#228" class="tactic">induction on 1.</a> <a href="stlc-weak-norm-details.html#229" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#230" class="tactic">case H1.</a>
+  <a href="stlc-weak-norm-details.html#231" class="tactic">case H2.</a> <a href="stlc-weak-norm-details.html#232" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#233" class="tactic">case H2.</a>
+    <a href="stlc-weak-norm-details.html#234" class="tactic">apply reduce_of to H5.</a> <a href="stlc-weak-norm-details.html#235" class="tactic">inst H3 with n1 = V.</a> <a href="stlc-weak-norm-details.html#236" class="tactic">cut H9 with H8.</a>
+      <a href="stlc-weak-norm-details.html#237" class="tactic">apply IH to H4 H7 H10.</a> <a href="stlc-weak-norm-details.html#238" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#239" class="command">Theorem weak_norm_ext : forall L M R A,
+  ctx L -> {L |- of M A} -> subst L M R -> reduce R A.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#240" class="tactic">induction on 2.</a> <a href="stlc-weak-norm-details.html#241" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#242" class="tactic">case H2 (keep).</a>
+  <a href="stlc-weak-norm-details.html#243" class="tactic">apply subst_app to H1 H3.</a>
+    <a href="stlc-weak-norm-details.html#244" class="tactic">apply IH to H1 H4 H6.</a>
+      <a href="stlc-weak-norm-details.html#245" class="tactic">apply IH to H1 H5 H7.</a>
+        <a href="stlc-weak-norm-details.html#246" class="tactic">case H8.</a> <a href="stlc-weak-norm-details.html#247" class="tactic">apply H12 to H9.</a> <a href="stlc-weak-norm-details.html#248" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#249" class="tactic">apply subst_abs to H1 H3.</a>
+    <a href="stlc-weak-norm-details.html#250" class="tactic">apply subst_preserves_ty to H1 H3 H2.</a> <a href="stlc-weak-norm-details.html#251" class="tactic">unfold.</a>
+      <a href="stlc-weak-norm-details.html#252" class="tactic">search.</a>
+      <a href="stlc-weak-norm-details.html#253" class="tactic">search.</a>
+      <a href="stlc-weak-norm-details.html#254" class="tactic">intros.</a> <span class="comment">% The rest is one single case</span>
+        <a href="stlc-weak-norm-details.html#255" class="tactic">apply reduce_halts to H7.</a> <a href="stlc-weak-norm-details.html#256" class="tactic">case H8.</a>
+        <a href="stlc-weak-norm-details.html#257" class="tactic">apply reduce_steps_forward to H7 H9.</a>
+        <a href="stlc-weak-norm-details.html#258" class="tactic">apply H5 to H11 H10.</a>
+        <a href="stlc-weak-norm-details.html#259" class="tactic">apply IH to _ H4 H12.</a>
+        <a href="stlc-weak-norm-details.html#260" class="tactic">apply steps_app_value to _ H9 with M = abs A1 MR.</a>
+        <a href="stlc-weak-norm-details.html#261" class="tactic">apply steps_right to H14 _ with R = MR V.</a>
+        <a href="stlc-weak-norm-details.html#262" class="tactic">apply reduce_of to H7.</a>
+        <a href="stlc-weak-norm-details.html#263" class="tactic">apply reduce_steps_backward to H13 H15 _.</a>
+        <a href="stlc-weak-norm-details.html#264" class="tactic">search.</a>
+  <a href="stlc-weak-norm-details.html#265" class="tactic">apply ctx_member to H1 H5.</a> <a href="stlc-weak-norm-details.html#266" class="tactic">case H6.</a> <a href="stlc-weak-norm-details.html#267" class="tactic">case H4.</a>
+   <a href="stlc-weak-norm-details.html#268" class="tactic">apply subst_var to H1 H5 H3.</a> <a href="stlc-weak-norm-details.html#269" class="tactic">search.</a></div>
+<a href="stlc-weak-norm-details.html#270" class="command">Theorem weak_norm : forall M A, {of M A} -> halts M.</a>
+<div class="proof"><a href="stlc-weak-norm-details.html#271" class="tactic">intros.</a> <a href="stlc-weak-norm-details.html#272" class="tactic">apply weak_norm_ext to _ H1 _.</a>
+  <a href="stlc-weak-norm-details.html#273" class="tactic">apply reduce_halts to H2.</a> <a href="stlc-weak-norm-details.html#274" class="tactic">search.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

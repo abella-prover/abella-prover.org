@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Higher-order Logic Programming - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "higher-order".</b>
+Reading specification "higher-order"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem split : 
+forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K} ->
+  (exists J, {mappred R L J} /\ {mappred S J K}).</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+
+  ============================
+   forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K} ->
+     (exists J, {mappred R L J} /\ {mappred S J K})
+
+split < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  ============================
+   forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}@ ->
+     (exists J, {mappred R L J} /\ {mappred S J K})
+
+split < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+  Variables: R, S, L, K
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H1 : {mappred (x\y\exist (z\and (R x z) (S z y))) L K}@
+  ============================
+   exists J, {mappred R L J} /\ {mappred S J K}
+
+split < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, S, L, K
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  ============================
+   exists J, {mappred R anil J} /\ {mappred S J anil}
+
+Subgoal 2 is:
+ exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < <b>search.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H2 : {exist (z\and (R X z) (S z Y))}*
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < <b>case H2.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H4 : {and (R X X1) (S X1 Y)}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < <b>case H4.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H5 : {R X X1}*
+  H6 : {S X1 Y}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < <b>apply IH to H3.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1, J
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H5 : {R X X1}*
+  H6 : {S X1 Y}*
+  H7 : {mappred (z1\z2\R z1 z2) XS J}
+  H8 : {mappred (z1\z2\S z1 z2) J YS}
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < <b>search.</b>
+Proof completed.
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Theorem combine : 
+forall R S L K J, {mappred R L J} -> {mappred S J K} ->
+  {mappred (x\y\exist (z\and (R x z) (S z y))) L K}.</b>
+</pre>
+<a name="12"></a>
+<pre>
+
+
+  ============================
+   forall R S L K J, {mappred R L J} -> {mappred S J K} ->
+     {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < <b>induction on 1.</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  ============================
+   forall R S L K J, {mappred R L J}@ -> {mappred S J K} ->
+     {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < <b>intros.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H1 : {mappred R L J}@
+  H2 : {mappred S J K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < <b>case H1.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H2 : {mappred S anil K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) anil K}
+
+Subgoal 2 is:
+ {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < <b>case H2.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) anil anil}
+
+Subgoal 2 is:
+ {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < <b>search.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H2 : {mappred S (acons Y YS) K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X, YS1, Y1
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  H5 : {S Y Y1}
+  H6 : {mappred S YS YS1}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) (acons Y1 YS1)}
+
+combine < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X, YS1, Y1
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  H5 : {S Y Y1}
+  H6 : {mappred S YS YS1}
+  H7 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS1}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) (acons Y1 YS1)}
+
+combine < <b>search.</b>
+Proof completed.
+</pre>
+<a name="20"></a>
+<pre class="code">
+Abella < <b>Theorem deterministic : 
+forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+  {mappred R L K1} -> {mappred R L K2} -> K1 = K2.</b>
+</pre>
+<a name="21"></a>
+<pre>
+
+
+  ============================
+   forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+     {mappred R L K1} -> {mappred R L K2} -> K1 = K2
+
+deterministic < <b>induction on 2.</b>
+</pre>
+<a name="22"></a>
+<pre>
+
+
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  ============================
+   forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+     {mappred R L K1}@ -> {mappred R L K2} -> K1 = K2
+
+deterministic < <b>intros.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H2 : {mappred R L K1}@
+  H3 : {mappred R L K2}
+  ============================
+   K1 = K2
+
+deterministic < <b>case H2.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H3 : {mappred R anil K2}
+  ============================
+   anil = K2
+
+Subgoal 2 is:
+ acons Y YS = K2
+
+deterministic < <b>case H3.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  ============================
+   anil = anil
+
+Subgoal 2 is:
+ acons Y YS = K2
+
+deterministic < <b>search.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H3 : {mappred R (acons X XS) K2}
+  H4 : {R X Y}*
+  H5 : {mappred R XS YS}*
+  ============================
+   acons Y YS = K2
+
+deterministic < <b>case H3.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y}*
+  H5 : {mappred R XS YS}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y YS = acons Y1 YS1
+
+deterministic < <b>apply H1 to H4 H6.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y1}*
+  H5 : {mappred R XS YS}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y1 YS = acons Y1 YS1
+
+deterministic < <b>apply IH to H1 H5 H7.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y1}*
+  H5 : {mappred R XS YS1}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y1 YS1 = acons Y1 YS1
+
+deterministic < <b>search.</b>
+Proof completed.
+</pre>
+<a name="30"></a>
+<pre class="code">
+Abella < <b>Theorem swap1 : 
+forall R L K, {mappred (swap R) L K} -> {mappred R K L}.</b>
+</pre>
+<a name="31"></a>
+<pre>
+
+
+  ============================
+   forall R L K, {mappred (swap R) L K} -> {mappred R K L}
+
+swap1 < <b>induction on 1.</b>
+</pre>
+<a name="32"></a>
+<pre>
+
+
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  ============================
+   forall R L K, {mappred (swap R) L K}@ -> {mappred R K L}
+
+swap1 < <b>intros.</b>
+</pre>
+<a name="33"></a>
+<pre>
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H1 : {mappred (swap R) L K}@
+  ============================
+   {mappred R K L}
+
+swap1 < <b>case H1.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  ============================
+   {mappred R anil anil}
+
+Subgoal 2 is:
+ {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < <b>search.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H2 : {swap R X Y}*
+  H3 : {mappred (swap R) XS YS}*
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < <b>case H2.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H3 : {mappred (swap R) XS YS}*
+  H4 : {R Y X}*
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < <b>apply IH to H3.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H3 : {mappred (swap R) XS YS}*
+  H4 : {R Y X}*
+  H5 : {mappred R YS XS}
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="38"></a>
+<pre class="code">
+Abella < <b>Theorem swap2 : 
+forall R L K, {mappred R K L} -> {mappred (swap R) L K}.</b>
+</pre>
+<a name="39"></a>
+<pre>
+
+
+  ============================
+   forall R L K, {mappred R K L} -> {mappred (swap R) L K}
+
+swap2 < <b>induction on 1.</b>
+</pre>
+<a name="40"></a>
+<pre>
+
+
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  ============================
+   forall R L K, {mappred R K L}@ -> {mappred (swap R) L K}
+
+swap2 < <b>intros.</b>
+</pre>
+<a name="41"></a>
+<pre>
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H1 : {mappred R K L}@
+  ============================
+   {mappred (swap R) L K}
+
+swap2 < <b>case H1.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  ============================
+   {mappred (swap R) anil anil}
+
+Subgoal 2 is:
+ {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < <b>search.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H2 : {R X Y}*
+  H3 : {mappred R XS YS}*
+  ============================
+   {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < <b>apply IH to H3.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H2 : {R X Y}*
+  H3 : {mappred R XS YS}*
+  H4 : {mappred (swap R) YS XS}
+  ============================
+   {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="45"></a>
+<pre class="code">
+Abella < <b>Define reflexive : (a -> a -> o) -> prop by 
+reflexive P := forall X, {P X X}.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+Abella < <b>Define transitive : (a -> a -> o) -> prop by 
+transitive P := forall X Y Z, {P X Y} -> {P Y Z} -> {P X Z}.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Abella < <b>Theorem star_reflexive : 
+forall P, reflexive (star P).</b>
+</pre>
+<a name="48"></a>
+<pre>
+
+
+  ============================
+   forall P, reflexive (star P)
+
+star_reflexive < <b>search.</b>
+Proof completed.
+</pre>
+<a name="49"></a>
+<pre class="code">
+Abella < <b>Theorem star_transitive : 
+forall P, transitive (star P).</b>
+</pre>
+<a name="50"></a>
+<pre>
+
+
+  ============================
+   forall P, transitive (star P)
+
+star_transitive < <b>intros.</b>
+</pre>
+<a name="51"></a>
+<pre>
+
+  Variables: P
+  ============================
+   transitive (star P)
+
+star_transitive < <b>unfold.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+  Variables: P
+  ============================
+   forall X Y Z, {star P X Y} -> {star P Y Z} -> {star P X Z}
+
+star_transitive < <b>induction on 1.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+  Variables: P
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  ============================
+   forall X Y Z, {star P X Y}@ -> {star P Y Z} -> {star P X Z}
+
+star_transitive < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+  Variables: P, X, Y, Z
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H1 : {star P X Y}@
+  H2 : {star P Y Z}
+  ============================
+   {star P X Z}
+
+star_transitive < <b>case H1.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, X, Y, Z
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  ============================
+   {star P Y Z}
+
+Subgoal 2 is:
+ {star P X Z}
+
+star_transitive < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, Y, Z, Z1
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  H3 : {P X Z1}*
+  H4 : {star P Z1 Y}*
+  ============================
+   {star P X Z}
+
+star_transitive < <b>apply IH to H4 H2.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, Y, Z, Z1
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  H3 : {P X Z1}*
+  H4 : {star P Z1 Y}*
+  H5 : {star P Z1 Z}
+  ============================
+   {star P X Z}
+
+star_transitive < <b>search.</b>
+Proof completed.
+</pre>
+<a name="58"></a>
+<pre class="code">
+Abella < <b>Define contained_in : (a -> a -> o) -> (a -> a -> o) -> prop by 
+contained_in P S := forall X Y, {P X Y} -> {S X Y}.</b>
+</pre>
+<a name="59"></a>
+<pre class="code">
+Abella < <b>Theorem star_minimal : 
+forall P S, contained_in P S -> reflexive S -> transitive S ->
+  contained_in (star P) S.</b>
+</pre>
+<a name="60"></a>
+<pre>
+
+
+  ============================
+   forall P S, contained_in P S -> reflexive S -> transitive S ->
+     contained_in (star P) S
+
+star_minimal < <b>intros.</b>
+</pre>
+<a name="61"></a>
+<pre>
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  ============================
+   contained_in (star P) S
+
+star_minimal < <b>unfold.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  ============================
+   forall X Y, {star P X Y} -> {S X Y}
+
+star_minimal < <b>induction on 1.</b>
+</pre>
+<a name="63"></a>
+<pre>
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  ============================
+   forall X Y, {star P X Y}@ -> {S X Y}
+
+star_minimal < <b>intros.</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H4 : {star P X Y}@
+  ============================
+   {S X Y}
+
+star_minimal < <b>case H4.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  ============================
+   {S Y Y}
+
+Subgoal 2 is:
+ {S X Y}
+
+star_minimal < <b>case H2.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : forall X, {S X X}
+  ============================
+   {S Y Y}
+
+Subgoal 2 is:
+ {S X Y}
+
+star_minimal < <b>backchain H5.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  ============================
+   {S X Y}
+
+star_minimal < <b>apply IH to H6.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  ============================
+   {S X Y}
+
+star_minimal < <b>case H1.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  ============================
+   {S X Y}
+
+star_minimal < <b>apply H8 to H5.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  ============================
+   {S X Y}
+
+star_minimal < <b>case H3.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  H10 : forall X Y Z, {S X Y} -> {S Y Z} -> {S X Z}
+  ============================
+   {S X Y}
+
+star_minimal < <b>apply H10 to H9 H7.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  H10 : forall X Y Z, {S X Y} -> {S Y Z} -> {S X Z}
+  H11 : {S X Y}
+  ============================
+   {S X Y}
+
+star_minimal < <b>search.</b>
+Proof completed.
+</pre>
+<a name="73"></a>
+<pre class="code">
+Abella < <b>Theorem star_vacuous : 
+forall P, reflexive P -> transitive P -> contained_in (star P) P.</b>
+</pre>
+<a name="74"></a>
+<pre>
+
+
+  ============================
+   forall P, reflexive P -> transitive P -> contained_in (star P) P
+
+star_vacuous < <b>intros.</b>
+</pre>
+<a name="75"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < <b>assert contained_in P P.</b>
+</pre>
+<a name="76"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  H3 : contained_in P P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < <b>apply star_minimal to H3 H1 H2.</b>
+</pre>
+<a name="77"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  H3 : contained_in P P
+  H4 : contained_in (star P) P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < <b>search.</b>
+Proof completed.
+</pre>
+<a name="78"></a>
+<pre class="code">
+Abella < <b>Theorem star_idempotent : 
+forall P, contained_in (star (star P)) (star P).</b>
+</pre>
+<a name="79"></a>
+<pre>
+
+
+  ============================
+   forall P, contained_in (star (star P)) (star P)
+
+star_idempotent < <b>intros.</b>
+</pre>
+<a name="80"></a>
+<pre>
+
+  Variables: P
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < <b>apply star_reflexive with P = P.</b>
+</pre>
+<a name="81"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < <b>apply star_transitive with P = P.</b>
+</pre>
+<a name="82"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive (star P)
+  H2 : transitive (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < <b>apply star_vacuous to H1 H2.</b>
+</pre>
+<a name="83"></a>
+<pre>
+
+  Variables: P
+  H1 : reflexive (star P)
+  H2 : transitive (star P)
+  H3 : contained_in (star (star P)) (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < <b>search.</b>
+Proof completed.
+</pre>
+<a name="84"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

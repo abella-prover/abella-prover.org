@@ -1,0 +1,1732 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Equivalence of natural deduction, hilbert calculus, and sequent calculus - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "equiv".</b>
+Reading specification "equiv"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctxs : olist -> olist -> olist -> prop by 
+ctxs nil nil nil;
+ctxs (nd G :: L) (hyp G :: J) (hil G :: K) := ctxs L J K.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem ctxs_member1 : 
+forall L J K E, ctxs L J K -> member E L -> (exists F, E = nd F /\
+  member (hyp F) J /\ member (hil F) K).</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  ============================
+   forall L J K E, ctxs L J K -> member E L -> (exists F, E = nd F /\
+     member (hyp F) J /\ member (hil F) K)
+
+ctxs_member1 < <b>induction on 2.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  ============================
+   forall L J K E, ctxs L J K -> member E L @ -> (exists F, E = nd F /\
+     member (hyp F) J /\ member (hil F) K)
+
+ctxs_member1 < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+  Variables: L, J, K, E
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H1 : ctxs L J K
+  H2 : member E L @
+  ============================
+   exists F, E = nd F /\ member (hyp F) J /\ member (hil F) K
+
+ctxs_member1 < <b>case H2.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H1 : ctxs (E :: L1) J K
+  ============================
+   exists F, E = nd F /\ member (hyp F) J /\ member (hil F) K
+
+Subgoal 2 is:
+ exists F, E = nd F /\ member (hyp F) J /\ member (hil F) K
+
+ctxs_member1 < <b>case H1.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1, K1, G, J1
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H3 : ctxs L1 J1 K1
+  ============================
+   exists F, nd G = nd F /\ member (hyp F) (hyp G :: J1) /\
+     member (hil F) (hil G :: K1)
+
+Subgoal 2 is:
+ exists F, E = nd F /\ member (hyp F) J /\ member (hil F) K
+
+ctxs_member1 < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H1 : ctxs (B :: L1) J K
+  H3 : member E L1 *
+  ============================
+   exists F, E = nd F /\ member (hyp F) J /\ member (hil F) K
+
+ctxs_member1 < <b>case H1.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, K1, G, J1
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H3 : member E L1 *
+  H4 : ctxs L1 J1 K1
+  ============================
+   exists F, E = nd F /\ member (hyp F) (hyp G :: J1) /\
+     member (hil F) (hil G :: K1)
+
+ctxs_member1 < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, K1, G, J1, F
+  IH : forall L J K E, ctxs L J K -> member E L * -> (exists F, E = nd F /\
+         member (hyp F) J /\ member (hil F) K)
+  H3 : member (nd F) L1 *
+  H4 : ctxs L1 J1 K1
+  H5 : member (hyp F) J1
+  H6 : member (hil F) K1
+  ============================
+   exists F1, nd F = nd F1 /\ member (hyp F1) (hyp G :: J1) /\
+     member (hil F1) (hil G :: K1)
+
+ctxs_member1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem ctxs_member2 : 
+forall L J K E, ctxs L J K -> member E J -> (exists F, E = hyp F /\
+  member (nd F) L /\ member (hil F) K).</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  ============================
+   forall L J K E, ctxs L J K -> member E J -> (exists F, E = hyp F /\
+     member (nd F) L /\ member (hil F) K)
+
+ctxs_member2 < <b>induction on 2.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  ============================
+   forall L J K E, ctxs L J K -> member E J @ -> (exists F, E = hyp F /\
+     member (nd F) L /\ member (hil F) K)
+
+ctxs_member2 < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+  Variables: L, J, K, E
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H1 : ctxs L J K
+  H2 : member E J @
+  ============================
+   exists F, E = hyp F /\ member (nd F) L /\ member (hil F) K
+
+ctxs_member2 < <b>case H2.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H1 : ctxs L (E :: L1) K
+  ============================
+   exists F, E = hyp F /\ member (nd F) L /\ member (hil F) K
+
+Subgoal 2 is:
+ exists F, E = hyp F /\ member (nd F) L /\ member (hil F) K
+
+ctxs_member2 < <b>case H1.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1, K1, G, L2
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H3 : ctxs L2 L1 K1
+  ============================
+   exists F, hyp G = hyp F /\ member (nd F) (nd G :: L2) /\
+     member (hil F) (hil G :: K1)
+
+Subgoal 2 is:
+ exists F, E = hyp F /\ member (nd F) L /\ member (hil F) K
+
+ctxs_member2 < <b>search.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H1 : ctxs L (B :: L1) K
+  H3 : member E L1 *
+  ============================
+   exists F, E = hyp F /\ member (nd F) L /\ member (hil F) K
+
+ctxs_member2 < <b>case H1.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, K1, G, L2
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H3 : member E L1 *
+  H4 : ctxs L2 L1 K1
+  ============================
+   exists F, E = hyp F /\ member (nd F) (nd G :: L2) /\
+     member (hil F) (hil G :: K1)
+
+ctxs_member2 < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, K1, G, L2, F
+  IH : forall L J K E, ctxs L J K -> member E J * -> (exists F, E = hyp F /\
+         member (nd F) L /\ member (hil F) K)
+  H3 : member (hyp F) L1 *
+  H4 : ctxs L2 L1 K1
+  H5 : member (nd F) L2
+  H6 : member (hil F) K1
+  ============================
+   exists F1, hyp F = hyp F1 /\ member (nd F1) (nd G :: L2) /\
+     member (hil F1) (hil G :: K1)
+
+ctxs_member2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="21"></a>
+<pre class="code">
+Abella < <b>Theorem ctxs_member3 : 
+forall L J K E, ctxs L J K -> member E K -> (exists F, E = hil F /\
+  member (nd F) L /\ member (hyp F) J).</b>
+</pre>
+<a name="22"></a>
+<pre>
+
+
+  ============================
+   forall L J K E, ctxs L J K -> member E K -> (exists F, E = hil F /\
+     member (nd F) L /\ member (hyp F) J)
+
+ctxs_member3 < <b>induction on 2.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  ============================
+   forall L J K E, ctxs L J K -> member E K @ -> (exists F, E = hil F /\
+     member (nd F) L /\ member (hyp F) J)
+
+ctxs_member3 < <b>intros.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+  Variables: L, J, K, E
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H1 : ctxs L J K
+  H2 : member E K @
+  ============================
+   exists F, E = hil F /\ member (nd F) L /\ member (hyp F) J
+
+ctxs_member3 < <b>case H2.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H1 : ctxs L J (E :: L1)
+  ============================
+   exists F, E = hil F /\ member (nd F) L /\ member (hyp F) J
+
+Subgoal 2 is:
+ exists F, E = hil F /\ member (nd F) L /\ member (hyp F) J
+
+ctxs_member3 < <b>case H1.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, E, L1, G, J1, L2
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H3 : ctxs L2 J1 L1
+  ============================
+   exists F, hil G = hil F /\ member (nd F) (nd G :: L2) /\
+     member (hyp F) (hyp G :: J1)
+
+Subgoal 2 is:
+ exists F, E = hil F /\ member (nd F) L /\ member (hyp F) J
+
+ctxs_member3 < <b>search.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H1 : ctxs L J (B :: L1)
+  H3 : member E L1 *
+  ============================
+   exists F, E = hil F /\ member (nd F) L /\ member (hyp F) J
+
+ctxs_member3 < <b>case H1.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, G, J1, L2
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H3 : member E L1 *
+  H4 : ctxs L2 J1 L1
+  ============================
+   exists F, E = hil F /\ member (nd F) (nd G :: L2) /\
+     member (hyp F) (hyp G :: J1)
+
+ctxs_member3 < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, E, L1, B, G, J1, L2, F
+  IH : forall L J K E, ctxs L J K -> member E K * -> (exists F, E = hil F /\
+         member (nd F) L /\ member (hyp F) J)
+  H3 : member (hil F) L1 *
+  H4 : ctxs L2 J1 L1
+  H5 : member (nd F) L2
+  H6 : member (hyp F) J1
+  ============================
+   exists F1, hil F = hil F1 /\ member (nd F1) (nd G :: L2) /\
+     member (hyp F1) (hyp G :: J1)
+
+ctxs_member3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="30"></a>
+<pre class="code">
+Abella < <b>Theorem nd_to_seq_ext : 
+forall L J K G, ctxs L J K -> {L |- nd G} -> {J |- conc G}.</b>
+</pre>
+<a name="31"></a>
+<pre>
+
+
+  ============================
+   forall L J K G, ctxs L J K -> {L |- nd G} -> {J |- conc G}
+
+nd_to_seq_ext < <b>induction on 2.</b>
+</pre>
+<a name="32"></a>
+<pre>
+
+
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  ============================
+   forall L J K G, ctxs L J K -> {L |- nd G}@ -> {J |- conc G}
+
+nd_to_seq_ext < <b>intros.</b>
+</pre>
+<a name="33"></a>
+<pre>
+
+  Variables: L, J, K, G
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H2 : {L |- nd G}@
+  ============================
+   {J |- conc G}
+
+nd_to_seq_ext < <b>case H2.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L, nd A |- nd B}*
+  ============================
+   {J |- conc (imp A B)}
+
+Subgoal 2 is:
+ {J |- conc G}
+
+Subgoal 3 is:
+ {J |- conc G}
+
+nd_to_seq_ext < <b>apply IH to _ H3.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L, nd A |- nd B}*
+  H4 : {J, hyp A |- conc B}
+  ============================
+   {J |- conc (imp A B)}
+
+Subgoal 2 is:
+ {J |- conc G}
+
+Subgoal 3 is:
+ {J |- conc G}
+
+nd_to_seq_ext < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L |- nd (imp A G)}*
+  H4 : {L |- nd A}*
+  ============================
+   {J |- conc G}
+
+Subgoal 3 is:
+ {J |- conc G}
+
+nd_to_seq_ext < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L |- nd (imp A G)}*
+  H4 : {L |- nd A}*
+  H5 : {J |- conc (imp A G)}
+  ============================
+   {J |- conc G}
+
+Subgoal 3 is:
+ {J |- conc G}
+
+nd_to_seq_ext < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L |- nd (imp A G)}*
+  H4 : {L |- nd A}*
+  H5 : {J |- conc (imp A G)}
+  H6 : {J |- conc A}
+  ============================
+   {J |- conc G}
+
+Subgoal 3 is:
+ {J |- conc G}
+
+nd_to_seq_ext < <b>search.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, F
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L, [F] |- nd G}*
+  H4 : member F L
+  ============================
+   {J |- conc G}
+
+nd_to_seq_ext < <b>apply ctxs_member1 to H1 H4.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H3 : {L, [nd F1] |- nd G}*
+  H4 : member (nd F1) L
+  H5 : member (hyp F1) J
+  H6 : member (hil F1) K
+  ============================
+   {J |- conc G}
+
+nd_to_seq_ext < <b>case H3.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {L |- nd G}* -> {J |- conc G}
+  H1 : ctxs L J K
+  H4 : member (nd G) L
+  H5 : member (hyp G) J
+  H6 : member (hil G) K
+  ============================
+   {J |- conc G}
+
+nd_to_seq_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="42"></a>
+<pre class="code">
+Abella < <b>Theorem nd_to_seq : 
+forall G, {nd G} -> {conc G}.</b>
+</pre>
+<a name="43"></a>
+<pre>
+
+
+  ============================
+   forall G, {nd G} -> {conc G}
+
+nd_to_seq < <b>intros.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+  Variables: G
+  H1 : {nd G}
+  ============================
+   {conc G}
+
+nd_to_seq < <b>apply nd_to_seq_ext to _ H1.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+  Variables: G
+  H1 : {nd G}
+  H2 : {conc G}
+  ============================
+   {conc G}
+
+nd_to_seq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="46"></a>
+<pre class="code">
+Abella < <b>Set witnesses on.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Abella < <b>Theorem hil_deduction : 
+forall L J K A B, ctxs L J K -> {K, hil A |- hil B} -> {K |- hil (imp A B)}.</b>
+</pre>
+<a name="48"></a>
+<pre>
+
+
+  ============================
+   forall L J K A B, ctxs L J K -> {K, hil A |- hil B} ->
+     {K |- hil (imp A B)}
+
+hil_deduction < <b>induction on 2.</b>
+</pre>
+<a name="49"></a>
+<pre>
+
+
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  ============================
+   forall L J K A B, ctxs L J K -> {K, hil A |- hil B}@ ->
+     {K |- hil (imp A B)}
+
+hil_deduction < <b>intros.</b>
+</pre>
+<a name="50"></a>
+<pre>
+
+  Variables: L, J, K, A, B
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H2 : {K, hil A |- hil B}@
+  ============================
+   {K |- hil (imp A B)}
+
+hil_deduction < <b>case H2.</b>
+</pre>
+<a name="51"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, A, B, A1, B1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  ============================
+   {K |- hil (imp A (imp A1 (imp B1 A1)))}
+
+Subgoal 2 is:
+ {K |- hil (imp A (imp (imp A1 (imp B1 C)) (imp (imp A1 B1) (imp A1 C))))}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>search.</b>
+Witness: hil[3](hil[1], hil[1])
+</pre>
+<a name="52"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, A, B, C, A1, B1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  ============================
+   {K |- hil (imp A (imp (imp A1 (imp B1 C)) (imp (imp A1 B1) (imp A1 C))))}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>search.</b>
+Witness: hil[3](hil[1], hil[2])
+</pre>
+<a name="53"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, A, B, A1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A |- hil (imp A1 B)}*
+  H4 : {K, hil A |- hil A1}*
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>apply IH to _ H3.</b>
+Witness: H1 : ctxs L J K
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, A, B, A1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A |- hil (imp A1 B)}*
+  H4 : {K, hil A |- hil A1}*
+  H5 : {K |- hil (imp A (imp A1 B))}
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>apply IH to _ H4.</b>
+Witness: H1 : ctxs L J K
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, A, B, A1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A |- hil (imp A1 B)}*
+  H4 : {K, hil A |- hil A1}*
+  H5 : {K |- hil (imp A (imp A1 B))}
+  H6 : {K |- hil (imp A A1)}
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>search.</b>
+Witness: hil[3](hil[3](hil[2], H5), H6)
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, A, B, F
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A, [F] |- hil B}*
+  H4 : member F (hil A :: K)
+  ============================
+   {K |- hil (imp A B)}
+
+hil_deduction < <b>case H4.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: L, J, K, A, B, F
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A, [hil A] |- hil B}*
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4.2 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>case H3.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: L, J, K, A, B, F
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  ============================
+   {K |- hil (imp B B)}
+
+Subgoal 4.2 is:
+ {K |- hil (imp A B)}
+
+hil_deduction < <b>search.</b>
+Witness: hil[3](hil[3](hil[2], hil[1]), hil[1])
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, J, K, A, B, F
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A, [F] |- hil B}*
+  H5 : member F K
+  ============================
+   {K |- hil (imp A B)}
+
+hil_deduction < <b>apply ctxs_member3 to H1 H5.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, J, K, A, B, F, F1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H3 : {K, hil A, [hil F1] |- hil B}*
+  H5 : member (hil F1) K
+  H6 : member (nd F1) L
+  H7 : member (hyp F1) J
+  ============================
+   {K |- hil (imp A B)}
+
+hil_deduction < <b>case H3.</b>
+</pre>
+<a name="61"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: L, J, K, A, B, F, F1
+  IH : forall L J K A B, ctxs L J K -> {K, hil A |- hil B}* ->
+         {K |- hil (imp A B)}
+  H1 : ctxs L J K
+  H5 : member (hil B) K
+  H6 : member (nd B) L
+  H7 : member (hyp B) J
+  ============================
+   {K |- hil (imp A B)}
+
+hil_deduction < <b>search.</b>
+Witness: hil[3](hil[1], hil[1])
+Proof completed.
+</pre>
+<a name="62"></a>
+<pre class="code">
+Abella < <b>Set witnesses off.</b>
+</pre>
+<a name="63"></a>
+<pre class="code">
+Abella < <b>Theorem seq_to_hil_ext : 
+forall L J K G, ctxs L J K -> {J |- conc G} -> {K |- hil G}.</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+
+  ============================
+   forall L J K G, ctxs L J K -> {J |- conc G} -> {K |- hil G}
+
+seq_to_hil_ext < <b>induction on 2.</b>
+</pre>
+<a name="65"></a>
+<pre>
+
+
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  ============================
+   forall L J K G, ctxs L J K -> {J |- conc G}@ -> {K |- hil G}
+
+seq_to_hil_ext < <b>intros.</b>
+</pre>
+<a name="66"></a>
+<pre>
+
+  Variables: L, J, K, G
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H2 : {J |- conc G}@
+  ============================
+   {K |- hil G}
+
+seq_to_hil_ext < <b>case H2.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J |- hyp G}*
+  ============================
+   {K |- hil G}
+
+Subgoal 2 is:
+ {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>case H3.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, F
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J, [F] |- hyp G}*
+  H5 : member F J
+  ============================
+   {K |- hil G}
+
+Subgoal 2 is:
+ {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply ctxs_member2 to H1 H5.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J, [hyp F1] |- hyp G}*
+  H5 : member (hyp F1) J
+  H6 : member (nd F1) L
+  H7 : member (hil F1) K
+  ============================
+   {K |- hil G}
+
+Subgoal 2 is:
+ {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>case H4.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H5 : member (hyp G) J
+  H6 : member (nd G) L
+  H7 : member (hil G) K
+  ============================
+   {K |- hil G}
+
+Subgoal 2 is:
+ {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>search.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc G}*
+  H4 : {J |- conc A}*
+  ============================
+   {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply IH to _ H3.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc G}*
+  H4 : {J |- conc A}*
+  H5 : {K, hil A |- hil G}
+  ============================
+   {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc G}*
+  H4 : {J |- conc A}*
+  H5 : {K, hil A |- hil G}
+  H6 : {K |- hil A}
+  ============================
+   {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply hil_deduction to _ H5.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc G}*
+  H4 : {J |- conc A}*
+  H5 : {K, hil A |- hil G}
+  H6 : {K |- hil A}
+  H7 : {K |- hil (imp A G)}
+  ============================
+   {K |- hil G}
+
+Subgoal 3 is:
+ {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>search.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc B}*
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply IH to _ H3.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc B}*
+  H4 : {K, hil A |- hil B}
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply hil_deduction to _ H4.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, hyp A |- conc B}*
+  H4 : {K, hil A |- hil B}
+  H5 : {K |- hil (imp A B)}
+  ============================
+   {K |- hil (imp A B)}
+
+Subgoal 4 is:
+ {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>search.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J |- hyp (imp A B)}*
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>case H3.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H6 : {J, [F] |- hyp (imp A B)}*
+  H7 : member F J
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply ctxs_member2 to H1 H7.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H6 : {J, [hyp F1] |- hyp (imp A B)}*
+  H7 : member (hyp F1) J
+  H8 : member (nd F1) L
+  H9 : member (hil F1) K
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>case H6.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H7 : member (hyp (imp A B)) J
+  H8 : member (nd (imp A B)) L
+  H9 : member (hil (imp A B)) K
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H7 : member (hyp (imp A B)) J
+  H8 : member (nd (imp A B)) L
+  H9 : member (hil (imp A B)) K
+  H10 : {K |- hil A}
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply IH to _ H5.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H7 : member (hyp (imp A B)) J
+  H8 : member (nd (imp A B)) L
+  H9 : member (hil (imp A B)) K
+  H10 : {K |- hil A}
+  H11 : {K, hil B |- hil G}
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>apply hil_deduction to _ H11.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, B, A, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H4 : {J |- conc A}*
+  H5 : {J, hyp B |- conc G}*
+  H7 : member (hyp (imp A B)) J
+  H8 : member (nd (imp A B)) L
+  H9 : member (hil (imp A B)) K
+  H10 : {K |- hil A}
+  H11 : {K, hil B |- hil G}
+  H12 : {K |- hil (imp B G)}
+  ============================
+   {K |- hil G}
+
+Subgoal 5 is:
+ {K |- hil G}
+
+seq_to_hil_ext < <b>search.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 5:
+
+  Variables: L, J, K, G, F
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, [F] |- conc G}*
+  H4 : member F J
+  ============================
+   {K |- hil G}
+
+seq_to_hil_ext < <b>apply ctxs_member2 to H1 H4.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 5:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {J |- conc G}* -> {K |- hil G}
+  H1 : ctxs L J K
+  H3 : {J, [hyp F1] |- conc G}*
+  H4 : member (hyp F1) J
+  H5 : member (nd F1) L
+  H6 : member (hil F1) K
+  ============================
+   {K |- hil G}
+
+seq_to_hil_ext < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="87"></a>
+<pre class="code">
+Abella < <b>Theorem seq_to_hil : 
+forall G, {conc G} -> {hil G}.</b>
+</pre>
+<a name="88"></a>
+<pre>
+
+
+  ============================
+   forall G, {conc G} -> {hil G}
+
+seq_to_hil < <b>intros.</b>
+</pre>
+<a name="89"></a>
+<pre>
+
+  Variables: G
+  H1 : {conc G}
+  ============================
+   {hil G}
+
+seq_to_hil < <b>apply seq_to_hil_ext to _ H1.</b>
+</pre>
+<a name="90"></a>
+<pre>
+
+  Variables: G
+  H1 : {conc G}
+  H2 : {hil G}
+  ============================
+   {hil G}
+
+seq_to_hil < <b>search.</b>
+Proof completed.
+</pre>
+<a name="91"></a>
+<pre class="code">
+Abella < <b>Theorem hil_to_nd_ext : 
+forall L J K G, ctxs L J K -> {K |- hil G} -> {L |- nd G}.</b>
+</pre>
+<a name="92"></a>
+<pre>
+
+
+  ============================
+   forall L J K G, ctxs L J K -> {K |- hil G} -> {L |- nd G}
+
+hil_to_nd_ext < <b>induction on 2.</b>
+</pre>
+<a name="93"></a>
+<pre>
+
+
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  ============================
+   forall L J K G, ctxs L J K -> {K |- hil G}@ -> {L |- nd G}
+
+hil_to_nd_ext < <b>intros.</b>
+</pre>
+<a name="94"></a>
+<pre>
+
+  Variables: L, J, K, G
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H2 : {K |- hil G}@
+  ============================
+   {L |- nd G}
+
+hil_to_nd_ext < <b>case H2.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, G, A, B
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  ============================
+   {L |- nd (imp A (imp B A))}
+
+Subgoal 2 is:
+ {L |- nd (imp (imp A (imp B C)) (imp (imp A B) (imp A C)))}
+
+Subgoal 3 is:
+ {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>search.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, C, A, B
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  ============================
+   {L |- nd (imp (imp A (imp B C)) (imp (imp A B) (imp A C)))}
+
+Subgoal 3 is:
+ {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>assert {nd (imp A (imp B C)), nd (imp A B), nd A |- nd C}.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, G, C, A, B
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {nd (imp A (imp B C)), nd (imp A B), nd A |- nd C}
+  ============================
+   {L |- nd (imp (imp A (imp B C)) (imp (imp A B) (imp A C)))}
+
+Subgoal 3 is:
+ {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>search.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {K |- hil (imp A G)}*
+  H4 : {K |- hil A}*
+  ============================
+   {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {K |- hil (imp A G)}*
+  H4 : {K |- hil A}*
+  H5 : {L |- nd (imp A G)}
+  ============================
+   {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, J, K, G, A
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {K |- hil (imp A G)}*
+  H4 : {K |- hil A}*
+  H5 : {L |- nd (imp A G)}
+  H6 : {L |- nd A}
+  ============================
+   {L |- nd G}
+
+Subgoal 4 is:
+ {L |- nd G}
+
+hil_to_nd_ext < <b>search.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, F
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {K, [F] |- hil G}*
+  H4 : member F K
+  ============================
+   {L |- nd G}
+
+hil_to_nd_ext < <b>apply ctxs_member3 to H1 H4.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H3 : {K, [hil F1] |- hil G}*
+  H4 : member (hil F1) K
+  H5 : member (nd F1) L
+  H6 : member (hyp F1) J
+  ============================
+   {L |- nd G}
+
+hil_to_nd_ext < <b>case H3.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 4:
+
+  Variables: L, J, K, G, F, F1
+  IH : forall L J K G, ctxs L J K -> {K |- hil G}* -> {L |- nd G}
+  H1 : ctxs L J K
+  H4 : member (hil G) K
+  H5 : member (nd G) L
+  H6 : member (hyp G) J
+  ============================
+   {L |- nd G}
+
+hil_to_nd_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="104"></a>
+<pre class="code">
+Abella < <b>Theorem hil_to_nd : 
+forall G, {hil G} -> {nd G}.</b>
+</pre>
+<a name="105"></a>
+<pre>
+
+
+  ============================
+   forall G, {hil G} -> {nd G}
+
+hil_to_nd < <b>intros.</b>
+</pre>
+<a name="106"></a>
+<pre>
+
+  Variables: G
+  H1 : {hil G}
+  ============================
+   {nd G}
+
+hil_to_nd < <b>apply hil_to_nd_ext to _ H1.</b>
+</pre>
+<a name="107"></a>
+<pre>
+
+  Variables: G
+  H1 : {hil G}
+  H2 : {nd G}
+  ============================
+   {nd G}
+
+hil_to_nd < <b>search.</b>
+Proof completed.
+</pre>
+<a name="108"></a>
+<pre class="code">
+Abella < <b>Define fold : olist -> form -> form -> prop by 
+fold nil B B;
+fold (hil A :: L) B B' := fold L (imp A B) B'.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+Abella < <b>Theorem hil_deduction_generalized : 
+forall L J K B B', ctxs L J K -> fold K B B' -> {K |- hil B} -> {hil B'}.</b>
+</pre>
+<a name="110"></a>
+<pre>
+
+
+  ============================
+   forall L J K B B', ctxs L J K -> fold K B B' -> {K |- hil B} -> {hil B'}
+
+hil_deduction_generalized < <b>induction on 2.</b>
+</pre>
+<a name="111"></a>
+<pre>
+
+
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  ============================
+   forall L J K B B', ctxs L J K -> fold K B B' @ -> {K |- hil B} -> {hil B'}
+
+hil_deduction_generalized < <b>intros.</b>
+</pre>
+<a name="112"></a>
+<pre>
+
+  Variables: L, J, K, B, B'
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H1 : ctxs L J K
+  H2 : fold K B B' @
+  H3 : {K |- hil B}
+  ============================
+   {hil B'}
+
+hil_deduction_generalized < <b>case H2.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, J, K, B, B'
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H1 : ctxs L J nil
+  H3 : {hil B'}
+  ============================
+   {hil B'}
+
+Subgoal 2 is:
+ {hil B'}
+
+hil_deduction_generalized < <b>search.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, B, B', L1, A
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H1 : ctxs L J (hil A :: L1)
+  H3 : {L1, hil A |- hil B}
+  H4 : fold L1 (imp A B) B' *
+  ============================
+   {hil B'}
+
+hil_deduction_generalized < <b>case H1.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, B, B', L1, A, J1, L2
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H3 : {L1, hil A |- hil B}
+  H4 : fold L1 (imp A B) B' *
+  H5 : ctxs L2 J1 L1
+  ============================
+   {hil B'}
+
+hil_deduction_generalized < <b>apply hil_deduction to _ H3.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, B, B', L1, A, J1, L2
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H3 : {L1, hil A |- hil B}
+  H4 : fold L1 (imp A B) B' *
+  H5 : ctxs L2 J1 L1
+  H6 : {L1 |- hil (imp A B)}
+  ============================
+   {hil B'}
+
+hil_deduction_generalized < <b>apply IH to _ H4 H6.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, J, K, B, B', L1, A, J1, L2
+  IH : forall L J K B B', ctxs L J K -> fold K B B' * -> {K |- hil B} ->
+         {hil B'}
+  H3 : {L1, hil A |- hil B}
+  H4 : fold L1 (imp A B) B' *
+  H5 : ctxs L2 J1 L1
+  H6 : {L1 |- hil (imp A B)}
+  H7 : {hil B'}
+  ============================
+   {hil B'}
+
+hil_deduction_generalized < <b>search.</b>
+Proof completed.
+</pre>
+<a name="118"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,884 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Type uniqueness for the simply-typed lambda-calculus - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "type-uniq".</b>
+Reading specification "type-uniq"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define name : tm -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem member_nominal_absurd : 
+forall L T, nabla x, member (of x T) L -> false.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  ============================
+   forall L T, nabla x, member (of x T) L -> false
+
+member_nominal_absurd < <b>induction on 1.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  IH : forall L T, nabla x, member (of x T) L * -> false
+  ============================
+   forall L T, nabla x, member (of x T) L @ -> false
+
+member_nominal_absurd < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+  Variables: L, T
+  IH : forall L T, nabla x, member (of x T) L * -> false
+  H1 : member (of n1 T) L @
+  ============================
+   false
+
+member_nominal_absurd < <b>case H1.</b>
+</pre>
+<a name="7"></a>
+<pre>
+
+  Variables: L, T, L3, L2
+  IH : forall L T, nabla x, member (of x T) L * -> false
+  H2 : member (of n1 T) L3 *
+  ============================
+   false
+
+member_nominal_absurd < <b>apply IH to H2.</b>
+Proof completed.
+</pre>
+<a name="8"></a>
+<pre class="code">
+Abella < <b>Close tm, ty.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+nabla x, ctx (of x T :: L) := ctx L.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_uniq : 
+forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+  T1 = T2.</b>
+</pre>
+<a name="11"></a>
+<pre>
+
+
+  ============================
+   forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+     T1 = T2
+
+ctx_uniq < <b>induction on 2.</b>
+</pre>
+<a name="12"></a>
+<pre>
+
+
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L -> member (of E T1) L @ -> member (of E T2) L ->
+     T1 = T2
+
+ctx_uniq < <b>intros.</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx L
+  H2 : member (of E T1) L @
+  H3 : member (of E T2) L
+  ============================
+   T1 = T2
+
+ctx_uniq < <b>case H2.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2, L1
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (of E T1 :: L1)
+  H3 : member (of E T2) (of E T1 :: L1)
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+ctx_uniq < <b>case H3.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2, L1
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (of E T1 :: L1)
+  ============================
+   T1 = T1
+
+Subgoal 1.2 is:
+ T1 = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+ctx_uniq < <b>search.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, L1
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (of E T1 :: L1)
+  H4 : member (of E T2) L1
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+ctx_uniq < <b>case H1.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, L1, L2
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H4 : member (of n1 T2) L2
+  H5 : ctx L2
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+ctx_uniq < <b>apply member_nominal_absurd to H4.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, T1, T2, L1, B
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (B :: L1)
+  H3 : member (of E T2) (B :: L1)
+  H4 : member (of E T1) L1 *
+  ============================
+   T1 = T2
+
+ctx_uniq < <b>case H3.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, L1, B
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (of E T2 :: L1)
+  H4 : member (of E T1) L1 *
+  ============================
+   T1 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+ctx_uniq < <b>case H1.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, L1, B, L2
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H4 : member (of n1 T1) L2 *
+  H5 : ctx L2
+  ============================
+   T1 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+ctx_uniq < <b>apply member_nominal_absurd to H4.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, B
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx (B :: L1)
+  H4 : member (of E T1) L1 *
+  H5 : member (of E T2) L1
+  ============================
+   T1 = T2
+
+ctx_uniq < <b>case H1.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, B, L2, T
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H4 : member (of (E n1) T1) L2 *
+  H5 : member (of (E n1) T2) L2
+  H6 : ctx L2
+  ============================
+   T1 = T2
+
+ctx_uniq < <b>apply IH to H6 H4 H5.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, B, L2, T
+  IH : forall L E T1 T2, ctx L -> member (of E T1) L * ->
+         member (of E T2) L -> T1 = T2
+  H4 : member (of (E n1) T2) L2 *
+  H5 : member (of (E n1) T2) L2
+  H6 : ctx L2
+  ============================
+   T2 = T2
+
+ctx_uniq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="24"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_mem : 
+forall L E, ctx L -> member E L -> (exists N X, E = of X N /\ name X).</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+
+  ============================
+   forall L E, ctx L -> member E L -> (exists N X, E = of X N /\ name X)
+
+ctx_mem < <b>induction on 2.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\ name X)
+  ============================
+   forall L E, ctx L -> member E L @ -> (exists N X, E = of X N /\ name X)
+
+ctx_mem < <b>intros.</b>
+</pre>
+<a name="27"></a>
+<pre>
+
+  Variables: L, E
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H1 : ctx L
+  H2 : member E L @
+  ============================
+   exists N X, E = of X N /\ name X
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, L1
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H1 : ctx (E :: L1)
+  ============================
+   exists N X, E = of X N /\ name X
+
+Subgoal 2 is:
+ exists N X, E = of X N /\ name X
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, L1, L2, T
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H3 : ctx L2
+  ============================
+   exists N X, of n1 T = of X N /\ name X
+
+Subgoal 2 is:
+ exists N X, E = of X N /\ name X
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, L1, B
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H1 : ctx (B :: L1)
+  H3 : member E L1 *
+  ============================
+   exists N X, E = of X N /\ name X
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, L1, B, L2, T
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H3 : member (E n1) L2 *
+  H4 : ctx L2
+  ============================
+   exists N X, E n1 = of X N /\ name X
+
+ctx_mem < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, L1, B, L2, T, N, X
+  IH : forall L E, ctx L -> member E L * -> (exists N X, E = of X N /\
+         name X)
+  H3 : member (of (X n1) N) L2 *
+  H4 : ctx L2
+  H5 : name (X n1)
+  ============================
+   exists N1 X1, of (X n1) N = of X1 N1 /\ name X1
+
+ctx_mem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="33"></a>
+<pre class="code">
+Abella < <b>Theorem type_uniq_ext : 
+forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2.</b>
+</pre>
+<a name="34"></a>
+<pre>
+
+
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2
+
+type_uniq_ext < <b>induction on 2.</b>
+</pre>
+<a name="35"></a>
+<pre>
+
+
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1}@ -> {L |- of E T2} -> T1 = T2
+
+type_uniq_ext < <b>intros.</b>
+</pre>
+<a name="36"></a>
+<pre>
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H2 : {L |- of E T1}@
+  H3 : {L |- of E T2}
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>case H2.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, E, T1, T2, U, R, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (abs T R) T2}
+  H4 : {L, of n1 T |- of (R n1) U}*
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H3.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arrow T U = arrow T U1
+
+Subgoal 1.2 is:
+ arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>apply IH to _ H4 H5.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U1}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arrow T U1 = arrow T U1
+
+Subgoal 1.2 is:
+ arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>search.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [F] |- of (abs T R) T2}
+  H6 : member F L
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>apply ctx_mem to H1 H6.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [of X N] |- of (abs T R) T2}
+  H6 : member (of X N) L
+  H7 : name X
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H5.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H6 : member (of (abs T R) T2) L
+  H7 : name (abs T R)
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H7.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, E, T1, T2, U, N, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (app M N) T2}
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H3.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L |- of M (arrow U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T1 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>apply IH to H1 H4 H6.</b>
+</pre>
+<a name="45"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U1 T2)}*
+  H5 : {L |- of N U1}*
+  H6 : {L |- of M (arrow U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T2 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>search.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [F] |- of (app M N) T2}
+  H7 : member F L
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>apply ctx_mem to H1 H7.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, N1, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [of X N1] |- of (app M N) T2}
+  H7 : member (of X N1) L
+  H8 : name X
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H6.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, N1, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H7 : member (of (app M N) T2) L
+  H8 : name (app M N)
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+type_uniq_ext < <b>case H8.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [F] |- of E T1}*
+  H5 : member F L
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>apply ctx_mem to H1 H5.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [of X N] |- of E T1}*
+  H5 : member (of X N) L
+  H6 : name X
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>case H4.</b>
+</pre>
+<a name="51"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H5 : member (of E T1) L
+  H6 : name E
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>case H6.</b>
+</pre>
+<a name="52"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H3 : {L n1 |- of n1 T2}
+  H5 : member (of n1 T1) (L n1)
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>case H3.</b>
+</pre>
+<a name="53"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X, F1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 T1) (L n1)
+  H7 : {L n1, [F1 n1] |- of n1 T2}
+  H8 : member (F1 n1) (L n1)
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>apply ctx_mem to H1 H8.</b>
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X, F1, N1, X1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 T1) (L n1)
+  H7 : {L n1, [of (X1 n1) N1] |- of n1 T2}
+  H8 : member (of (X1 n1) N1) (L n1)
+  H9 : name (X1 n1)
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>case H7.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X, F1, N1, X1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 T1) (L n1)
+  H8 : member (of n1 T2) (L n1)
+  H9 : name n1
+  ============================
+   T1 = T2
+
+type_uniq_ext < <b>apply ctx_uniq to H1 H5 H8.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, N, X, F1, N1, X1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx (L n1)
+  H5 : member (of n1 T2) (L n1)
+  H8 : member (of n1 T2) (L n1)
+  H9 : name n1
+  ============================
+   T2 = T2
+
+type_uniq_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="57"></a>
+<pre class="code">
+Abella < <b>Theorem type_uniq : 
+forall E T1 T2, {of E T1} -> {of E T2} -> T1 = T2.</b>
+</pre>
+<a name="58"></a>
+<pre>
+
+
+  ============================
+   forall E T1 T2, {of E T1} -> {of E T2} -> T1 = T2
+
+type_uniq < <b>intros.</b>
+</pre>
+<a name="59"></a>
+<pre>
+
+  Variables: E, T1, T2
+  H1 : {of E T1}
+  H2 : {of E T2}
+  ============================
+   T1 = T2
+
+type_uniq < <b>apply type_uniq_ext to _ H1 H2.</b>
+</pre>
+<a name="60"></a>
+<pre>
+
+  Variables: E, T1, T2
+  H1 : {of E T2}
+  H2 : {of E T2}
+  ============================
+   T2 = T2
+
+type_uniq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="61"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

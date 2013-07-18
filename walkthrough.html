@@ -1,0 +1,618 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Walkthrough</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="index.html">
+<img src="images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1 id="main">Walkthrough: Subject Reduction</h1>
+<br/>
+<p>
+In this walkthrough you will learn...
+<ul>
+<li>How to express specifications</li>
+<li>How to state theorems</li>
+<li>How to conduct proofs</li>
+</ul>
+</p>
+</div>
+
+<div class="section">
+<h1>Introduction</h1>
+
+<p>
+Abella is designed for reasoning about the meta-theory of programming
+languages and other logical systems which manipulate objects with
+binding. The simplest example of a programming language is the
+lambda-calculus, so in this walkthrough we'll encode the semantics of
+evaluation in the lambda-calculus as well as typing rules for
+lambda-terms. We'll then show that the type of a term is not changed
+by evaluation. This is called <em>subject reduction</em>.
+</p>
+
+<p>
+Before we start using Abella, we recall the rules for evaluation and
+typing of lambda-terms. Evaluation is defined by the following rules.
+
+<center>
+<img src="images/eval-rules.png" />
+</center>
+
+The first rule says abstractions evaluate to themselves. The second
+rule says applications are evaluate by evaluating the function
+component to an abstraction, substituting the argument component into
+abstraction, and evaluating the result. Notice that the second rule
+assumes a notion of capture-avoiding substitution.
+</p>
+
+<p>
+Typing judgments on lambda-terms are defined as follows.
+
+<center>
+<img src="images/of-rules.png" />
+</center>
+
+These typing rules make use of a typing context which stores the
+binding for variables. The first rule says that a variable <i>x</i>
+has type <i>T</i> if we find such a binding in the typing context. The
+second rule says that we find the type of an abstraction by assuming a
+type for its variable while finding a type for the body. The resulting
+type is an arrow from the type of the variable to the type of the
+body. The side condition here implies that we must occasionally rename
+the bound variable <i>x</i> before we can apply the rule. The last
+rule says that an application is typed by determining the function
+component has an arrow type and the argument component has a type
+which matches the input of this arrow type. The resulting type is then
+the output of the arrow type.
+</p>
+</div>
+
+<div class="section">
+<h1>A note about the structure of Abella</h1>
+<p>
+Abella takes a <b>two-level logic</b> approach.
+<ul>
+
+<li>The <em>specification logic</em> is used to express inference
+rules of the kind shown for evaluation and type assignment above;
+these rules are known as structural operational semantics rules.
+Specifications in this logic can be given an executable interpretation
+and execution traces generated in this way correspond naturally to
+derivations based on the structural operational semantics rules. </li>
+
+<li>The <em>reasoning logic</em> is used to express and prove
+properties about atomic predicates that are defined by specifications
+provided through the specification logic. The proof of such properties
+leads naturally to a style of argument that is based on the execution
+traces in the specification logic. Thus the properties that are proved
+are essentially ones about the logical system described by structural
+operational semantics rules.</li>
+
+</ul>
+
+When you use Abella, you should distinguish between the logical system
+you want to specify and the properties you want to prove about that
+system, and you should use the two separate logics to encode these.
+Another important feature of Abella is that it supports a
+lambda-calculus based representation of binding in the objects of the
+logical system which is described. This support is provided in both
+the specification logic and the reasoning logic.
+</p>
+</div>
+
+<div class="section">
+<h1>Executable Specification</h1>
+
+<p>
+Abella's specification and reasoning logics are simply-typed. Before
+we can specify the rules for evaluation and typing for the
+lambda-calculus we must first introduce the types and terms used to
+construct the objects from and judgments over the lambda-calculus.
+This is done via the following signature which we assume is saved in
+the file <code>eval.sig</code>.
+
+<pre>
+sig eval.
+
+kind    tm, ty     type.
+
+type    i          ty.
+type    arrow      ty -> ty -> ty.
+
+type    app        tm -> tm -> tm.
+type    abs        (tm -> tm) -> tm.
+
+type    eval       tm -> tm -> o.
+type    of         tm -> ty -> o.
+</pre>
+
+
+<p>
+This signature declares that we have two types called <code>tm</code>
+and <code>ty</code> for representing the terms and types of the
+lambda-calculus, respectively. It then declares a base type
+called <code>i</code> and a constructor for function types
+called <code>arrow</code>. Terms are constructed as either
+applications using <code>app</code> or abstractions
+using <code>abs</code>. Note that the <code>abs</code> constructor
+takes a single argument which is an abstraction in the specification
+logic so we do not need an explicit constructor for variables.
+Instead, the specification logic's notion of binding is used to model
+the binding behavior of our lambda-calculus specification. For
+example, the term &lambda;x.&lambda;y.xy is represented by <code>abs
+(x\ abs (y\ app x y))</code> where <code>x\ ...</code> is the syntax
+of an abstraction in the specification logic. Finally, this signature
+declares that we will form two judgments called <code>eval</code> for
+evaluation and <code>of</code> for typing. The type <code>o</code> in
+these declarations is the type of formulas in the specification logic.
+</p>
+
+<p>
+Abella uses a Prolog-like specification logic that treats binding as
+a fundamental notion and provides operators for manipulating binding,
+such as capture-avoiding substitution and the implicit renaming of
+bound variables. The rules for evaluation and typing can be encoded in
+this specification logic via the following module which we assume is
+saved in the file <code>eval.mod</code>.
+</p>
+
+<pre>
+module eval.
+
+eval (abs R) (abs R).
+eval (app M N) V :- eval M (abs R), eval (R N) V.
+
+of (abs R) (arrow T U) :- pi x\ (of x T => of (R x) U).
+of (app M N) T :- of M (arrow U T), of N U.
+</pre>
+
+<p>
+The first rule for evaluation says abstractions evaluate to
+themselves. The second rule says an application <code>(app M N)</code>
+evaluates to <code>V</code> if there exists an <code>R</code> such
+that <code>M</code> evaluates to <code>(abs R)</code> and <code>(R
+N)</code> evaluates to <code>V</code>. An important point is that the
+term <code>R</code> in <code>(abs R)</code> is an abstraction at the
+specification level. Thus we do not need to keep track of bound
+variable names for abstractions, and we also get capture-avoiding
+substitution "for free" in the second rule by applying <code>R</code>
+to <code>N</code>.
+</p>
+
+<p>
+The rules for typing use two more features of our
+specification logic: generic and hypothetical judgments. A generic
+judgment introduces a new constant which is distinct from all other
+variables and constants. We use this when encoding the typing
+rule for abstractions since it allows us to generate a variable which
+we know for sure cannot already be in the typing context. In syntax,
+the generic judgment is denoted by <code>pi x\ G</code> where
+<code>x</code> is the new constant and <code>G</code> is the goal to
+prove. A hypothetical judgment introduces a locally scoped assumption
+under which another goal is proven. We use the hypothetical judgments
+of our specification logic to keep track of typing assumptions for
+variables rather than using an explicit context. The hypothetical
+judgment is written <code>H => G</code> where
+<code>H</code> is assumed while proving <code>G</code>.
+</p>
+
+<p>
+With this understanding, we can read the first typing rule
+as saying an abstraction <code>(abs R)</code>
+has type <code>(arrow T U)</code> if for some fresh constant
+<code>x</code> which we assume has type <code>T</code> we can prove
+<code>(R x)</code> has type <code>U</code>. The second rule says an
+application <code>(app M N)</code> has type <code>T</code> if there
+exists a <code>U</code> such that <code>M</code> has type <code>(arrow
+U T)</code> and <code>N</code> has type <code>U</code>.
+</p>
+
+<p>
+You may wonder if our encoding of the evaluation and typing rules is
+faithful to the original specification. This property is known as
+<i>adequacy</i> and has been addressed for similar systems in the
+past. See, for example, <a
+href="http://www.site.uottawa.ca/%7Eafelty/dist/jar.ps">this paper</a>
+which shows adequacy for a deductive system encoded in a specification
+logic like ours. An important point to note here is that the use of
+lambda-tree syntax in capturing binding properties in the
+specification logic makes it easy to prove adequacy properties. We
+will stop in this walkthrough with the observation that adequacy can
+be proved for our encodings; we will not actually provide such proofs
+since our present objective is more to illuminate the
+capabilities Abella provides for reasoning about specifications once
+they have been accepted.
+</p>
+</div>
+
+<div class="section">
+<h1>Reasoning</h1>
+
+<p>
+You are encouraged to follow along with this development explicitly
+using the Abella system. The specification is already included with
+Abella in the directory <code>examples/lambda-calculus</code> as the
+files <code>eval.sig</code> and <code>eval.mod</code>. If you make a
+mistake while following along, type "<code>undo.</code>" to go back.
+If you haven't yet downloaded Abella, you can get
+the <a href="distributions/abella-1.3.5.tar.gz">source</a> or for Windows
+a <a href="distributions/abella-1.3.5.zip">binary package</a> is available. Compiling the source requires
+an installation
+of <a href="http://caml.inria.fr/download.en.html">OCaml</a>.
+</p>
+
+<p>
+To begin reasoning, we navigate to the directory which contains our
+specification and start Abella (it helps if abella is in your path).
+Then we use the <code>Specification</code> command to indicate which
+specification we are going to reason about. The text in bold is what
+you will enter.
+
+<pre>
+~/abella/examples/lambda-calculus % <b>abella</b>
+Welcome to Abella 2.0.0
+Abella < <b>Specification "eval".</b>
+Reading specification eval
+
+Abella <
+</pre>
+
+Recall our goal is to prove subjection reduction, i.e. that evaluation
+preserves the type of a lambda-term. We can state this in Abella as
+follows.
+
+<pre>
+Abella < <b>Theorem sr_eval : forall E V T,
+           {eval E V} -> {of E T} -> {of V T}.</b>
+</pre>
+
+This theorem says that for all proofs of <code>{eval E V}</code> and
+all proofs of <code>{of E T}</code> there exists a proof of <code>{of
+V T}</code>. The curly braces are the predicate in the reasoning logic
+denoting specification logic provability: in particular, {A} is
+provable in the reasoning logic if and only if A is provable in the
+specification logic.
+
+<pre>
+
+
+  ============================
+   forall E V T, {eval E V} -> {of E T} -> {of V T}
+
+</pre>
+
+To prove this goal, we'll use induction on the height of the
+derivation of <code>{eval E V}</code>. We tell the system to induct
+using the <code>induction</code> tactic, and, since we want to induct
+according to the first component of the nested implication above, we
+call this "<code>induction on 1.</code>"
+
+<pre>
+sr_eval < <b>induction on 1.</b>
+
+
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  ============================
+   forall E V T, {eval E V}@ -> {of E T} -> {of V T}
+
+</pre>
+
+The system has created a new hypothesis called <code>IH</code> (for
+Inductive Hypothesis). The symbol <code>*</code> denotes that this
+inductive hypothesis can only be used on terms which are smaller than
+the original term. The symbol <code>@</code> in the goal denotes that
+this term is equal in size to what we started with. Later, when we
+decompose the term <code>{eval E V}@</code> we will get "smaller"
+hypotheses with <code>*</code> which can then be used with the
+inductive hypothesis.
+
+</p>
+<p>
+
+The next step is to introduce the implications in the goal as new
+hypotheses. We can do this using the <code>intros</code> tactic which
+introduces <em>eigenvariables</em> to stand for the universally
+quantified variables and new hypotheses for the nested implications.
+
+<pre>
+sr_eval < <b>intros.</b>
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H1 : {eval E V}@
+  H2 : {of E T}
+  ============================
+   {of V T}
+
+</pre>
+
+Now we perform case analysis on <code>{eval E V}@</code> using
+the <code>case</code> tactic. This will split the proof into two
+branches based on the two possible ways in which <code>E</code> can
+evaluate to <code>V</code>. Each of the different proof branches is
+called a <em>subgoal</em>. In general, only the first subgoal will be
+displayed in full; the other subgoals will be shown without their
+hypotheses. When the first subgoal is completed, the prover will move
+to the next subgoal.
+
+<pre>
+sr_eval < <b>case H1.</b>
+Subgoal 1:
+
+  Variables: E, V, T, R
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (abs R) T}
+  ============================
+   {of (abs R) T}
+
+Subgoal 2 is:
+ {of V T}
+
+</pre>
+
+The first subgoal corresponds to the first specification rule for eval
+which says that an abstraction evaluates to itself. If this was the
+rule used to derive <code>{eval E V}</code> then it must be that
+<code>E</code> and <code>V</code> are equal to <code>(abs R)</code>
+for some new eigenvariable <code>R</code>. The proof of this subgoal
+is now trivial. The <code>search</code> tactic will complete the proof
+by finding the goal as one of the hypotheses.
+
+<pre>
+sr_eval < <b>search.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (app M N) T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  ============================
+   {of V T}
+
+</pre>
+
+The second subgoal corresponds to the second specification rule for
+eval which expresses how applications are evaluated. If this was the
+last rule used to derive <code>{eval E V}</code> then it must be
+that <code>E</code> is equal to <code>(app M N)</code> for new
+eigenvariables <code>M</code> and <code>N</code>. Looking at the body
+of the second specification rule for eval, we can see that it must
+also be the case that there exist derivations for <code>{eval M (abs
+R)}</code> and <code>{eval (R N) V}</code> for some
+new <code>R</code>. Thus these become new hypotheses in the proof.
+Since the derivations of these judgments are shorter than the original
+hypothesis, they have a <code>*</code> to signify that they are
+candidates for the inductive hypothesis.
+
+</p>
+<p>
+
+Before we can apply the inductive hypothesis, we need to find relevant
+typing judgments. We get these by performing case analysis
+on <code>{of (app M N) T}</code>. This case analysis will result only
+in one subgoal since there is only one specification rule for typing
+applications.
+
+<pre>
+sr_eval < <b>case H2.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  ============================
+   {of V T}
+
+</pre>
+
+This case analysis has given us typing judgments for both
+<code>M</code> and <code>N</code>. Now we can now use
+the <code>apply</code> tactic to apply the inductive
+hypotheses to <code>{eval M (abs R)}*</code> and <code>{of M (arrow U
+T)}</code> to get a typing judgment for <code>(abs R)</code>.
+
+<pre>
+sr_eval < <b>apply IH to H3 H5.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H7 : {of (abs R) (arrow U T)}
+  ============================
+   {of V T}
+
+</pre>
+
+Looking ahead, our goal is to get a typing judgment for <code>(R
+N)</code> so that we can apply the inductive hypothesis to get a
+typing judgment for <code>V</code>. We already have a typing judgment
+for <code>N</code>, so the next step is to decompose our typing
+judgment for <code>(abs R)</code> in order to get a typing judgment
+for <code>R</code>. Again, case analysis will result in only one
+subgoal since there is only one typing rule for abstractions.
+
+<pre>
+sr_eval < <b>case H7.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  ============================
+   {of V T}
+
+</pre>
+
+The <code>n1</code> here represents a <i>nominal constant</i> which we
+can think of as a placeholder for any term except another nominal
+constant (see <a href="http://arxiv.org/pdf/0802.0865v1.pdf">this
+paper</a> for a precise explanation of the logical nature of such
+constants). Now, the hypothesis <code>{of n1 U |- of (R n1) T}</code>
+roughly says that if any term <code>n1</code> has type <code>U</code>
+then we can conclude <code>(R n1)</code> has type <code>T</code>.
+Obviously, we can instantiate <code>n1</code> with <code>N</code>. The
+<code>inst</code> tactic acts on this property of our specification
+logic.
+
+<pre>
+sr_eval < <b>inst H8 with n1 = N.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  ============================
+   {of V T}
+
+</pre>
+
+We now know <code>{of N U}</code> and <code>{of N U |- of (R N)
+T}</code>. The next step is to combine these two judgments to get a
+typing judgment for <code>(R N)</code> which does not have any
+hypothetical judgments. We realize this through the <code>cut</code>
+tactic which implements the cut rule for our specification logic.
+
+<pre>
+sr_eval < <b>cut H9 with H6.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  ============================
+   {of V T}
+
+</pre>
+
+With our new hypothesis, we can apply the inductive hypotheses to
+<code>{eval (R N) V}*</code> and <code>{of (R N) T}</code> to get the
+proper typing judgment for <code>V</code>.
+
+<pre>
+sr_eval < <b>apply IH to H4 H10.</b>
+Subgoal 2:
+
+  Variables: E, V, T, R, N, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  H11 : {of V T}
+  ============================
+   {of V T}
+
+</pre>
+
+Finally, the search tactic completes the proof.
+
+<pre>
+sr_eval < <b>search.</b>
+
+Proof completed.
+</pre>
+</p>
+</div>
+
+<div class="section">
+<h1>Moving Forward</h1>
+<p>
+For those who are following this development using Abella, you are
+encouraged to try your own proofs. The following theorem states that
+evaluation is deterministic. Why don't you prove it?
+
+<pre>
+Theorem eval_det : forall E V1 V2,
+  {eval E V1} -> {eval E V2} -> V1 = V2.
+</pre>
+
+Next try to prove that the term (&lambda;x. x x) cannot be assigned a
+type.
+
+<pre>
+Theorem of_self_app_absurd : forall T,
+  {of (abs (x\ app x x)) T} -> false.
+</pre>
+
+Finally, it is also possible to prove that the term (&lambda;x. x x)
+(&lambda; x. x x) does not evaluate to a value.
+
+<pre>
+Theorem no_eval : forall V,
+  {eval (app (abs x\ app x x) (abs x\ app x x)) V} -> false.
+</pre>
+
+</p>
+
+<p>
+If you get stuck on any of these, the solutions to these problems and
+others related to the lambda-calculus are available
+in <a href="examples/lambda-calculus/eval.html">
+examples/lambda-calculus/eval.thm</a>.
+</p>
+
+<p>
+Once you've finished, it's time to move on to bigger and better
+things. In the <a href="advanced-walkthrough.html">advanced
+walkthrough</a> you'll see more sophisticated reasoning which uses
+definitions and lemmas.
+</p>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3596815-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
+
+<!--  LocalWords:  eval thm sr forall subgoal IH inst abella OCaml det Prolog
+ -->
+<!--  LocalWords:  Walkthrough walkthrough encodings gz eigenvariables subgoals
+ -->
+<!--  LocalWords:  eigenvariable sig ty xy
+ -->

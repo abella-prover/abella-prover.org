@@ -1,0 +1,5451 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Takahashi's proof of Church-Rosser using complete developments - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "cr".</b>
+Reading specification "cr"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctxs : olist -> olist -> olist -> prop by 
+ctxs nil nil nil;
+nabla x, ctxs (trm x :: L) (pr1 x x :: K) (cd1 x x :: notabs x :: J) := ctxs L K J.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define name : tm -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Theorem trm_worlds : 
+forall L K J E, ctxs L K J -> member E L -> (exists A, E = trm A /\ name A /\
+  member (pr1 A A) K /\ member (cd1 A A) J /\ member (notabs A) J).</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  ============================
+   forall L K J E, ctxs L K J -> member E L -> (exists A, E = trm A /\
+     name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+     member (notabs A) J)
+
+trm_worlds < <b>induction on 2.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  ============================
+   forall L K J E, ctxs L K J -> member E L @ -> (exists A, E = trm A /\
+     name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+     member (notabs A) J)
+
+trm_worlds < <b>intros.</b>
+</pre>
+<a name="7"></a>
+<pre>
+
+  Variables: L, K, J, E
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H1 : ctxs L K J
+  H2 : member E L @
+  ============================
+   exists A, E = trm A /\ name A /\ member (pr1 A A) K /\
+     member (cd1 A A) J /\ member (notabs A) J
+
+trm_worlds < <b>case H2.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H1 : ctxs (E :: L1) K J
+  ============================
+   exists A, E = trm A /\ name A /\ member (pr1 A A) K /\
+     member (cd1 A A) J /\ member (notabs A) J
+
+Subgoal 2 is:
+ exists A, E = trm A /\ name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+   member (notabs A) J
+
+trm_worlds < <b>case H1.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H3 : ctxs L2 K1 J1
+  ============================
+   exists A, trm n1 = trm A /\ name A /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+Subgoal 2 is:
+ exists A, E = trm A /\ name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+   member (notabs A) J
+
+trm_worlds < <b>search.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H1 : ctxs (B :: L1) K J
+  H3 : member E L1 *
+  ============================
+   exists A, E = trm A /\ name A /\ member (pr1 A A) K /\
+     member (cd1 A A) J /\ member (notabs A) J
+
+trm_worlds < <b>case H1.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H3 : member (E n1) L2 *
+  H4 : ctxs L2 K1 J1
+  ============================
+   exists A, E n1 = trm A /\ name A /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+trm_worlds < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2, A
+  IH : forall L K J E, ctxs L K J -> member E L * -> (exists A, E = trm A /\
+         name A /\ member (pr1 A A) K /\ member (cd1 A A) J /\
+         member (notabs A) J)
+  H3 : member (trm (A n1)) L2 *
+  H4 : ctxs L2 K1 J1
+  H5 : name (A n1)
+  H6 : member (pr1 (A n1) (A n1)) K1
+  H7 : member (cd1 (A n1) (A n1)) J1
+  H8 : member (notabs (A n1)) J1
+  ============================
+   exists A1, trm (A n1) = trm A1 /\ name A1 /\
+     member (pr1 A1 A1) (pr1 n1 n1 :: K1) /\
+     member (cd1 A1 A1) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A1) (cd1 n1 n1 :: notabs n1 :: J1)
+
+trm_worlds < <b>search.</b>
+Proof completed.
+</pre>
+<a name="13"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_worlds : 
+forall L K J E, ctxs L K J -> member E K -> (exists A B, E = pr1 A B /\
+  name A /\ A = B /\ member (trm A) L /\ member (cd1 A B) J /\
+  member (notabs A) J).</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  ============================
+   forall L K J E, ctxs L K J -> member E K -> (exists A B, E = pr1 A B /\
+     name A /\ A = B /\ member (trm A) L /\ member (cd1 A B) J /\
+     member (notabs A) J)
+
+pr1_worlds < <b>induction on 2.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  ============================
+   forall L K J E, ctxs L K J -> member E K @ -> (exists A B, E = pr1 A B /\
+     name A /\ A = B /\ member (trm A) L /\ member (cd1 A B) J /\
+     member (notabs A) J)
+
+pr1_worlds < <b>intros.</b>
+</pre>
+<a name="16"></a>
+<pre>
+
+  Variables: L, K, J, E
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H1 : ctxs L K J
+  H2 : member E K @
+  ============================
+   exists A B, E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+     member (cd1 A B) J /\ member (notabs A) J
+
+pr1_worlds < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H1 : ctxs L (E :: L1) J
+  ============================
+   exists A B, E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+     member (cd1 A B) J /\ member (notabs A) J
+
+Subgoal 2 is:
+ exists A B, E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+   member (cd1 A B) J /\ member (notabs A) J
+
+pr1_worlds < <b>case H1.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H3 : ctxs L2 K1 J1
+  ============================
+   exists A B, pr1 n1 n1 = pr1 A B /\ name A /\ A = B /\
+     member (trm A) (trm n1 :: L2) /\
+     member (cd1 A B) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+Subgoal 2 is:
+ exists A B, E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+   member (cd1 A B) J /\ member (notabs A) J
+
+pr1_worlds < <b>search.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H1 : ctxs L (B :: L1) J
+  H3 : member E L1 *
+  ============================
+   exists A B, E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+     member (cd1 A B) J /\ member (notabs A) J
+
+pr1_worlds < <b>case H1.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H3 : member (E n1) K1 *
+  H4 : ctxs L2 K1 J1
+  ============================
+   exists A B, E n1 = pr1 A B /\ name A /\ A = B /\
+     member (trm A) (trm n1 :: L2) /\
+     member (cd1 A B) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+pr1_worlds < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2, A, B1
+  IH : forall L K J E, ctxs L K J -> member E K * -> (exists A B,
+         E = pr1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (cd1 A B) J /\ member (notabs A) J)
+  H3 : member (pr1 (B1 n1) (B1 n1)) K1 *
+  H4 : ctxs L2 K1 J1
+  H5 : name (B1 n1)
+  H6 : member (trm (B1 n1)) L2
+  H7 : member (cd1 (B1 n1) (B1 n1)) J1
+  H8 : member (notabs (B1 n1)) J1
+  ============================
+   exists A B, pr1 (B1 n1) (B1 n1) = pr1 A B /\ name A /\ A = B /\
+     member (trm A) (trm n1 :: L2) /\
+     member (cd1 A B) (cd1 n1 n1 :: notabs n1 :: J1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+pr1_worlds < <b>search.</b>
+Proof completed.
+</pre>
+<a name="22"></a>
+<pre class="code">
+Abella < <b>Theorem cd_worlds : 
+forall L K J E, ctxs L K J -> member E J -> (exists A B, E = cd1 A B /\
+  name A /\ A = B /\ member (trm A) L /\ member (pr1 A A) K /\
+  member (notabs A) J) \/ (exists A, E = notabs A /\ name A /\
+  member (trm A) L /\ member (pr1 A A) K /\ member (cd1 A A) J).</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+
+  ============================
+   forall L K J E, ctxs L K J -> member E J -> (exists A B, E = cd1 A B /\
+     name A /\ A = B /\ member (trm A) L /\ member (pr1 A A) K /\
+     member (notabs A) J) \/ (exists A, E = notabs A /\ name A /\
+     member (trm A) L /\ member (pr1 A A) K /\ member (cd1 A A) J)
+
+cd_worlds < <b>induction on 2.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   forall L K J E, ctxs L K J -> member E J @ -> (exists A B, E = cd1 A B /\
+     name A /\ A = B /\ member (trm A) L /\ member (pr1 A A) K /\
+     member (notabs A) J) \/ (exists A, E = notabs A /\ name A /\
+     member (trm A) L /\ member (pr1 A A) K /\ member (cd1 A A) J)
+
+cd_worlds < <b>intros.</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+  Variables: L, K, J, E
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H1 : ctxs L K J
+  H2 : member E J @
+  ============================
+   (exists A B, E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+     member (pr1 A A) K /\ member (notabs A) J) \/ (exists A, E = notabs A /\
+     name A /\ member (trm A) L /\ member (pr1 A A) K /\ member (cd1 A A) J)
+
+cd_worlds < <b>case H2.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H1 : ctxs L K (E :: L1)
+  ============================
+   (exists A B, E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+     member (pr1 A A) K /\ member (notabs A) (E :: L1)) \/ (exists A,
+     E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+     member (cd1 A A) (E :: L1))
+
+Subgoal 2 is:
+ (exists A B1, E = cd1 A B1 /\ name A /\ A = B1 /\ member (trm A) L /\
+   member (pr1 A A) K /\ member (notabs A) (B :: L1)) \/ (exists A,
+   E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+   member (cd1 A A) (B :: L1))
+
+cd_worlds < <b>case H1.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, J, E, L1, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H3 : ctxs L2 K1 J1
+  ============================
+   (exists A B, cd1 n1 n1 = cd1 A B /\ name A /\ A = B /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     cd1 n1 n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+Subgoal 2 is:
+ (exists A B1, E = cd1 A B1 /\ name A /\ A = B1 /\ member (trm A) L /\
+   member (pr1 A A) K /\ member (notabs A) (B :: L1)) \/ (exists A,
+   E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+   member (cd1 A A) (B :: L1))
+
+cd_worlds < <b>search.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H1 : ctxs L K (B :: L1)
+  H3 : member E L1 *
+  ============================
+   (exists A B1, E = cd1 A B1 /\ name A /\ A = B1 /\ member (trm A) L /\
+     member (pr1 A A) K /\ member (notabs A) (B :: L1)) \/ (exists A,
+     E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+     member (cd1 A A) (B :: L1))
+
+cd_worlds < <b>case H1.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H3 : member (E n1) (notabs n1 :: J1) *
+  H4 : ctxs L2 K1 J1
+  ============================
+   (exists A B1, E n1 = cd1 A B1 /\ name A /\ A = B1 /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     E n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>case H3.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  ============================
+   (exists A B1, notabs n1 = cd1 A B1 /\ name A /\ A = B1 /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     notabs n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+Subgoal 2.2 is:
+ (exists A B1, E n1 = cd1 A B1 /\ name A /\ A = B1 /\
+   member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+   member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+   E n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+   member (pr1 A A) (pr1 n1 n1 :: K1) /\
+   member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>right.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  ============================
+   exists A, notabs n1 = notabs A /\ name A /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1)
+
+Subgoal 2.2 is:
+ (exists A B1, E n1 = cd1 A B1 /\ name A /\ A = B1 /\
+   member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+   member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+   E n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+   member (pr1 A A) (pr1 n1 n1 :: K1) /\
+   member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>search.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  H5 : member (E n1) J1 *
+  ============================
+   (exists A B1, E n1 = cd1 A B1 /\ name A /\ A = B1 /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     E n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>apply IH to H4 H5.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  H5 : member (E n1) J1 *
+  H6 : (exists A B, E n1 = cd1 A B /\ name A /\ A = B /\ member (trm A) L2 /\
+         member (pr1 A A) K1 /\ member (notabs A) J1) \/ (exists A,
+         E n1 = notabs A /\ name A /\ member (trm A) L2 /\
+         member (pr1 A A) K1 /\ member (cd1 A A) J1)
+  ============================
+   (exists A B1, E n1 = cd1 A B1 /\ name A /\ A = B1 /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     E n1 = notabs A /\ name A /\ member (trm A) (trm n1 :: L2) /\
+     member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>case H6.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2, A, B1
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  H5 : member (cd1 (B1 n1) (B1 n1)) J1 *
+  H7 : name (B1 n1)
+  H8 : member (trm (B1 n1)) L2
+  H9 : member (pr1 (B1 n1) (B1 n1)) K1
+  H10 : member (notabs (B1 n1)) J1
+  ============================
+   (exists A B2, cd1 (B1 n1) (B1 n1) = cd1 A B2 /\ name A /\ A = B2 /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (notabs A) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A,
+     cd1 (B1 n1) (B1 n1) = notabs A /\ name A /\
+     member (trm A) (trm n1 :: L2) /\ member (pr1 A A) (pr1 n1 n1 :: K1) /\
+     member (cd1 A A) (cd1 n1 n1 :: notabs n1 :: J1))
+
+Subgoal 2.2.2 is:
+ (exists A1 B1, notabs (A n1) = cd1 A1 B1 /\ name A1 /\ A1 = B1 /\
+   member (trm A1) (trm n1 :: L2) /\ member (pr1 A1 A1) (pr1 n1 n1 :: K1) /\
+   member (notabs A1) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A1,
+   notabs (A n1) = notabs A1 /\ name A1 /\ member (trm A1) (trm n1 :: L2) /\
+   member (pr1 A1 A1) (pr1 n1 n1 :: K1) /\
+   member (cd1 A1 A1) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>search.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2.2.2:
+
+  Variables: L, K, J, E, L1, B, J1, K1, L2, A
+  IH : forall L K J E, ctxs L K J -> member E J * -> (exists A B,
+         E = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         E = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  H4 : ctxs L2 K1 J1
+  H5 : member (notabs (A n1)) J1 *
+  H7 : name (A n1)
+  H8 : member (trm (A n1)) L2
+  H9 : member (pr1 (A n1) (A n1)) K1
+  H10 : member (cd1 (A n1) (A n1)) J1
+  ============================
+   (exists A1 B1, notabs (A n1) = cd1 A1 B1 /\ name A1 /\ A1 = B1 /\
+     member (trm A1) (trm n1 :: L2) /\
+     member (pr1 A1 A1) (pr1 n1 n1 :: K1) /\
+     member (notabs A1) (cd1 n1 n1 :: notabs n1 :: J1)) \/ (exists A1,
+     notabs (A n1) = notabs A1 /\ name A1 /\
+     member (trm A1) (trm n1 :: L2) /\
+     member (pr1 A1 A1) (pr1 n1 n1 :: K1) /\
+     member (cd1 A1 A1) (cd1 n1 n1 :: notabs n1 :: J1))
+
+cd_worlds < <b>search.</b>
+Proof completed.
+</pre>
+<a name="36"></a>
+<pre class="code">
+Abella < <b>Theorem notabs_abs_absurd : 
+forall A L K J, ctxs L K J -> {J |- notabs (abs A)} -> false.</b>
+</pre>
+<a name="37"></a>
+<pre>
+
+
+  ============================
+   forall A L K J, ctxs L K J -> {J |- notabs (abs A)} -> false
+
+notabs_abs_absurd < <b>intros.</b>
+</pre>
+<a name="38"></a>
+<pre>
+
+  Variables: A, L, K, J
+  H1 : ctxs L K J
+  H2 : {J |- notabs (abs A)}
+  ============================
+   false
+
+notabs_abs_absurd < <b>case H2.</b>
+</pre>
+<a name="39"></a>
+<pre>
+
+  Variables: A, L, K, J, F
+  H1 : ctxs L K J
+  H3 : {J, [F] |- notabs (abs A)}
+  H4 : member F J
+  ============================
+   false
+
+notabs_abs_absurd < <b>apply cd_worlds to H1 H4.</b>
+</pre>
+<a name="40"></a>
+<pre>
+
+  Variables: A, L, K, J, F
+  H1 : ctxs L K J
+  H3 : {J, [F] |- notabs (abs A)}
+  H4 : member F J
+  H5 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   false
+
+notabs_abs_absurd < <b>case H5.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, F, A1, B
+  H1 : ctxs L K J
+  H3 : {J, [cd1 B B] |- notabs (abs A)}
+  H4 : member (cd1 B B) J
+  H6 : name B
+  H7 : member (trm B) L
+  H8 : member (pr1 B B) K
+  H9 : member (notabs B) J
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+notabs_abs_absurd < <b>case H3.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, F, A1
+  H1 : ctxs L K J
+  H3 : {J, [notabs A1] |- notabs (abs A)}
+  H4 : member (notabs A1) J
+  H6 : name A1
+  H7 : member (trm A1) L
+  H8 : member (pr1 A1 A1) K
+  H9 : member (cd1 A1 A1) J
+  ============================
+   false
+
+notabs_abs_absurd < <b>case H3.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, F, A1
+  H1 : ctxs L K J
+  H4 : member (notabs (abs A)) J
+  H6 : name (abs A)
+  H7 : member (trm (abs A)) L
+  H8 : member (pr1 (abs A) (abs A)) K
+  H9 : member (cd1 (abs A) (abs A)) J
+  ============================
+   false
+
+notabs_abs_absurd < <b>case H6.</b>
+Proof completed.
+</pre>
+<a name="44"></a>
+<pre class="code">
+Abella < <b>Theorem cd1_trm : 
+forall A B L K J, ctxs L K J -> {J |- cd1 A B} -> {L |- trm A}.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+
+  ============================
+   forall A B L K J, ctxs L K J -> {J |- cd1 A B} -> {L |- trm A}
+
+cd1_trm < <b>induction on 2.</b>
+</pre>
+<a name="46"></a>
+<pre>
+
+
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  ============================
+   forall A B L K J, ctxs L K J -> {J |- cd1 A B}@ -> {L |- trm A}
+
+cd1_trm < <b>intros.</b>
+</pre>
+<a name="47"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H2 : {J |- cd1 A B}@
+  ============================
+   {L |- trm A}
+
+cd1_trm < <b>case H2.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- notabs T1}*
+  H4 : {J |- cd1 T1 T2}*
+  H5 : {J |- cd1 S1 S2}*
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- notabs T1}*
+  H4 : {J |- cd1 T1 T2}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {L |- trm T1}
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>apply IH to H1 H5.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- notabs T1}*
+  H4 : {J |- cd1 T1 T2}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {L |- trm T1}
+  H7 : {L |- trm S1}
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>search.</b>
+</pre>
+<a name="51"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, K, J, S2, S1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  ============================
+   {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>apply IH to _ H3.</b>
+</pre>
+<a name="52"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, K, J, S2, S1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H4 : {L, trm n1 |- trm (S1 n1)}
+  ============================
+   {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>search.</b>
+</pre>
+<a name="53"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (abs T1) (abs T2)}*
+  H4 : {J |- cd1 S1 S2}*
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (abs T1) (abs T2)}*
+  H4 : {J |- cd1 S1 S2}*
+  H5 : {L |- trm (abs T1)}
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (abs T1) (abs T2)}*
+  H4 : {J |- cd1 S1 S2}*
+  H5 : {L |- trm (abs T1)}
+  H6 : {L |- trm S1}
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+cd1_trm < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, L, K, J, F
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, [F] |- cd1 A B}*
+  H4 : member F J
+  ============================
+   {L |- trm A}
+
+cd1_trm < <b>apply cd_worlds to H1 H4.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, L, K, J, F
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, [F] |- cd1 A B}*
+  H4 : member F J
+  H5 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   {L |- trm A}
+
+cd1_trm < <b>case H5.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, L, K, J, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, [cd1 B1 B1] |- cd1 A B}*
+  H4 : member (cd1 B1 B1) J
+  H6 : name B1
+  H7 : member (trm B1) L
+  H8 : member (pr1 B1 B1) K
+  H9 : member (notabs B1) J
+  ============================
+   {L |- trm A}
+
+Subgoal 4.2 is:
+ {L |- trm A}
+
+cd1_trm < <b>case H3.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, L, K, J, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H4 : member (cd1 B B) J
+  H6 : name B
+  H7 : member (trm B) L
+  H8 : member (pr1 B B) K
+  H9 : member (notabs B) J
+  ============================
+   {L |- trm B}
+
+Subgoal 4.2 is:
+ {L |- trm A}
+
+cd1_trm < <b>search.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A, B, L, K, J, F, A1
+  IH : forall A B L K J, ctxs L K J -> {J |- cd1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {J, [notabs A1] |- cd1 A B}*
+  H4 : member (notabs A1) J
+  H6 : name A1
+  H7 : member (trm A1) L
+  H8 : member (pr1 A1 A1) K
+  H9 : member (cd1 A1 A1) J
+  ============================
+   {L |- trm A}
+
+cd1_trm < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="61"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_trm : 
+forall A B L K J, ctxs L K J -> {K |- pr1 A B} -> {L |- trm A}.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+
+  ============================
+   forall A B L K J, ctxs L K J -> {K |- pr1 A B} -> {L |- trm A}
+
+pr1_trm < <b>induction on 2.</b>
+</pre>
+<a name="63"></a>
+<pre>
+
+
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  ============================
+   forall A B L K J, ctxs L K J -> {K |- pr1 A B}@ -> {L |- trm A}
+
+pr1_trm < <b>intros.</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}@
+  ============================
+   {L |- trm A}
+
+pr1_trm < <b>case H2.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 T1 T2}*
+  H4 : {K |- pr1 S1 S2}*
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 T1 T2}*
+  H4 : {K |- pr1 S1 S2}*
+  H5 : {L |- trm T1}
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 T1 T2}*
+  H4 : {K |- pr1 S1 S2}*
+  H5 : {L |- trm T1}
+  H6 : {L |- trm S1}
+  ============================
+   {L |- trm (app T1 S1)}
+
+Subgoal 2 is:
+ {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>search.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, K, J, S2, S1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  ============================
+   {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>apply IH to _ H3.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, K, J, S2, S1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  H4 : {L, trm n1 |- trm (S1 n1)}
+  ============================
+   {L |- trm (abs S1)}
+
+Subgoal 3 is:
+ {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>search.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 (abs T1) (abs T2)}*
+  H4 : {K |- pr1 S1 S2}*
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 (abs T1) (abs T2)}*
+  H4 : {K |- pr1 S1 S2}*
+  H5 : {L |- trm (abs T1)}
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, S2, S1, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 (abs T1) (abs T2)}*
+  H4 : {K |- pr1 S1 S2}*
+  H5 : {L |- trm (abs T1)}
+  H6 : {L |- trm S1}
+  ============================
+   {L |- trm (app (abs T1) S1)}
+
+Subgoal 4 is:
+ {L |- trm A}
+
+pr1_trm < <b>search.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, L, K, J, F
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K, [F] |- pr1 A B}*
+  H4 : member F K
+  ============================
+   {L |- trm A}
+
+pr1_trm < <b>apply pr1_worlds to H1 H4.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, L, K, J, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H3 : {K, [pr1 B1 B1] |- pr1 A B}*
+  H4 : member (pr1 B1 B1) K
+  H5 : name B1
+  H6 : member (trm B1) L
+  H7 : member (cd1 B1 B1) J
+  H8 : member (notabs B1) J
+  ============================
+   {L |- trm A}
+
+pr1_trm < <b>case H3.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, L, K, J, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {K |- pr1 A B}* -> {L |- trm A}
+  H1 : ctxs L K J
+  H4 : member (pr1 B B) K
+  H5 : name B
+  H6 : member (trm B) L
+  H7 : member (cd1 B B) J
+  H8 : member (notabs B) J
+  ============================
+   {L |- trm B}
+
+pr1_trm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="76"></a>
+<pre class="code">
+Abella < <b>Theorem pre_cd1_pr1 : 
+forall A B L K J, ctxs L K J -> {L |- trm A} -> {J |- cd1 A B} ->
+  {K |- pr1 A B}.</b>
+</pre>
+<a name="77"></a>
+<pre>
+
+
+  ============================
+   forall A B L K J, ctxs L K J -> {L |- trm A} -> {J |- cd1 A B} ->
+     {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>induction on 2.</b>
+</pre>
+<a name="78"></a>
+<pre>
+
+
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  ============================
+   forall A B L K J, ctxs L K J -> {L |- trm A}@ -> {J |- cd1 A B} ->
+     {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>intros.</b>
+</pre>
+<a name="79"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  H3 : {J |- cd1 A B}
+  ============================
+   {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H2 (keep).</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, L, K, J, N, M
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H3 : {J |- cd1 (app M N) B}
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  ============================
+   {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H3.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, L, K, J, N, M, S2, T2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J |- notabs M}
+  H7 : {J |- cd1 M T2}
+  H8 : {J |- cd1 N S2}
+  ============================
+   {K |- pr1 (app M N) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply IH to H1 H4 H7.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, L, K, J, N, M, S2, T2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J |- notabs M}
+  H7 : {J |- cd1 M T2}
+  H8 : {J |- cd1 N S2}
+  H9 : {K |- pr1 M T2}
+  ============================
+   {K |- pr1 (app M N) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply IH to H1 H5 H8.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, L, K, J, N, M, S2, T2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J |- notabs M}
+  H7 : {J |- cd1 M T2}
+  H8 : {J |- cd1 N S2}
+  H9 : {K |- pr1 M T2}
+  H10 : {K |- pr1 N S2}
+  ============================
+   {K |- pr1 (app M N) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>search.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, B, L, K, J, N, M, S2, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app (abs T1) N)}@
+  H4 : {L |- trm (abs T1)}*
+  H5 : {L |- trm N}*
+  H6 : {J |- cd1 (abs T1) (abs T2)}
+  H7 : {J |- cd1 N S2}
+  ============================
+   {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply IH to H1 H4 H6.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, B, L, K, J, N, M, S2, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app (abs T1) N)}@
+  H4 : {L |- trm (abs T1)}*
+  H5 : {L |- trm N}*
+  H6 : {J |- cd1 (abs T1) (abs T2)}
+  H7 : {J |- cd1 N S2}
+  H8 : {K |- pr1 (abs T1) (abs T2)}
+  ============================
+   {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply IH to H1 H5 H7.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, B, L, K, J, N, M, S2, T2, T1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app (abs T1) N)}@
+  H4 : {L |- trm (abs T1)}*
+  H5 : {L |- trm N}*
+  H6 : {J |- cd1 (abs T1) (abs T2)}
+  H7 : {J |- cd1 N S2}
+  H8 : {K |- pr1 (abs T1) (abs T2)}
+  H9 : {K |- pr1 N S2}
+  ============================
+   {K |- pr1 (app (abs T1) N) (T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>search.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, L, K, J, N, M, F
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J, [F] |- cd1 (app M N) B}
+  H7 : member F J
+  ============================
+   {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply cd_worlds to H1 H7.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, L, K, J, N, M, F
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J, [F] |- cd1 (app M N) B}
+  H7 : member F J
+  H8 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H8.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 1.3.1:
+
+  Variables: A, B, L, K, J, N, M, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J, [cd1 B1 B1] |- cd1 (app M N) B}
+  H7 : member (cd1 B1 B1) J
+  H9 : name B1
+  H10 : member (trm B1) L
+  H11 : member (pr1 B1 B1) K
+  H12 : member (notabs B1) J
+  ============================
+   {K |- pr1 (app M N) B}
+
+Subgoal 1.3.2 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H9.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 1.3.1:
+
+  Variables: A, B, L, K, J, N, M, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm (app (M n1) (N n1))}@
+  H4 : {L n1 |- trm (M n1)}*
+  H5 : {L n1 |- trm (N n1)}*
+  H6 : {J n1, [cd1 n1 n1] |- cd1 (app (M n1) (N n1)) (B n1)}
+  H7 : member (cd1 n1 n1) (J n1)
+  H10 : member (trm n1) (L n1)
+  H11 : member (pr1 n1 n1) (K n1)
+  H12 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 (app (M n1) (N n1)) (B n1)}
+
+Subgoal 1.3.2 is:
+ {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H6.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 1.3.2:
+
+  Variables: A, B, L, K, J, N, M, F, A1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (app M N)}@
+  H4 : {L |- trm M}*
+  H5 : {L |- trm N}*
+  H6 : {J, [notabs A1] |- cd1 (app M N) B}
+  H7 : member (notabs A1) J
+  H9 : name A1
+  H10 : member (trm A1) L
+  H11 : member (pr1 A1 A1) K
+  H12 : member (cd1 A1 A1) J
+  ============================
+   {K |- pr1 (app M N) B}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H6.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, K, J, R
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H3 : {J |- cd1 (abs R) B}
+  H4 : {L, trm n1 |- trm (R n1)}*
+  ============================
+   {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H3.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, L, K, J, R, S2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, notabs n1, cd1 n1 n1 |- cd1 (R n1) (S2 n1)}
+  ============================
+   {K |- pr1 (abs R) (abs S2)}
+
+Subgoal 2.2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply IH to _ H4 H5.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, L, K, J, R, S2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, notabs n1, cd1 n1 n1 |- cd1 (R n1) (S2 n1)}
+  H6 : {K, pr1 n1 n1 |- pr1 (R n1) (S2 n1)}
+  ============================
+   {K |- pr1 (abs R) (abs S2)}
+
+Subgoal 2.2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>search.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, L, K, J, R, F
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, [F] |- cd1 (abs R) B}
+  H6 : member F J
+  ============================
+   {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply cd_worlds to H1 H6.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, L, K, J, R, F
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, [F] |- cd1 (abs R) B}
+  H6 : member F J
+  H7 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H7.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: A, B, L, K, J, R, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, [cd1 B1 B1] |- cd1 (abs R) B}
+  H6 : member (cd1 B1 B1) J
+  H8 : name B1
+  H9 : member (trm B1) L
+  H10 : member (pr1 B1 B1) K
+  H11 : member (notabs B1) J
+  ============================
+   {K |- pr1 (abs R) B}
+
+Subgoal 2.2.2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H8.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: A, B, L, K, J, R, F, A1, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n2) (K n2) (J n2)
+  H2 : {L n2 |- trm (abs (R n2))}@
+  H4 : {L n2, trm n1 |- trm (R n2 n1)}*
+  H5 : {J n2, [cd1 n2 n2] |- cd1 (abs (R n2)) (B n2)}
+  H6 : member (cd1 n2 n2) (J n2)
+  H9 : member (trm n2) (L n2)
+  H10 : member (pr1 n2 n2) (K n2)
+  H11 : member (notabs n2) (J n2)
+  ============================
+   {K n2 |- pr1 (abs (R n2)) (B n2)}
+
+Subgoal 2.2.2 is:
+ {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H5.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 2.2.2:
+
+  Variables: A, B, L, K, J, R, F, A1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm (abs R)}@
+  H4 : {L, trm n1 |- trm (R n1)}*
+  H5 : {J, [notabs A1] |- cd1 (abs R) B}
+  H6 : member (notabs A1) J
+  H8 : name A1
+  H9 : member (trm A1) L
+  H10 : member (pr1 A1 A1) K
+  H11 : member (cd1 A1 A1) J
+  ============================
+   {K |- pr1 (abs R) B}
+
+Subgoal 3 is:
+ {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H5.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  H3 : {J |- cd1 A B}
+  H4 : {L, [F] |- trm A}*
+  H5 : member F L
+  ============================
+   {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>apply trm_worlds to H1 H5.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F, A1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  H3 : {J |- cd1 A B}
+  H4 : {L, [trm A1] |- trm A}*
+  H5 : member (trm A1) L
+  H6 : name A1
+  H7 : member (pr1 A1 A1) K
+  H8 : member (cd1 A1 A1) J
+  H9 : member (notabs A1) J
+  ============================
+   {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H4.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F, A1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  H3 : {J |- cd1 A B}
+  H5 : member (trm A) L
+  H6 : name A
+  H7 : member (pr1 A A) K
+  H8 : member (cd1 A A) J
+  H9 : member (notabs A) J
+  ============================
+   {K |- pr1 A B}
+
+pre_cd1_pr1 < <b>case H6.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F, A1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H3 : {J n1 |- cd1 n1 (B n1)}
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>case H3.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F, A1, F1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  H10 : {J n1, [F1 n1] |- cd1 n1 (B n1)}
+  H11 : member (F1 n1) (J n1)
+  ============================
+   {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>apply cd_worlds to H1 H11.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, L, K, J, F, A1, F1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  H10 : {J n1, [F1 n1] |- cd1 n1 (B n1)}
+  H11 : member (F1 n1) (J n1)
+  H12 : (exists A B, F1 n1 = cd1 A B /\ name A /\ A = B /\
+          member (trm A) (L n1) /\ member (pr1 A A) (K n1) /\
+          member (notabs A) (J n1)) \/ (exists A, F1 n1 = notabs A /\
+          name A /\ member (trm A) (L n1) /\ member (pr1 A A) (K n1) /\
+          member (cd1 A A) (J n1))
+  ============================
+   {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>case H12.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: A, B, L, K, J, F, A1, F1, A2, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  H10 : {J n1, [cd1 (B1 n1) (B1 n1)] |- cd1 n1 (B n1)}
+  H11 : member (cd1 (B1 n1) (B1 n1)) (J n1)
+  H13 : name (B1 n1)
+  H14 : member (trm (B1 n1)) (L n1)
+  H15 : member (pr1 (B1 n1) (B1 n1)) (K n1)
+  H16 : member (notabs (B1 n1)) (J n1)
+  ============================
+   {K n1 |- pr1 n1 (B n1)}
+
+Subgoal 3.2 is:
+ {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>case H10.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: A, B, L, K, J, F, A1, F1, A2, B1
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  H11 : member (cd1 n1 n1) (J n1)
+  H13 : name n1
+  H14 : member (trm n1) (L n1)
+  H15 : member (pr1 n1 n1) (K n1)
+  H16 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 n1 n1}
+
+Subgoal 3.2 is:
+ {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>search.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, L, K, J, F, A1, F1, A2
+  IH : forall A B L K J, ctxs L K J -> {L |- trm A}* -> {J |- cd1 A B} ->
+         {K |- pr1 A B}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {L n1 |- trm n1}@
+  H5 : member (trm n1) (L n1)
+  H7 : member (pr1 n1 n1) (K n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  H10 : {J n1, [notabs (A2 n1)] |- cd1 n1 (B n1)}
+  H11 : member (notabs (A2 n1)) (J n1)
+  H13 : name (A2 n1)
+  H14 : member (trm (A2 n1)) (L n1)
+  H15 : member (pr1 (A2 n1) (A2 n1)) (K n1)
+  H16 : member (cd1 (A2 n1) (A2 n1)) (J n1)
+  ============================
+   {K n1 |- pr1 n1 (B n1)}
+
+pre_cd1_pr1 < <b>case H10.</b>
+Proof completed.
+</pre>
+<a name="109"></a>
+<pre class="code">
+Abella < <b>Theorem cd1_pr1 : 
+forall A B L K J, ctxs L K J -> {J |- cd1 A B} -> {K |- pr1 A B}.</b>
+</pre>
+<a name="110"></a>
+<pre>
+
+
+  ============================
+   forall A B L K J, ctxs L K J -> {J |- cd1 A B} -> {K |- pr1 A B}
+
+cd1_pr1 < <b>intros.</b>
+</pre>
+<a name="111"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  H1 : ctxs L K J
+  H2 : {J |- cd1 A B}
+  ============================
+   {K |- pr1 A B}
+
+cd1_pr1 < <b>apply cd1_trm to H1 H2.</b>
+</pre>
+<a name="112"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  H1 : ctxs L K J
+  H2 : {J |- cd1 A B}
+  H3 : {L |- trm A}
+  ============================
+   {K |- pr1 A B}
+
+cd1_pr1 < <b>apply pre_cd1_pr1 to H1 H3 H2.</b>
+</pre>
+<a name="113"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  H1 : ctxs L K J
+  H2 : {J |- cd1 A B}
+  H3 : {L |- trm A}
+  H4 : {K |- pr1 A B}
+  ============================
+   {K |- pr1 A B}
+
+cd1_pr1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="114"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_rfl : 
+forall A L K J, ctxs L K J -> {L |- trm A} -> {K |- pr1 A A}.</b>
+</pre>
+<a name="115"></a>
+<pre>
+
+
+  ============================
+   forall A L K J, ctxs L K J -> {L |- trm A} -> {K |- pr1 A A}
+
+pr1_rfl < <b>induction on 2.</b>
+</pre>
+<a name="116"></a>
+<pre>
+
+
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  ============================
+   forall A L K J, ctxs L K J -> {L |- trm A}@ -> {K |- pr1 A A}
+
+pr1_rfl < <b>intros.</b>
+</pre>
+<a name="117"></a>
+<pre>
+
+  Variables: A, L, K, J
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  ============================
+   {K |- pr1 A A}
+
+pr1_rfl < <b>case H2.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  ============================
+   {K |- pr1 (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- pr1 A A}
+
+pr1_rfl < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  H5 : {K |- pr1 M M}
+  ============================
+   {K |- pr1 (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- pr1 A A}
+
+pr1_rfl < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  H5 : {K |- pr1 M M}
+  H6 : {K |- pr1 N N}
+  ============================
+   {K |- pr1 (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- pr1 (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- pr1 A A}
+
+pr1_rfl < <b>search.</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, R
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L, trm n1 |- trm (R n1)}*
+  ============================
+   {K |- pr1 (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- pr1 A A}
+
+pr1_rfl < <b>apply IH to _ H3.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, R
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L, trm n1 |- trm (R n1)}*
+  H4 : {K, pr1 n1 n1 |- pr1 (R n1) (R n1)}
+  ============================
+   {K |- pr1 (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- pr1 A A}
+
+pr1_rfl < <b>search.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L, [F] |- trm A}*
+  H4 : member F L
+  ============================
+   {K |- pr1 A A}
+
+pr1_rfl < <b>apply trm_worlds to H1 H4.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs L K J
+  H3 : {L, [trm A1] |- trm A}*
+  H4 : member (trm A1) L
+  H5 : name A1
+  H6 : member (pr1 A1 A1) K
+  H7 : member (cd1 A1 A1) J
+  H8 : member (notabs A1) J
+  ============================
+   {K |- pr1 A A}
+
+pr1_rfl < <b>case H5.</b>
+</pre>
+<a name="125"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H3 : {L n1, [trm n1] |- trm (A n1)}*
+  H4 : member (trm n1) (L n1)
+  H6 : member (pr1 n1 n1) (K n1)
+  H7 : member (cd1 n1 n1) (J n1)
+  H8 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 (A n1) (A n1)}
+
+pr1_rfl < <b>case H3.</b>
+</pre>
+<a name="126"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> {K |- pr1 A A}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : member (trm n1) (L n1)
+  H6 : member (pr1 n1 n1) (K n1)
+  H7 : member (cd1 n1 n1) (J n1)
+  H8 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 n1 n1}
+
+pr1_rfl < <b>search.</b>
+Proof completed.
+</pre>
+<a name="127"></a>
+<pre class="code">
+Abella < <b>Theorem cd1_unique : 
+forall A B C L K J, ctxs L K J -> {J |- cd1 A B} -> {J |- cd1 A C} -> B = C.</b>
+</pre>
+<a name="128"></a>
+<pre>
+
+
+  ============================
+   forall A B C L K J, ctxs L K J -> {J |- cd1 A B} -> {J |- cd1 A C} ->
+     B = C
+
+cd1_unique < <b>induction on 2.</b>
+</pre>
+<a name="129"></a>
+<pre>
+
+
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  ============================
+   forall A B C L K J, ctxs L K J -> {J |- cd1 A B}@ -> {J |- cd1 A C} ->
+     B = C
+
+cd1_unique < <b>intros.</b>
+</pre>
+<a name="130"></a>
+<pre>
+
+  Variables: A, B, C, L, K, J
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H2 : {J |- cd1 A B}@
+  H3 : {J |- cd1 A C}
+  ============================
+   B = C
+
+cd1_unique < <b>case H2.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (app T1 S1) C}
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  ============================
+   app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H3.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J |- notabs T1}
+  H8 : {J |- cd1 T1 T3}
+  H9 : {J |- cd1 S1 S3}
+  ============================
+   app T2 S2 = app T3 S3
+
+Subgoal 1.2 is:
+ app T2 S2 = T3 S3
+
+Subgoal 1.3 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply IH to H1 H5 H8.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T3}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J |- notabs T1}
+  H8 : {J |- cd1 T1 T3}
+  H9 : {J |- cd1 S1 S3}
+  ============================
+   app T3 S2 = app T3 S3
+
+Subgoal 1.2 is:
+ app T2 S2 = T3 S3
+
+Subgoal 1.3 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply IH to H1 H6 H9.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T3}*
+  H6 : {J |- cd1 S1 S3}*
+  H7 : {J |- notabs T1}
+  H8 : {J |- cd1 T1 T3}
+  H9 : {J |- cd1 S1 S3}
+  ============================
+   app T3 S3 = app T3 S3
+
+Subgoal 1.2 is:
+ app T2 S2 = T3 S3
+
+Subgoal 1.3 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>search.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, T4
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs (abs T4)}*
+  H5 : {J |- cd1 (abs T4) T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J |- cd1 (abs T4) (abs T3)}
+  H8 : {J |- cd1 S1 S3}
+  ============================
+   app T2 S2 = T3 S3
+
+Subgoal 1.3 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply notabs_abs_absurd to H1 H4.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J, [F] |- cd1 (app T1 S1) C}
+  H8 : member F J
+  ============================
+   app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply cd_worlds to H1 H8.</b>
+</pre>
+<a name="137"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J, [F] |- cd1 (app T1 S1) C}
+  H8 : member F J
+  H9 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H9.</b>
+</pre>
+<a name="138"></a>
+<pre>
+Subgoal 1.3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J, [cd1 B1 B1] |- cd1 (app T1 S1) C}
+  H8 : member (cd1 B1 B1) J
+  H10 : name B1
+  H11 : member (trm B1) L
+  H12 : member (pr1 B1 B1) K
+  H13 : member (notabs B1) J
+  ============================
+   app T2 S2 = C
+
+Subgoal 1.3.2 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H10.</b>
+</pre>
+<a name="139"></a>
+<pre>
+Subgoal 1.3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- notabs (T1 n1)}*
+  H5 : {J n1 |- cd1 (T1 n1) (T2 n1)}*
+  H6 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H7 : {J n1, [cd1 n1 n1] |- cd1 (app (T1 n1) (S1 n1)) (C n1)}
+  H8 : member (cd1 n1 n1) (J n1)
+  H11 : member (trm n1) (L n1)
+  H12 : member (pr1 n1 n1) (K n1)
+  H13 : member (notabs n1) (J n1)
+  ============================
+   app (T2 n1) (S2 n1) = C n1
+
+Subgoal 1.3.2 is:
+ app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H7.</b>
+</pre>
+<a name="140"></a>
+<pre>
+Subgoal 1.3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {J, [notabs A1] |- cd1 (app T1 S1) C}
+  H8 : member (notabs A1) J
+  H10 : name A1
+  H11 : member (trm A1) L
+  H12 : member (pr1 A1 A1) K
+  H13 : member (cd1 A1 A1) J
+  ============================
+   app T2 S2 = C
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H10.</b>
+</pre>
+<a name="141"></a>
+<pre>
+Subgoal 1.3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- notabs (T1 n1)}*
+  H5 : {J n1 |- cd1 (T1 n1) (T2 n1)}*
+  H6 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H7 : {J n1, [notabs n1] |- cd1 (app (T1 n1) (S1 n1)) (C n1)}
+  H8 : member (notabs n1) (J n1)
+  H11 : member (trm n1) (L n1)
+  H12 : member (pr1 n1 n1) (K n1)
+  H13 : member (cd1 n1 n1) (J n1)
+  ============================
+   app (T2 n1) (S2 n1) = C n1
+
+Subgoal 2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H7.</b>
+</pre>
+<a name="142"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, L, K, J, S2, S1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (abs S1) C}
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  ============================
+   abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H3.</b>
+</pre>
+<a name="143"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, S3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S3 n1)}
+  ============================
+   abs S2 = abs S3
+
+Subgoal 2.2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply IH to _ H4 H5.</b>
+</pre>
+<a name="144"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, S3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S3 n1)}*
+  H5 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S3 n1)}
+  ============================
+   abs (z1\S3 z1) = abs S3
+
+Subgoal 2.2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>search.</b>
+</pre>
+<a name="145"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {J, [F] |- cd1 (abs S1) C}
+  H6 : member F J
+  ============================
+   abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply cd_worlds to H1 H6.</b>
+</pre>
+<a name="146"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {J, [F] |- cd1 (abs S1) C}
+  H6 : member F J
+  H7 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H7.</b>
+</pre>
+<a name="147"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {J, [cd1 B1 B1] |- cd1 (abs S1) C}
+  H6 : member (cd1 B1 B1) J
+  H8 : name B1
+  H9 : member (trm B1) L
+  H10 : member (pr1 B1 B1) K
+  H11 : member (notabs B1) J
+  ============================
+   abs S2 = C
+
+Subgoal 2.2.2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H8.</b>
+</pre>
+<a name="148"></a>
+<pre>
+Subgoal 2.2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n2) (K n2) (J n2)
+  H4 : {J n2, notabs n1, cd1 n1 n1 |- cd1 (S1 n2 n1) (S2 n2 n1)}*
+  H5 : {J n2, [cd1 n2 n2] |- cd1 (abs (S1 n2)) (C n2)}
+  H6 : member (cd1 n2 n2) (J n2)
+  H9 : member (trm n2) (L n2)
+  H10 : member (pr1 n2 n2) (K n2)
+  H11 : member (notabs n2) (J n2)
+  ============================
+   abs (S2 n2) = C n2
+
+Subgoal 2.2.2 is:
+ abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H5.</b>
+</pre>
+<a name="149"></a>
+<pre>
+Subgoal 2.2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {J, [notabs A1] |- cd1 (abs S1) C}
+  H6 : member (notabs A1) J
+  H8 : name A1
+  H9 : member (trm A1) L
+  H10 : member (pr1 A1 A1) K
+  H11 : member (cd1 A1 A1) J
+  ============================
+   abs S2 = C
+
+Subgoal 3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H5.</b>
+</pre>
+<a name="150"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 (app (abs T1) S1) C}
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  ============================
+   T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H3.</b>
+</pre>
+<a name="151"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J |- notabs (abs T1)}
+  H7 : {J |- cd1 (abs T1) T3}
+  H8 : {J |- cd1 S1 S3}
+  ============================
+   T2 S2 = app T3 S3
+
+Subgoal 3.2 is:
+ T2 S2 = T3 S3
+
+Subgoal 3.3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply notabs_abs_absurd to H1 H6.</b>
+</pre>
+<a name="152"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J |- cd1 (abs T1) (abs T3)}
+  H7 : {J |- cd1 S1 S3}
+  ============================
+   T2 S2 = T3 S3
+
+Subgoal 3.3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply IH to H1 H4 H6.</b>
+</pre>
+<a name="153"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T3)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J |- cd1 (abs T1) (abs T3)}
+  H7 : {J |- cd1 S1 S3}
+  ============================
+   T3 S2 = T3 S3
+
+Subgoal 3.3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply IH to H1 H5 H7.</b>
+</pre>
+<a name="154"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T3)}*
+  H5 : {J |- cd1 S1 S3}*
+  H6 : {J |- cd1 (abs T1) (abs T3)}
+  H7 : {J |- cd1 S1 S3}
+  ============================
+   T3 S3 = T3 S3
+
+Subgoal 3.3 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>search.</b>
+</pre>
+<a name="155"></a>
+<pre>
+Subgoal 3.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J, [F] |- cd1 (app (abs T1) S1) C}
+  H7 : member F J
+  ============================
+   T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>apply cd_worlds to H1 H7.</b>
+</pre>
+<a name="156"></a>
+<pre>
+Subgoal 3.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J, [F] |- cd1 (app (abs T1) S1) C}
+  H7 : member F J
+  H8 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H8.</b>
+</pre>
+<a name="157"></a>
+<pre>
+Subgoal 3.3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J, [cd1 B1 B1] |- cd1 (app (abs T1) S1) C}
+  H7 : member (cd1 B1 B1) J
+  H9 : name B1
+  H10 : member (trm B1) L
+  H11 : member (pr1 B1 B1) K
+  H12 : member (notabs B1) J
+  ============================
+   T2 S2 = C
+
+Subgoal 3.3.2 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H9.</b>
+</pre>
+<a name="158"></a>
+<pre>
+Subgoal 3.3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- cd1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H6 : {J n1, [cd1 n1 n1] |- cd1 (app (abs (T1 n1)) (S1 n1)) (C n1)}
+  H7 : member (cd1 n1 n1) (J n1)
+  H10 : member (trm n1) (L n1)
+  H11 : member (pr1 n1 n1) (K n1)
+  H12 : member (notabs n1) (J n1)
+  ============================
+   T2 n1 (S2 n1) = C n1
+
+Subgoal 3.3.2 is:
+ T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H6.</b>
+</pre>
+<a name="159"></a>
+<pre>
+Subgoal 3.3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {J, [notabs A1] |- cd1 (app (abs T1) S1) C}
+  H7 : member (notabs A1) J
+  H9 : name A1
+  H10 : member (trm A1) L
+  H11 : member (pr1 A1 A1) K
+  H12 : member (cd1 A1 A1) J
+  ============================
+   T2 S2 = C
+
+Subgoal 4 is:
+ B = C
+
+cd1_unique < <b>case H6.</b>
+</pre>
+<a name="160"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, C, L, K, J, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 A C}
+  H4 : {J, [F] |- cd1 A B}*
+  H5 : member F J
+  ============================
+   B = C
+
+cd1_unique < <b>apply cd_worlds to H1 H5.</b>
+</pre>
+<a name="161"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, C, L, K, J, F
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 A C}
+  H4 : {J, [F] |- cd1 A B}*
+  H5 : member F J
+  H6 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   B = C
+
+cd1_unique < <b>case H6.</b>
+</pre>
+<a name="162"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 A C}
+  H4 : {J, [cd1 B1 B1] |- cd1 A B}*
+  H5 : member (cd1 B1 B1) J
+  H7 : name B1
+  H8 : member (trm B1) L
+  H9 : member (pr1 B1 B1) K
+  H10 : member (notabs B1) J
+  ============================
+   B = C
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H7.</b>
+</pre>
+<a name="163"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H3 : {J n1 |- cd1 (A n1) (C n1)}
+  H4 : {J n1, [cd1 n1 n1] |- cd1 (A n1) (B n1)}*
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  ============================
+   B n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H4.</b>
+</pre>
+<a name="164"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H3 : {J n1 |- cd1 n1 (C n1)}
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  ============================
+   n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H3.</b>
+</pre>
+<a name="165"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1, F1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  H11 : {J n1, [F1 n1] |- cd1 n1 (C n1)}
+  H12 : member (F1 n1) (J n1)
+  ============================
+   n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>apply cd_worlds to H1 H12.</b>
+</pre>
+<a name="166"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1, F1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  H11 : {J n1, [F1 n1] |- cd1 n1 (C n1)}
+  H12 : member (F1 n1) (J n1)
+  H13 : (exists A B, F1 n1 = cd1 A B /\ name A /\ A = B /\
+          member (trm A) (L n1) /\ member (pr1 A A) (K n1) /\
+          member (notabs A) (J n1)) \/ (exists A, F1 n1 = notabs A /\
+          name A /\ member (trm A) (L n1) /\ member (pr1 A A) (K n1) /\
+          member (cd1 A A) (J n1))
+  ============================
+   n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H13.</b>
+</pre>
+<a name="167"></a>
+<pre>
+Subgoal 4.1.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1, F1, A2, B2
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  H11 : {J n1, [cd1 (B2 n1) (B2 n1)] |- cd1 n1 (C n1)}
+  H12 : member (cd1 (B2 n1) (B2 n1)) (J n1)
+  H14 : name (B2 n1)
+  H15 : member (trm (B2 n1)) (L n1)
+  H16 : member (pr1 (B2 n1) (B2 n1)) (K n1)
+  H17 : member (notabs (B2 n1)) (J n1)
+  ============================
+   n1 = C n1
+
+Subgoal 4.1.2 is:
+ n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H11.</b>
+</pre>
+<a name="168"></a>
+<pre>
+Subgoal 4.1.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1, F1, A2, B2
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  H12 : member (cd1 n1 n1) (J n1)
+  H14 : name n1
+  H15 : member (trm n1) (L n1)
+  H16 : member (pr1 n1 n1) (K n1)
+  H17 : member (notabs n1) (J n1)
+  ============================
+   n1 = n1
+
+Subgoal 4.1.2 is:
+ n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>search.</b>
+</pre>
+<a name="169"></a>
+<pre>
+Subgoal 4.1.2:
+
+  Variables: A, B, C, L, K, J, F, A1, B1, F1, A2
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (cd1 n1 n1) (J n1)
+  H8 : member (trm n1) (L n1)
+  H9 : member (pr1 n1 n1) (K n1)
+  H10 : member (notabs n1) (J n1)
+  H11 : {J n1, [notabs (A2 n1)] |- cd1 n1 (C n1)}
+  H12 : member (notabs (A2 n1)) (J n1)
+  H14 : name (A2 n1)
+  H15 : member (trm (A2 n1)) (L n1)
+  H16 : member (pr1 (A2 n1) (A2 n1)) (K n1)
+  H17 : member (cd1 (A2 n1) (A2 n1)) (J n1)
+  ============================
+   n1 = C n1
+
+Subgoal 4.2 is:
+ B = C
+
+cd1_unique < <b>case H11.</b>
+</pre>
+<a name="170"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A, B, C, L, K, J, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {J |- cd1 A B}* -> {J |- cd1 A C} ->
+         B = C
+  H1 : ctxs L K J
+  H3 : {J |- cd1 A C}
+  H4 : {J, [notabs A1] |- cd1 A B}*
+  H5 : member (notabs A1) J
+  H7 : name A1
+  H8 : member (trm A1) L
+  H9 : member (pr1 A1 A1) K
+  H10 : member (cd1 A1 A1) J
+  ============================
+   B = C
+
+cd1_unique < <b>case H4.</b>
+Proof completed.
+</pre>
+<a name="171"></a>
+<pre class="code">
+Abella < <b>Theorem cd1_exists : 
+forall A L K J, ctxs L K J -> {L |- trm A} -> (exists B, {J |- cd1 A B}).</b>
+</pre>
+<a name="172"></a>
+<pre>
+
+
+  ============================
+   forall A L K J, ctxs L K J -> {L |- trm A} -> (exists B, {J |- cd1 A B})
+
+cd1_exists < <b>induction on 2.</b>
+</pre>
+<a name="173"></a>
+<pre>
+
+
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  ============================
+   forall A L K J, ctxs L K J -> {L |- trm A}@ -> (exists B, {J |- cd1 A B})
+
+cd1_exists < <b>intros.</b>
+</pre>
+<a name="174"></a>
+<pre>
+
+  Variables: A, L, K, J
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H2 : {L |- trm A}@
+  ============================
+   exists B, {J |- cd1 A B}
+
+cd1_exists < <b>case H2.</b>
+</pre>
+<a name="175"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="176"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M, B
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 M B}
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="177"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, L, K, J, N, M, B, B1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L |- trm M}*
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 M B}
+  H6 : {J |- cd1 N B1}
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>case H3.</b>
+</pre>
+<a name="178"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, L, K, J, N, M, B, B1, N1, M1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 (app M1 N1) B}
+  H6 : {J |- cd1 N B1}
+  H7 : {L |- trm M1}*
+  H8 : {L |- trm N1}*
+  ============================
+   exists B, {J |- cd1 (app (app M1 N1) N) B}
+
+Subgoal 1.2 is:
+ exists B, {J |- cd1 (app (abs R) N) B}
+
+Subgoal 1.3 is:
+ exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>search.</b>
+</pre>
+<a name="179"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, L, K, J, N, M, B, B1, R
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 (abs R) B}
+  H6 : {J |- cd1 N B1}
+  H7 : {L, trm n1 |- trm (R n1)}*
+  ============================
+   exists B, {J |- cd1 (app (abs R) N) B}
+
+Subgoal 1.3 is:
+ exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply IH to _ H7.</b>
+</pre>
+<a name="180"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, L, K, J, N, M, B, B1, R, B2
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 (abs R) B}
+  H6 : {J |- cd1 N B1}
+  H7 : {L, trm n1 |- trm (R n1)}*
+  H8 : {J, notabs n1, cd1 n1 n1 |- cd1 (R n1) (B2 n1)}
+  ============================
+   exists B, {J |- cd1 (app (abs R) N) B}
+
+Subgoal 1.3 is:
+ exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>search.</b>
+</pre>
+<a name="181"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, L, K, J, N, M, B, B1, F
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 M B}
+  H6 : {J |- cd1 N B1}
+  H7 : {L, [F] |- trm M}*
+  H8 : member F L
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply trm_worlds to H1 H8.</b>
+</pre>
+<a name="182"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, L, K, J, N, M, B, B1, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 M B}
+  H6 : {J |- cd1 N B1}
+  H7 : {L, [trm A1] |- trm M}*
+  H8 : member (trm A1) L
+  H9 : name A1
+  H10 : member (pr1 A1 A1) K
+  H11 : member (cd1 A1 A1) J
+  H12 : member (notabs A1) J
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>case H7.</b>
+</pre>
+<a name="183"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, L, K, J, N, M, B, B1, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : {L |- trm N}*
+  H5 : {J |- cd1 M B}
+  H6 : {J |- cd1 N B1}
+  H8 : member (trm M) L
+  H9 : name M
+  H10 : member (pr1 M M) K
+  H11 : member (cd1 M M) J
+  H12 : member (notabs M) J
+  ============================
+   exists B, {J |- cd1 (app M N) B}
+
+Subgoal 2 is:
+ exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>search.</b>
+</pre>
+<a name="184"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, R
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L, trm n1 |- trm (R n1)}*
+  ============================
+   exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply IH to _ H3.</b>
+</pre>
+<a name="185"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, L, K, J, R, B
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L, trm n1 |- trm (R n1)}*
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (R n1) (B n1)}
+  ============================
+   exists B, {J |- cd1 (abs R) B}
+
+Subgoal 3 is:
+ exists B, {J |- cd1 A B}
+
+cd1_exists < <b>search.</b>
+</pre>
+<a name="186"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L, [F] |- trm A}*
+  H4 : member F L
+  ============================
+   exists B, {J |- cd1 A B}
+
+cd1_exists < <b>apply trm_worlds to H1 H4.</b>
+</pre>
+<a name="187"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H3 : {L, [trm A1] |- trm A}*
+  H4 : member (trm A1) L
+  H5 : name A1
+  H6 : member (pr1 A1 A1) K
+  H7 : member (cd1 A1 A1) J
+  H8 : member (notabs A1) J
+  ============================
+   exists B, {J |- cd1 A B}
+
+cd1_exists < <b>case H3.</b>
+</pre>
+<a name="188"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, L, K, J, F, A1
+  IH : forall A L K J, ctxs L K J -> {L |- trm A}* -> (exists B,
+         {J |- cd1 A B})
+  H1 : ctxs L K J
+  H4 : member (trm A) L
+  H5 : name A
+  H6 : member (pr1 A A) K
+  H7 : member (cd1 A A) J
+  H8 : member (notabs A) J
+  ============================
+   exists B, {J |- cd1 A B}
+
+cd1_exists < <b>search.</b>
+Proof completed.
+</pre>
+<a name="189"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_name : 
+forall A B L K J, ctxs L K J -> {K |- pr1 A B} -> name A -> B = A.</b>
+</pre>
+<a name="190"></a>
+<pre>
+
+
+  ============================
+   forall A B L K J, ctxs L K J -> {K |- pr1 A B} -> name A -> B = A
+
+pr1_name < <b>intros.</b>
+</pre>
+<a name="191"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H3 : name A
+  ============================
+   B = A
+
+pr1_name < <b>case H3.</b>
+</pre>
+<a name="192"></a>
+<pre>
+
+  Variables: A, B, L, K, J
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H2 : {K n1 |- pr1 n1 (B n1)}
+  ============================
+   B n1 = n1
+
+pr1_name < <b>case H2.</b>
+</pre>
+<a name="193"></a>
+<pre>
+
+  Variables: A, B, L, K, J, F
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {K n1, [F n1] |- pr1 n1 (B n1)}
+  H5 : member (F n1) (K n1)
+  ============================
+   B n1 = n1
+
+pr1_name < <b>apply pr1_worlds to H1 H5.</b>
+</pre>
+<a name="194"></a>
+<pre>
+
+  Variables: A, B, L, K, J, F, A1, B1
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {K n1, [pr1 (B1 n1) (B1 n1)] |- pr1 n1 (B n1)}
+  H5 : member (pr1 (B1 n1) (B1 n1)) (K n1)
+  H6 : name (B1 n1)
+  H7 : member (trm (B1 n1)) (L n1)
+  H8 : member (cd1 (B1 n1) (B1 n1)) (J n1)
+  H9 : member (notabs (B1 n1)) (J n1)
+  ============================
+   B n1 = n1
+
+pr1_name < <b>case H4.</b>
+</pre>
+<a name="195"></a>
+<pre>
+
+  Variables: A, B, L, K, J, F, A1, B1
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H5 : member (pr1 n1 n1) (K n1)
+  H6 : name n1
+  H7 : member (trm n1) (L n1)
+  H8 : member (cd1 n1 n1) (J n1)
+  H9 : member (notabs n1) (J n1)
+  ============================
+   n1 = n1
+
+pr1_name < <b>search.</b>
+Proof completed.
+</pre>
+<a name="196"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_abs : 
+forall R B L K J, ctxs L K J -> {K |- pr1 (abs R) B} -> (exists S, B = abs S).</b>
+</pre>
+<a name="197"></a>
+<pre>
+
+
+  ============================
+   forall R B L K J, ctxs L K J -> {K |- pr1 (abs R) B} -> (exists S,
+     B = abs S)
+
+pr1_abs < <b>intros.</b>
+</pre>
+<a name="198"></a>
+<pre>
+
+  Variables: R, B, L, K, J
+  H1 : ctxs L K J
+  H2 : {K |- pr1 (abs R) B}
+  ============================
+   exists S, B = abs S
+
+pr1_abs < <b>case H2.</b>
+</pre>
+<a name="199"></a>
+<pre>
+Subgoal 1:
+
+  Variables: R, B, L, K, J, S2
+  H1 : ctxs L K J
+  H3 : {K, pr1 n1 n1 |- pr1 (R n1) (S2 n1)}
+  ============================
+   exists S, abs S2 = abs S
+
+Subgoal 2 is:
+ exists S, B = abs S
+
+pr1_abs < <b>search.</b>
+</pre>
+<a name="200"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, B, L, K, J, F
+  H1 : ctxs L K J
+  H3 : {K, [F] |- pr1 (abs R) B}
+  H4 : member F K
+  ============================
+   exists S, B = abs S
+
+pr1_abs < <b>apply pr1_worlds to H1 H4.</b>
+</pre>
+<a name="201"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, B, L, K, J, F, A, B1
+  H1 : ctxs L K J
+  H3 : {K, [pr1 B1 B1] |- pr1 (abs R) B}
+  H4 : member (pr1 B1 B1) K
+  H5 : name B1
+  H6 : member (trm B1) L
+  H7 : member (cd1 B1 B1) J
+  H8 : member (notabs B1) J
+  ============================
+   exists S, B = abs S
+
+pr1_abs < <b>case H5.</b>
+</pre>
+<a name="202"></a>
+<pre>
+Subgoal 2:
+
+  Variables: R, B, L, K, J, F, A, B1
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H3 : {K n1, [pr1 n1 n1] |- pr1 (abs (R n1)) (B n1)}
+  H4 : member (pr1 n1 n1) (K n1)
+  H6 : member (trm n1) (L n1)
+  H7 : member (cd1 n1 n1) (J n1)
+  H8 : member (notabs n1) (J n1)
+  ============================
+   exists S, B n1 = abs S
+
+pr1_abs < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="203"></a>
+<pre class="code">
+Abella < <b>Theorem pre_pr1_subst_lem : 
+forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+  {K, pr1 x x |- pr1 (A1 x) (A2 x)} -> {K |- pr1 B1 B2} ->
+  {K |- pr1 (A1 B1) (A2 B2)}.</b>
+</pre>
+<a name="204"></a>
+<pre>
+
+
+  ============================
+   forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+     {K, pr1 x x |- pr1 (A1 x) (A2 x)} -> {K |- pr1 B1 B2} ->
+     {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>induction on 2.</b>
+</pre>
+<a name="205"></a>
+<pre>
+
+
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  ============================
+   forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+     {K, pr1 x x |- pr1 (A1 x) (A2 x)}@ -> {K |- pr1 B1 B2} ->
+     {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>intros.</b>
+</pre>
+<a name="206"></a>
+<pre>
+
+  Variables: A1, A2, B1, B2, L, K, J
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H2 : {K, pr1 n1 n1 |- pr1 (A1 n1) (A2 n1)}@
+  H3 : {K |- pr1 B1 B2}
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>case H2.</b>
+</pre>
+<a name="207"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (T1 n1) (T2 n1)}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  ============================
+   {K |- pr1 (app (T1 B1) (S1 B1)) (app (T2 B2) (S2 B2))}
+
+Subgoal 2 is:
+ {K |- pr1 (abs (S1 B1)) (abs (S2 B2))}
+
+Subgoal 3 is:
+ {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply IH to H1 H4 H3.</b>
+</pre>
+<a name="208"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (T1 n1) (T2 n1)}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  H6 : {K |- pr1 (T1 B1) (T2 B2)}
+  ============================
+   {K |- pr1 (app (T1 B1) (S1 B1)) (app (T2 B2) (S2 B2))}
+
+Subgoal 2 is:
+ {K |- pr1 (abs (S1 B1)) (abs (S2 B2))}
+
+Subgoal 3 is:
+ {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply IH to H1 H5 H3.</b>
+</pre>
+<a name="209"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (T1 n1) (T2 n1)}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  H6 : {K |- pr1 (T1 B1) (T2 B2)}
+  H7 : {K |- pr1 (S1 B1) (S2 B2)}
+  ============================
+   {K |- pr1 (app (T1 B1) (S1 B1)) (app (T2 B2) (S2 B2))}
+
+Subgoal 2 is:
+ {K |- pr1 (abs (S1 B1)) (abs (S2 B2))}
+
+Subgoal 3 is:
+ {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="210"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, pr1 n2 n2 |- pr1 (S1 n1 n2) (S2 n1 n2)}*
+  ============================
+   {K |- pr1 (abs (S1 B1)) (abs (S2 B2))}
+
+Subgoal 3 is:
+ {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply IH to _ H4 H3.</b>
+</pre>
+<a name="211"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, pr1 n2 n2 |- pr1 (S1 n1 n2) (S2 n1 n2)}*
+  H5 : {K, pr1 n2 n2 |- pr1 (S1 B1 n2) (S2 B2 n2)}
+  ============================
+   {K |- pr1 (abs (S1 B1)) (abs (S2 B2))}
+
+Subgoal 3 is:
+ {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="212"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  ============================
+   {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply IH to H1 H4 H3.</b>
+</pre>
+<a name="213"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  H6 : {K |- pr1 (abs (T1 B1)) (abs (T2 B2))}
+  ============================
+   {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply IH to H1 H5 H3.</b>
+</pre>
+<a name="214"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A1, A2, B1, B2, L, K, J, S2, S1, T2, T1
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S2 n1)}*
+  H6 : {K |- pr1 (abs (T1 B1)) (abs (T2 B2))}
+  H7 : {K |- pr1 (S1 B1) (S2 B2)}
+  ============================
+   {K |- pr1 (app (abs (T1 B1)) (S1 B1)) (T2 B2 (S2 B2))}
+
+Subgoal 4 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="215"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A1, A2, B1, B2, L, K, J, F
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, [F n1] |- pr1 (A1 n1) (A2 n1)}*
+  H5 : member (F n1) (pr1 n1 n1 :: K)
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>case H5.</b>
+</pre>
+<a name="216"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A1, A2, B1, B2, L, K, J, F
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, [pr1 n1 n1] |- pr1 (A1 n1) (A2 n1)}*
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+Subgoal 4.2 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>case H4.</b>
+</pre>
+<a name="217"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A1, A2, B1, B2, L, K, J, F
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  ============================
+   {K |- pr1 B1 B2}
+
+Subgoal 4.2 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="218"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, [F n1] |- pr1 (A1 n1) (A2 n1)}*
+  H6 : member (F n1) K
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>apply pr1_worlds to H1 H6.</b>
+</pre>
+<a name="219"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1, [pr1 (B n1) (B n1)] |- pr1 (A1 n1) (A2 n1)}*
+  H6 : member (pr1 (B n1) (B n1)) K
+  H7 : name (B n1)
+  H8 : member (trm (B n1)) L
+  H9 : member (cd1 (B n1) (B n1)) J
+  H10 : member (notabs (B n1)) J
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>case H4.</b>
+</pre>
+<a name="220"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H6 : member (pr1 (A2 n1) (A2 n1)) K
+  H7 : name (A2 n1)
+  H8 : member (trm (A2 n1)) L
+  H9 : member (cd1 (A2 n1) (A2 n1)) J
+  H10 : member (notabs (A2 n1)) J
+  ============================
+   {K |- pr1 (A2 B1) (A2 B2)}
+
+pre_pr1_subst_lem < <b>case H7.</b>
+</pre>
+<a name="221"></a>
+<pre>
+Subgoal 4.2.1:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs (L n2) (K n2) (J n2)
+  H3 : {K n2 |- pr1 (B1 n2) (B2 n2)}
+  H6 : member (pr1 n2 n2) (K n2)
+  H8 : member (trm n2) (L n2)
+  H9 : member (cd1 n2 n2) (J n2)
+  H10 : member (notabs n2) (J n2)
+  ============================
+   {K n2 |- pr1 n2 n2}
+
+Subgoal 4.2.2 is:
+ {K |- pr1 B1 B2}
+
+pre_pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="222"></a>
+<pre>
+Subgoal 4.2.2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  IH : forall A1 A2 B1 B2 L K J, nabla x, ctxs L K J ->
+         {K, pr1 x x |- pr1 (A1 x) (A2 x)}* -> {K |- pr1 B1 B2} ->
+         {K |- pr1 (A1 B1) (A2 B2)}
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H6 : member (pr1 n1 n1) K
+  H8 : member (trm n1) L
+  H9 : member (cd1 n1 n1) J
+  H10 : member (notabs n1) J
+  ============================
+   {K |- pr1 B1 B2}
+
+pre_pr1_subst_lem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="223"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_subst_lem : 
+forall A1 A2 B1 B2 L K J, ctxs L K J -> {K |- pr1 (abs A1) (abs A2)} ->
+  {K |- pr1 B1 B2} -> {K |- pr1 (A1 B1) (A2 B2)}.</b>
+</pre>
+<a name="224"></a>
+<pre>
+
+
+  ============================
+   forall A1 A2 B1 B2 L K J, ctxs L K J -> {K |- pr1 (abs A1) (abs A2)} ->
+     {K |- pr1 B1 B2} -> {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>intros.</b>
+</pre>
+<a name="225"></a>
+<pre>
+
+  Variables: A1, A2, B1, B2, L, K, J
+  H1 : ctxs L K J
+  H2 : {K |- pr1 (abs A1) (abs A2)}
+  H3 : {K |- pr1 B1 B2}
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>case H2.</b>
+</pre>
+<a name="226"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A1, A2, B1, B2, L, K, J
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (A1 n1) (A2 n1)}
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+Subgoal 2 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>apply pre_pr1_subst_lem to H1 H4 H3.</b>
+</pre>
+<a name="227"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A1, A2, B1, B2, L, K, J
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, pr1 n1 n1 |- pr1 (A1 n1) (A2 n1)}
+  H5 : {K |- pr1 (A1 B1) (A2 B2)}
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+Subgoal 2 is:
+ {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>search.</b>
+</pre>
+<a name="228"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, [F] |- pr1 (abs A1) (abs A2)}
+  H5 : member F K
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>apply pr1_worlds to H1 H5.</b>
+</pre>
+<a name="229"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H4 : {K, [pr1 B B] |- pr1 (abs A1) (abs A2)}
+  H5 : member (pr1 B B) K
+  H6 : name B
+  H7 : member (trm B) L
+  H8 : member (cd1 B B) J
+  H9 : member (notabs B) J
+  ============================
+   {K |- pr1 (A1 B1) (A2 B2)}
+
+pr1_subst_lem < <b>case H4.</b>
+</pre>
+<a name="230"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A1, A2, B1, B2, L, K, J, F, A, B
+  H1 : ctxs L K J
+  H3 : {K |- pr1 B1 B2}
+  H5 : member (pr1 (abs A2) (abs A2)) K
+  H6 : name (abs A2)
+  H7 : member (trm (abs A2)) L
+  H8 : member (cd1 (abs A2) (abs A2)) J
+  H9 : member (notabs (abs A2)) J
+  ============================
+   {K |- pr1 (A2 B1) (A2 B2)}
+
+pr1_subst_lem < <b>case H6.</b>
+Proof completed.
+</pre>
+<a name="231"></a>
+<pre class="code">
+Abella < <b>Theorem cd1_pr1_triangle : 
+forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C} ->
+  {K |- pr1 B C}.</b>
+</pre>
+<a name="232"></a>
+<pre>
+
+
+  ============================
+   forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C} ->
+     {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>induction on 3.</b>
+</pre>
+<a name="233"></a>
+<pre>
+
+
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  ============================
+   forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}@ ->
+     {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>intros.</b>
+</pre>
+<a name="234"></a>
+<pre>
+
+  Variables: A, B, C, L, K, J
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H3 : {J |- cd1 A C}@
+  ============================
+   {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H3.</b>
+</pre>
+<a name="235"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 (app T1 S1) B}
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  ============================
+   {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H2.</b>
+</pre>
+<a name="236"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 T1 T3}
+  H8 : {K |- pr1 S1 S3}
+  ============================
+   {K |- pr1 (app T3 S3) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (T3 S3) (app T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 H7 H5.</b>
+</pre>
+<a name="237"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 T1 T3}
+  H8 : {K |- pr1 S1 S3}
+  H9 : {K |- pr1 T3 T2}
+  ============================
+   {K |- pr1 (app T3 S3) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (T3 S3) (app T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 H8 H6.</b>
+</pre>
+<a name="238"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 T1 T3}
+  H8 : {K |- pr1 S1 S3}
+  H9 : {K |- pr1 T3 T2}
+  H10 : {K |- pr1 S3 S2}
+  ============================
+   {K |- pr1 (app T3 S3) (app T2 S2)}
+
+Subgoal 1.2 is:
+ {K |- pr1 (T3 S3) (app T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>search.</b>
+</pre>
+<a name="239"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, T4
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs (abs T4)}*
+  H5 : {J |- cd1 (abs T4) T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 (abs T4) (abs T3)}
+  H8 : {K |- pr1 S1 S3}
+  ============================
+   {K |- pr1 (T3 S3) (app T2 S2)}
+
+Subgoal 1.3 is:
+ {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply notabs_abs_absurd to H1 H4.</b>
+</pre>
+<a name="240"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K, [F] |- pr1 (app T1 S1) B}
+  H8 : member F K
+  ============================
+   {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_worlds to H1 H8.</b>
+</pre>
+<a name="241"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- notabs T1}*
+  H5 : {J |- cd1 T1 T2}*
+  H6 : {J |- cd1 S1 S2}*
+  H7 : {K, [pr1 B1 B1] |- pr1 (app T1 S1) B}
+  H8 : member (pr1 B1 B1) K
+  H9 : name B1
+  H10 : member (trm B1) L
+  H11 : member (cd1 B1 B1) J
+  H12 : member (notabs B1) J
+  ============================
+   {K |- pr1 B (app T2 S2)}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H9.</b>
+</pre>
+<a name="242"></a>
+<pre>
+Subgoal 1.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- notabs (T1 n1)}*
+  H5 : {J n1 |- cd1 (T1 n1) (T2 n1)}*
+  H6 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H7 : {K n1, [pr1 n1 n1] |- pr1 (app (T1 n1) (S1 n1)) (B n1)}
+  H8 : member (pr1 n1 n1) (K n1)
+  H10 : member (trm n1) (L n1)
+  H11 : member (cd1 n1 n1) (J n1)
+  H12 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 (B n1) (app (T2 n1) (S2 n1))}
+
+Subgoal 2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H7.</b>
+</pre>
+<a name="243"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, L, K, J, S2, S1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 (abs S1) B}
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  ============================
+   {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H2.</b>
+</pre>
+<a name="244"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, S3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S3 n1)}
+  ============================
+   {K |- pr1 (abs S3) (abs S2)}
+
+Subgoal 2.2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to _ H5 H4.</b>
+</pre>
+<a name="245"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, S3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {K, pr1 n1 n1 |- pr1 (S1 n1) (S3 n1)}
+  H6 : {K, pr1 n1 n1 |- pr1 (S3 n1) (S2 n1)}
+  ============================
+   {K |- pr1 (abs S3) (abs S2)}
+
+Subgoal 2.2 is:
+ {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>search.</b>
+</pre>
+<a name="246"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {K, [F] |- pr1 (abs S1) B}
+  H6 : member F K
+  ============================
+   {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_worlds to H1 H6.</b>
+</pre>
+<a name="247"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J, notabs n1, cd1 n1 n1 |- cd1 (S1 n1) (S2 n1)}*
+  H5 : {K, [pr1 B1 B1] |- pr1 (abs S1) B}
+  H6 : member (pr1 B1 B1) K
+  H7 : name B1
+  H8 : member (trm B1) L
+  H9 : member (cd1 B1 B1) J
+  H10 : member (notabs B1) J
+  ============================
+   {K |- pr1 B (abs S2)}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H7.</b>
+</pre>
+<a name="248"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs (L n2) (K n2) (J n2)
+  H4 : {J n2, notabs n1, cd1 n1 n1 |- cd1 (S1 n2 n1) (S2 n2 n1)}*
+  H5 : {K n2, [pr1 n2 n2] |- pr1 (abs (S1 n2)) (B n2)}
+  H6 : member (pr1 n2 n2) (K n2)
+  H8 : member (trm n2) (L n2)
+  H9 : member (cd1 n2 n2) (J n2)
+  H10 : member (notabs n2) (J n2)
+  ============================
+   {K n2 |- pr1 (B n2) (abs (S2 n2))}
+
+Subgoal 3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H5.</b>
+</pre>
+<a name="249"></a>
+<pre>
+Subgoal 3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 (app (abs T1) S1) B}
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  ============================
+   {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H2.</b>
+</pre>
+<a name="250"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K |- pr1 (abs T1) T3}
+  H7 : {K |- pr1 S1 S3}
+  ============================
+   {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H6.</b>
+</pre>
+<a name="251"></a>
+<pre>
+Subgoal 3.1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, S4
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K, pr1 n1 n1 |- pr1 (T1 n1) (S4 n1)}
+  ============================
+   {K |- pr1 (app (abs S4) S3) (T2 S2)}
+
+Subgoal 3.1.2 is:
+ {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 H7 H5.</b>
+</pre>
+<a name="252"></a>
+<pre>
+Subgoal 3.1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, S4
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K, pr1 n1 n1 |- pr1 (T1 n1) (S4 n1)}
+  H9 : {K |- pr1 S3 S2}
+  ============================
+   {K |- pr1 (app (abs S4) S3) (T2 S2)}
+
+Subgoal 3.1.2 is:
+ {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 _ H4.</b>
+</pre>
+<a name="253"></a>
+<pre>
+Subgoal 3.1.1:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, S4
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K, pr1 n1 n1 |- pr1 (T1 n1) (S4 n1)}
+  H9 : {K |- pr1 S3 S2}
+  H10 : {K |- pr1 (abs (z1\S4 z1)) (abs T2)}
+  ============================
+   {K |- pr1 (app (abs S4) S3) (T2 S2)}
+
+Subgoal 3.1.2 is:
+ {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>search.</b>
+</pre>
+<a name="254"></a>
+<pre>
+Subgoal 3.1.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K, [F] |- pr1 (abs T1) T3}
+  H9 : member F K
+  ============================
+   {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_worlds to H1 H9.</b>
+</pre>
+<a name="255"></a>
+<pre>
+Subgoal 3.1.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K, [pr1 B1 B1] |- pr1 (abs T1) T3}
+  H9 : member (pr1 B1 B1) K
+  H10 : name B1
+  H11 : member (trm B1) L
+  H12 : member (cd1 B1 B1) J
+  H13 : member (notabs B1) J
+  ============================
+   {K |- pr1 (app T3 S3) (T2 S2)}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H10.</b>
+</pre>
+<a name="256"></a>
+<pre>
+Subgoal 3.1.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- cd1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H7 : {K n1 |- pr1 (S1 n1) (S3 n1)}
+  H8 : {K n1, [pr1 n1 n1] |- pr1 (abs (T1 n1)) (T3 n1)}
+  H9 : member (pr1 n1 n1) (K n1)
+  H11 : member (trm n1) (L n1)
+  H12 : member (cd1 n1 n1) (J n1)
+  H13 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 (app (T3 n1) (S3 n1)) (T2 n1 (S2 n1))}
+
+Subgoal 3.2 is:
+ {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H8.</b>
+</pre>
+<a name="257"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K |- pr1 (abs T1) (abs T3)}
+  H7 : {K |- pr1 S1 S3}
+  ============================
+   {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 H7 H5.</b>
+</pre>
+<a name="258"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K |- pr1 (abs T1) (abs T3)}
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K |- pr1 S3 S2}
+  ============================
+   {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply IH to H1 _ H4.</b>
+</pre>
+<a name="259"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K |- pr1 (abs T1) (abs T3)}
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K |- pr1 S3 S2}
+  H9 : {K |- pr1 (abs T3) (abs T2)}
+  ============================
+   {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_subst_lem to H1 H9 H8.</b>
+</pre>
+<a name="260"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, S3, T3
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K |- pr1 (abs T1) (abs T3)}
+  H7 : {K |- pr1 S1 S3}
+  H8 : {K |- pr1 S3 S2}
+  H9 : {K |- pr1 (abs T3) (abs T2)}
+  H10 : {K |- pr1 (T3 S3) (T2 S2)}
+  ============================
+   {K |- pr1 (T3 S3) (T2 S2)}
+
+Subgoal 3.3 is:
+ {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>search.</b>
+</pre>
+<a name="261"></a>
+<pre>
+Subgoal 3.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K, [F] |- pr1 (app (abs T1) S1) B}
+  H7 : member F K
+  ============================
+   {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_worlds to H1 H7.</b>
+</pre>
+<a name="262"></a>
+<pre>
+Subgoal 3.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H4 : {J |- cd1 (abs T1) (abs T2)}*
+  H5 : {J |- cd1 S1 S2}*
+  H6 : {K, [pr1 B1 B1] |- pr1 (app (abs T1) S1) B}
+  H7 : member (pr1 B1 B1) K
+  H8 : name B1
+  H9 : member (trm B1) L
+  H10 : member (cd1 B1 B1) J
+  H11 : member (notabs B1) J
+  ============================
+   {K |- pr1 B (T2 S2)}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H8.</b>
+</pre>
+<a name="263"></a>
+<pre>
+Subgoal 3.3:
+
+  Variables: A, B, C, L, K, J, S2, S1, T2, T1, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs (L n1) (K n1) (J n1)
+  H4 : {J n1 |- cd1 (abs (T1 n1)) (abs (T2 n1))}*
+  H5 : {J n1 |- cd1 (S1 n1) (S2 n1)}*
+  H6 : {K n1, [pr1 n1 n1] |- pr1 (app (abs (T1 n1)) (S1 n1)) (B n1)}
+  H7 : member (pr1 n1 n1) (K n1)
+  H9 : member (trm n1) (L n1)
+  H10 : member (cd1 n1 n1) (J n1)
+  H11 : member (notabs n1) (J n1)
+  ============================
+   {K n1 |- pr1 (B n1) (T2 n1 (S2 n1))}
+
+Subgoal 4 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H6.</b>
+</pre>
+<a name="264"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, C, L, K, J, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H4 : {J, [F] |- cd1 A C}*
+  H5 : member F J
+  ============================
+   {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply cd_worlds to H1 H5.</b>
+</pre>
+<a name="265"></a>
+<pre>
+Subgoal 4:
+
+  Variables: A, B, C, L, K, J, F
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H4 : {J, [F] |- cd1 A C}*
+  H5 : member F J
+  H6 : (exists A B, F = cd1 A B /\ name A /\ A = B /\ member (trm A) L /\
+         member (pr1 A A) K /\ member (notabs A) J) \/ (exists A,
+         F = notabs A /\ name A /\ member (trm A) L /\ member (pr1 A A) K /\
+         member (cd1 A A) J)
+  ============================
+   {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H6.</b>
+</pre>
+<a name="266"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H4 : {J, [cd1 B1 B1] |- cd1 A C}*
+  H5 : member (cd1 B1 B1) J
+  H7 : name B1
+  H8 : member (trm B1) L
+  H9 : member (pr1 B1 B1) K
+  H10 : member (notabs B1) J
+  ============================
+   {K |- pr1 B C}
+
+Subgoal 4.2 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H4.</b>
+</pre>
+<a name="267"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 C B}
+  H5 : member (cd1 C C) J
+  H7 : name C
+  H8 : member (trm C) L
+  H9 : member (pr1 C C) K
+  H10 : member (notabs C) J
+  ============================
+   {K |- pr1 B C}
+
+Subgoal 4.2 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>apply pr1_name to H1 H2 H7.</b>
+</pre>
+<a name="268"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: A, B, C, L, K, J, F, A1, B1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 C C}
+  H5 : member (cd1 C C) J
+  H7 : name C
+  H8 : member (trm C) L
+  H9 : member (pr1 C C) K
+  H10 : member (notabs C) J
+  ============================
+   {K |- pr1 C C}
+
+Subgoal 4.2 is:
+ {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>search.</b>
+</pre>
+<a name="269"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: A, B, C, L, K, J, F, A1
+  IH : forall A B C L K J, ctxs L K J -> {K |- pr1 A B} -> {J |- cd1 A C}* ->
+         {K |- pr1 B C}
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B}
+  H4 : {J, [notabs A1] |- cd1 A C}*
+  H5 : member (notabs A1) J
+  H7 : name A1
+  H8 : member (trm A1) L
+  H9 : member (pr1 A1 A1) K
+  H10 : member (cd1 A1 A1) J
+  ============================
+   {K |- pr1 B C}
+
+cd1_pr1_triangle < <b>case H4.</b>
+Proof completed.
+</pre>
+<a name="270"></a>
+<pre class="code">
+Abella < <b>Theorem pr1_diamond : 
+forall A B1 B2 L K J, ctxs L K J -> {K |- pr1 A B1} -> {K |- pr1 A B2} ->
+  (exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}).</b>
+</pre>
+<a name="271"></a>
+<pre>
+
+
+  ============================
+   forall A B1 B2 L K J, ctxs L K J -> {K |- pr1 A B1} -> {K |- pr1 A B2} ->
+     (exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C})
+
+pr1_diamond < <b>intros.</b>
+</pre>
+<a name="272"></a>
+<pre>
+
+  Variables: A, B1, B2, L, K, J
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B1}
+  H3 : {K |- pr1 A B2}
+  ============================
+   exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}
+
+pr1_diamond < <b>apply pr1_trm to H1 H2.</b>
+</pre>
+<a name="273"></a>
+<pre>
+
+  Variables: A, B1, B2, L, K, J
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B1}
+  H3 : {K |- pr1 A B2}
+  H4 : {L |- trm A}
+  ============================
+   exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}
+
+pr1_diamond < <b>apply cd1_exists to H1 H4.</b>
+</pre>
+<a name="274"></a>
+<pre>
+
+  Variables: A, B1, B2, L, K, J, B
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B1}
+  H3 : {K |- pr1 A B2}
+  H4 : {L |- trm A}
+  H5 : {J |- cd1 A B}
+  ============================
+   exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}
+
+pr1_diamond < <b>apply cd1_pr1_triangle to H1 H2 H5.</b>
+</pre>
+<a name="275"></a>
+<pre>
+
+  Variables: A, B1, B2, L, K, J, B
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B1}
+  H3 : {K |- pr1 A B2}
+  H4 : {L |- trm A}
+  H5 : {J |- cd1 A B}
+  H6 : {K |- pr1 B1 B}
+  ============================
+   exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}
+
+pr1_diamond < <b>apply cd1_pr1_triangle to H1 H3 H5.</b>
+</pre>
+<a name="276"></a>
+<pre>
+
+  Variables: A, B1, B2, L, K, J, B
+  H1 : ctxs L K J
+  H2 : {K |- pr1 A B1}
+  H3 : {K |- pr1 A B2}
+  H4 : {L |- trm A}
+  H5 : {J |- cd1 A B}
+  H6 : {K |- pr1 B1 B}
+  H7 : {K |- pr1 B2 B}
+  ============================
+   exists C, {K |- pr1 B1 C} /\ {K |- pr1 B2 C}
+
+pr1_diamond < <b>search.</b>
+Proof completed.
+</pre>
+<a name="277"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

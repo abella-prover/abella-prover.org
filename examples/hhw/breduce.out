@@ -1,0 +1,6783 @@
+Welcome to Abella 2.0.0
+Abella < Specification "breduce".
+Reading specification "breduce"
+
+Abella < Close tm, p.
+
+Abella < Define ctx2 : olist -> olist -> prop by 
+ctx2 nil nil;
+nabla x p, ctx2 (bred x x :: G) (path x p :: D) := ctx2 G D;
+nabla x, ctx2 (pi u\bred N u => bred x u :: G) (pi q\path N q => path x q :: D) := ctx2 G D.
+
+Abella < Define name : tm -> prop by 
+nabla n, name n.
+
+Abella < Define fresh : tm -> tm -> prop by 
+nabla n, fresh n X.
+
+Abella < Define pname : p -> prop by 
+nabla p, pname p.
+
+Abella < Theorem ctx2_mem_G : 
+forall G D F, ctx2 G D -> member F G -> (exists x, F = bred x x /\ name x) \/
+  (exists x N, F = pi u\bred N u => bred x u /\ fresh x N).
+
+
+  ============================
+   forall G D F, ctx2 G D -> member F G -> (exists x, F = bred x x /\
+     name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < induction on 1.
+
+
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   forall G D F, ctx2 G D @ -> member F G -> (exists x, F = bred x x /\
+     name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < intros.
+
+  Variables: G, D, F
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : ctx2 G D @
+  H2 : member F G
+  ============================
+   (exists x, F = bred x x /\ name x) \/ (exists x N,
+     F = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H1.
+Subgoal 1:
+
+  Variables: G, D, F
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H2 : member F nil
+  ============================
+   (exists x, F = bred x x /\ name x) \/ (exists x N,
+     F = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 2 is:
+ (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+   F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H2.
+Subgoal 2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H2 : member (F n1 n2) (bred n1 n1 :: G1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+     F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H2.
+Subgoal 2.1:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x, bred n1 n1 = bred x x /\ name x) \/ (exists x N,
+     bred n1 n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 2.2 is:
+ (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+   F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < search.
+Subgoal 2.2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1 n2) G1
+  ============================
+   (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+     F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1 n2) G1
+  H5 : (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+         F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   (exists x, F n1 n2 = bred x x /\ name x) \/ (exists x N,
+     F n1 n2 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H5.
+Subgoal 2.2.1:
+
+  Variables: G, D, F, D1, G1, x
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (bred (x n1) (x n1)) G1
+  H6 : name (x n1)
+  ============================
+   (exists x1, bred (x n1) (x n1) = bred x1 x1 /\ name x1) \/ (exists x1 N,
+     bred (x n1) (x n1) = pi u\bred N u => bred x1 u /\ fresh x1 N)
+
+Subgoal 2.2.2 is:
+ (exists x1, pi u\bred (N n1) u => bred (x n1) u = bred x1 x1 /\ name x1) \/
+   (exists x1 N1,
+   pi u\bred (N n1) u => bred (x n1) u = pi u\bred N1 u => bred x1 u /\
+   fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < search.
+Subgoal 2.2.2:
+
+  Variables: G, D, F, D1, G1, x, N
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred (N n1) u => bred (x n1) u) G1
+  H6 : fresh (x n1) (N n1)
+  ============================
+   (exists x1, pi u\bred (N n1) u => bred (x n1) u = bred x1 x1 /\
+     name x1) \/ (exists x1 N1,
+     pi u\bred (N n1) u => bred (x n1) u = pi u\bred N1 u => bred x1 u /\
+     fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < search.
+Subgoal 3:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H2 : member (F n1) (pi u\bred N u => bred n1 u :: G1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+     F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H2.
+Subgoal 3.1:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x, pi u\bred N u => bred n1 u = bred x x /\ name x) \/
+     (exists x N1, pi u\bred N u => bred n1 u = pi u\bred N1 u => bred x u /\
+     fresh x N1)
+
+Subgoal 3.2 is:
+ (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+   F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < search.
+Subgoal 3.2:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1) G1
+  ============================
+   (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+     F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1) G1
+  H5 : (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+         F n1 = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   (exists x, F n1 = bred x x /\ name x) \/ (exists x N,
+     F n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+ctx2_mem_G < case H5.
+Subgoal 3.2.1:
+
+  Variables: G, D, F, D1, N, G1, x
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (bred (x n1) (x n1)) G1
+  H6 : name (x n1)
+  ============================
+   (exists x1, bred (x n1) (x n1) = bred x1 x1 /\ name x1) \/ (exists x1 N,
+     bred (x n1) (x n1) = pi u\bred N u => bred x1 u /\ fresh x1 N)
+
+Subgoal 3.2.2 is:
+ (exists x1, pi u\bred (N1 n1) u => bred (x n1) u = bred x1 x1 /\ name x1) \/
+   (exists x1 N,
+   pi u\bred (N1 n1) u => bred (x n1) u = pi u\bred N u => bred x1 u /\
+   fresh x1 N)
+
+ctx2_mem_G < search.
+Subgoal 3.2.2:
+
+  Variables: G, D, F, D1, N, G1, x, N1
+  IH : forall G D F, ctx2 G D * -> member F G -> (exists x, F = bred x x /\
+         name x) \/ (exists x N, F = pi u\bred N u => bred x u /\ fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred (N1 n1) u => bred (x n1) u) G1
+  H6 : fresh (x n1) (N1 n1)
+  ============================
+   (exists x1, pi u\bred (N1 n1) u => bred (x n1) u = bred x1 x1 /\
+     name x1) \/ (exists x1 N,
+     pi u\bred (N1 n1) u => bred (x n1) u = pi u\bred N u => bred x1 u /\
+     fresh x1 N)
+
+ctx2_mem_G < search.
+Proof completed.
+
+Abella < Theorem ctx2_mem_D : 
+forall G D F, ctx2 G D -> member F D -> (exists x p, F = path x p /\
+  name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+  fresh x N).
+
+
+  ============================
+   forall G D F, ctx2 G D -> member F D -> (exists x p, F = path x p /\
+     name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+     fresh x N)
+
+ctx2_mem_D < induction on 1.
+
+
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  ============================
+   forall G D F, ctx2 G D @ -> member F D -> (exists x p, F = path x p /\
+     name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+     fresh x N)
+
+ctx2_mem_D < intros.
+
+  Variables: G, D, F
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H1 : ctx2 G D @
+  H2 : member F D
+  ============================
+   (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+     F = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H1.
+Subgoal 1:
+
+  Variables: G, D, F
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H2 : member F nil
+  ============================
+   (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+     F = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 2 is:
+ (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H2.
+Subgoal 2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H2 : member (F n1 n2) (path n1 n2 :: D1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H2.
+Subgoal 2.1:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x p, path n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+     path n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 2.2 is:
+ (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < search.
+Subgoal 2.2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1 n2) D1
+  ============================
+   (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: G, D, F, D1, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1 n2) D1
+  H5 : (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+         F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   (exists x p, F n1 n2 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 n2 = pi q\path N q => path x q /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H5.
+Subgoal 2.2.1:
+
+  Variables: G, D, F, D1, G1, x, p
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (path (x n1) (p n2)) D1
+  H6 : name (x n1)
+  H7 : pname (p n2)
+  ============================
+   (exists x1 p1, path (x n1) (p n2) = path x1 p1 /\ name x1 /\ pname p1) \/
+     (exists x1 N, path (x n1) (p n2) = pi q\path N q => path x1 q /\
+     fresh x1 N)
+
+Subgoal 2.2.2 is:
+ (exists x1 p, pi q\path (N n1) q => path (x n1) q = path x1 p /\ name x1 /\
+   pname p) \/ (exists x1 N1,
+   pi q\path (N n1) q => path (x n1) q = pi q\path N1 q => path x1 q /\
+   fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < search.
+Subgoal 2.2.2:
+
+  Variables: G, D, F, D1, G1, x, N
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi q\path (N n1) q => path (x n1) q) D1
+  H6 : fresh (x n1) (N n1)
+  ============================
+   (exists x1 p, pi q\path (N n1) q => path (x n1) q = path x1 p /\
+     name x1 /\ pname p) \/ (exists x1 N1,
+     pi q\path (N n1) q => path (x n1) q = pi q\path N1 q => path x1 q /\
+     fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < search.
+Subgoal 3:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H2 : member (F n1) (pi q\path N q => path n1 q :: D1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H2.
+Subgoal 3.1:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  ============================
+   (exists x p, pi q\path N q => path n1 q = path x p /\ name x /\
+     pname p) \/ (exists x N1,
+     pi q\path N q => path n1 q = pi q\path N1 q => path x q /\ fresh x N1)
+
+Subgoal 3.2 is:
+ (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+   F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < search.
+Subgoal 3.2:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1) D1
+  ============================
+   (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: G, D, F, D1, N, G1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1) D1
+  H5 : (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+         F n1 = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+     F n1 = pi q\path N q => path x q /\ fresh x N)
+
+ctx2_mem_D < case H5.
+Subgoal 3.2.1:
+
+  Variables: G, D, F, D1, N, G1, x, p
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (path (x n1) p) D1
+  H6 : name (x n1)
+  H7 : pname p
+  ============================
+   (exists x1 p1, path (x n1) p = path x1 p1 /\ name x1 /\ pname p1) \/
+     (exists x1 N, path (x n1) p = pi q\path N q => path x1 q /\ fresh x1 N)
+
+Subgoal 3.2.2 is:
+ (exists x1 p, pi q\path (N1 n1) q => path (x n1) q = path x1 p /\ name x1 /\
+   pname p) \/ (exists x1 N,
+   pi q\path (N1 n1) q => path (x n1) q = pi q\path N q => path x1 q /\
+   fresh x1 N)
+
+ctx2_mem_D < search.
+Subgoal 3.2.2:
+
+  Variables: G, D, F, D1, N, G1, x, N1
+  IH : forall G D F, ctx2 G D * -> member F D -> (exists x p, F = path x p /\
+         name x /\ pname p) \/ (exists x N, F = pi q\path N q => path x q /\
+         fresh x N)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi q\path (N1 n1) q => path (x n1) q) D1
+  H6 : fresh (x n1) (N1 n1)
+  ============================
+   (exists x1 p, pi q\path (N1 n1) q => path (x n1) q = path x1 p /\
+     name x1 /\ pname p) \/ (exists x1 N,
+     pi q\path (N1 n1) q => path (x n1) q = pi q\path N q => path x1 q /\
+     fresh x1 N)
+
+ctx2_mem_D < search.
+Proof completed.
+
+Abella < Theorem ctx2_uniform : 
+forall G D X, nabla n, ctx2 (G n) (D n) ->
+  member (pi u\bred X u => bred n u) (G n) ->
+  member (pi q\path X q => path n q) (D n).
+
+
+  ============================
+   forall G D X, nabla n, ctx2 (G n) (D n) ->
+     member (pi u\bred X u => bred n u) (G n) ->
+     member (pi q\path X q => path n q) (D n)
+
+ctx2_uniform < induction on 1.
+
+
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  ============================
+   forall G D X, nabla n, ctx2 (G n) (D n) @ ->
+     member (pi u\bred X u => bred n u) (G n) ->
+     member (pi q\path X q => path n q) (D n)
+
+ctx2_uniform < intros.
+
+  Variables: G, D, X
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H1 : ctx2 (G n1) (D n1) @
+  H2 : member (pi u\bred X u => bred n1 u) (G n1)
+  ============================
+   member (pi q\path X q => path n1 q) (D n1)
+
+ctx2_uniform < case H1.
+Subgoal 1:
+
+  Variables: G, D, X
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H2 : member (pi u\bred X u => bred n1 u) nil
+  ============================
+   member (pi q\path X q => path n1 q) nil
+
+Subgoal 2 is:
+ member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+
+Subgoal 3 is:
+ member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H2 : member (pi u\bred (X n2) u => bred n1 u) (bred n2 n2 :: G1 n1)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+
+Subgoal 3 is:
+ member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  H4 : member (pi u\bred (X n2) u => bred n1 u) (G1 n1)
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+
+Subgoal 3 is:
+ member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < apply IH to H3 H4.
+Subgoal 2:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  H4 : member (pi u\bred (X n2) u => bred n1 u) (G1 n1)
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+
+Subgoal 3 is:
+ member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < search.
+Subgoal 3:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H2 : member (pi u\bred X u => bred n1 u) (bred n1 n1 :: G1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < case H2.
+Subgoal 3:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred X u => bred n1 u) G1
+  ============================
+   member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < apply IH to H3 H4.
+Subgoal 3:
+
+  Variables: G, D, X, D1, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred X u => bred n1 u) G1
+  H5 : member (pi q\path X q => path n1 q) D1
+  ============================
+   member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+
+Subgoal 4 is:
+ member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < search.
+Subgoal 4:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H2 : member (pi u\bred (X n2) u => bred n1 u) (pi u\bred (N n1) u => bred n2 u :: G1 n1)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < case H2.
+Subgoal 4:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  H4 : member (pi u\bred (X n2) u => bred n1 u) (G1 n1)
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < apply IH to H3 H4.
+Subgoal 4:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 (G1 n1) (D1 n1) *
+  H4 : member (pi u\bred (X n2) u => bred n1 u) (G1 n1)
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+
+Subgoal 5 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < search.
+Subgoal 5:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H2 : member (pi u\bred X u => bred n1 u) (pi u\bred N u => bred n1 u :: G1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < case H2.
+Subgoal 5.1:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 G1 D1 *
+  ============================
+   member (pi q\path N q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+Subgoal 5.2 is:
+ member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < search.
+Subgoal 5.2:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred X u => bred n1 u) G1
+  ============================
+   member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < apply IH to H3 H4.
+Subgoal 5.2:
+
+  Variables: G, D, X, D1, N, G1
+  IH : forall G D X, nabla n, ctx2 (G n) (D n) * ->
+         member (pi u\bred X u => bred n u) (G n) ->
+         member (pi q\path X q => path n q) (D n)
+  H3 : ctx2 G1 D1 *
+  H4 : member (pi u\bred X u => bred n1 u) G1
+  H5 : member (pi q\path X q => path n1 q) D1
+  ============================
+   member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+
+ctx2_uniform < search.
+Proof completed.
+
+Abella < Theorem member_prune_D : 
+forall G D E, nabla n, ctx2 G D -> member (E n) D -> (exists F, E = x\F).
+
+
+  ============================
+   forall G D E, nabla n, ctx2 G D -> member (E n) D -> (exists F, E = x\F)
+
+member_prune_D < induction on 1.
+
+
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  ============================
+   forall G D E, nabla n, ctx2 G D @ -> member (E n) D -> (exists F, E = x\F)
+
+member_prune_D < intros.
+
+  Variables: G, D, E
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H1 : ctx2 G D @
+  H2 : member (E n1) D
+  ============================
+   exists F, E = x\F
+
+member_prune_D < case H1.
+Subgoal 1:
+
+  Variables: G, D, E
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H2 : member (E n1) nil
+  ============================
+   exists F, E = x\F
+
+Subgoal 2 is:
+ exists F, E n2 n3 = x\F
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < case H2.
+Subgoal 2:
+
+  Variables: G, D, E, D1, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H2 : member (E n2 n3 n1) (path n2 n3 :: D1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   exists F, E n2 n3 = x\F
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < case H2.
+Subgoal 2.1:
+
+  Variables: G, D, E, D1, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  ============================
+   exists F, z3\path n2 n3 = x\F
+
+Subgoal 2.2 is:
+ exists F, E n2 n3 = x\F
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < search.
+Subgoal 2.2:
+
+  Variables: G, D, E, D1, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member (E n2 n3 n1) D1
+  ============================
+   exists F, E n2 n3 = x\F
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: G, D, E, D1, G1, F
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1 n3) D1
+  ============================
+   exists F1, z3\F z3 n3 = x\F1
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: G, D, E, D1, G1, F, F1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F1 n3) D1
+  ============================
+   exists F2, z3\F1 n3 = x\F2
+
+Subgoal 3 is:
+ exists F, E n2 = x\F
+
+member_prune_D < search.
+Subgoal 3:
+
+  Variables: G, D, E, D1, N, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H2 : member (E n2 n1) (pi q\path N q => path n2 q :: D1)
+  H3 : ctx2 G1 D1 *
+  ============================
+   exists F, E n2 = x\F
+
+member_prune_D < case H2.
+Subgoal 3.1:
+
+  Variables: G, D, E, D1, N, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  ============================
+   exists F, z2\pi q\path N q => path n2 q = x\F
+
+Subgoal 3.2 is:
+ exists F, E n2 = x\F
+
+member_prune_D < search.
+Subgoal 3.2:
+
+  Variables: G, D, E, D1, N, G1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member (E n2 n1) D1
+  ============================
+   exists F, E n2 = x\F
+
+member_prune_D < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: G, D, E, D1, N, G1, F
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member (F n1) D1
+  ============================
+   exists F1, z2\F z2 = x\F1
+
+member_prune_D < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: G, D, E, D1, N, G1, F, F1
+  IH : forall G D E, nabla n, ctx2 G D * -> member (E n) D -> (exists F,
+         E = x\F)
+  H3 : ctx2 G1 D1 *
+  H4 : member F1 D1
+  ============================
+   exists F2, z2\F1 = x\F2
+
+member_prune_D < search.
+Proof completed.
+
+Abella < Theorem member_D_determinate : 
+forall G D X Y, nabla n, ctx2 (G n) (D n) ->
+  member (pi q\path X q => path n q) (D n) ->
+  member (pi q\path Y q => path n q) (D n) -> X = Y.
+
+
+  ============================
+   forall G D X Y, nabla n, ctx2 (G n) (D n) ->
+     member (pi q\path X q => path n q) (D n) ->
+     member (pi q\path Y q => path n q) (D n) -> X = Y
+
+member_D_determinate < induction on 1.
+
+
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  ============================
+   forall G D X Y, nabla n, ctx2 (G n) (D n) @ ->
+     member (pi q\path X q => path n q) (D n) ->
+     member (pi q\path Y q => path n q) (D n) -> X = Y
+
+member_D_determinate < intros.
+
+  Variables: G, D, X, Y
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H1 : ctx2 (G n1) (D n1) @
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H3 : member (pi q\path Y q => path n1 q) (D n1)
+  ============================
+   X = Y
+
+member_D_determinate < case H1.
+Subgoal 1:
+
+  Variables: G, D, X, Y
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H2 : member (pi q\path X q => path n1 q) nil
+  H3 : member (pi q\path Y q => path n1 q) nil
+  ============================
+   X = Y
+
+Subgoal 2 is:
+ X n2 = Y n2
+
+Subgoal 3 is:
+ X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H2 : member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+  H3 : member (pi q\path (Y n2) q => path n1 q) (path n2 n3 :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   X n2 = Y n2
+
+Subgoal 3 is:
+ X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H3 : member (pi q\path (Y n2) q => path n1 q) (path n2 n3 :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   X n2 = Y n2
+
+Subgoal 3 is:
+ X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H3.
+Subgoal 2:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  H6 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  ============================
+   X n2 = Y n2
+
+Subgoal 3 is:
+ X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < apply IH to H4 H5 H6.
+Subgoal 2:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  H6 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  ============================
+   Y n2 = Y n2
+
+Subgoal 3 is:
+ X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < search.
+Subgoal 3:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H2 : member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+  H3 : member (pi q\path Y q => path n1 q) (path n1 n2 :: D1)
+  H4 : ctx2 G1 D1 *
+  ============================
+   X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H2.
+Subgoal 3:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H3 : member (pi q\path Y q => path n1 q) (path n1 n2 :: D1)
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path X q => path n1 q) D1
+  ============================
+   X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H3.
+Subgoal 3:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path X q => path n1 q) D1
+  H6 : member (pi q\path Y q => path n1 q) D1
+  ============================
+   X = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < apply IH to H4 H5 H6.
+Subgoal 3:
+
+  Variables: G, D, X, Y, D1, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path Y q => path n1 q) D1
+  H6 : member (pi q\path Y q => path n1 q) D1
+  ============================
+   Y = Y
+
+Subgoal 4 is:
+ X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < search.
+Subgoal 4:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H2 : member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H3 : member (pi q\path (Y n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H2.
+Subgoal 4:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H3 : member (pi q\path (Y n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < case H3.
+Subgoal 4:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  H6 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  ============================
+   X n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < apply IH to H4 H5 H6.
+Subgoal 4:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  H6 : member (pi q\path (Y n2) q => path n1 q) (D1 n1)
+  ============================
+   Y n2 = Y n2
+
+Subgoal 5 is:
+ X = Y
+
+member_D_determinate < search.
+Subgoal 5:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H2 : member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H3 : member (pi q\path Y q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H4 : ctx2 G1 D1 *
+  ============================
+   X = Y
+
+member_D_determinate < case H2.
+Subgoal 5.1:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H3 : member (pi q\path Y q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H4 : ctx2 G1 D1 *
+  ============================
+   N = Y
+
+Subgoal 5.2 is:
+ X = Y
+
+member_D_determinate < case H3.
+Subgoal 5.1.1:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 G1 D1 *
+  ============================
+   N = N
+
+Subgoal 5.1.2 is:
+ N = Y
+
+Subgoal 5.2 is:
+ X = Y
+
+member_D_determinate < search.
+Subgoal 5.1.2:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path Y q => path n1 q) D1
+  ============================
+   N = Y
+
+Subgoal 5.2 is:
+ X = Y
+
+member_D_determinate < apply member_prune_D to H4 H5.
+Subgoal 5.2:
+
+  Variables: G, D, X, Y, D1, N, G1
+  IH : forall G D X Y, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (pi q\path Y q => path n q) (D n) -> X = Y
+  H3 : member (pi q\path Y q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path X q => path n1 q) D1
+  ============================
+   X = Y
+
+member_D_determinate < apply member_prune_D to H4 H5.
+Proof completed.
+
+Abella < Theorem member_D_discrim : 
+forall G D X P, nabla n, ctx2 (G n) (D n) ->
+  member (pi q\path X q => path n q) (D n) -> member (path n P) (D n) ->
+  false.
+
+
+  ============================
+   forall G D X P, nabla n, ctx2 (G n) (D n) ->
+     member (pi q\path X q => path n q) (D n) -> member (path n P) (D n) ->
+     false
+
+member_D_discrim < induction on 1.
+
+
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  ============================
+   forall G D X P, nabla n, ctx2 (G n) (D n) @ ->
+     member (pi q\path X q => path n q) (D n) -> member (path n P) (D n) ->
+     false
+
+member_D_discrim < intros.
+
+  Variables: G, D, X, P
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H1 : ctx2 (G n1) (D n1) @
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H3 : member (path n1 P) (D n1)
+  ============================
+   false
+
+member_D_discrim < case H1.
+Subgoal 1:
+
+  Variables: G, D, X, P
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path X q => path n1 q) nil
+  H3 : member (path n1 P) nil
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, P, D1, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path (X n2) q => path n1 q) (path n2 n3 :: D1 n1)
+  H3 : member (path n1 (P n3)) (path n2 n3 :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H2.
+Subgoal 2:
+
+  Variables: G, D, X, P, D1, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H3 : member (path n1 (P n3)) (path n2 n3 :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H3.
+Subgoal 2:
+
+  Variables: G, D, X, P, D1, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  H6 : member (path n1 (P n3)) (D1 n1)
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < apply IH to H4 H5 H6.
+Subgoal 3:
+
+  Variables: G, D, X, P, D1, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path X q => path n1 q) (path n1 n2 :: D1)
+  H3 : member (path n1 (P n2)) (path n1 n2 :: D1)
+  H4 : ctx2 G1 D1 *
+  ============================
+   false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H2.
+Subgoal 3:
+
+  Variables: G, D, X, P, D1, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H3 : member (path n1 (P n2)) (path n1 n2 :: D1)
+  H4 : ctx2 G1 D1 *
+  H5 : member (pi q\path X q => path n1 q) D1
+  ============================
+   false
+
+Subgoal 4 is:
+ false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < apply member_prune_D to H4 H5.
+Subgoal 4:
+
+  Variables: G, D, X, P, D1, N, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path (X n2) q => path n1 q) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H3 : member (path n1 P) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  ============================
+   false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H2.
+Subgoal 4:
+
+  Variables: G, D, X, P, D1, N, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H3 : member (path n1 P) (pi q\path (N n1) q => path n2 q :: D1 n1)
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  ============================
+   false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < case H3.
+Subgoal 4:
+
+  Variables: G, D, X, P, D1, N, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H4 : ctx2 (G1 n1) (D1 n1) *
+  H5 : member (pi q\path (X n2) q => path n1 q) (D1 n1)
+  H6 : member (path n1 P) (D1 n1)
+  ============================
+   false
+
+Subgoal 5 is:
+ false
+
+member_D_discrim < apply IH to H4 H5 H6.
+Subgoal 5:
+
+  Variables: G, D, X, P, D1, N, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H3 : member (path n1 P) (pi q\path N q => path n1 q :: D1)
+  H4 : ctx2 G1 D1 *
+  ============================
+   false
+
+member_D_discrim < case H3.
+Subgoal 5:
+
+  Variables: G, D, X, P, D1, N, G1
+  IH : forall G D X P, nabla n, ctx2 (G n) (D n) * ->
+         member (pi q\path X q => path n q) (D n) ->
+         member (path n P) (D n) -> false
+  H2 : member (pi q\path X q => path n1 q) (pi q\path N q => path n1 q :: D1)
+  H4 : ctx2 G1 D1 *
+  H5 : member (path n1 P) D1
+  ============================
+   false
+
+member_D_discrim < apply member_prune_D to H4 H5.
+Proof completed.
+
+Abella < Theorem jump_D_invert : 
+forall G D X P, nabla n, ctx2 (G n) (D n) ->
+  member (pi q\path X q => path n q) (D n) -> {D n |- path n P} ->
+  {D n |- path X P}.
+
+
+  ============================
+   forall G D X P, nabla n, ctx2 (G n) (D n) ->
+     member (pi q\path X q => path n q) (D n) -> {D n |- path n P} ->
+     {D n |- path X P}
+
+jump_D_invert < intros.
+
+  Variables: G, D, X, P
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H3 : {D n1 |- path n1 P}
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < case H3.
+
+  Variables: G, D, X, P, F
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H4 : {D n1, [F n1] |- path n1 P}
+  H5 : member (F n1) (D n1)
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < apply ctx2_mem_D to H1 H5.
+
+  Variables: G, D, X, P, F
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H4 : {D n1, [F n1] |- path n1 P}
+  H5 : member (F n1) (D n1)
+  H6 : (exists x p, F n1 = path x p /\ name x /\ pname p) \/ (exists x N,
+         F n1 = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < case H6.
+Subgoal 1:
+
+  Variables: G, D, X, P, F, x, p
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H4 : {D n1, [path (x n1) p] |- path n1 P}
+  H5 : member (path (x n1) p) (D n1)
+  H7 : name (x n1)
+  H8 : pname p
+  ============================
+   {D n1 |- path X P}
+
+Subgoal 2 is:
+ {D n1 |- path X P}
+
+jump_D_invert < case H4.
+Subgoal 1:
+
+  Variables: G, D, X, P, F, x, p
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H5 : member (path n1 P) (D n1)
+  H7 : name n1
+  H8 : pname P
+  ============================
+   {D n1 |- path X P}
+
+Subgoal 2 is:
+ {D n1 |- path X P}
+
+jump_D_invert < apply member_D_discrim to H1 H2 H5.
+Subgoal 2:
+
+  Variables: G, D, X, P, F, x, N
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H4 : {D n1, [pi q\path (N n1) q => path (x n1) q] |- path n1 P}
+  H5 : member (pi q\path (N n1) q => path (x n1) q) (D n1)
+  H7 : fresh (x n1) (N n1)
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < case H4.
+Subgoal 2:
+
+  Variables: G, D, X, P, F, x, N
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H5 : member (pi q\path (N n1) q => path n1 q) (D n1)
+  H7 : fresh n1 (N n1)
+  H8 : {D n1 |- path (N n1) P}
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < case H7.
+Subgoal 2:
+
+  Variables: G, D, X, P, F, x, N, X1
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X q => path n1 q) (D n1)
+  H5 : member (pi q\path X1 q => path n1 q) (D n1)
+  H8 : {D n1 |- path X1 P}
+  ============================
+   {D n1 |- path X P}
+
+jump_D_invert < apply member_D_determinate to H1 H2 H5.
+Subgoal 2:
+
+  Variables: G, D, X, P, F, x, N, X1
+  H1 : ctx2 (G n1) (D n1)
+  H2 : member (pi q\path X1 q => path n1 q) (D n1)
+  H5 : member (pi q\path X1 q => path n1 q) (D n1)
+  H8 : {D n1 |- path X1 P}
+  ============================
+   {D n1 |- path X1 P}
+
+jump_D_invert < search.
+Proof completed.
+
+Abella < Theorem bred_ltr : 
+forall G D M N P, ctx2 G D -> {G |- bred M N} -> {D |- path M P} ->
+  {D |- path N P}.
+
+
+  ============================
+   forall G D M N P, ctx2 G D -> {G |- bred M N} -> {D |- path M P} ->
+     {D |- path N P}
+
+bred_ltr < induction on 2.
+
+
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  ============================
+   forall G D M N P, ctx2 G D -> {G |- bred M N}@ -> {D |- path M P} ->
+     {D |- path N P}
+
+bred_ltr < intros.
+
+  Variables: G, D, M, N, P
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path M P}
+  ============================
+   {D |- path N P}
+
+bred_ltr < case H2 (keep).
+Subgoal 1:
+
+  Variables: G, D, M, N, P, U, M1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H3 : {D |- path (abs M1) P}
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  ============================
+   {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H3.
+Subgoal 1.1:
+
+  Variables: G, D, M, N, P, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, path n1 n2 |- path (M1 n1) (P1 n2)}
+  ============================
+   {D |- path (abs U) (bnd P1)}
+
+Subgoal 1.2 is:
+ {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply IH to _ H4 H5.
+Subgoal 1.1:
+
+  Variables: G, D, M, N, P, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, path n1 n2 |- path (M1 n1) (P1 n2)}
+  H6 : {D, path n1 n2 |- path (U n1) (P1 n2)}
+  ============================
+   {D |- path (abs U) (bnd P1)}
+
+Subgoal 1.2 is:
+ {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < search.
+Subgoal 1.2:
+
+  Variables: G, D, M, N, P, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [F] |- path (abs M1) P}
+  H6 : member F D
+  ============================
+   {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply ctx2_mem_D to H1 H6.
+Subgoal 1.2:
+
+  Variables: G, D, M, N, P, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [F] |- path (abs M1) P}
+  H6 : member F D
+  H7 : (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+         F = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H7.
+Subgoal 1.2.1:
+
+  Variables: G, D, M, N, P, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [path x p] |- path (abs M1) P}
+  H6 : member (path x p) D
+  H8 : name x
+  H9 : pname p
+  ============================
+   {D |- path (abs U) P}
+
+Subgoal 1.2.2 is:
+ {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H8.
+Subgoal 1.2.1:
+
+  Variables: G, D, M, N, P, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (abs (M1 n2)) (abs (U n2))}@
+  H4 : {G n2, bred n1 n1 |- bred (M1 n2 n1) (U n2 n1)}*
+  H5 : {D n2, [path n2 p] |- path (abs (M1 n2)) P}
+  H6 : member (path n2 p) (D n2)
+  H9 : pname p
+  ============================
+   {D n2 |- path (abs (U n2)) P}
+
+Subgoal 1.2.2 is:
+ {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H5.
+Subgoal 1.2.2:
+
+  Variables: G, D, M, N, P, U, M1, F, x, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [pi q\path N1 q => path x q] |- path (abs M1) P}
+  H6 : member (pi q\path N1 q => path x q) D
+  H8 : fresh x N1
+  ============================
+   {D |- path (abs U) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H8.
+Subgoal 1.2.2:
+
+  Variables: G, D, M, N, P, U, M1, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (abs (M1 n2)) (abs (U n2))}@
+  H4 : {G n2, bred n1 n1 |- bred (M1 n2 n1) (U n2 n1)}*
+  H5 : {D n2, [pi q\path X q => path n2 q] |- path (abs (M1 n2)) P}
+  H6 : member (pi q\path X q => path n2 q) (D n2)
+  ============================
+   {D n2 |- path (abs (U n2)) P}
+
+Subgoal 2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H5.
+Subgoal 2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H3 : {D |- path (app M1 N1) P}
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  ============================
+   {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H3.
+Subgoal 2.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path M1 P1}
+  ============================
+   {D |- path (app U V) (left P1)}
+
+Subgoal 2.2 is:
+ {D |- path (app U V) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply IH to _ H4 H6.
+Subgoal 2.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path M1 P1}
+  H7 : {D |- path U P1}
+  ============================
+   {D |- path (app U V) (left P1)}
+
+Subgoal 2.2 is:
+ {D |- path (app U V) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < search.
+Subgoal 2.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path N1 P1}
+  ============================
+   {D |- path (app U V) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply IH to _ H5 H6.
+Subgoal 2.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path N1 P1}
+  H7 : {D |- path V P1}
+  ============================
+   {D |- path (app U V) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < search.
+Subgoal 2.3:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [F] |- path (app M1 N1) P}
+  H7 : member F D
+  ============================
+   {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply ctx2_mem_D to H1 H7.
+Subgoal 2.3:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [F] |- path (app M1 N1) P}
+  H7 : member F D
+  H8 : (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+         F = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H8.
+Subgoal 2.3.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [path x p] |- path (app M1 N1) P}
+  H7 : member (path x p) D
+  H9 : name x
+  H10 : pname p
+  ============================
+   {D |- path (app U V) P}
+
+Subgoal 2.3.2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H9.
+Subgoal 2.3.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (app (M1 n1) (N1 n1)) (app (U n1) (V n1))}@
+  H4 : {G n1 |- bred (M1 n1) (U n1)}*
+  H5 : {G n1 |- bred (N1 n1) (V n1)}*
+  H6 : {D n1, [path n1 p] |- path (app (M1 n1) (N1 n1)) P}
+  H7 : member (path n1 p) (D n1)
+  H10 : pname p
+  ============================
+   {D n1 |- path (app (U n1) (V n1)) P}
+
+Subgoal 2.3.2 is:
+ {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H6.
+Subgoal 2.3.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, N2
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [pi q\path N2 q => path x q] |- path (app M1 N1) P}
+  H7 : member (pi q\path N2 q => path x q) D
+  H9 : fresh x N2
+  ============================
+   {D |- path (app U V) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H9.
+Subgoal 2.3.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, N2, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (app (M1 n1) (N1 n1)) (app (U n1) (V n1))}@
+  H4 : {G n1 |- bred (M1 n1) (U n1)}*
+  H5 : {G n1 |- bred (N1 n1) (V n1)}*
+  H6 : {D n1, [pi q\path X q => path n1 q] |- path (app (M1 n1) (N1 n1)) P}
+  H7 : member (pi q\path X q => path n1 q) (D n1)
+  ============================
+   {D n1 |- path (app (U n1) (V n1)) P}
+
+Subgoal 3 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H6.
+Subgoal 3:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H3 : {D |- path (beta R N1) P}
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  ============================
+   {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H3.
+Subgoal 3.1:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply IH to _ H4 H5.
+Subgoal 3.1:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  H6 : {D, pi q\path N1 q => path n1 q |- path N P}
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < inst H6 with n1 = N1.
+Subgoal 3.1:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  H6 : {D, pi q\path N1 q => path n1 q |- path N P}
+  H7 : {D, pi q\path N1 q => path N1 q |- path N P}
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < assert {D |- pi q\path N1 q => path N1 q}.
+Subgoal 3.1:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  H6 : {D, pi q\path N1 q => path n1 q |- path N P}
+  H7 : {D, pi q\path N1 q => path N1 q |- path N P}
+  H8 : {D |- pi q\path N1 q => path N1 q}
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < cut H7 with H8.
+Subgoal 3.1:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  H6 : {D, pi q\path N1 q => path n1 q |- path N P}
+  H7 : {D, pi q\path N1 q => path N1 q |- path N P}
+  H8 : {D |- pi q\path N1 q => path N1 q}
+  H9 : {D |- path N P}
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < search.
+Subgoal 3.2:
+
+  Variables: G, D, M, N, P, R, N1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, [F] |- path (beta R N1) P}
+  H6 : member F D
+  ============================
+   {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < apply ctx2_mem_D to H1 H6.
+Subgoal 3.2:
+
+  Variables: G, D, M, N, P, R, N1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, [F] |- path (beta R N1) P}
+  H6 : member F D
+  H7 : (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+         F = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H7.
+Subgoal 3.2.1:
+
+  Variables: G, D, M, N, P, R, N1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, [path x p] |- path (beta R N1) P}
+  H6 : member (path x p) D
+  H8 : name x
+  H9 : pname p
+  ============================
+   {D |- path N P}
+
+Subgoal 3.2.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H8.
+Subgoal 3.2.1:
+
+  Variables: G, D, M, N, P, R, N1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (beta (R n2) (N1 n2)) (N n2)}@
+  H4 : {G n2, pi u\bred (N1 n2) u => bred n1 u |- bred (R n2 n1) (N n2)}*
+  H5 : {D n2, [path n2 p] |- path (beta (R n2) (N1 n2)) P}
+  H6 : member (path n2 p) (D n2)
+  H9 : pname p
+  ============================
+   {D n2 |- path (N n2) P}
+
+Subgoal 3.2.2 is:
+ {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H5.
+Subgoal 3.2.2:
+
+  Variables: G, D, M, N, P, R, N1, F, x, N2
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, [pi q\path N2 q => path x q] |- path (beta R N1) P}
+  H6 : member (pi q\path N2 q => path x q) D
+  H8 : fresh x N2
+  ============================
+   {D |- path N P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H8.
+Subgoal 3.2.2:
+
+  Variables: G, D, M, N, P, R, N1, F, x, N2, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (beta (R n2) (N1 n2)) (N n2)}@
+  H4 : {G n2, pi u\bred (N1 n2) u => bred n1 u |- bred (R n2 n1) (N n2)}*
+  H5 : {D n2, [pi q\path X q => path n2 q] |- path (beta (R n2) (N1 n2)) P}
+  H6 : member (pi q\path X q => path n2 q) (D n2)
+  ============================
+   {D n2 |- path (N n2) P}
+
+Subgoal 4 is:
+ {D |- path N P}
+
+bred_ltr < case H5.
+Subgoal 4:
+
+  Variables: G, D, M, N, P, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path M P}
+  H4 : {G, [F] |- bred M N}*
+  H5 : member F G
+  ============================
+   {D |- path N P}
+
+bred_ltr < apply ctx2_mem_G to H1 H5.
+Subgoal 4:
+
+  Variables: G, D, M, N, P, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path M P}
+  H4 : {G, [F] |- bred M N}*
+  H5 : member F G
+  H6 : (exists x, F = bred x x /\ name x) \/ (exists x N,
+         F = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   {D |- path N P}
+
+bred_ltr < case H6.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path M P}
+  H4 : {G, [bred x x] |- bred M N}*
+  H5 : member (bred x x) G
+  H7 : name x
+  ============================
+   {D |- path N P}
+
+Subgoal 4.2 is:
+ {D |- path N P}
+
+bred_ltr < case H7.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (M n1) (N n1)}@
+  H3 : {D n1 |- path (M n1) P}
+  H4 : {G n1, [bred n1 n1] |- bred (M n1) (N n1)}*
+  H5 : member (bred n1 n1) (G n1)
+  ============================
+   {D n1 |- path (N n1) P}
+
+Subgoal 4.2 is:
+ {D |- path N P}
+
+bred_ltr < case H4.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 n1}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (bred n1 n1) (G n1)
+  ============================
+   {D n1 |- path n1 P}
+
+Subgoal 4.2 is:
+ {D |- path N P}
+
+bred_ltr < search.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path M P}
+  H4 : {G, [pi u\bred N1 u => bred x u] |- bred M N}*
+  H5 : member (pi u\bred N1 u => bred x u) G
+  H7 : fresh x N1
+  ============================
+   {D |- path N P}
+
+bred_ltr < case H7.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (M n1) (N n1)}@
+  H3 : {D n1 |- path (M n1) P}
+  H4 : {G n1, [pi u\bred X u => bred n1 u] |- bred (M n1) (N n1)}*
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  ============================
+   {D n1 |- path (N n1) P}
+
+bred_ltr < case H4.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  ============================
+   {D n1 |- path (N n1) P}
+
+bred_ltr < assert {D n1 |- path X P}.
+Subgoal 4.2.1:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  ============================
+   {D n1 |- path X P}
+
+Subgoal 4.2 is:
+ {D n1 |- path (N n1) P}
+
+bred_ltr < apply ctx2_uniform to H1 H5.
+Subgoal 4.2.1:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : member (pi q\path X q => path n1 q) (D n1)
+  ============================
+   {D n1 |- path X P}
+
+Subgoal 4.2 is:
+ {D n1 |- path (N n1) P}
+
+bred_ltr < apply jump_D_invert to H1 H9 H3.
+Subgoal 4.2.1:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : member (pi q\path X q => path n1 q) (D n1)
+  H10 : {D n1 |- path X P}
+  ============================
+   {D n1 |- path X P}
+
+Subgoal 4.2 is:
+ {D n1 |- path (N n1) P}
+
+bred_ltr < search.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : {D n1 |- path X P}
+  ============================
+   {D n1 |- path (N n1) P}
+
+bred_ltr < apply IH to H1 H8 H9.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path M P} ->
+         {D |- path N P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : {D n1 |- path X P}
+  H10 : {D n1 |- path (N n1) P}
+  ============================
+   {D n1 |- path (N n1) P}
+
+bred_ltr < search.
+Proof completed.
+
+Abella < Theorem bred_rtl : 
+forall G D M N P, ctx2 G D -> {G |- bred M N} -> {D |- path N P} ->
+  {D |- path M P}.
+
+
+  ============================
+   forall G D M N P, ctx2 G D -> {G |- bred M N} -> {D |- path N P} ->
+     {D |- path M P}
+
+bred_rtl < induction on 2.
+
+
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  ============================
+   forall G D M N P, ctx2 G D -> {G |- bred M N}@ -> {D |- path N P} ->
+     {D |- path M P}
+
+bred_rtl < intros.
+
+  Variables: G, D, M, N, P
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path N P}
+  ============================
+   {D |- path M P}
+
+bred_rtl < case H2 (keep).
+Subgoal 1:
+
+  Variables: G, D, M, N, P, U, M1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H3 : {D |- path (abs U) P}
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  ============================
+   {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H3.
+Subgoal 1.1:
+
+  Variables: G, D, M, N, P, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, path n1 n2 |- path (U n1) (P1 n2)}
+  ============================
+   {D |- path (abs M1) (bnd P1)}
+
+Subgoal 1.2 is:
+ {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply IH to _ H4 H5.
+Subgoal 1.1:
+
+  Variables: G, D, M, N, P, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, path n1 n2 |- path (U n1) (P1 n2)}
+  H6 : {D, path n1 n2 |- path (M1 n1) (P1 n2)}
+  ============================
+   {D |- path (abs M1) (bnd P1)}
+
+Subgoal 1.2 is:
+ {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < search.
+Subgoal 1.2:
+
+  Variables: G, D, M, N, P, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [F] |- path (abs U) P}
+  H6 : member F D
+  ============================
+   {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply ctx2_mem_D to H1 H6.
+Subgoal 1.2:
+
+  Variables: G, D, M, N, P, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [F] |- path (abs U) P}
+  H6 : member F D
+  H7 : (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+         F = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H7.
+Subgoal 1.2.1:
+
+  Variables: G, D, M, N, P, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [path x p] |- path (abs U) P}
+  H6 : member (path x p) D
+  H8 : name x
+  H9 : pname p
+  ============================
+   {D |- path (abs M1) P}
+
+Subgoal 1.2.2 is:
+ {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H8.
+Subgoal 1.2.1:
+
+  Variables: G, D, M, N, P, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (abs (M1 n2)) (abs (U n2))}@
+  H4 : {G n2, bred n1 n1 |- bred (M1 n2 n1) (U n2 n1)}*
+  H5 : {D n2, [path n2 p] |- path (abs (U n2)) P}
+  H6 : member (path n2 p) (D n2)
+  H9 : pname p
+  ============================
+   {D n2 |- path (abs (M1 n2)) P}
+
+Subgoal 1.2.2 is:
+ {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H5.
+Subgoal 1.2.2:
+
+  Variables: G, D, M, N, P, U, M1, F, x, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (abs M1) (abs U)}@
+  H4 : {G, bred n1 n1 |- bred (M1 n1) (U n1)}*
+  H5 : {D, [pi q\path N1 q => path x q] |- path (abs U) P}
+  H6 : member (pi q\path N1 q => path x q) D
+  H8 : fresh x N1
+  ============================
+   {D |- path (abs M1) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H8.
+Subgoal 1.2.2:
+
+  Variables: G, D, M, N, P, U, M1, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n2) (D n2)
+  H2 : {G n2 |- bred (abs (M1 n2)) (abs (U n2))}@
+  H4 : {G n2, bred n1 n1 |- bred (M1 n2 n1) (U n2 n1)}*
+  H5 : {D n2, [pi q\path X q => path n2 q] |- path (abs (U n2)) P}
+  H6 : member (pi q\path X q => path n2 q) (D n2)
+  ============================
+   {D n2 |- path (abs (M1 n2)) P}
+
+Subgoal 2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H5.
+Subgoal 2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H3 : {D |- path (app U V) P}
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  ============================
+   {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H3.
+Subgoal 2.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path U P1}
+  ============================
+   {D |- path (app M1 N1) (left P1)}
+
+Subgoal 2.2 is:
+ {D |- path (app M1 N1) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply IH to _ H4 H6.
+Subgoal 2.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path U P1}
+  H7 : {D |- path M1 P1}
+  ============================
+   {D |- path (app M1 N1) (left P1)}
+
+Subgoal 2.2 is:
+ {D |- path (app M1 N1) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < search.
+Subgoal 2.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path V P1}
+  ============================
+   {D |- path (app M1 N1) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply IH to _ H5 H6.
+Subgoal 2.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, P1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D |- path V P1}
+  H7 : {D |- path N1 P1}
+  ============================
+   {D |- path (app M1 N1) (right P1)}
+
+Subgoal 2.3 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < search.
+Subgoal 2.3:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [F] |- path (app U V) P}
+  H7 : member F D
+  ============================
+   {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply ctx2_mem_D to H1 H7.
+Subgoal 2.3:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [F] |- path (app U V) P}
+  H7 : member F D
+  H8 : (exists x p, F = path x p /\ name x /\ pname p) \/ (exists x N,
+         F = pi q\path N q => path x q /\ fresh x N)
+  ============================
+   {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H8.
+Subgoal 2.3.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [path x p] |- path (app U V) P}
+  H7 : member (path x p) D
+  H9 : name x
+  H10 : pname p
+  ============================
+   {D |- path (app M1 N1) P}
+
+Subgoal 2.3.2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H9.
+Subgoal 2.3.1:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, p
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (app (M1 n1) (N1 n1)) (app (U n1) (V n1))}@
+  H4 : {G n1 |- bred (M1 n1) (U n1)}*
+  H5 : {G n1 |- bred (N1 n1) (V n1)}*
+  H6 : {D n1, [path n1 p] |- path (app (U n1) (V n1)) P}
+  H7 : member (path n1 p) (D n1)
+  H10 : pname p
+  ============================
+   {D n1 |- path (app (M1 n1) (N1 n1)) P}
+
+Subgoal 2.3.2 is:
+ {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H6.
+Subgoal 2.3.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, N2
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (app M1 N1) (app U V)}@
+  H4 : {G |- bred M1 U}*
+  H5 : {G |- bred N1 V}*
+  H6 : {D, [pi q\path N2 q => path x q] |- path (app U V) P}
+  H7 : member (pi q\path N2 q => path x q) D
+  H9 : fresh x N2
+  ============================
+   {D |- path (app M1 N1) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H9.
+Subgoal 2.3.2:
+
+  Variables: G, D, M, N, P, V, N1, U, M1, F, x, N2, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (app (M1 n1) (N1 n1)) (app (U n1) (V n1))}@
+  H4 : {G n1 |- bred (M1 n1) (U n1)}*
+  H5 : {G n1 |- bred (N1 n1) (V n1)}*
+  H6 : {D n1, [pi q\path X q => path n1 q] |- path (app (U n1) (V n1)) P}
+  H7 : member (pi q\path X q => path n1 q) (D n1)
+  ============================
+   {D n1 |- path (app (M1 n1) (N1 n1)) P}
+
+Subgoal 3 is:
+ {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < case H6.
+Subgoal 3:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H3 : {D |- path N P}
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  ============================
+   {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < assert {D, pi q\path N1 q => path n1 q |- path N P}.
+Subgoal 3:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H3 : {D |- path N P}
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path N P}
+  ============================
+   {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < apply IH to _ H4 H5.
+Subgoal 3:
+
+  Variables: G, D, M, N, P, R, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred (beta R N1) N}@
+  H3 : {D |- path N P}
+  H4 : {G, pi u\bred N1 u => bred n1 u |- bred (R n1) N}*
+  H5 : {D, pi q\path N1 q => path n1 q |- path N P}
+  H6 : {D, pi q\path N1 q => path n1 q |- path (R n1) P}
+  ============================
+   {D |- path (beta R N1) P}
+
+Subgoal 4 is:
+ {D |- path M P}
+
+bred_rtl < search.
+Subgoal 4:
+
+  Variables: G, D, M, N, P, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path N P}
+  H4 : {G, [F] |- bred M N}*
+  H5 : member F G
+  ============================
+   {D |- path M P}
+
+bred_rtl < apply ctx2_mem_G to H1 H5.
+Subgoal 4:
+
+  Variables: G, D, M, N, P, F
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path N P}
+  H4 : {G, [F] |- bred M N}*
+  H5 : member F G
+  H6 : (exists x, F = bred x x /\ name x) \/ (exists x N,
+         F = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   {D |- path M P}
+
+bred_rtl < case H6.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path N P}
+  H4 : {G, [bred x x] |- bred M N}*
+  H5 : member (bred x x) G
+  H7 : name x
+  ============================
+   {D |- path M P}
+
+Subgoal 4.2 is:
+ {D |- path M P}
+
+bred_rtl < case H7.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (M n1) (N n1)}@
+  H3 : {D n1 |- path (N n1) P}
+  H4 : {G n1, [bred n1 n1] |- bred (M n1) (N n1)}*
+  H5 : member (bred n1 n1) (G n1)
+  ============================
+   {D n1 |- path (M n1) P}
+
+Subgoal 4.2 is:
+ {D |- path M P}
+
+bred_rtl < case H4.
+Subgoal 4.1:
+
+  Variables: G, D, M, N, P, F, x
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 n1}@
+  H3 : {D n1 |- path n1 P}
+  H5 : member (bred n1 n1) (G n1)
+  ============================
+   {D n1 |- path n1 P}
+
+Subgoal 4.2 is:
+ {D |- path M P}
+
+bred_rtl < search.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 G D
+  H2 : {G |- bred M N}@
+  H3 : {D |- path N P}
+  H4 : {G, [pi u\bred N1 u => bred x u] |- bred M N}*
+  H5 : member (pi u\bred N1 u => bred x u) G
+  H7 : fresh x N1
+  ============================
+   {D |- path M P}
+
+bred_rtl < case H7.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred (M n1) (N n1)}@
+  H3 : {D n1 |- path (N n1) P}
+  H4 : {G n1, [pi u\bred X u => bred n1 u] |- bred (M n1) (N n1)}*
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  ============================
+   {D n1 |- path (M n1) P}
+
+bred_rtl < case H4.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path (N n1) P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  ============================
+   {D n1 |- path n1 P}
+
+bred_rtl < apply IH to H1 H8 H3.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path (N n1) P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : {D n1 |- path X P}
+  ============================
+   {D n1 |- path n1 P}
+
+bred_rtl < apply ctx2_uniform to H1 H5.
+Subgoal 4.2:
+
+  Variables: G, D, M, N, P, F, x, N1, X
+  IH : forall G D M N P, ctx2 G D -> {G |- bred M N}* -> {D |- path N P} ->
+         {D |- path M P}
+  H1 : ctx2 (G n1) (D n1)
+  H2 : {G n1 |- bred n1 (N n1)}@
+  H3 : {D n1 |- path (N n1) P}
+  H5 : member (pi u\bred X u => bred n1 u) (G n1)
+  H8 : {G n1 |- bred X (N n1)}*
+  H9 : {D n1 |- path X P}
+  H10 : member (pi q\path X q => path n1 q) (D n1)
+  ============================
+   {D n1 |- path n1 P}
+
+bred_rtl < search.
+Proof completed.
+
+Abella < Define bfctx : olist -> olist -> prop by 
+bfctx nil nil;
+nabla n p, bfctx (bfree n :: L) (path n p :: K) := bfctx L K.
+
+Abella < Theorem member_prune_path : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune_path < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune_path < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune_path < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune_path < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune_path < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune_path < search.
+Proof completed.
+
+Abella < Theorem bfctx_member1 : 
+forall X L K, bfctx L K -> member X L -> (exists E F, X = bfree E /\
+  name E /\ member (path E F) K /\ pname F).
+
+
+  ============================
+   forall X L K, bfctx L K -> member X L -> (exists E F, X = bfree E /\
+     name E /\ member (path E F) K /\ pname F)
+
+bfctx_member1 < induction on 1.
+
+
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  ============================
+   forall X L K, bfctx L K @ -> member X L -> (exists E F, X = bfree E /\
+     name E /\ member (path E F) K /\ pname F)
+
+bfctx_member1 < intros.
+
+  Variables: X, L, K
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H1 : bfctx L K @
+  H2 : member X L
+  ============================
+   exists E F, X = bfree E /\ name E /\ member (path E F) K /\ pname F
+
+bfctx_member1 < case H1.
+Subgoal 1:
+
+  Variables: X, L, K
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H2 : member X nil
+  ============================
+   exists E F, X = bfree E /\ name E /\ member (path E F) nil /\ pname F
+
+Subgoal 2 is:
+ exists E F, X n1 n2 = bfree E /\ name E /\
+   member (path E F) (path n1 n2 :: K1) /\ pname F
+
+bfctx_member1 < case H2.
+Subgoal 2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H2 : member (X n1 n2) (bfree n1 :: L1)
+  H3 : bfctx L1 K1 *
+  ============================
+   exists E F, X n1 n2 = bfree E /\ name E /\
+     member (path E F) (path n1 n2 :: K1) /\ pname F
+
+bfctx_member1 < case H2.
+Subgoal 2.1:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H3 : bfctx L1 K1 *
+  ============================
+   exists E F, bfree n1 = bfree E /\ name E /\
+     member (path E F) (path n1 n2 :: K1) /\ pname F
+
+Subgoal 2.2 is:
+ exists E F, X n1 n2 = bfree E /\ name E /\
+   member (path E F) (path n1 n2 :: K1) /\ pname F
+
+bfctx_member1 < search.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H3 : bfctx L1 K1 *
+  H4 : member (X n1 n2) L1
+  ============================
+   exists E F, X n1 n2 = bfree E /\ name E /\
+     member (path E F) (path n1 n2 :: K1) /\ pname F
+
+bfctx_member1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1, E, F
+  IH : forall X L K, bfctx L K * -> member X L -> (exists E F, X = bfree E /\
+         name E /\ member (path E F) K /\ pname F)
+  H3 : bfctx L1 K1 *
+  H4 : member (bfree (E n1)) L1
+  H5 : name (E n1)
+  H6 : member (path (E n1) (F n2)) K1
+  H7 : pname (F n2)
+  ============================
+   exists E1 F, bfree (E n1) = bfree E1 /\ name E1 /\
+     member (path E1 F) (path n1 n2 :: K1) /\ pname F
+
+bfctx_member1 < search.
+Proof completed.
+
+Abella < Theorem bfctx_member2 : 
+forall X L K, bfctx L K -> member X K -> (exists E F, X = path E F /\
+  name E /\ pname F).
+
+
+  ============================
+   forall X L K, bfctx L K -> member X K -> (exists E F, X = path E F /\
+     name E /\ pname F)
+
+bfctx_member2 < induction on 1.
+
+
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  ============================
+   forall X L K, bfctx L K @ -> member X K -> (exists E F, X = path E F /\
+     name E /\ pname F)
+
+bfctx_member2 < intros.
+
+  Variables: X, L, K
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H1 : bfctx L K @
+  H2 : member X K
+  ============================
+   exists E F, X = path E F /\ name E /\ pname F
+
+bfctx_member2 < case H1.
+Subgoal 1:
+
+  Variables: X, L, K
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H2 : member X nil
+  ============================
+   exists E F, X = path E F /\ name E /\ pname F
+
+Subgoal 2 is:
+ exists E F, X n1 n2 = path E F /\ name E /\ pname F
+
+bfctx_member2 < case H2.
+Subgoal 2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H2 : member (X n1 n2) (path n1 n2 :: K1)
+  H3 : bfctx L1 K1 *
+  ============================
+   exists E F, X n1 n2 = path E F /\ name E /\ pname F
+
+bfctx_member2 < case H2.
+Subgoal 2.1:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H3 : bfctx L1 K1 *
+  ============================
+   exists E F, path n1 n2 = path E F /\ name E /\ pname F
+
+Subgoal 2.2 is:
+ exists E F, X n1 n2 = path E F /\ name E /\ pname F
+
+bfctx_member2 < search.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H3 : bfctx L1 K1 *
+  H4 : member (X n1 n2) K1
+  ============================
+   exists E F, X n1 n2 = path E F /\ name E /\ pname F
+
+bfctx_member2 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1, E, F
+  IH : forall X L K, bfctx L K * -> member X K -> (exists E F,
+         X = path E F /\ name E /\ pname F)
+  H3 : bfctx L1 K1 *
+  H4 : member (path (E n1) (F n2)) K1
+  H5 : name (E n1)
+  H6 : pname (F n2)
+  ============================
+   exists E1 F1, path (E n1) (F n2) = path E1 F1 /\ name E1 /\ pname F1
+
+bfctx_member2 < search.
+Proof completed.
+
+Abella < Theorem member_path_unique : 
+forall L K X Y F, bfctx L K -> member (path X F) K -> member (path Y F) K ->
+  X = Y.
+
+
+  ============================
+   forall L K X Y F, bfctx L K -> member (path X F) K ->
+     member (path Y F) K -> X = Y
+
+member_path_unique < induction on 2.
+
+
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  ============================
+   forall L K X Y F, bfctx L K -> member (path X F) K @ ->
+     member (path Y F) K -> X = Y
+
+member_path_unique < intros.
+
+  Variables: L, K, X, Y, F
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L K
+  H2 : member (path X F) K @
+  H3 : member (path Y F) K
+  ============================
+   X = Y
+
+member_path_unique < case H2.
+Subgoal 1:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (path X F :: L1)
+  H3 : member (path Y F) (path X F :: L1)
+  ============================
+   X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < case H3.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (path X F :: L1)
+  ============================
+   X = X
+
+Subgoal 1.2 is:
+ X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < search.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (path X F :: L1)
+  H4 : member (path Y F) L1
+  ============================
+   X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < case H1.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, F, L1, K1, L2
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (Y n1) n2) K1
+  H5 : bfctx L2 K1
+  ============================
+   n1 = Y n1
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < apply member_prune_path to H4.
+Subgoal 2:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (B :: L1)
+  H3 : member (path Y F) (B :: L1)
+  H4 : member (path X F) L1 *
+  ============================
+   X = Y
+
+member_path_unique < case H3.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (path Y F :: L1)
+  H4 : member (path X F) L1 *
+  ============================
+   X = Y
+
+Subgoal 2.2 is:
+ X = Y
+
+member_path_unique < case H1.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (X n1) n2) K1 *
+  H5 : bfctx L2 K1
+  ============================
+   X n1 = n1
+
+Subgoal 2.2 is:
+ X = Y
+
+member_path_unique < apply member_prune_path to H4.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : bfctx L (B :: L1)
+  H4 : member (path X F) L1 *
+  H5 : member (path Y F) L1
+  ============================
+   X = Y
+
+member_path_unique < case H1.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (X n1) (F n2)) K1 *
+  H5 : member (path (Y n1) (F n2)) K1
+  H6 : bfctx L2 K1
+  ============================
+   X n1 = Y n1
+
+member_path_unique < apply IH to H6 H4 H5.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, bfctx L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (Y n1) (F n2)) K1 *
+  H5 : member (path (Y n1) (F n2)) K1
+  H6 : bfctx L2 K1
+  ============================
+   Y n1 = Y n1
+
+member_path_unique < search.
+Proof completed.
+
+Abella < Theorem path_exists : 
+forall L K M, bfctx L K -> {L |- bfree M} -> (exists P, {K |- path M P}).
+
+
+  ============================
+   forall L K M, bfctx L K -> {L |- bfree M} -> (exists P, {K |- path M P})
+
+path_exists < induction on 2.
+
+
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  ============================
+   forall L K M, bfctx L K -> {L |- bfree M}@ -> (exists P, {K |- path M P})
+
+path_exists < intros.
+
+  Variables: L, K, M
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, M1
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L, bfree n1 |- bfree (M1 n1)}*
+  ============================
+   exists P, {K |- path (abs M1) P}
+
+Subgoal 2 is:
+ exists P, {K |- path (app M1 N) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < assert bfctx (bfree n1 :: L) (path n1 n2 :: K).
+Subgoal 1:
+
+  Variables: L, K, M, M1
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L, bfree n1 |- bfree (M1 n1)}*
+  H4 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  ============================
+   exists P, {K |- path (abs M1) P}
+
+Subgoal 2 is:
+ exists P, {K |- path (app M1 N) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < apply IH to H4 H3.
+Subgoal 1:
+
+  Variables: L, K, M, M1, P
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L, bfree n1 |- bfree (M1 n1)}*
+  H4 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H5 : {K, path n1 n2 |- path (M1 n1) (P n2)}
+  ============================
+   exists P, {K |- path (abs M1) P}
+
+Subgoal 2 is:
+ exists P, {K |- path (app M1 N) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < search.
+Subgoal 2:
+
+  Variables: L, K, M, N, M1
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L |- bfree M1}*
+  H4 : {L |- bfree N}*
+  ============================
+   exists P, {K |- path (app M1 N) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < apply IH to H1 H3.
+Subgoal 2:
+
+  Variables: L, K, M, N, M1, P
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L |- bfree M1}*
+  H4 : {L |- bfree N}*
+  H5 : {K |- path M1 P}
+  ============================
+   exists P, {K |- path (app M1 N) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < search.
+Subgoal 3:
+
+  Variables: L, K, M, F
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L, [F] |- bfree M}*
+  H4 : member F L
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < apply bfctx_member1 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, F, E, F1
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H3 : {L, [bfree E] |- bfree M}*
+  H4 : member (bfree E) L
+  H5 : name E
+  H6 : member (path E F1) K
+  H7 : pname F1
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < case H3.
+Subgoal 3:
+
+  Variables: L, K, M, F, E, F1
+  IH : forall L K M, bfctx L K -> {L |- bfree M}* -> (exists P,
+         {K |- path M P})
+  H1 : bfctx L K
+  H4 : member (bfree M) L
+  H5 : name M
+  H6 : member (path M F1) K
+  H7 : pname F1
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < search.
+Proof completed.
+
+Abella < Theorem bfree_beta_absurd : 
+forall L K R N, bfctx L K -> {L |- bfree (beta R N)} -> false.
+
+
+  ============================
+   forall L K R N, bfctx L K -> {L |- bfree (beta R N)} -> false
+
+bfree_beta_absurd < intros.
+
+  Variables: L, K, R, N
+  H1 : bfctx L K
+  H2 : {L |- bfree (beta R N)}
+  ============================
+   false
+
+bfree_beta_absurd < case H2.
+
+  Variables: L, K, R, N, F
+  H1 : bfctx L K
+  H3 : {L, [F] |- bfree (beta R N)}
+  H4 : member F L
+  ============================
+   false
+
+bfree_beta_absurd < apply bfctx_member1 to H1 H4.
+
+  Variables: L, K, R, N, F, E, F1
+  H1 : bfctx L K
+  H3 : {L, [bfree E] |- bfree (beta R N)}
+  H4 : member (bfree E) L
+  H5 : name E
+  H6 : member (path E F1) K
+  H7 : pname F1
+  ============================
+   false
+
+bfree_beta_absurd < case H5.
+
+  Variables: L, K, R, N, F, E, F1
+  H1 : bfctx (L n1) (K n1)
+  H3 : {L n1, [bfree n1] |- bfree (beta (R n1) (N n1))}
+  H4 : member (bfree n1) (L n1)
+  H6 : member (path n1 F1) (K n1)
+  H7 : pname F1
+  ============================
+   false
+
+bfree_beta_absurd < case H3.
+Proof completed.
+
+Abella < Theorem path_app : 
+forall L K M N Y, bfctx L K -> {L |- bfree (app M N)} -> {L |- bfree Y} ->
+  (forall P, {K |- path (app M N) P} -> {K |- path Y P}) -> (exists YM YN,
+  Y = app YM YN).
+
+
+  ============================
+   forall L K M N Y, bfctx L K -> {L |- bfree (app M N)} -> {L |- bfree Y} ->
+     (forall P, {K |- path (app M N) P} -> {K |- path Y P}) -> (exists YM YN,
+     Y = app YM YN)
+
+path_app < intros.
+
+  Variables: L, K, M, N, Y
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M N)}
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply path_exists to H1 H5.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < assert {K |- path (app M N) (left P)}.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply H4 to H8.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  H9 : {K |- path Y (left P)}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H9.
+Subgoal 1.1:
+
+  Variables: L, K, M, N, Y, P, M1, N1
+  H1 : bfctx L K
+  H3 : {L |- bfree (app M1 N1)}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path (app M1 N1) P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  H10 : {K |- path M1 P}
+  ============================
+   exists YM YN, app M1 N1 = app YM YN
+
+Subgoal 1.2 is:
+ exists YM YN, beta R N1 = app YM YN
+
+Subgoal 1.3 is:
+ exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < search.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, Y, P, R, N1
+  H1 : bfctx L K
+  H3 : {L |- bfree (beta R N1)}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path (beta R N1) P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  H10 : {K, pi q\path N1 q => path n1 q |- path (R n1) (left P)}
+  ============================
+   exists YM YN, beta R N1 = app YM YN
+
+Subgoal 1.3 is:
+ exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply bfree_beta_absurd to H1 H3.
+Subgoal 1.3:
+
+  Variables: L, K, M, N, Y, P, F
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  H10 : {K, [F] |- path Y (left P)}
+  H11 : member F K
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply bfctx_member2 to H1 H11.
+Subgoal 1.3:
+
+  Variables: L, K, M, N, Y, P, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L |- bfree M}
+  H6 : {L |- bfree N}
+  H7 : {K |- path M P}
+  H8 : {K |- path (app M N) (left P)}
+  H10 : {K, [path E F1] |- path Y (left P)}
+  H11 : member (path E F1) K
+  H12 : name E
+  H13 : pname F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H13.
+Subgoal 1.3:
+
+  Variables: L, K, M, N, Y, P, F, E, F1
+  H1 : bfctx (L n1) (K n1)
+  H3 : {L n1 |- bfree Y}
+  H4 : forall P, {K n1 |- path (app M N) P} -> {K n1 |- path Y P}
+  H5 : {L n1 |- bfree M}
+  H6 : {L n1 |- bfree N}
+  H7 : {K n1 |- path M (P n1)}
+  H8 : {K n1 |- path (app M N) (left (P n1))}
+  H10 : {K n1, [path E n1] |- path Y (left (P n1))}
+  H11 : member (path E n1) (K n1)
+  H12 : name E
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H10.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L, [F] |- bfree (app M N)}
+  H6 : member F L
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < apply bfctx_member1 to H1 H6.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : {L, [bfree E] |- bfree (app M N)}
+  H6 : member (bfree E) L
+  H7 : name E
+  H8 : member (path E F1) K
+  H9 : pname F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H5.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H6 : member (bfree (app M N)) L
+  H7 : name (app M N)
+  H8 : member (path (app M N) F1) K
+  H9 : pname F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H7.
+Proof completed.
+
+Abella < Theorem path_abs : 
+forall L K R Y, bfctx L K -> {L |- bfree (abs R)} -> {L |- bfree Y} ->
+  (forall P, {K |- path (abs R) P} -> {K |- path Y P}) -> (exists YR,
+  Y = abs YR).
+
+
+  ============================
+   forall L K R Y, bfctx L K -> {L |- bfree (abs R)} -> {L |- bfree Y} ->
+     (forall P, {K |- path (abs R) P} -> {K |- path Y P}) -> (exists YR,
+     Y = abs YR)
+
+path_abs < intros.
+
+  Variables: L, K, R, Y
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs R)}
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H2.
+Subgoal 1:
+
+  Variables: L, K, R, Y
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < assert bfctx (bfree n1 :: L) (path n1 n2 :: K).
+Subgoal 1:
+
+  Variables: L, K, R, Y
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply path_exists to H6 H5.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < assert {K |- path (abs R) (bnd P)}.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply H4 to H8.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H9 : {K |- path Y (bnd P)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H9.
+Subgoal 1.1:
+
+  Variables: L, K, R, Y, P, M
+  H1 : bfctx L K
+  H3 : {L |- bfree (abs M)}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path (abs M) P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H10 : {K, path n1 n2 |- path (M n1) (P n2)}
+  ============================
+   exists YR, abs M = abs YR
+
+Subgoal 1.2 is:
+ exists YR, beta R1 N = abs YR
+
+Subgoal 1.3 is:
+ exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < search.
+Subgoal 1.2:
+
+  Variables: L, K, R, Y, P, R1, N
+  H1 : bfctx L K
+  H3 : {L |- bfree (beta R1 N)}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path (beta R1 N) P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H10 : {K, pi q\path N q => path n1 q |- path (R1 n1) (bnd P)}
+  ============================
+   exists YR, beta R1 N = abs YR
+
+Subgoal 1.3 is:
+ exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply bfree_beta_absurd to H1 H3.
+Subgoal 1.3:
+
+  Variables: L, K, R, Y, P, F
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H10 : {K, [F] |- path Y (bnd P)}
+  H11 : member F K
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply bfctx_member2 to H1 H11.
+Subgoal 1.3:
+
+  Variables: L, K, R, Y, P, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H10 : {K, [path E F1] |- path Y (bnd P)}
+  H11 : member (path E F1) K
+  H12 : name E
+  H13 : pname F1
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H10.
+Subgoal 1.3:
+
+  Variables: L, K, R, Y, P, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, bfree n1 |- bfree (R n1)}
+  H6 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  H7 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H8 : {K |- path (abs R) (bnd P)}
+  H11 : member (path Y (bnd P)) K
+  H12 : name Y
+  H13 : pname (bnd P)
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H13.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, [F] |- bfree (abs R)}
+  H6 : member F L
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < apply bfctx_member1 to H1 H6.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : {L, [bfree E] |- bfree (abs R)}
+  H6 : member (bfree E) L
+  H7 : name E
+  H8 : member (path E F1) K
+  H9 : pname F1
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H5.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F, E, F1
+  H1 : bfctx L K
+  H3 : {L |- bfree Y}
+  H4 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H6 : member (bfree (abs R)) L
+  H7 : name (abs R)
+  H8 : member (path (abs R) F1) K
+  H9 : pname F1
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H7.
+Proof completed.
+
+Abella < Theorem bfree_sames : 
+forall L K M N, bfctx L K -> {L |- bfree M} -> {L |- bfree N} -> (forall p,
+  {K |- path M p} -> {K |- path N p}) -> M = N.
+
+
+  ============================
+   forall L K M N, bfctx L K -> {L |- bfree M} -> {L |- bfree N} ->
+     (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+
+bfree_sames < induction on 2.
+
+
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  ============================
+   forall L K M N, bfctx L K -> {L |- bfree M}@ -> {L |- bfree N} ->
+     (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+
+bfree_sames < intros.
+
+  Variables: L, K, M, N
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  ============================
+   M = N
+
+bfree_sames < case H2 (keep).
+Subgoal 1:
+
+  Variables: L, K, M, N, M1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path N p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  ============================
+   abs M1 = N
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply path_abs to H1 H2 H3 H4.
+Subgoal 1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H3 : {L |- bfree (abs YR)}
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  ============================
+   abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H3.
+Subgoal 1.1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  ============================
+   abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert forall p, {K, path n1 n2 |- path (M1 n1) p} ->
+  {K, path n1 n2 |- path (YR n1) p}.
+Subgoal 1.1.1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  ============================
+   forall p, {K, path n1 n2 |- path (M1 n1) p} ->
+     {K, path n1 n2 |- path (YR n1) p}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < intros.
+Subgoal 1.1.1:
+
+  Variables: L, K, M, N, M1, YR, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert {K |- path (abs M1) (bnd p)}.
+Subgoal 1.1.1:
+
+  Variables: L, K, M, N, M1, YR, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  H8 : {K |- path (abs M1) (bnd p)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply H4 to H8.
+Subgoal 1.1.1:
+
+  Variables: L, K, M, N, M1, YR, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  H8 : {K |- path (abs M1) (bnd p)}
+  H9 : {K |- path (abs YR) (bnd p)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H9.
+Subgoal 1.1.1.1:
+
+  Variables: L, K, M, N, M1, YR, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  H8 : {K |- path (abs M1) (bnd p)}
+  H10 : {K, path n1 n2 |- path (YR n1) (p n2)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1.1.2 is:
+ {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < search.
+Subgoal 1.1.1.2:
+
+  Variables: L, K, M, N, M1, YR, p, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  H8 : {K |- path (abs M1) (bnd p)}
+  H10 : {K, [F] |- path (abs YR) (bnd p)}
+  H11 : member F K
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply bfctx_member2 to H1 H11.
+Subgoal 1.1.1.2:
+
+  Variables: L, K, M, N, M1, YR, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : {K, path n1 n2 |- path (M1 n1) (p n2)}
+  H8 : {K |- path (abs M1) (bnd p)}
+  H10 : {K, [path E F1] |- path (abs YR) (bnd p)}
+  H11 : member (path E F1) K
+  H12 : name E
+  H13 : pname F1
+  ============================
+   {K, path n1 n2 |- path (YR n1) (p n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H13.
+Subgoal 1.1.1.2:
+
+  Variables: L, K, M, N, M1, YR, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n3) (K n3)
+  H2 : {L n3 |- bfree (abs M1)}@
+  H4 : forall p, {K n3 |- path (abs M1) p} -> {K n3 |- path (abs YR) p}
+  H5 : {L n3, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L n3, bfree n1 |- bfree (YR n1)}
+  H7 : {K n3, path n1 n2 |- path (M1 n1) (p n3 n2)}
+  H8 : {K n3 |- path (abs M1) (bnd (p n3))}
+  H10 : {K n3, [path E n3] |- path (abs YR) (bnd (p n3))}
+  H11 : member (path E n3) (K n3)
+  H12 : name E
+  ============================
+   {K n3, path n1 n2 |- path (YR n1) (p n3 n2)}
+
+Subgoal 1.1 is:
+ abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H10.
+Subgoal 1.1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : forall p, {K, path n1 n2 |- path (M1 n1) p} ->
+         {K, path n1 n2 |- path (YR n1) p}
+  ============================
+   abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert bfctx (bfree n1 :: L) (path n1 n2 :: K).
+Subgoal 1.1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : forall p, {K, path n1 n2 |- path (M1 n1) p} ->
+         {K, path n1 n2 |- path (YR n1) p}
+  H8 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  ============================
+   abs M1 = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply IH to H8 H5 H6 H7.
+Subgoal 1.1:
+
+  Variables: L, K, M, N, M1, YR
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs (z1\YR z1))}@
+  H4 : forall p, {K |- path (abs (z1\YR z1)) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (YR n1)}*
+  H6 : {L, bfree n1 |- bfree (YR n1)}
+  H7 : forall p, {K, path n1 n2 |- path (YR n1) p} ->
+         {K, path n1 n2 |- path (YR n1) p}
+  H8 : bfctx (bfree n1 :: L) (path n1 n2 :: K)
+  ============================
+   abs (z1\YR z1) = abs YR
+
+Subgoal 1.2 is:
+ abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < search.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, M1, YR, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, [F] |- bfree (abs YR)}
+  H7 : member F L
+  ============================
+   abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply bfctx_member1 to H1 H7.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, M1, YR, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (abs M1)}@
+  H4 : forall p, {K |- path (abs M1) p} -> {K |- path (abs YR) p}
+  H5 : {L, bfree n1 |- bfree (M1 n1)}*
+  H6 : {L, [bfree E] |- bfree (abs YR)}
+  H7 : member (bfree E) L
+  H8 : name E
+  H9 : member (path E F1) K
+  H10 : pname F1
+  ============================
+   abs M1 = abs YR
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H8.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, M1, YR, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n2) (K n2)
+  H2 : {L n2 |- bfree (abs (M1 n2))}@
+  H4 : forall p, {K n2 |- path (abs (M1 n2)) p} ->
+         {K n2 |- path (abs (YR n2)) p}
+  H5 : {L n2, bfree n1 |- bfree (M1 n2 n1)}*
+  H6 : {L n2, [bfree n2] |- bfree (abs (YR n2))}
+  H7 : member (bfree n2) (L n2)
+  H9 : member (path n2 F1) (K n2)
+  H10 : pname F1
+  ============================
+   abs (M1 n2) = abs (YR n2)
+
+Subgoal 2 is:
+ app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H6.
+Subgoal 2:
+
+  Variables: L, K, M, N, N1, M1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path N p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  ============================
+   app M1 N1 = N
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply path_app to H1 H2 H3 H4.
+Subgoal 2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H3 : {L |- bfree (app YM YN)}
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  ============================
+   app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H3.
+Subgoal 2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  ============================
+   app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert forall p, {K |- path M1 p} -> {K |- path YM p}.
+Subgoal 2.1.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  ============================
+   forall p, {K |- path M1 p} -> {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < intros.
+Subgoal 2.1.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert {K |- path (app M1 N1) (left p)}.
+Subgoal 2.1.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  H10 : {K |- path (app M1 N1) (left p)}
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply H4 to H10.
+Subgoal 2.1.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  H10 : {K |- path (app M1 N1) (left p)}
+  H11 : {K |- path (app YM YN) (left p)}
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H11.
+Subgoal 2.1.1.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  H10 : {K |- path (app M1 N1) (left p)}
+  H12 : {K |- path YM p}
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1.1.2 is:
+ {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < search.
+Subgoal 2.1.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  H10 : {K |- path (app M1 N1) (left p)}
+  H12 : {K, [F] |- path (app YM YN) (left p)}
+  H13 : member F K
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply bfctx_member2 to H1 H13.
+Subgoal 2.1.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : {K |- path M1 p}
+  H10 : {K |- path (app M1 N1) (left p)}
+  H12 : {K, [path E F1] |- path (app YM YN) (left p)}
+  H13 : member (path E F1) K
+  H14 : name E
+  H15 : pname F1
+  ============================
+   {K |- path YM p}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H15.
+Subgoal 2.1.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree (app M1 N1)}@
+  H4 : forall p, {K n1 |- path (app M1 N1) p} -> {K n1 |- path (app YM YN) p}
+  H5 : {L n1 |- bfree M1}*
+  H6 : {L n1 |- bfree N1}*
+  H7 : {L n1 |- bfree YM}
+  H8 : {L n1 |- bfree YN}
+  H9 : {K n1 |- path M1 (p n1)}
+  H10 : {K n1 |- path (app M1 N1) (left (p n1))}
+  H12 : {K n1, [path E n1] |- path (app YM YN) (left (p n1))}
+  H13 : member (path E n1) (K n1)
+  H14 : name E
+  ============================
+   {K n1 |- path YM (p n1)}
+
+Subgoal 2.1 is:
+ app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H12.
+Subgoal 2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path M1 p} -> {K |- path YM p}
+  ============================
+   app M1 N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply IH to H1 H5 H7 H9.
+Subgoal 2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  ============================
+   app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert forall p, {K |- path N1 p} -> {K |- path YN p}.
+Subgoal 2.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  ============================
+   forall p, {K |- path N1 p} -> {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < intros.
+Subgoal 2.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < assert {K |- path (app M1 N1) (right p)}.
+Subgoal 2.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  H11 : {K |- path (app YM N1) (right p)}
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply H4 to H11.
+Subgoal 2.1.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  H11 : {K |- path (app YM N1) (right p)}
+  H12 : {K |- path (app YM YN) (right p)}
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H12.
+Subgoal 2.1.2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  H11 : {K |- path (app YM N1) (right p)}
+  H13 : {K |- path YN p}
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1.2.2 is:
+ {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < search.
+Subgoal 2.1.2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  H11 : {K |- path (app YM N1) (right p)}
+  H13 : {K, [F] |- path (app YM YN) (right p)}
+  H14 : member F K
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply bfctx_member2 to H1 H14.
+Subgoal 2.1.2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : {K |- path N1 p}
+  H11 : {K |- path (app YM N1) (right p)}
+  H13 : {K, [path E F1] |- path (app YM YN) (right p)}
+  H14 : member (path E F1) K
+  H15 : name E
+  H16 : pname F1
+  ============================
+   {K |- path YN p}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H16.
+Subgoal 2.1.2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, p, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree (app YM N1)}@
+  H4 : forall p, {K n1 |- path (app YM N1) p} -> {K n1 |- path (app YM YN) p}
+  H5 : {L n1 |- bfree YM}*
+  H6 : {L n1 |- bfree N1}*
+  H7 : {L n1 |- bfree YM}
+  H8 : {L n1 |- bfree YN}
+  H9 : forall p, {K n1 |- path YM p} -> {K n1 |- path YM p}
+  H10 : {K n1 |- path N1 (p n1)}
+  H11 : {K n1 |- path (app YM N1) (right (p n1))}
+  H13 : {K n1, [path E n1] |- path (app YM YN) (right (p n1))}
+  H14 : member (path E n1) (K n1)
+  H15 : name E
+  ============================
+   {K n1 |- path YN (p n1)}
+
+Subgoal 2.1 is:
+ app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H13.
+Subgoal 2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM N1)}@
+  H4 : forall p, {K |- path (app YM N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree N1}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : forall p, {K |- path N1 p} -> {K |- path YN p}
+  ============================
+   app YM N1 = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply IH to H1 H6 H8 H10.
+Subgoal 2.1:
+
+  Variables: L, K, M, N, N1, M1, YM, YN
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app YM YN)}@
+  H4 : forall p, {K |- path (app YM YN) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree YM}*
+  H6 : {L |- bfree YN}*
+  H7 : {L |- bfree YM}
+  H8 : {L |- bfree YN}
+  H9 : forall p, {K |- path YM p} -> {K |- path YM p}
+  H10 : forall p, {K |- path YN p} -> {K |- path YN p}
+  ============================
+   app YM YN = app YM YN
+
+Subgoal 2.2 is:
+ app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < search.
+Subgoal 2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L, [F] |- bfree (app YM YN)}
+  H8 : member F L
+  ============================
+   app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < apply bfctx_member1 to H1 H8.
+Subgoal 2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree (app M1 N1)}@
+  H4 : forall p, {K |- path (app M1 N1) p} -> {K |- path (app YM YN) p}
+  H5 : {L |- bfree M1}*
+  H6 : {L |- bfree N1}*
+  H7 : {L, [bfree E] |- bfree (app YM YN)}
+  H8 : member (bfree E) L
+  H9 : name E
+  H10 : member (path E F1) K
+  H11 : pname F1
+  ============================
+   app M1 N1 = app YM YN
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H9.
+Subgoal 2.2:
+
+  Variables: L, K, M, N, N1, M1, YM, YN, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree (app (M1 n1) (N1 n1))}@
+  H4 : forall p, {K n1 |- path (app (M1 n1) (N1 n1)) p} ->
+         {K n1 |- path (app (YM n1) (YN n1)) p}
+  H5 : {L n1 |- bfree (M1 n1)}*
+  H6 : {L n1 |- bfree (N1 n1)}*
+  H7 : {L n1, [bfree n1] |- bfree (app (YM n1) (YN n1))}
+  H8 : member (bfree n1) (L n1)
+  H10 : member (path n1 F1) (K n1)
+  H11 : pname F1
+  ============================
+   app (M1 n1) (N1 n1) = app (YM n1) (YN n1)
+
+Subgoal 3 is:
+ M = N
+
+bfree_sames < case H7.
+Subgoal 3:
+
+  Variables: L, K, M, N, F
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  H5 : {L, [F] |- bfree M}*
+  H6 : member F L
+  ============================
+   M = N
+
+bfree_sames < apply bfctx_member1 to H1 H6.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  H5 : {L, [bfree E] |- bfree M}*
+  H6 : member (bfree E) L
+  H7 : name E
+  H8 : member (path E F1) K
+  H9 : pname F1
+  ============================
+   M = N
+
+bfree_sames < case H5.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  H6 : member (bfree M) L
+  H7 : name M
+  H8 : member (path M F1) K
+  H9 : pname F1
+  ============================
+   M = N
+
+bfree_sames < assert {K |- path M F1}.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  H6 : member (bfree M) L
+  H7 : name M
+  H8 : member (path M F1) K
+  H9 : pname F1
+  H10 : {K |- path M F1}
+  ============================
+   M = N
+
+bfree_sames < apply H4 to H10.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx L K
+  H2 : {L |- bfree M}@
+  H3 : {L |- bfree N}
+  H4 : forall p, {K |- path M p} -> {K |- path N p}
+  H6 : member (bfree M) L
+  H7 : name M
+  H8 : member (path M F1) K
+  H9 : pname F1
+  H10 : {K |- path M F1}
+  H11 : {K |- path N F1}
+  ============================
+   M = N
+
+bfree_sames < case H9.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, E, F1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree M}@
+  H3 : {L n1 |- bfree N}
+  H4 : forall p, {K n1 |- path M p} -> {K n1 |- path N p}
+  H6 : member (bfree M) (L n1)
+  H7 : name M
+  H8 : member (path M n1) (K n1)
+  H10 : {K n1 |- path M n1}
+  H11 : {K n1 |- path N n1}
+  ============================
+   M = N
+
+bfree_sames < case H11.
+Subgoal 3.1:
+
+  Variables: L, K, M, N, F, E, F1, R, N1
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree M}@
+  H3 : {L n1 |- bfree (beta R N1)}
+  H4 : forall p, {K n1 |- path M p} -> {K n1 |- path (beta R N1) p}
+  H6 : member (bfree M) (L n1)
+  H7 : name M
+  H8 : member (path M n1) (K n1)
+  H10 : {K n1 |- path M n1}
+  H12 : {K n1, pi q\path N1 q => path n2 q |- path (R n2) n1}
+  ============================
+   M = beta R N1
+
+Subgoal 3.2 is:
+ M = N
+
+bfree_sames < apply bfree_beta_absurd to H1 H3.
+Subgoal 3.2:
+
+  Variables: L, K, M, N, F, E, F1, F2
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree M}@
+  H3 : {L n1 |- bfree N}
+  H4 : forall p, {K n1 |- path M p} -> {K n1 |- path N p}
+  H6 : member (bfree M) (L n1)
+  H7 : name M
+  H8 : member (path M n1) (K n1)
+  H10 : {K n1 |- path M n1}
+  H12 : {K n1, [F2 n1] |- path N n1}
+  H13 : member (F2 n1) (K n1)
+  ============================
+   M = N
+
+bfree_sames < apply bfctx_member2 to H1 H13.
+Subgoal 3.2:
+
+  Variables: L, K, M, N, F, E, F1, F2, E1, F3
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree M}@
+  H3 : {L n1 |- bfree N}
+  H4 : forall p, {K n1 |- path M p} -> {K n1 |- path N p}
+  H6 : member (bfree M) (L n1)
+  H7 : name M
+  H8 : member (path M n1) (K n1)
+  H10 : {K n1 |- path M n1}
+  H12 : {K n1, [path E1 (F3 n1)] |- path N n1}
+  H13 : member (path E1 (F3 n1)) (K n1)
+  H14 : name E1
+  H15 : pname (F3 n1)
+  ============================
+   M = N
+
+bfree_sames < case H12.
+Subgoal 3.2:
+
+  Variables: L, K, M, N, F, E, F1, F2, E1, F3
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree M}@
+  H3 : {L n1 |- bfree N}
+  H4 : forall p, {K n1 |- path M p} -> {K n1 |- path N p}
+  H6 : member (bfree M) (L n1)
+  H7 : name M
+  H8 : member (path M n1) (K n1)
+  H10 : {K n1 |- path M n1}
+  H13 : member (path N n1) (K n1)
+  H14 : name N
+  H15 : pname n1
+  ============================
+   M = N
+
+bfree_sames < apply member_path_unique to H1 H8 H13.
+Subgoal 3.2:
+
+  Variables: L, K, M, N, F, E, F1, F2, E1, F3
+  IH : forall L K M N, bfctx L K -> {L |- bfree M}* -> {L |- bfree N} ->
+         (forall p, {K |- path M p} -> {K |- path N p}) -> M = N
+  H1 : bfctx (L n1) (K n1)
+  H2 : {L n1 |- bfree N}@
+  H3 : {L n1 |- bfree N}
+  H4 : forall p, {K n1 |- path N p} -> {K n1 |- path N p}
+  H6 : member (bfree N) (L n1)
+  H7 : name N
+  H8 : member (path N n1) (K n1)
+  H10 : {K n1 |- path N n1}
+  H13 : member (path N n1) (K n1)
+  H14 : name N
+  H15 : pname n1
+  ============================
+   N = N
+
+bfree_sames < search.
+Proof completed.
+
+Abella < Define brctx : olist -> olist -> prop by 
+brctx nil nil;
+nabla x, brctx (bred x x :: L) (bfree x :: K) := brctx L K;
+nabla x, brctx (pi u\bred N u => bred x u :: L) K := brctx L K.
+
+Abella < Theorem brctx_mem_1 : 
+forall L K E, brctx L K -> member E L -> (exists x, E = bred x x /\
+  name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N).
+
+
+  ============================
+   forall L K E, brctx L K -> member E L -> (exists x, E = bred x x /\
+     name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < induction on 1.
+
+
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   forall L K E, brctx L K @ -> member E L -> (exists x, E = bred x x /\
+     name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < intros.
+
+  Variables: L, K, E
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx L K @
+  H2 : member E L
+  ============================
+   (exists x, E = bred x x /\ name x) \/ (exists x N,
+     E = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H1 (keep).
+Subgoal 1:
+
+  Variables: L, K, E
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx nil nil @
+  H2 : member E nil
+  ============================
+   (exists x, E = bred x x /\ name x) \/ (exists x N,
+     E = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 2 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H2.
+Subgoal 2:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H2 : member (E n1) (bred n1 n1 :: L1)
+  H3 : brctx L1 K1 *
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H2.
+Subgoal 2.1:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H3 : brctx L1 K1 *
+  ============================
+   (exists x, bred n1 n1 = bred x x /\ name x) \/ (exists x N,
+     bred n1 n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 2.2 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < search.
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H3 : brctx L1 K1 *
+  H4 : member (E n1) L1
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H3 : brctx L1 K1 *
+  H4 : member (E n1) L1
+  H5 : (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+         E n1 = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H5.
+Subgoal 2.2.1:
+
+  Variables: L, K, E, K1, L1, x
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H3 : brctx L1 K1 *
+  H4 : member (bred (x n1) (x n1)) L1
+  H6 : name (x n1)
+  ============================
+   (exists x1, bred (x n1) (x n1) = bred x1 x1 /\ name x1) \/ (exists x1 N,
+     bred (x n1) (x n1) = pi u\bred N u => bred x1 u /\ fresh x1 N)
+
+Subgoal 2.2.2 is:
+ (exists x1, pi u\bred (N n1) u => bred (x n1) u = bred x1 x1 /\ name x1) \/
+   (exists x1 N1,
+   pi u\bred (N n1) u => bred (x n1) u = pi u\bred N1 u => bred x1 u /\
+   fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < search.
+Subgoal 2.2.2:
+
+  Variables: L, K, E, K1, L1, x, N
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (bred n1 n1 :: L1) (bfree n1 :: K1) @
+  H3 : brctx L1 K1 *
+  H4 : member (pi u\bred (N n1) u => bred (x n1) u) L1
+  H6 : fresh (x n1) (N n1)
+  ============================
+   (exists x1, pi u\bred (N n1) u => bred (x n1) u = bred x1 x1 /\
+     name x1) \/ (exists x1 N1,
+     pi u\bred (N n1) u => bred (x n1) u = pi u\bred N1 u => bred x1 u /\
+     fresh x1 N1)
+
+Subgoal 3 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < search.
+Subgoal 3:
+
+  Variables: L, K, E, K1, L1, N
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H2 : member (E n1) (pi u\bred N u => bred n1 u :: L1)
+  H3 : brctx L1 K1 *
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H2.
+Subgoal 3.1:
+
+  Variables: L, K, E, K1, L1, N
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H3 : brctx L1 K1 *
+  ============================
+   (exists x, pi u\bred N u => bred n1 u = bred x x /\ name x) \/
+     (exists x N1, pi u\bred N u => bred n1 u = pi u\bred N1 u => bred x u /\
+     fresh x N1)
+
+Subgoal 3.2 is:
+ (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+   E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < search.
+Subgoal 3.2:
+
+  Variables: L, K, E, K1, L1, N
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H3 : brctx L1 K1 *
+  H4 : member (E n1) L1
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: L, K, E, K1, L1, N
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H3 : brctx L1 K1 *
+  H4 : member (E n1) L1
+  H5 : (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+         E n1 = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   (exists x, E n1 = bred x x /\ name x) \/ (exists x N,
+     E n1 = pi u\bred N u => bred x u /\ fresh x N)
+
+brctx_mem_1 < case H5.
+Subgoal 3.2.1:
+
+  Variables: L, K, E, K1, L1, N, x
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H3 : brctx L1 K1 *
+  H4 : member (bred (x n1) (x n1)) L1
+  H6 : name (x n1)
+  ============================
+   (exists x1, bred (x n1) (x n1) = bred x1 x1 /\ name x1) \/ (exists x1 N,
+     bred (x n1) (x n1) = pi u\bred N u => bred x1 u /\ fresh x1 N)
+
+Subgoal 3.2.2 is:
+ (exists x1, pi u\bred (N1 n1) u => bred (x n1) u = bred x1 x1 /\ name x1) \/
+   (exists x1 N,
+   pi u\bred (N1 n1) u => bred (x n1) u = pi u\bred N u => bred x1 u /\
+   fresh x1 N)
+
+brctx_mem_1 < search.
+Subgoal 3.2.2:
+
+  Variables: L, K, E, K1, L1, N, x, N1
+  IH : forall L K E, brctx L K * -> member E L -> (exists x, E = bred x x /\
+         name x) \/ (exists x N, E = pi u\bred N u => bred x u /\ fresh x N)
+  H1 : brctx (pi u\bred N u => bred n1 u :: L1) K1 @
+  H3 : brctx L1 K1 *
+  H4 : member (pi u\bred (N1 n1) u => bred (x n1) u) L1
+  H6 : fresh (x n1) (N1 n1)
+  ============================
+   (exists x1, pi u\bred (N1 n1) u => bred (x n1) u = bred x1 x1 /\
+     name x1) \/ (exists x1 N,
+     pi u\bred (N1 n1) u => bred (x n1) u = pi u\bred N u => bred x1 u /\
+     fresh x1 N)
+
+brctx_mem_1 < search.
+Proof completed.
+
+Abella < Theorem brctx_sync : 
+forall L K, nabla x, brctx (L x) (K x) -> member (bred x x) (L x) ->
+  member (bfree x) (K x).
+
+
+  ============================
+   forall L K, nabla x, brctx (L x) (K x) -> member (bred x x) (L x) ->
+     member (bfree x) (K x)
+
+brctx_sync < induction on 1.
+
+
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  ============================
+   forall L K, nabla x, brctx (L x) (K x) @ -> member (bred x x) (L x) ->
+     member (bfree x) (K x)
+
+brctx_sync < intros.
+
+  Variables: L, K
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H1 : brctx (L n1) (K n1) @
+  H2 : member (bred n1 n1) (L n1)
+  ============================
+   member (bfree n1) (K n1)
+
+brctx_sync < case H1.
+Subgoal 1:
+
+  Variables: L, K
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H2 : member (bred n1 n1) nil
+  ============================
+   member (bfree n1) nil
+
+Subgoal 2 is:
+ member (bfree n1) (bfree n2 :: K1 n1)
+
+Subgoal 3 is:
+ member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < case H2.
+Subgoal 2:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H2 : member (bred n1 n1) (bred n2 n2 :: L1 n1)
+  H3 : brctx (L1 n1) (K1 n1) *
+  ============================
+   member (bfree n1) (bfree n2 :: K1 n1)
+
+Subgoal 3 is:
+ member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < case H2.
+Subgoal 2:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx (L1 n1) (K1 n1) *
+  H4 : member (bred n1 n1) (L1 n1)
+  ============================
+   member (bfree n1) (bfree n2 :: K1 n1)
+
+Subgoal 3 is:
+ member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < apply IH to H3 H4.
+Subgoal 2:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx (L1 n1) (K1 n1) *
+  H4 : member (bred n1 n1) (L1 n1)
+  H5 : member (bfree n1) (K1 n1)
+  ============================
+   member (bfree n1) (bfree n2 :: K1 n1)
+
+Subgoal 3 is:
+ member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < search.
+Subgoal 3:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H2 : member (bred n1 n1) (bred n1 n1 :: L1)
+  H3 : brctx L1 K1 *
+  ============================
+   member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < case H2.
+Subgoal 3.1:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx L1 K1 *
+  ============================
+   member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 3.2 is:
+ member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < search.
+Subgoal 3.2:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx L1 K1 *
+  H4 : member (bred n1 n1) L1
+  ============================
+   member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < apply IH to H3 H4.
+Subgoal 3.2:
+
+  Variables: L, K, K1, L1
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx L1 K1 *
+  H4 : member (bred n1 n1) L1
+  H5 : member (bfree n1) K1
+  ============================
+   member (bfree n1) (bfree n1 :: K1)
+
+Subgoal 4 is:
+ member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < search.
+Subgoal 4:
+
+  Variables: L, K, K2, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H2 : member (bred n1 n1) (pi u\bred (N n1) u => bred n2 u :: L1 n1)
+  H3 : brctx (L1 n1) (K2 n1) *
+  ============================
+   member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < case H2.
+Subgoal 4:
+
+  Variables: L, K, K2, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx (L1 n1) (K2 n1) *
+  H4 : member (bred n1 n1) (L1 n1)
+  ============================
+   member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < apply IH to H3 H4.
+Subgoal 4:
+
+  Variables: L, K, K2, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx (L1 n1) (K2 n1) *
+  H4 : member (bred n1 n1) (L1 n1)
+  H5 : member (bfree n1) (K2 n1)
+  ============================
+   member (bfree n1) (K2 n1)
+
+Subgoal 5 is:
+ member (bfree n1) K1
+
+brctx_sync < search.
+Subgoal 5:
+
+  Variables: L, K, K1, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H2 : member (bred n1 n1) (pi u\bred N u => bred n1 u :: L1)
+  H3 : brctx L1 K1 *
+  ============================
+   member (bfree n1) K1
+
+brctx_sync < case H2.
+Subgoal 5:
+
+  Variables: L, K, K1, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx L1 K1 *
+  H4 : member (bred n1 n1) L1
+  ============================
+   member (bfree n1) K1
+
+brctx_sync < apply IH to H3 H4.
+Subgoal 5:
+
+  Variables: L, K, K1, L1, N
+  IH : forall L K, nabla x, brctx (L x) (K x) * -> member (bred x x) (L x) ->
+         member (bfree x) (K x)
+  H3 : brctx L1 K1 *
+  H4 : member (bred n1 n1) L1
+  H5 : member (bfree n1) K1
+  ============================
+   member (bfree n1) K1
+
+brctx_sync < search.
+Proof completed.
+
+Abella < Theorem bred_makes_bfree : 
+forall L K M U, brctx L K -> {L |- bred M U} -> {K |- bfree U}.
+
+
+  ============================
+   forall L K M U, brctx L K -> {L |- bred M U} -> {K |- bfree U}
+
+bred_makes_bfree < induction on 2.
+
+
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  ============================
+   forall L K M U, brctx L K -> {L |- bred M U}@ -> {K |- bfree U}
+
+bred_makes_bfree < intros.
+
+  Variables: L, K, M, U
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  ============================
+   {K |- bfree U}
+
+bred_makes_bfree < case H2 (keep).
+Subgoal 1:
+
+  Variables: L, K, M, U, U1, M1
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (abs M1) (abs U1)}@
+  H3 : {L, bred n1 n1 |- bred (M1 n1) (U1 n1)}*
+  ============================
+   {K |- bfree (abs U1)}
+
+Subgoal 2 is:
+ {K |- bfree (app U1 V)}
+
+Subgoal 3 is:
+ {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < apply IH to _ H3.
+Subgoal 1:
+
+  Variables: L, K, M, U, U1, M1
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (abs M1) (abs U1)}@
+  H3 : {L, bred n1 n1 |- bred (M1 n1) (U1 n1)}*
+  H4 : {K, bfree n1 |- bfree (U1 n1)}
+  ============================
+   {K |- bfree (abs U1)}
+
+Subgoal 2 is:
+ {K |- bfree (app U1 V)}
+
+Subgoal 3 is:
+ {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < search.
+Subgoal 2:
+
+  Variables: L, K, M, U, V, N, U1, M1
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (app M1 N) (app U1 V)}@
+  H3 : {L |- bred M1 U1}*
+  H4 : {L |- bred N V}*
+  ============================
+   {K |- bfree (app U1 V)}
+
+Subgoal 3 is:
+ {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < apply IH to _ H3.
+Subgoal 2:
+
+  Variables: L, K, M, U, V, N, U1, M1
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (app M1 N) (app U1 V)}@
+  H3 : {L |- bred M1 U1}*
+  H4 : {L |- bred N V}*
+  H5 : {K |- bfree U1}
+  ============================
+   {K |- bfree (app U1 V)}
+
+Subgoal 3 is:
+ {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < apply IH to _ H4.
+Subgoal 2:
+
+  Variables: L, K, M, U, V, N, U1, M1
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (app M1 N) (app U1 V)}@
+  H3 : {L |- bred M1 U1}*
+  H4 : {L |- bred N V}*
+  H5 : {K |- bfree U1}
+  H6 : {K |- bfree V}
+  ============================
+   {K |- bfree (app U1 V)}
+
+Subgoal 3 is:
+ {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < search.
+Subgoal 3:
+
+  Variables: L, K, M, U, R, N
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (beta R N) U}@
+  H3 : {L, pi u\bred N u => bred n1 u |- bred (R n1) U}*
+  ============================
+   {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < apply IH to _ H3.
+Subgoal 3:
+
+  Variables: L, K, M, U, R, N
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred (beta R N) U}@
+  H3 : {L, pi u\bred N u => bred n1 u |- bred (R n1) U}*
+  H4 : {K |- bfree U}
+  ============================
+   {K |- bfree U}
+
+Subgoal 4 is:
+ {K |- bfree U}
+
+bred_makes_bfree < search.
+Subgoal 4:
+
+  Variables: L, K, M, U, F
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  H3 : {L, [F] |- bred M U}*
+  H4 : member F L
+  ============================
+   {K |- bfree U}
+
+bred_makes_bfree < apply brctx_mem_1 to H1 H4.
+Subgoal 4:
+
+  Variables: L, K, M, U, F
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  H3 : {L, [F] |- bred M U}*
+  H4 : member F L
+  H5 : (exists x, F = bred x x /\ name x) \/ (exists x N,
+         F = pi u\bred N u => bred x u /\ fresh x N)
+  ============================
+   {K |- bfree U}
+
+bred_makes_bfree < case H5.
+Subgoal 4.1:
+
+  Variables: L, K, M, U, F, x
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  H3 : {L, [bred x x] |- bred M U}*
+  H4 : member (bred x x) L
+  H6 : name x
+  ============================
+   {K |- bfree U}
+
+Subgoal 4.2 is:
+ {K |- bfree U}
+
+bred_makes_bfree < case H3.
+Subgoal 4.1:
+
+  Variables: L, K, M, U, F, x
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred U U}@
+  H4 : member (bred U U) L
+  H6 : name U
+  ============================
+   {K |- bfree U}
+
+Subgoal 4.2 is:
+ {K |- bfree U}
+
+bred_makes_bfree < case H6.
+Subgoal 4.1:
+
+  Variables: L, K, M, U, F, x
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx (L n1) (K n1)
+  H2 : {L n1 |- bred n1 n1}@
+  H4 : member (bred n1 n1) (L n1)
+  ============================
+   {K n1 |- bfree n1}
+
+Subgoal 4.2 is:
+ {K |- bfree U}
+
+bred_makes_bfree < apply brctx_sync to H1 H4.
+Subgoal 4.1:
+
+  Variables: L, K, M, U, F, x
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx (L n1) (K n1)
+  H2 : {L n1 |- bred n1 n1}@
+  H4 : member (bred n1 n1) (L n1)
+  H7 : member (bfree n1) (K n1)
+  ============================
+   {K n1 |- bfree n1}
+
+Subgoal 4.2 is:
+ {K |- bfree U}
+
+bred_makes_bfree < search.
+Subgoal 4.2:
+
+  Variables: L, K, M, U, F, x, N
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  H3 : {L, [pi u\bred N u => bred x u] |- bred M U}*
+  H4 : member (pi u\bred N u => bred x u) L
+  H6 : fresh x N
+  ============================
+   {K |- bfree U}
+
+bred_makes_bfree < case H3.
+Subgoal 4.2:
+
+  Variables: L, K, M, U, F, x, N
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx L K
+  H2 : {L |- bred M U}@
+  H4 : member (pi u\bred N u => bred M u) L
+  H6 : fresh M N
+  H7 : {L |- bred N U}*
+  ============================
+   {K |- bfree U}
+
+bred_makes_bfree < case H6.
+Subgoal 4.2:
+
+  Variables: L, K, M, U, F, x, N, X
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx (L n1) (K n1)
+  H2 : {L n1 |- bred n1 (U n1)}@
+  H4 : member (pi u\bred X u => bred n1 u) (L n1)
+  H7 : {L n1 |- bred X (U n1)}*
+  ============================
+   {K n1 |- bfree (U n1)}
+
+bred_makes_bfree < apply IH to H1 H7.
+Subgoal 4.2:
+
+  Variables: L, K, M, U, F, x, N, X
+  IH : forall L K M U, brctx L K -> {L |- bred M U}* -> {K |- bfree U}
+  H1 : brctx (L n1) (K n1)
+  H2 : {L n1 |- bred n1 (U n1)}@
+  H4 : member (pi u\bred X u => bred n1 u) (L n1)
+  H7 : {L n1 |- bred X (U n1)}*
+  H8 : {K n1 |- bfree (U n1)}
+  ============================
+   {K n1 |- bfree (U n1)}
+
+bred_makes_bfree < search.
+Proof completed.
+
+Abella < Theorem same_paths_bred_same : 
+forall M N U V, (forall P, {path M P} -> {path N P}) -> {bred M U} ->
+  {bred N V} -> U = V.
+
+
+  ============================
+   forall M N U V, (forall P, {path M P} -> {path N P}) -> {bred M U} ->
+     {bred N V} -> U = V
+
+same_paths_bred_same < intros.
+
+  Variables: M, N, U, V
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  ============================
+   U = V
+
+same_paths_bred_same < apply bred_makes_bfree to _ H2.
+
+  Variables: M, N, U, V
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  ============================
+   U = V
+
+same_paths_bred_same < apply bred_makes_bfree to _ H3.
+
+  Variables: M, N, U, V
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  ============================
+   U = V
+
+same_paths_bred_same < backchain bfree_sames.
+
+  Variables: M, N, U, V
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  ============================
+   forall p, {path U p} -> {path V p}
+
+same_paths_bred_same < intros.
+
+  Variables: M, N, U, V, p
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  H6 : {path U p}
+  ============================
+   {path V p}
+
+same_paths_bred_same < apply bred_rtl to _ H2 H6.
+
+  Variables: M, N, U, V, p
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  H6 : {path U p}
+  H7 : {path M p}
+  ============================
+   {path V p}
+
+same_paths_bred_same < apply H1 to H7.
+
+  Variables: M, N, U, V, p
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  H6 : {path U p}
+  H7 : {path M p}
+  H8 : {path N p}
+  ============================
+   {path V p}
+
+same_paths_bred_same < apply bred_ltr to _ H3 H8.
+
+  Variables: M, N, U, V, p
+  H1 : forall P, {path M P} -> {path N P}
+  H2 : {bred M U}
+  H3 : {bred N V}
+  H4 : {bfree U}
+  H5 : {bfree V}
+  H6 : {path U p}
+  H7 : {path M p}
+  H8 : {path N p}
+  H9 : {path V p}
+  ============================
+   {path V p}
+
+same_paths_bred_same < search.
+Proof completed.
+
+Abella < Goodbye.

@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Cut admissibility for sequent calculus</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Cut admissibility for sequent calculus</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="cut.sig">[View cut.sig]</a>
+<a class="view" href="cut.mod">[View cut.mod]</a>
+<pre class="command">
+sig cut.
+
+kind   i, formula         type.
+
+type   top, bot           formula.
+type   p                  i -> formula.
+type   and, or, imp       formula -> formula -> formula.
+type   all, ex            (i -> formula) -> formula.
+
+type   form, hyp, conc    formula -> o.
+
+</pre>
+<pre class="command">
+module cut.
+
+<span class="comment">% The actual structure of formulas does not matter, but</span>
+<span class="comment">% we use this predicate as a target for induction.</span>
+form top.
+form bot.
+form (p X).                             <span class="comment">% an arbitrary unary predicate P</span>
+form (and A B) :- form A, form B.
+form (or A B) :- form A, form B.
+form (imp A B) :- form A, form B.
+form (all A) :- pi x\ form (A x).
+form (ex A) :- pi x\ form (A x).
+
+
+conc A :- hyp A.                                             <span class="comment">% init</span>
+conc top.                                                    <span class="comment">% topR</span>
+conc C :- hyp bot.                                           <span class="comment">% botL</span>
+
+conc (and A B) :- conc A, conc B.                            <span class="comment">% andR</span>
+conc C :- hyp (and A B), hyp A => hyp B => conc C.           <span class="comment">% andL</span>
+
+conc (or A B) :- conc A.                                     <span class="comment">% orR_1</span>
+conc (or A B) :- conc B.                                     <span class="comment">% orR_2</span>
+conc C :- hyp (or A B), hyp A => conc C, hyp B => conc C.    <span class="comment">% orL</span>
+
+conc (imp A B) :- hyp A => conc B.                           <span class="comment">% impR</span>
+conc C :- hyp (imp A B), conc A, hyp B => conc C.            <span class="comment">% impL</span>
+
+conc (all A) :- pi x\ conc (A x).                            <span class="comment">% allR</span>
+conc C :- hyp (all A), hyp (A T) => conc C.                  <span class="comment">% allL</span>
+
+conc (ex A) :- conc (A T).                                   <span class="comment">% exR</span>
+conc C :- hyp (ex A), pi x\ hyp (A x) => conc C.             <span class="comment">% exL</span>
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="cut.thm">[View cut.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%%</span>
+<span class="comment">%% An object level sequent A_1, ..., A_n |- C is encoded as</span>
+<span class="comment">%% {hyp A_1, ..., hyp A_n |- conc C}. We use the ctx meta-level</span>
+<span class="comment">%% predicate to describe the structure of contexts for the conc</span>
+<span class="comment">%% predicate. In this case, the important point is that the context</span>
+<span class="comment">%% contains only hypotheses (hyp A) and not conclusions (conc A).</span>
+<span class="comment">%%</span>
+<span class="comment">%% This is based on a similar development for Twelf</span>
+
+<a href="cut-details.html#1" class="command">Specification "cut".</a>
+
+<a href="cut-details.html#2" class="command">Define ctx : olist -> prop by
+  ctx nil ;
+  ctx (hyp A :: L) := ctx L.</a>
+
+<a href="cut-details.html#3" class="command">Theorem ctx_lemma :
+  forall E L, ctx L ->  member E L -> exists A, E = hyp A.</a>
+<div class="proof"><a href="cut-details.html#4" class="tactic">induction on 1.</a> <a href="cut-details.html#5" class="tactic">intros.</a> <a href="cut-details.html#6" class="tactic">case H1.</a>
+  <a href="cut-details.html#7" class="tactic">case H2.</a>
+  <a href="cut-details.html#8" class="tactic">case H2.</a> <a href="cut-details.html#9" class="tactic">search.</a> <a href="cut-details.html#10" class="tactic">apply IH to H3 H4.</a> <a href="cut-details.html#11" class="tactic">search.</a></div>
+<span class="comment">%% We can independently prove inversion lemmas for 'bot', 'and', 'imp',</span>
+<span class="comment">%% and 'all'.</span>
+<span class="comment">%%</span>
+<span class="comment">%% For 'or' and 'ex' the inversion lemmas depend on the cut admissibility</span>
+<span class="comment">%% result and thus we prove those inversions during the cut proof.</span>
+
+<a href="cut-details.html#12" class="command">Theorem bot_inv : forall L C,
+  ctx L -> {L |- conc bot} -> {L |- conc C}.</a>
+<div class="proof"><a href="cut-details.html#13" class="tactic">induction on 2.</a> <a href="cut-details.html#14" class="tactic">intros.</a> <a href="cut-details.html#15" class="tactic">case H2.</a>
+  <a href="cut-details.html#16" class="tactic">search.</a>
+  <a href="cut-details.html#17" class="tactic">search.</a>
+  <a href="cut-details.html#18" class="tactic">apply IH to _ H4 with C = C.</a> <a href="cut-details.html#19" class="tactic">search.</a>
+  <a href="cut-details.html#20" class="tactic">apply IH to _ H4 with C = C.</a> <a href="cut-details.html#21" class="tactic">apply IH to _ H5 with C = C.</a> <a href="cut-details.html#22" class="tactic">search.</a>
+  <a href="cut-details.html#23" class="tactic">apply IH to _ H5 with C = C.</a> <a href="cut-details.html#24" class="tactic">search.</a>
+  <a href="cut-details.html#25" class="tactic">apply IH to _ H4 with C = C.</a> <a href="cut-details.html#26" class="tactic">search.</a>
+  <a href="cut-details.html#27" class="tactic">apply IH to _ H4 with C = C.</a> <a href="cut-details.html#28" class="tactic">search.</a>
+  <a href="cut-details.html#29" class="tactic">apply ctx_lemma to H1 H4.</a> <a href="cut-details.html#30" class="tactic">case H3.</a></div>
+<a href="cut-details.html#31" class="command">Theorem and_left_inv : forall L C1 C2,
+  ctx L -> {L |- conc (and C1 C2)} -> {L |- conc C1}.</a>
+<div class="proof"><a href="cut-details.html#32" class="tactic">induction on 2.</a> <a href="cut-details.html#33" class="tactic">intros.</a> <a href="cut-details.html#34" class="tactic">case H2.</a>
+  <a href="cut-details.html#35" class="tactic">search.</a>
+  <a href="cut-details.html#36" class="tactic">search.</a>
+  <a href="cut-details.html#37" class="tactic">search.</a>
+  <a href="cut-details.html#38" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#39" class="tactic">search.</a>
+  <a href="cut-details.html#40" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#41" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#42" class="tactic">search.</a>
+  <a href="cut-details.html#43" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#44" class="tactic">search.</a>
+  <a href="cut-details.html#45" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#46" class="tactic">search.</a>
+  <a href="cut-details.html#47" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#48" class="tactic">search.</a>
+  <a href="cut-details.html#49" class="tactic">apply ctx_lemma to H1 H4.</a> <a href="cut-details.html#50" class="tactic">case H3.</a></div>
+<a href="cut-details.html#51" class="command">Theorem and_right_inv : forall L C1 C2,
+  ctx L -> {L |- conc (and C1 C2)} -> {L |- conc C2}.</a>
+<div class="proof"><a href="cut-details.html#52" class="tactic">induction on 2.</a> <a href="cut-details.html#53" class="tactic">intros.</a> <a href="cut-details.html#54" class="tactic">case H2.</a>
+  <a href="cut-details.html#55" class="tactic">search.</a>
+  <a href="cut-details.html#56" class="tactic">search.</a>
+  <a href="cut-details.html#57" class="tactic">search.</a>
+  <a href="cut-details.html#58" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#59" class="tactic">search.</a>
+  <a href="cut-details.html#60" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#61" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#62" class="tactic">search.</a>
+  <a href="cut-details.html#63" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#64" class="tactic">search.</a>
+  <a href="cut-details.html#65" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#66" class="tactic">search.</a>
+  <a href="cut-details.html#67" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#68" class="tactic">search.</a>
+  <a href="cut-details.html#69" class="tactic">apply ctx_lemma to H1 H4.</a> <a href="cut-details.html#70" class="tactic">case H3.</a></div>
+<a href="cut-details.html#71" class="command">Theorem imp_inv : forall L C1 C2,
+  ctx L -> {L |- conc (imp C1 C2)} -> {L, hyp C1 |- conc C2}.</a>
+<div class="proof"><a href="cut-details.html#72" class="tactic">induction on 2.</a> <a href="cut-details.html#73" class="tactic">intros.</a> <a href="cut-details.html#74" class="tactic">case H2.</a>
+  <a href="cut-details.html#75" class="tactic">search.</a>
+  <a href="cut-details.html#76" class="tactic">search.</a>
+  <a href="cut-details.html#77" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#78" class="tactic">search.</a>
+  <a href="cut-details.html#79" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#80" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#81" class="tactic">search.</a>
+  <a href="cut-details.html#82" class="tactic">search.</a>
+  <a href="cut-details.html#83" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#84" class="tactic">search.</a>
+  <a href="cut-details.html#85" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#86" class="tactic">search.</a>
+  <a href="cut-details.html#87" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#88" class="tactic">search.</a>
+  <a href="cut-details.html#89" class="tactic">apply ctx_lemma to H1 H4.</a> <a href="cut-details.html#90" class="tactic">case H3.</a></div>
+<a href="cut-details.html#91" class="command">Theorem all_inv : forall L C,
+  ctx L -> {L |- conc (all C)} -> nabla x, {L |- conc (C x)}.</a>
+<div class="proof"><a href="cut-details.html#92" class="tactic">induction on 2.</a> <a href="cut-details.html#93" class="tactic">intros.</a> <a href="cut-details.html#94" class="tactic">case H2.</a>
+  <a href="cut-details.html#95" class="tactic">search.</a>
+  <a href="cut-details.html#96" class="tactic">search.</a>
+  <a href="cut-details.html#97" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#98" class="tactic">search.</a>
+  <a href="cut-details.html#99" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#100" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#101" class="tactic">search.</a>
+  <a href="cut-details.html#102" class="tactic">apply IH to _ H5.</a> <a href="cut-details.html#103" class="tactic">search.</a>
+  <a href="cut-details.html#104" class="tactic">search.</a>
+  <a href="cut-details.html#105" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#106" class="tactic">search.</a>
+  <a href="cut-details.html#107" class="tactic">apply IH to _ H4.</a> <a href="cut-details.html#108" class="tactic">search.</a>
+  <a href="cut-details.html#109" class="tactic">apply ctx_lemma to H1 H4.</a> <a href="cut-details.html#110" class="tactic">case H3.</a></div>
+<a href="cut-details.html#111" class="command">Theorem cut_admissibility : forall L K C,
+  {form K} -> ctx L ->
+    {L |- conc K} -> {L, hyp K |- conc C} -> {L |- conc C}.</a>
+<div class="proof">
+<span class="comment">% The proof is by nested induction on</span>
+<span class="comment">%  1) The size of the cut formula K</span>
+<span class="comment">%  2) The height of {L, hyp K |- conc C}</span>
+
+<a href="cut-details.html#112" class="tactic">induction on 1.</a> <a href="cut-details.html#113" class="tactic">induction on 4.</a> <a href="cut-details.html#114" class="tactic">intros.</a> <a href="cut-details.html#115" class="tactic">case H4.</a>
+  <span class="comment">% Case analysis on {L, hyp K |- conc C}</span>
+
+  <span class="comment">% conc C in context - impossible</span>
+  <span class="comment">% apply ctx_lemma to _ H5.</span>
+
+  <span class="comment">% init rule</span>
+  <a href="cut-details.html#116" class="tactic">case H5.</a> <a href="cut-details.html#117" class="tactic">case H7.</a>
+    <a href="cut-details.html#118" class="tactic">case H6.</a> <a href="cut-details.html#119" class="tactic">search.</a>
+    <a href="cut-details.html#120" class="tactic">apply ctx_lemma to H2 H8.</a> <a href="cut-details.html#121" class="tactic">case H6.</a> <a href="cut-details.html#122" class="tactic">search.</a>
+
+  <span class="comment">% topR - C = top</span>
+  <a href="cut-details.html#123" class="tactic">search.</a>
+
+  <span class="comment">% botL</span>
+  <a href="cut-details.html#124" class="tactic">case H5.</a> <a href="cut-details.html#125" class="tactic">case H7.</a>
+    <span class="comment">% essential case - K = bot</span>
+    <a href="cut-details.html#126" class="tactic">case H6.</a> <a href="cut-details.html#127" class="tactic">apply bot_inv to H2 H3 with C = C.</a> <a href="cut-details.html#128" class="tactic">search.</a>
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#129" class="tactic">apply ctx_lemma to H2 H8.</a> <a href="cut-details.html#130" class="tactic">case H6.</a> <a href="cut-details.html#131" class="tactic">search.</a>
+
+  <span class="comment">% andR - C = and A B</span>
+  <a href="cut-details.html#132" class="tactic">apply IH1 to H1 _ H3 H5.</a> <a href="cut-details.html#133" class="tactic">apply IH1 to H1 _ H3 H6.</a>
+    <a href="cut-details.html#134" class="tactic">search.</a>
+
+  <span class="comment">% andL</span>
+  <a href="cut-details.html#135" class="tactic">apply IH1 to H1 _ H3 H6.</a> <a href="cut-details.html#136" class="tactic">case H5.</a> <a href="cut-details.html#137" class="tactic">case H9.</a>
+    <a href="cut-details.html#138" class="tactic">case H8.</a>
+    <span class="comment">% essential case - K = and A B</span>
+    <a href="cut-details.html#139" class="tactic">apply and_left_inv to _ H3.</a> <a href="cut-details.html#140" class="tactic">apply and_right_inv to _ H3.</a> <a href="cut-details.html#141" class="tactic">case H1.</a>
+      <a href="cut-details.html#142" class="tactic">apply IH to H12 _ H10 H7.</a> <a href="cut-details.html#143" class="tactic">apply IH to H13 _ H11 H14.</a> <a href="cut-details.html#144" class="tactic">search.</a>
+
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#145" class="tactic">apply ctx_lemma to H2 H10.</a> <a href="cut-details.html#146" class="tactic">case H8.</a>
+    <a href="cut-details.html#147" class="tactic">search.</a>
+
+  <span class="comment">% orR_1 - C = or A B</span>
+  <a href="cut-details.html#148" class="tactic">apply IH1 to H1 H2 H3 H5.</a> <a href="cut-details.html#149" class="tactic">search.</a>
+
+  <span class="comment">% orR_2 - C = or A B</span>
+  <a href="cut-details.html#150" class="tactic">apply IH1 to H1 H2 H3 H5.</a> <a href="cut-details.html#151" class="tactic">search.</a>
+
+  <span class="comment">% orL</span>
+  <a href="cut-details.html#152" class="tactic">apply IH1 to H1 _ H3 H6.</a> <a href="cut-details.html#153" class="tactic">apply IH1 to H1 _ H3 H7.</a> <a href="cut-details.html#154" class="tactic">case H5.</a> <a href="cut-details.html#155" class="tactic">case H11.</a>
+    <a href="cut-details.html#156" class="tactic">case H10.</a>
+    <span class="comment">% essential case - K = or A B</span>
+    <span class="comment">% A nested inversion lemma for 'or'</span>
+    <a href="cut-details.html#157" class="tactic">assert (forall L D, ctx L -> {L |- conc (or A B)} ->
+                          {L, hyp A |- conc D} -> {L, hyp B |- conc D} ->
+                          {L |- conc D}).</a>
+      <a href="cut-details.html#158" class="tactic">induction on 2.</a> <a href="cut-details.html#159" class="tactic">intros.</a> <a href="cut-details.html#160" class="tactic">case H13.</a>
+        <a href="cut-details.html#161" class="tactic">search.</a>
+        <a href="cut-details.html#162" class="tactic">search.</a>
+        <a href="cut-details.html#163" class="tactic">apply IH2 to _ H17 H14 H15.</a> <a href="cut-details.html#164" class="tactic">search.</a>
+        <a href="cut-details.html#165" class="tactic">case H1.</a> <a href="cut-details.html#166" class="tactic">apply IH to H17 H12 H16 H14.</a> <a href="cut-details.html#167" class="tactic">search.</a>
+        <a href="cut-details.html#168" class="tactic">case H1.</a> <a href="cut-details.html#169" class="tactic">apply IH to H18 H12 H16 H15.</a> <a href="cut-details.html#170" class="tactic">search.</a>
+        <a href="cut-details.html#171" class="tactic">apply IH2 to _ H17 H14 H15.</a> <a href="cut-details.html#172" class="tactic">apply IH2 to _ H18 H14 H15.</a> <a href="cut-details.html#173" class="tactic">search.</a>
+        <a href="cut-details.html#174" class="tactic">apply IH2 to _ H18 H14 H15.</a> <a href="cut-details.html#175" class="tactic">search.</a>
+        <a href="cut-details.html#176" class="tactic">apply IH2 to _ H17 H14 H15.</a> <a href="cut-details.html#177" class="tactic">search.</a>
+        <a href="cut-details.html#178" class="tactic">apply IH2 to _ H17 H14 H15.</a> <a href="cut-details.html#179" class="tactic">search.</a>
+        <a href="cut-details.html#180" class="tactic">apply ctx_lemma to H12 H17.</a> <a href="cut-details.html#181" class="tactic">case H16.</a>
+
+    <a href="cut-details.html#182" class="tactic">apply H12 to H2 H3 H8 H9.</a> <a href="cut-details.html#183" class="tactic">search.</a>
+
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#184" class="tactic">apply ctx_lemma to H2 H12.</a> <a href="cut-details.html#185" class="tactic">case H10.</a>
+    <a href="cut-details.html#186" class="tactic">search.</a>
+
+  <span class="comment">% impR - C = imp A B.</span>
+  <a href="cut-details.html#187" class="tactic">apply IH1 to H1 _ H3 H5.</a> <a href="cut-details.html#188" class="tactic">search.</a>
+
+  <span class="comment">% impL</span>
+  <a href="cut-details.html#189" class="tactic">apply IH1 to H1 _ H3 H6.</a> <a href="cut-details.html#190" class="tactic">apply IH1 to H1 _ H3 H7.</a> <a href="cut-details.html#191" class="tactic">case H5.</a> <a href="cut-details.html#192" class="tactic">case H11.</a>
+    <a href="cut-details.html#193" class="tactic">case H10.</a>
+    <span class="comment">% essential case - K = imp A B</span>
+    <a href="cut-details.html#194" class="tactic">apply imp_inv to _ H3.</a> <a href="cut-details.html#195" class="tactic">case H1.</a>
+      <a href="cut-details.html#196" class="tactic">apply IH to H13 _ H8 H12.</a> <a href="cut-details.html#197" class="tactic">apply IH to H14 _ H15 H9.</a> <a href="cut-details.html#198" class="tactic">search.</a>
+
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#199" class="tactic">apply ctx_lemma to H2 H12.</a> <a href="cut-details.html#200" class="tactic">case H10.</a>
+    <a href="cut-details.html#201" class="tactic">search.</a>
+
+  <span class="comment">% allR - C = all A</span>
+  <a href="cut-details.html#202" class="tactic">apply IH1 to H1 _ H3 H5.</a> <a href="cut-details.html#203" class="tactic">search.</a>
+
+  <span class="comment">% allL</span>
+  <a href="cut-details.html#204" class="tactic">apply IH1 to H1 _ H3 H6.</a> <a href="cut-details.html#205" class="tactic">case H5.</a> <a href="cut-details.html#206" class="tactic">case H9.</a>
+    <a href="cut-details.html#207" class="tactic">case H8.</a>
+    <span class="comment">% essential case - K = all A</span>
+    <a href="cut-details.html#208" class="tactic">apply all_inv to _ H3.</a> <a href="cut-details.html#209" class="tactic">case H1.</a>
+      <a href="cut-details.html#210" class="tactic">inst H10 with n1 = T.</a> <a href="cut-details.html#211" class="tactic">inst H11 with n1 = T.</a>
+        <a href="cut-details.html#212" class="tactic">apply IH to H13 _ H12 H7.</a> <a href="cut-details.html#213" class="tactic">search.</a>
+
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#214" class="tactic">apply ctx_lemma to H2 H10.</a> <a href="cut-details.html#215" class="tactic">case H8.</a>
+    <a href="cut-details.html#216" class="tactic">search.</a>
+
+  <span class="comment">% exR - C = ex A</span>
+  <a href="cut-details.html#217" class="tactic">apply IH1 to H1 H2 H3 H5.</a> <a href="cut-details.html#218" class="tactic">search.</a>
+
+  <span class="comment">% exL</span>
+  <a href="cut-details.html#219" class="tactic">apply IH1 to H1 _ H3 H6.</a> <a href="cut-details.html#220" class="tactic">case H5.</a> <a href="cut-details.html#221" class="tactic">case H9.</a> <a href="cut-details.html#222" class="tactic">case H8.</a>
+    <span class="comment">% essential case - K = ex A</span>
+    <span class="comment">% A nested inversion lemma for 'ex'</span>
+    <a href="cut-details.html#223" class="tactic">assert (forall L D, nabla x, ctx L -> {L |- conc (ex A)} ->
+                                   {L, hyp (A x) |- conc D} ->
+                                   {L |- conc D}).</a>
+      <a href="cut-details.html#224" class="tactic">induction on 2.</a> <a href="cut-details.html#225" class="tactic">intros.</a> <a href="cut-details.html#226" class="tactic">case H11.</a>
+        <a href="cut-details.html#227" class="tactic">search.</a>
+        <a href="cut-details.html#228" class="tactic">search.</a>
+        <a href="cut-details.html#229" class="tactic">apply IH2 to _ H14 H12.</a> <a href="cut-details.html#230" class="tactic">search.</a>
+        <a href="cut-details.html#231" class="tactic">apply IH2 to _ H14 H12.</a> <a href="cut-details.html#232" class="tactic">apply IH2 to _ H15 H12.</a> <a href="cut-details.html#233" class="tactic">search.</a>
+        <a href="cut-details.html#234" class="tactic">apply IH2 to _ H15 H12.</a> <a href="cut-details.html#235" class="tactic">search.</a>
+        <a href="cut-details.html#236" class="tactic">apply IH2 to _ H14 H12.</a> <a href="cut-details.html#237" class="tactic">search.</a>
+        <a href="cut-details.html#238" class="tactic">case H1.</a> <a href="cut-details.html#239" class="tactic">inst H14 with n1 = T.</a> <a href="cut-details.html#240" class="tactic">inst H12 with n1 = T.</a>
+          <a href="cut-details.html#241" class="tactic">apply IH to H15 H10 H13 H16.</a> <a href="cut-details.html#242" class="tactic">search.</a>
+        <a href="cut-details.html#243" class="tactic">assert {L1, hyp (A n2) |- conc D}.</a>
+          <a href="cut-details.html#244" class="tactic">apply IH2 to _ H14 H15.</a> <a href="cut-details.html#245" class="tactic">search.</a>
+        <a href="cut-details.html#246" class="tactic">apply ctx_lemma to H10 H14.</a> <a href="cut-details.html#247" class="tactic">case H13.</a>
+
+    <a href="cut-details.html#248" class="tactic">apply H10 to H2 H3 H7.</a> <a href="cut-details.html#249" class="tactic">search.</a>
+
+    <span class="comment">% commutative case</span>
+    <a href="cut-details.html#250" class="tactic">apply ctx_lemma to H2 H10.</a> <a href="cut-details.html#251" class="tactic">case H8.</a>
+    <a href="cut-details.html#252" class="tactic">search.</a>
+
+  <a href="cut-details.html#253" class="tactic">case H6.</a>
+    <a href="cut-details.html#254" class="tactic">case H5.</a>
+    <a href="cut-details.html#255" class="tactic">apply ctx_lemma to H2 H7.</a> <a href="cut-details.html#256" class="tactic">case H5.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

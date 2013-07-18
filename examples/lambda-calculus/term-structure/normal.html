@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Disjoint partitioning of lambda terms into normal and non-normal form</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Disjoint partitioning of lambda terms into normal and non-normal form</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="normal.sig">[View normal.sig]</a>
+<a class="view" href="normal.mod">[View normal.mod]</a>
+<pre class="command">
+sig normal.
+
+kind      tm                     type.
+
+type      app                    tm -> tm -> tm.
+type      abs                    (tm -> tm) -> tm.
+
+type      term                   tm -> o.
+type      non_normal             tm -> o.
+type      neutral, normal        tm -> o.
+
+</pre>
+<pre class="command">
+<span class="comment">% From Dale Miller:</span>
+<span class="comment">%</span>
+<span class="comment">% It is easy to write code that determines if a given lambda-term (type</span>
+<span class="comment">% tm) is in beta-normal form (using the fact that a term in normal form</span>
+<span class="comment">% is of the form (lambda x1 ... lambda xn. h t1 ... tn) where t1, ...,</span>
+<span class="comment">% tn are in beta-normal form and h is a variable (one of the x1, ...,</span>
+<span class="comment">% xn, or a variable introduced before).  It is also possible to know</span>
+<span class="comment">% that a term is not in beta-normal form since it contains a beta-redex</span>
+<span class="comment">% (in abstract syntax, it would contain a subterm of the form (app (abs</span>
+<span class="comment">% R) M).  An interesting theorem to try is the one that says</span>
+<span class="comment">%   forall T : tm.  (normal T) or (non-normal T).</span>
+<span class="comment">% This one should have a simple proof if the right induction invariant</span>
+<span class="comment">% can be stated.</span>
+
+module normal.
+
+term (app M N) :- term M, term N.
+term (abs R) :- pi x\ term x => term (R x).
+
+
+non_normal (app (abs R) M).
+non_normal (app M N) :- non_normal M.
+non_normal (app M N) :- non_normal N.
+non_normal (abs R) :- pi x\ non_normal (R x).
+
+normal (abs R) :- pi x\ neutral x => normal (R x).
+normal M :- neutral M.
+neutral (app M N) :- neutral M, normal N.
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="normal.thm">[View normal.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%% The ctxs predicate encodes the relationship between the context</span>
+<span class="comment">%% of the judgements (term T) and (normal T).</span>
+
+<a href="normal-details.html#1" class="command">Specification "normal".</a>
+
+<a href="normal-details.html#2" class="command">Define name : tm -> prop by
+  nabla x, name x.</a>
+
+<a href="normal-details.html#3" class="command">Define ctxs : olist -> olist -> prop by
+  ctxs nil nil ;
+  nabla x, ctxs (term x :: L) (neutral x :: K) := ctxs L K.</a>
+
+
+<span class="comment">%% Lemmas about contexts</span>
+
+<a href="normal-details.html#4" class="command">Theorem ctxs_member_term : forall L K E,
+  ctxs L K -> member E L ->
+  exists X, E = term X /\ member (neutral X) K /\ name X.</a>
+<div class="proof"><a href="normal-details.html#5" class="tactic">induction on 1.</a> <a href="normal-details.html#6" class="tactic">intros.</a> <a href="normal-details.html#7" class="tactic">case H1.</a>
+  <a href="normal-details.html#8" class="tactic">case H2.</a>
+  <a href="normal-details.html#9" class="tactic">case H2.</a>
+    <a href="normal-details.html#10" class="tactic">search.</a>
+    <a href="normal-details.html#11" class="tactic">apply IH to H3 H4.</a>
+      <a href="normal-details.html#12" class="tactic">search.</a></div>
+<a href="normal-details.html#13" class="command">Theorem ctxs_var : forall E L K,
+  ctxs L K -> member E K -> 
+  exists X, E = neutral X /\ name X.</a>
+<div class="proof"><a href="normal-details.html#14" class="tactic">induction on 1.</a> <a href="normal-details.html#15" class="tactic">intros.</a> <a href="normal-details.html#16" class="tactic">case H1.</a>
+  <a href="normal-details.html#17" class="tactic">case H2.</a>
+  <a href="normal-details.html#18" class="tactic">case H2.</a>
+    <a href="normal-details.html#19" class="tactic">search.</a>
+    <a href="normal-details.html#20" class="tactic">apply IH to H3 H4.</a> <a href="normal-details.html#21" class="tactic">search.</a></div>
+
+<span class="comment">%% Partitioning is total</span>
+
+<a href="normal-details.html#22" class="command">Theorem total_ext : forall T L K,
+  ctxs L K -> {L |- term T} -> {K |- normal T} \/ {non_normal T}.</a>
+<div class="proof"><a href="normal-details.html#23" class="tactic">induction on 2.</a> <a href="normal-details.html#24" class="tactic">intros.</a> <a href="normal-details.html#25" class="tactic">case H2.</a>
+  <a href="normal-details.html#26" class="tactic">apply IH to H1 H3.</a> <a href="normal-details.html#27" class="tactic">apply IH to H1 H4.</a> <a href="normal-details.html#28" class="tactic">case H5.</a>
+    <a href="normal-details.html#29" class="tactic">case H6.</a>
+      <a href="normal-details.html#30" class="tactic">case H7.</a>
+        <a href="normal-details.html#31" class="tactic">search.</a>
+        <a href="normal-details.html#32" class="tactic">search.</a>
+        <a href="normal-details.html#33" class="tactic">apply ctxs_var to H1 H10.</a> <a href="normal-details.html#34" class="tactic">case H9.</a>
+      <a href="normal-details.html#35" class="tactic">search.</a>
+    <a href="normal-details.html#36" class="tactic">search.</a>
+  <a href="normal-details.html#37" class="tactic">apply IH to _ H3.</a> <a href="normal-details.html#38" class="tactic">case H4.</a>
+    <a href="normal-details.html#39" class="tactic">search.</a>
+    <a href="normal-details.html#40" class="tactic">search.</a>
+  <a href="normal-details.html#41" class="tactic">apply ctxs_member_term to H1 H4.</a> <a href="normal-details.html#42" class="tactic">case H3.</a> <a href="normal-details.html#43" class="tactic">search.</a></div>
+<a href="normal-details.html#44" class="command">Theorem total : forall T,
+  {term T} -> {normal T} \/ {non_normal T}.</a>
+<div class="proof"><a href="normal-details.html#45" class="tactic">intros.</a> <a href="normal-details.html#46" class="tactic">apply total_ext to _ H1.</a> <a href="normal-details.html#47" class="tactic">search.</a></div>
+
+<span class="comment">%% Partitioning is disjoint</span>
+
+<a href="normal-details.html#48" class="command">Theorem neutral_abs_absurd : forall L K R,
+  ctxs L K -> {K |- neutral (abs R)} -> false.</a>
+<div class="proof"><a href="normal-details.html#49" class="tactic">intros.</a> <a href="normal-details.html#50" class="tactic">case H2.</a> 
+ <a href="normal-details.html#51" class="tactic">apply ctxs_var to H1 H4.</a> <a href="normal-details.html#52" class="tactic">case H3.</a> <a href="normal-details.html#53" class="tactic">case H5.</a></div>
+<a href="normal-details.html#54" class="command">Theorem disjoint_ext : forall L K T,
+  ctxs L K -> {K |- normal T} -> {non_normal T} -> false.</a>
+<div class="proof"><a href="normal-details.html#55" class="tactic">induction on 3.</a> <a href="normal-details.html#56" class="tactic">intros.</a> <a href="normal-details.html#57" class="tactic">case H2.</a>
+  <a href="normal-details.html#58" class="tactic">case H3.</a> <a href="normal-details.html#59" class="tactic">apply IH to _ H4 H5.</a>
+  <a href="normal-details.html#60" class="tactic">case H4.</a>
+    <a href="normal-details.html#61" class="tactic">case H3.</a>
+      <a href="normal-details.html#62" class="tactic">apply neutral_abs_absurd to H1 H5.</a>
+      <a href="normal-details.html#63" class="tactic">apply IH to H1 _ H7.</a>
+      <a href="normal-details.html#64" class="tactic">apply IH to H1 H6 H7.</a>
+    <a href="normal-details.html#65" class="tactic">apply ctxs_var to H1 H6.</a> <a href="normal-details.html#66" class="tactic">case H5.</a> <a href="normal-details.html#67" class="tactic">case H7.</a> <a href="normal-details.html#68" class="tactic">case H3.</a>
+  <a href="normal-details.html#69" class="tactic">apply ctxs_var to H1 H5.</a> <a href="normal-details.html#70" class="tactic">case H4.</a></div>
+<a href="normal-details.html#71" class="command">Theorem disjoint : forall T,
+  {normal T} -> {non_normal T} -> false.</a>
+<div class="proof"><a href="normal-details.html#72" class="tactic">intros.</a> <a href="normal-details.html#73" class="tactic">apply disjoint_ext to _ H1 H2.</a></div>
+</pre>
+</div>
+
+</body>
+</html>
