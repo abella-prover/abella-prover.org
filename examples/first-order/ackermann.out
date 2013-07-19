@@ -1,0 +1,150 @@
+Welcome to Abella 2.0
+Abella < Kind nat type.
+
+Abella < Type z nat.
+
+Abella < Type s nat -> nat.
+
+Abella < Define nat : nat -> prop by 
+nat z;
+nat (s X) := nat X.
+
+Abella < Define ack : nat -> nat -> nat -> prop by 
+ack z N (s N);
+ack (s M) z R := ack M (s z) R;
+ack (s M) (s N) R := exists R', ack (s M) N R' /\ ack M R' R.
+
+Abella < Theorem ack_total : 
+forall M N, nat M -> nat N -> (exists R, nat R /\ ack M N R).
+
+
+  ============================
+   forall M N, nat M -> nat N -> (exists R, nat R /\ ack M N R)
+
+ack_total < induction on 1.
+
+
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  ============================
+   forall M N, nat M @ -> nat N -> (exists R, nat R /\ ack M N R)
+
+ack_total < induction on 2.
+
+
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  ============================
+   forall M N, nat M @ -> nat N @@ -> (exists R, nat R /\ ack M N R)
+
+ack_total < intros.
+
+  Variables: M, N
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat M @
+  H2 : nat N @@
+  ============================
+   exists R, nat R /\ ack M N R
+
+ack_total < case H1 (keep).
+Subgoal 1:
+
+  Variables: M, N
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat z @
+  H2 : nat N @@
+  ============================
+   exists R, nat R /\ ack z N R
+
+Subgoal 2 is:
+ exists R, nat R /\ ack (s X) N R
+
+ack_total < search.
+Subgoal 2:
+
+  Variables: M, N, X
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H2 : nat N @@
+  H3 : nat X *
+  ============================
+   exists R, nat R /\ ack (s X) N R
+
+ack_total < case H2.
+Subgoal 2.1:
+
+  Variables: M, N, X
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H3 : nat X *
+  ============================
+   exists R, nat R /\ ack (s X) z R
+
+Subgoal 2.2 is:
+ exists R, nat R /\ ack (s X) (s X1) R
+
+ack_total < apply IH to H3 _ with N = s z.
+Subgoal 2.1:
+
+  Variables: M, N, X, R
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H3 : nat X *
+  H4 : nat R
+  H5 : ack X (s z) R
+  ============================
+   exists R, nat R /\ ack (s X) z R
+
+Subgoal 2.2 is:
+ exists R, nat R /\ ack (s X) (s X1) R
+
+ack_total < search.
+Subgoal 2.2:
+
+  Variables: M, N, X, X1
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H3 : nat X *
+  H4 : nat X1 **
+  ============================
+   exists R, nat R /\ ack (s X) (s X1) R
+
+ack_total < apply IH1 to H1 H4.
+Subgoal 2.2:
+
+  Variables: M, N, X, X1, R
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H3 : nat X *
+  H4 : nat X1 **
+  H5 : nat R
+  H6 : ack (s X) X1 R
+  ============================
+   exists R, nat R /\ ack (s X) (s X1) R
+
+ack_total < apply IH to H3 H5.
+Subgoal 2.2:
+
+  Variables: M, N, X, X1, R, R1
+  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+  H1 : nat (s X) @
+  H3 : nat X *
+  H4 : nat X1 **
+  H5 : nat R
+  H6 : ack (s X) X1 R
+  H7 : nat R1
+  H8 : ack X R R1
+  ============================
+   exists R, nat R /\ ack (s X) (s X1) R
+
+ack_total < search.
+Proof completed.
+
+Abella < Goodbye.

@@ -1,0 +1,811 @@
+Welcome to Abella 2.0
+Abella < Kind exp type.
+
+Abella < Type plus exp -> exp -> exp.
+
+Abella < Theorem subst_plus : 
+forall R N A B, R N = plus A B -> (exists R1 R2, R = x\plus (R1 x) (R2 x) /\
+  A = R1 N /\ B = R2 N) \/ R = x\x /\ N = plus A B.
+
+
+  ============================
+   forall R N A B, R N = plus A B -> (exists R1 R2,
+     R = x\plus (R1 x) (R2 x) /\ A = R1 N /\ B = R2 N) \/ R = x\x /\
+     N = plus A B
+
+subst_plus < intros.
+
+  Variables: R, N, A, B
+  H1 : R N = plus A B
+  ============================
+   (exists R1 R2, R = x\plus (R1 x) (R2 x) /\ A = R1 N /\ B = R2 N) \/
+     R = x\x /\ N = plus A B
+
+subst_plus < case H1.
+Subgoal 1:
+
+  Variables: R, N, A, B, R2, R1
+  ============================
+   (exists R3 R4, z1\plus (R1 z1) (R2 z1) = x\plus (R3 x) (R4 x) /\
+     R1 N = R3 N /\ R2 N = R4 N) \/ z1\plus (R1 z1) (R2 z1) = x\x /\
+     N = plus (R1 N) (R2 N)
+
+Subgoal 2 is:
+ (exists R1 R2, z1\z1 = x\plus (R1 x) (R2 x) /\ A = R1 (plus A B) /\
+   B = R2 (plus A B)) \/ z1\z1 = x\x /\ plus A B = plus A B
+
+subst_plus < search.
+Subgoal 2:
+
+  Variables: R, N, A, B
+  ============================
+   (exists R1 R2, z1\z1 = x\plus (R1 x) (R2 x) /\ A = R1 (plus A B) /\
+     B = R2 (plus A B)) \/ z1\z1 = x\x /\ plus A B = plus A B
+
+subst_plus < search.
+Proof completed.
+
+Abella < Kind i type.
+
+Abella < Type a i -> i.
+
+Abella < Type b i.
+
+Abella < Theorem huet1 : 
+forall F X, F (F X) = a (a b) -> F = x\a (a b) \/ F = a /\ X = b \/
+  F = x\x /\ X = a (a b).
+
+
+  ============================
+   forall F X, F (F X) = a (a b) -> F = x\a (a b) \/ F = a /\ X = b \/
+     F = x\x /\ X = a (a b)
+
+huet1 < intros.
+
+  Variables: F, X
+  H1 : F (F X) = a (a b)
+  ============================
+   F = x\a (a b) \/ F = a /\ X = b \/ F = x\x /\ X = a (a b)
+
+huet1 < case H1.
+Subgoal 1:
+
+  Variables: F, X, F1
+  H2 : F1 (a (F1 X)) = a b
+  ============================
+   z1\a (F1 z1) = x\a (a b) \/ z1\a (F1 z1) = a /\ X = b \/
+     z1\a (F1 z1) = x\x /\ X = a (a b)
+
+Subgoal 2 is:
+ z1\z1 = x\a (a b) \/ z1\z1 = a /\ a (a b) = b \/ z1\z1 = x\x /\
+   a (a b) = a (a b)
+
+huet1 < case H2.
+Subgoal 1.1:
+
+  Variables: F, X, F1, F2
+  H3 : F2 (a (a (F2 X))) = b
+  ============================
+   z1\a (a (F2 z1)) = x\a (a b) \/ z1\a (a (F2 z1)) = a /\ X = b \/
+     z1\a (a (F2 z1)) = x\x /\ X = a (a b)
+
+Subgoal 1.2 is:
+ z1\a z1 = x\a (a b) \/ z1\a z1 = a /\ b = b \/ z1\a z1 = x\x /\ b = a (a b)
+
+Subgoal 2 is:
+ z1\z1 = x\a (a b) \/ z1\z1 = a /\ a (a b) = b \/ z1\z1 = x\x /\
+   a (a b) = a (a b)
+
+huet1 < case H3.
+Subgoal 1.1:
+
+  Variables: F, X, F1, F2
+  ============================
+   z1\a (a b) = x\a (a b) \/ z1\a (a b) = a /\ X = b \/ z1\a (a b) = x\x /\
+     X = a (a b)
+
+Subgoal 1.2 is:
+ z1\a z1 = x\a (a b) \/ z1\a z1 = a /\ b = b \/ z1\a z1 = x\x /\ b = a (a b)
+
+Subgoal 2 is:
+ z1\z1 = x\a (a b) \/ z1\z1 = a /\ a (a b) = b \/ z1\z1 = x\x /\
+   a (a b) = a (a b)
+
+huet1 < search.
+Subgoal 1.2:
+
+  Variables: F, X, F1
+  ============================
+   z1\a z1 = x\a (a b) \/ z1\a z1 = a /\ b = b \/ z1\a z1 = x\x /\
+     b = a (a b)
+
+Subgoal 2 is:
+ z1\z1 = x\a (a b) \/ z1\z1 = a /\ a (a b) = b \/ z1\z1 = x\x /\
+   a (a b) = a (a b)
+
+huet1 < search.
+Subgoal 2:
+
+  Variables: F, X
+  ============================
+   z1\z1 = x\a (a b) \/ z1\z1 = a /\ a (a b) = b \/ z1\z1 = x\x /\
+     a (a b) = a (a b)
+
+huet1 < search.
+Proof completed.
+
+Abella < Define fdlist : (olist -> olist) -> olist -> prop by 
+fdlist (l\l) nil;
+fdlist (l\X :: F l) (X :: L) := fdlist F L.
+
+Abella < Define append : olist -> olist -> olist -> prop by 
+append nil C C;
+append (X :: A) B (X :: C) := append A B C.
+
+Abella < Theorem fdlist_det1 : 
+forall F L1 L2, fdlist F L1 -> fdlist F L2 -> L1 = L2.
+
+
+  ============================
+   forall F L1 L2, fdlist F L1 -> fdlist F L2 -> L1 = L2
+
+fdlist_det1 < induction on 1.
+
+
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  ============================
+   forall F L1 L2, fdlist F L1 @ -> fdlist F L2 -> L1 = L2
+
+fdlist_det1 < intros.
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  H1 : fdlist F L1 @
+  H2 : fdlist F L2
+  ============================
+   L1 = L2
+
+fdlist_det1 < case H1.
+Subgoal 1:
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  H2 : fdlist (l\l) L2
+  ============================
+   nil = L2
+
+Subgoal 2 is:
+ X :: L = L2
+
+fdlist_det1 < case H2.
+Subgoal 1:
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  ============================
+   nil = nil
+
+Subgoal 2 is:
+ X :: L = L2
+
+fdlist_det1 < search.
+Subgoal 2:
+
+  Variables: F, L1, L2, L, X, F1
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  H2 : fdlist (l\X :: F1 l) L2
+  H3 : fdlist F1 L *
+  ============================
+   X :: L = L2
+
+fdlist_det1 < case H2.
+Subgoal 2:
+
+  Variables: F, L1, L2, L, X, F1, L3
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  H3 : fdlist F1 L *
+  H4 : fdlist (z1\F1 z1) L3
+  ============================
+   X :: L = X :: L3
+
+fdlist_det1 < apply IH to H3 H4.
+Subgoal 2:
+
+  Variables: F, L1, L2, L, X, F1, L3
+  IH : forall F L1 L2, fdlist F L1 * -> fdlist F L2 -> L1 = L2
+  H3 : fdlist F1 L3 *
+  H4 : fdlist (z1\F1 z1) L3
+  ============================
+   X :: L3 = X :: L3
+
+fdlist_det1 < search.
+Proof completed.
+
+Abella < Theorem fdlist_append : 
+forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL -> fdlist G GL ->
+  append FL GL HL.
+
+
+  ============================
+   forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL ->
+     fdlist G GL -> append FL GL HL
+
+fdlist_append < induction on 2.
+
+
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  ============================
+   forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL @ ->
+     fdlist G GL -> append FL GL HL
+
+fdlist_append < intros.
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H1 : fdlist (l\F (G l)) HL
+  H2 : fdlist F FL @
+  H3 : fdlist G GL
+  ============================
+   append FL GL HL
+
+fdlist_append < case H2.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H1 : fdlist (l\G l) HL
+  H3 : fdlist G GL
+  ============================
+   append nil GL HL
+
+Subgoal 2 is:
+ append (X :: L) GL HL
+
+fdlist_append < apply fdlist_det1 to H1 H3.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H1 : fdlist (l\G l) GL
+  H3 : fdlist G GL
+  ============================
+   append nil GL GL
+
+Subgoal 2 is:
+ append (X :: L) GL HL
+
+fdlist_append < search.
+Subgoal 2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H1 : fdlist (l\X :: F1 (G l)) HL
+  H3 : fdlist G GL
+  H4 : fdlist F1 L *
+  ============================
+   append (X :: L) GL HL
+
+fdlist_append < case H1.
+Subgoal 2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, L1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist G GL
+  H4 : fdlist F1 L *
+  H5 : fdlist (z1\F1 (G z1)) L1
+  ============================
+   append (X :: L) GL (X :: L1)
+
+fdlist_append < apply IH to H5 H4 H3 with F = F1.
+Subgoal 2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, L1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL * ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist G GL
+  H4 : fdlist F1 L *
+  H5 : fdlist (z1\F1 (G z1)) L1
+  H6 : append L GL L1
+  ============================
+   append (X :: L) GL (X :: L1)
+
+fdlist_append < search.
+Proof completed.
+
+Abella < Theorem fdlist_append : 
+forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL -> fdlist G GL ->
+  append FL GL HL.
+
+
+  ============================
+   forall F G FL GL HL, fdlist (l\F (G l)) HL -> fdlist F FL ->
+     fdlist G GL -> append FL GL HL
+
+fdlist_append < induction on 1.
+
+
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  ============================
+   forall F G FL GL HL, fdlist (l\F (G l)) HL @ -> fdlist F FL ->
+     fdlist G GL -> append FL GL HL
+
+fdlist_append < intros.
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H1 : fdlist (l\F (G l)) HL @
+  H2 : fdlist F FL
+  H3 : fdlist G GL
+  ============================
+   append FL GL HL
+
+fdlist_append < case H1.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H2 : fdlist F FL
+  H3 : fdlist G GL
+  H4 : l\l = l\F (G l)
+  ============================
+   append FL GL nil
+
+Subgoal 2 is:
+ append FL GL (X :: L)
+
+fdlist_append < case H4.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H2 : fdlist (z1\z1) FL
+  H3 : fdlist (z1\z1) GL
+  ============================
+   append FL GL nil
+
+Subgoal 2 is:
+ append FL GL (X :: L)
+
+fdlist_append < case H2.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist (z1\z1) GL
+  ============================
+   append nil GL nil
+
+Subgoal 2 is:
+ append FL GL (X :: L)
+
+fdlist_append < case H3.
+Subgoal 1:
+
+  Variables: F, G, FL, GL, HL
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  ============================
+   append nil nil nil
+
+Subgoal 2 is:
+ append FL GL (X :: L)
+
+fdlist_append < search.
+Subgoal 2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H2 : fdlist F FL
+  H3 : fdlist G GL
+  H4 : l\X :: F1 l = l\F (G l)
+  H5 : fdlist F1 L *
+  ============================
+   append FL GL (X :: L)
+
+fdlist_append < case H4.
+Subgoal 2.1:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, F3, F2
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H2 : fdlist (z1\F2 z1 :: F3 z1) FL
+  H3 : fdlist G GL
+  H5 : fdlist (z1\F3 (G z1)) L *
+  H6 : l\F2 (G l) = l\X
+  ============================
+   append FL GL (X :: L)
+
+Subgoal 2.2 is:
+ append FL GL (X :: L)
+
+fdlist_append < case H2.
+Subgoal 2.1:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, F3, F2, L1, X1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist G GL
+  H5 : fdlist (z1\F3 (G z1)) L *
+  H6 : l\X1 = l\X
+  H7 : fdlist (z1\F3 z1) L1
+  ============================
+   append (X1 :: L1) GL (X :: L)
+
+Subgoal 2.2 is:
+ append FL GL (X :: L)
+
+fdlist_append < case H6.
+Subgoal 2.1:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, F3, F2, L1, X1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist G GL
+  H5 : fdlist (z1\F3 (G z1)) L *
+  H7 : fdlist (z1\F3 z1) L1
+  ============================
+   append (X :: L1) GL (X :: L)
+
+Subgoal 2.2 is:
+ append FL GL (X :: L)
+
+fdlist_append < apply IH to H5 H7 H3 with F = F3.
+Subgoal 2.1:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, F3, F2, L1, X1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist G GL
+  H5 : fdlist (z1\F3 (G z1)) L *
+  H7 : fdlist (z1\F3 z1) L1
+  H8 : append L1 GL L
+  ============================
+   append (X :: L1) GL (X :: L)
+
+Subgoal 2.2 is:
+ append FL GL (X :: L)
+
+fdlist_append < search.
+Subgoal 2.2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H2 : fdlist (z1\z1) FL
+  H3 : fdlist (z1\X :: F1 z1) GL
+  H5 : fdlist F1 L *
+  ============================
+   append FL GL (X :: L)
+
+fdlist_append < case H2.
+Subgoal 2.2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H3 : fdlist (z1\X :: F1 z1) GL
+  H5 : fdlist F1 L *
+  ============================
+   append nil GL (X :: L)
+
+fdlist_append < case H3.
+Subgoal 2.2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, L1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H5 : fdlist F1 L *
+  H6 : fdlist (z1\F1 z1) L1
+  ============================
+   append nil (X :: L1) (X :: L)
+
+fdlist_append < apply fdlist_det1 to H5 H6.
+Subgoal 2.2:
+
+  Variables: F, G, FL, GL, HL, L, X, F1, L1
+  IH : forall F G FL GL HL, fdlist (l\F (G l)) HL * -> fdlist F FL ->
+         fdlist G GL -> append FL GL HL
+  H5 : fdlist F1 L1 *
+  H6 : fdlist (z1\F1 z1) L1
+  ============================
+   append nil (X :: L1) (X :: L1)
+
+fdlist_append < search.
+Proof completed.
+
+Abella < Type p1, p2, p3 o.
+
+Abella < Theorem manual_example : 
+forall F G, fdlist (l\F (G l)) (p1 :: p2 :: p3 :: nil) ->
+  F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+  G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+  G = l\p1 :: p2 :: p3 :: l.
+
+
+  ============================
+   forall F G, fdlist (l\F (G l)) (p1 :: p2 :: p3 :: nil) ->
+     F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < intros.
+
+  Variables: F, G
+  H1 : fdlist (l\F (G l)) (p1 :: p2 :: p3 :: nil)
+  ============================
+   F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H1.
+
+  Variables: F, G, F1
+  H2 : l\p1 :: F1 l = l\F (G l)
+  H3 : fdlist F1 (p2 :: p3 :: nil)
+  ============================
+   F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H3.
+
+  Variables: F, G, F1, F2
+  H2 : l\p1 :: p2 :: F2 l = l\F (G l)
+  H4 : fdlist F2 (p3 :: nil)
+  ============================
+   F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H4.
+
+  Variables: F, G, F1, F2, F3
+  H2 : l\p1 :: p2 :: p3 :: F3 l = l\F (G l)
+  H5 : fdlist F3 nil
+  ============================
+   F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H5.
+
+  Variables: F, G, F1, F2, F3
+  H2 : l\p1 :: p2 :: p3 :: l = l\F (G l)
+  ============================
+   F = l\p1 :: p2 :: p3 :: l /\ G = l\l \/ F = l\p1 :: p2 :: l /\
+     G = l\p3 :: l \/ F = l\p1 :: l /\ G = l\p2 :: p3 :: l \/ F = l\l /\
+     G = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H2.
+Subgoal 1:
+
+  Variables: F, G, F1, F2, F3, F5, F4
+  H6 : l\F5 (G l) = l\p2 :: p3 :: l
+  H7 : l\F4 (G l) = l\p1
+  ============================
+   z1\F4 z1 :: F5 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\F4 z1 :: F5 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\F4 z1 :: F5 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\F4 z1 :: F5 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H7.
+Subgoal 1:
+
+  Variables: F, G, F1, F2, F3, F5, F4
+  H6 : l\F5 (G l) = l\p2 :: p3 :: l
+  ============================
+   z1\p1 :: F5 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\p1 :: F5 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\p1 :: F5 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\p1 :: F5 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H6.
+Subgoal 1.1:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6
+  H8 : l\F7 (G l) = l\p3 :: l
+  H9 : l\F6 (G l) = l\p2
+  ============================
+   z1\p1 :: F6 z1 :: F7 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\p1 :: F6 z1 :: F7 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\p1 :: F6 z1 :: F7 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\p1 :: F6 z1 :: F7 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H9.
+Subgoal 1.1:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6
+  H8 : l\F7 (G l) = l\p3 :: l
+  ============================
+   z1\p1 :: p2 :: F7 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\p1 :: p2 :: F7 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\p1 :: p2 :: F7 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\p1 :: p2 :: F7 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H8.
+Subgoal 1.1.1:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6, F9, F8
+  H10 : l\F9 (G l) = l\l
+  H11 : l\F8 (G l) = l\p3
+  ============================
+   z1\p1 :: p2 :: F8 z1 :: F9 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\p1 :: p2 :: F8 z1 :: F9 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\p1 :: p2 :: F8 z1 :: F9 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\p1 :: p2 :: F8 z1 :: F9 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.1.2 is:
+ z1\p1 :: p2 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p3 :: z1 = l\l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: p2 :: l /\ z1\p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: l /\ z1\p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\l /\ z1\p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H11.
+Subgoal 1.1.1:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6, F9, F8
+  H10 : l\F9 (G l) = l\l
+  ============================
+   z1\p1 :: p2 :: p3 :: F9 z1 = l\p1 :: p2 :: p3 :: l /\ G = l\l \/
+     z1\p1 :: p2 :: p3 :: F9 z1 = l\p1 :: p2 :: l /\ G = l\p3 :: l \/
+     z1\p1 :: p2 :: p3 :: F9 z1 = l\p1 :: l /\ G = l\p2 :: p3 :: l \/
+     z1\p1 :: p2 :: p3 :: F9 z1 = l\l /\ G = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.1.2 is:
+ z1\p1 :: p2 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p3 :: z1 = l\l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: p2 :: l /\ z1\p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: l /\ z1\p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\l /\ z1\p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < case H10.
+Subgoal 1.1.1:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6, F9, F8
+  ============================
+   z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\z1 = l\l \/
+     z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: l /\ z1\z1 = l\p3 :: l \/
+     z1\p1 :: p2 :: p3 :: z1 = l\p1 :: l /\ z1\z1 = l\p2 :: p3 :: l \/
+     z1\p1 :: p2 :: p3 :: z1 = l\l /\ z1\z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.1.2 is:
+ z1\p1 :: p2 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p3 :: z1 = l\l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: p2 :: l /\ z1\p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\p1 :: l /\ z1\p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: p2 :: z1 = l\l /\ z1\p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < search.
+Subgoal 1.1.2:
+
+  Variables: F, G, F1, F2, F3, F5, F4, F7, F6
+  ============================
+   z1\p1 :: p2 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p3 :: z1 = l\l \/
+     z1\p1 :: p2 :: z1 = l\p1 :: p2 :: l /\ z1\p3 :: z1 = l\p3 :: l \/
+     z1\p1 :: p2 :: z1 = l\p1 :: l /\ z1\p3 :: z1 = l\p2 :: p3 :: l \/
+     z1\p1 :: p2 :: z1 = l\l /\ z1\p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 1.2 is:
+ z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+   z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < search.
+Subgoal 1.2:
+
+  Variables: F, G, F1, F2, F3, F5, F4
+  ============================
+   z1\p1 :: z1 = l\p1 :: p2 :: p3 :: l /\ z1\p2 :: p3 :: z1 = l\l \/
+     z1\p1 :: z1 = l\p1 :: p2 :: l /\ z1\p2 :: p3 :: z1 = l\p3 :: l \/
+     z1\p1 :: z1 = l\p1 :: l /\ z1\p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+     z1\p1 :: z1 = l\l /\ z1\p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+Subgoal 2 is:
+ z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+   z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+   z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+   z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < search.
+Subgoal 2:
+
+  Variables: F, G, F1, F2, F3
+  ============================
+   z1\z1 = l\p1 :: p2 :: p3 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\l \/
+     z1\z1 = l\p1 :: p2 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p3 :: l \/
+     z1\z1 = l\p1 :: l /\ z1\p1 :: p2 :: p3 :: z1 = l\p2 :: p3 :: l \/
+     z1\z1 = l\l /\ z1\p1 :: p2 :: p3 :: z1 = l\p1 :: p2 :: p3 :: l
+
+manual_example < search.
+Proof completed.
+
+Abella < Goodbye.

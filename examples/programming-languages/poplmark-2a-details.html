@@ -1,0 +1,2425 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: POPLmark 2a: Progress and preservation for Fsub - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "poplmark-2a".</b>
+Reading specification "poplmark-2a"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem sub_top : 
+forall T, {sub top T} -> T = top.</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+
+  ============================
+   forall T, {sub top T} -> T = top
+
+sub_top < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  IH : forall T, {sub top T}* -> T = top
+  ============================
+   forall T, {sub top T}@ -> T = top
+
+sub_top < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+  Variables: T
+  IH : forall T, {sub top T}* -> T = top
+  H1 : {sub top T}@
+  ============================
+   T = top
+
+sub_top < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T
+  IH : forall T, {sub top T}* -> T = top
+  ============================
+   top = top
+
+Subgoal 2 is:
+ top = top
+
+Subgoal 3 is:
+ T = top
+
+sub_top < <b>search.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 2:
+
+  Variables: T
+  IH : forall T, {sub top T}* -> T = top
+  ============================
+   top = top
+
+Subgoal 3 is:
+ T = top
+
+sub_top < <b>search.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, Q
+  IH : forall T, {sub top T}* -> T = top
+  H2 : {sub top Q}*
+  H3 : {sub Q T}*
+  ============================
+   T = top
+
+sub_top < <b>apply IH to H2.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, Q
+  IH : forall T, {sub top T}* -> T = top
+  H2 : {sub top top}*
+  H3 : {sub top T}*
+  ============================
+   T = top
+
+sub_top < <b>apply IH to H3.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, Q
+  IH : forall T, {sub top T}* -> T = top
+  H2 : {sub top top}*
+  H3 : {sub top top}*
+  ============================
+   top = top
+
+sub_top < <b>search.</b>
+Proof completed.
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Theorem sub_arrow : 
+forall S T1 T2, {sub S (arrow T1 T2)} -> (exists S1 S2, S = arrow S1 S2).</b>
+</pre>
+<a name="12"></a>
+<pre>
+
+
+  ============================
+   forall S T1 T2, {sub S (arrow T1 T2)} -> (exists S1 S2, S = arrow S1 S2)
+
+sub_arrow < <b>induction on 1.</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  ============================
+   forall S T1 T2, {sub S (arrow T1 T2)}@ -> (exists S1 S2, S = arrow S1 S2)
+
+sub_arrow < <b>intros.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+  Variables: S, T1, T2
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  H1 : {sub S (arrow T1 T2)}@
+  ============================
+   exists S1 S2, S = arrow S1 S2
+
+sub_arrow < <b>case H1.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S, T1, T2
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  ============================
+   exists S1 S2, arrow T1 T2 = arrow S1 S2
+
+Subgoal 2 is:
+ exists S1 S2, S = arrow S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, arrow S1 S2 = arrow S3 S4
+
+sub_arrow < <b>search.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  H2 : {sub S Q}*
+  H3 : {sub Q (arrow T1 T2)}*
+  ============================
+   exists S1 S2, S = arrow S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, arrow S1 S2 = arrow S3 S4
+
+sub_arrow < <b>apply IH to H3.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q, S1, S2
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  H2 : {sub S (arrow S1 S2)}*
+  H3 : {sub (arrow S1 S2) (arrow T1 T2)}*
+  ============================
+   exists S1 S2, S = arrow S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, arrow S1 S2 = arrow S3 S4
+
+sub_arrow < <b>apply IH to H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q, S1, S2, S3, S4
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  H2 : {sub (arrow S3 S4) (arrow S1 S2)}*
+  H3 : {sub (arrow S1 S2) (arrow T1 T2)}*
+  ============================
+   exists S1 S2, arrow S3 S4 = arrow S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, arrow S1 S2 = arrow S3 S4
+
+sub_arrow < <b>search.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 3:
+
+  Variables: S, T1, T2, S2, S1
+  IH : forall S T1 T2, {sub S (arrow T1 T2)}* -> (exists S1 S2,
+         S = arrow S1 S2)
+  H2 : {sub T1 S1}*
+  H3 : {sub S2 T2}*
+  ============================
+   exists S3 S4, arrow S1 S2 = arrow S3 S4
+
+sub_arrow < <b>search.</b>
+Proof completed.
+</pre>
+<a name="20"></a>
+<pre class="code">
+Abella < <b>Theorem sub_forall : 
+forall S T1 T2, {sub S (all T1 T2)} -> (exists S1 S2, S = all S1 S2).</b>
+</pre>
+<a name="21"></a>
+<pre>
+
+
+  ============================
+   forall S T1 T2, {sub S (all T1 T2)} -> (exists S1 S2, S = all S1 S2)
+
+sub_forall < <b>induction on 1.</b>
+</pre>
+<a name="22"></a>
+<pre>
+
+
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  ============================
+   forall S T1 T2, {sub S (all T1 T2)}@ -> (exists S1 S2, S = all S1 S2)
+
+sub_forall < <b>intros.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+  Variables: S, T1, T2
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  H1 : {sub S (all T1 T2)}@
+  ============================
+   exists S1 S2, S = all S1 S2
+
+sub_forall < <b>case H1.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S, T1, T2
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  ============================
+   exists S1 S2, all T1 T2 = all S1 S2
+
+Subgoal 2 is:
+ exists S1 S2, S = all S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, all S1 (x\S2 x) = all S3 S4
+
+sub_forall < <b>search.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  H2 : {sub S Q}*
+  H3 : {sub Q (all T1 T2)}*
+  ============================
+   exists S1 S2, S = all S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, all S1 (x\S2 x) = all S3 S4
+
+sub_forall < <b>apply IH to H3.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q, S1, S2
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  H2 : {sub S (all S1 S2)}*
+  H3 : {sub (all S1 S2) (all T1 T2)}*
+  ============================
+   exists S1 S2, S = all S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, all S1 (x\S2 x) = all S3 S4
+
+sub_forall < <b>apply IH to H2.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S, T1, T2, Q, S1, S2, S3, S4
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  H2 : {sub (all S3 S4) (all S1 S2)}*
+  H3 : {sub (all S1 S2) (all T1 T2)}*
+  ============================
+   exists S1 S2, all S3 S4 = all S1 S2
+
+Subgoal 3 is:
+ exists S3 S4, all S1 (x\S2 x) = all S3 S4
+
+sub_forall < <b>search.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 3:
+
+  Variables: S, T1, T2, T3, S2, S1
+  IH : forall S T1 T2, {sub S (all T1 T2)}* -> (exists S1 S2, S = all S1 S2)
+  H2 : {sub T1 S1}*
+  H3 : {sub n1 T1 |- sub (S2 n1) (T3 n1)}*
+  ============================
+   exists S3 S4, all S1 (x\S2 x) = all S3 S4
+
+sub_forall < <b>search.</b>
+Proof completed.
+</pre>
+<a name="29"></a>
+<pre class="code">
+Abella < <b>Theorem invert_sub_arrow : 
+forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)} -> {sub T1 S1} /\
+  {sub S2 T2}.</b>
+</pre>
+<a name="30"></a>
+<pre>
+
+
+  ============================
+   forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)} -> {sub T1 S1} /\
+     {sub S2 T2}
+
+invert_sub_arrow < <b>induction on 1.</b>
+</pre>
+<a name="31"></a>
+<pre>
+
+
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  ============================
+   forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}@ -> {sub T1 S1} /\
+     {sub S2 T2}
+
+invert_sub_arrow < <b>intros.</b>
+</pre>
+<a name="32"></a>
+<pre>
+
+  Variables: S1, S2, T1, T2
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H1 : {sub (arrow S1 S2) (arrow T1 T2)}@
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>case H1.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S1, S2, T1, T2
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  ============================
+   {sub T1 T1} /\ {sub T2 T2}
+
+Subgoal 2 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+Subgoal 3 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>search.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H2 : {sub (arrow S1 S2) Q}*
+  H3 : {sub Q (arrow T1 T2)}*
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+Subgoal 3 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>apply sub_arrow to H3.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H2 : {sub (arrow S1 S2) (arrow S3 S4)}*
+  H3 : {sub (arrow S3 S4) (arrow T1 T2)}*
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+Subgoal 3 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>apply IH to H2.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H2 : {sub (arrow S1 S2) (arrow S3 S4)}*
+  H3 : {sub (arrow S3 S4) (arrow T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub S2 S4}
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+Subgoal 3 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>apply IH to H3.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H2 : {sub (arrow S1 S2) (arrow S3 S4)}*
+  H3 : {sub (arrow S3 S4) (arrow T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub S2 S4}
+  H6 : {sub T1 S3}
+  H7 : {sub S4 T2}
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+Subgoal 3 is:
+ {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>search.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 3:
+
+  Variables: S1, S2, T1, T2
+  IH : forall S1 S2 T1 T2, {sub (arrow S1 S2) (arrow T1 T2)}* ->
+         {sub T1 S1} /\ {sub S2 T2}
+  H2 : {sub T1 S1}*
+  H3 : {sub S2 T2}*
+  ============================
+   {sub T1 S1} /\ {sub S2 T2}
+
+invert_sub_arrow < <b>search.</b>
+Proof completed.
+</pre>
+<a name="39"></a>
+<pre class="code">
+Abella < <b>Theorem invert_sub_forall : 
+forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)} -> {sub T1 S1} /\ (nabla x,
+  {sub x T1 |- sub (S2 x) (T2 x)}).</b>
+</pre>
+<a name="40"></a>
+<pre>
+
+
+  ============================
+   forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)} -> {sub T1 S1} /\
+     (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+invert_sub_forall < <b>induction on 1.</b>
+</pre>
+<a name="41"></a>
+<pre>
+
+
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  ============================
+   forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}@ -> {sub T1 S1} /\
+     (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+invert_sub_forall < <b>intros.</b>
+</pre>
+<a name="42"></a>
+<pre>
+
+  Variables: S1, S2, T1, T2
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H1 : {sub (all S1 S2) (all T1 T2)}@
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+invert_sub_forall < <b>case H1.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S1, S2, T1, T2
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  ============================
+   {sub T1 T1} /\ (nabla x, {sub x T1 |- sub (T2 x) (T2 x)})
+
+Subgoal 2 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>search.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) Q}*
+  H3 : {sub Q (all T1 T2)}*
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>apply sub_forall to H3.</b>
+</pre>
+<a name="45"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) (all S3 S4)}*
+  H3 : {sub (all S3 S4) (all T1 T2)}*
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>apply IH to H2.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) (all S3 S4)}*
+  H3 : {sub (all S3 S4) (all T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub n1 S3 |- sub (S2 n1) (S4 n1)}
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>apply IH to H3.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) (all S3 S4)}*
+  H3 : {sub (all S3 S4) (all T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub n1 S3 |- sub (S2 n1) (S4 n1)}
+  H6 : {sub T1 S3}
+  H7 : {sub n1 T1 |- sub (S4 n1) (T2 n1)}
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>assert {sub n1 T1 |- sub n1 S3}.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) (all S3 S4)}*
+  H3 : {sub (all S3 S4) (all T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub n1 S3 |- sub (S2 n1) (S4 n1)}
+  H6 : {sub T1 S3}
+  H7 : {sub n1 T1 |- sub (S4 n1) (T2 n1)}
+  H8 : {sub n1 T1 |- sub n1 S3}
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>cut H5 with H8.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, S2, T1, T2, Q, S3, S4
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub (all S1 S2) (all S3 S4)}*
+  H3 : {sub (all S3 S4) (all T1 T2)}*
+  H4 : {sub S3 S1}
+  H5 : {sub n1 S3 |- sub (S2 n1) (S4 n1)}
+  H6 : {sub T1 S3}
+  H7 : {sub n1 T1 |- sub (S4 n1) (T2 n1)}
+  H8 : {sub n1 T1 |- sub n1 S3}
+  H9 : {sub n1 T1 |- sub (S2 n1) (S4 n1)}
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+
+Subgoal 3 is:
+ {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>search.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 3:
+
+  Variables: S1, S2, T1, T2, T3, S3
+  IH : forall S1 S2 T1 T2, {sub (all S1 S2) (all T1 T2)}* -> {sub T1 S1} /\
+         (nabla x, {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub T1 S1}*
+  H3 : {sub n1 T1 |- sub (S3 n1) (T3 n1)}*
+  ============================
+   {sub T1 S1} /\ (nabla x, {sub x T1 |- sub (S3 x) (T3 x)})
+
+invert_sub_forall < <b>search.</b>
+Proof completed.
+</pre>
+<a name="51"></a>
+<pre class="code">
+Abella < <b>Theorem absurd_ota : 
+forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)} -> false.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+
+  ============================
+   forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)} -> false
+
+absurd_ota < <b>induction on 1.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+
+  IH : forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)}* -> false
+  ============================
+   forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)}@ -> false
+
+absurd_ota < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+  Variables: E, T1, T2, T3
+  IH : forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)}* -> false
+  H1 : {of (tabs T1 E) (arrow T2 T3)}@
+  ============================
+   false
+
+absurd_ota < <b>case H1.</b>
+</pre>
+<a name="55"></a>
+<pre>
+
+  Variables: E, T1, T2, T3, S
+  IH : forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)}* -> false
+  H2 : {of (tabs T1 E) S}*
+  H3 : {sub S (arrow T2 T3)}*
+  ============================
+   false
+
+absurd_ota < <b>apply sub_arrow to H3.</b>
+</pre>
+<a name="56"></a>
+<pre>
+
+  Variables: E, T1, T2, T3, S, S1, S2
+  IH : forall E T1 T2 T3, {of (tabs T1 E) (arrow T2 T3)}* -> false
+  H2 : {of (tabs T1 E) (arrow S1 S2)}*
+  H3 : {sub (arrow S1 S2) (arrow T2 T3)}*
+  ============================
+   false
+
+absurd_ota < <b>apply IH to H2.</b>
+Proof completed.
+</pre>
+<a name="57"></a>
+<pre class="code">
+Abella < <b>Theorem absurd_oaf : 
+forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)} -> false.</b>
+</pre>
+<a name="58"></a>
+<pre>
+
+
+  ============================
+   forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)} -> false
+
+absurd_oaf < <b>induction on 1.</b>
+</pre>
+<a name="59"></a>
+<pre>
+
+
+  IH : forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)}* -> false
+  ============================
+   forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)}@ -> false
+
+absurd_oaf < <b>intros.</b>
+</pre>
+<a name="60"></a>
+<pre>
+
+  Variables: E, T1, T2, T3
+  IH : forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)}* -> false
+  H1 : {of (abs T1 E) (all T2 T3)}@
+  ============================
+   false
+
+absurd_oaf < <b>case H1.</b>
+</pre>
+<a name="61"></a>
+<pre>
+
+  Variables: E, T1, T2, T3, S
+  IH : forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)}* -> false
+  H2 : {of (abs T1 E) S}*
+  H3 : {sub S (all T2 T3)}*
+  ============================
+   false
+
+absurd_oaf < <b>apply sub_forall to H3.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+  Variables: E, T1, T2, T3, S, S1, S2
+  IH : forall E T1 T2 T3, {of (abs T1 E) (all T2 T3)}* -> false
+  H2 : {of (abs T1 E) (all S1 S2)}*
+  H3 : {sub (all S1 S2) (all T2 T3)}*
+  ============================
+   false
+
+absurd_oaf < <b>apply IH to H2.</b>
+Proof completed.
+</pre>
+<a name="63"></a>
+<pre class="code">
+Abella < <b>Theorem invert_of_abs : 
+forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)} -> (exists S2, nabla x,
+  {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}).</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+
+  ============================
+   forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)} -> (exists S2, nabla x,
+     {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+
+invert_of_abs < <b>induction on 1.</b>
+</pre>
+<a name="65"></a>
+<pre>
+
+
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  ============================
+   forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}@ -> (exists S2, nabla x,
+     {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+
+invert_of_abs < <b>intros.</b>
+</pre>
+<a name="66"></a>
+<pre>
+
+  Variables: S1, E, T1, T2
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H1 : {of (abs S1 E) (arrow T1 T2)}@
+  ============================
+   exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>case H1.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S1, E, T1, T2
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H2 : {of n1 T1 |- of (E n1) T2}*
+  ============================
+   exists S2, nabla x, {of x T1 |- of (E x) S2} /\ {sub T1 T1} /\ {sub S2 T2}
+
+Subgoal 2 is:
+ exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>search.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H2 : {of (abs S1 E) S}*
+  H3 : {sub S (arrow T1 T2)}*
+  ============================
+   exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>apply sub_arrow to H3.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H2 : {of (abs S1 E) (arrow S2 S3)}*
+  H3 : {sub (arrow S2 S3) (arrow T1 T2)}*
+  ============================
+   exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>apply invert_sub_arrow to H3.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H2 : {of (abs S1 E) (arrow S2 S3)}*
+  H3 : {sub (arrow S2 S3) (arrow T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub S3 T2}
+  ============================
+   exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>apply IH to H2.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3, S4
+  IH : forall S1 E T1 T2, {of (abs S1 E) (arrow T1 T2)}* -> (exists S2,
+         nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2})
+  H2 : {of (abs S1 E) (arrow S2 S3)}*
+  H3 : {sub (arrow S2 S3) (arrow T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub S3 T2}
+  H6 : {of n1 S1 |- of (E n1) S4}
+  H7 : {sub S2 S1}
+  H8 : {sub S4 S3}
+  ============================
+   exists S2, nabla x, {of x S1 |- of (E x) S2} /\ {sub T1 S1} /\ {sub S2 T2}
+
+invert_of_abs < <b>search.</b>
+Proof completed.
+</pre>
+<a name="72"></a>
+<pre class="code">
+Abella < <b>Theorem invert_of_tabs : 
+forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)} -> (exists S2, nabla x,
+  {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+  {sub x T1 |- sub (S2 x) (T2 x)}).</b>
+</pre>
+<a name="73"></a>
+<pre>
+
+
+  ============================
+   forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)} -> (exists S2, nabla x,
+     {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)})
+
+invert_of_tabs < <b>induction on 1.</b>
+</pre>
+<a name="74"></a>
+<pre>
+
+
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  ============================
+   forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}@ -> (exists S2, nabla x,
+     {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)})
+
+invert_of_tabs < <b>intros.</b>
+</pre>
+<a name="75"></a>
+<pre>
+
+  Variables: S1, E, T1, T2
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H1 : {of (tabs S1 E) (all T1 T2)}@
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>case H1.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 1:
+
+  Variables: S1, E, T1, T2
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {sub n1 T1 |- of (E n1) (T2 n1)}*
+  ============================
+   exists S2, nabla x, {sub x T1 |- of (E x) (S2 x)} /\ {sub T1 T1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+Subgoal 2 is:
+ exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+   {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>search.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) S}*
+  H3 : {sub S (all T1 T2)}*
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>apply sub_forall to H3.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) (all S2 S3)}*
+  H3 : {sub (all S2 S3) (all T1 T2)}*
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>apply invert_sub_forall to H3.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) (all S2 S3)}*
+  H3 : {sub (all S2 S3) (all T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub n1 T1 |- sub (S3 n1) (T2 n1)}
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>apply IH to H2.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3, S4
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) (all S2 S3)}*
+  H3 : {sub (all S2 S3) (all T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub n1 T1 |- sub (S3 n1) (T2 n1)}
+  H6 : {sub n1 S1 |- of (E n1) (S4 n1)}
+  H7 : {sub S2 S1}
+  H8 : {sub n1 S2 |- sub (S4 n1) (S3 n1)}
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>assert {sub n1 T1 |- sub n1 S2}.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3, S4
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) (all S2 S3)}*
+  H3 : {sub (all S2 S3) (all T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub n1 T1 |- sub (S3 n1) (T2 n1)}
+  H6 : {sub n1 S1 |- of (E n1) (S4 n1)}
+  H7 : {sub S2 S1}
+  H8 : {sub n1 S2 |- sub (S4 n1) (S3 n1)}
+  H9 : {sub n1 T1 |- sub n1 S2}
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>cut H8 with H9.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 2:
+
+  Variables: S1, E, T1, T2, S, S2, S3, S4
+  IH : forall S1 E T1 T2, {of (tabs S1 E) (all T1 T2)}* -> (exists S2,
+         nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+         {sub x T1 |- sub (S2 x) (T2 x)})
+  H2 : {of (tabs S1 E) (all S2 S3)}*
+  H3 : {sub (all S2 S3) (all T1 T2)}*
+  H4 : {sub T1 S2}
+  H5 : {sub n1 T1 |- sub (S3 n1) (T2 n1)}
+  H6 : {sub n1 S1 |- of (E n1) (S4 n1)}
+  H7 : {sub S2 S1}
+  H8 : {sub n1 S2 |- sub (S4 n1) (S3 n1)}
+  H9 : {sub n1 T1 |- sub n1 S2}
+  H10 : {sub n1 T1 |- sub (S4 n1) (S3 n1)}
+  ============================
+   exists S2, nabla x, {sub x S1 |- of (E x) (S2 x)} /\ {sub T1 S1} /\
+     {sub x T1 |- sub (S2 x) (T2 x)}
+
+invert_of_tabs < <b>search.</b>
+Proof completed.
+</pre>
+<a name="83"></a>
+<pre class="code">
+Abella < <b>Define progresses : tm -> prop by 
+progresses E := {value E};
+progresses E := exists E', {step E E'}.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+Abella < <b>Theorem app_progresses : 
+forall E1 E2 T, {of (app E1 E2) T} -> progresses E1 -> progresses E2 ->
+  progresses (app E1 E2).</b>
+</pre>
+<a name="85"></a>
+<pre>
+
+
+  ============================
+   forall E1 E2 T, {of (app E1 E2) T} -> progresses E1 -> progresses E2 ->
+     progresses (app E1 E2)
+
+app_progresses < <b>induction on 1.</b>
+</pre>
+<a name="86"></a>
+<pre>
+
+
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  ============================
+   forall E1 E2 T, {of (app E1 E2) T}@ -> progresses E1 -> progresses E2 ->
+     progresses (app E1 E2)
+
+app_progresses < <b>intros.</b>
+</pre>
+<a name="87"></a>
+<pre>
+
+  Variables: E1, E2, T
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H1 : {of (app E1 E2) T}@
+  H2 : progresses E1
+  H3 : progresses E2
+  ============================
+   progresses (app E1 E2)
+
+app_progresses < <b>case H1.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, T11
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H2 : progresses E1
+  H3 : progresses E2
+  H4 : {of E1 (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>case H2.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: E1, E2, T, T11
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H3 : progresses E2
+  H4 : {of E1 (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H6 : {value E1}
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>case H3.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 1.1.1:
+
+  Variables: E1, E2, T, T11
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H4 : {of E1 (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H6 : {value E1}
+  H7 : {value E2}
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 1.1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>case H6.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 1.1.1.1:
+
+  Variables: E1, E2, T, T11, E, T1
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H4 : {of (abs T1 E) (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H7 : {value E2}
+  ============================
+   progresses (app (abs T1 E) E2)
+
+Subgoal 1.1.1.2 is:
+ progresses (app (tabs T1 E) E2)
+
+Subgoal 1.1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>search.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 1.1.1.2:
+
+  Variables: E1, E2, T, T11, E, T1
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H4 : {of (tabs T1 E) (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H7 : {value E2}
+  ============================
+   progresses (app (tabs T1 E) E2)
+
+Subgoal 1.1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>apply absurd_ota to H4.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 1.1.2:
+
+  Variables: E1, E2, T, T11, E'
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H4 : {of E1 (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H6 : {value E1}
+  H7 : {step E2 E'}
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 1.2 is:
+ progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>search.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: E1, E2, T, T11, E'
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H3 : progresses E2
+  H4 : {of E1 (arrow T11 T)}*
+  H5 : {of E2 T11}*
+  H6 : {step E1 E'}
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+app_progresses < <b>search.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, S
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H2 : progresses E1
+  H3 : progresses E2
+  H4 : {of (app E1 E2) S}*
+  H5 : {sub S T}*
+  ============================
+   progresses (app E1 E2)
+
+app_progresses < <b>apply IH to H4 H2 H3.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, S
+  IH : forall E1 E2 T, {of (app E1 E2) T}* -> progresses E1 ->
+         progresses E2 -> progresses (app E1 E2)
+  H2 : progresses E1
+  H3 : progresses E2
+  H4 : {of (app E1 E2) S}*
+  H5 : {sub S T}*
+  H6 : progresses (app E1 E2)
+  ============================
+   progresses (app E1 E2)
+
+app_progresses < <b>search.</b>
+Proof completed.
+</pre>
+<a name="97"></a>
+<pre class="code">
+Abella < <b>Theorem tapp_progresses : 
+forall E T T', {of (tapp E T) T'} -> progresses E -> progresses (tapp E T).</b>
+</pre>
+<a name="98"></a>
+<pre>
+
+
+  ============================
+   forall E T T', {of (tapp E T) T'} -> progresses E -> progresses (tapp E T)
+
+tapp_progresses < <b>induction on 1.</b>
+</pre>
+<a name="99"></a>
+<pre>
+
+
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  ============================
+   forall E T T', {of (tapp E T) T'}@ -> progresses E ->
+     progresses (tapp E T)
+
+tapp_progresses < <b>intros.</b>
+</pre>
+<a name="100"></a>
+<pre>
+
+  Variables: E, T, T'
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H1 : {of (tapp E T) T'}@
+  H2 : progresses E
+  ============================
+   progresses (tapp E T)
+
+tapp_progresses < <b>case H1.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, T, T', T11, T12
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H2 : progresses E
+  H3 : {of E (all T11 T12)}*
+  H4 : {sub T T11}*
+  ============================
+   progresses (tapp E T)
+
+Subgoal 2 is:
+ progresses (tapp E T)
+
+tapp_progresses < <b>case H2.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: E, T, T', T11, T12
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H3 : {of E (all T11 T12)}*
+  H4 : {sub T T11}*
+  H5 : {value E}
+  ============================
+   progresses (tapp E T)
+
+Subgoal 1.2 is:
+ progresses (tapp E T)
+
+Subgoal 2 is:
+ progresses (tapp E T)
+
+tapp_progresses < <b>case H5.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 1.1.1:
+
+  Variables: E, T, T', T11, T12, E1, T1
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H3 : {of (abs T1 E1) (all T11 T12)}*
+  H4 : {sub T T11}*
+  ============================
+   progresses (tapp (abs T1 E1) T)
+
+Subgoal 1.1.2 is:
+ progresses (tapp (tabs T1 E1) T)
+
+Subgoal 1.2 is:
+ progresses (tapp E T)
+
+Subgoal 2 is:
+ progresses (tapp E T)
+
+tapp_progresses < <b>apply absurd_oaf to H3.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 1.1.2:
+
+  Variables: E, T, T', T11, T12, E1, T1
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H3 : {of (tabs T1 E1) (all T11 T12)}*
+  H4 : {sub T T11}*
+  ============================
+   progresses (tapp (tabs T1 E1) T)
+
+Subgoal 1.2 is:
+ progresses (tapp E T)
+
+Subgoal 2 is:
+ progresses (tapp E T)
+
+tapp_progresses < <b>search.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: E, T, T', T11, T12, E'
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H3 : {of E (all T11 T12)}*
+  H4 : {sub T T11}*
+  H5 : {step E E'}
+  ============================
+   progresses (tapp E T)
+
+Subgoal 2 is:
+ progresses (tapp E T)
+
+tapp_progresses < <b>search.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T', S
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H2 : progresses E
+  H3 : {of (tapp E T) S}*
+  H4 : {sub S T'}*
+  ============================
+   progresses (tapp E T)
+
+tapp_progresses < <b>apply IH to H3 H2.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T', S
+  IH : forall E T T', {of (tapp E T) T'}* -> progresses E ->
+         progresses (tapp E T)
+  H2 : progresses E
+  H3 : {of (tapp E T) S}*
+  H4 : {sub S T'}*
+  H5 : progresses (tapp E T)
+  ============================
+   progresses (tapp E T)
+
+tapp_progresses < <b>search.</b>
+Proof completed.
+</pre>
+<a name="108"></a>
+<pre class="code">
+Abella < <b>Theorem progress : 
+forall E T, {of E T} -> progresses E.</b>
+</pre>
+<a name="109"></a>
+<pre>
+
+
+  ============================
+   forall E T, {of E T} -> progresses E
+
+progress < <b>induction on 1.</b>
+</pre>
+<a name="110"></a>
+<pre>
+
+
+  IH : forall E T, {of E T}* -> progresses E
+  ============================
+   forall E T, {of E T}@ -> progresses E
+
+progress < <b>intros.</b>
+</pre>
+<a name="111"></a>
+<pre>
+
+  Variables: E, T
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of E T}@
+  ============================
+   progresses E
+
+progress < <b>case H1 (keep).</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, T, T2, E1, T1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (abs T1 E1) (arrow T1 T2)}@
+  H2 : {of n1 T1 |- of (E1 n1) T2}*
+  ============================
+   progresses (abs T1 E1)
+
+Subgoal 2 is:
+ progresses (app E1 E2)
+
+Subgoal 3 is:
+ progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>search.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T11, E2, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (app E1 E2) T}@
+  H2 : {of E1 (arrow T11 T)}*
+  H3 : {of E2 T11}*
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 3 is:
+ progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>apply IH to H2.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T11, E2, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (app E1 E2) T}@
+  H2 : {of E1 (arrow T11 T)}*
+  H3 : {of E2 T11}*
+  H4 : progresses E1
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 3 is:
+ progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>apply IH to H3.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T11, E2, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (app E1 E2) T}@
+  H2 : {of E1 (arrow T11 T)}*
+  H3 : {of E2 T11}*
+  H4 : progresses E1
+  H5 : progresses E2
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 3 is:
+ progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>apply app_progresses to H1 H4 H5.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, T, T11, E2, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (app E1 E2) T}@
+  H2 : {of E1 (arrow T11 T)}*
+  H3 : {of E2 T11}*
+  H4 : progresses E1
+  H5 : progresses E2
+  H6 : progresses (app E1 E2)
+  ============================
+   progresses (app E1 E2)
+
+Subgoal 3 is:
+ progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>search.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 3:
+
+  Variables: E, T, T2, E1, T1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (tabs T1 E1) (all T1 T2)}@
+  H2 : {sub n1 T1 |- of (E1 n1) (T2 n1)}*
+  ============================
+   progresses (tabs T1 E1)
+
+Subgoal 4 is:
+ progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>search.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, T, T11, T2, T12, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (tapp E1 T2) (T12 T2)}@
+  H2 : {of E1 (all T11 T12)}*
+  H3 : {sub T2 T11}*
+  ============================
+   progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>apply IH to H2.</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, T, T11, T2, T12, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (tapp E1 T2) (T12 T2)}@
+  H2 : {of E1 (all T11 T12)}*
+  H3 : {sub T2 T11}*
+  H4 : progresses E1
+  ============================
+   progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>apply tapp_progresses to H1 H4.</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, T, T11, T2, T12, E1
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of (tapp E1 T2) (T12 T2)}@
+  H2 : {of E1 (all T11 T12)}*
+  H3 : {sub T2 T11}*
+  H4 : progresses E1
+  H5 : progresses (tapp E1 T2)
+  ============================
+   progresses (tapp E1 T2)
+
+Subgoal 5 is:
+ progresses E
+
+progress < <b>search.</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, T, S
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of E T}@
+  H2 : {of E S}*
+  H3 : {sub S T}*
+  ============================
+   progresses E
+
+progress < <b>apply IH to H2.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, T, S
+  IH : forall E T, {of E T}* -> progresses E
+  H1 : {of E T}@
+  H2 : {of E S}*
+  H3 : {sub S T}*
+  H4 : progresses E
+  ============================
+   progresses E
+
+progress < <b>search.</b>
+Proof completed.
+</pre>
+<a name="123"></a>
+<pre class="code">
+Abella < <b>Theorem preservation : 
+forall E E' T, {of E T} -> {step E E'} -> {of E' T}.</b>
+</pre>
+<a name="124"></a>
+<pre>
+
+
+  ============================
+   forall E E' T, {of E T} -> {step E E'} -> {of E' T}
+
+preservation < <b>induction on 1.</b>
+</pre>
+<a name="125"></a>
+<pre>
+
+
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  ============================
+   forall E E' T, {of E T}@ -> {step E E'} -> {of E' T}
+
+preservation < <b>intros.</b>
+</pre>
+<a name="126"></a>
+<pre>
+
+  Variables: E, E', T
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H1 : {of E T}@
+  H2 : {step E E'}
+  ============================
+   {of E' T}
+
+preservation < <b>case H1.</b>
+</pre>
+<a name="127"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, E', T, T2, E1, T1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step (abs T1 E1) E'}
+  H3 : {of n1 T1 |- of (E1 n1) T2}*
+  ============================
+   {of E' (arrow T1 T2)}
+
+Subgoal 2 is:
+ {of E' T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>case H2.</b>
+</pre>
+<a name="128"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, E', T, T11, E2, E1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step (app E1 E2) E'}
+  H3 : {of E1 (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  ============================
+   {of E' T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>case H2.</b>
+</pre>
+<a name="129"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, E', T, T11, E2, E1, E3, T1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (abs T1 E3) (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E2}
+  ============================
+   {of (E3 E2) T}
+
+Subgoal 2.2 is:
+ {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>apply invert_of_abs to H3.</b>
+</pre>
+<a name="130"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, E', T, T11, E2, E1, E3, T1, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (abs T1 E3) (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E2}
+  H6 : {of n1 T1 |- of (E3 n1) S2}
+  H7 : {sub T11 T1}
+  H8 : {sub S2 T}
+  ============================
+   {of (E3 E2) T}
+
+Subgoal 2.2 is:
+ {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>inst H6 with n1 = E2.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, E', T, T11, E2, E1, E3, T1, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (abs T1 E3) (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E2}
+  H6 : {of n1 T1 |- of (E3 n1) S2}
+  H7 : {sub T11 T1}
+  H8 : {sub S2 T}
+  H9 : {of E2 T1 |- of (E3 E2) S2}
+  ============================
+   {of (E3 E2) T}
+
+Subgoal 2.2 is:
+ {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>assert {of E2 T1}.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, E', T, T11, E2, E1, E3, T1, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (abs T1 E3) (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E2}
+  H6 : {of n1 T1 |- of (E3 n1) S2}
+  H7 : {sub T11 T1}
+  H8 : {sub S2 T}
+  H9 : {of E2 T1 |- of (E3 E2) S2}
+  H10 : {of E2 T1}
+  ============================
+   {of (E3 E2) T}
+
+Subgoal 2.2 is:
+ {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>cut H9 with H10.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, E', T, T11, E2, E1, E3, T1, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (abs T1 E3) (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E2}
+  H6 : {of n1 T1 |- of (E3 n1) S2}
+  H7 : {sub T11 T1}
+  H8 : {sub S2 T}
+  H9 : {of E2 T1 |- of (E3 E2) S2}
+  H10 : {of E2 T1}
+  H11 : {of (E3 E2) S2}
+  ============================
+   {of (E3 E2) T}
+
+Subgoal 2.2 is:
+ {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>search.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, E', T, T11, E2, E1, E1'
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {step E1 E1'}
+  ============================
+   {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, E', T, T11, E2, E1, E1'
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {step E1 E1'}
+  H6 : {of E1' (arrow T11 T)}
+  ============================
+   {of (app E1' E2) T}
+
+Subgoal 2.3 is:
+ {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>search.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 2.3:
+
+  Variables: E, E', T, T11, E2, E1, E2'
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E1}
+  H6 : {step E2 E2'}
+  ============================
+   {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="137"></a>
+<pre>
+Subgoal 2.3:
+
+  Variables: E, E', T, T11, E2, E1, E2'
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (arrow T11 T)}*
+  H4 : {of E2 T11}*
+  H5 : {value E1}
+  H6 : {step E2 E2'}
+  H7 : {of E2' T11}
+  ============================
+   {of (app E1 E2') T}
+
+Subgoal 3 is:
+ {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>search.</b>
+</pre>
+<a name="138"></a>
+<pre>
+Subgoal 3:
+
+  Variables: E, E', T, T2, E1, T1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step (tabs T1 E1) E'}
+  H3 : {sub n1 T1 |- of (E1 n1) (T2 n1)}*
+  ============================
+   {of E' (all T1 T2)}
+
+Subgoal 4 is:
+ {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>case H2.</b>
+</pre>
+<a name="139"></a>
+<pre>
+Subgoal 4:
+
+  Variables: E, E', T, T11, T2, T12, E1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step (tapp E1 T2) E'}
+  H3 : {of E1 (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  ============================
+   {of E' (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>case H2.</b>
+</pre>
+<a name="140"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>apply invert_of_tabs to H3.</b>
+</pre>
+<a name="141"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>assert {sub T2 T3}.</b>
+</pre>
+<a name="142"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  H8 : {sub T2 T3}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>inst H5 with n1 = T2.</b>
+</pre>
+<a name="143"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  H8 : {sub T2 T3}
+  H9 : {sub T2 T3 |- of (E2 T2) (S2 T2)}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>cut H9 with H8.</b>
+</pre>
+<a name="144"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  H8 : {sub T2 T3}
+  H9 : {sub T2 T3 |- of (E2 T2) (S2 T2)}
+  H10 : {of (E2 T2) (S2 T2)}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>inst H7 with n1 = T2.</b>
+</pre>
+<a name="145"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  H8 : {sub T2 T3}
+  H9 : {sub T2 T3 |- of (E2 T2) (S2 T2)}
+  H10 : {of (E2 T2) (S2 T2)}
+  H11 : {sub T2 T11 |- sub (S2 T2) (T12 T2)}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>cut H11 with H4.</b>
+</pre>
+<a name="146"></a>
+<pre>
+Subgoal 4.1:
+
+  Variables: E, E', T, T11, T2, T12, E1, E2, T3, S2
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of (tabs T3 E2) (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {sub n1 T3 |- of (E2 n1) (S2 n1)}
+  H6 : {sub T11 T3}
+  H7 : {sub n1 T11 |- sub (S2 n1) (T12 n1)}
+  H8 : {sub T2 T3}
+  H9 : {sub T2 T3 |- of (E2 T2) (S2 T2)}
+  H10 : {of (E2 T2) (S2 T2)}
+  H11 : {sub T2 T11 |- sub (S2 T2) (T12 T2)}
+  H12 : {sub (S2 T2) (T12 T2)}
+  ============================
+   {of (E2 T2) (T12 T2)}
+
+Subgoal 4.2 is:
+ {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>search.</b>
+</pre>
+<a name="147"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: E, E', T, T11, T2, T12, E1, E'1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {step E1 E'1}
+  ============================
+   {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="148"></a>
+<pre>
+Subgoal 4.2:
+
+  Variables: E, E', T, T11, T2, T12, E1, E'1
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H3 : {of E1 (all T11 T12)}*
+  H4 : {sub T2 T11}*
+  H5 : {step E1 E'1}
+  H6 : {of E'1 (all T11 T12)}
+  ============================
+   {of (tapp E'1 T2) (T12 T2)}
+
+Subgoal 5 is:
+ {of E' T}
+
+preservation < <b>search.</b>
+</pre>
+<a name="149"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, E', T, S
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step E E'}
+  H3 : {of E S}*
+  H4 : {sub S T}*
+  ============================
+   {of E' T}
+
+preservation < <b>apply IH to H3 H2.</b>
+</pre>
+<a name="150"></a>
+<pre>
+Subgoal 5:
+
+  Variables: E, E', T, S
+  IH : forall E E' T, {of E T}* -> {step E E'} -> {of E' T}
+  H2 : {step E E'}
+  H3 : {of E S}*
+  H4 : {sub S T}*
+  H5 : {of E' S}
+  ============================
+   {of E' T}
+
+preservation < <b>search.</b>
+Proof completed.
+</pre>
+<a name="151"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

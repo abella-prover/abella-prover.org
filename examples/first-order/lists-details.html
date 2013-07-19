@@ -1,0 +1,879 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Various results about lists - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "lists".</b>
+Reading specification "lists"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem app_total : 
+forall A B, {list A} -> {list B} -> (exists C, {append A B C}).</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+
+  ============================
+   forall A B, {list A} -> {list B} -> (exists C, {append A B C})
+
+app_total < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  IH : forall A B, {list A}* -> {list B} -> (exists C, {append A B C})
+  ============================
+   forall A B, {list A}@ -> {list B} -> (exists C, {append A B C})
+
+app_total < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+  Variables: A, B
+  IH : forall A B, {list A}* -> {list B} -> (exists C, {append A B C})
+  H1 : {list A}@
+  H2 : {list B}
+  ============================
+   exists C, {append A B C}
+
+app_total < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B
+  IH : forall A B, {list A}* -> {list B} -> (exists C, {append A B C})
+  H2 : {list B}
+  ============================
+   exists C, {append nl B C}
+
+Subgoal 2 is:
+ exists C, {append (cons X L) B C}
+
+app_total < <b>search.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, X
+  IH : forall A B, {list A}* -> {list B} -> (exists C, {append A B C})
+  H2 : {list B}
+  H3 : {list L}*
+  ============================
+   exists C, {append (cons X L) B C}
+
+app_total < <b>apply IH to H3 H2.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, L, X, C
+  IH : forall A B, {list A}* -> {list B} -> (exists C, {append A B C})
+  H2 : {list B}
+  H3 : {list L}*
+  H4 : {append L B C}
+  ============================
+   exists C, {append (cons X L) B C}
+
+app_total < <b>search.</b>
+Proof completed.
+</pre>
+<a name="9"></a>
+<pre class="code">
+Abella < <b>Theorem app_det : 
+forall A B C C', {append A B C} -> {append A B C'} -> C = C'.</b>
+</pre>
+<a name="10"></a>
+<pre>
+
+
+  ============================
+   forall A B C C', {append A B C} -> {append A B C'} -> C = C'
+
+app_det < <b>induction on 1.</b>
+</pre>
+<a name="11"></a>
+<pre>
+
+
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  ============================
+   forall A B C C', {append A B C}@ -> {append A B C'} -> C = C'
+
+app_det < <b>intros.</b>
+</pre>
+<a name="12"></a>
+<pre>
+
+  Variables: A, B, C, C'
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  H1 : {append A B C}@
+  H2 : {append A B C'}
+  ============================
+   C = C'
+
+app_det < <b>case H1.</b>
+</pre>
+<a name="13"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, C'
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  H2 : {append nl C C'}
+  ============================
+   C = C'
+
+Subgoal 2 is:
+ cons X C1 = C'
+
+app_det < <b>case H2.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, C'
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  ============================
+   C' = C'
+
+Subgoal 2 is:
+ cons X C1 = C'
+
+app_det < <b>search.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C', C1, A1, X
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  H2 : {append (cons X A1) B C'}
+  H3 : {append A1 B C1}*
+  ============================
+   cons X C1 = C'
+
+app_det < <b>case H2.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C', C1, A1, X, C2
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  H3 : {append A1 B C1}*
+  H4 : {append A1 B C2}
+  ============================
+   cons X C1 = cons X C2
+
+app_det < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C', C1, A1, X, C2
+  IH : forall A B C C', {append A B C}* -> {append A B C'} -> C = C'
+  H3 : {append A1 B C2}*
+  H4 : {append A1 B C2}
+  ============================
+   cons X C2 = cons X C2
+
+app_det < <b>search.</b>
+Proof completed.
+</pre>
+<a name="18"></a>
+<pre class="code">
+Abella < <b>Theorem app_assoc : 
+forall A B C AB ABC, {append A B AB} -> {append AB C ABC} -> (exists BC,
+  {append B C BC} /\ {append A BC ABC}).</b>
+</pre>
+<a name="19"></a>
+<pre>
+
+
+  ============================
+   forall A B C AB ABC, {append A B AB} -> {append AB C ABC} -> (exists BC,
+     {append B C BC} /\ {append A BC ABC})
+
+app_assoc < <b>induction on 1.</b>
+</pre>
+<a name="20"></a>
+<pre>
+
+
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  ============================
+   forall A B C AB ABC, {append A B AB}@ -> {append AB C ABC} -> (exists BC,
+     {append B C BC} /\ {append A BC ABC})
+
+app_assoc < <b>intros.</b>
+</pre>
+<a name="21"></a>
+<pre>
+
+  Variables: A, B, C, AB, ABC
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  H1 : {append A B AB}@
+  H2 : {append AB C ABC}
+  ============================
+   exists BC, {append B C BC} /\ {append A BC ABC}
+
+app_assoc < <b>case H1.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, AB, ABC
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  H2 : {append AB C ABC}
+  ============================
+   exists BC, {append AB C BC} /\ {append nl BC ABC}
+
+Subgoal 2 is:
+ exists BC, {append B C BC} /\ {append (cons X A1) BC ABC}
+
+app_assoc < <b>search.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, AB, ABC, C1, A1, X
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  H2 : {append (cons X C1) C ABC}
+  H3 : {append A1 B C1}*
+  ============================
+   exists BC, {append B C BC} /\ {append (cons X A1) BC ABC}
+
+app_assoc < <b>case H2.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, AB, ABC, C1, A1, X, C2
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  H3 : {append A1 B C1}*
+  H4 : {append C1 C C2}
+  ============================
+   exists BC, {append B C BC} /\ {append (cons X A1) BC (cons X C2)}
+
+app_assoc < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, AB, ABC, C1, A1, X, C2, BC
+  IH : forall A B C AB ABC, {append A B AB}* -> {append AB C ABC} ->
+         (exists BC, {append B C BC} /\ {append A BC ABC})
+  H3 : {append A1 B C1}*
+  H4 : {append C1 C C2}
+  H5 : {append B C BC}
+  H6 : {append A1 BC C2}
+  ============================
+   exists BC, {append B C BC} /\ {append (cons X A1) BC (cons X C2)}
+
+app_assoc < <b>search.</b>
+Proof completed.
+</pre>
+<a name="26"></a>
+<pre class="code">
+Abella < <b>Theorem rev_lemma : 
+forall A A' B X, {rev A A'} -> {append A (cons X nl) B} ->
+  {rev B (cons X A')}.</b>
+</pre>
+<a name="27"></a>
+<pre>
+
+
+  ============================
+   forall A A' B X, {rev A A'} -> {append A (cons X nl) B} ->
+     {rev B (cons X A')}
+
+rev_lemma < <b>induction on 1.</b>
+</pre>
+<a name="28"></a>
+<pre>
+
+
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  ============================
+   forall A A' B X, {rev A A'}@ -> {append A (cons X nl) B} ->
+     {rev B (cons X A')}
+
+rev_lemma < <b>intros.</b>
+</pre>
+<a name="29"></a>
+<pre>
+
+  Variables: A, A', B, X
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  H1 : {rev A A'}@
+  H2 : {append A (cons X nl) B}
+  ============================
+   {rev B (cons X A')}
+
+rev_lemma < <b>case H1.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, A', B, X
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  H2 : {append nl (cons X nl) B}
+  ============================
+   {rev B (cons X nl)}
+
+Subgoal 2 is:
+ {rev B (cons X A')}
+
+rev_lemma < <b>case H2.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, A', B, X
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  ============================
+   {rev (cons X nl) (cons X nl)}
+
+Subgoal 2 is:
+ {rev B (cons X A')}
+
+rev_lemma < <b>search.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, A', B, X, X1, A'1, A1
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  H2 : {append (cons X1 A1) (cons X nl) B}
+  H3 : {rev A1 A'1}*
+  H4 : {append A'1 (cons X1 nl) A'}*
+  ============================
+   {rev B (cons X A')}
+
+rev_lemma < <b>case H2.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, A', B, X, X1, A'1, A1, C
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  H3 : {rev A1 A'1}*
+  H4 : {append A'1 (cons X1 nl) A'}*
+  H5 : {append A1 (cons X nl) C}
+  ============================
+   {rev (cons X1 C) (cons X A')}
+
+rev_lemma < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, A', B, X, X1, A'1, A1, C
+  IH : forall A A' B X, {rev A A'}* -> {append A (cons X nl) B} ->
+         {rev B (cons X A')}
+  H3 : {rev A1 A'1}*
+  H4 : {append A'1 (cons X1 nl) A'}*
+  H5 : {append A1 (cons X nl) C}
+  H6 : {rev C (cons X A'1)}
+  ============================
+   {rev (cons X1 C) (cons X A')}
+
+rev_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="35"></a>
+<pre class="code">
+Abella < <b>Theorem rev_rev : 
+forall A B, {rev A B} -> {rev B A}.</b>
+</pre>
+<a name="36"></a>
+<pre>
+
+
+  ============================
+   forall A B, {rev A B} -> {rev B A}
+
+rev_rev < <b>induction on 1.</b>
+</pre>
+<a name="37"></a>
+<pre>
+
+
+  IH : forall A B, {rev A B}* -> {rev B A}
+  ============================
+   forall A B, {rev A B}@ -> {rev B A}
+
+rev_rev < <b>intros.</b>
+</pre>
+<a name="38"></a>
+<pre>
+
+  Variables: A, B
+  IH : forall A B, {rev A B}* -> {rev B A}
+  H1 : {rev A B}@
+  ============================
+   {rev B A}
+
+rev_rev < <b>case H1.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B
+  IH : forall A B, {rev A B}* -> {rev B A}
+  ============================
+   {rev nl nl}
+
+Subgoal 2 is:
+ {rev B (cons X A1)}
+
+rev_rev < <b>search.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, X, A', A1
+  IH : forall A B, {rev A B}* -> {rev B A}
+  H2 : {rev A1 A'}*
+  H3 : {append A' (cons X nl) B}*
+  ============================
+   {rev B (cons X A1)}
+
+rev_rev < <b>apply IH to H2.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, X, A', A1
+  IH : forall A B, {rev A B}* -> {rev B A}
+  H2 : {rev A1 A'}*
+  H3 : {append A' (cons X nl) B}*
+  H4 : {rev A' A1}
+  ============================
+   {rev B (cons X A1)}
+
+rev_rev < <b>apply rev_lemma to H4 H3.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, X, A', A1
+  IH : forall A B, {rev A B}* -> {rev B A}
+  H2 : {rev A1 A'}*
+  H3 : {append A' (cons X nl) B}*
+  H4 : {rev A' A1}
+  H5 : {rev B (cons X A1)}
+  ============================
+   {rev B (cons X A1)}
+
+rev_rev < <b>search.</b>
+Proof completed.
+</pre>
+<a name="43"></a>
+<pre class="code">
+Abella < <b>Theorem perm_lemma : 
+forall A B B' X, {perm B' A} -> {select B X B'} -> {perm B (cons X A)}.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+
+  ============================
+   forall A B B' X, {perm B' A} -> {select B X B'} -> {perm B (cons X A)}
+
+perm_lemma < <b>induction on 2.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* -> {perm B (cons X A)}
+  ============================
+   forall A B B' X, {perm B' A} -> {select B X B'}@ -> {perm B (cons X A)}
+
+perm_lemma < <b>intros.</b>
+</pre>
+<a name="46"></a>
+<pre>
+
+  Variables: A, B, B', X
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* ->
+         {perm B (cons X A)}
+  H1 : {perm B' A}
+  H2 : {select B X B'}@
+  ============================
+   {perm B (cons X A)}
+
+perm_lemma < <b>case H2.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, B', X
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* ->
+         {perm B (cons X A)}
+  H1 : {perm B' A}
+  ============================
+   {perm (cons X B') (cons X A)}
+
+Subgoal 2 is:
+ {perm (cons Y A1) (cons X A)}
+
+perm_lemma < <b>search.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', X, B1, A1, Y
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* ->
+         {perm B (cons X A)}
+  H1 : {perm (cons Y B1) A}
+  H3 : {select A1 X B1}*
+  ============================
+   {perm (cons Y A1) (cons X A)}
+
+perm_lemma < <b>case H1.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', X, B1, A1, Y, B'1
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* ->
+         {perm B (cons X A)}
+  H3 : {select A1 X B1}*
+  H4 : {select A Y B'1}
+  H5 : {perm B1 B'1}
+  ============================
+   {perm (cons Y A1) (cons X A)}
+
+perm_lemma < <b>apply IH to H5 H3.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', X, B1, A1, Y, B'1
+  IH : forall A B B' X, {perm B' A} -> {select B X B'}* ->
+         {perm B (cons X A)}
+  H3 : {select A1 X B1}*
+  H4 : {select A Y B'1}
+  H5 : {perm B1 B'1}
+  H6 : {perm A1 (cons X B'1)}
+  ============================
+   {perm (cons Y A1) (cons X A)}
+
+perm_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="51"></a>
+<pre class="code">
+Abella < <b>Theorem perm_perm : 
+forall A B, {perm A B} -> {perm B A}.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+
+  ============================
+   forall A B, {perm A B} -> {perm B A}
+
+perm_perm < <b>induction on 1.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+
+  IH : forall A B, {perm A B}* -> {perm B A}
+  ============================
+   forall A B, {perm A B}@ -> {perm B A}
+
+perm_perm < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+  Variables: A, B
+  IH : forall A B, {perm A B}* -> {perm B A}
+  H1 : {perm A B}@
+  ============================
+   {perm B A}
+
+perm_perm < <b>case H1.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B
+  IH : forall A B, {perm A B}* -> {perm B A}
+  ============================
+   {perm nl nl}
+
+Subgoal 2 is:
+ {perm B (cons X A')}
+
+perm_perm < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', A', X
+  IH : forall A B, {perm A B}* -> {perm B A}
+  H2 : {select B X B'}*
+  H3 : {perm A' B'}*
+  ============================
+   {perm B (cons X A')}
+
+perm_perm < <b>apply IH to H3.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', A', X
+  IH : forall A B, {perm A B}* -> {perm B A}
+  H2 : {select B X B'}*
+  H3 : {perm A' B'}*
+  H4 : {perm B' A'}
+  ============================
+   {perm B (cons X A')}
+
+perm_perm < <b>apply perm_lemma to H4 H2.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, B', A', X
+  IH : forall A B, {perm A B}* -> {perm B A}
+  H2 : {select B X B'}*
+  H3 : {perm A' B'}*
+  H4 : {perm B' A'}
+  H5 : {perm B (cons X A')}
+  ============================
+   {perm B (cons X A')}
+
+perm_perm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="59"></a>
+<pre class="code">
+Abella < <b>Define app : list -> list -> list -> prop by 
+app nl C C;
+app (cons X A) B (cons X C) := app A B C.</b>
+</pre>
+<a name="60"></a>
+<pre class="code">
+Abella < <b>Theorem meta_implies_obj : 
+forall A B C, app A B C -> {append A B C}.</b>
+</pre>
+<a name="61"></a>
+<pre>
+
+
+  ============================
+   forall A B C, app A B C -> {append A B C}
+
+meta_implies_obj < <b>induction on 1.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+
+  IH : forall A B C, app A B C * -> {append A B C}
+  ============================
+   forall A B C, app A B C @ -> {append A B C}
+
+meta_implies_obj < <b>intros.</b>
+</pre>
+<a name="63"></a>
+<pre>
+
+  Variables: A, B, C
+  IH : forall A B C, app A B C * -> {append A B C}
+  H1 : app A B C @
+  ============================
+   {append A B C}
+
+meta_implies_obj < <b>case H1.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C
+  IH : forall A B C, app A B C * -> {append A B C}
+  ============================
+   {append nl C C}
+
+Subgoal 2 is:
+ {append (cons X A1) B (cons X C1)}
+
+meta_implies_obj < <b>search.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C1, X, A1
+  IH : forall A B C, app A B C * -> {append A B C}
+  H2 : app A1 B C1 *
+  ============================
+   {append (cons X A1) B (cons X C1)}
+
+meta_implies_obj < <b>apply IH to H2.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C1, X, A1
+  IH : forall A B C, app A B C * -> {append A B C}
+  H2 : app A1 B C1 *
+  H3 : {append A1 B C1}
+  ============================
+   {append (cons X A1) B (cons X C1)}
+
+meta_implies_obj < <b>search.</b>
+Proof completed.
+</pre>
+<a name="67"></a>
+<pre class="code">
+Abella < <b>Theorem obj_implies_meta : 
+forall A B C, {append A B C} -> app A B C.</b>
+</pre>
+<a name="68"></a>
+<pre>
+
+
+  ============================
+   forall A B C, {append A B C} -> app A B C
+
+obj_implies_meta < <b>induction on 1.</b>
+</pre>
+<a name="69"></a>
+<pre>
+
+
+  IH : forall A B C, {append A B C}* -> app A B C
+  ============================
+   forall A B C, {append A B C}@ -> app A B C
+
+obj_implies_meta < <b>intros.</b>
+</pre>
+<a name="70"></a>
+<pre>
+
+  Variables: A, B, C
+  IH : forall A B C, {append A B C}* -> app A B C
+  H1 : {append A B C}@
+  ============================
+   app A B C
+
+obj_implies_meta < <b>case H1.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C
+  IH : forall A B C, {append A B C}* -> app A B C
+  ============================
+   app nl C C
+
+Subgoal 2 is:
+ app (cons X A1) B (cons X C1)
+
+obj_implies_meta < <b>search.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C1, A1, X
+  IH : forall A B C, {append A B C}* -> app A B C
+  H2 : {append A1 B C1}*
+  ============================
+   app (cons X A1) B (cons X C1)
+
+obj_implies_meta < <b>apply IH to H2.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, C1, A1, X
+  IH : forall A B C, {append A B C}* -> app A B C
+  H2 : {append A1 B C1}*
+  H3 : app A1 B C1
+  ============================
+   app (cons X A1) B (cons X C1)
+
+obj_implies_meta < <b>search.</b>
+Proof completed.
+</pre>
+<a name="74"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

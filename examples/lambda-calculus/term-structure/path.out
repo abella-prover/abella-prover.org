@@ -1,0 +1,2066 @@
+Welcome to Abella 2.0
+Abella < Specification "path".
+Reading specification "path"
+
+Abella < Close tm, path.
+
+Abella < Define tm_var : tm -> prop by 
+nabla x, tm_var x.
+
+Abella < Define path_var : path -> prop by 
+nabla x, path_var x.
+
+Abella < Theorem member_prune_tm : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune_tm < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune_tm < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune_tm < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune_tm < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune_tm < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune_tm < search.
+Proof completed.
+
+Abella < Theorem member_prune_path : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune_path < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune_path < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune_path < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune_path < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune_path < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune_path < search.
+Proof completed.
+
+Abella < Define ctxs : olist -> olist -> prop by 
+ctxs nil nil;
+nabla x p, ctxs (tm x :: L) (path x p :: K) := ctxs L K.
+
+Abella < Theorem ctxs_member1 : 
+forall X L K, ctxs L K -> member X L -> (exists E F, X = tm E /\ tm_var E /\
+  member (path E F) K /\ path_var F).
+
+
+  ============================
+   forall X L K, ctxs L K -> member X L -> (exists E F, X = tm E /\
+     tm_var E /\ member (path E F) K /\ path_var F)
+
+ctxs_member1 < induction on 1.
+
+
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  ============================
+   forall X L K, ctxs L K @ -> member X L -> (exists E F, X = tm E /\
+     tm_var E /\ member (path E F) K /\ path_var F)
+
+ctxs_member1 < intros.
+
+  Variables: X, L, K
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H1 : ctxs L K @
+  H2 : member X L
+  ============================
+   exists E F, X = tm E /\ tm_var E /\ member (path E F) K /\ path_var F
+
+ctxs_member1 < case H1.
+Subgoal 1:
+
+  Variables: X, L, K
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H2 : member X nil
+  ============================
+   exists E F, X = tm E /\ tm_var E /\ member (path E F) nil /\ path_var F
+
+Subgoal 2 is:
+ exists E F, X n1 n2 = tm E /\ tm_var E /\
+   member (path E F) (path n1 n2 :: K1) /\ path_var F
+
+ctxs_member1 < case H2.
+Subgoal 2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H2 : member (X n1 n2) (tm n1 :: L1)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists E F, X n1 n2 = tm E /\ tm_var E /\
+     member (path E F) (path n1 n2 :: K1) /\ path_var F
+
+ctxs_member1 < case H2.
+Subgoal 2.1:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists E F, tm n1 = tm E /\ tm_var E /\
+     member (path E F) (path n1 n2 :: K1) /\ path_var F
+
+Subgoal 2.2 is:
+ exists E F, X n1 n2 = tm E /\ tm_var E /\
+   member (path E F) (path n1 n2 :: K1) /\ path_var F
+
+ctxs_member1 < search.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H3 : ctxs L1 K1 *
+  H4 : member (X n1 n2) L1
+  ============================
+   exists E F, X n1 n2 = tm E /\ tm_var E /\
+     member (path E F) (path n1 n2 :: K1) /\ path_var F
+
+ctxs_member1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1, E, F
+  IH : forall X L K, ctxs L K * -> member X L -> (exists E F, X = tm E /\
+         tm_var E /\ member (path E F) K /\ path_var F)
+  H3 : ctxs L1 K1 *
+  H4 : member (tm (E n1)) L1
+  H5 : tm_var (E n1)
+  H6 : member (path (E n1) (F n2)) K1
+  H7 : path_var (F n2)
+  ============================
+   exists E1 F, tm (E n1) = tm E1 /\ tm_var E1 /\
+     member (path E1 F) (path n1 n2 :: K1) /\ path_var F
+
+ctxs_member1 < search.
+Proof completed.
+
+Abella < Theorem ctxs_member2 : 
+forall X L K, ctxs L K -> member X K -> (exists E F, X = path E F /\
+  tm_var E /\ path_var F).
+
+
+  ============================
+   forall X L K, ctxs L K -> member X K -> (exists E F, X = path E F /\
+     tm_var E /\ path_var F)
+
+ctxs_member2 < induction on 1.
+
+
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  ============================
+   forall X L K, ctxs L K @ -> member X K -> (exists E F, X = path E F /\
+     tm_var E /\ path_var F)
+
+ctxs_member2 < intros.
+
+  Variables: X, L, K
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H1 : ctxs L K @
+  H2 : member X K
+  ============================
+   exists E F, X = path E F /\ tm_var E /\ path_var F
+
+ctxs_member2 < case H1.
+Subgoal 1:
+
+  Variables: X, L, K
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H2 : member X nil
+  ============================
+   exists E F, X = path E F /\ tm_var E /\ path_var F
+
+Subgoal 2 is:
+ exists E F, X n1 n2 = path E F /\ tm_var E /\ path_var F
+
+ctxs_member2 < case H2.
+Subgoal 2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H2 : member (X n1 n2) (path n1 n2 :: K1)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists E F, X n1 n2 = path E F /\ tm_var E /\ path_var F
+
+ctxs_member2 < case H2.
+Subgoal 2.1:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists E F, path n1 n2 = path E F /\ tm_var E /\ path_var F
+
+Subgoal 2.2 is:
+ exists E F, X n1 n2 = path E F /\ tm_var E /\ path_var F
+
+ctxs_member2 < search.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H3 : ctxs L1 K1 *
+  H4 : member (X n1 n2) K1
+  ============================
+   exists E F, X n1 n2 = path E F /\ tm_var E /\ path_var F
+
+ctxs_member2 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, L, K, K1, L1, E, F
+  IH : forall X L K, ctxs L K * -> member X K -> (exists E F, X = path E F /\
+         tm_var E /\ path_var F)
+  H3 : ctxs L1 K1 *
+  H4 : member (path (E n1) (F n2)) K1
+  H5 : tm_var (E n1)
+  H6 : path_var (F n2)
+  ============================
+   exists E1 F1, path (E n1) (F n2) = path E1 F1 /\ tm_var E1 /\ path_var F1
+
+ctxs_member2 < search.
+Proof completed.
+
+Abella < Theorem member_path_unique : 
+forall L K X Y F, ctxs L K -> member (path X F) K -> member (path Y F) K ->
+  X = Y.
+
+
+  ============================
+   forall L K X Y F, ctxs L K -> member (path X F) K ->
+     member (path Y F) K -> X = Y
+
+member_path_unique < induction on 2.
+
+
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  ============================
+   forall L K X Y F, ctxs L K -> member (path X F) K @ ->
+     member (path Y F) K -> X = Y
+
+member_path_unique < intros.
+
+  Variables: L, K, X, Y, F
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L K
+  H2 : member (path X F) K @
+  H3 : member (path Y F) K
+  ============================
+   X = Y
+
+member_path_unique < case H2.
+Subgoal 1:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (path X F :: L1)
+  H3 : member (path Y F) (path X F :: L1)
+  ============================
+   X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < case H3.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (path X F :: L1)
+  ============================
+   X = X
+
+Subgoal 1.2 is:
+ X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < search.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, F, L1
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (path X F :: L1)
+  H4 : member (path Y F) L1
+  ============================
+   X = Y
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < case H1.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, F, L1, K1, L2
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (Y n1) n2) K1
+  H5 : ctxs L2 K1
+  ============================
+   n1 = Y n1
+
+Subgoal 2 is:
+ X = Y
+
+member_path_unique < apply member_prune_path to H4.
+Subgoal 2:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (B :: L1)
+  H3 : member (path Y F) (B :: L1)
+  H4 : member (path X F) L1 *
+  ============================
+   X = Y
+
+member_path_unique < case H3.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (path Y F :: L1)
+  H4 : member (path X F) L1 *
+  ============================
+   X = Y
+
+Subgoal 2.2 is:
+ X = Y
+
+member_path_unique < case H1.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (X n1) n2) K1 *
+  H5 : ctxs L2 K1
+  ============================
+   X n1 = n1
+
+Subgoal 2.2 is:
+ X = Y
+
+member_path_unique < apply member_prune_path to H4.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H1 : ctxs L (B :: L1)
+  H4 : member (path X F) L1 *
+  H5 : member (path Y F) L1
+  ============================
+   X = Y
+
+member_path_unique < case H1.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (X n1) (F n2)) K1 *
+  H5 : member (path (Y n1) (F n2)) K1
+  H6 : ctxs L2 K1
+  ============================
+   X n1 = Y n1
+
+member_path_unique < apply IH to H6 H4 H5.
+Subgoal 2.2:
+
+  Variables: L, K, X, Y, F, L1, B, K1, L2
+  IH : forall L K X Y F, ctxs L K -> member (path X F) K * ->
+         member (path Y F) K -> X = Y
+  H4 : member (path (Y n1) (F n2)) K1 *
+  H5 : member (path (Y n1) (F n2)) K1
+  H6 : ctxs L2 K1
+  ============================
+   Y n1 = Y n1
+
+member_path_unique < search.
+Proof completed.
+
+Abella < Theorem path_exists : 
+forall L K M, ctxs L K -> {L |- tm M} -> (exists P, {K |- path M P}).
+
+
+  ============================
+   forall L K M, ctxs L K -> {L |- tm M} -> (exists P, {K |- path M P})
+
+path_exists < induction on 2.
+
+
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  ============================
+   forall L K M, ctxs L K -> {L |- tm M}@ -> (exists P, {K |- path M P})
+
+path_exists < intros.
+
+  Variables: L, K, M
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H2 : {L |- tm M}@
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, N, M1
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L |- tm M1}*
+  H4 : {L |- tm N}*
+  ============================
+   exists P, {K |- path (app M1 N) P}
+
+Subgoal 2 is:
+ exists P, {K |- path (abs R) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < apply IH to H1 H3.
+Subgoal 1:
+
+  Variables: L, K, M, N, M1, P
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L |- tm M1}*
+  H4 : {L |- tm N}*
+  H5 : {K |- path M1 P}
+  ============================
+   exists P, {K |- path (app M1 N) P}
+
+Subgoal 2 is:
+ exists P, {K |- path (abs R) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < search.
+Subgoal 2:
+
+  Variables: L, K, M, R
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L, tm n1 |- tm (R n1)}*
+  ============================
+   exists P, {K |- path (abs R) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < assert ctxs (tm n1 :: L) (path n1 n2 :: K).
+Subgoal 2:
+
+  Variables: L, K, M, R
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L, tm n1 |- tm (R n1)}*
+  H4 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  ============================
+   exists P, {K |- path (abs R) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < apply IH to H4 H3.
+Subgoal 2:
+
+  Variables: L, K, M, R, P
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L, tm n1 |- tm (R n1)}*
+  H4 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  ============================
+   exists P, {K |- path (abs R) P}
+
+Subgoal 3 is:
+ exists P, {K |- path M P}
+
+path_exists < search.
+Subgoal 3:
+
+  Variables: L, K, M, F
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L, [F] |- tm M}*
+  H4 : member F L
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < apply ctxs_member1 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, F, E, F1
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H3 : {L, [tm E] |- tm M}*
+  H4 : member (tm E) L
+  H5 : tm_var E
+  H6 : member (path E F1) K
+  H7 : path_var F1
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < case H3.
+Subgoal 3:
+
+  Variables: L, K, M, F, E, F1
+  IH : forall L K M, ctxs L K -> {L |- tm M}* -> (exists P, {K |- path M P})
+  H1 : ctxs L K
+  H4 : member (tm M) L
+  H5 : tm_var M
+  H6 : member (path M F1) K
+  H7 : path_var F1
+  ============================
+   exists P, {K |- path M P}
+
+path_exists < search.
+Proof completed.
+
+Abella < Theorem path_app : 
+forall L K M N Y, ctxs L K -> {L |- tm (app M N)} -> (forall P,
+  {K |- path (app M N) P} -> {K |- path Y P}) -> (exists YM YN,
+  Y = app YM YN).
+
+
+  ============================
+   forall L K M N Y, ctxs L K -> {L |- tm (app M N)} -> (forall P,
+     {K |- path (app M N) P} -> {K |- path Y P}) -> (exists YM YN,
+     Y = app YM YN)
+
+path_app < intros.
+
+  Variables: L, K, M, N, Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply path_exists to H1 H4.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < assert {K |- path (app M N) (left P)}.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply H3 to H7.
+Subgoal 1:
+
+  Variables: L, K, M, N, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H8 : {K |- path Y (left P)}
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H8.
+Subgoal 1.1:
+
+  Variables: L, K, M, N, Y, P, M1, N1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app M1 N1) P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K |- path M1 P}
+  ============================
+   exists YM YN, app M1 N1 = app YM YN
+
+Subgoal 1.2 is:
+ exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < search.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, Y, P, F
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K, [F] |- path Y (left P)}
+  H10 : member F K
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < apply ctxs_member2 to H1 H10.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, Y, P, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}
+  H5 : {L |- tm N}
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K, [path E F1] |- path Y (left P)}
+  H10 : member (path E F1) K
+  H11 : tm_var E
+  H12 : path_var F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H12.
+Subgoal 1.2:
+
+  Variables: L, K, M, N, Y, P, F, E, F1
+  H1 : ctxs (L n1) (K n1)
+  H3 : forall P, {K n1 |- path (app M N) P} -> {K n1 |- path Y P}
+  H4 : {L n1 |- tm M}
+  H5 : {L n1 |- tm N}
+  H6 : {K n1 |- path M (P n1)}
+  H7 : {K n1 |- path (app M N) (left (P n1))}
+  H9 : {K n1, [path E n1] |- path Y (left (P n1))}
+  H10 : member (path E n1) (K n1)
+  H11 : tm_var E
+  ============================
+   exists YM YN, Y = app YM YN
+
+Subgoal 2 is:
+ exists YM YN, Y = app YM YN
+
+path_app < case H9.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L, [F] |- tm (app M N)}
+  H5 : member F L
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < apply ctxs_member1 to H1 H5.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L, [tm E] |- tm (app M N)}
+  H5 : member (tm E) L
+  H6 : tm_var E
+  H7 : member (path E F1) K
+  H8 : path_var F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H4.
+Subgoal 2:
+
+  Variables: L, K, M, N, Y, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H5 : member (tm (app M N)) L
+  H6 : tm_var (app M N)
+  H7 : member (path (app M N) F1) K
+  H8 : path_var F1
+  ============================
+   exists YM YN, Y = app YM YN
+
+path_app < case H6.
+Proof completed.
+
+Abella < Theorem path_abs : 
+forall L K R Y, ctxs L K -> {L |- tm (abs R)} -> (forall P,
+  {K |- path (abs R) P} -> {K |- path Y P}) -> (exists YR, Y = abs YR).
+
+
+  ============================
+   forall L K R Y, ctxs L K -> {L |- tm (abs R)} -> (forall P,
+     {K |- path (abs R) P} -> {K |- path Y P}) -> (exists YR, Y = abs YR)
+
+path_abs < intros.
+
+  Variables: L, K, R, Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H2.
+Subgoal 1:
+
+  Variables: L, K, R, Y
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < assert ctxs (tm n1 :: L) (path n1 n2 :: K).
+Subgoal 1:
+
+  Variables: L, K, R, Y
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply path_exists to H5 H4.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < assert {K |- path (abs R) (bnd P)}.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply H3 to H7.
+Subgoal 1:
+
+  Variables: L, K, R, Y, P
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  H8 : {K |- path Y (bnd P)}
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H8.
+Subgoal 1.1:
+
+  Variables: L, K, R, Y, P, R1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs R1) P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  H9 : {K, path n1 n2 |- path (R1 n1) (P n2)}
+  ============================
+   exists YR, abs R1 = abs YR
+
+Subgoal 1.2 is:
+ exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < search.
+Subgoal 1.2:
+
+  Variables: L, K, R, Y, P, F
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  H9 : {K, [F] |- path Y (bnd P)}
+  H10 : member F K
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < apply ctxs_member2 to H1 H10.
+Subgoal 1.2:
+
+  Variables: L, K, R, Y, P, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  H9 : {K, [path E F1] |- path Y (bnd P)}
+  H10 : member (path E F1) K
+  H11 : tm_var E
+  H12 : path_var F1
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H9.
+Subgoal 1.2:
+
+  Variables: L, K, R, Y, P, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}
+  H5 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  H6 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H7 : {K |- path (abs R) (bnd P)}
+  H10 : member (path Y (bnd P)) K
+  H11 : tm_var Y
+  H12 : path_var (bnd P)
+  ============================
+   exists YR, Y = abs YR
+
+Subgoal 2 is:
+ exists YR, Y = abs YR
+
+path_abs < case H12.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, [F] |- tm (abs R)}
+  H5 : member F L
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < apply ctxs_member1 to H1 H5.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, [tm E] |- tm (abs R)}
+  H5 : member (tm E) L
+  H6 : tm_var E
+  H7 : member (path E F1) K
+  H8 : path_var F1
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H4.
+Subgoal 2:
+
+  Variables: L, K, R, Y, F, E, F1
+  H1 : ctxs L K
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H5 : member (tm (abs R)) L
+  H6 : tm_var (abs R)
+  H7 : member (path (abs R) F1) K
+  H8 : path_var F1
+  ============================
+   exists YR, Y = abs YR
+
+path_abs < case H6.
+Proof completed.
+
+Abella < Theorem path_equal : 
+forall L K X Y, ctxs L K -> {L |- tm X} -> (forall P, {K |- path X P} ->
+  {K |- path Y P}) -> X = Y.
+
+
+  ============================
+   forall L K X Y, ctxs L K -> {L |- tm X} -> (forall P, {K |- path X P} ->
+     {K |- path Y P}) -> X = Y
+
+path_equal < induction on 2.
+
+
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  ============================
+   forall L K X Y, ctxs L K -> {L |- tm X}@ -> (forall P, {K |- path X P} ->
+     {K |- path Y P}) -> X = Y
+
+path_equal < intros.
+
+  Variables: L, K, X, Y
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  ============================
+   X = Y
+
+path_equal < case H2 (keep).
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path Y P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  ============================
+   app M N = Y
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply path_app to H1 H2 H3.
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  ============================
+   app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert forall P, {K |- path M P} -> {K |- path YM P}.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  ============================
+   forall P, {K |- path M P} -> {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < intros.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  ============================
+   {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert {K |- path (app M N) (left P)}.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  ============================
+   {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply H3 to H7.
+Subgoal 1.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H8 : {K |- path (app YM YN) (left P)}
+  ============================
+   {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H8.
+Subgoal 1.1.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K |- path YM P}
+  ============================
+   {K |- path YM P}
+
+Subgoal 1.1.2 is:
+ {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < search.
+Subgoal 1.1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K, [F] |- path (app YM YN) (left P)}
+  H10 : member F K
+  ============================
+   {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply ctxs_member2 to H1 H10.
+Subgoal 1.1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : {K |- path M P}
+  H7 : {K |- path (app M N) (left P)}
+  H9 : {K, [path E F1] |- path (app YM YN) (left P)}
+  H10 : member (path E F1) K
+  H11 : tm_var E
+  H12 : path_var F1
+  ============================
+   {K |- path YM P}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H12.
+Subgoal 1.1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm (app M N)}@
+  H3 : forall P, {K n1 |- path (app M N) P} -> {K n1 |- path (app YM YN) P}
+  H4 : {L n1 |- tm M}*
+  H5 : {L n1 |- tm N}*
+  H6 : {K n1 |- path M (P n1)}
+  H7 : {K n1 |- path (app M N) (left (P n1))}
+  H9 : {K n1, [path E n1] |- path (app YM YN) (left (P n1))}
+  H10 : member (path E n1) (K n1)
+  H11 : tm_var E
+  ============================
+   {K n1 |- path YM (P n1)}
+
+Subgoal 1 is:
+ app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H9.
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app M N)}@
+  H3 : forall P, {K |- path (app M N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm M}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path M P} -> {K |- path YM P}
+  ============================
+   app M N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply IH to H1 H4 H6.
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  ============================
+   app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert forall P, {K |- path N P} -> {K |- path YN P}.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  ============================
+   forall P, {K |- path N P} -> {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < intros.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  ============================
+   {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert {K |- path (app M N) (right P)}.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  H8 : {K |- path (app YM N) (right P)}
+  ============================
+   {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply H3 to H8.
+Subgoal 1.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  H8 : {K |- path (app YM N) (right P)}
+  H9 : {K |- path (app YM YN) (right P)}
+  ============================
+   {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H9.
+Subgoal 1.2.1:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  H8 : {K |- path (app YM N) (right P)}
+  H10 : {K |- path YN P}
+  ============================
+   {K |- path YN P}
+
+Subgoal 1.2.2 is:
+ {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < search.
+Subgoal 1.2.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  H8 : {K |- path (app YM N) (right P)}
+  H10 : {K, [F] |- path (app YM YN) (right P)}
+  H11 : member F K
+  ============================
+   {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply ctxs_member2 to H1 H11.
+Subgoal 1.2.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : {K |- path N P}
+  H8 : {K |- path (app YM N) (right P)}
+  H10 : {K, [path E F1] |- path (app YM YN) (right P)}
+  H11 : member (path E F1) K
+  H12 : tm_var E
+  H13 : path_var F1
+  ============================
+   {K |- path YN P}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H13.
+Subgoal 1.2.2:
+
+  Variables: L, K, X, Y, N, M, YM, YN, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm (app YM N)}@
+  H3 : forall P, {K n1 |- path (app YM N) P} -> {K n1 |- path (app YM YN) P}
+  H4 : {L n1 |- tm YM}*
+  H5 : {L n1 |- tm N}*
+  H6 : forall P, {K n1 |- path YM P} -> {K n1 |- path YM P}
+  H7 : {K n1 |- path N (P n1)}
+  H8 : {K n1 |- path (app YM N) (right (P n1))}
+  H10 : {K n1, [path E n1] |- path (app YM YN) (right (P n1))}
+  H11 : member (path E n1) (K n1)
+  H12 : tm_var E
+  ============================
+   {K n1 |- path YN (P n1)}
+
+Subgoal 1 is:
+ app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H10.
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM N)}@
+  H3 : forall P, {K |- path (app YM N) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm N}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : forall P, {K |- path N P} -> {K |- path YN P}
+  ============================
+   app YM N = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply IH to H1 H5 H7.
+Subgoal 1:
+
+  Variables: L, K, X, Y, N, M, YM, YN
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (app YM YN)}@
+  H3 : forall P, {K |- path (app YM YN) P} -> {K |- path (app YM YN) P}
+  H4 : {L |- tm YM}*
+  H5 : {L |- tm YN}*
+  H6 : forall P, {K |- path YM P} -> {K |- path YM P}
+  H7 : forall P, {K |- path YN P} -> {K |- path YN P}
+  ============================
+   app YM YN = app YM YN
+
+Subgoal 2 is:
+ abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < search.
+Subgoal 2:
+
+  Variables: L, K, X, Y, R
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path Y P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  ============================
+   abs R = Y
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply path_abs to H1 H2 H3.
+Subgoal 2:
+
+  Variables: L, K, X, Y, R, YR
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  ============================
+   abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert forall P, {K, path n1 n2 |- path (R n1) P} ->
+  {K, path n1 n2 |- path (YR n1) P}.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, R, YR
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  ============================
+   forall P, {K, path n1 n2 |- path (R n1) P} ->
+     {K, path n1 n2 |- path (YR n1) P}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < intros.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, R, YR, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert {K |- path (abs R) (bnd P)}.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, R, YR, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H6 : {K |- path (abs R) (bnd P)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply H3 to H6.
+Subgoal 2.1:
+
+  Variables: L, K, X, Y, R, YR, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H6 : {K |- path (abs R) (bnd P)}
+  H7 : {K |- path (abs YR) (bnd P)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H7.
+Subgoal 2.1.1:
+
+  Variables: L, K, X, Y, R, YR, P
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H6 : {K |- path (abs R) (bnd P)}
+  H8 : {K, path n1 n2 |- path (YR n1) (P n2)}
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2.1.2 is:
+ {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < search.
+Subgoal 2.1.2:
+
+  Variables: L, K, X, Y, R, YR, P, F
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H6 : {K |- path (abs R) (bnd P)}
+  H8 : {K, [F] |- path (abs YR) (bnd P)}
+  H9 : member F K
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply ctxs_member2 to H1 H9.
+Subgoal 2.1.2:
+
+  Variables: L, K, X, Y, R, YR, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : {K, path n1 n2 |- path (R n1) (P n2)}
+  H6 : {K |- path (abs R) (bnd P)}
+  H8 : {K, [path E F1] |- path (abs YR) (bnd P)}
+  H9 : member (path E F1) K
+  H10 : tm_var E
+  H11 : path_var F1
+  ============================
+   {K, path n1 n2 |- path (YR n1) (P n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H11.
+Subgoal 2.1.2:
+
+  Variables: L, K, X, Y, R, YR, P, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n3) (K n3)
+  H2 : {L n3 |- tm (abs R)}@
+  H3 : forall P, {K n3 |- path (abs R) P} -> {K n3 |- path (abs YR) P}
+  H4 : {L n3, tm n1 |- tm (R n1)}*
+  H5 : {K n3, path n1 n2 |- path (R n1) (P n3 n2)}
+  H6 : {K n3 |- path (abs R) (bnd (P n3))}
+  H8 : {K n3, [path E n3] |- path (abs YR) (bnd (P n3))}
+  H9 : member (path E n3) (K n3)
+  H10 : tm_var E
+  ============================
+   {K n3, path n1 n2 |- path (YR n1) (P n3 n2)}
+
+Subgoal 2 is:
+ abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < case H8.
+Subgoal 2:
+
+  Variables: L, K, X, Y, R, YR
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : forall P, {K, path n1 n2 |- path (R n1) P} ->
+         {K, path n1 n2 |- path (YR n1) P}
+  ============================
+   abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < assert ctxs (tm n1 :: L) (path n1 n2 :: K).
+Subgoal 2:
+
+  Variables: L, K, X, Y, R, YR
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs R)}@
+  H3 : forall P, {K |- path (abs R) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (R n1)}*
+  H5 : forall P, {K, path n1 n2 |- path (R n1) P} ->
+         {K, path n1 n2 |- path (YR n1) P}
+  H6 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  ============================
+   abs R = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < apply IH to H6 H4 H5.
+Subgoal 2:
+
+  Variables: L, K, X, Y, R, YR
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm (abs (z1\YR z1))}@
+  H3 : forall P, {K |- path (abs (z1\YR z1)) P} -> {K |- path (abs YR) P}
+  H4 : {L, tm n1 |- tm (YR n1)}*
+  H5 : forall P, {K, path n1 n2 |- path (YR n1) P} ->
+         {K, path n1 n2 |- path (YR n1) P}
+  H6 : ctxs (tm n1 :: L) (path n1 n2 :: K)
+  ============================
+   abs (z1\YR z1) = abs YR
+
+Subgoal 3 is:
+ X = Y
+
+path_equal < search.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  H4 : {L, [F] |- tm X}*
+  H5 : member F L
+  ============================
+   X = Y
+
+path_equal < apply ctxs_member1 to H1 H5.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  H4 : {L, [tm E] |- tm X}*
+  H5 : member (tm E) L
+  H6 : tm_var E
+  H7 : member (path E F1) K
+  H8 : path_var F1
+  ============================
+   X = Y
+
+path_equal < case H4.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  H5 : member (tm X) L
+  H6 : tm_var X
+  H7 : member (path X F1) K
+  H8 : path_var F1
+  ============================
+   X = Y
+
+path_equal < assert {K |- path X F1}.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  H5 : member (tm X) L
+  H6 : tm_var X
+  H7 : member (path X F1) K
+  H8 : path_var F1
+  H9 : {K |- path X F1}
+  ============================
+   X = Y
+
+path_equal < apply H3 to H9.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs L K
+  H2 : {L |- tm X}@
+  H3 : forall P, {K |- path X P} -> {K |- path Y P}
+  H5 : member (tm X) L
+  H6 : tm_var X
+  H7 : member (path X F1) K
+  H8 : path_var F1
+  H9 : {K |- path X F1}
+  H10 : {K |- path Y F1}
+  ============================
+   X = Y
+
+path_equal < case H8.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm X}@
+  H3 : forall P, {K n1 |- path X P} -> {K n1 |- path Y P}
+  H5 : member (tm X) (L n1)
+  H6 : tm_var X
+  H7 : member (path X n1) (K n1)
+  H9 : {K n1 |- path X n1}
+  H10 : {K n1 |- path Y n1}
+  ============================
+   X = Y
+
+path_equal < case H10.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1, F2
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm X}@
+  H3 : forall P, {K n1 |- path X P} -> {K n1 |- path Y P}
+  H5 : member (tm X) (L n1)
+  H6 : tm_var X
+  H7 : member (path X n1) (K n1)
+  H9 : {K n1 |- path X n1}
+  H11 : {K n1, [F2 n1] |- path Y n1}
+  H12 : member (F2 n1) (K n1)
+  ============================
+   X = Y
+
+path_equal < apply ctxs_member2 to H1 H12.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1, F2, E1, F3
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm X}@
+  H3 : forall P, {K n1 |- path X P} -> {K n1 |- path Y P}
+  H5 : member (tm X) (L n1)
+  H6 : tm_var X
+  H7 : member (path X n1) (K n1)
+  H9 : {K n1 |- path X n1}
+  H11 : {K n1, [path E1 (F3 n1)] |- path Y n1}
+  H12 : member (path E1 (F3 n1)) (K n1)
+  H13 : tm_var E1
+  H14 : path_var (F3 n1)
+  ============================
+   X = Y
+
+path_equal < case H11.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1, F2, E1, F3
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm X}@
+  H3 : forall P, {K n1 |- path X P} -> {K n1 |- path Y P}
+  H5 : member (tm X) (L n1)
+  H6 : tm_var X
+  H7 : member (path X n1) (K n1)
+  H9 : {K n1 |- path X n1}
+  H12 : member (path Y n1) (K n1)
+  H13 : tm_var Y
+  H14 : path_var n1
+  ============================
+   X = Y
+
+path_equal < apply member_path_unique to H1 H7 H12.
+Subgoal 3:
+
+  Variables: L, K, X, Y, F, E, F1, F2, E1, F3
+  IH : forall L K X Y, ctxs L K -> {L |- tm X}* -> (forall P,
+         {K |- path X P} -> {K |- path Y P}) -> X = Y
+  H1 : ctxs (L n1) (K n1)
+  H2 : {L n1 |- tm Y}@
+  H3 : forall P, {K n1 |- path Y P} -> {K n1 |- path Y P}
+  H5 : member (tm Y) (L n1)
+  H6 : tm_var Y
+  H7 : member (path Y n1) (K n1)
+  H9 : {K n1 |- path Y n1}
+  H12 : member (path Y n1) (K n1)
+  H13 : tm_var Y
+  H14 : path_var n1
+  ============================
+   Y = Y
+
+path_equal < search.
+Proof completed.
+
+Abella < Goodbye.

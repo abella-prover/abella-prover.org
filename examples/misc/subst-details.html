@@ -1,0 +1,700 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Correctness for LLambda subst predicate - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "subst".</b>
+Reading specification "subst"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> olist -> prop by 
+ctx nil nil;
+ctx (term X :: L) (copy X X :: K) := ctx L K.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_member1 : 
+forall L K E, ctx L K -> member E L -> (exists T, E = term T /\
+  member (copy T T) K).</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  ============================
+   forall L K E, ctx L K -> member E L -> (exists T, E = term T /\
+     member (copy T T) K)
+
+ctx_member1 < <b>induction on 1.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  ============================
+   forall L K E, ctx L K @ -> member E L -> (exists T, E = term T /\
+     member (copy T T) K)
+
+ctx_member1 < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+  Variables: L, K, E
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H1 : ctx L K @
+  H2 : member E L
+  ============================
+   exists T, E = term T /\ member (copy T T) K
+
+ctx_member1 < <b>case H1.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, E
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H2 : member E nil
+  ============================
+   exists T, E = term T /\ member (copy T T) nil
+
+Subgoal 2 is:
+ exists T, E = term T /\ member (copy T T) (copy X X :: K1)
+
+ctx_member1 < <b>case H2.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H2 : member E (term X :: L1)
+  H3 : ctx L1 K1 *
+  ============================
+   exists T, E = term T /\ member (copy T T) (copy X X :: K1)
+
+ctx_member1 < <b>case H2.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H3 : ctx L1 K1 *
+  ============================
+   exists T, term X = term T /\ member (copy T T) (copy X X :: K1)
+
+Subgoal 2.2 is:
+ exists T, E = term T /\ member (copy T T) (copy X X :: K1)
+
+ctx_member1 < <b>search.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H3 : ctx L1 K1 *
+  H4 : member E L1
+  ============================
+   exists T, E = term T /\ member (copy T T) (copy X X :: K1)
+
+ctx_member1 < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, X, L1, T
+  IH : forall L K E, ctx L K * -> member E L -> (exists T, E = term T /\
+         member (copy T T) K)
+  H3 : ctx L1 K1 *
+  H4 : member (term T) L1
+  H5 : member (copy T T) K1
+  ============================
+   exists T1, term T = term T1 /\ member (copy T1 T1) (copy X X :: K1)
+
+ctx_member1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_member2 : 
+forall L K E, ctx L K -> member E K -> (exists T, E = copy T T).</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  ============================
+   forall L K E, ctx L K -> member E K -> (exists T, E = copy T T)
+
+ctx_member2 < <b>induction on 1.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  ============================
+   forall L K E, ctx L K @ -> member E K -> (exists T, E = copy T T)
+
+ctx_member2 < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+  Variables: L, K, E
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H1 : ctx L K @
+  H2 : member E K
+  ============================
+   exists T, E = copy T T
+
+ctx_member2 < <b>case H1.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, E
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H2 : member E nil
+  ============================
+   exists T, E = copy T T
+
+Subgoal 2 is:
+ exists T, E = copy T T
+
+ctx_member2 < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H2 : member E (copy X X :: K1)
+  H3 : ctx L1 K1 *
+  ============================
+   exists T, E = copy T T
+
+ctx_member2 < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H3 : ctx L1 K1 *
+  ============================
+   exists T, copy X X = copy T T
+
+Subgoal 2.2 is:
+ exists T, E = copy T T
+
+ctx_member2 < <b>search.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, X, L1
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H3 : ctx L1 K1 *
+  H4 : member E K1
+  ============================
+   exists T, E = copy T T
+
+ctx_member2 < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, X, L1, T
+  IH : forall L K E, ctx L K * -> member E K -> (exists T, E = copy T T)
+  H3 : ctx L1 K1 *
+  H4 : member (copy T T) K1
+  ============================
+   exists T1, copy T T = copy T1 T1
+
+ctx_member2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="21"></a>
+<pre class="code">
+Abella < <b>Theorem copy_id : 
+forall L K T, ctx L K -> {L |- term T} -> {K |- copy T T}.</b>
+</pre>
+<a name="22"></a>
+<pre>
+
+
+  ============================
+   forall L K T, ctx L K -> {L |- term T} -> {K |- copy T T}
+
+copy_id < <b>induction on 2.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  ============================
+   forall L K T, ctx L K -> {L |- term T}@ -> {K |- copy T T}
+
+copy_id < <b>intros.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+  Variables: L, K, T
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H2 : {L |- term T}@
+  ============================
+   {K |- copy T T}
+
+copy_id < <b>case H2.</b>
+</pre>
+<a name="25"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  ============================
+   {K |- copy (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- copy (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- copy T T}
+
+copy_id < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H5 : {K |- copy M M}
+  ============================
+   {K |- copy (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- copy (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- copy T T}
+
+copy_id < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H5 : {K |- copy M M}
+  H6 : {K |- copy N N}
+  ============================
+   {K |- copy (app M N) (app M N)}
+
+Subgoal 2 is:
+ {K |- copy (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- copy T T}
+
+copy_id < <b>search.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, T, R
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L, term n1 |- term (R n1)}*
+  ============================
+   {K |- copy (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- copy T T}
+
+copy_id < <b>apply IH to _ H3.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, T, R
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L, term n1 |- term (R n1)}*
+  H4 : {K, copy n1 n1 |- copy (R n1) (R n1)}
+  ============================
+   {K |- copy (abs R) (abs R)}
+
+Subgoal 3 is:
+ {K |- copy T T}
+
+copy_id < <b>search.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, F
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L, [F] |- term T}*
+  H4 : member F L
+  ============================
+   {K |- copy T T}
+
+copy_id < <b>apply ctx_member1 to H1 H4.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, F, T1
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H3 : {L, [term T1] |- term T}*
+  H4 : member (term T1) L
+  H5 : member (copy T1 T1) K
+  ============================
+   {K |- copy T T}
+
+copy_id < <b>case H3.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, F, T1
+  IH : forall L K T, ctx L K -> {L |- term T}* -> {K |- copy T T}
+  H1 : ctx L K
+  H4 : member (term T) L
+  H5 : member (copy T T) K
+  ============================
+   {K |- copy T T}
+
+copy_id < <b>search.</b>
+Proof completed.
+</pre>
+<a name="33"></a>
+<pre class="code">
+Abella < <b>Theorem copy_eq : 
+forall L K T S, ctx L K -> {K |- copy T S} -> T = S.</b>
+</pre>
+<a name="34"></a>
+<pre>
+
+
+  ============================
+   forall L K T S, ctx L K -> {K |- copy T S} -> T = S
+
+copy_eq < <b>induction on 2.</b>
+</pre>
+<a name="35"></a>
+<pre>
+
+
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  ============================
+   forall L K T S, ctx L K -> {K |- copy T S}@ -> T = S
+
+copy_eq < <b>intros.</b>
+</pre>
+<a name="36"></a>
+<pre>
+
+  Variables: L, K, T, S
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H2 : {K |- copy T S}@
+  ============================
+   T = S
+
+copy_eq < <b>case H2.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, S, Q, M, P, N
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K |- copy N P}*
+  H4 : {K |- copy M Q}*
+  ============================
+   app N M = app P Q
+
+Subgoal 2 is:
+ abs R = abs S1
+
+Subgoal 3 is:
+ T = S
+
+copy_eq < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, S, Q, M, P, N
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K |- copy P P}*
+  H4 : {K |- copy M Q}*
+  ============================
+   app P M = app P Q
+
+Subgoal 2 is:
+ abs R = abs S1
+
+Subgoal 3 is:
+ T = S
+
+copy_eq < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, S, Q, M, P, N
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K |- copy P P}*
+  H4 : {K |- copy Q Q}*
+  ============================
+   app P Q = app P Q
+
+Subgoal 2 is:
+ abs R = abs S1
+
+Subgoal 3 is:
+ T = S
+
+copy_eq < <b>search.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, T, S, S1, R
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K, copy n1 n1 |- copy (R n1) (S1 n1)}*
+  ============================
+   abs R = abs S1
+
+Subgoal 3 is:
+ T = S
+
+copy_eq < <b>apply IH to _ H3.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, T, S, S1, R
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K, copy n1 n1 |- copy (S1 n1) (S1 n1)}*
+  ============================
+   abs (z1\S1 z1) = abs S1
+
+Subgoal 3 is:
+ T = S
+
+copy_eq < <b>search.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, S, F
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K, [F] |- copy T S}*
+  H4 : member F K
+  ============================
+   T = S
+
+copy_eq < <b>apply ctx_member2 to H1 H4.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, S, F, T1
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H3 : {K, [copy T1 T1] |- copy T S}*
+  H4 : member (copy T1 T1) K
+  ============================
+   T = S
+
+copy_eq < <b>case H3.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, S, F, T1
+  IH : forall L K T S, ctx L K -> {K |- copy T S}* -> T = S
+  H1 : ctx L K
+  H4 : member (copy S S) K
+  ============================
+   S = S
+
+copy_eq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="45"></a>
+<pre class="code">
+Abella < <b>Theorem subst : 
+forall R T S, {term T} -> {subst R T S} -> R T = S.</b>
+</pre>
+<a name="46"></a>
+<pre>
+
+
+  ============================
+   forall R T S, {term T} -> {subst R T S} -> R T = S
+
+subst < <b>intros.</b>
+</pre>
+<a name="47"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H2 : {subst R T S}
+  ============================
+   R T = S
+
+subst < <b>case H2.</b>
+</pre>
+<a name="48"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H3 : {copy n1 T |- copy (R n1) S}
+  ============================
+   R T = S
+
+subst < <b>apply copy_id to _ H1.</b>
+</pre>
+<a name="49"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H3 : {copy n1 T |- copy (R n1) S}
+  H4 : {copy T T}
+  ============================
+   R T = S
+
+subst < <b>inst H3 with n1 = T.</b>
+</pre>
+<a name="50"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H3 : {copy n1 T |- copy (R n1) S}
+  H4 : {copy T T}
+  H5 : {copy T T |- copy (R T) S}
+  ============================
+   R T = S
+
+subst < <b>cut H5 with H4.</b>
+</pre>
+<a name="51"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H3 : {copy n1 T |- copy (R n1) S}
+  H4 : {copy T T}
+  H5 : {copy T T |- copy (R T) S}
+  H6 : {copy (R T) S}
+  ============================
+   R T = S
+
+subst < <b>apply copy_eq to _ H6.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+  Variables: R, T, S
+  H1 : {term T}
+  H3 : {copy n1 T |- copy (R n1) (R T)}
+  H4 : {copy T T}
+  H5 : {copy T T |- copy (R T) (R T)}
+  H6 : {copy (R T) (R T)}
+  ============================
+   R T = R T
+
+subst < <b>search.</b>
+Proof completed.
+</pre>
+<a name="53"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

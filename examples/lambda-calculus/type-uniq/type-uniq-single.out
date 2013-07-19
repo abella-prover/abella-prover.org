@@ -1,0 +1,385 @@
+Welcome to Abella 2.0
+Abella < Kind tm, ty type.
+
+Abella < Type app tm -> tm -> tm.
+
+Abella < Type abs ty -> (tm -> tm) -> tm.
+
+Abella < Type arr ty -> ty -> ty.
+
+Abella < Type bind tm -> ty -> o.
+
+Abella < Theorem member_prune : 
+forall L E, nabla x, member (E x) L -> (exists F, E = x\F).
+
+
+  ============================
+   forall L E, nabla x, member (E x) L -> (exists F, E = x\F)
+
+member_prune < induction on 1.
+
+
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  ============================
+   forall L E, nabla x, member (E x) L @ -> (exists F, E = x\F)
+
+member_prune < intros.
+
+  Variables: L, E
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = x\F
+
+member_prune < case H1.
+Subgoal 1:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  ============================
+   exists F, z1\L2 = x\F
+
+Subgoal 2 is:
+ exists F, E = x\F
+
+member_prune < search.
+Subgoal 2:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = x\F
+
+member_prune < apply IH to H2.
+Subgoal 2:
+
+  Variables: L, E, L3, L2, F
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = x\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = x\F1
+
+member_prune < search.
+Proof completed.
+
+Abella < Define ctx : olist -> prop by 
+ctx nil;
+nabla x, ctx (bind x A :: L) := ctx L.
+
+Abella < Define of : olist -> tm -> ty -> prop by 
+nabla x, of (L x) x A := nabla x, member (bind x A) (L x);
+of L (app M N) B := exists A, of L M (arr A B) /\ of L N A;
+of L (abs A R) (arr A B) := nabla x, of (bind x A :: L) (R x) B.
+
+Abella < Theorem ctx_uniq : 
+forall L E T1 T2, ctx L -> member (bind E T1) L -> member (bind E T2) L ->
+  T1 = T2.
+
+
+  ============================
+   forall L E T1 T2, ctx L -> member (bind E T1) L -> member (bind E T2) L ->
+     T1 = T2
+
+ctx_uniq < induction on 1.
+
+
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L @ -> member (bind E T1) L ->
+     member (bind E T2) L -> T1 = T2
+
+ctx_uniq < intros.
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H1 : ctx L @
+  H2 : member (bind E T1) L
+  H3 : member (bind E T2) L
+  ============================
+   T1 = T2
+
+ctx_uniq < case H1.
+Subgoal 1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H2 : member (bind E T1) nil
+  H3 : member (bind E T2) nil
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < case H2.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H2 : member (bind (E n1) (T1 n1)) (bind n1 A :: L1)
+  H3 : member (bind (E n1) (T2 n1)) (bind n1 A :: L1)
+  H4 : ctx L1 *
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < case H2.
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H3 : member (bind n1 (T2 n1)) (bind n1 A :: L1)
+  H4 : ctx L1 *
+  ============================
+   A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < case H3.
+Subgoal 2.1.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  ============================
+   A = A
+
+Subgoal 2.1.2 is:
+ A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < search.
+Subgoal 2.1.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (bind n1 (T2 n1)) L1
+  ============================
+   A = T2 n1
+
+Subgoal 2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < apply member_prune to H5.
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H3 : member (bind (E n1) (T2 n1)) (bind n1 A :: L1)
+  H4 : ctx L1 *
+  H5 : member (bind (E n1) (T1 n1)) L1
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < case H3.
+Subgoal 2.2.1:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (bind n1 (T1 n1)) L1
+  ============================
+   T1 n1 = A
+
+Subgoal 2.2.2 is:
+ T1 n1 = T2 n1
+
+ctx_uniq < apply member_prune to H5.
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (bind (E n1) (T1 n1)) L1
+  H6 : member (bind (E n1) (T2 n1)) L1
+  ============================
+   T1 n1 = T2 n1
+
+ctx_uniq < apply IH to H4 H5 H6.
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, A
+  IH : forall L E T1 T2, ctx L * -> member (bind E T1) L ->
+         member (bind E T2) L -> T1 = T2
+  H4 : ctx L1 *
+  H5 : member (bind (E n1) (T2 n1)) L1
+  H6 : member (bind (E n1) (T2 n1)) L1
+  ============================
+   T2 n1 = T2 n1
+
+ctx_uniq < search.
+Proof completed.
+
+Abella < Theorem type_uniq : 
+forall L E T1 T2, ctx L -> of L E T1 -> of L E T2 -> T1 = T2.
+
+
+  ============================
+   forall L E T1 T2, ctx L -> of L E T1 -> of L E T2 -> T1 = T2
+
+type_uniq < induction on 2.
+
+
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L -> of L E T1 @ -> of L E T2 -> T1 = T2
+
+type_uniq < intros.
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H2 : of L E T1 @
+  H3 : of L E T2
+  ============================
+   T1 = T2
+
+type_uniq < case H2.
+Subgoal 1:
+
+  Variables: L, E, T1, T2, A
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx (L n1)
+  H3 : of (L n1) n1 (T2 n1)
+  H4 : member (bind n1 A) (L n1)
+  ============================
+   A = T2 n1
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < case H3.
+Subgoal 1:
+
+  Variables: L, E, T1, T2, A, A1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx (L n1)
+  H4 : member (bind n1 A) (L n1)
+  H5 : member (bind n1 A1) (L n1)
+  ============================
+   A = A1
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < apply ctx_uniq to H1 H4 H5.
+Subgoal 1:
+
+  Variables: L, E, T1, T2, A, A1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx (L n1)
+  H4 : member (bind n1 A1) (L n1)
+  H5 : member (bind n1 A1) (L n1)
+  ============================
+   A1 = A1
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < search.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, A, N, M
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H3 : of L (app M N) T2
+  H4 : of L M (arr A T1) *
+  H5 : of L N A *
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < case H3.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, A, N, M, A1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H4 : of L M (arr A T1) *
+  H5 : of L N A *
+  H6 : of L M (arr A1 T2)
+  H7 : of L N A1
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < apply IH to H1 H4 H6.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, A, N, M, A1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H4 : of L M (arr A1 T2) *
+  H5 : of L N A1 *
+  H6 : of L M (arr A1 T2)
+  H7 : of L N A1
+  ============================
+   T2 = T2
+
+Subgoal 3 is:
+ arr A B = T2
+
+type_uniq < search.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, B, A, R
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H3 : of L (abs A R) T2
+  H4 : of (bind n1 A :: L) (R n1) B *
+  ============================
+   arr A B = T2
+
+type_uniq < case H3.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, B, A, R, B1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H4 : of (bind n1 A :: L) (R n1) B *
+  H5 : of (bind n1 A :: L) (R n1) B1
+  ============================
+   arr A B = arr A B1
+
+type_uniq < apply IH to _ H4 H5.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, B, A, R, B1
+  IH : forall L E T1 T2, ctx L -> of L E T1 * -> of L E T2 -> T1 = T2
+  H1 : ctx L
+  H4 : of (bind n1 A :: L) (R n1) B1 *
+  H5 : of (bind n1 A :: L) (R n1) B1
+  ============================
+   arr A B1 = arr A B1
+
+type_uniq < search.
+Proof completed.
+
+Abella < Goodbye.

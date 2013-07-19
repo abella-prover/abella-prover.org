@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Totality of Euclid's GCD algorithm</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella.cs.umn.edu/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Totality of Euclid's GCD algorithm</h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="gcd.sig">[View gcd.sig]</a>
+<a class="view" href="gcd.mod">[View gcd.mod]</a>
+<pre class="command">
+sig gcd.
+
+kind    nat, bool        type.
+
+type    z                nat.
+type    s                nat -> nat.
+type    tt, ff           bool.
+
+type    nat              nat -> o.
+type    bool             bool -> o.
+type    sub, gcd         nat -> nat -> nat -> o.
+type    less             nat -> nat -> bool -> o.
+type    lt               nat -> nat -> o.
+
+</pre>
+<pre class="command">
+<span class="comment">%% Euclid's GCD algorithm</span>
+<span class="comment">%%</span>
+<span class="comment">%% Adapted from the %reduces example in the Twelf User's Guide:</span>
+<span class="comment">%% http://www.cs.cmu.edu/~twelf/guide-1-4/twelf_8.html#SEC47</span>
+
+module gcd.
+
+nat z.
+nat (s N) :- nat N.
+
+bool tt.
+bool ff.
+
+sub X z X.
+sub (s X) (s Y) Z :- sub X Y Z.
+
+less z (s X) tt.
+less X z ff.
+less (s X) (s Y) B :- less X Y B.
+
+lt z (s Y).
+lt (s X) (s Y) :- lt X Y.
+
+gcd z Y Y.
+gcd X z X.
+gcd (s X) (s Y) Z :- less X Y tt, sub Y X Y', gcd (s X) Y' Z.  <span class="comment">% (1)</span>
+gcd (s X) (s Y) Z :- less X Y ff, sub X Y X', gcd X' (s Y) Z.  <span class="comment">% (2)</span>
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="gcd.thm">[View gcd.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%% This requires strong induction which we can encode using regular</span>
+<span class="comment">%% inducution together with an ordering on natural numbers.</span>
+<span class="comment">%%</span>
+<span class="comment">%% Adapted from the %reduces example in the Twelf User's Guide:</span>
+<span class="comment">%% http://www.cs.cmu.edu/~twelf/guide-1-4/twelf_8.html#SEC47</span>
+
+<a href="gcd-details.html#1" class="command">Specification "gcd".</a>
+
+<a href="gcd-details.html#2" class="command">Theorem sub_total_tt : forall X Y,
+  {less X Y tt} -> exists Z, {sub Y X Z}.</a>
+<div class="proof"><a href="gcd-details.html#3" class="tactic">induction on 1.</a> <a href="gcd-details.html#4" class="tactic">intros.</a> <a href="gcd-details.html#5" class="tactic">case H1.</a>
+  <a href="gcd-details.html#6" class="tactic">search.</a>
+  <a href="gcd-details.html#7" class="tactic">apply IH to H2.</a> <a href="gcd-details.html#8" class="tactic">search.</a></div>
+<a href="gcd-details.html#9" class="command">Theorem sub_total_ff : forall X Y,
+  {less X Y ff} -> exists Z, {sub X Y Z}.</a>
+<div class="proof"><a href="gcd-details.html#10" class="tactic">induction on 1.</a> <a href="gcd-details.html#11" class="tactic">intros.</a> <a href="gcd-details.html#12" class="tactic">case H1.</a>
+  <a href="gcd-details.html#13" class="tactic">search.</a>
+  <a href="gcd-details.html#14" class="tactic">apply IH to H2.</a> <a href="gcd-details.html#15" class="tactic">search.</a></div>
+<a href="gcd-details.html#16" class="command">Theorem less_total : forall X Y,
+  {nat X} -> {nat Y} -> exists B, {bool B} /\ {less X Y B}.</a>
+<div class="proof"><a href="gcd-details.html#17" class="tactic">induction on 1.</a> <a href="gcd-details.html#18" class="tactic">intros.</a> <a href="gcd-details.html#19" class="tactic">case H1.</a>
+  <a href="gcd-details.html#20" class="tactic">case H2.</a>
+    <a href="gcd-details.html#21" class="tactic">search.</a>
+    <a href="gcd-details.html#22" class="tactic">search.</a>
+  <a href="gcd-details.html#23" class="tactic">case H2.</a>
+    <a href="gcd-details.html#24" class="tactic">search.</a>
+    <a href="gcd-details.html#25" class="tactic">apply IH to H3 H4.</a> <a href="gcd-details.html#26" class="tactic">search.</a></div>
+<a href="gcd-details.html#27" class="command">Theorem lt_trans : forall X Y Z,
+  {lt X (s Y)} -> {lt Y Z} -> {lt X Z}.</a>
+<div class="proof"><a href="gcd-details.html#28" class="tactic">induction on 1.</a> <a href="gcd-details.html#29" class="tactic">intros.</a> <a href="gcd-details.html#30" class="tactic">case H1.</a>
+  <a href="gcd-details.html#31" class="tactic">case H2.</a>
+    <a href="gcd-details.html#32" class="tactic">search.</a>
+    <a href="gcd-details.html#33" class="tactic">search.</a>
+  <a href="gcd-details.html#34" class="tactic">case H2.</a>
+    <a href="gcd-details.html#35" class="tactic">case H3.</a>
+    <a href="gcd-details.html#36" class="tactic">apply IH to H3 H4.</a> <a href="gcd-details.html#37" class="tactic">search.</a></div>
+<a href="gcd-details.html#38" class="command">Theorem lt_nat : forall X Y,
+  {lt X Y} -> {nat X}.</a>
+<div class="proof"><a href="gcd-details.html#39" class="tactic">induction on 1.</a> <a href="gcd-details.html#40" class="tactic">intros.</a> <a href="gcd-details.html#41" class="tactic">case H1.</a>
+  <a href="gcd-details.html#42" class="tactic">search.</a>
+  <a href="gcd-details.html#43" class="tactic">apply IH to H2.</a> <a href="gcd-details.html#44" class="tactic">search.</a></div>
+<a href="gcd-details.html#45" class="command">Theorem lt_x_sx : forall X,
+  {nat X} -> {lt X (s X)}.</a>
+<div class="proof"><a href="gcd-details.html#46" class="tactic">induction on 1.</a> <a href="gcd-details.html#47" class="tactic">intros.</a> <a href="gcd-details.html#48" class="tactic">case H1.</a>
+  <a href="gcd-details.html#49" class="tactic">search.</a>
+  <a href="gcd-details.html#50" class="tactic">apply IH to H2.</a> <a href="gcd-details.html#51" class="tactic">search.</a></div>
+<a href="gcd-details.html#52" class="command">Theorem lt_s : forall X Y,
+  {lt X Y} -> {lt X (s Y)}.</a>
+<div class="proof"><a href="gcd-details.html#53" class="tactic">induction on 1.</a> <a href="gcd-details.html#54" class="tactic">intros.</a> <a href="gcd-details.html#55" class="tactic">case H1.</a>
+  <a href="gcd-details.html#56" class="tactic">search.</a>
+  <a href="gcd-details.html#57" class="tactic">apply IH to H2.</a> <a href="gcd-details.html#58" class="tactic">search.</a></div>
+<a href="gcd-details.html#59" class="command">Theorem sub_lt : forall X Y Z,
+  {nat X} -> {sub X Y Z} -> {lt Z (s X)}.</a>
+<div class="proof"><a href="gcd-details.html#60" class="tactic">induction on 2.</a> <a href="gcd-details.html#61" class="tactic">intros.</a> <a href="gcd-details.html#62" class="tactic">case H2.</a>
+  <a href="gcd-details.html#63" class="tactic">apply lt_x_sx to H1.</a> <a href="gcd-details.html#64" class="tactic">search.</a>
+  <a href="gcd-details.html#65" class="tactic">case H1.</a> <a href="gcd-details.html#66" class="tactic">apply IH to H4 H3.</a> <a href="gcd-details.html#67" class="tactic">apply lt_s to H5.</a> <a href="gcd-details.html#68" class="tactic">search.</a></div>
+<a href="gcd-details.html#69" class="command">Theorem gcd_total_strong : forall A B,
+  {nat A} -> {nat B} ->
+    (forall X Y, {lt X A} -> {lt Y B} -> exists Z, {nat Z} /\ {gcd X Y Z}).</a>
+<div class="proof"><a href="gcd-details.html#70" class="tactic">induction on 1.</a> <a href="gcd-details.html#71" class="tactic">induction on 2.</a> <a href="gcd-details.html#72" class="tactic">intros.</a>
+  <a href="gcd-details.html#73" class="tactic">apply lt_nat to H3.</a> <a href="gcd-details.html#74" class="tactic">apply lt_nat to H4.</a>
+
+  <span class="comment">% Trivial base cases</span>
+  <a href="gcd-details.html#75" class="tactic">case H1 (keep).</a> <a href="gcd-details.html#76" class="tactic">case H3.</a>
+  <a href="gcd-details.html#77" class="tactic">case H2 (keep).</a> <a href="gcd-details.html#78" class="tactic">case H4.</a>
+
+  <span class="comment">% A = s N, B = s N1</span>
+  <a href="gcd-details.html#79" class="tactic">apply IH to H7 H2.</a> <a href="gcd-details.html#80" class="tactic">apply IH1 to H1 H8.</a>
+  <a href="gcd-details.html#81" class="tactic">clear IH IH1 H1 H2 H7 H8.</a>
+
+    <span class="comment">% X = z</span>
+    <a href="gcd-details.html#82" class="tactic">case H3.</a> <a href="gcd-details.html#83" class="tactic">search.</a>
+
+    <span class="comment">% Y = z</span>
+    <a href="gcd-details.html#84" class="tactic">case H4.</a> <a href="gcd-details.html#85" class="tactic">search.</a>
+
+    <span class="comment">% X = s X1, Y = s X2</span>
+    <a href="gcd-details.html#86" class="tactic">case H5.</a> <a href="gcd-details.html#87" class="tactic">case H6.</a>
+    <a href="gcd-details.html#88" class="tactic">apply less_total to H13 H14.</a> <a href="gcd-details.html#89" class="tactic">case H15.</a>
+
+      <span class="comment">% X1 < X2</span>
+      <a href="gcd-details.html#90" class="tactic">apply sub_total_tt to H16.</a>
+      <a href="gcd-details.html#91" class="tactic">apply sub_lt to H14 H17.</a>
+      <a href="gcd-details.html#92" class="tactic">apply lt_trans to H18 H12.</a>
+      <a href="gcd-details.html#93" class="tactic">apply H10 to _ H19 with X = s X1.</a> <a href="gcd-details.html#94" class="tactic">search.</a>
+
+      <span class="comment">% X1 >= X2</span>
+      <a href="gcd-details.html#95" class="tactic">apply sub_total_ff to H16.</a>
+      <a href="gcd-details.html#96" class="tactic">apply sub_lt to H13 H17.</a>
+      <a href="gcd-details.html#97" class="tactic">apply lt_trans to H18 H11.</a>
+      <a href="gcd-details.html#98" class="tactic">apply H9 to H19 _ with Y = s X2.</a> <a href="gcd-details.html#99" class="tactic">search.</a></div>
+
+<a href="gcd-details.html#100" class="command">Theorem gcd_total : forall X Y,
+   {nat X} -> {nat Y} -> exists Z, {nat Z} /\ {gcd X Y Z}.</a>
+<div class="proof"><a href="gcd-details.html#101" class="tactic">intros.</a> <a href="gcd-details.html#102" class="tactic">assert {nat (s X)}.</a> <a href="gcd-details.html#103" class="tactic">assert {nat (s Y)}.</a>
+  <a href="gcd-details.html#104" class="tactic">apply gcd_total_strong to H3 H4.</a>
+    <a href="gcd-details.html#105" class="tactic">apply lt_x_sx to H1.</a> <a href="gcd-details.html#106" class="tactic">apply lt_x_sx to H2.</a>
+      <a href="gcd-details.html#107" class="tactic">apply H5 to H6 H7.</a> <a href="gcd-details.html#108" class="tactic">search.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

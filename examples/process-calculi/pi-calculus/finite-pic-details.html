@@ -1,0 +1,4349 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Simulation and bisimulation for the pi-calculus - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "finite-pic".</b>
+Reading specification "finite-pic"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>CoDefine sim : proc -> proc -> prop by 
+sim P Q := (forall A P1, {one P A P1} -> (exists Q1, {one Q A Q1} /\ sim P1 Q1)) /\
+  (forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+  (forall W, sim (M W) (N W)))) /\ (forall X M, {oneb P (up X) M} ->
+  (exists N, {oneb Q (up X) N} /\ (nabla w, sim (M w) (N w)))).</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem sim_refl : 
+forall P, sim P P.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  ============================
+   forall P, sim P P
+
+sim_refl < <b>coinduction.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  CH : forall P, sim P P +
+  ============================
+   forall P, sim P P #
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+  Variables: P
+  CH : forall P, sim P P +
+  ============================
+   sim P P #
+
+sim_refl < <b>unfold.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P
+  CH : forall P, sim P P +
+  ============================
+   forall A P1, {one P A P1} -> (exists Q1, {one P A Q1} /\ sim P1 Q1 +)
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, A, P1
+  CH : forall P, sim P P +
+  H1 : {one P A P1}
+  ============================
+   exists Q1, {one P A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>apply CH with P = P1.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, A, P1
+  CH : forall P, sim P P +
+  H1 : {one P A P1}
+  H2 : sim P1 P1 +
+  ============================
+   exists Q1, {one P A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>search.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P
+  CH : forall P, sim P P +
+  ============================
+   forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\
+     (forall W, sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   exists N, {oneb P (dn X) N} /\ (forall W, sim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>exists M.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   {oneb P (dn X) M} /\ (forall W, sim (M W) (M W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>split.</b>
+</pre>
+<a name="13"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   {oneb P (dn X) M}
+
+Subgoal 2.2 is:
+ forall W, sim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>search.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   forall W, sim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M, W
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   sim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>apply CH with P = M W.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M, W
+  CH : forall P, sim P P +
+  H1 : {oneb P (dn X) M}
+  H2 : sim (M W) (M W) +
+  ============================
+   sim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_refl < <b>search.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P
+  CH : forall P, sim P P +
+  ============================
+   forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+     sim (M w) (N w) +))
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   exists N, {oneb P (up X) N} /\ (nabla w, sim (M w) (N w) +)
+
+sim_refl < <b>exists M.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   {oneb P (up X) M} /\ (nabla w, sim (M w) (M w) +)
+
+sim_refl < <b>split.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   {oneb P (up X) M}
+
+Subgoal 3.2 is:
+ nabla w, sim (M w) (M w) +
+
+sim_refl < <b>search.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   nabla w, sim (M w) (M w) +
+
+sim_refl < <b>intros.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   sim (M n1) (M n1) +
+
+sim_refl < <b>apply CH with P = M n1.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, sim P P +
+  H1 : {oneb P (up X) M}
+  H2 : sim (M n1) (M n1) +
+  ============================
+   sim (M n1) (M n1) +
+
+sim_refl < <b>search.</b>
+Proof completed.
+</pre>
+<a name="24"></a>
+<pre class="code">
+Abella < <b>Theorem sim_trans : 
+forall P Q R, sim P Q -> sim Q R -> sim P R.</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+
+  ============================
+   forall P Q R, sim P Q -> sim Q R -> sim P R
+
+sim_trans < <b>coinduction.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  ============================
+   forall P Q R, sim P Q -> sim Q R -> sim P R #
+
+sim_trans < <b>intros.</b>
+</pre>
+<a name="27"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H1 : sim P Q
+  H2 : sim Q R
+  ============================
+   sim P R #
+
+sim_trans < <b>case H1.</b>
+</pre>
+<a name="28"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H2 : sim Q R
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  ============================
+   sim P R #
+
+sim_trans < <b>case H2.</b>
+</pre>
+<a name="29"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  ============================
+   sim P R #
+
+sim_trans < <b>unfold.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  ============================
+   forall A P1, {one P A P1} -> (exists Q1, {one R A Q1} /\ sim P1 Q1 +)
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>intros.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {one P A P1}
+  ============================
+   exists Q1, {one R A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H3 to H9.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {one P A P1}
+  H10 : {one Q A Q2}
+  H11 : sim P1 Q2
+  ============================
+   exists Q1, {one R A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H6 to H10.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2, Q1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {one P A P1}
+  H10 : {one Q A Q2}
+  H11 : sim P1 Q2
+  H12 : {one R A Q1}
+  H13 : sim Q2 Q1
+  ============================
+   exists Q1, {one R A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply CH to H11 H13.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2, Q1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {one P A P1}
+  H10 : {one Q A Q2}
+  H11 : sim P1 Q2
+  H12 : {one R A Q1}
+  H13 : sim Q2 Q1
+  H14 : sim P1 Q1 +
+  ============================
+   exists Q1, {one R A Q1} /\ sim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>search.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  ============================
+   forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+     (forall W, sim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>intros.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, sim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H4 to H9.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, sim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H7 to H10.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, sim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>exists N1.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  ============================
+   {oneb R (dn X) N1} /\ (forall W, sim (M W) (N1 W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>split.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  ============================
+   {oneb R (dn X) N1}
+
+Subgoal 2.2 is:
+ forall W, sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>search.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  ============================
+   forall W, sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>intros.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  ============================
+   sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H11 with W = W.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  H14 : sim (M W) (N W)
+  ============================
+   sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply H13 with W = W.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  H14 : sim (M W) (N W)
+  H15 : sim (N W) (N1 W)
+  ============================
+   sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>apply CH to H14 H15.</b>
+</pre>
+<a name="45"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (dn X) M}
+  H10 : {oneb Q (dn X) N}
+  H11 : forall W, sim (M W) (N W)
+  H12 : {oneb R (dn X) N1}
+  H13 : forall W, sim (N W) (N1 W)
+  H14 : sim (M W) (N W)
+  H15 : sim (N W) (N1 W)
+  H16 : sim (M W) (N1 W) +
+  ============================
+   sim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   sim (M w) (N w) +))
+
+sim_trans < <b>search.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  ============================
+   forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+     sim (M w) (N w) +))
+
+sim_trans < <b>intros.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (up X) M}
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, sim (M w) (N w) +)
+
+sim_trans < <b>apply H5 to H9.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (up X) M}
+  H10 : {oneb Q (up X) N}
+  H11 : sim (M n1) (N n1)
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, sim (M w) (N w) +)
+
+sim_trans < <b>apply H8 to H10.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (up X) M}
+  H10 : {oneb Q (up X) N}
+  H11 : sim (M n1) (N n1)
+  H12 : {oneb R (up X) N1}
+  H13 : sim (N n1) (N1 n1)
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, sim (M w) (N w) +)
+
+sim_trans < <b>apply CH to H11 H13.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, sim P Q -> sim Q R -> sim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ sim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H6 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ sim P2 Q2)
+  H7 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+         (forall W, sim (M W) (N W)))
+  H8 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+         (nabla w, sim (M w) (N w)))
+  H9 : {oneb P (up X) M}
+  H10 : {oneb Q (up X) N}
+  H11 : sim (M n1) (N n1)
+  H12 : {oneb R (up X) N1}
+  H13 : sim (N n1) (N1 n1)
+  H14 : sim (M n1) (N1 n1) +
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, sim (M w) (N w) +)
+
+sim_trans < <b>search.</b>
+Proof completed.
+</pre>
+<a name="51"></a>
+<pre class="code">
+Abella < <b>CoDefine bisim : proc -> proc -> prop by 
+bisim P Q := (forall A P1, {one P A P1} -> (exists Q1, {one Q A Q1} /\ bisim P1 Q1)) /\
+  (forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+  (forall W, bisim (M W) (N W)))) /\ (forall X M, {oneb P (up X) M} ->
+  (exists N, {oneb Q (up X) N} /\ (nabla w, bisim (M w) (N w)))) /\
+  (forall A Q1, {one Q A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1)) /\
+  (forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+  (forall W, bisim (N W) (M W)))) /\ (forall X N, {oneb Q (up X) N} ->
+  (exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w)))).</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+Abella < <b>Theorem bisim_refl : 
+forall P, bisim P P.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+
+  ============================
+   forall P, bisim P P
+
+bisim_refl < <b>coinduction.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+
+  CH : forall P, bisim P P +
+  ============================
+   forall P, bisim P P #
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="55"></a>
+<pre>
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   bisim P P #
+
+bisim_refl < <b>unfold.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall A P1, {one P A P1} -> (exists Q1, {one P A Q1} /\ bisim P1 Q1 +)
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, A, P1
+  CH : forall P, bisim P P +
+  H1 : {one P A P1}
+  ============================
+   exists Q1, {one P A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>apply CH with P = P1.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, A, P1
+  CH : forall P, bisim P P +
+  H1 : {one P A P1}
+  H2 : bisim P1 P1 +
+  ============================
+   exists Q1, {one P A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall X M, {oneb P (dn X) M} -> (exists N, {oneb P (dn X) N} /\
+     (forall W, bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   exists N, {oneb P (dn X) N} /\ (forall W, bisim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>exists M.</b>
+</pre>
+<a name="61"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   {oneb P (dn X) M} /\ (forall W, bisim (M W) (M W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>split.</b>
+</pre>
+<a name="62"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   {oneb P (dn X) M}
+
+Subgoal 2.2 is:
+ forall W, bisim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="63"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   forall W, bisim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M, W
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  ============================
+   bisim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>apply CH with P = M W.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, X, M, W
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) M}
+  H2 : bisim (M W) (M W) +
+  ============================
+   bisim (M W) (M W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall X M, {oneb P (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+     bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   exists N, {oneb P (up X) N} /\ (nabla w, bisim (M w) (N w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>exists M.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   {oneb P (up X) M} /\ (nabla w, bisim (M w) (M w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>split.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 3.1:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   {oneb P (up X) M}
+
+Subgoal 3.2 is:
+ nabla w, bisim (M w) (M w) +
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   nabla w, bisim (M w) (M w) +
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  ============================
+   bisim (M n1) (M n1) +
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>apply CH with P = M n1.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 3.2:
+
+  Variables: P, X, M
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) M}
+  H2 : bisim (M n1) (M n1) +
+  ============================
+   bisim (M n1) (M n1) +
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall A Q1, {one P A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, A, Q1
+  CH : forall P, bisim P P +
+  H1 : {one P A Q1}
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>apply CH with P = Q1.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, A, Q1
+  CH : forall P, bisim P P +
+  H1 : {one P A Q1}
+  H2 : bisim Q1 Q1 +
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall X N, {oneb P (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+     (forall W, bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  ============================
+   exists M, {oneb P (dn X) M} /\ (forall W, bisim (N W) (M W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>exists N.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  ============================
+   {oneb P (dn X) N} /\ (forall W, bisim (N W) (N W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>split.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 5.1:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  ============================
+   {oneb P (dn X) N}
+
+Subgoal 5.2 is:
+ forall W, bisim (N W) (N W) +
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  ============================
+   forall W, bisim (N W) (N W) +
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, X, N, W
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  ============================
+   bisim (N W) (N W) +
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>apply CH with P = N W.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, X, N, W
+  CH : forall P, bisim P P +
+  H1 : {oneb P (dn X) N}
+  H2 : bisim (N W) (N W) +
+  ============================
+   bisim (N W) (N W) +
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P
+  CH : forall P, bisim P P +
+  ============================
+   forall X N, {oneb P (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+     bisim (N w) (M w) +))
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  ============================
+   exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w) +)
+
+bisim_refl < <b>exists N.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  ============================
+   {oneb P (up X) N} /\ (nabla w, bisim (N w) (N w) +)
+
+bisim_refl < <b>split.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 6.1:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  ============================
+   {oneb P (up X) N}
+
+Subgoal 6.2 is:
+ nabla w, bisim (N w) (N w) +
+
+bisim_refl < <b>search.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  ============================
+   nabla w, bisim (N w) (N w) +
+
+bisim_refl < <b>intros.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  ============================
+   bisim (N n1) (N n1) +
+
+bisim_refl < <b>apply CH with P = N n1.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 6.2:
+
+  Variables: P, X, N
+  CH : forall P, bisim P P +
+  H1 : {oneb P (up X) N}
+  H2 : bisim (N n1) (N n1) +
+  ============================
+   bisim (N n1) (N n1) +
+
+bisim_refl < <b>search.</b>
+Proof completed.
+</pre>
+<a name="90"></a>
+<pre class="code">
+Abella < <b>Theorem bisim_sym : 
+forall P Q, bisim P Q -> bisim Q P.</b>
+</pre>
+<a name="91"></a>
+<pre>
+
+
+  ============================
+   forall P Q, bisim P Q -> bisim Q P
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="92"></a>
+<pre>
+
+  Variables: P, Q
+  H1 : bisim P Q
+  ============================
+   bisim Q P
+
+bisim_sym < <b>case H1.</b>
+</pre>
+<a name="93"></a>
+<pre>
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   bisim Q P
+
+bisim_sym < <b>unfold.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall A P1, {one Q A P1} -> (exists Q1, {one P A Q1} /\ bisim P1 Q1)
+
+Subgoal 2 is:
+ forall X M, {oneb Q (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W)))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, A, P1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {one Q A P1}
+  ============================
+   exists Q1, {one P A Q1} /\ bisim P1 Q1
+
+Subgoal 2 is:
+ forall X M, {oneb Q (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W)))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>apply H5 to H8.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, A, P1, P2
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {one Q A P1}
+  H9 : {one P A P2}
+  H10 : bisim P1 P2
+  ============================
+   exists Q1, {one P A Q1} /\ bisim P1 Q1
+
+Subgoal 2 is:
+ forall X M, {oneb Q (dn X) M} -> (exists N, {oneb P (dn X) N} /\ (forall W,
+   bisim (M W) (N W)))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>search.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X M, {oneb Q (dn X) M} -> (exists N, {oneb P (dn X) N} /\
+     (forall W, bisim (M W) (N W)))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, X, M
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb Q (dn X) M}
+  ============================
+   exists N, {oneb P (dn X) N} /\ (forall W, bisim (M W) (N W))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>apply H6 to H8.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, X, M, M1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb Q (dn X) M}
+  H9 : {oneb P (dn X) M1}
+  H10 : forall W, bisim (M W) (M1 W)
+  ============================
+   exists N, {oneb P (dn X) N} /\ (forall W, bisim (M W) (N W))
+
+Subgoal 3 is:
+ forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+   bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>search.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X M, {oneb Q (up X) M} -> (exists N, {oneb P (up X) N} /\ (nabla w,
+     bisim (M w) (N w)))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, X, M
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb Q (up X) M}
+  ============================
+   exists N, {oneb P (up X) N} /\ (nabla w, bisim (M w) (N w))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>apply H7 to H8.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, X, M, M1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb Q (up X) M}
+  H9 : {oneb P (up X) M1}
+  H10 : bisim (M n1) (M1 n1)
+  ============================
+   exists N, {oneb P (up X) N} /\ (nabla w, bisim (M w) (N w))
+
+Subgoal 4 is:
+ forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>search.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall A Q1, {one P A Q1} -> (exists P1, {one Q A P1} /\ bisim Q1 P1)
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, A, Q1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {one P A Q1}
+  ============================
+   exists P1, {one Q A P1} /\ bisim Q1 P1
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>apply H2 to H8.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, A, Q1, Q2
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {one P A Q1}
+  H9 : {one Q A Q2}
+  H10 : bisim Q1 Q2
+  ============================
+   exists P1, {one Q A P1} /\ bisim Q1 P1
+
+Subgoal 5 is:
+ forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\ (forall W,
+   bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>search.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X N, {oneb P (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+     (forall W, bisim (N W) (M W)))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, X, N
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb P (dn X) N}
+  ============================
+   exists M, {oneb Q (dn X) M} /\ (forall W, bisim (N W) (M W))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>apply H3 to H8.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, X, N, N1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb P (dn X) N}
+  H9 : {oneb Q (dn X) N1}
+  H10 : forall W, bisim (N W) (N1 W)
+  ============================
+   exists M, {oneb Q (dn X) M} /\ (forall W, bisim (N W) (M W))
+
+Subgoal 6 is:
+ forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+   bisim (N w) (M w)))
+
+bisim_sym < <b>search.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X N, {oneb P (up X) N} -> (exists M, {oneb Q (up X) M} /\ (nabla w,
+     bisim (N w) (M w)))
+
+bisim_sym < <b>intros.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, X, N
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb P (up X) N}
+  ============================
+   exists M, {oneb Q (up X) M} /\ (nabla w, bisim (N w) (M w))
+
+bisim_sym < <b>apply H4 to H8.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, X, N, N1
+  H2 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H3 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H4 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H5 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H6 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H7 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H8 : {oneb P (up X) N}
+  H9 : {oneb Q (up X) N1}
+  H10 : bisim (N n1) (N1 n1)
+  ============================
+   exists M, {oneb Q (up X) M} /\ (nabla w, bisim (N w) (M w))
+
+bisim_sym < <b>search.</b>
+Proof completed.
+</pre>
+<a name="112"></a>
+<pre class="code">
+Abella < <b>Theorem bisim_trans : 
+forall P Q R, bisim P Q -> bisim Q R -> bisim P R.</b>
+</pre>
+<a name="113"></a>
+<pre>
+
+
+  ============================
+   forall P Q R, bisim P Q -> bisim Q R -> bisim P R
+
+bisim_trans < <b>coinduction.</b>
+</pre>
+<a name="114"></a>
+<pre>
+
+
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  ============================
+   forall P Q R, bisim P Q -> bisim Q R -> bisim P R #
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="115"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H1 : bisim P Q
+  H2 : bisim Q R
+  ============================
+   bisim P R #
+
+bisim_trans < <b>case H1.</b>
+</pre>
+<a name="116"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H2 : bisim Q R
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  ============================
+   bisim P R #
+
+bisim_trans < <b>case H2.</b>
+</pre>
+<a name="117"></a>
+<pre>
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   bisim P R #
+
+bisim_trans < <b>unfold.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall A P1, {one P A P1} -> (exists Q1, {one R A Q1} /\ bisim P1 Q1 +)
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one P A P1}
+  ============================
+   exists Q1, {one R A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H3 to H15.</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one P A P1}
+  H16 : {one Q A Q2}
+  H17 : bisim P1 Q2
+  ============================
+   exists Q1, {one R A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H9 to H16.</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2, Q1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one P A P1}
+  H16 : {one Q A Q2}
+  H17 : bisim P1 Q2
+  H18 : {one R A Q1}
+  H19 : bisim Q2 Q1
+  ============================
+   exists Q1, {one R A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply CH to H17 H19.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 1:
+
+  Variables: P, Q, R, A, P1, Q2, Q1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one P A P1}
+  H16 : {one Q A Q2}
+  H17 : bisim P1 Q2
+  H18 : {one R A Q1}
+  H19 : bisim Q2 Q1
+  H20 : bisim P1 Q1 +
+  ============================
+   exists Q1, {one R A Q1} /\ bisim P1 Q1 +
+
+Subgoal 2 is:
+ forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\ (forall W,
+   bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X M, {oneb P (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+     (forall W, bisim (M W) (N W) +))
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, bisim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H4 to H15.</b>
+</pre>
+<a name="125"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, bisim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H10 to H16.</b>
+</pre>
+<a name="126"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  ============================
+   exists N, {oneb R (dn X) N} /\ (forall W, bisim (M W) (N W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>exists N1.</b>
+</pre>
+<a name="127"></a>
+<pre>
+Subgoal 2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  ============================
+   {oneb R (dn X) N1} /\ (forall W, bisim (M W) (N1 W) +)
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>split.</b>
+</pre>
+<a name="128"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  ============================
+   {oneb R (dn X) N1}
+
+Subgoal 2.2 is:
+ forall W, bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="129"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  ============================
+   forall W, bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="130"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  ============================
+   bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H17 with W = W.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  H20 : bisim (M W) (N W)
+  ============================
+   bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H19 with W = W.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  H20 : bisim (M W) (N W)
+  H21 : bisim (N W) (N1 W)
+  ============================
+   bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply CH to H20 H21.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: P, Q, R, X, M, N, N1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (dn X) M}
+  H16 : {oneb Q (dn X) N}
+  H17 : forall W, bisim (M W) (N W)
+  H18 : {oneb R (dn X) N1}
+  H19 : forall W, bisim (N W) (N1 W)
+  H20 : bisim (M W) (N W)
+  H21 : bisim (N W) (N1 W)
+  H22 : bisim (M W) (N1 W) +
+  ============================
+   bisim (M W) (N1 W) +
+
+Subgoal 3 is:
+ forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+   bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X M, {oneb P (up X) M} -> (exists N, {oneb R (up X) N} /\ (nabla w,
+     bisim (M w) (N w) +))
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (up X) M}
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, bisim (M w) (N w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H5 to H15.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (up X) M}
+  H16 : {oneb Q (up X) N}
+  H17 : bisim (M n1) (N n1)
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, bisim (M w) (N w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H11 to H16.</b>
+</pre>
+<a name="137"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (up X) M}
+  H16 : {oneb Q (up X) N}
+  H17 : bisim (M n1) (N n1)
+  H18 : {oneb R (up X) N1}
+  H19 : bisim (N n1) (N1 n1)
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, bisim (M w) (N w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply CH to H17 H19.</b>
+</pre>
+<a name="138"></a>
+<pre>
+Subgoal 3:
+
+  Variables: P, Q, R, X, M, N, N1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb P (up X) M}
+  H16 : {oneb Q (up X) N}
+  H17 : bisim (M n1) (N n1)
+  H18 : {oneb R (up X) N1}
+  H19 : bisim (N n1) (N1 n1)
+  H20 : bisim (M n1) (N1 n1) +
+  ============================
+   exists N, {oneb R (up X) N} /\ (nabla w, bisim (M w) (N w) +)
+
+Subgoal 4 is:
+ forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="139"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall A Q1, {one R A Q1} -> (exists P1, {one P A P1} /\ bisim Q1 P1 +)
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="140"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, R, A, Q1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one R A Q1}
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H12 to H15.</b>
+</pre>
+<a name="141"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, R, A, Q1, P2
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one R A Q1}
+  H16 : {one Q A P2}
+  H17 : bisim Q1 P2
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H6 to H16.</b>
+</pre>
+<a name="142"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, R, A, Q1, P2, P1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one R A Q1}
+  H16 : {one Q A P2}
+  H17 : bisim Q1 P2
+  H18 : {one P A P1}
+  H19 : bisim P2 P1
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply CH to H17 H19.</b>
+</pre>
+<a name="143"></a>
+<pre>
+Subgoal 4:
+
+  Variables: P, Q, R, A, Q1, P2, P1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {one R A Q1}
+  H16 : {one Q A P2}
+  H17 : bisim Q1 P2
+  H18 : {one P A P1}
+  H19 : bisim P2 P1
+  H20 : bisim Q1 P1 +
+  ============================
+   exists P1, {one P A P1} /\ bisim Q1 P1 +
+
+Subgoal 5 is:
+ forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\ (forall W,
+   bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="144"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X N, {oneb R (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+     (forall W, bisim (N W) (M W) +))
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="145"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, R, X, N
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  ============================
+   exists M, {oneb P (dn X) M} /\ (forall W, bisim (N W) (M W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H13 to H15.</b>
+</pre>
+<a name="146"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, R, X, N, M
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  ============================
+   exists M, {oneb P (dn X) M} /\ (forall W, bisim (N W) (M W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H7 to H16.</b>
+</pre>
+<a name="147"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  ============================
+   exists M, {oneb P (dn X) M} /\ (forall W, bisim (N W) (M W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>exists M1.</b>
+</pre>
+<a name="148"></a>
+<pre>
+Subgoal 5:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  ============================
+   {oneb P (dn X) M1} /\ (forall W, bisim (N W) (M1 W) +)
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>split.</b>
+</pre>
+<a name="149"></a>
+<pre>
+Subgoal 5.1:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  ============================
+   {oneb P (dn X) M1}
+
+Subgoal 5.2 is:
+ forall W, bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="150"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  ============================
+   forall W, bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="151"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, Q, R, X, N, M, M1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  ============================
+   bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H17 with W = W.</b>
+</pre>
+<a name="152"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, Q, R, X, N, M, M1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  H20 : bisim (N W) (M W)
+  ============================
+   bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply H19 with W = W.</b>
+</pre>
+<a name="153"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, Q, R, X, N, M, M1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  H20 : bisim (N W) (M W)
+  H21 : bisim (M W) (M1 W)
+  ============================
+   bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>apply CH to H20 H21.</b>
+</pre>
+<a name="154"></a>
+<pre>
+Subgoal 5.2:
+
+  Variables: P, Q, R, X, N, M, M1, W
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (dn X) N}
+  H16 : {oneb Q (dn X) M}
+  H17 : forall W, bisim (N W) (M W)
+  H18 : {oneb P (dn X) M1}
+  H19 : forall W, bisim (M W) (M1 W)
+  H20 : bisim (N W) (M W)
+  H21 : bisim (M W) (M1 W)
+  H22 : bisim (N W) (M1 W) +
+  ============================
+   bisim (N W) (M1 W) +
+
+Subgoal 6 is:
+ forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+   bisim (N w) (M w) +))
+
+bisim_trans < <b>search.</b>
+</pre>
+<a name="155"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, R
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  ============================
+   forall X N, {oneb R (up X) N} -> (exists M, {oneb P (up X) M} /\ (nabla w,
+     bisim (N w) (M w) +))
+
+bisim_trans < <b>intros.</b>
+</pre>
+<a name="156"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, R, X, N
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (up X) N}
+  ============================
+   exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w) +)
+
+bisim_trans < <b>apply H14 to H15.</b>
+</pre>
+<a name="157"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, R, X, N, M
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (up X) N}
+  H16 : {oneb Q (up X) M}
+  H17 : bisim (N n1) (M n1)
+  ============================
+   exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w) +)
+
+bisim_trans < <b>apply H8 to H16.</b>
+</pre>
+<a name="158"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (up X) N}
+  H16 : {oneb Q (up X) M}
+  H17 : bisim (N n1) (M n1)
+  H18 : {oneb P (up X) M1}
+  H19 : bisim (M n1) (M1 n1)
+  ============================
+   exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w) +)
+
+bisim_trans < <b>apply CH to H17 H19.</b>
+</pre>
+<a name="159"></a>
+<pre>
+Subgoal 6:
+
+  Variables: P, Q, R, X, N, M, M1
+  CH : forall P Q R, bisim P Q -> bisim Q R -> bisim P R +
+  H3 : forall A P2, {one P A P2} -> (exists Q2, {one Q A Q2} /\ bisim P2 Q2)
+  H4 : forall X M, {oneb P (dn X) M} -> (exists N, {oneb Q (dn X) N} /\
+         (forall W, bisim (M W) (N W)))
+  H5 : forall X M, {oneb P (up X) M} -> (exists N, {oneb Q (up X) N} /\
+         (nabla w, bisim (M w) (N w)))
+  H6 : forall A Q2, {one Q A Q2} -> (exists P2, {one P A P2} /\ bisim Q2 P2)
+  H7 : forall X N, {oneb Q (dn X) N} -> (exists M, {oneb P (dn X) M} /\
+         (forall W, bisim (N W) (M W)))
+  H8 : forall X N, {oneb Q (up X) N} -> (exists M, {oneb P (up X) M} /\
+         (nabla w, bisim (N w) (M w)))
+  H9 : forall A P2, {one Q A P2} -> (exists Q2, {one R A Q2} /\ bisim P2 Q2)
+  H10 : forall X M, {oneb Q (dn X) M} -> (exists N, {oneb R (dn X) N} /\
+          (forall W, bisim (M W) (N W)))
+  H11 : forall X M, {oneb Q (up X) M} -> (exists N, {oneb R (up X) N} /\
+          (nabla w, bisim (M w) (N w)))
+  H12 : forall A Q2, {one R A Q2} -> (exists P2, {one Q A P2} /\ bisim Q2 P2)
+  H13 : forall X N, {oneb R (dn X) N} -> (exists M, {oneb Q (dn X) M} /\
+          (forall W, bisim (N W) (M W)))
+  H14 : forall X N, {oneb R (up X) N} -> (exists M, {oneb Q (up X) M} /\
+          (nabla w, bisim (N w) (M w)))
+  H15 : {oneb R (up X) N}
+  H16 : {oneb Q (up X) M}
+  H17 : bisim (N n1) (M n1)
+  H18 : {oneb P (up X) M1}
+  H19 : bisim (M n1) (M1 n1)
+  H20 : bisim (N n1) (M1 n1) +
+  ============================
+   exists M, {oneb P (up X) M} /\ (nabla w, bisim (N w) (M w) +)
+
+bisim_trans < <b>search.</b>
+Proof completed.
+</pre>
+<a name="160"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

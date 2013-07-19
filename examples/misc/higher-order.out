@@ -1,0 +1,763 @@
+Welcome to Abella 2.0
+Abella < Specification "higher-order".
+Reading specification "higher-order"
+
+Abella < Theorem split : 
+forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K} ->
+  (exists J, {mappred R L J} /\ {mappred S J K}).
+
+
+  ============================
+   forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K} ->
+     (exists J, {mappred R L J} /\ {mappred S J K})
+
+split < induction on 1.
+
+
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  ============================
+   forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}@ ->
+     (exists J, {mappred R L J} /\ {mappred S J K})
+
+split < intros.
+
+  Variables: R, S, L, K
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H1 : {mappred (x\y\exist (z\and (R x z) (S z y))) L K}@
+  ============================
+   exists J, {mappred R L J} /\ {mappred S J K}
+
+split < case H1.
+Subgoal 1:
+
+  Variables: R, S, L, K
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  ============================
+   exists J, {mappred R anil J} /\ {mappred S J anil}
+
+Subgoal 2 is:
+ exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < search.
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H2 : {exist (z\and (R X z) (S z Y))}*
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < case H2.
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H4 : {and (R X X1) (S X1 Y)}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < case H4.
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H5 : {R X X1}*
+  H6 : {S X1 Y}*
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < apply IH to H3.
+Subgoal 2:
+
+  Variables: R, S, L, K, YS, XS, Y, X, X1, J
+  IH : forall R S L K, {mappred (x\y\exist (z\and (R x z) (S z y))) L K}* ->
+         (exists J, {mappred R L J} /\ {mappred S J K})
+  H3 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS}*
+  H5 : {R X X1}*
+  H6 : {S X1 Y}*
+  H7 : {mappred (z1\z2\R z1 z2) XS J}
+  H8 : {mappred (z1\z2\S z1 z2) J YS}
+  ============================
+   exists J, {mappred R (acons X XS) J} /\ {mappred S J (acons Y YS)}
+
+split < search.
+Proof completed.
+
+Abella < Theorem combine : 
+forall R S L K J, {mappred R L J} -> {mappred S J K} ->
+  {mappred (x\y\exist (z\and (R x z) (S z y))) L K}.
+
+
+  ============================
+   forall R S L K J, {mappred R L J} -> {mappred S J K} ->
+     {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < induction on 1.
+
+
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  ============================
+   forall R S L K J, {mappred R L J}@ -> {mappred S J K} ->
+     {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < intros.
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H1 : {mappred R L J}@
+  H2 : {mappred S J K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+
+combine < case H1.
+Subgoal 1:
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H2 : {mappred S anil K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) anil K}
+
+Subgoal 2 is:
+ {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < case H2.
+Subgoal 1:
+
+  Variables: R, S, L, K, J
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) anil anil}
+
+Subgoal 2 is:
+ {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < search.
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H2 : {mappred S (acons Y YS) K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) K}
+
+combine < case H2.
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X, YS1, Y1
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  H5 : {S Y Y1}
+  H6 : {mappred S YS YS1}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) (acons Y1 YS1)}
+
+combine < apply IH to H4 H6.
+Subgoal 2:
+
+  Variables: R, S, L, K, J, YS, XS, Y, X, YS1, Y1
+  IH : forall R S L K J, {mappred R L J}* -> {mappred S J K} ->
+         {mappred (x\y\exist (z\and (R x z) (S z y))) L K}
+  H3 : {R X Y}*
+  H4 : {mappred R XS YS}*
+  H5 : {S Y Y1}
+  H6 : {mappred S YS YS1}
+  H7 : {mappred (x\y\exist (z\and (R x z) (S z y))) XS YS1}
+  ============================
+   {mappred (x\y\exist (z\and (R x z) (S z y))) (acons X XS) (acons Y1 YS1)}
+
+combine < search.
+Proof completed.
+
+Abella < Theorem deterministic : 
+forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+  {mappred R L K1} -> {mappred R L K2} -> K1 = K2.
+
+
+  ============================
+   forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+     {mappred R L K1} -> {mappred R L K2} -> K1 = K2
+
+deterministic < induction on 2.
+
+
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  ============================
+   forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+     {mappred R L K1}@ -> {mappred R L K2} -> K1 = K2
+
+deterministic < intros.
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H2 : {mappred R L K1}@
+  H3 : {mappred R L K2}
+  ============================
+   K1 = K2
+
+deterministic < case H2.
+Subgoal 1:
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H3 : {mappred R anil K2}
+  ============================
+   anil = K2
+
+Subgoal 2 is:
+ acons Y YS = K2
+
+deterministic < case H3.
+Subgoal 1:
+
+  Variables: R, L, K1, K2
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  ============================
+   anil = anil
+
+Subgoal 2 is:
+ acons Y YS = K2
+
+deterministic < search.
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H3 : {mappred R (acons X XS) K2}
+  H4 : {R X Y}*
+  H5 : {mappred R XS YS}*
+  ============================
+   acons Y YS = K2
+
+deterministic < case H3.
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y}*
+  H5 : {mappred R XS YS}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y YS = acons Y1 YS1
+
+deterministic < apply H1 to H4 H6.
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y1}*
+  H5 : {mappred R XS YS}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y1 YS = acons Y1 YS1
+
+deterministic < apply IH to H1 H5 H7.
+Subgoal 2:
+
+  Variables: R, L, K1, K2, YS, XS, Y, X, YS1, Y1
+  IH : forall R L K1 K2, (forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2) ->
+         {mappred R L K1}* -> {mappred R L K2} -> K1 = K2
+  H1 : forall X Y1 Y2, {R X Y1} -> {R X Y2} -> Y1 = Y2
+  H4 : {R X Y1}*
+  H5 : {mappred R XS YS1}*
+  H6 : {R X Y1}
+  H7 : {mappred R XS YS1}
+  ============================
+   acons Y1 YS1 = acons Y1 YS1
+
+deterministic < search.
+Proof completed.
+
+Abella < Theorem swap1 : 
+forall R L K, {mappred (swap R) L K} -> {mappred R K L}.
+
+
+  ============================
+   forall R L K, {mappred (swap R) L K} -> {mappred R K L}
+
+swap1 < induction on 1.
+
+
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  ============================
+   forall R L K, {mappred (swap R) L K}@ -> {mappred R K L}
+
+swap1 < intros.
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H1 : {mappred (swap R) L K}@
+  ============================
+   {mappred R K L}
+
+swap1 < case H1.
+Subgoal 1:
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  ============================
+   {mappred R anil anil}
+
+Subgoal 2 is:
+ {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < search.
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H2 : {swap R X Y}*
+  H3 : {mappred (swap R) XS YS}*
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < case H2.
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H3 : {mappred (swap R) XS YS}*
+  H4 : {R Y X}*
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < apply IH to H3.
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred (swap R) L K}* -> {mappred R K L}
+  H3 : {mappred (swap R) XS YS}*
+  H4 : {R Y X}*
+  H5 : {mappred R YS XS}
+  ============================
+   {mappred R (acons Y YS) (acons X XS)}
+
+swap1 < search.
+Proof completed.
+
+Abella < Theorem swap2 : 
+forall R L K, {mappred R K L} -> {mappred (swap R) L K}.
+
+
+  ============================
+   forall R L K, {mappred R K L} -> {mappred (swap R) L K}
+
+swap2 < induction on 1.
+
+
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  ============================
+   forall R L K, {mappred R K L}@ -> {mappred (swap R) L K}
+
+swap2 < intros.
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H1 : {mappred R K L}@
+  ============================
+   {mappred (swap R) L K}
+
+swap2 < case H1.
+Subgoal 1:
+
+  Variables: R, L, K
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  ============================
+   {mappred (swap R) anil anil}
+
+Subgoal 2 is:
+ {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < search.
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H2 : {R X Y}*
+  H3 : {mappred R XS YS}*
+  ============================
+   {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < apply IH to H3.
+Subgoal 2:
+
+  Variables: R, L, K, YS, XS, Y, X
+  IH : forall R L K, {mappred R K L}* -> {mappred (swap R) L K}
+  H2 : {R X Y}*
+  H3 : {mappred R XS YS}*
+  H4 : {mappred (swap R) YS XS}
+  ============================
+   {mappred (swap R) (acons Y YS) (acons X XS)}
+
+swap2 < search.
+Proof completed.
+
+Abella < Define reflexive : (a -> a -> o) -> prop by 
+reflexive P := forall X, {P X X}.
+
+Abella < Define transitive : (a -> a -> o) -> prop by 
+transitive P := forall X Y Z, {P X Y} -> {P Y Z} -> {P X Z}.
+
+Abella < Theorem star_reflexive : 
+forall P, reflexive (star P).
+
+
+  ============================
+   forall P, reflexive (star P)
+
+star_reflexive < search.
+Proof completed.
+
+Abella < Theorem star_transitive : 
+forall P, transitive (star P).
+
+
+  ============================
+   forall P, transitive (star P)
+
+star_transitive < intros.
+
+  Variables: P
+  ============================
+   transitive (star P)
+
+star_transitive < unfold.
+
+  Variables: P
+  ============================
+   forall X Y Z, {star P X Y} -> {star P Y Z} -> {star P X Z}
+
+star_transitive < induction on 1.
+
+  Variables: P
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  ============================
+   forall X Y Z, {star P X Y}@ -> {star P Y Z} -> {star P X Z}
+
+star_transitive < intros.
+
+  Variables: P, X, Y, Z
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H1 : {star P X Y}@
+  H2 : {star P Y Z}
+  ============================
+   {star P X Z}
+
+star_transitive < case H1.
+Subgoal 1:
+
+  Variables: P, X, Y, Z
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  ============================
+   {star P Y Z}
+
+Subgoal 2 is:
+ {star P X Z}
+
+star_transitive < search.
+Subgoal 2:
+
+  Variables: P, X, Y, Z, Z1
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  H3 : {P X Z1}*
+  H4 : {star P Z1 Y}*
+  ============================
+   {star P X Z}
+
+star_transitive < apply IH to H4 H2.
+Subgoal 2:
+
+  Variables: P, X, Y, Z, Z1
+  IH : forall X Y Z, {star P X Y}* -> {star P Y Z} -> {star P X Z}
+  H2 : {star P Y Z}
+  H3 : {P X Z1}*
+  H4 : {star P Z1 Y}*
+  H5 : {star P Z1 Z}
+  ============================
+   {star P X Z}
+
+star_transitive < search.
+Proof completed.
+
+Abella < Define contained_in : (a -> a -> o) -> (a -> a -> o) -> prop by 
+contained_in P S := forall X Y, {P X Y} -> {S X Y}.
+
+Abella < Theorem star_minimal : 
+forall P S, contained_in P S -> reflexive S -> transitive S ->
+  contained_in (star P) S.
+
+
+  ============================
+   forall P S, contained_in P S -> reflexive S -> transitive S ->
+     contained_in (star P) S
+
+star_minimal < intros.
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  ============================
+   contained_in (star P) S
+
+star_minimal < unfold.
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  ============================
+   forall X Y, {star P X Y} -> {S X Y}
+
+star_minimal < induction on 1.
+
+  Variables: P, S
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  ============================
+   forall X Y, {star P X Y}@ -> {S X Y}
+
+star_minimal < intros.
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H4 : {star P X Y}@
+  ============================
+   {S X Y}
+
+star_minimal < case H4.
+Subgoal 1:
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  ============================
+   {S Y Y}
+
+Subgoal 2 is:
+ {S X Y}
+
+star_minimal < case H2.
+Subgoal 1:
+
+  Variables: P, S, X, Y
+  H1 : contained_in P S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : forall X, {S X X}
+  ============================
+   {S Y Y}
+
+Subgoal 2 is:
+ {S X Y}
+
+star_minimal < backchain H5.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  ============================
+   {S X Y}
+
+star_minimal < apply IH to H6.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H1 : contained_in P S
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  ============================
+   {S X Y}
+
+star_minimal < case H1.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  ============================
+   {S X Y}
+
+star_minimal < apply H8 to H5.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  H3 : transitive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  ============================
+   {S X Y}
+
+star_minimal < case H3.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  H10 : forall X Y Z, {S X Y} -> {S Y Z} -> {S X Z}
+  ============================
+   {S X Y}
+
+star_minimal < apply H10 to H9 H7.
+Subgoal 2:
+
+  Variables: P, S, X, Y, Z
+  H2 : reflexive S
+  IH : forall X Y, {star P X Y}* -> {S X Y}
+  H5 : {P X Z}*
+  H6 : {star P Z Y}*
+  H7 : {S Z Y}
+  H8 : forall X Y, {P X Y} -> {S X Y}
+  H9 : {S X Z}
+  H10 : forall X Y Z, {S X Y} -> {S Y Z} -> {S X Z}
+  H11 : {S X Y}
+  ============================
+   {S X Y}
+
+star_minimal < search.
+Proof completed.
+
+Abella < Theorem star_vacuous : 
+forall P, reflexive P -> transitive P -> contained_in (star P) P.
+
+
+  ============================
+   forall P, reflexive P -> transitive P -> contained_in (star P) P
+
+star_vacuous < intros.
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < assert contained_in P P.
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  H3 : contained_in P P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < apply star_minimal to H3 H1 H2.
+
+  Variables: P
+  H1 : reflexive P
+  H2 : transitive P
+  H3 : contained_in P P
+  H4 : contained_in (star P) P
+  ============================
+   contained_in (star P) P
+
+star_vacuous < search.
+Proof completed.
+
+Abella < Theorem star_idempotent : 
+forall P, contained_in (star (star P)) (star P).
+
+
+  ============================
+   forall P, contained_in (star (star P)) (star P)
+
+star_idempotent < intros.
+
+  Variables: P
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < apply star_reflexive with P = P.
+
+  Variables: P
+  H1 : reflexive (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < apply star_transitive with P = P.
+
+  Variables: P
+  H1 : reflexive (star P)
+  H2 : transitive (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < apply star_vacuous to H1 H2.
+
+  Variables: P
+  H1 : reflexive (star P)
+  H2 : transitive (star P)
+  H3 : contained_in (star (star P)) (star P)
+  ============================
+   contained_in (star (star P)) (star P)
+
+star_idempotent < search.
+Proof completed.
+
+Abella < Goodbye.

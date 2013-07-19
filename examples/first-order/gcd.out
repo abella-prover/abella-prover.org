@@ -1,0 +1,1211 @@
+Welcome to Abella 2.0
+Abella < Specification "gcd".
+Reading specification "gcd"
+
+Abella < Theorem sub_total_tt : 
+forall X Y, {less X Y tt} -> (exists Z, {sub Y X Z}).
+
+
+  ============================
+   forall X Y, {less X Y tt} -> (exists Z, {sub Y X Z})
+
+sub_total_tt < induction on 1.
+
+
+  IH : forall X Y, {less X Y tt}* -> (exists Z, {sub Y X Z})
+  ============================
+   forall X Y, {less X Y tt}@ -> (exists Z, {sub Y X Z})
+
+sub_total_tt < intros.
+
+  Variables: X, Y
+  IH : forall X Y, {less X Y tt}* -> (exists Z, {sub Y X Z})
+  H1 : {less X Y tt}@
+  ============================
+   exists Z, {sub Y X Z}
+
+sub_total_tt < case H1.
+Subgoal 1:
+
+  Variables: X, Y, X1
+  IH : forall X Y, {less X Y tt}* -> (exists Z, {sub Y X Z})
+  ============================
+   exists Z, {sub (s X1) z Z}
+
+Subgoal 2 is:
+ exists Z, {sub (s Y1) (s X1) Z}
+
+sub_total_tt < search.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {less X Y tt}* -> (exists Z, {sub Y X Z})
+  H2 : {less X1 Y1 tt}*
+  ============================
+   exists Z, {sub (s Y1) (s X1) Z}
+
+sub_total_tt < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1, Z
+  IH : forall X Y, {less X Y tt}* -> (exists Z, {sub Y X Z})
+  H2 : {less X1 Y1 tt}*
+  H3 : {sub Y1 X1 Z}
+  ============================
+   exists Z, {sub (s Y1) (s X1) Z}
+
+sub_total_tt < search.
+Proof completed.
+
+Abella < Theorem sub_total_ff : 
+forall X Y, {less X Y ff} -> (exists Z, {sub X Y Z}).
+
+
+  ============================
+   forall X Y, {less X Y ff} -> (exists Z, {sub X Y Z})
+
+sub_total_ff < induction on 1.
+
+
+  IH : forall X Y, {less X Y ff}* -> (exists Z, {sub X Y Z})
+  ============================
+   forall X Y, {less X Y ff}@ -> (exists Z, {sub X Y Z})
+
+sub_total_ff < intros.
+
+  Variables: X, Y
+  IH : forall X Y, {less X Y ff}* -> (exists Z, {sub X Y Z})
+  H1 : {less X Y ff}@
+  ============================
+   exists Z, {sub X Y Z}
+
+sub_total_ff < case H1.
+Subgoal 1:
+
+  Variables: X, Y
+  IH : forall X Y, {less X Y ff}* -> (exists Z, {sub X Y Z})
+  ============================
+   exists Z, {sub X z Z}
+
+Subgoal 2 is:
+ exists Z, {sub (s X1) (s Y1) Z}
+
+sub_total_ff < search.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {less X Y ff}* -> (exists Z, {sub X Y Z})
+  H2 : {less X1 Y1 ff}*
+  ============================
+   exists Z, {sub (s X1) (s Y1) Z}
+
+sub_total_ff < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1, Z
+  IH : forall X Y, {less X Y ff}* -> (exists Z, {sub X Y Z})
+  H2 : {less X1 Y1 ff}*
+  H3 : {sub X1 Y1 Z}
+  ============================
+   exists Z, {sub (s X1) (s Y1) Z}
+
+sub_total_ff < search.
+Proof completed.
+
+Abella < Theorem less_total : 
+forall X Y, {nat X} -> {nat Y} -> (exists B, {bool B} /\ {less X Y B}).
+
+
+  ============================
+   forall X Y, {nat X} -> {nat Y} -> (exists B, {bool B} /\ {less X Y B})
+
+less_total < induction on 1.
+
+
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\ {less X Y B})
+  ============================
+   forall X Y, {nat X}@ -> {nat Y} -> (exists B, {bool B} /\ {less X Y B})
+
+less_total < intros.
+
+  Variables: X, Y
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H1 : {nat X}@
+  H2 : {nat Y}
+  ============================
+   exists B, {bool B} /\ {less X Y B}
+
+less_total < case H1.
+Subgoal 1:
+
+  Variables: X, Y
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H2 : {nat Y}
+  ============================
+   exists B, {bool B} /\ {less z Y B}
+
+Subgoal 2 is:
+ exists B, {bool B} /\ {less (s N) Y B}
+
+less_total < case H2.
+Subgoal 1.1:
+
+  Variables: X, Y
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  ============================
+   exists B, {bool B} /\ {less z z B}
+
+Subgoal 1.2 is:
+ exists B, {bool B} /\ {less z (s N) B}
+
+Subgoal 2 is:
+ exists B, {bool B} /\ {less (s N) Y B}
+
+less_total < search.
+Subgoal 1.2:
+
+  Variables: X, Y, N
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H3 : {nat N}
+  ============================
+   exists B, {bool B} /\ {less z (s N) B}
+
+Subgoal 2 is:
+ exists B, {bool B} /\ {less (s N) Y B}
+
+less_total < search.
+Subgoal 2:
+
+  Variables: X, Y, N
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H2 : {nat Y}
+  H3 : {nat N}*
+  ============================
+   exists B, {bool B} /\ {less (s N) Y B}
+
+less_total < case H2.
+Subgoal 2.1:
+
+  Variables: X, Y, N
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H3 : {nat N}*
+  ============================
+   exists B, {bool B} /\ {less (s N) z B}
+
+Subgoal 2.2 is:
+ exists B, {bool B} /\ {less (s N) (s N1) B}
+
+less_total < search.
+Subgoal 2.2:
+
+  Variables: X, Y, N, N1
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H3 : {nat N}*
+  H4 : {nat N1}
+  ============================
+   exists B, {bool B} /\ {less (s N) (s N1) B}
+
+less_total < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, Y, N, N1, B
+  IH : forall X Y, {nat X}* -> {nat Y} -> (exists B, {bool B} /\
+         {less X Y B})
+  H3 : {nat N}*
+  H4 : {nat N1}
+  H5 : {bool B}
+  H6 : {less N N1 B}
+  ============================
+   exists B, {bool B} /\ {less (s N) (s N1) B}
+
+less_total < search.
+Proof completed.
+
+Abella < Theorem lt_trans : 
+forall X Y Z, {lt X (s Y)} -> {lt Y Z} -> {lt X Z}.
+
+
+  ============================
+   forall X Y Z, {lt X (s Y)} -> {lt Y Z} -> {lt X Z}
+
+lt_trans < induction on 1.
+
+
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  ============================
+   forall X Y Z, {lt X (s Y)}@ -> {lt Y Z} -> {lt X Z}
+
+lt_trans < intros.
+
+  Variables: X, Y, Z
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H1 : {lt X (s Y)}@
+  H2 : {lt Y Z}
+  ============================
+   {lt X Z}
+
+lt_trans < case H1.
+Subgoal 1:
+
+  Variables: X, Y, Z
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H2 : {lt Y Z}
+  ============================
+   {lt z Z}
+
+Subgoal 2 is:
+ {lt (s X1) Z}
+
+lt_trans < case H2.
+Subgoal 1.1:
+
+  Variables: X, Y, Z, Y1
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  ============================
+   {lt z (s Y1)}
+
+Subgoal 1.2 is:
+ {lt z (s Y1)}
+
+Subgoal 2 is:
+ {lt (s X1) Z}
+
+lt_trans < search.
+Subgoal 1.2:
+
+  Variables: X, Y, Z, Y1, X1
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H3 : {lt X1 Y1}
+  ============================
+   {lt z (s Y1)}
+
+Subgoal 2 is:
+ {lt (s X1) Z}
+
+lt_trans < search.
+Subgoal 2:
+
+  Variables: X, Y, Z, X1
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H2 : {lt Y Z}
+  H3 : {lt X1 Y}*
+  ============================
+   {lt (s X1) Z}
+
+lt_trans < case H2.
+Subgoal 2.1:
+
+  Variables: X, Y, Z, X1, Y1
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H3 : {lt X1 z}*
+  ============================
+   {lt (s X1) (s Y1)}
+
+Subgoal 2.2 is:
+ {lt (s X1) (s Y1)}
+
+lt_trans < case H3.
+Subgoal 2.2:
+
+  Variables: X, Y, Z, X1, Y1, X2
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H3 : {lt X1 (s X2)}*
+  H4 : {lt X2 Y1}
+  ============================
+   {lt (s X1) (s Y1)}
+
+lt_trans < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, Y, Z, X1, Y1, X2
+  IH : forall X Y Z, {lt X (s Y)}* -> {lt Y Z} -> {lt X Z}
+  H3 : {lt X1 (s X2)}*
+  H4 : {lt X2 Y1}
+  H5 : {lt X1 Y1}
+  ============================
+   {lt (s X1) (s Y1)}
+
+lt_trans < search.
+Proof completed.
+
+Abella < Theorem lt_nat : 
+forall X Y, {lt X Y} -> {nat X}.
+
+
+  ============================
+   forall X Y, {lt X Y} -> {nat X}
+
+lt_nat < induction on 1.
+
+
+  IH : forall X Y, {lt X Y}* -> {nat X}
+  ============================
+   forall X Y, {lt X Y}@ -> {nat X}
+
+lt_nat < intros.
+
+  Variables: X, Y
+  IH : forall X Y, {lt X Y}* -> {nat X}
+  H1 : {lt X Y}@
+  ============================
+   {nat X}
+
+lt_nat < case H1.
+Subgoal 1:
+
+  Variables: X, Y, Y1
+  IH : forall X Y, {lt X Y}* -> {nat X}
+  ============================
+   {nat z}
+
+Subgoal 2 is:
+ {nat (s X1)}
+
+lt_nat < search.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {lt X Y}* -> {nat X}
+  H2 : {lt X1 Y1}*
+  ============================
+   {nat (s X1)}
+
+lt_nat < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {lt X Y}* -> {nat X}
+  H2 : {lt X1 Y1}*
+  H3 : {nat X1}
+  ============================
+   {nat (s X1)}
+
+lt_nat < search.
+Proof completed.
+
+Abella < Theorem lt_x_sx : 
+forall X, {nat X} -> {lt X (s X)}.
+
+
+  ============================
+   forall X, {nat X} -> {lt X (s X)}
+
+lt_x_sx < induction on 1.
+
+
+  IH : forall X, {nat X}* -> {lt X (s X)}
+  ============================
+   forall X, {nat X}@ -> {lt X (s X)}
+
+lt_x_sx < intros.
+
+  Variables: X
+  IH : forall X, {nat X}* -> {lt X (s X)}
+  H1 : {nat X}@
+  ============================
+   {lt X (s X)}
+
+lt_x_sx < case H1.
+Subgoal 1:
+
+  Variables: X
+  IH : forall X, {nat X}* -> {lt X (s X)}
+  ============================
+   {lt z (s z)}
+
+Subgoal 2 is:
+ {lt (s N) (s (s N))}
+
+lt_x_sx < search.
+Subgoal 2:
+
+  Variables: X, N
+  IH : forall X, {nat X}* -> {lt X (s X)}
+  H2 : {nat N}*
+  ============================
+   {lt (s N) (s (s N))}
+
+lt_x_sx < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, N
+  IH : forall X, {nat X}* -> {lt X (s X)}
+  H2 : {nat N}*
+  H3 : {lt N (s N)}
+  ============================
+   {lt (s N) (s (s N))}
+
+lt_x_sx < search.
+Proof completed.
+
+Abella < Theorem lt_s : 
+forall X Y, {lt X Y} -> {lt X (s Y)}.
+
+
+  ============================
+   forall X Y, {lt X Y} -> {lt X (s Y)}
+
+lt_s < induction on 1.
+
+
+  IH : forall X Y, {lt X Y}* -> {lt X (s Y)}
+  ============================
+   forall X Y, {lt X Y}@ -> {lt X (s Y)}
+
+lt_s < intros.
+
+  Variables: X, Y
+  IH : forall X Y, {lt X Y}* -> {lt X (s Y)}
+  H1 : {lt X Y}@
+  ============================
+   {lt X (s Y)}
+
+lt_s < case H1.
+Subgoal 1:
+
+  Variables: X, Y, Y1
+  IH : forall X Y, {lt X Y}* -> {lt X (s Y)}
+  ============================
+   {lt z (s (s Y1))}
+
+Subgoal 2 is:
+ {lt (s X1) (s (s Y1))}
+
+lt_s < search.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {lt X Y}* -> {lt X (s Y)}
+  H2 : {lt X1 Y1}*
+  ============================
+   {lt (s X1) (s (s Y1))}
+
+lt_s < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, Y, Y1, X1
+  IH : forall X Y, {lt X Y}* -> {lt X (s Y)}
+  H2 : {lt X1 Y1}*
+  H3 : {lt X1 (s Y1)}
+  ============================
+   {lt (s X1) (s (s Y1))}
+
+lt_s < search.
+Proof completed.
+
+Abella < Theorem sub_lt : 
+forall X Y Z, {nat X} -> {sub X Y Z} -> {lt Z (s X)}.
+
+
+  ============================
+   forall X Y Z, {nat X} -> {sub X Y Z} -> {lt Z (s X)}
+
+sub_lt < induction on 2.
+
+
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  ============================
+   forall X Y Z, {nat X} -> {sub X Y Z}@ -> {lt Z (s X)}
+
+sub_lt < intros.
+
+  Variables: X, Y, Z
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H1 : {nat X}
+  H2 : {sub X Y Z}@
+  ============================
+   {lt Z (s X)}
+
+sub_lt < case H2.
+Subgoal 1:
+
+  Variables: X, Y, Z
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H1 : {nat Z}
+  ============================
+   {lt Z (s Z)}
+
+Subgoal 2 is:
+ {lt Z (s (s X1))}
+
+sub_lt < apply lt_x_sx to H1.
+Subgoal 1:
+
+  Variables: X, Y, Z
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H1 : {nat Z}
+  H3 : {lt Z (s Z)}
+  ============================
+   {lt Z (s Z)}
+
+Subgoal 2 is:
+ {lt Z (s (s X1))}
+
+sub_lt < search.
+Subgoal 2:
+
+  Variables: X, Y, Z, Y1, X1
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H1 : {nat (s X1)}
+  H3 : {sub X1 Y1 Z}*
+  ============================
+   {lt Z (s (s X1))}
+
+sub_lt < case H1.
+Subgoal 2:
+
+  Variables: X, Y, Z, Y1, X1
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H3 : {sub X1 Y1 Z}*
+  H4 : {nat X1}
+  ============================
+   {lt Z (s (s X1))}
+
+sub_lt < apply IH to H4 H3.
+Subgoal 2:
+
+  Variables: X, Y, Z, Y1, X1
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H3 : {sub X1 Y1 Z}*
+  H4 : {nat X1}
+  H5 : {lt Z (s X1)}
+  ============================
+   {lt Z (s (s X1))}
+
+sub_lt < apply lt_s to H5.
+Subgoal 2:
+
+  Variables: X, Y, Z, Y1, X1
+  IH : forall X Y Z, {nat X} -> {sub X Y Z}* -> {lt Z (s X)}
+  H3 : {sub X1 Y1 Z}*
+  H4 : {nat X1}
+  H5 : {lt Z (s X1)}
+  H6 : {lt Z (s (s X1))}
+  ============================
+   {lt Z (s (s X1))}
+
+sub_lt < search.
+Proof completed.
+
+Abella < Theorem gcd_total_strong : 
+forall A B, {nat A} -> {nat B} -> (forall X Y, {lt X A} -> {lt Y B} ->
+  (exists Z, {nat Z} /\ {gcd X Y Z})).
+
+
+  ============================
+   forall A B, {nat A} -> {nat B} -> (forall X Y, {lt X A} -> {lt Y B} ->
+     (exists Z, {nat Z} /\ {gcd X Y Z}))
+
+gcd_total_strong < induction on 1.
+
+
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  ============================
+   forall A B, {nat A}@ -> {nat B} -> (forall X Y, {lt X A} -> {lt Y B} ->
+     (exists Z, {nat Z} /\ {gcd X Y Z}))
+
+gcd_total_strong < induction on 2.
+
+
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  ============================
+   forall A B, {nat A}@ -> {nat B}@@ -> (forall X Y, {lt X A} -> {lt Y B} ->
+     (exists Z, {nat Z} /\ {gcd X Y Z}))
+
+gcd_total_strong < intros.
+
+  Variables: A, B, X, Y
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat A}@
+  H2 : {nat B}@@
+  H3 : {lt X A}
+  H4 : {lt Y B}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < apply lt_nat to H3.
+
+  Variables: A, B, X, Y
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat A}@
+  H2 : {nat B}@@
+  H3 : {lt X A}
+  H4 : {lt Y B}
+  H5 : {nat X}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < apply lt_nat to H4.
+
+  Variables: A, B, X, Y
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat A}@
+  H2 : {nat B}@@
+  H3 : {lt X A}
+  H4 : {lt Y B}
+  H5 : {nat X}
+  H6 : {nat Y}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < case H1 (keep).
+Subgoal 1:
+
+  Variables: A, B, X, Y
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat z}@
+  H2 : {nat B}@@
+  H3 : {lt X z}
+  H4 : {lt Y B}
+  H5 : {nat X}
+  H6 : {nat Y}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+Subgoal 2 is:
+ exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < case H3.
+Subgoal 2:
+
+  Variables: A, B, X, Y, N
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat (s N)}@
+  H2 : {nat B}@@
+  H3 : {lt X (s N)}
+  H4 : {lt Y B}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H7 : {nat N}*
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < case H2 (keep).
+Subgoal 2.1:
+
+  Variables: A, B, X, Y, N
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat (s N)}@
+  H2 : {nat z}@@
+  H3 : {lt X (s N)}
+  H4 : {lt Y z}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H7 : {nat N}*
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+Subgoal 2.2 is:
+ exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < case H4.
+Subgoal 2.2:
+
+  Variables: A, B, X, Y, N, N1
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat (s N)}@
+  H2 : {nat (s N1)}@@
+  H3 : {lt X (s N)}
+  H4 : {lt Y (s N1)}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H7 : {nat N}*
+  H8 : {nat N1}**
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < apply IH to H7 H2.
+Subgoal 2.2:
+
+  Variables: A, B, X, Y, N, N1
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat (s N)}@
+  H2 : {nat (s N1)}@@
+  H3 : {lt X (s N)}
+  H4 : {lt Y (s N1)}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H7 : {nat N}*
+  H8 : {nat N1}**
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < apply IH1 to H1 H8.
+Subgoal 2.2:
+
+  Variables: A, B, X, Y, N, N1
+  IH : forall A B, {nat A}* -> {nat B} -> (forall X Y, {lt X A} ->
+         {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  IH1 : forall A B, {nat A}@ -> {nat B}** -> (forall X Y, {lt X A} ->
+          {lt Y B} -> (exists Z, {nat Z} /\ {gcd X Y Z}))
+  H1 : {nat (s N)}@
+  H2 : {nat (s N1)}@@
+  H3 : {lt X (s N)}
+  H4 : {lt Y (s N1)}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H7 : {nat N}*
+  H8 : {nat N1}**
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < clear IH IH1 H1 H2 H7 H8.
+Subgoal 2.2:
+
+  Variables: A, B, X, Y, N, N1
+  H3 : {lt X (s N)}
+  H4 : {lt Y (s N1)}
+  H5 : {nat X}
+  H6 : {nat Y}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total_strong < case H3.
+Subgoal 2.2.1:
+
+  Variables: A, B, X, Y, N, N1
+  H4 : {lt Y (s N1)}
+  H5 : {nat z}
+  H6 : {nat Y}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  ============================
+   exists Z, {nat Z} /\ {gcd z Y Z}
+
+Subgoal 2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) Y Z}
+
+gcd_total_strong < search.
+Subgoal 2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1
+  H4 : {lt Y (s N1)}
+  H5 : {nat (s X1)}
+  H6 : {nat Y}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) Y Z}
+
+gcd_total_strong < case H4.
+Subgoal 2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1
+  H5 : {nat (s X1)}
+  H6 : {nat z}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) z Z}
+
+Subgoal 2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < search.
+Subgoal 2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2
+  H5 : {nat (s X1)}
+  H6 : {nat (s X2)}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < case H5.
+Subgoal 2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2
+  H6 : {nat (s X2)}
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < case H6.
+Subgoal 2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply less_total to H13 H14.
+Subgoal 2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H15 : {bool B1}
+  H16 : {less X1 X2 B1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < case H15.
+Subgoal 2.2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 tt}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+Subgoal 2.2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply sub_total_tt to H16.
+Subgoal 2.2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 tt}
+  H17 : {sub X2 X1 Z}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+Subgoal 2.2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply sub_lt to H14 H17.
+Subgoal 2.2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 tt}
+  H17 : {sub X2 X1 Z}
+  H18 : {lt Z (s X2)}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+Subgoal 2.2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply lt_trans to H18 H12.
+Subgoal 2.2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 tt}
+  H17 : {sub X2 X1 Z}
+  H18 : {lt Z (s X2)}
+  H19 : {lt Z N1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+Subgoal 2.2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply H10 to _ H19 with X = s X1.
+Subgoal 2.2.2.2.1:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z, Z1
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 tt}
+  H17 : {sub X2 X1 Z}
+  H18 : {lt Z (s X2)}
+  H19 : {lt Z N1}
+  H20 : {nat Z1}
+  H21 : {gcd (s X1) Z Z1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+Subgoal 2.2.2.2.2 is:
+ exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < search.
+Subgoal 2.2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 ff}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply sub_total_ff to H16.
+Subgoal 2.2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 ff}
+  H17 : {sub X1 X2 Z}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply sub_lt to H13 H17.
+Subgoal 2.2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 ff}
+  H17 : {sub X1 X2 Z}
+  H18 : {lt Z (s X1)}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply lt_trans to H18 H11.
+Subgoal 2.2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 ff}
+  H17 : {sub X1 X2 Z}
+  H18 : {lt Z (s X1)}
+  H19 : {lt Z N}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < apply H9 to H19 _ with Y = s X2.
+Subgoal 2.2.2.2.2:
+
+  Variables: A, B, X, Y, N, N1, X1, X2, B1, Z, Z1
+  H9 : forall X Y, {lt X N} -> {lt Y (s N1)} -> (exists Z, {nat Z} /\
+         {gcd X Y Z})
+  H10 : forall X Y, {lt X (s N)} -> {lt Y N1} -> (exists Z, {nat Z} /\
+          {gcd X Y Z})
+  H11 : {lt X1 N}
+  H12 : {lt X2 N1}
+  H13 : {nat X1}
+  H14 : {nat X2}
+  H16 : {less X1 X2 ff}
+  H17 : {sub X1 X2 Z}
+  H18 : {lt Z (s X1)}
+  H19 : {lt Z N}
+  H20 : {nat Z1}
+  H21 : {gcd Z (s X2) Z1}
+  ============================
+   exists Z, {nat Z} /\ {gcd (s X1) (s X2) Z}
+
+gcd_total_strong < search.
+Proof completed.
+
+Abella < Theorem gcd_total : 
+forall X Y, {nat X} -> {nat Y} -> (exists Z, {nat Z} /\ {gcd X Y Z}).
+
+
+  ============================
+   forall X Y, {nat X} -> {nat Y} -> (exists Z, {nat Z} /\ {gcd X Y Z})
+
+gcd_total < intros.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < assert {nat (s X)}.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < assert {nat (s Y)}.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  H4 : {nat (s Y)}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < apply gcd_total_strong to H3 H4.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  H4 : {nat (s Y)}
+  H5 : forall X1 Y1, {lt X1 (s X)} -> {lt Y1 (s Y)} -> (exists Z, {nat Z} /\
+         {gcd X1 Y1 Z})
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < apply lt_x_sx to H1.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  H4 : {nat (s Y)}
+  H5 : forall X1 Y1, {lt X1 (s X)} -> {lt Y1 (s Y)} -> (exists Z, {nat Z} /\
+         {gcd X1 Y1 Z})
+  H6 : {lt X (s X)}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < apply lt_x_sx to H2.
+
+  Variables: X, Y
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  H4 : {nat (s Y)}
+  H5 : forall X1 Y1, {lt X1 (s X)} -> {lt Y1 (s Y)} -> (exists Z, {nat Z} /\
+         {gcd X1 Y1 Z})
+  H6 : {lt X (s X)}
+  H7 : {lt Y (s Y)}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < apply H5 to H6 H7.
+
+  Variables: X, Y, Z
+  H1 : {nat X}
+  H2 : {nat Y}
+  H3 : {nat (s X)}
+  H4 : {nat (s Y)}
+  H5 : forall X1 Y1, {lt X1 (s X)} -> {lt Y1 (s Y)} -> (exists Z, {nat Z} /\
+         {gcd X1 Y1 Z})
+  H6 : {lt X (s X)}
+  H7 : {lt Y (s Y)}
+  H8 : {nat Z}
+  H9 : {gcd X Y Z}
+  ============================
+   exists Z, {nat Z} /\ {gcd X Y Z}
+
+gcd_total < search.
+Proof completed.
+
+Abella < Goodbye.

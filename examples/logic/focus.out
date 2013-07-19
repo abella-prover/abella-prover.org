@@ -1,0 +1,1907 @@
+Welcome to Abella 2.0
+Abella < Specification "focus".
+Reading specification "focus"
+
+Abella < Define ctx : olist -> prop by 
+ctx nil;
+ctx (hyp B :: L) := {form B} /\ ctx L.
+
+Abella < Theorem ctx_member : 
+forall E L, ctx L -> member E L -> (exists B, E = hyp B /\ {form B}).
+
+
+  ============================
+   forall E L, ctx L -> member E L -> (exists B, E = hyp B /\ {form B})
+
+ctx_member < induction on 1.
+
+
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  ============================
+   forall E L, ctx L @ -> member E L -> (exists B, E = hyp B /\ {form B})
+
+ctx_member < intros.
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H1 : ctx L @
+  H2 : member E L
+  ============================
+   exists B, E = hyp B /\ {form B}
+
+ctx_member < case H1.
+Subgoal 1:
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H2 : member E nil
+  ============================
+   exists B, E = hyp B /\ {form B}
+
+Subgoal 2 is:
+ exists B, E = hyp B /\ {form B}
+
+ctx_member < case H2.
+Subgoal 2:
+
+  Variables: E, L, L1, B
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H2 : member E (hyp B :: L1)
+  H3 : {form B}
+  H4 : ctx L1 *
+  ============================
+   exists B, E = hyp B /\ {form B}
+
+ctx_member < case H2.
+Subgoal 2.1:
+
+  Variables: E, L, L1, B
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H3 : {form B}
+  H4 : ctx L1 *
+  ============================
+   exists B1, hyp B = hyp B1 /\ {form B1}
+
+Subgoal 2.2 is:
+ exists B, E = hyp B /\ {form B}
+
+ctx_member < search.
+Subgoal 2.2:
+
+  Variables: E, L, L1, B
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H3 : {form B}
+  H4 : ctx L1 *
+  H5 : member E L1
+  ============================
+   exists B, E = hyp B /\ {form B}
+
+ctx_member < apply IH to H4 H5.
+Subgoal 2.2:
+
+  Variables: E, L, L1, B, B1
+  IH : forall E L, ctx L * -> member E L -> (exists B, E = hyp B /\ {form B})
+  H3 : {form B}
+  H4 : ctx L1 *
+  H5 : member (hyp B1) L1
+  H6 : {form B1}
+  ============================
+   exists B, hyp B1 = hyp B /\ {form B}
+
+ctx_member < search.
+Proof completed.
+
+Abella < Theorem hyp_form : 
+forall L B, ctx L -> {L |- hyp B} -> {form B}.
+
+
+  ============================
+   forall L B, ctx L -> {L |- hyp B} -> {form B}
+
+hyp_form < intros.
+
+  Variables: L, B
+  H1 : ctx L
+  H2 : {L |- hyp B}
+  ============================
+   {form B}
+
+hyp_form < case H2.
+
+  Variables: L, B, F
+  H1 : ctx L
+  H3 : {L, [F] |- hyp B}
+  H4 : member F L
+  ============================
+   {form B}
+
+hyp_form < apply ctx_member to H1 H4.
+
+  Variables: L, B, F, B1
+  H1 : ctx L
+  H3 : {L, [hyp B1] |- hyp B}
+  H4 : member (hyp B1) L
+  H5 : {form B1}
+  ============================
+   {form B}
+
+hyp_form < case H3.
+
+  Variables: L, B, F, B1
+  H1 : ctx L
+  H4 : member (hyp B) L
+  H5 : {form B}
+  ============================
+   {form B}
+
+hyp_form < search.
+Proof completed.
+
+Abella < Theorem hyp_imp_form : 
+forall L B1 B2, ctx L -> {L |- hyp (imp B1 B2)} -> {form B1} /\ {form B2}.
+
+
+  ============================
+   forall L B1 B2, ctx L -> {L |- hyp (imp B1 B2)} -> {form B1} /\ {form B2}
+
+hyp_imp_form < intros.
+
+  Variables: L, B1, B2
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  ============================
+   {form B1} /\ {form B2}
+
+hyp_imp_form < apply hyp_form to H1 H2.
+
+  Variables: L, B1, B2
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (imp B1 B2)}
+  ============================
+   {form B1} /\ {form B2}
+
+hyp_imp_form < case H3.
+
+  Variables: L, B1, B2
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {form B1}
+  H5 : {form B2}
+  ============================
+   {form B1} /\ {form B2}
+
+hyp_imp_form < search.
+Proof completed.
+
+Abella < Theorem sound : 
+(forall L A B, ctx L -> {form B} -> {L |- focus B A} ->
+  {L, hyp B |- conc (atom A)}) /\ (forall L B, ctx L -> {form B} ->
+  {L |- unfocus B} -> {L |- conc B}).
+
+
+  ============================
+   (forall L A B, ctx L -> {form B} -> {L |- focus B A} ->
+     {L, hyp B |- conc (atom A)}) /\ (forall L B, ctx L -> {form B} ->
+     {L |- unfocus B} -> {L |- conc B})
+
+sound < induction on 3 3.
+
+
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  ============================
+   (forall L A B, ctx L -> {form B} -> {L |- focus B A}@ ->
+     {L, hyp B |- conc (atom A)}) /\ (forall L B, ctx L -> {form B} ->
+     {L |- unfocus B}@ -> {L |- conc B})
+
+sound < split.
+Subgoal 1:
+
+
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  ============================
+   forall L A B, ctx L -> {form B} -> {L |- focus B A}@ ->
+     {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < intros.
+Subgoal 1:
+
+  Variables: L, A, B
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- focus B A}@
+  ============================
+   {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < case H3.
+Subgoal 1.1:
+
+  Variables: L, A, B
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  ============================
+   {L, hyp (atom A) |- conc (atom A)}
+
+Subgoal 1.2 is:
+ {L, hyp (imp B1 C) |- conc (atom A)}
+
+Subgoal 1.3 is:
+ {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < search.
+Subgoal 1.2:
+
+  Variables: L, A, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (imp B1 C)}
+  H4 : {L |- unfocus B1}*
+  H5 : {L, hyp C |- focus C A}*
+  ============================
+   {L, hyp (imp B1 C) |- conc (atom A)}
+
+Subgoal 1.3 is:
+ {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < case H2.
+Subgoal 1.2:
+
+  Variables: L, A, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H4 : {L |- unfocus B1}*
+  H5 : {L, hyp C |- focus C A}*
+  H6 : {form B1}
+  H7 : {form C}
+  ============================
+   {L, hyp (imp B1 C) |- conc (atom A)}
+
+Subgoal 1.3 is:
+ {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < apply IH1 to H1 H6 H4.
+Subgoal 1.2:
+
+  Variables: L, A, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H4 : {L |- unfocus B1}*
+  H5 : {L, hyp C |- focus C A}*
+  H6 : {form B1}
+  H7 : {form C}
+  H8 : {L |- conc B1}
+  ============================
+   {L, hyp (imp B1 C) |- conc (atom A)}
+
+Subgoal 1.3 is:
+ {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < apply IH to _ H7 H5.
+Subgoal 1.2:
+
+  Variables: L, A, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H4 : {L |- unfocus B1}*
+  H5 : {L, hyp C |- focus C A}*
+  H6 : {form B1}
+  H7 : {form C}
+  H8 : {L |- conc B1}
+  H9 : {L, hyp C |- conc (atom A)}
+  ============================
+   {L, hyp (imp B1 C) |- conc (atom A)}
+
+Subgoal 1.3 is:
+ {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < search.
+Subgoal 1.3:
+
+  Variables: L, A, B, F
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [F] |- focus B A}*
+  H5 : member F L
+  ============================
+   {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < apply ctx_member to H1 H5.
+Subgoal 1.3:
+
+  Variables: L, A, B, F, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [hyp B1] |- focus B A}*
+  H5 : member (hyp B1) L
+  H6 : {form B1}
+  ============================
+   {L, hyp B |- conc (atom A)}
+
+Subgoal 2 is:
+ forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < case H4.
+Subgoal 2:
+
+
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- unfocus B}@ -> {L |- conc B}
+
+sound < intros.
+Subgoal 2:
+
+  Variables: L, B
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- unfocus B}@
+  ============================
+   {L |- conc B}
+
+sound < case H3.
+Subgoal 2.1:
+
+  Variables: L, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (imp B1 C)}
+  H4 : {L, hyp B1 |- unfocus C}*
+  ============================
+   {L |- conc (imp B1 C)}
+
+Subgoal 2.2 is:
+ {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < case H2.
+Subgoal 2.1:
+
+  Variables: L, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- unfocus C}*
+  H5 : {form B1}
+  H6 : {form C}
+  ============================
+   {L |- conc (imp B1 C)}
+
+Subgoal 2.2 is:
+ {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < apply IH1 to _ H6 H4.
+Subgoal 2.1:
+
+  Variables: L, B, C, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- unfocus C}*
+  H5 : {form B1}
+  H6 : {form C}
+  H7 : {L, hyp B1 |- conc C}
+  ============================
+   {L |- conc (imp B1 C)}
+
+Subgoal 2.2 is:
+ {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < search.
+Subgoal 2.2:
+
+  Variables: L, B, A, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  H4 : {L |- hyp B1}*
+  H5 : {L |- focus B1 A}*
+  ============================
+   {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < apply hyp_form to H1 H4.
+Subgoal 2.2:
+
+  Variables: L, B, A, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  H4 : {L |- hyp B1}*
+  H5 : {L |- focus B1 A}*
+  H6 : {form B1}
+  ============================
+   {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < apply IH to H1 H6 H5.
+Subgoal 2.2:
+
+  Variables: L, B, A, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  H4 : {L |- hyp B1}*
+  H5 : {L |- focus B1 A}*
+  H6 : {form B1}
+  H7 : {L, hyp B1 |- conc (atom A)}
+  ============================
+   {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < cut H7 with H4.
+Subgoal 2.2:
+
+  Variables: L, B, A, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  H4 : {L |- hyp B1}*
+  H5 : {L |- focus B1 A}*
+  H6 : {form B1}
+  H7 : {L, hyp B1 |- conc (atom A)}
+  H8 : {L |- conc (atom A)}
+  ============================
+   {L |- conc (atom A)}
+
+Subgoal 2.3 is:
+ {L |- conc B}
+
+sound < search.
+Subgoal 2.3:
+
+  Variables: L, B, F
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [F] |- unfocus B}*
+  H5 : member F L
+  ============================
+   {L |- conc B}
+
+sound < apply ctx_member to H1 H5.
+Subgoal 2.3:
+
+  Variables: L, B, F, B1
+  IH : forall L A B, ctx L -> {form B} -> {L |- focus B A}* ->
+         {L, hyp B |- conc (atom A)}
+  IH1 : forall L B, ctx L -> {form B} -> {L |- unfocus B}* -> {L |- conc B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [hyp B1] |- unfocus B}*
+  H5 : member (hyp B1) L
+  H6 : {form B1}
+  ============================
+   {L |- conc B}
+
+sound < case H4.
+Proof completed.
+
+Abella < Theorem soundness : 
+forall L B, ctx L -> {form B} -> {L |- unfocus B} -> {L |- conc B}.
+
+
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- unfocus B} -> {L |- conc B}
+
+soundness < apply sound.
+
+
+  H1 : forall L A B, ctx L -> {form B} -> {L |- focus B A} ->
+         {L, hyp B |- conc (atom A)}
+  H2 : forall L B, ctx L -> {form B} -> {L |- unfocus B} -> {L |- conc B}
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- unfocus B} -> {L |- conc B}
+
+soundness < search.
+Proof completed.
+
+Abella < Theorem init_form : 
+forall L B, {form B} -> member (hyp B) L -> {L |- conc-i B}.
+
+
+  ============================
+   forall L B, {form B} -> member (hyp B) L -> {L |- conc-i B}
+
+init_form < induction on 1.
+
+
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  ============================
+   forall L B, {form B}@ -> member (hyp B) L -> {L |- conc-i B}
+
+init_form < intros.
+
+  Variables: L, B
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  H1 : {form B}@
+  H2 : member (hyp B) L
+  ============================
+   {L |- conc-i B}
+
+init_form < case H1.
+Subgoal 1:
+
+  Variables: L, B, A
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  H2 : member (hyp (atom A)) L
+  ============================
+   {L |- conc-i (atom A)}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+init_form < search.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  H2 : member (hyp (imp B1 C)) L
+  H3 : {form B1}*
+  H4 : {form C}*
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+init_form < apply IH to H3 _ with L = hyp B1 :: L.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  H2 : member (hyp (imp B1 C)) L
+  H3 : {form B1}*
+  H4 : {form C}*
+  H5 : {L, hyp B1 |- conc-i B1}
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+init_form < apply IH to H4 _ with L = hyp C :: L.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, {form B}* -> member (hyp B) L -> {L |- conc-i B}
+  H2 : member (hyp (imp B1 C)) L
+  H3 : {form B1}*
+  H4 : {form C}*
+  H5 : {L, hyp B1 |- conc-i B1}
+  H6 : {L, hyp C |- conc-i C}
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+init_form < search.
+Proof completed.
+
+Abella < Theorem restrict_init : 
+forall L B, ctx L -> {form B} -> {L |- conc B} -> {L |- conc-i B}.
+
+
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- conc B} -> {L |- conc-i B}
+
+restrict_init < induction on 3.
+
+
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- conc B}@ -> {L |- conc-i B}
+
+restrict_init < intros.
+
+  Variables: L, B
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- conc B}@
+  ============================
+   {L |- conc-i B}
+
+restrict_init < case H3.
+Subgoal 1:
+
+  Variables: L, B
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp B}*
+  ============================
+   {L |- conc-i B}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < case H4.
+Subgoal 1:
+
+  Variables: L, B, F
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H5 : {L, [F] |- hyp B}*
+  H6 : member F L
+  ============================
+   {L |- conc-i B}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply ctx_member to H1 H6.
+Subgoal 1:
+
+  Variables: L, B, F, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H5 : {L, [hyp B1] |- hyp B}*
+  H6 : member (hyp B1) L
+  H7 : {form B1}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply init_form to H7 H6.
+Subgoal 1:
+
+  Variables: L, B, F, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H5 : {L, [hyp B1] |- hyp B}*
+  H6 : member (hyp B1) L
+  H7 : {form B1}
+  H8 : {L |- conc-i B1}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < case H5.
+Subgoal 1:
+
+  Variables: L, B, F, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H6 : member (hyp B) L
+  H7 : {form B}
+  H8 : {L |- conc-i B}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 2 is:
+ {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < search.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form (imp B1 C)}
+  H4 : {L, hyp B1 |- conc C}*
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < case H2.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- conc C}*
+  H5 : {form B1}
+  H6 : {form C}
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply IH to _ H6 H4.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- conc C}*
+  H5 : {form B1}
+  H6 : {form C}
+  H7 : {L, hyp B1 |- conc-i C}
+  ============================
+   {L |- conc-i (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < search.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc B1}*
+  H6 : {L, hyp C |- conc B}*
+  ============================
+   {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply hyp_imp_form to H1 H4.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc B1}*
+  H6 : {L, hyp C |- conc B}*
+  H7 : {form B1}
+  H8 : {form C}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply IH to H1 H7 H5.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc B1}*
+  H6 : {L, hyp C |- conc B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- conc-i B1}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < apply IH to _ H2 H6.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc B1}*
+  H6 : {L, hyp C |- conc B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- conc-i B1}
+  H10 : {L, hyp C |- conc-i B}
+  ============================
+   {L |- conc-i B}
+
+Subgoal 4 is:
+ {L |- conc-i B}
+
+restrict_init < search.
+Subgoal 4:
+
+  Variables: L, B, F
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [F] |- conc B}*
+  H5 : member F L
+  ============================
+   {L |- conc-i B}
+
+restrict_init < apply ctx_member to H1 H5.
+Subgoal 4:
+
+  Variables: L, B, F, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc B}* -> {L |- conc-i B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [hyp B1] |- conc B}*
+  H5 : member (hyp B1) L
+  H6 : {form B1}
+  ============================
+   {L |- conc-i B}
+
+restrict_init < case H4.
+Proof completed.
+
+Abella < Theorem lemma : 
+forall B2, (forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+  {L |- unfocus B1} -> {L, hyp B2 |- unfocus C} -> {L |- unfocus C}) /\
+  (forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+  {L |- unfocus B1} -> {L, hyp B2 |- focus B A} -> {L |- focus B A}).
+
+
+  ============================
+   forall B2, (forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- unfocus C} -> {L |- unfocus C}) /\
+     (forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- focus B A} -> {L |- focus B A})
+
+lemma < intros.
+
+  Variables: B2
+  ============================
+   (forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- unfocus C} -> {L |- unfocus C}) /\
+     (forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- focus B A} -> {L |- focus B A})
+
+lemma < induction on 5 5.
+
+  Variables: B2
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  ============================
+   (forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}@ -> {L |- unfocus C}) /\
+     (forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A})
+
+lemma < split.
+Subgoal 1:
+
+  Variables: B2
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  ============================
+   forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}@ -> {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < intros.
+Subgoal 1:
+
+  Variables: B2, L, B1, C
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form C}
+  H4 : {L |- unfocus B1}
+  H5 : {L, hyp B2 |- unfocus C}@
+  ============================
+   {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H5.
+Subgoal 1.1:
+
+  Variables: B2, L, B1, C, C1, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (imp B C1)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, hyp B |- unfocus C1}*
+  ============================
+   {L |- unfocus (imp B C1)}
+
+Subgoal 1.2 is:
+ {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H3.
+Subgoal 1.1:
+
+  Variables: B2, L, B1, C, C1, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, hyp B |- unfocus C1}*
+  H7 : {form B}
+  H8 : {form C1}
+  ============================
+   {L |- unfocus (imp B C1)}
+
+Subgoal 1.2 is:
+ {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < apply IH to _ _ H8 _ H6.
+Subgoal 1.1:
+
+  Variables: B2, L, B1, C, C1, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, hyp B |- unfocus C1}*
+  H7 : {form B}
+  H8 : {form C1}
+  H9 : {L, hyp B |- unfocus C1}
+  ============================
+   {L |- unfocus (imp B C1)}
+
+Subgoal 1.2 is:
+ {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < search.
+Subgoal 1.2:
+
+  Variables: B2, L, B1, C, A, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- hyp B}*
+  H7 : {L, hyp B2 |- focus B A}*
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H6.
+Subgoal 1.2:
+
+  Variables: B2, L, B1, C, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H8 : {L, hyp B2, [F] |- hyp B}*
+  H9 : member F (hyp B2 :: L)
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H9.
+Subgoal 1.2.1:
+
+  Variables: B2, L, B1, C, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H8 : {L, hyp B2, [hyp B2] |- hyp B}*
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.2.2 is:
+ {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H8.
+Subgoal 1.2.1:
+
+  Variables: B2, L, B1, C, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B2, ctx L -> {L |- hyp (imp B1 B)} -> {form B2} ->
+          {L |- unfocus B1} -> {L, hyp B |- focus B2 A}* -> {L |- focus B2 A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B |- focus B A}*
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.2.2 is:
+ {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < search.
+Subgoal 1.2.2:
+
+  Variables: B2, L, B1, C, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H8 : {L, hyp B2, [F] |- hyp B}*
+  H10 : member F L
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < apply ctx_member to H1 H10.
+Subgoal 1.2.2:
+
+  Variables: B2, L, B1, C, A, B, F, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H8 : {L, hyp B2, [hyp B3] |- hyp B}*
+  H10 : member (hyp B3) L
+  H11 : {form B3}
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H8.
+Subgoal 1.2.2:
+
+  Variables: B2, L, B1, C, A, B, F, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H10 : member (hyp B) L
+  H11 : {form B}
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < apply IH1 to H1 H2 H11 H4 H7.
+Subgoal 1.2.2:
+
+  Variables: B2, L, B1, C, A, B, F, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  H7 : {L, hyp B2 |- focus B A}*
+  H10 : member (hyp B) L
+  H11 : {form B}
+  H12 : {L |- focus B A}
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 1.3 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < search.
+Subgoal 1.3:
+
+  Variables: B2, L, B1, C, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form C}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [F] |- unfocus C}*
+  H7 : member F (hyp B2 :: L)
+  ============================
+   {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H7.
+Subgoal 1.3.1:
+
+  Variables: B2, L, B1, C, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form C}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [hyp B2] |- unfocus C}*
+  ============================
+   {L |- unfocus C}
+
+Subgoal 1.3.2 is:
+ {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H6.
+Subgoal 1.3.2:
+
+  Variables: B2, L, B1, C, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form C}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [F] |- unfocus C}*
+  H8 : member F L
+  ============================
+   {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < apply ctx_member to H1 H8.
+Subgoal 1.3.2:
+
+  Variables: B2, L, B1, C, F, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form C}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [hyp B] |- unfocus C}*
+  H8 : member (hyp B) L
+  H9 : {form B}
+  ============================
+   {L |- unfocus C}
+
+Subgoal 2 is:
+ forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+   {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < case H6.
+Subgoal 2:
+
+  Variables: B2
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  ============================
+   forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+     {L |- unfocus B1} -> {L, hyp B2 |- focus B A}@ -> {L |- focus B A}
+
+lemma < intros.
+Subgoal 2:
+
+  Variables: B2, L, B1, A, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form B}
+  H4 : {L |- unfocus B1}
+  H5 : {L, hyp B2 |- focus B A}@
+  ============================
+   {L |- focus B A}
+
+lemma < case H5.
+Subgoal 2.1:
+
+  Variables: B2, L, B1, A, B
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (atom A)}
+  H4 : {L |- unfocus B1}
+  ============================
+   {L |- focus (atom A) A}
+
+Subgoal 2.2 is:
+ {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < search.
+Subgoal 2.2:
+
+  Variables: B2, L, B1, A, B, C, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form (imp B3 C)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- unfocus B3}*
+  H7 : {L, hyp B2, hyp C |- focus C A}*
+  ============================
+   {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < case H3.
+Subgoal 2.2:
+
+  Variables: B2, L, B1, A, B, C, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- unfocus B3}*
+  H7 : {L, hyp B2, hyp C |- focus C A}*
+  H8 : {form B3}
+  H9 : {form C}
+  ============================
+   {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < apply hyp_imp_form to H1 H2.
+Subgoal 2.2:
+
+  Variables: B2, L, B1, A, B, C, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- unfocus B3}*
+  H7 : {L, hyp B2, hyp C |- focus C A}*
+  H8 : {form B3}
+  H9 : {form C}
+  H10 : {form B1}
+  H11 : {form B2}
+  ============================
+   {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < apply IH to _ _ H8 _ H6.
+Subgoal 2.2:
+
+  Variables: B2, L, B1, A, B, C, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- unfocus B3}*
+  H7 : {L, hyp B2, hyp C |- focus C A}*
+  H8 : {form B3}
+  H9 : {form C}
+  H10 : {form B1}
+  H11 : {form B2}
+  H12 : {L |- unfocus B3}
+  ============================
+   {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < apply IH1 to _ _ H9 _ H7.
+Subgoal 2.2:
+
+  Variables: B2, L, B1, A, B, C, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2 |- unfocus B3}*
+  H7 : {L, hyp B2, hyp C |- focus C A}*
+  H8 : {form B3}
+  H9 : {form C}
+  H10 : {form B1}
+  H11 : {form B2}
+  H12 : {L |- unfocus B3}
+  H13 : {L, hyp C |- focus C A}
+  ============================
+   {L |- focus (imp B3 C) A}
+
+Subgoal 2.3 is:
+ {L |- focus B A}
+
+lemma < search.
+Subgoal 2.3:
+
+  Variables: B2, L, B1, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form B}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [F] |- focus B A}*
+  H7 : member F (hyp B2 :: L)
+  ============================
+   {L |- focus B A}
+
+lemma < case H7.
+Subgoal 2.3.1:
+
+  Variables: B2, L, B1, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form B}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [hyp B2] |- focus B A}*
+  ============================
+   {L |- focus B A}
+
+Subgoal 2.3.2 is:
+ {L |- focus B A}
+
+lemma < case H6.
+Subgoal 2.3.2:
+
+  Variables: B2, L, B1, A, B, F
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form B}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [F] |- focus B A}*
+  H8 : member F L
+  ============================
+   {L |- focus B A}
+
+lemma < apply ctx_member to H1 H8.
+Subgoal 2.3.2:
+
+  Variables: B2, L, B1, A, B, F, B3
+  IH : forall L B1 C, ctx L -> {L |- hyp (imp B1 B2)} -> {form C} ->
+         {L |- unfocus B1} -> {L, hyp B2 |- unfocus C}* -> {L |- unfocus C}
+  IH1 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 B2)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp B2 |- focus B A}* -> {L |- focus B A}
+  H1 : ctx L
+  H2 : {L |- hyp (imp B1 B2)}
+  H3 : {form B}
+  H4 : {L |- unfocus B1}
+  H6 : {L, hyp B2, [hyp B3] |- focus B A}*
+  H8 : member (hyp B3) L
+  H9 : {form B3}
+  ============================
+   {L |- focus B A}
+
+lemma < case H6.
+Proof completed.
+
+Abella < Theorem conc-i_complete : 
+forall L B, ctx L -> {form B} -> {L |- conc-i B} -> {L |- unfocus B}.
+
+
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- conc-i B} -> {L |- unfocus B}
+
+conc-i_complete < induction on 3.
+
+
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- conc-i B}@ -> {L |- unfocus B}
+
+conc-i_complete < intros.
+
+  Variables: L, B
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- conc-i B}@
+  ============================
+   {L |- unfocus B}
+
+conc-i_complete < case H3.
+Subgoal 1:
+
+  Variables: L, B, A
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form (atom A)}
+  H4 : {L |- hyp (atom A)}*
+  ============================
+   {L |- unfocus (atom A)}
+
+Subgoal 2 is:
+ {L |- unfocus (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < search.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form (imp B1 C)}
+  H4 : {L, hyp B1 |- conc-i C}*
+  ============================
+   {L |- unfocus (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < case H2.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- conc-i C}*
+  H5 : {form B1}
+  H6 : {form C}
+  ============================
+   {L |- unfocus (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply IH to _ H6 H4.
+Subgoal 2:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H4 : {L, hyp B1 |- conc-i C}*
+  H5 : {form B1}
+  H6 : {form C}
+  H7 : {L, hyp B1 |- unfocus C}
+  ============================
+   {L |- unfocus (imp B1 C)}
+
+Subgoal 3 is:
+ {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < search.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply hyp_imp_form to H1 H4.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  H7 : {form B1}
+  H8 : {form C}
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply IH to H1 H7 H5.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- unfocus B1}
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply IH to _ H2 H6.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- unfocus B1}
+  H10 : {L, hyp C |- unfocus B}
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply lemma with B2 = C.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- unfocus B1}
+  H10 : {L, hyp C |- unfocus B}
+  H11 : forall L B1 C1, ctx L -> {L |- hyp (imp B1 C)} -> {form C1} ->
+          {L |- unfocus B1} -> {L, hyp C |- unfocus C1} -> {L |- unfocus C1}
+  H12 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 C)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp C |- focus B A} -> {L |- focus B A}
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < apply H11 to H1 H4 H2 H9 H10.
+Subgoal 3:
+
+  Variables: L, B, C, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L |- hyp (imp B1 C)}*
+  H5 : {L |- conc-i B1}*
+  H6 : {L, hyp C |- conc-i B}*
+  H7 : {form B1}
+  H8 : {form C}
+  H9 : {L |- unfocus B1}
+  H10 : {L, hyp C |- unfocus B}
+  H11 : forall L B1 C1, ctx L -> {L |- hyp (imp B1 C)} -> {form C1} ->
+          {L |- unfocus B1} -> {L, hyp C |- unfocus C1} -> {L |- unfocus C1}
+  H12 : forall L B1 A B, ctx L -> {L |- hyp (imp B1 C)} -> {form B} ->
+          {L |- unfocus B1} -> {L, hyp C |- focus B A} -> {L |- focus B A}
+  H13 : {L |- unfocus B}
+  ============================
+   {L |- unfocus B}
+
+Subgoal 4 is:
+ {L |- unfocus B}
+
+conc-i_complete < search.
+Subgoal 4:
+
+  Variables: L, B, F
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [F] |- conc-i B}*
+  H5 : member F L
+  ============================
+   {L |- unfocus B}
+
+conc-i_complete < apply ctx_member to H1 H5.
+Subgoal 4:
+
+  Variables: L, B, F, B1
+  IH : forall L B, ctx L -> {form B} -> {L |- conc-i B}* -> {L |- unfocus B}
+  H1 : ctx L
+  H2 : {form B}
+  H4 : {L, [hyp B1] |- conc-i B}*
+  H5 : member (hyp B1) L
+  H6 : {form B1}
+  ============================
+   {L |- unfocus B}
+
+conc-i_complete < case H4.
+Proof completed.
+
+Abella < Theorem completeness : 
+forall L B, ctx L -> {form B} -> {L |- conc B} -> {L |- unfocus B}.
+
+
+  ============================
+   forall L B, ctx L -> {form B} -> {L |- conc B} -> {L |- unfocus B}
+
+completeness < intros.
+
+  Variables: L, B
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- conc B}
+  ============================
+   {L |- unfocus B}
+
+completeness < apply restrict_init to H1 H2 H3.
+
+  Variables: L, B
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- conc B}
+  H4 : {L |- conc-i B}
+  ============================
+   {L |- unfocus B}
+
+completeness < apply conc-i_complete to H1 H2 H4.
+
+  Variables: L, B
+  H1 : ctx L
+  H2 : {form B}
+  H3 : {L |- conc B}
+  H4 : {L |- conc-i B}
+  H5 : {L |- unfocus B}
+  ============================
+   {L |- unfocus B}
+
+completeness < search.
+Proof completed.
+
+Abella < Goodbye.

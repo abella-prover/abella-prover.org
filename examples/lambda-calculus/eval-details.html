@@ -1,0 +1,1732 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Lambda calculus and various results on typing and evaluation - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "eval".</b>
+Reading specification "eval"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem eval_det : 
+forall E V1 V2, {eval E V1} -> {eval E V2} -> V1 = V2.</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+
+  ============================
+   forall E V1 V2, {eval E V1} -> {eval E V2} -> V1 = V2
+
+eval_det < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  ============================
+   forall E V1 V2, {eval E V1}@ -> {eval E V2} -> V1 = V2
+
+eval_det < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+  Variables: E, V1, V2
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H1 : {eval E V1}@
+  H2 : {eval E V2}
+  ============================
+   V1 = V2
+
+eval_det < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, V1, V2, R
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H2 : {eval (abs R) V2}
+  ============================
+   abs R = V2
+
+Subgoal 2 is:
+ V1 = V2
+
+eval_det < <b>case H2.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, V1, V2, R
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  ============================
+   abs R = abs R
+
+Subgoal 2 is:
+ V1 = V2
+
+eval_det < <b>search.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V1, V2, N, R, M
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H2 : {eval (app M N) V2}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V1}*
+  ============================
+   V1 = V2
+
+eval_det < <b>case H2.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V1, V2, N, R, M, R1
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V1}*
+  H5 : {eval M (abs R1)}
+  H6 : {eval (R1 N) V2}
+  ============================
+   V1 = V2
+
+eval_det < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V1, V2, N, R, M, R1
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H3 : {eval M (abs R1)}*
+  H4 : {eval (R1 N) V1}*
+  H5 : {eval M (abs R1)}
+  H6 : {eval (R1 N) V2}
+  ============================
+   V1 = V2
+
+eval_det < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V1, V2, N, R, M, R1
+  IH : forall E V1 V2, {eval E V1}* -> {eval E V2} -> V1 = V2
+  H3 : {eval M (abs R1)}*
+  H4 : {eval (R1 N) V2}*
+  H5 : {eval M (abs R1)}
+  H6 : {eval (R1 N) V2}
+  ============================
+   V2 = V2
+
+eval_det < <b>search.</b>
+Proof completed.
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem step_det : 
+forall E1 E2 E3, {step E1 E2} -> {step E1 E3} -> E2 = E3.</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  ============================
+   forall E1 E2 E3, {step E1 E2} -> {step E1 E3} -> E2 = E3
+
+step_det < <b>induction on 1.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  ============================
+   forall E1 E2 E3, {step E1 E2}@ -> {step E1 E3} -> E2 = E3
+
+step_det < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+  Variables: E1, E2, E3
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H1 : {step E1 E2}@
+  H2 : {step E1 E3}
+  ============================
+   E2 = E3
+
+step_det < <b>case H1.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, E3, M, R
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H2 : {step (app (abs R) M) E3}
+  ============================
+   R M = E3
+
+Subgoal 2 is:
+ app M' N = E3
+
+step_det < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: E1, E2, E3, M, R
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  ============================
+   R M = R M
+
+Subgoal 1.2 is:
+ R M = app M' M
+
+Subgoal 2 is:
+ app M' N = E3
+
+step_det < <b>search.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: E1, E2, E3, M, R, M'
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H3 : {step (abs R) M'}
+  ============================
+   R M = app M' M
+
+Subgoal 2 is:
+ app M' N = E3
+
+step_det < <b>case H3.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, E3, M', M, N
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H2 : {step (app M N) E3}
+  H3 : {step M M'}*
+  ============================
+   app M' N = E3
+
+step_det < <b>case H2.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E1, E2, E3, M', M, N, R
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H3 : {step (abs R) M'}*
+  ============================
+   app M' N = R N
+
+Subgoal 2.2 is:
+ app M' N = app M'1 N
+
+step_det < <b>case H3.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E1, E2, E3, M', M, N, M'1
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H3 : {step M M'}*
+  H4 : {step M M'1}
+  ============================
+   app M' N = app M'1 N
+
+step_det < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E1, E2, E3, M', M, N, M'1
+  IH : forall E1 E2 E3, {step E1 E2}* -> {step E1 E3} -> E2 = E3
+  H3 : {step M M'1}*
+  H4 : {step M M'1}
+  ============================
+   app M'1 N = app M'1 N
+
+step_det < <b>search.</b>
+Proof completed.
+</pre>
+<a name="23"></a>
+<pre class="code">
+Abella < <b>Theorem nstep_det : 
+forall E R1 R2, {nstep E (abs R1)} -> {nstep E (abs R2)} -> R1 = R2.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+
+  ============================
+   forall E R1 R2, {nstep E (abs R1)} -> {nstep E (abs R2)} -> R1 = R2
+
+nstep_det < <b>induction on 1.</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  ============================
+   forall E R1 R2, {nstep E (abs R1)}@ -> {nstep E (abs R2)} -> R1 = R2
+
+nstep_det < <b>intros.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+  Variables: E, R1, R2
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H1 : {nstep E (abs R1)}@
+  H2 : {nstep E (abs R2)}
+  ============================
+   R1 = R2
+
+nstep_det < <b>case H1.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, R1, R2
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H2 : {nstep (abs R1) (abs R2)}
+  ============================
+   R1 = R2
+
+Subgoal 2 is:
+ R1 = R2
+
+nstep_det < <b>case H2.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: E, R1, R2
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  ============================
+   R2 = R2
+
+Subgoal 1.2 is:
+ R1 = R2
+
+Subgoal 2 is:
+ R1 = R2
+
+nstep_det < <b>search.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: E, R1, R2, B
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H3 : {step (abs R1) B}
+  H4 : {nstep B (abs R2)}
+  ============================
+   R1 = R2
+
+Subgoal 2 is:
+ R1 = R2
+
+nstep_det < <b>case H3.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, R1, R2, B
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H2 : {nstep E (abs R2)}
+  H3 : {step E B}*
+  H4 : {nstep B (abs R1)}*
+  ============================
+   R1 = R2
+
+nstep_det < <b>case H2.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, R1, R2, B
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H3 : {step (abs R2) B}*
+  H4 : {nstep B (abs R1)}*
+  ============================
+   R1 = R2
+
+Subgoal 2.2 is:
+ R1 = R2
+
+nstep_det < <b>case H3.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, R1, R2, B, B1
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H3 : {step E B}*
+  H4 : {nstep B (abs R1)}*
+  H5 : {step E B1}
+  H6 : {nstep B1 (abs R2)}
+  ============================
+   R1 = R2
+
+nstep_det < <b>apply step_det to H3 H5.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, R1, R2, B, B1
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H3 : {step E B1}*
+  H4 : {nstep B1 (abs R1)}*
+  H5 : {step E B1}
+  H6 : {nstep B1 (abs R2)}
+  ============================
+   R1 = R2
+
+nstep_det < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, R1, R2, B, B1
+  IH : forall E R1 R2, {nstep E (abs R1)}* -> {nstep E (abs R2)} -> R1 = R2
+  H3 : {step E B1}*
+  H4 : {nstep B1 (abs R2)}*
+  H5 : {step E B1}
+  H6 : {nstep B1 (abs R2)}
+  ============================
+   R2 = R2
+
+nstep_det < <b>search.</b>
+Proof completed.
+</pre>
+<a name="35"></a>
+<pre class="code">
+Abella < <b>Theorem nstep_lemma : 
+forall M N R V, {nstep M (abs R)} -> {nstep (R N) V} -> {nstep (app M N) V}.</b>
+</pre>
+<a name="36"></a>
+<pre>
+
+
+  ============================
+   forall M N R V, {nstep M (abs R)} -> {nstep (R N) V} ->
+     {nstep (app M N) V}
+
+nstep_lemma < <b>induction on 1.</b>
+</pre>
+<a name="37"></a>
+<pre>
+
+
+  IH : forall M N R V, {nstep M (abs R)}* -> {nstep (R N) V} ->
+         {nstep (app M N) V}
+  ============================
+   forall M N R V, {nstep M (abs R)}@ -> {nstep (R N) V} ->
+     {nstep (app M N) V}
+
+nstep_lemma < <b>intros.</b>
+</pre>
+<a name="38"></a>
+<pre>
+
+  Variables: M, N, R, V
+  IH : forall M N R V, {nstep M (abs R)}* -> {nstep (R N) V} ->
+         {nstep (app M N) V}
+  H1 : {nstep M (abs R)}@
+  H2 : {nstep (R N) V}
+  ============================
+   {nstep (app M N) V}
+
+nstep_lemma < <b>case H1.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 1:
+
+  Variables: M, N, R, V
+  IH : forall M N R V, {nstep M (abs R)}* -> {nstep (R N) V} ->
+         {nstep (app M N) V}
+  H2 : {nstep (R N) V}
+  ============================
+   {nstep (app (abs R) N) V}
+
+Subgoal 2 is:
+ {nstep (app M N) V}
+
+nstep_lemma < <b>search.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2:
+
+  Variables: M, N, R, V, B
+  IH : forall M N R V, {nstep M (abs R)}* -> {nstep (R N) V} ->
+         {nstep (app M N) V}
+  H2 : {nstep (R N) V}
+  H3 : {step M B}*
+  H4 : {nstep B (abs R)}*
+  ============================
+   {nstep (app M N) V}
+
+nstep_lemma < <b>apply IH to H4 H2.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 2:
+
+  Variables: M, N, R, V, B
+  IH : forall M N R V, {nstep M (abs R)}* -> {nstep (R N) V} ->
+         {nstep (app M N) V}
+  H2 : {nstep (R N) V}
+  H3 : {step M B}*
+  H4 : {nstep B (abs R)}*
+  H5 : {nstep (app B N) V}
+  ============================
+   {nstep (app M N) V}
+
+nstep_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="42"></a>
+<pre class="code">
+Abella < <b>Theorem eval_nstep : 
+forall E V, {eval E V} -> {nstep E V}.</b>
+</pre>
+<a name="43"></a>
+<pre>
+
+
+  ============================
+   forall E V, {eval E V} -> {nstep E V}
+
+eval_nstep < <b>induction on 1.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  ============================
+   forall E V, {eval E V}@ -> {nstep E V}
+
+eval_nstep < <b>intros.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+  Variables: E, V
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  H1 : {eval E V}@
+  ============================
+   {nstep E V}
+
+eval_nstep < <b>case H1.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, V, R
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  ============================
+   {nstep (abs R) (abs R)}
+
+Subgoal 2 is:
+ {nstep (app M N) V}
+
+eval_nstep < <b>search.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, N, R, M
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  H2 : {eval M (abs R)}*
+  H3 : {eval (R N) V}*
+  ============================
+   {nstep (app M N) V}
+
+eval_nstep < <b>apply IH to H2.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, N, R, M
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  H2 : {eval M (abs R)}*
+  H3 : {eval (R N) V}*
+  H4 : {nstep M (abs R)}
+  ============================
+   {nstep (app M N) V}
+
+eval_nstep < <b>apply IH to H3.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, N, R, M
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  H2 : {eval M (abs R)}*
+  H3 : {eval (R N) V}*
+  H4 : {nstep M (abs R)}
+  H5 : {nstep (R N) V}
+  ============================
+   {nstep (app M N) V}
+
+eval_nstep < <b>apply nstep_lemma to H4 H5.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, N, R, M
+  IH : forall E V, {eval E V}* -> {nstep E V}
+  H2 : {eval M (abs R)}*
+  H3 : {eval (R N) V}*
+  H4 : {nstep M (abs R)}
+  H5 : {nstep (R N) V}
+  H6 : {nstep (app M N) V}
+  ============================
+   {nstep (app M N) V}
+
+eval_nstep < <b>search.</b>
+Proof completed.
+</pre>
+<a name="51"></a>
+<pre class="code">
+Abella < <b>Theorem step_eval_lemma : 
+forall A B C, {step A B} -> {eval B C} -> {eval A C}.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+
+  ============================
+   forall A B C, {step A B} -> {eval B C} -> {eval A C}
+
+step_eval_lemma < <b>induction on 1.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  ============================
+   forall A B C, {step A B}@ -> {eval B C} -> {eval A C}
+
+step_eval_lemma < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+  Variables: A, B, C
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  H1 : {step A B}@
+  H2 : {eval B C}
+  ============================
+   {eval A C}
+
+step_eval_lemma < <b>case H1.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 1:
+
+  Variables: A, B, C, M, R
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  H2 : {eval (R M) C}
+  ============================
+   {eval (app (abs R) M) C}
+
+Subgoal 2 is:
+ {eval (app M N) C}
+
+step_eval_lemma < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, M', M, N
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  H2 : {eval (app M' N) C}
+  H3 : {step M M'}*
+  ============================
+   {eval (app M N) C}
+
+step_eval_lemma < <b>case H2.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, M', M, N, R
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  H3 : {step M M'}*
+  H4 : {eval M' (abs R)}
+  H5 : {eval (R N) C}
+  ============================
+   {eval (app M N) C}
+
+step_eval_lemma < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2:
+
+  Variables: A, B, C, M', M, N, R
+  IH : forall A B C, {step A B}* -> {eval B C} -> {eval A C}
+  H3 : {step M M'}*
+  H4 : {eval M' (abs R)}
+  H5 : {eval (R N) C}
+  H6 : {eval M (abs R)}
+  ============================
+   {eval (app M N) C}
+
+step_eval_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="59"></a>
+<pre class="code">
+Abella < <b>Theorem nstep_eval : 
+forall E R, {nstep E (abs R)} -> {eval E (abs R)}.</b>
+</pre>
+<a name="60"></a>
+<pre>
+
+
+  ============================
+   forall E R, {nstep E (abs R)} -> {eval E (abs R)}
+
+nstep_eval < <b>induction on 1.</b>
+</pre>
+<a name="61"></a>
+<pre>
+
+
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  ============================
+   forall E R, {nstep E (abs R)}@ -> {eval E (abs R)}
+
+nstep_eval < <b>intros.</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+  Variables: E, R
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  H1 : {nstep E (abs R)}@
+  ============================
+   {eval E (abs R)}
+
+nstep_eval < <b>case H1.</b>
+</pre>
+<a name="63"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, R
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  ============================
+   {eval (abs R) (abs R)}
+
+Subgoal 2 is:
+ {eval E (abs R)}
+
+nstep_eval < <b>search.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, R, B
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  H2 : {step E B}*
+  H3 : {nstep B (abs R)}*
+  ============================
+   {eval E (abs R)}
+
+nstep_eval < <b>apply IH to H3.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, R, B
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  H2 : {step E B}*
+  H3 : {nstep B (abs R)}*
+  H4 : {eval B (abs R)}
+  ============================
+   {eval E (abs R)}
+
+nstep_eval < <b>apply step_eval_lemma to H2 H4.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, R, B
+  IH : forall E R, {nstep E (abs R)}* -> {eval E (abs R)}
+  H2 : {step E B}*
+  H3 : {nstep B (abs R)}*
+  H4 : {eval B (abs R)}
+  H5 : {eval E (abs R)}
+  ============================
+   {eval E (abs R)}
+
+nstep_eval < <b>search.</b>
+Proof completed.
+</pre>
+<a name="67"></a>
+<pre class="code">
+Abella < <b>Theorem sr_eval : 
+forall E V T, {eval E V} -> {of E T} -> {of V T}.</b>
+</pre>
+<a name="68"></a>
+<pre>
+
+
+  ============================
+   forall E V T, {eval E V} -> {of E T} -> {of V T}
+
+sr_eval < <b>induction on 1.</b>
+</pre>
+<a name="69"></a>
+<pre>
+
+
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  ============================
+   forall E V T, {eval E V}@ -> {of E T} -> {of V T}
+
+sr_eval < <b>intros.</b>
+</pre>
+<a name="70"></a>
+<pre>
+
+  Variables: E, V, T
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H1 : {eval E V}@
+  H2 : {of E T}
+  ============================
+   {of V T}
+
+sr_eval < <b>case H1.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, V, T, R
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (abs R) T}
+  ============================
+   {of (abs R) T}
+
+Subgoal 2 is:
+ {of V T}
+
+sr_eval < <b>search.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H2 : {of (app M N) T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  ============================
+   {of V T}
+
+sr_eval < <b>case H2.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  ============================
+   {of V T}
+
+sr_eval < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H7 : {of (abs R) (arrow U T)}
+  ============================
+   {of V T}
+
+sr_eval < <b>case H7.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  ============================
+   {of V T}
+
+sr_eval < <b>inst H8 with n1 = N.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  ============================
+   {of V T}
+
+sr_eval < <b>cut H9 with H6.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  ============================
+   {of V T}
+
+sr_eval < <b>apply IH to H4 H10.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, V, T, N, R, M, U
+  IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
+  H3 : {eval M (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {of M (arrow U T)}
+  H6 : {of N U}
+  H8 : {of n1 U |- of (R n1) T}
+  H9 : {of N U |- of (R N) T}
+  H10 : {of (R N) T}
+  H11 : {of V T}
+  ============================
+   {of V T}
+
+sr_eval < <b>search.</b>
+Proof completed.
+</pre>
+<a name="79"></a>
+<pre class="code">
+Abella < <b>Theorem sr_step : 
+forall E1 E2 T, {step E1 E2} -> {of E1 T} -> {of E2 T}.</b>
+</pre>
+<a name="80"></a>
+<pre>
+
+
+  ============================
+   forall E1 E2 T, {step E1 E2} -> {of E1 T} -> {of E2 T}
+
+sr_step < <b>induction on 1.</b>
+</pre>
+<a name="81"></a>
+<pre>
+
+
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  ============================
+   forall E1 E2 T, {step E1 E2}@ -> {of E1 T} -> {of E2 T}
+
+sr_step < <b>intros.</b>
+</pre>
+<a name="82"></a>
+<pre>
+
+  Variables: E1, E2, T
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H1 : {step E1 E2}@
+  H2 : {of E1 T}
+  ============================
+   {of E2 T}
+
+sr_step < <b>case H1.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, M, R
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of (app (abs R) M) T}
+  ============================
+   {of (R M) T}
+
+Subgoal 2 is:
+ {of (app M' N) T}
+
+sr_step < <b>case H2.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, M, R, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H3 : {of (abs R) (arrow U T)}
+  H4 : {of M U}
+  ============================
+   {of (R M) T}
+
+Subgoal 2 is:
+ {of (app M' N) T}
+
+sr_step < <b>case H3.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, M, R, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H4 : {of M U}
+  H5 : {of n1 U |- of (R n1) T}
+  ============================
+   {of (R M) T}
+
+Subgoal 2 is:
+ {of (app M' N) T}
+
+sr_step < <b>inst H5 with n1 = M.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, M, R, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H4 : {of M U}
+  H5 : {of n1 U |- of (R n1) T}
+  H6 : {of M U |- of (R M) T}
+  ============================
+   {of (R M) T}
+
+Subgoal 2 is:
+ {of (app M' N) T}
+
+sr_step < <b>cut H6 with H4.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T, M, R, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H4 : {of M U}
+  H5 : {of n1 U |- of (R n1) T}
+  H6 : {of M U |- of (R M) T}
+  H7 : {of (R M) T}
+  ============================
+   {of (R M) T}
+
+Subgoal 2 is:
+ {of (app M' N) T}
+
+sr_step < <b>search.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, M', M, N
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of (app M N) T}
+  H3 : {step M M'}*
+  ============================
+   {of (app M' N) T}
+
+sr_step < <b>case H2.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, M', M, N, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H3 : {step M M'}*
+  H4 : {of M (arrow U T)}
+  H5 : {of N U}
+  ============================
+   {of (app M' N) T}
+
+sr_step < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, M', M, N, U
+  IH : forall E1 E2 T, {step E1 E2}* -> {of E1 T} -> {of E2 T}
+  H3 : {step M M'}*
+  H4 : {of M (arrow U T)}
+  H5 : {of N U}
+  H6 : {of M' (arrow U T)}
+  ============================
+   {of (app M' N) T}
+
+sr_step < <b>search.</b>
+Proof completed.
+</pre>
+<a name="91"></a>
+<pre class="code">
+Abella < <b>Theorem sr_nstep : 
+forall E1 E2 T, {nstep E1 E2} -> {of E1 T} -> {of E2 T}.</b>
+</pre>
+<a name="92"></a>
+<pre>
+
+
+  ============================
+   forall E1 E2 T, {nstep E1 E2} -> {of E1 T} -> {of E2 T}
+
+sr_nstep < <b>induction on 1.</b>
+</pre>
+<a name="93"></a>
+<pre>
+
+
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  ============================
+   forall E1 E2 T, {nstep E1 E2}@ -> {of E1 T} -> {of E2 T}
+
+sr_nstep < <b>intros.</b>
+</pre>
+<a name="94"></a>
+<pre>
+
+  Variables: E1, E2, T
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  H1 : {nstep E1 E2}@
+  H2 : {of E1 T}
+  ============================
+   {of E2 T}
+
+sr_nstep < <b>case H1.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E1, E2, T
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of E2 T}
+  ============================
+   {of E2 T}
+
+Subgoal 2 is:
+ {of E2 T}
+
+sr_nstep < <b>search.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, B
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of E1 T}
+  H3 : {step E1 B}*
+  H4 : {nstep B E2}*
+  ============================
+   {of E2 T}
+
+sr_nstep < <b>apply sr_step to H3 H2.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, B
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of E1 T}
+  H3 : {step E1 B}*
+  H4 : {nstep B E2}*
+  H5 : {of B T}
+  ============================
+   {of E2 T}
+
+sr_nstep < <b>apply IH to H4 H5.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E1, E2, T, B
+  IH : forall E1 E2 T, {nstep E1 E2}* -> {of E1 T} -> {of E2 T}
+  H2 : {of E1 T}
+  H3 : {step E1 B}*
+  H4 : {nstep B E2}*
+  H5 : {of B T}
+  H6 : {of E2 T}
+  ============================
+   {of E2 T}
+
+sr_nstep < <b>search.</b>
+Proof completed.
+</pre>
+<a name="99"></a>
+<pre class="code">
+Abella < <b>Theorem type_subst : 
+forall L E E' T T', nabla x, {L, of x T' |- of (E x) T} -> {L |- of E' T'} ->
+  {L |- of (E E') T}.</b>
+</pre>
+<a name="100"></a>
+<pre>
+
+
+  ============================
+   forall L E E' T T', nabla x, {L, of x T' |- of (E x) T} ->
+     {L |- of E' T'} -> {L |- of (E E') T}
+
+type_subst < <b>intros.</b>
+</pre>
+<a name="101"></a>
+<pre>
+
+  Variables: L, E, E', T, T'
+  H1 : {L, of n1 T' |- of (E n1) T}
+  H2 : {L |- of E' T'}
+  ============================
+   {L |- of (E E') T}
+
+type_subst < <b>inst H1 with n1 = E'.</b>
+</pre>
+<a name="102"></a>
+<pre>
+
+  Variables: L, E, E', T, T'
+  H1 : {L, of n1 T' |- of (E n1) T}
+  H2 : {L |- of E' T'}
+  H3 : {L, of E' T' |- of (E E') T}
+  ============================
+   {L |- of (E E') T}
+
+type_subst < <b>cut H3 with H2.</b>
+</pre>
+<a name="103"></a>
+<pre>
+
+  Variables: L, E, E', T, T'
+  H1 : {L, of n1 T' |- of (E n1) T}
+  H2 : {L |- of E' T'}
+  H3 : {L, of E' T' |- of (E E') T}
+  H4 : {L |- of (E E') T}
+  ============================
+   {L |- of (E E') T}
+
+type_subst < <b>search.</b>
+Proof completed.
+</pre>
+<a name="104"></a>
+<pre class="code">
+Abella < <b>Theorem of_self_app_absurd : 
+forall T, {of (abs (x\app x x)) T} -> false.</b>
+</pre>
+<a name="105"></a>
+<pre>
+
+
+  ============================
+   forall T, {of (abs (x\app x x)) T} -> false
+
+of_self_app_absurd < <b>intros.</b>
+</pre>
+<a name="106"></a>
+<pre>
+
+  Variables: T
+  H1 : {of (abs (x\app x x)) T}
+  ============================
+   false
+
+of_self_app_absurd < <b>case H1.</b>
+</pre>
+<a name="107"></a>
+<pre>
+
+  Variables: T, U, T1
+  H2 : {of n1 T1 |- of (app n1 n1) U}
+  ============================
+   false
+
+of_self_app_absurd < <b>case H2.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T, U, T1, U1
+  H3 : {of n1 T1 |- of n1 (arrow (U1 n1) U)}
+  H4 : {of n1 T1 |- of n1 (U1 n1)}
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H3.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T, U, T1, U1, F
+  H4 : {of n1 T1 |- of n1 (U1 n1)}
+  H5 : {of n1 T1, [F n1] |- of n1 (arrow (U1 n1) U)}
+  H6 : member (F n1) (of n1 T1 :: nil)
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H6.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: T, U, T1, U1, F
+  H4 : {of n1 T1 |- of n1 (U1 n1)}
+  H5 : {of n1 T1, [of n1 T1] |- of n1 (arrow (U1 n1) U)}
+  ============================
+   false
+
+Subgoal 1.2 is:
+ false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H5.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: T, U, T1, U1, F, T2
+  H4 : {of n1 (arrow T2 U) |- of n1 T2}
+  ============================
+   false
+
+Subgoal 1.2 is:
+ false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H4.</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: T, U, T1, U1, F, T2, F1
+  H7 : {of n1 (arrow T2 U), [F1 n1] |- of n1 T2}
+  H8 : member (F1 n1) (of n1 (arrow T2 U) :: nil)
+  ============================
+   false
+
+Subgoal 1.2 is:
+ false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H8.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 1.1.1:
+
+  Variables: T, U, T1, U1, F, T2, F1
+  H7 : {of n1 (arrow T2 U), [of n1 (arrow T2 U)] |- of n1 T2}
+  ============================
+   false
+
+Subgoal 1.1.2 is:
+ false
+
+Subgoal 1.2 is:
+ false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H7.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 1.1.2:
+
+  Variables: T, U, T1, U1, F, T2, F1
+  H7 : {of n1 (arrow T2 U), [F1 n1] |- of n1 T2}
+  H9 : member (F1 n1) nil
+  ============================
+   false
+
+Subgoal 1.2 is:
+ false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H9.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: T, U, T1, U1, F
+  H4 : {of n1 T1 |- of n1 (U1 n1)}
+  H5 : {of n1 T1, [F n1] |- of n1 (arrow (U1 n1) U)}
+  H7 : member (F n1) nil
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+of_self_app_absurd < <b>case H7.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 2:
+
+  Variables: T, U, T1, F
+  H3 : {of n1 T1, [F n1] |- of (app n1 n1) U}
+  H4 : member (F n1) (of n1 T1 :: nil)
+  ============================
+   false
+
+of_self_app_absurd < <b>case H4.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: T, U, T1, F
+  H3 : {of n1 T1, [of n1 T1] |- of (app n1 n1) U}
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+of_self_app_absurd < <b>case H3.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: T, U, T1, F
+  H3 : {of n1 T1, [F n1] |- of (app n1 n1) U}
+  H5 : member (F n1) nil
+  ============================
+   false
+
+of_self_app_absurd < <b>case H5.</b>
+Proof completed.
+</pre>
+<a name="119"></a>
+<pre class="code">
+Abella < <b>Theorem no_eval : 
+forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V} -> false.</b>
+</pre>
+<a name="120"></a>
+<pre>
+
+
+  ============================
+   forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V} -> false
+
+no_eval < <b>induction on 1.</b>
+</pre>
+<a name="121"></a>
+<pre>
+
+
+  IH : forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V}* -> false
+  ============================
+   forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V}@ -> false
+
+no_eval < <b>intros.</b>
+</pre>
+<a name="122"></a>
+<pre>
+
+  Variables: V
+  IH : forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V}* -> false
+  H1 : {eval (app (abs (x\app x x)) (abs (x\app x x))) V}@
+  ============================
+   false
+
+no_eval < <b>case H1.</b>
+</pre>
+<a name="123"></a>
+<pre>
+
+  Variables: V, R
+  IH : forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V}* -> false
+  H2 : {eval (abs (x\app x x)) (abs R)}*
+  H3 : {eval (R (abs (x\app x x))) V}*
+  ============================
+   false
+
+no_eval < <b>case H2.</b>
+</pre>
+<a name="124"></a>
+<pre>
+
+  Variables: V, R
+  IH : forall V, {eval (app (abs (x\app x x)) (abs (x\app x x))) V}* -> false
+  H3 : {eval (app (abs (x\app x x)) (abs (x\app x x))) V}*
+  ============================
+   false
+
+no_eval < <b>apply IH to H3.</b>
+Proof completed.
+</pre>
+<a name="125"></a>
+<pre class="code">
+Abella < <b>CoDefine diverge : tm -> prop by 
+diverge (app M N) := diverge M;
+diverge (app M N) := exists R, {eval M (abs R)} /\ diverge (R N).</b>
+</pre>
+<a name="126"></a>
+<pre class="code">
+Abella < <b>Theorem omega_diverge : 
+diverge (app (abs (x\app x x)) (abs (x\app x x))).</b>
+</pre>
+<a name="127"></a>
+<pre>
+
+
+  ============================
+   diverge (app (abs (x\app x x)) (abs (x\app x x)))
+
+omega_diverge < <b>coinduction.</b>
+</pre>
+<a name="128"></a>
+<pre>
+
+
+  CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+  ============================
+   diverge (app (abs (x\app x x)) (abs (x\app x x))) #
+
+omega_diverge < <b>search.</b>
+Proof completed.
+</pre>
+<a name="129"></a>
+<pre class="code">
+Abella < <b>Theorem eval_diverge_absurd : 
+forall M V, {eval M V} -> diverge M -> false.</b>
+</pre>
+<a name="130"></a>
+<pre>
+
+
+  ============================
+   forall M V, {eval M V} -> diverge M -> false
+
+eval_diverge_absurd < <b>induction on 1.</b>
+</pre>
+<a name="131"></a>
+<pre>
+
+
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  ============================
+   forall M V, {eval M V}@ -> diverge M -> false
+
+eval_diverge_absurd < <b>intros.</b>
+</pre>
+<a name="132"></a>
+<pre>
+
+  Variables: M, V
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H1 : {eval M V}@
+  H2 : diverge M
+  ============================
+   false
+
+eval_diverge_absurd < <b>case H1.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 1:
+
+  Variables: M, V, R
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H2 : diverge (abs R)
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+eval_diverge_absurd < <b>case H2.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 2:
+
+  Variables: M, V, N, R, M1
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H2 : diverge (app M1 N)
+  H3 : {eval M1 (abs R)}*
+  H4 : {eval (R N) V}*
+  ============================
+   false
+
+eval_diverge_absurd < <b>case H2.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: M, V, N, R, M1
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H3 : {eval M1 (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : diverge M1
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+eval_diverge_absurd < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: M, V, N, R, M1, R1
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H3 : {eval M1 (abs R)}*
+  H4 : {eval (R N) V}*
+  H5 : {eval M1 (abs R1)}
+  H6 : diverge (R1 N)
+  ============================
+   false
+
+eval_diverge_absurd < <b>apply eval_det to H3 H5.</b>
+</pre>
+<a name="137"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: M, V, N, R, M1, R1
+  IH : forall M V, {eval M V}* -> diverge M -> false
+  H3 : {eval M1 (abs R1)}*
+  H4 : {eval (R1 N) V}*
+  H5 : {eval M1 (abs R1)}
+  H6 : diverge (R1 N)
+  ============================
+   false
+
+eval_diverge_absurd < <b>apply IH to H4 H6.</b>
+Proof completed.
+</pre>
+<a name="138"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

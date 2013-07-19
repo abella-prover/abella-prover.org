@@ -1,0 +1,618 @@
+Welcome to Abella 2.0
+Abella < Kind conat type.
+
+Abella < Type z conat.
+
+Abella < Type s conat -> conat.
+
+Abella < CoDefine conat : conat -> prop by 
+conat z;
+conat (s A) := conat A.
+
+Abella < CoDefine coeq : conat -> conat -> prop by 
+coeq z z;
+coeq (s A) (s B) := coeq A B.
+
+Abella < CoDefine inf : conat -> prop by 
+inf (s A) := inf A.
+
+Abella < CoDefine coadd : conat -> conat -> conat -> prop by 
+coadd (s A) B (s C) := coadd A B C;
+coadd z (s B) (s C) := coadd z B C;
+coadd z z z.
+
+Abella < Theorem coeq_refl : 
+forall A, conat A -> coeq A A.
+
+
+  ============================
+   forall A, conat A -> coeq A A
+
+coeq_refl < coinduction.
+
+
+  CH : forall A, conat A -> coeq A A +
+  ============================
+   forall A, conat A -> coeq A A #
+
+coeq_refl < intros.
+
+  Variables: A
+  CH : forall A, conat A -> coeq A A +
+  H1 : conat A
+  ============================
+   coeq A A #
+
+coeq_refl < case H1.
+Subgoal 1:
+
+  Variables: A
+  CH : forall A, conat A -> coeq A A +
+  ============================
+   coeq z z #
+
+Subgoal 2 is:
+ coeq (s A1) (s A1) #
+
+coeq_refl < search.
+Subgoal 2:
+
+  Variables: A, A1
+  CH : forall A, conat A -> coeq A A +
+  H2 : conat A1
+  ============================
+   coeq (s A1) (s A1) #
+
+coeq_refl < apply CH to H2.
+Subgoal 2:
+
+  Variables: A, A1
+  CH : forall A, conat A -> coeq A A +
+  H2 : conat A1
+  H3 : coeq A1 A1 +
+  ============================
+   coeq (s A1) (s A1) #
+
+coeq_refl < search.
+Proof completed.
+
+Abella < Theorem coeq_sym : 
+forall A B, coeq A B -> coeq B A.
+
+
+  ============================
+   forall A B, coeq A B -> coeq B A
+
+coeq_sym < coinduction.
+
+
+  CH : forall A B, coeq A B -> coeq B A +
+  ============================
+   forall A B, coeq A B -> coeq B A #
+
+coeq_sym < intros.
+
+  Variables: A, B
+  CH : forall A B, coeq A B -> coeq B A +
+  H1 : coeq A B
+  ============================
+   coeq B A #
+
+coeq_sym < case H1.
+Subgoal 1:
+
+  Variables: A, B
+  CH : forall A B, coeq A B -> coeq B A +
+  ============================
+   coeq z z #
+
+Subgoal 2 is:
+ coeq (s B1) (s A1) #
+
+coeq_sym < search.
+Subgoal 2:
+
+  Variables: A, B, B1, A1
+  CH : forall A B, coeq A B -> coeq B A +
+  H2 : coeq A1 B1
+  ============================
+   coeq (s B1) (s A1) #
+
+coeq_sym < apply CH to H2.
+Subgoal 2:
+
+  Variables: A, B, B1, A1
+  CH : forall A B, coeq A B -> coeq B A +
+  H2 : coeq A1 B1
+  H3 : coeq B1 A1 +
+  ============================
+   coeq (s B1) (s A1) #
+
+coeq_sym < search.
+Proof completed.
+
+Abella < Theorem coeq_trans : 
+forall A B C, coeq A B -> coeq B C -> coeq A C.
+
+
+  ============================
+   forall A B C, coeq A B -> coeq B C -> coeq A C
+
+coeq_trans < coinduction.
+
+
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  ============================
+   forall A B C, coeq A B -> coeq B C -> coeq A C #
+
+coeq_trans < intros.
+
+  Variables: A, B, C
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  H1 : coeq A B
+  H2 : coeq B C
+  ============================
+   coeq A C #
+
+coeq_trans < case H1.
+Subgoal 1:
+
+  Variables: A, B, C
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  H2 : coeq z C
+  ============================
+   coeq z C #
+
+Subgoal 2 is:
+ coeq (s A1) C #
+
+coeq_trans < search.
+Subgoal 2:
+
+  Variables: A, B, C, B1, A1
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  H2 : coeq (s B1) C
+  H3 : coeq A1 B1
+  ============================
+   coeq (s A1) C #
+
+coeq_trans < case H2.
+Subgoal 2:
+
+  Variables: A, B, C, B1, A1, B2
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  H3 : coeq A1 B1
+  H4 : coeq B1 B2
+  ============================
+   coeq (s A1) (s B2) #
+
+coeq_trans < apply CH to H3 H4.
+Subgoal 2:
+
+  Variables: A, B, C, B1, A1, B2
+  CH : forall A B C, coeq A B -> coeq B C -> coeq A C +
+  H3 : coeq A1 B1
+  H4 : coeq B1 B2
+  H5 : coeq A1 B2 +
+  ============================
+   coeq (s A1) (s B2) #
+
+coeq_trans < search.
+Proof completed.
+
+Abella < Theorem inf_plus_one : 
+forall A, inf A -> coeq A (s A).
+
+
+  ============================
+   forall A, inf A -> coeq A (s A)
+
+inf_plus_one < coinduction.
+
+
+  CH : forall A, inf A -> coeq A (s A) +
+  ============================
+   forall A, inf A -> coeq A (s A) #
+
+inf_plus_one < intros.
+
+  Variables: A
+  CH : forall A, inf A -> coeq A (s A) +
+  H1 : inf A
+  ============================
+   coeq A (s A) #
+
+inf_plus_one < case H1.
+
+  Variables: A, A1
+  CH : forall A, inf A -> coeq A (s A) +
+  H2 : inf A1
+  ============================
+   coeq (s A1) (s (s A1)) #
+
+inf_plus_one < apply CH to H2.
+
+  Variables: A, A1
+  CH : forall A, inf A -> coeq A (s A) +
+  H2 : inf A1
+  H3 : coeq A1 (s A1) +
+  ============================
+   coeq (s A1) (s (s A1)) #
+
+inf_plus_one < search.
+Proof completed.
+
+Abella < Theorem coadd_det : 
+forall A B C D, coadd A B C -> coadd A B D -> coeq C D.
+
+
+  ============================
+   forall A B C D, coadd A B C -> coadd A B D -> coeq C D
+
+coadd_det < coinduction.
+
+
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  ============================
+   forall A B C D, coadd A B C -> coadd A B D -> coeq C D #
+
+coadd_det < intros.
+
+  Variables: A, B, C, D
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H1 : coadd A B C
+  H2 : coadd A B D
+  ============================
+   coeq C D #
+
+coadd_det < case H1.
+Subgoal 1:
+
+  Variables: A, B, C, D, C1, A1
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H2 : coadd (s A1) B D
+  H3 : coadd A1 B C1
+  ============================
+   coeq (s C1) D #
+
+Subgoal 2 is:
+ coeq (s C1) D #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < case H2.
+Subgoal 1:
+
+  Variables: A, B, C, D, C1, A1, C2
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H3 : coadd A1 B C1
+  H4 : coadd A1 B C2
+  ============================
+   coeq (s C1) (s C2) #
+
+Subgoal 2 is:
+ coeq (s C1) D #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < apply CH to H3 H4.
+Subgoal 1:
+
+  Variables: A, B, C, D, C1, A1, C2
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H3 : coadd A1 B C1
+  H4 : coadd A1 B C2
+  H5 : coeq C1 C2 +
+  ============================
+   coeq (s C1) (s C2) #
+
+Subgoal 2 is:
+ coeq (s C1) D #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < search.
+Subgoal 2:
+
+  Variables: A, B, C, D, C1, B1
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H2 : coadd z (s B1) D
+  H3 : coadd z B1 C1
+  ============================
+   coeq (s C1) D #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < case H2.
+Subgoal 2:
+
+  Variables: A, B, C, D, C1, B1, C2
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H3 : coadd z B1 C1
+  H4 : coadd z B1 C2
+  ============================
+   coeq (s C1) (s C2) #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < apply CH to H3 H4.
+Subgoal 2:
+
+  Variables: A, B, C, D, C1, B1, C2
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H3 : coadd z B1 C1
+  H4 : coadd z B1 C2
+  H5 : coeq C1 C2 +
+  ============================
+   coeq (s C1) (s C2) #
+
+Subgoal 3 is:
+ coeq z D #
+
+coadd_det < search.
+Subgoal 3:
+
+  Variables: A, B, C, D
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  H2 : coadd z z D
+  ============================
+   coeq z D #
+
+coadd_det < case H2.
+Subgoal 3:
+
+  Variables: A, B, C, D
+  CH : forall A B C D, coadd A B C -> coadd A B D -> coeq C D +
+  ============================
+   coeq z z #
+
+coadd_det < search.
+Proof completed.
+
+Abella < Theorem coadd_z : 
+forall A, conat A -> coadd A z A.
+
+
+  ============================
+   forall A, conat A -> coadd A z A
+
+coadd_z < coinduction.
+
+
+  CH : forall A, conat A -> coadd A z A +
+  ============================
+   forall A, conat A -> coadd A z A #
+
+coadd_z < intros.
+
+  Variables: A
+  CH : forall A, conat A -> coadd A z A +
+  H1 : conat A
+  ============================
+   coadd A z A #
+
+coadd_z < case H1.
+Subgoal 1:
+
+  Variables: A
+  CH : forall A, conat A -> coadd A z A +
+  ============================
+   coadd z z z #
+
+Subgoal 2 is:
+ coadd (s A1) z (s A1) #
+
+coadd_z < search.
+Subgoal 2:
+
+  Variables: A, A1
+  CH : forall A, conat A -> coadd A z A +
+  H2 : conat A1
+  ============================
+   coadd (s A1) z (s A1) #
+
+coadd_z < apply CH to H2.
+Subgoal 2:
+
+  Variables: A, A1
+  CH : forall A, conat A -> coadd A z A +
+  H2 : conat A1
+  H3 : coadd A1 z A1 +
+  ============================
+   coadd (s A1) z (s A1) #
+
+coadd_z < search.
+Proof completed.
+
+Abella < Theorem coadd_inf1 : 
+forall A B C, inf A -> coadd A B C -> inf C.
+
+
+  ============================
+   forall A B C, inf A -> coadd A B C -> inf C
+
+coadd_inf1 < coinduction.
+
+
+  CH : forall A B C, inf A -> coadd A B C -> inf C +
+  ============================
+   forall A B C, inf A -> coadd A B C -> inf C #
+
+coadd_inf1 < intros.
+
+  Variables: A, B, C
+  CH : forall A B C, inf A -> coadd A B C -> inf C +
+  H1 : inf A
+  H2 : coadd A B C
+  ============================
+   inf C #
+
+coadd_inf1 < case H1.
+
+  Variables: A, B, C, A1
+  CH : forall A B C, inf A -> coadd A B C -> inf C +
+  H2 : coadd (s A1) B C
+  H3 : inf A1
+  ============================
+   inf C #
+
+coadd_inf1 < case H2.
+
+  Variables: A, B, C, A1, C1
+  CH : forall A B C, inf A -> coadd A B C -> inf C +
+  H3 : inf A1
+  H4 : coadd A1 B C1
+  ============================
+   inf (s C1) #
+
+coadd_inf1 < apply CH to H3 H4.
+
+  Variables: A, B, C, A1, C1
+  CH : forall A B C, inf A -> coadd A B C -> inf C +
+  H3 : inf A1
+  H4 : coadd A1 B C1
+  H5 : inf C1 +
+  ============================
+   inf (s C1) #
+
+coadd_inf1 < search.
+Proof completed.
+
+Abella < Theorem coadd_inf2 : 
+forall A B C, conat A -> inf B -> coadd A B C -> inf C.
+
+
+  ============================
+   forall A B C, conat A -> inf B -> coadd A B C -> inf C
+
+coadd_inf2 < coinduction.
+
+
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  ============================
+   forall A B C, conat A -> inf B -> coadd A B C -> inf C #
+
+coadd_inf2 < intros.
+
+  Variables: A, B, C
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat A
+  H2 : inf B
+  H3 : coadd A B C
+  ============================
+   inf C #
+
+coadd_inf2 < case H3.
+Subgoal 1:
+
+  Variables: A, B, C, C1, A1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat (s A1)
+  H2 : inf B
+  H4 : coadd A1 B C1
+  ============================
+   inf (s C1) #
+
+Subgoal 2 is:
+ inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < case H1.
+Subgoal 1:
+
+  Variables: A, B, C, C1, A1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H2 : inf B
+  H4 : coadd A1 B C1
+  H5 : conat A1
+  ============================
+   inf (s C1) #
+
+Subgoal 2 is:
+ inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < apply CH to H5 H2 H4.
+Subgoal 1:
+
+  Variables: A, B, C, C1, A1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H2 : inf B
+  H4 : coadd A1 B C1
+  H5 : conat A1
+  H6 : inf C1 +
+  ============================
+   inf (s C1) #
+
+Subgoal 2 is:
+ inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < search.
+Subgoal 2:
+
+  Variables: A, B, C, C1, B1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat z
+  H2 : inf (s B1)
+  H4 : coadd z B1 C1
+  ============================
+   inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < case H2.
+Subgoal 2:
+
+  Variables: A, B, C, C1, B1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat z
+  H4 : coadd z B1 C1
+  H5 : inf B1
+  ============================
+   inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < apply CH to H1 H5 H4.
+Subgoal 2:
+
+  Variables: A, B, C, C1, B1
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat z
+  H4 : coadd z B1 C1
+  H5 : inf B1
+  H6 : inf C1 +
+  ============================
+   inf (s C1) #
+
+Subgoal 3 is:
+ inf z #
+
+coadd_inf2 < search.
+Subgoal 3:
+
+  Variables: A, B, C
+  CH : forall A B C, conat A -> inf B -> coadd A B C -> inf C +
+  H1 : conat z
+  H2 : inf z
+  ============================
+   inf z #
+
+coadd_inf2 < search.
+Proof completed.
+
+Abella < Goodbye.

@@ -1,0 +1,1504 @@
+Welcome to Abella 2.0
+Abella < Specification "sred".
+Reading specification "sred"
+
+Abella < Theorem member_prune : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune < search.
+Proof completed.
+
+Abella < Define ctx : olist -> olist -> prop by 
+ctx nil nil;
+nabla x, ctx (tm x :: C) (sred x x :: D) := ctx C D.
+
+Abella < Theorem ctx_member1 : 
+forall C D H, ctx C D -> member H C -> (exists X, H = tm X /\
+  member (sred X X) D).
+
+
+  ============================
+   forall C D H, ctx C D -> member H C -> (exists X, H = tm X /\
+     member (sred X X) D)
+
+ctx_member1 < induction on 2.
+
+
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  ============================
+   forall C D H, ctx C D -> member H C @ -> (exists X, H = tm X /\
+     member (sred X X) D)
+
+ctx_member1 < intros.
+
+  Variables: C, D, H
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H1 : ctx C D
+  H2 : member H C @
+  ============================
+   exists X, H = tm X /\ member (sred X X) D
+
+ctx_member1 < case H2.
+Subgoal 1:
+
+  Variables: C, D, H, L
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H1 : ctx (H :: L) D
+  ============================
+   exists X, H = tm X /\ member (sred X X) D
+
+Subgoal 2 is:
+ exists X, H = tm X /\ member (sred X X) D
+
+ctx_member1 < case H1.
+Subgoal 1:
+
+  Variables: C, D, H, L, D1, C1
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H3 : ctx C1 D1
+  ============================
+   exists X, tm n1 = tm X /\ member (sred X X) (sred n1 n1 :: D1)
+
+Subgoal 2 is:
+ exists X, H = tm X /\ member (sred X X) D
+
+ctx_member1 < search.
+Subgoal 2:
+
+  Variables: C, D, H, L, B
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H1 : ctx (B :: L) D
+  H3 : member H L *
+  ============================
+   exists X, H = tm X /\ member (sred X X) D
+
+ctx_member1 < case H1.
+Subgoal 2:
+
+  Variables: C, D, H, L, B, D1, C1
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H3 : member (H n1) C1 *
+  H4 : ctx C1 D1
+  ============================
+   exists X, H n1 = tm X /\ member (sred X X) (sred n1 n1 :: D1)
+
+ctx_member1 < apply IH to H4 H3.
+Subgoal 2:
+
+  Variables: C, D, H, L, B, D1, C1, X
+  IH : forall C D H, ctx C D -> member H C * -> (exists X, H = tm X /\
+         member (sred X X) D)
+  H3 : member (tm (X n1)) C1 *
+  H4 : ctx C1 D1
+  H5 : member (sred (X n1) (X n1)) D1
+  ============================
+   exists X1, tm (X n1) = tm X1 /\ member (sred X1 X1) (sred n1 n1 :: D1)
+
+ctx_member1 < search.
+Proof completed.
+
+Abella < Theorem ctx_member2 : 
+forall C D H, ctx C D -> member H D -> (exists X, H = sred X X /\
+  member (tm X) C).
+
+
+  ============================
+   forall C D H, ctx C D -> member H D -> (exists X, H = sred X X /\
+     member (tm X) C)
+
+ctx_member2 < induction on 2.
+
+
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  ============================
+   forall C D H, ctx C D -> member H D @ -> (exists X, H = sred X X /\
+     member (tm X) C)
+
+ctx_member2 < intros.
+
+  Variables: C, D, H
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H1 : ctx C D
+  H2 : member H D @
+  ============================
+   exists X, H = sred X X /\ member (tm X) C
+
+ctx_member2 < case H2.
+Subgoal 1:
+
+  Variables: C, D, H, L
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H1 : ctx C (H :: L)
+  ============================
+   exists X, H = sred X X /\ member (tm X) C
+
+Subgoal 2 is:
+ exists X, H = sred X X /\ member (tm X) C
+
+ctx_member2 < case H1.
+Subgoal 1:
+
+  Variables: C, D, H, L, D1, C1
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H3 : ctx C1 D1
+  ============================
+   exists X, sred n1 n1 = sred X X /\ member (tm X) (tm n1 :: C1)
+
+Subgoal 2 is:
+ exists X, H = sred X X /\ member (tm X) C
+
+ctx_member2 < search.
+Subgoal 2:
+
+  Variables: C, D, H, L, B
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H1 : ctx C (B :: L)
+  H3 : member H L *
+  ============================
+   exists X, H = sred X X /\ member (tm X) C
+
+ctx_member2 < case H1.
+Subgoal 2:
+
+  Variables: C, D, H, L, B, D1, C1
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H3 : member (H n1) D1 *
+  H4 : ctx C1 D1
+  ============================
+   exists X, H n1 = sred X X /\ member (tm X) (tm n1 :: C1)
+
+ctx_member2 < apply IH to H4 H3.
+Subgoal 2:
+
+  Variables: C, D, H, L, B, D1, C1, X
+  IH : forall C D H, ctx C D -> member H D * -> (exists X, H = sred X X /\
+         member (tm X) C)
+  H3 : member (sred (X n1) (X n1)) D1 *
+  H4 : ctx C1 D1
+  H5 : member (tm (X n1)) C1
+  ============================
+   exists X1, sred (X n1) (X n1) = sred X1 X1 /\ member (tm X1) (tm n1 :: C1)
+
+ctx_member2 < search.
+Proof completed.
+
+Abella < Theorem wh_ctx : 
+forall C D T T', ctx C D -> {D |- wh T T'} -> {wh T T'}.
+
+
+  ============================
+   forall C D T T', ctx C D -> {D |- wh T T'} -> {wh T T'}
+
+wh_ctx < induction on 2.
+
+
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  ============================
+   forall C D T T', ctx C D -> {D |- wh T T'}@ -> {wh T T'}
+
+wh_ctx < intros.
+
+  Variables: C, D, T, T'
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  H2 : {D |- wh T T'}@
+  ============================
+   {wh T T'}
+
+wh_ctx < case H2.
+Subgoal 1:
+
+  Variables: C, D, T, T', M, R
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  ============================
+   {wh (app (abs R) M) (R M)}
+
+Subgoal 2 is:
+ {wh (app M N) (app M' N)}
+
+Subgoal 3 is:
+ {wh T T'}
+
+wh_ctx < search.
+Subgoal 2:
+
+  Variables: C, D, T, T', M', M, N
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  H3 : {D |- wh M M'}*
+  ============================
+   {wh (app M N) (app M' N)}
+
+Subgoal 3 is:
+ {wh T T'}
+
+wh_ctx < apply IH to H1 H3.
+Subgoal 2:
+
+  Variables: C, D, T, T', M', M, N
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  H3 : {D |- wh M M'}*
+  H4 : {wh M M'}
+  ============================
+   {wh (app M N) (app M' N)}
+
+Subgoal 3 is:
+ {wh T T'}
+
+wh_ctx < search.
+Subgoal 3:
+
+  Variables: C, D, T, T', F
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  H3 : {D, [F] |- wh T T'}*
+  H4 : member F D
+  ============================
+   {wh T T'}
+
+wh_ctx < apply ctx_member2 to H1 H4.
+Subgoal 3:
+
+  Variables: C, D, T, T', F, X
+  IH : forall C D T T', ctx C D -> {D |- wh T T'}* -> {wh T T'}
+  H1 : ctx C D
+  H3 : {D, [sred X X] |- wh T T'}*
+  H4 : member (sred X X) D
+  H5 : member (tm X) C
+  ============================
+   {wh T T'}
+
+wh_ctx < case H3.
+Proof completed.
+
+Abella < Theorem srefl : 
+forall C D T, ctx C D -> {C |- tm T} -> {D |- sred T T}.
+
+
+  ============================
+   forall C D T, ctx C D -> {C |- tm T} -> {D |- sred T T}
+
+srefl < induction on 2.
+
+
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  ============================
+   forall C D T, ctx C D -> {C |- tm T}@ -> {D |- sred T T}
+
+srefl < intros.
+
+  Variables: C, D, T
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H2 : {C |- tm T}@
+  ============================
+   {D |- sred T T}
+
+srefl < case H2.
+Subgoal 1:
+
+  Variables: C, D, T, N, M
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C |- tm M}*
+  H4 : {C |- tm N}*
+  ============================
+   {D |- sred (app M N) (app M N)}
+
+Subgoal 2 is:
+ {D |- sred (abs R) (abs R)}
+
+Subgoal 3 is:
+ {D |- sred T T}
+
+srefl < apply IH to H1 H3.
+Subgoal 1:
+
+  Variables: C, D, T, N, M
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C |- tm M}*
+  H4 : {C |- tm N}*
+  H5 : {D |- sred M M}
+  ============================
+   {D |- sred (app M N) (app M N)}
+
+Subgoal 2 is:
+ {D |- sred (abs R) (abs R)}
+
+Subgoal 3 is:
+ {D |- sred T T}
+
+srefl < apply IH to H1 H4.
+Subgoal 1:
+
+  Variables: C, D, T, N, M
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C |- tm M}*
+  H4 : {C |- tm N}*
+  H5 : {D |- sred M M}
+  H6 : {D |- sred N N}
+  ============================
+   {D |- sred (app M N) (app M N)}
+
+Subgoal 2 is:
+ {D |- sred (abs R) (abs R)}
+
+Subgoal 3 is:
+ {D |- sred T T}
+
+srefl < search.
+Subgoal 2:
+
+  Variables: C, D, T, R
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C, tm n1 |- tm (R n1)}*
+  ============================
+   {D |- sred (abs R) (abs R)}
+
+Subgoal 3 is:
+ {D |- sred T T}
+
+srefl < apply IH to _ H3.
+Subgoal 2:
+
+  Variables: C, D, T, R
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C, tm n1 |- tm (R n1)}*
+  H4 : {D, sred n1 n1 |- sred (R n1) (R n1)}
+  ============================
+   {D |- sred (abs R) (abs R)}
+
+Subgoal 3 is:
+ {D |- sred T T}
+
+srefl < search.
+Subgoal 3:
+
+  Variables: C, D, T, F
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C, [F] |- tm T}*
+  H4 : member F C
+  ============================
+   {D |- sred T T}
+
+srefl < apply ctx_member1 to H1 H4.
+Subgoal 3:
+
+  Variables: C, D, T, F, X
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H3 : {C, [tm X] |- tm T}*
+  H4 : member (tm X) C
+  H5 : member (sred X X) D
+  ============================
+   {D |- sred T T}
+
+srefl < case H3.
+Subgoal 3:
+
+  Variables: C, D, T, F, X
+  IH : forall C D T, ctx C D -> {C |- tm T}* -> {D |- sred T T}
+  H1 : ctx C D
+  H4 : member (tm T) C
+  H5 : member (sred T T) D
+  ============================
+   {D |- sred T T}
+
+srefl < search.
+Proof completed.
+
+Abella < Theorem ssubst : 
+forall C D T T' S S', nabla x, ctx C D ->
+  {D, sred x x |- sred (T x) (T' x)} -> {D |- sred S S'} ->
+  {D |- sred (T S) (T' S')}.
+
+
+  ============================
+   forall C D T T' S S', nabla x, ctx C D ->
+     {D, sred x x |- sred (T x) (T' x)} -> {D |- sred S S'} ->
+     {D |- sred (T S) (T' S')}
+
+ssubst < induction on 2.
+
+
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  ============================
+   forall C D T T' S S', nabla x, ctx C D ->
+     {D, sred x x |- sred (T x) (T' x)}@ -> {D |- sred S S'} ->
+     {D |- sred (T S) (T' S')}
+
+ssubst < intros.
+
+  Variables: C, D, T, T', S, S'
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H2 : {D, sred n1 n1 |- sred (T n1) (T' n1)}@
+  H3 : {D |- sred S S'}
+  ============================
+   {D |- sred (T S) (T' S')}
+
+ssubst < case H2.
+Subgoal 1:
+
+  Variables: C, D, T, T', S, S', M2
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- wh (T n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (M2 n1) (T' n1)}*
+  ============================
+   {D |- sred (T S) (T' S')}
+
+Subgoal 2 is:
+ {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < apply IH to H1 H5 H3.
+Subgoal 1:
+
+  Variables: C, D, T, T', S, S', M2
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- wh (T n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (M2 n1) (T' n1)}*
+  H6 : {D |- sred (M2 S) (T' S')}
+  ============================
+   {D |- sred (T S) (T' S')}
+
+Subgoal 2 is:
+ {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < apply wh_ctx to _ H4.
+Subgoal 1:
+
+  Variables: C, D, T, T', S, S', M2
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- wh (T n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (M2 n1) (T' n1)}*
+  H6 : {D |- sred (M2 S) (T' S')}
+  H7 : {wh (T n1) (M2 n1)}
+  ============================
+   {D |- sred (T S) (T' S')}
+
+Subgoal 2 is:
+ {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < inst H7 with n1 = S.
+Subgoal 1:
+
+  Variables: C, D, T, T', S, S', M2
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- wh (T n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (M2 n1) (T' n1)}*
+  H6 : {D |- sred (M2 S) (T' S')}
+  H7 : {wh (T n1) (M2 n1)}
+  H8 : {wh (T S) (M2 S)}
+  ============================
+   {D |- sred (T S) (T' S')}
+
+Subgoal 2 is:
+ {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < search.
+Subgoal 2:
+
+  Variables: C, D, T, T', S, S', N2, N1, M2, M1
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- sred (M1 n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (N1 n1) (N2 n1)}*
+  ============================
+   {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < apply IH to H1 H4 H3.
+Subgoal 2:
+
+  Variables: C, D, T, T', S, S', N2, N1, M2, M1
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- sred (M1 n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (N1 n1) (N2 n1)}*
+  H6 : {D |- sred (M1 S) (M2 S')}
+  ============================
+   {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < apply IH to H1 H5 H3.
+Subgoal 2:
+
+  Variables: C, D, T, T', S, S', N2, N1, M2, M1
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1 |- sred (M1 n1) (M2 n1)}*
+  H5 : {D, sred n1 n1 |- sred (N1 n1) (N2 n1)}*
+  H6 : {D |- sred (M1 S) (M2 S')}
+  H7 : {D |- sred (N1 S) (N2 S')}
+  ============================
+   {D |- sred (app (M1 S) (N1 S)) (app (M2 S') (N2 S'))}
+
+Subgoal 3 is:
+ {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < search.
+Subgoal 3:
+
+  Variables: C, D, T, T', S, S', R2, R1
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, sred n2 n2 |- sred (R1 n1 n2) (R2 n1 n2)}*
+  ============================
+   {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < apply IH to _ H4 H3.
+Subgoal 3:
+
+  Variables: C, D, T, T', S, S', R2, R1
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, sred n2 n2 |- sred (R1 n1 n2) (R2 n1 n2)}*
+  H5 : {D, sred n2 n2 |- sred (R1 S n2) (R2 S' n2)}
+  ============================
+   {D |- sred (abs (R1 S)) (abs (R2 S'))}
+
+Subgoal 4 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < search.
+Subgoal 4:
+
+  Variables: C, D, T, T', S, S', F
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, [F n1] |- sred (T n1) (T' n1)}*
+  H5 : member (F n1) (sred n1 n1 :: D)
+  ============================
+   {D |- sred (T S) (T' S')}
+
+ssubst < case H5.
+Subgoal 4.1:
+
+  Variables: C, D, T, T', S, S', F
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, [sred n1 n1] |- sred (T n1) (T' n1)}*
+  ============================
+   {D |- sred (T S) (T' S')}
+
+Subgoal 4.2 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < case H4.
+Subgoal 4.1:
+
+  Variables: C, D, T, T', S, S', F
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  ============================
+   {D |- sred S S'}
+
+Subgoal 4.2 is:
+ {D |- sred (T S) (T' S')}
+
+ssubst < search.
+Subgoal 4.2:
+
+  Variables: C, D, T, T', S, S', F
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, [F n1] |- sred (T n1) (T' n1)}*
+  H6 : member (F n1) D
+  ============================
+   {D |- sred (T S) (T' S')}
+
+ssubst < apply ctx_member2 to H1 H6.
+Subgoal 4.2:
+
+  Variables: C, D, T, T', S, S', F, X
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H4 : {D, sred n1 n1, [sred (X n1) (X n1)] |- sred (T n1) (T' n1)}*
+  H6 : member (sred (X n1) (X n1)) D
+  H7 : member (tm (X n1)) C
+  ============================
+   {D |- sred (T S) (T' S')}
+
+ssubst < case H4.
+Subgoal 4.2:
+
+  Variables: C, D, T, T', S, S', F, X
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H6 : member (sred (T' n1) (T' n1)) D
+  H7 : member (tm (T' n1)) C
+  ============================
+   {D |- sred (T' S) (T' S')}
+
+ssubst < apply member_prune to H6.
+Subgoal 4.2:
+
+  Variables: C, D, T, T', S, S', F, X, F1, F2
+  IH : forall C D T T' S S', nabla x, ctx C D ->
+         {D, sred x x |- sred (T x) (T' x)}* -> {D |- sred S S'} ->
+         {D |- sred (T S) (T' S')}
+  H1 : ctx C D
+  H3 : {D |- sred S S'}
+  H6 : member (sred F2 F2) D
+  H7 : member (tm F2) C
+  ============================
+   {D |- sred F2 F2}
+
+ssubst < search.
+Proof completed.
+
+Abella < Theorem name_not_beta : 
+forall T, nabla x, {beta x T} -> false.
+
+
+  ============================
+   forall T, nabla x, {beta x T} -> false
+
+name_not_beta < intros.
+
+  Variables: T
+  H1 : {beta n1 T}
+  ============================
+   false
+
+name_not_beta < case H1.
+Proof completed.
+
+Abella < Theorem var_not_beta : 
+forall C D T T', ctx C D -> member (tm T) C -> {beta T T'} -> false.
+
+
+  ============================
+   forall C D T T', ctx C D -> member (tm T) C -> {beta T T'} -> false
+
+var_not_beta < induction on 2.
+
+
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  ============================
+   forall C D T T', ctx C D -> member (tm T) C @ -> {beta T T'} -> false
+
+var_not_beta < intros.
+
+  Variables: C, D, T, T'
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  H1 : ctx C D
+  H2 : member (tm T) C @
+  H3 : {beta T T'}
+  ============================
+   false
+
+var_not_beta < case H2.
+Subgoal 1:
+
+  Variables: C, D, T, T', L
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  H1 : ctx (tm T :: L) D
+  H3 : {beta T T'}
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+var_not_beta < case H1.
+Subgoal 1:
+
+  Variables: C, D, T, T', L, D1, C1
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  H3 : {beta n1 (T' n1)}
+  H4 : ctx C1 D1
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+var_not_beta < case H3.
+Subgoal 2:
+
+  Variables: C, D, T, T', L, B
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  H1 : ctx (B :: L) D
+  H3 : {beta T T'}
+  H4 : member (tm T) L *
+  ============================
+   false
+
+var_not_beta < case H1.
+Subgoal 2:
+
+  Variables: C, D, T, T', L, B, D1, C1
+  IH : forall C D T T', ctx C D -> member (tm T) C * -> {beta T T'} -> false
+  H3 : {beta (T n1) (T' n1)}
+  H4 : member (tm (T n1)) C1 *
+  H5 : ctx C1 D1
+  ============================
+   false
+
+var_not_beta < apply IH to H5 H4 H3.
+Proof completed.
+
+Abella < Theorem var_not_abs : 
+forall C D R, ctx C D -> member (tm (abs R)) C -> false.
+
+
+  ============================
+   forall C D R, ctx C D -> member (tm (abs R)) C -> false
+
+var_not_abs < induction on 2.
+
+
+  IH : forall C D R, ctx C D -> member (tm (abs R)) C * -> false
+  ============================
+   forall C D R, ctx C D -> member (tm (abs R)) C @ -> false
+
+var_not_abs < intros.
+
+  Variables: C, D, R
+  IH : forall C D R, ctx C D -> member (tm (abs R)) C * -> false
+  H1 : ctx C D
+  H2 : member (tm (abs R)) C @
+  ============================
+   false
+
+var_not_abs < case H2.
+Subgoal 1:
+
+  Variables: C, D, R, L
+  IH : forall C D R, ctx C D -> member (tm (abs R)) C * -> false
+  H1 : ctx (tm (abs R) :: L) D
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+var_not_abs < case H1.
+Subgoal 2:
+
+  Variables: C, D, R, L, B
+  IH : forall C D R, ctx C D -> member (tm (abs R)) C * -> false
+  H1 : ctx (B :: L) D
+  H3 : member (tm (abs R)) L *
+  ============================
+   false
+
+var_not_abs < case H1.
+Subgoal 2:
+
+  Variables: C, D, R, L, B, D1, C1
+  IH : forall C D R, ctx C D -> member (tm (abs R)) C * -> false
+  H3 : member (tm (abs (R n1))) C1 *
+  H4 : ctx C1 D1
+  ============================
+   false
+
+var_not_abs < apply IH to H4 H3.
+Proof completed.
+
+Abella < Theorem sred_beta : 
+forall C D M N N' R, ctx C D -> {D |- sred M (abs R)} -> {D |- sred N N'} ->
+  {D |- sred (app M N) (R N')}.
+
+
+  ============================
+   forall C D M N N' R, ctx C D -> {D |- sred M (abs R)} ->
+     {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+
+sred_beta < induction on 2.
+
+
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  ============================
+   forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}@ ->
+     {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+
+sred_beta < intros.
+
+  Variables: C, D, M, N, N', R
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H2 : {D |- sred M (abs R)}@
+  H3 : {D |- sred N N'}
+  ============================
+   {D |- sred (app M N) (R N')}
+
+sred_beta < case H2.
+Subgoal 1:
+
+  Variables: C, D, M, N, N', R, M2
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D |- wh M M2}*
+  H5 : {D |- sred M2 (abs R)}*
+  ============================
+   {D |- sred (app M N) (R N')}
+
+Subgoal 2 is:
+ {D |- sred (app (abs R1) N) (R N')}
+
+Subgoal 3 is:
+ {D |- sred (app M N) (R N')}
+
+sred_beta < apply IH to H1 H5 H3.
+Subgoal 1:
+
+  Variables: C, D, M, N, N', R, M2
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D |- wh M M2}*
+  H5 : {D |- sred M2 (abs R)}*
+  H6 : {D |- sred (app M2 N) (R N')}
+  ============================
+   {D |- sred (app M N) (R N')}
+
+Subgoal 2 is:
+ {D |- sred (app (abs R1) N) (R N')}
+
+Subgoal 3 is:
+ {D |- sred (app M N) (R N')}
+
+sred_beta < search.
+Subgoal 2:
+
+  Variables: C, D, M, N, N', R, R1
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D, sred n1 n1 |- sred (R1 n1) (R n1)}*
+  ============================
+   {D |- sred (app (abs R1) N) (R N')}
+
+Subgoal 3 is:
+ {D |- sred (app M N) (R N')}
+
+sred_beta < apply ssubst to H1 H4 H3.
+Subgoal 2:
+
+  Variables: C, D, M, N, N', R, R1
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D, sred n1 n1 |- sred (R1 n1) (R n1)}*
+  H5 : {D |- sred (R1 N) (R N')}
+  ============================
+   {D |- sred (app (abs R1) N) (R N')}
+
+Subgoal 3 is:
+ {D |- sred (app M N) (R N')}
+
+sred_beta < search.
+Subgoal 3:
+
+  Variables: C, D, M, N, N', R, F
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D, [F] |- sred M (abs R)}*
+  H5 : member F D
+  ============================
+   {D |- sred (app M N) (R N')}
+
+sred_beta < apply ctx_member2 to H1 H5.
+Subgoal 3:
+
+  Variables: C, D, M, N, N', R, F, X
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H4 : {D, [sred X X] |- sred M (abs R)}*
+  H5 : member (sred X X) D
+  H6 : member (tm X) C
+  ============================
+   {D |- sred (app M N) (R N')}
+
+sred_beta < case H4.
+Subgoal 3:
+
+  Variables: C, D, M, N, N', R, F, X
+  IH : forall C D M N N' R, ctx C D -> {D |- sred M (abs R)}* ->
+         {D |- sred N N'} -> {D |- sred (app M N) (R N')}
+  H1 : ctx C D
+  H3 : {D |- sred N N'}
+  H5 : member (sred (abs R) (abs R)) D
+  H6 : member (tm (abs R)) C
+  ============================
+   {D |- sred (app (abs R) N) (R N')}
+
+sred_beta < apply var_not_abs to H1 H6.
+Proof completed.
+
+Abella < Theorem sappend : 
+forall C D T T' T'', ctx C D -> {D |- sred T T'} -> {beta T' T''} ->
+  {D |- sred T T''}.
+
+
+  ============================
+   forall C D T T' T'', ctx C D -> {D |- sred T T'} -> {beta T' T''} ->
+     {D |- sred T T''}
+
+sappend < induction on 2.
+
+
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  ============================
+   forall C D T T' T'', ctx C D -> {D |- sred T T'}@ -> {beta T' T''} ->
+     {D |- sred T T''}
+
+sappend < intros.
+
+  Variables: C, D, T, T', T''
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H2 : {D |- sred T T'}@
+  H3 : {beta T' T''}
+  ============================
+   {D |- sred T T''}
+
+sappend < case H2.
+Subgoal 1:
+
+  Variables: C, D, T, T', T'', M2
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta T' T''}
+  H4 : {D |- wh T M2}*
+  H5 : {D |- sred M2 T'}*
+  ============================
+   {D |- sred T T''}
+
+Subgoal 2 is:
+ {D |- sred (app M1 N1) T''}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < apply IH to H1 H5 H3.
+Subgoal 1:
+
+  Variables: C, D, T, T', T'', M2
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta T' T''}
+  H4 : {D |- wh T M2}*
+  H5 : {D |- sred M2 T'}*
+  H6 : {D |- sred M2 T''}
+  ============================
+   {D |- sred T T''}
+
+Subgoal 2 is:
+ {D |- sred (app M1 N1) T''}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < search.
+Subgoal 2:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta (app M2 N2) T''}
+  H4 : {D |- sred M1 M2}*
+  H5 : {D |- sred N1 N2}*
+  ============================
+   {D |- sred (app M1 N1) T''}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < case H3.
+Subgoal 2.1:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, M'
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 M2}*
+  H5 : {D |- sred N1 N2}*
+  H6 : {beta M2 M'}
+  ============================
+   {D |- sred (app M1 N1) (app M' N2)}
+
+Subgoal 2.2 is:
+ {D |- sred (app M1 N1) (app M2 N')}
+
+Subgoal 2.3 is:
+ {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < apply IH to H1 H4 H6.
+Subgoal 2.1:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, M'
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 M2}*
+  H5 : {D |- sred N1 N2}*
+  H6 : {beta M2 M'}
+  H7 : {D |- sred M1 M'}
+  ============================
+   {D |- sred (app M1 N1) (app M' N2)}
+
+Subgoal 2.2 is:
+ {D |- sred (app M1 N1) (app M2 N')}
+
+Subgoal 2.3 is:
+ {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < search.
+Subgoal 2.2:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, N'
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 M2}*
+  H5 : {D |- sred N1 N2}*
+  H6 : {beta N2 N'}
+  ============================
+   {D |- sred (app M1 N1) (app M2 N')}
+
+Subgoal 2.3 is:
+ {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < apply IH to H1 H5 H6.
+Subgoal 2.2:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, N'
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 M2}*
+  H5 : {D |- sred N1 N2}*
+  H6 : {beta N2 N'}
+  H7 : {D |- sred N1 N'}
+  ============================
+   {D |- sred (app M1 N1) (app M2 N')}
+
+Subgoal 2.3 is:
+ {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < search.
+Subgoal 2.3:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, R
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 (abs R)}*
+  H5 : {D |- sred N1 N2}*
+  ============================
+   {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < apply sred_beta to H1 H4 H5.
+Subgoal 2.3:
+
+  Variables: C, D, T, T', T'', N2, N1, M2, M1, R
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D |- sred M1 (abs R)}*
+  H5 : {D |- sred N1 N2}*
+  H6 : {D |- sred (app M1 N1) (R N2)}
+  ============================
+   {D |- sred (app M1 N1) (R N2)}
+
+Subgoal 3 is:
+ {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < search.
+Subgoal 3:
+
+  Variables: C, D, T, T', T'', R2, R1
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta (abs R2) T''}
+  H4 : {D, sred n1 n1 |- sred (R1 n1) (R2 n1)}*
+  ============================
+   {D |- sred (abs R1) T''}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < case H3.
+Subgoal 3:
+
+  Variables: C, D, T, T', T'', R2, R1, S2
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D, sred n1 n1 |- sred (R1 n1) (R2 n1)}*
+  H5 : {beta (R2 n1) (S2 n1)}
+  ============================
+   {D |- sred (abs R1) (abs S2)}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < apply IH to _ H4 H5.
+Subgoal 3:
+
+  Variables: C, D, T, T', T'', R2, R1, S2
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H4 : {D, sred n1 n1 |- sred (R1 n1) (R2 n1)}*
+  H5 : {beta (R2 n1) (S2 n1)}
+  H6 : {D, sred n1 n1 |- sred (R1 n1) (S2 n1)}
+  ============================
+   {D |- sred (abs R1) (abs S2)}
+
+Subgoal 4 is:
+ {D |- sred T T''}
+
+sappend < search.
+Subgoal 4:
+
+  Variables: C, D, T, T', T'', F
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta T' T''}
+  H4 : {D, [F] |- sred T T'}*
+  H5 : member F D
+  ============================
+   {D |- sred T T''}
+
+sappend < apply ctx_member2 to H1 H5.
+Subgoal 4:
+
+  Variables: C, D, T, T', T'', F, X
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta T' T''}
+  H4 : {D, [sred X X] |- sred T T'}*
+  H5 : member (sred X X) D
+  H6 : member (tm X) C
+  ============================
+   {D |- sred T T''}
+
+sappend < case H4.
+Subgoal 4:
+
+  Variables: C, D, T, T', T'', F, X
+  IH : forall C D T T' T'', ctx C D -> {D |- sred T T'}* -> {beta T' T''} ->
+         {D |- sred T T''}
+  H1 : ctx C D
+  H3 : {beta T' T''}
+  H5 : member (sred T' T') D
+  H6 : member (tm T') C
+  ============================
+   {D |- sred T' T''}
+
+sappend < apply var_not_beta to H1 H6 H3.
+Proof completed.
+
+Abella < Theorem standardization : 
+forall T T', {tm T} -> {betas T T'} -> {sred T T'}.
+
+
+  ============================
+   forall T T', {tm T} -> {betas T T'} -> {sred T T'}
+
+standardization < induction on 2.
+
+
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  ============================
+   forall T T', {tm T} -> {betas T T'}@ -> {sred T T'}
+
+standardization < intros.
+
+  Variables: T, T'
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T}
+  H2 : {betas T T'}@
+  ============================
+   {sred T T'}
+
+standardization < case H2.
+Subgoal 1:
+
+  Variables: T, T'
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T'}
+  ============================
+   {sred T' T'}
+
+Subgoal 2 is:
+ {sred T T'}
+
+standardization < apply srefl to _ H1.
+Subgoal 1:
+
+  Variables: T, T'
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T'}
+  H3 : {sred T' T'}
+  ============================
+   {sred T' T'}
+
+Subgoal 2 is:
+ {sred T T'}
+
+standardization < search.
+Subgoal 2:
+
+  Variables: T, T', P
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T}
+  H3 : {betas T P}*
+  H4 : {beta P T'}*
+  ============================
+   {sred T T'}
+
+standardization < apply IH to H1 H3.
+Subgoal 2:
+
+  Variables: T, T', P
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T}
+  H3 : {betas T P}*
+  H4 : {beta P T'}*
+  H5 : {sred T P}
+  ============================
+   {sred T T'}
+
+standardization < apply sappend to _ H5 H4.
+Subgoal 2:
+
+  Variables: T, T', P
+  IH : forall T T', {tm T} -> {betas T T'}* -> {sred T T'}
+  H1 : {tm T}
+  H3 : {betas T P}*
+  H4 : {beta P T'}*
+  H5 : {sred T P}
+  H6 : {sred T T'}
+  ============================
+   {sred T T'}
+
+standardization < search.
+Proof completed.
+
+Abella < Goodbye.

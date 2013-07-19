@@ -1,0 +1,1056 @@
+Welcome to Abella 2.0
+Abella < Specification "type-uniq".
+Reading specification "type-uniq"
+
+Abella < Theorem member_prune : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune < search.
+Proof completed.
+
+Abella < Define ctx : olist -> prop by 
+ctx nil;
+ctx (of X T :: L) := (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R -> false) /\
+  (forall T', member (of X T') L -> false) /\ ctx L.
+
+Abella < Theorem ctx_member : 
+forall E L, ctx L -> member E L -> (exists X T, E = of X T /\ (forall M N,
+  X = app M N -> false) /\ (forall T R, X = abs T R -> false)).
+
+
+  ============================
+   forall E L, ctx L -> member E L -> (exists X T, E = of X T /\ (forall M N,
+     X = app M N -> false) /\ (forall T R, X = abs T R -> false))
+
+ctx_member < induction on 1.
+
+
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  ============================
+   forall E L, ctx L @ -> member E L -> (exists X T, E = of X T /\
+     (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+     false))
+
+ctx_member < intros.
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H1 : ctx L @
+  H2 : member E L
+  ============================
+   exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\
+     (forall T R, X = abs T R -> false)
+
+ctx_member < case H1.
+Subgoal 1:
+
+  Variables: E, L
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H2 : member E nil
+  ============================
+   exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\
+     (forall T R, X = abs T R -> false)
+
+Subgoal 2 is:
+ exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\ (forall T R,
+   X = abs T R -> false)
+
+ctx_member < case H2.
+Subgoal 2:
+
+  Variables: E, L, L1, T, X
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H2 : member E (of X T :: L1)
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\
+     (forall T R, X = abs T R -> false)
+
+ctx_member < case H2.
+Subgoal 2.1:
+
+  Variables: E, L, L1, T, X
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   exists X1 T1, of X T = of X1 T1 /\ (forall M N, X1 = app M N -> false) /\
+     (forall T R, X1 = abs T R -> false)
+
+Subgoal 2.2 is:
+ exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\ (forall T R,
+   X = abs T R -> false)
+
+ctx_member < search.
+Subgoal 2.2:
+
+  Variables: E, L, L1, T, X
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  H7 : member E L1
+  ============================
+   exists X T, E = of X T /\ (forall M N, X = app M N -> false) /\
+     (forall T R, X = abs T R -> false)
+
+ctx_member < apply IH to H6 H7.
+Subgoal 2.2:
+
+  Variables: E, L, L1, T, X, X1, T1
+  IH : forall E L, ctx L * -> member E L -> (exists X T, E = of X T /\
+         (forall M N, X = app M N -> false) /\ (forall T R, X = abs T R ->
+         false))
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  H7 : member (of X1 T1) L1
+  H8 : forall M N, X1 = app M N -> false
+  H9 : forall T R, X1 = abs T R -> false
+  ============================
+   exists X T, of X1 T1 = of X T /\ (forall M N, X = app M N -> false) /\
+     (forall T R, X = abs T R -> false)
+
+ctx_member < search.
+Proof completed.
+
+Abella < Theorem ctx_app_absurd : 
+forall L M N T, ctx L -> member (of (app M N) T) L -> false.
+
+
+  ============================
+   forall L M N T, ctx L -> member (of (app M N) T) L -> false
+
+ctx_app_absurd < induction on 1.
+
+
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  ============================
+   forall L M N T, ctx L @ -> member (of (app M N) T) L -> false
+
+ctx_app_absurd < intros.
+
+  Variables: L, M, N, T
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  H1 : ctx L @
+  H2 : member (of (app M N) T) L
+  ============================
+   false
+
+ctx_app_absurd < case H1.
+Subgoal 1:
+
+  Variables: L, M, N, T
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  H2 : member (of (app M N) T) nil
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+ctx_app_absurd < case H2.
+Subgoal 2:
+
+  Variables: L, M, N, T, L1, T1, X
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  H2 : member (of (app M N) T) (of X T1 :: L1)
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   false
+
+ctx_app_absurd < case H2.
+Subgoal 2.1:
+
+  Variables: L, M, N, T, L1, T1, X
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  H3 : forall M1 N1, app M N = app M1 N1 -> false
+  H4 : forall T R, app M N = abs T R -> false
+  H5 : forall T', member (of (app M N) T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+ctx_app_absurd < apply H3 to _.
+Subgoal 2.2:
+
+  Variables: L, M, N, T, L1, T1, X
+  IH : forall L M N T, ctx L * -> member (of (app M N) T) L -> false
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  H7 : member (of (app M N) T) L1
+  ============================
+   false
+
+ctx_app_absurd < apply IH to H6 H7.
+Proof completed.
+
+Abella < Theorem ctx_abs_absurd : 
+forall L R T S, ctx L -> member (of (abs S R) T) L -> false.
+
+
+  ============================
+   forall L R T S, ctx L -> member (of (abs S R) T) L -> false
+
+ctx_abs_absurd < induction on 1.
+
+
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  ============================
+   forall L R T S, ctx L @ -> member (of (abs S R) T) L -> false
+
+ctx_abs_absurd < intros.
+
+  Variables: L, R, T, S
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  H1 : ctx L @
+  H2 : member (of (abs S R) T) L
+  ============================
+   false
+
+ctx_abs_absurd < case H1.
+Subgoal 1:
+
+  Variables: L, R, T, S
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  H2 : member (of (abs S R) T) nil
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+ctx_abs_absurd < case H2.
+Subgoal 2:
+
+  Variables: L, R, T, S, L1, T1, X
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  H2 : member (of (abs S R) T) (of X T1 :: L1)
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   false
+
+ctx_abs_absurd < case H2.
+Subgoal 2.1:
+
+  Variables: L, R, T, S, L1, T1, X
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  H3 : forall M N, abs S R = app M N -> false
+  H4 : forall T R1, abs S R = abs T R1 -> false
+  H5 : forall T', member (of (abs S R) T') L1 -> false
+  H6 : ctx L1 *
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+ctx_abs_absurd < apply H4 to _.
+Subgoal 2.2:
+
+  Variables: L, R, T, S, L1, T1, X
+  IH : forall L R T S, ctx L * -> member (of (abs S R) T) L -> false
+  H3 : forall M N, X = app M N -> false
+  H4 : forall T R, X = abs T R -> false
+  H5 : forall T', member (of X T') L1 -> false
+  H6 : ctx L1 *
+  H7 : member (of (abs S R) T) L1
+  ============================
+   false
+
+ctx_abs_absurd < apply IH to H6 H7.
+Proof completed.
+
+Abella < Theorem uniq : 
+forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+  T1 = T2.
+
+
+  ============================
+   forall L E T1 T2, ctx L -> member (of E T1) L -> member (of E T2) L ->
+     T1 = T2
+
+uniq < induction on 1.
+
+
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L @ -> member (of E T1) L -> member (of E T2) L ->
+     T1 = T2
+
+uniq < intros.
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H1 : ctx L @
+  H2 : member (of E T1) L
+  H3 : member (of E T2) L
+  ============================
+   T1 = T2
+
+uniq < case H1.
+Subgoal 1:
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H2 : member (of E T1) nil
+  H3 : member (of E T2) nil
+  ============================
+   T1 = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+uniq < case H2.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H2 : member (of E T1) (of X T :: L1)
+  H3 : member (of E T2) (of X T :: L1)
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  ============================
+   T1 = T2
+
+uniq < case H2.
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H3 : member (of X T2) (of X T :: L1)
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  ============================
+   T = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+uniq < case H3.
+Subgoal 2.1.1:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  ============================
+   T = T
+
+Subgoal 2.1.2 is:
+ T = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+uniq < search.
+Subgoal 2.1.2:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  H8 : member (of X T2) L1
+  ============================
+   T = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+uniq < apply H6 to H8.
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H3 : member (of E T2) (of X T :: L1)
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  H8 : member (of E T1) L1
+  ============================
+   T1 = T2
+
+uniq < case H3.
+Subgoal 2.2.1:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  H8 : member (of X T1) L1
+  ============================
+   T1 = T
+
+Subgoal 2.2.2 is:
+ T1 = T2
+
+uniq < apply H6 to H8.
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  H8 : member (of E T1) L1
+  H9 : member (of E T2) L1
+  ============================
+   T1 = T2
+
+uniq < apply IH to H7 H8 H9.
+Subgoal 2.2.2:
+
+  Variables: L, E, T1, T2, L1, T, X
+  IH : forall L E T1 T2, ctx L * -> member (of E T1) L ->
+         member (of E T2) L -> T1 = T2
+  H4 : forall M N, X = app M N -> false
+  H5 : forall T R, X = abs T R -> false
+  H6 : forall T', member (of X T') L1 -> false
+  H7 : ctx L1 *
+  H8 : member (of E T2) L1
+  H9 : member (of E T2) L1
+  ============================
+   T2 = T2
+
+uniq < search.
+Proof completed.
+
+Abella < Theorem ctx_extend : 
+forall T L, nabla x, ctx L -> ctx (of x T :: L).
+
+
+  ============================
+   forall T L, nabla x, ctx L -> ctx (of x T :: L)
+
+ctx_extend < intros.
+
+  Variables: T, L
+  H1 : ctx L
+  ============================
+   ctx (of n1 T :: L)
+
+ctx_extend < unfold.
+Subgoal 1:
+
+  Variables: T, L
+  H1 : ctx L
+  ============================
+   forall M N, n1 = app M N -> false
+
+Subgoal 2 is:
+ forall T R, n1 = abs T R -> false
+
+Subgoal 3 is:
+ forall T', member (of n1 T') L -> false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < intros.
+Subgoal 1:
+
+  Variables: T, L, M, N
+  H1 : ctx L
+  H2 : n1 = app (M n1) (N n1)
+  ============================
+   false
+
+Subgoal 2 is:
+ forall T R, n1 = abs T R -> false
+
+Subgoal 3 is:
+ forall T', member (of n1 T') L -> false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < case H2.
+Subgoal 2:
+
+  Variables: T, L
+  H1 : ctx L
+  ============================
+   forall T R, n1 = abs T R -> false
+
+Subgoal 3 is:
+ forall T', member (of n1 T') L -> false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < intros.
+Subgoal 2:
+
+  Variables: T, L, T1, R
+  H1 : ctx L
+  H2 : n1 = abs (T1 n1) (R n1)
+  ============================
+   false
+
+Subgoal 3 is:
+ forall T', member (of n1 T') L -> false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < case H2.
+Subgoal 3:
+
+  Variables: T, L
+  H1 : ctx L
+  ============================
+   forall T', member (of n1 T') L -> false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < intros.
+Subgoal 3:
+
+  Variables: T, L, T'
+  H1 : ctx L
+  H2 : member (of n1 (T' n1)) L
+  ============================
+   false
+
+Subgoal 4 is:
+ ctx L
+
+ctx_extend < apply member_prune to H2.
+Subgoal 4:
+
+  Variables: T, L
+  H1 : ctx L
+  ============================
+   ctx L
+
+ctx_extend < search.
+Proof completed.
+
+Abella < Theorem det_of : 
+forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2.
+
+
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1} -> {L |- of E T2} -> T1 = T2
+
+det_of < induction on 2.
+
+
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} -> T1 = T2
+  ============================
+   forall L E T1 T2, ctx L -> {L |- of E T1}@ -> {L |- of E T2} -> T1 = T2
+
+det_of < intros.
+
+  Variables: L, E, T1, T2
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H2 : {L |- of E T1}@
+  H3 : {L |- of E T2}
+  ============================
+   T1 = T2
+
+det_of < case H2.
+Subgoal 1:
+
+  Variables: L, E, T1, T2, U, R, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (abs T R) T2}
+  H4 : {L, of n1 T |- of (R n1) U}*
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < case H3.
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arrow T U = arrow T U1
+
+Subgoal 1.2 is:
+ arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply IH to _ H4 H5.
+Subgoal 1.1.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   ctx (of n1 T :: L)
+
+Subgoal 1.1 is:
+ arrow T U1 = arrow T U1
+
+Subgoal 1.2 is:
+ arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < backchain ctx_extend.
+Subgoal 1.1:
+
+  Variables: L, E, T1, T2, U, R, T, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U1}*
+  H5 : {L, of n1 T |- of (R n1) U1}
+  ============================
+   arrow T U1 = arrow T U1
+
+Subgoal 1.2 is:
+ arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < search.
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [F] |- of (abs T R) T2}
+  H6 : member F L
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply ctx_member to H1 H6.
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, X, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H5 : {L, [of X T3] |- of (abs T R) T2}
+  H6 : member (of X T3) L
+  H7 : forall M N, X = app M N -> false
+  H8 : forall T R, X = abs T R -> false
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < case H5.
+Subgoal 1.2:
+
+  Variables: L, E, T1, T2, U, R, T, F, X, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L, of n1 T |- of (R n1) U}*
+  H6 : member (of (abs T R) T2) L
+  H7 : forall M N, abs T R = app M N -> false
+  H8 : forall T1 R1, abs T R = abs T1 R1 -> false
+  ============================
+   arrow T U = T2
+
+Subgoal 2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply H8 to _ with T1 = T, R1 = R.
+Subgoal 2:
+
+  Variables: L, E, T1, T2, U, N, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of (app M N) T2}
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < case H3.
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L |- of M (arrow U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T1 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply IH to _ H4 H6.
+Subgoal 2.1:
+
+  Variables: L, E, T1, T2, U, N, M, U1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U1 T2)}*
+  H5 : {L |- of N U1}*
+  H6 : {L |- of M (arrow U1 T2)}
+  H7 : {L |- of N U1}
+  ============================
+   T2 = T2
+
+Subgoal 2.2 is:
+ T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < search.
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [F] |- of (app M N) T2}
+  H7 : member F L
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply ctx_member to H1 H7.
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, X, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H6 : {L, [of X T] |- of (app M N) T2}
+  H7 : member (of X T) L
+  H8 : forall M N, X = app M N -> false
+  H9 : forall T R, X = abs T R -> false
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < case H6.
+Subgoal 2.2:
+
+  Variables: L, E, T1, T2, U, N, M, F, X, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H4 : {L |- of M (arrow U T1)}*
+  H5 : {L |- of N U}*
+  H7 : member (of (app M N) T2) L
+  H8 : forall M1 N1, app M N = app M1 N1 -> false
+  H9 : forall T R, app M N = abs T R -> false
+  ============================
+   T1 = T2
+
+Subgoal 3 is:
+ T1 = T2
+
+det_of < apply H8 to _ with M1 = M, N1 = N.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [F] |- of E T1}*
+  H5 : member F L
+  ============================
+   T1 = T2
+
+det_of < apply ctx_member to H1 H5.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, X, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H4 : {L, [of X T] |- of E T1}*
+  H5 : member (of X T) L
+  H6 : forall M N, X = app M N -> false
+  H7 : forall T R, X = abs T R -> false
+  ============================
+   T1 = T2
+
+det_of < case H4.
+Subgoal 3:
+
+  Variables: L, E, T1, T2, F, X, T
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H3 : {L |- of E T2}
+  H5 : member (of E T1) L
+  H6 : forall M N, E = app M N -> false
+  H7 : forall T R, E = abs T R -> false
+  ============================
+   T1 = T2
+
+det_of < case H3.
+Subgoal 3.1:
+
+  Variables: L, E, T1, T2, F, X, T, U, R, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of (abs T3 R) T1) L
+  H6 : forall M N, abs T3 R = app M N -> false
+  H7 : forall T R1, abs T3 R = abs T R1 -> false
+  H8 : {L, of n1 T3 |- of (R n1) U}
+  ============================
+   T1 = arrow T3 U
+
+Subgoal 3.2 is:
+ T1 = T2
+
+Subgoal 3.3 is:
+ T1 = T2
+
+det_of < apply H7 to _ with T = T3, R1 = R.
+Subgoal 3.2:
+
+  Variables: L, E, T1, T2, F, X, T, U, N, M
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of (app M N) T1) L
+  H6 : forall M1 N1, app M N = app M1 N1 -> false
+  H7 : forall T R, app M N = abs T R -> false
+  H8 : {L |- of M (arrow U T2)}
+  H9 : {L |- of N U}
+  ============================
+   T1 = T2
+
+Subgoal 3.3 is:
+ T1 = T2
+
+det_of < apply H6 to _ with M1 = M, N1 = N.
+Subgoal 3.3:
+
+  Variables: L, E, T1, T2, F, X, T, F1
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of E T1) L
+  H6 : forall M N, E = app M N -> false
+  H7 : forall T R, E = abs T R -> false
+  H8 : {L, [F1] |- of E T2}
+  H9 : member F1 L
+  ============================
+   T1 = T2
+
+det_of < apply ctx_member to H1 H9.
+Subgoal 3.3:
+
+  Variables: L, E, T1, T2, F, X, T, F1, X1, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of E T1) L
+  H6 : forall M N, E = app M N -> false
+  H7 : forall T R, E = abs T R -> false
+  H8 : {L, [of X1 T3] |- of E T2}
+  H9 : member (of X1 T3) L
+  H10 : forall M N, X1 = app M N -> false
+  H11 : forall T R, X1 = abs T R -> false
+  ============================
+   T1 = T2
+
+det_of < case H8.
+Subgoal 3.3:
+
+  Variables: L, E, T1, T2, F, X, T, F1, X1, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of E T1) L
+  H6 : forall M N, E = app M N -> false
+  H7 : forall T R, E = abs T R -> false
+  H9 : member (of E T2) L
+  H10 : forall M N, E = app M N -> false
+  H11 : forall T R, E = abs T R -> false
+  ============================
+   T1 = T2
+
+det_of < apply uniq to H1 H5 H9.
+Subgoal 3.3:
+
+  Variables: L, E, T1, T2, F, X, T, F1, X1, T3
+  IH : forall L E T1 T2, ctx L -> {L |- of E T1}* -> {L |- of E T2} ->
+         T1 = T2
+  H1 : ctx L
+  H5 : member (of E T2) L
+  H6 : forall M N, E = app M N -> false
+  H7 : forall T R, E = abs T R -> false
+  H9 : member (of E T2) L
+  H10 : forall M N, E = app M N -> false
+  H11 : forall T R, E = abs T R -> false
+  ============================
+   T2 = T2
+
+det_of < search.
+Proof completed.
+
+Abella < Goodbye.

@@ -1,0 +1,992 @@
+Welcome to Abella 2.0
+Abella < Specification "copy".
+Reading specification "copy"
+
+Abella < Theorem member_fresh : 
+forall L E, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall L E, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_fresh < induction on 1.
+
+
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall L E, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_fresh < intros.
+
+  Variables: L, E
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_fresh < case H1.
+Subgoal 1:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_fresh < search.
+Subgoal 2:
+
+  Variables: L, E, L3, L2
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_fresh < apply IH to H2.
+Subgoal 2:
+
+  Variables: L, E, L3, L2, F
+  IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_fresh < search.
+Proof completed.
+
+Abella < Define ctxs : olist -> olist -> prop by 
+ctxs nil nil;
+ctxs (copy X Y :: L1) (copy2 X Y :: L2) := ctxs L1 L2.
+
+Abella < Define name : tm -> prop by 
+nabla x, name x.
+
+Abella < Theorem ctx_mem1 : 
+forall F L1 L2, ctxs L1 L2 -> member F L1 -> (exists X Y, F = copy X Y).
+
+
+  ============================
+   forall F L1 L2, ctxs L1 L2 -> member F L1 -> (exists X Y, F = copy X Y)
+
+ctx_mem1 < induction on 1.
+
+
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  ============================
+   forall F L1 L2, ctxs L1 L2 @ -> member F L1 -> (exists X Y, F = copy X Y)
+
+ctx_mem1 < intros.
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H1 : ctxs L1 L2 @
+  H2 : member F L1
+  ============================
+   exists X Y, F = copy X Y
+
+ctx_mem1 < case H1.
+Subgoal 1:
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H2 : member F nil
+  ============================
+   exists X Y, F = copy X Y
+
+Subgoal 2 is:
+ exists X Y, F = copy X Y
+
+ctx_mem1 < case H2.
+Subgoal 2:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H2 : member F (copy X Y :: L3)
+  H3 : ctxs L3 L4 *
+  ============================
+   exists X Y, F = copy X Y
+
+ctx_mem1 < case H2.
+Subgoal 2.1:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H3 : ctxs L3 L4 *
+  ============================
+   exists X1 Y1, copy X Y = copy X1 Y1
+
+Subgoal 2.2 is:
+ exists X Y, F = copy X Y
+
+ctx_mem1 < search.
+Subgoal 2.2:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H3 : ctxs L3 L4 *
+  H4 : member F L3
+  ============================
+   exists X Y, F = copy X Y
+
+ctx_mem1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: F, L1, L2, L4, Y, X, L3, X1, Y1
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L1 -> (exists X Y,
+         F = copy X Y)
+  H3 : ctxs L3 L4 *
+  H4 : member (copy X1 Y1) L3
+  ============================
+   exists X Y, copy X1 Y1 = copy X Y
+
+ctx_mem1 < search.
+Proof completed.
+
+Abella < Theorem ctx_mem2 : 
+forall F L1 L2, ctxs L1 L2 -> member F L2 -> (exists X Y, F = copy2 X Y).
+
+
+  ============================
+   forall F L1 L2, ctxs L1 L2 -> member F L2 -> (exists X Y, F = copy2 X Y)
+
+ctx_mem2 < induction on 1.
+
+
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  ============================
+   forall F L1 L2, ctxs L1 L2 @ -> member F L2 -> (exists X Y, F = copy2 X Y)
+
+ctx_mem2 < intros.
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H1 : ctxs L1 L2 @
+  H2 : member F L2
+  ============================
+   exists X Y, F = copy2 X Y
+
+ctx_mem2 < case H1.
+Subgoal 1:
+
+  Variables: F, L1, L2
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H2 : member F nil
+  ============================
+   exists X Y, F = copy2 X Y
+
+Subgoal 2 is:
+ exists X Y, F = copy2 X Y
+
+ctx_mem2 < case H2.
+Subgoal 2:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H2 : member F (copy2 X Y :: L4)
+  H3 : ctxs L3 L4 *
+  ============================
+   exists X Y, F = copy2 X Y
+
+ctx_mem2 < case H2.
+Subgoal 2.1:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H3 : ctxs L3 L4 *
+  ============================
+   exists X1 Y1, copy2 X Y = copy2 X1 Y1
+
+Subgoal 2.2 is:
+ exists X Y, F = copy2 X Y
+
+ctx_mem2 < search.
+Subgoal 2.2:
+
+  Variables: F, L1, L2, L4, Y, X, L3
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H3 : ctxs L3 L4 *
+  H4 : member F L4
+  ============================
+   exists X Y, F = copy2 X Y
+
+ctx_mem2 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: F, L1, L2, L4, Y, X, L3, X1, Y1
+  IH : forall F L1 L2, ctxs L1 L2 * -> member F L2 -> (exists X Y,
+         F = copy2 X Y)
+  H3 : ctxs L3 L4 *
+  H4 : member (copy2 X1 Y1) L4
+  ============================
+   exists X Y, copy2 X1 Y1 = copy2 X Y
+
+ctx_mem2 < search.
+Proof completed.
+
+Abella < Theorem copy2_align : 
+forall M N K L, nabla z, ctxs K L -> {L, copy2 z z |- copy2 (M z) (N z)} ->
+  (nabla x y, {L, copy2 x y |- copy2 (M x) (N y)}).
+
+
+  ============================
+   forall M N K L, nabla z, ctxs K L ->
+     {L, copy2 z z |- copy2 (M z) (N z)} -> (nabla x y,
+     {L, copy2 x y |- copy2 (M x) (N y)})
+
+copy2_align < induction on 2.
+
+
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  ============================
+   forall M N K L, nabla z, ctxs K L ->
+     {L, copy2 z z |- copy2 (M z) (N z)}@ -> (nabla x y,
+     {L, copy2 x y |- copy2 (M x) (N y)})
+
+copy2_align < intros.
+
+  Variables: M, N, K, L
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H2 : {L, copy2 n1 n1 |- copy2 (M n1) (N n1)}@
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < case H2.
+Subgoal 1:
+
+  Variables: M, N, K, L, Q, M1, P, N1
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1 |- copy2 (N1 n1) (P n1)}*
+  H4 : {L, copy2 n1 n1 |- copy2 (M1 n1) (Q n1)}*
+  ============================
+   {L, copy2 n1 n2 |- copy2 (app (N1 n1) (M1 n1)) (app (P n2) (Q n2))}
+
+Subgoal 2 is:
+ {L, copy2 n1 n2 |- copy2 (abs (R n1)) (abs (S n2))}
+
+Subgoal 3 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < apply IH to H1 H3.
+Subgoal 1:
+
+  Variables: M, N, K, L, Q, M1, P, N1
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1 |- copy2 (N1 n1) (P n1)}*
+  H4 : {L, copy2 n1 n1 |- copy2 (M1 n1) (Q n1)}*
+  H5 : {L, copy2 n1 n2 |- copy2 (N1 n1) (P n2)}
+  ============================
+   {L, copy2 n1 n2 |- copy2 (app (N1 n1) (M1 n1)) (app (P n2) (Q n2))}
+
+Subgoal 2 is:
+ {L, copy2 n1 n2 |- copy2 (abs (R n1)) (abs (S n2))}
+
+Subgoal 3 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < apply IH to H1 H4.
+Subgoal 1:
+
+  Variables: M, N, K, L, Q, M1, P, N1
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1 |- copy2 (N1 n1) (P n1)}*
+  H4 : {L, copy2 n1 n1 |- copy2 (M1 n1) (Q n1)}*
+  H5 : {L, copy2 n1 n2 |- copy2 (N1 n1) (P n2)}
+  H6 : {L, copy2 n1 n2 |- copy2 (M1 n1) (Q n2)}
+  ============================
+   {L, copy2 n1 n2 |- copy2 (app (N1 n1) (M1 n1)) (app (P n2) (Q n2))}
+
+Subgoal 2 is:
+ {L, copy2 n1 n2 |- copy2 (abs (R n1)) (abs (S n2))}
+
+Subgoal 3 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < search.
+Subgoal 2:
+
+  Variables: M, N, K, L, S, R
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, copy2 n2 n3 |- copy2 (R n1 n2) (S n1 n3)}*
+  ============================
+   {L, copy2 n1 n2 |- copy2 (abs (R n1)) (abs (S n2))}
+
+Subgoal 3 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < apply IH to _ H3.
+Subgoal 2:
+
+  Variables: M, N, K, L, S, R
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, copy2 n2 n3 |- copy2 (R n1 n2) (S n1 n3)}*
+  H4 : {L, copy2 n2 n3, copy2 n1 n4 |- copy2 (R n1 n2) (S n4 n3)}
+  ============================
+   {L, copy2 n1 n2 |- copy2 (abs (R n1)) (abs (S n2))}
+
+Subgoal 3 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < search.
+Subgoal 3:
+
+  Variables: M, N, K, L, F
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, [F n1] |- copy2 (M n1) (N n1)}*
+  H4 : member (F n1) (copy2 n1 n1 :: L)
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < case H4.
+Subgoal 3.1:
+
+  Variables: M, N, K, L, F
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, [copy2 n1 n1] |- copy2 (M n1) (N n1)}*
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+Subgoal 3.2 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < case H3.
+Subgoal 3.1:
+
+  Variables: M, N, K, L, F
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  ============================
+   {L, copy2 n1 n2 |- copy2 n1 n2}
+
+Subgoal 3.2 is:
+ {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < search.
+Subgoal 3.2:
+
+  Variables: M, N, K, L, F
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, [F n1] |- copy2 (M n1) (N n1)}*
+  H5 : member (F n1) L
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < apply member_fresh to H5.
+Subgoal 3.2:
+
+  Variables: M, N, K, L, F, F1
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, [F1] |- copy2 (M n1) (N n1)}*
+  H5 : member F1 L
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < apply ctx_mem2 to H1 H5.
+Subgoal 3.2:
+
+  Variables: M, N, K, L, F, F1, X, Y
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H3 : {L, copy2 n1 n1, [copy2 X Y] |- copy2 (M n1) (N n1)}*
+  H5 : member (copy2 X Y) L
+  ============================
+   {L, copy2 n1 n2 |- copy2 (M n1) (N n2)}
+
+copy2_align < case H3.
+Subgoal 3.2:
+
+  Variables: M, N, K, L, F, F1, X, Y
+  IH : forall M N K L, nabla z, ctxs K L ->
+         {L, copy2 z z |- copy2 (M z) (N z)}* -> (nabla x y,
+         {L, copy2 x y |- copy2 (M x) (N y)})
+  H1 : ctxs K L
+  H5 : member (copy2 X Y) L
+  ============================
+   {L, copy2 n1 n2 |- copy2 X Y}
+
+copy2_align < search.
+Proof completed.
+
+Abella < Theorem ctxs_member1 : 
+forall X Y L K, ctxs L K -> member (copy X Y) L -> member (copy2 X Y) K.
+
+
+  ============================
+   forall X Y L K, ctxs L K -> member (copy X Y) L -> member (copy2 X Y) K
+
+ctxs_member1 < induction on 1.
+
+
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  ============================
+   forall X Y L K, ctxs L K @ -> member (copy X Y) L -> member (copy2 X Y) K
+
+ctxs_member1 < intros.
+
+  Variables: X, Y, L, K
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H1 : ctxs L K @
+  H2 : member (copy X Y) L
+  ============================
+   member (copy2 X Y) K
+
+ctxs_member1 < case H1.
+Subgoal 1:
+
+  Variables: X, Y, L, K
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H2 : member (copy X Y) nil
+  ============================
+   member (copy2 X Y) nil
+
+Subgoal 2 is:
+ member (copy2 X Y) (copy2 X1 Y1 :: L2)
+
+ctxs_member1 < case H2.
+Subgoal 2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H2 : member (copy X Y) (copy X1 Y1 :: L1)
+  H3 : ctxs L1 L2 *
+  ============================
+   member (copy2 X Y) (copy2 X1 Y1 :: L2)
+
+ctxs_member1 < case H2.
+Subgoal 2.1:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H3 : ctxs L1 L2 *
+  ============================
+   member (copy2 X1 Y1) (copy2 X1 Y1 :: L2)
+
+Subgoal 2.2 is:
+ member (copy2 X Y) (copy2 X1 Y1 :: L2)
+
+ctxs_member1 < search.
+Subgoal 2.2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H3 : ctxs L1 L2 *
+  H4 : member (copy X Y) L1
+  ============================
+   member (copy2 X Y) (copy2 X1 Y1 :: L2)
+
+ctxs_member1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy X Y) L ->
+         member (copy2 X Y) K
+  H3 : ctxs L1 L2 *
+  H4 : member (copy X Y) L1
+  H5 : member (copy2 X Y) L2
+  ============================
+   member (copy2 X Y) (copy2 X1 Y1 :: L2)
+
+ctxs_member1 < search.
+Proof completed.
+
+Abella < Theorem copy_copy2 : 
+forall L K M N, ctxs L K -> {L |- copy M N} -> {K |- copy2 M N}.
+
+
+  ============================
+   forall L K M N, ctxs L K -> {L |- copy M N} -> {K |- copy2 M N}
+
+copy_copy2 < induction on 2.
+
+
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  ============================
+   forall L K M N, ctxs L K -> {L |- copy M N}@ -> {K |- copy2 M N}
+
+copy_copy2 < intros.
+
+  Variables: L, K, M, N
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H2 : {L |- copy M N}@
+  ============================
+   {K |- copy2 M N}
+
+copy_copy2 < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L |- copy N1 P}*
+  H4 : {L |- copy M1 Q}*
+  ============================
+   {K |- copy2 (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < apply IH to H1 H3.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L |- copy N1 P}*
+  H4 : {L |- copy M1 Q}*
+  H5 : {K |- copy2 N1 P}
+  ============================
+   {K |- copy2 (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < apply IH to H1 H4.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L |- copy N1 P}*
+  H4 : {L |- copy M1 Q}*
+  H5 : {K |- copy2 N1 P}
+  H6 : {K |- copy2 M1 Q}
+  ============================
+   {K |- copy2 (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < search.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L, copy n1 n1 |- copy (R n1) (S n1)}*
+  ============================
+   {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < apply IH to _ H3.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L, copy n1 n1 |- copy (R n1) (S n1)}*
+  H4 : {K, copy2 n1 n1 |- copy2 (R n1) (S n1)}
+  ============================
+   {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < apply copy2_align to H1 H4.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L, copy n1 n1 |- copy (R n1) (S n1)}*
+  H4 : {K, copy2 n1 n1 |- copy2 (R n1) (S n1)}
+  H5 : {K, copy2 n1 n2 |- copy2 (R n1) (S n2)}
+  ============================
+   {K |- copy2 (abs R) (abs S)}
+
+Subgoal 3 is:
+ {K |- copy2 M N}
+
+copy_copy2 < search.
+Subgoal 3:
+
+  Variables: L, K, M, N, F
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L, [F] |- copy M N}*
+  H4 : member F L
+  ============================
+   {K |- copy2 M N}
+
+copy_copy2 < apply ctx_mem1 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H3 : {L, [copy X Y] |- copy M N}*
+  H4 : member (copy X Y) L
+  ============================
+   {K |- copy2 M N}
+
+copy_copy2 < case H3.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H4 : member (copy M N) L
+  ============================
+   {K |- copy2 M N}
+
+copy_copy2 < apply ctxs_member1 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {L |- copy M N}* -> {K |- copy2 M N}
+  H1 : ctxs L K
+  H4 : member (copy M N) L
+  H5 : member (copy2 M N) K
+  ============================
+   {K |- copy2 M N}
+
+copy_copy2 < search.
+Proof completed.
+
+Abella < Theorem copy_align : 
+forall M N L, nabla x y, {L, copy x y |- copy (M x) (N y)} -> (nabla z,
+  {L, copy z z |- copy (M z) (N z)}).
+
+
+  ============================
+   forall M N L, nabla x y, {L, copy x y |- copy (M x) (N y)} -> (nabla z,
+     {L, copy z z |- copy (M z) (N z)})
+
+copy_align < intros.
+
+  Variables: M, N, L
+  H1 : {L, copy n1 n2 |- copy (M n1) (N n2)}
+  ============================
+   {L, copy n1 n1 |- copy (M n1) (N n1)}
+
+copy_align < inst H1 with n2 = n1.
+
+  Variables: M, N, L
+  H1 : {L, copy n1 n2 |- copy (M n1) (N n2)}
+  H2 : {L, copy n1 n1 |- copy (M n1) (N n1)}
+  ============================
+   {L, copy n1 n1 |- copy (M n1) (N n1)}
+
+copy_align < search.
+Proof completed.
+
+Abella < Theorem ctxs_member2 : 
+forall X Y L K, ctxs L K -> member (copy2 X Y) K -> member (copy X Y) L.
+
+
+  ============================
+   forall X Y L K, ctxs L K -> member (copy2 X Y) K -> member (copy X Y) L
+
+ctxs_member2 < induction on 1.
+
+
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  ============================
+   forall X Y L K, ctxs L K @ -> member (copy2 X Y) K -> member (copy X Y) L
+
+ctxs_member2 < intros.
+
+  Variables: X, Y, L, K
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H1 : ctxs L K @
+  H2 : member (copy2 X Y) K
+  ============================
+   member (copy X Y) L
+
+ctxs_member2 < case H1.
+Subgoal 1:
+
+  Variables: X, Y, L, K
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H2 : member (copy2 X Y) nil
+  ============================
+   member (copy X Y) nil
+
+Subgoal 2 is:
+ member (copy X Y) (copy X1 Y1 :: L1)
+
+ctxs_member2 < case H2.
+Subgoal 2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H2 : member (copy2 X Y) (copy2 X1 Y1 :: L2)
+  H3 : ctxs L1 L2 *
+  ============================
+   member (copy X Y) (copy X1 Y1 :: L1)
+
+ctxs_member2 < case H2.
+Subgoal 2.1:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H3 : ctxs L1 L2 *
+  ============================
+   member (copy X1 Y1) (copy X1 Y1 :: L1)
+
+Subgoal 2.2 is:
+ member (copy X Y) (copy X1 Y1 :: L1)
+
+ctxs_member2 < search.
+Subgoal 2.2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H3 : ctxs L1 L2 *
+  H4 : member (copy2 X Y) L2
+  ============================
+   member (copy X Y) (copy X1 Y1 :: L1)
+
+ctxs_member2 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: X, Y, L, K, L2, Y1, X1, L1
+  IH : forall X Y L K, ctxs L K * -> member (copy2 X Y) K ->
+         member (copy X Y) L
+  H3 : ctxs L1 L2 *
+  H4 : member (copy2 X Y) L2
+  H5 : member (copy X Y) L1
+  ============================
+   member (copy X Y) (copy X1 Y1 :: L1)
+
+ctxs_member2 < search.
+Proof completed.
+
+Abella < Theorem copy2_copy : 
+forall L K M N, ctxs L K -> {K |- copy2 M N} -> {L |- copy M N}.
+
+
+  ============================
+   forall L K M N, ctxs L K -> {K |- copy2 M N} -> {L |- copy M N}
+
+copy2_copy < induction on 2.
+
+
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  ============================
+   forall L K M N, ctxs L K -> {K |- copy2 M N}@ -> {L |- copy M N}
+
+copy2_copy < intros.
+
+  Variables: L, K, M, N
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H2 : {K |- copy2 M N}@
+  ============================
+   {L |- copy M N}
+
+copy2_copy < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K |- copy2 N1 P}*
+  H4 : {K |- copy2 M1 Q}*
+  ============================
+   {L |- copy (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < apply IH to H1 H3.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K |- copy2 N1 P}*
+  H4 : {K |- copy2 M1 Q}*
+  H5 : {L |- copy N1 P}
+  ============================
+   {L |- copy (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < apply IH to H1 H4.
+Subgoal 1:
+
+  Variables: L, K, M, N, Q, M1, P, N1
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K |- copy2 N1 P}*
+  H4 : {K |- copy2 M1 Q}*
+  H5 : {L |- copy N1 P}
+  H6 : {L |- copy M1 Q}
+  ============================
+   {L |- copy (app N1 M1) (app P Q)}
+
+Subgoal 2 is:
+ {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < search.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K, copy2 n1 n2 |- copy2 (R n1) (S n2)}*
+  ============================
+   {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < apply IH to _ H3.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K, copy2 n1 n2 |- copy2 (R n1) (S n2)}*
+  H4 : {L, copy n1 n2 |- copy (R n1) (S n2)}
+  ============================
+   {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < apply copy_align to H4.
+Subgoal 2:
+
+  Variables: L, K, M, N, S, R
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K, copy2 n1 n2 |- copy2 (R n1) (S n2)}*
+  H4 : {L, copy n1 n2 |- copy (R n1) (S n2)}
+  H5 : {L, copy n1 n1 |- copy (R n1) (S n1)}
+  ============================
+   {L |- copy (abs R) (abs S)}
+
+Subgoal 3 is:
+ {L |- copy M N}
+
+copy2_copy < search.
+Subgoal 3:
+
+  Variables: L, K, M, N, F
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K, [F] |- copy2 M N}*
+  H4 : member F K
+  ============================
+   {L |- copy M N}
+
+copy2_copy < apply ctx_mem2 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H3 : {K, [copy2 X Y] |- copy2 M N}*
+  H4 : member (copy2 X Y) K
+  ============================
+   {L |- copy M N}
+
+copy2_copy < case H3.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H4 : member (copy2 M N) K
+  ============================
+   {L |- copy M N}
+
+copy2_copy < apply ctxs_member2 to H1 H4.
+Subgoal 3:
+
+  Variables: L, K, M, N, F, X, Y
+  IH : forall L K M N, ctxs L K -> {K |- copy2 M N}* -> {L |- copy M N}
+  H1 : ctxs L K
+  H4 : member (copy2 M N) K
+  H5 : member (copy M N) L
+  ============================
+   {L |- copy M N}
+
+copy2_copy < search.
+Proof completed.
+
+Abella < Goodbye.

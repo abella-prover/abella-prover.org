@@ -1,0 +1,831 @@
+Welcome to Abella 2.0
+Abella < Specification "bred_alt".
+Reading specification "bred_alt"
+
+Abella < Close tm, p.
+
+Abella < Define ctx2 : olist -> olist -> prop by 
+ctx2 nil nil;
+nabla x p, ctx2 (bred x x :: G) (path x p :: D) := ctx2 G D;
+nabla x, ctx2 (pi u\bred N u => bred x u :: G) (pi q\path N q => path x q :: D) := ctx2 G D.
+
+Abella < Define name : tm -> prop by 
+nabla n, name n.
+
+Abella < Define fresh : tm -> tm -> prop by 
+nabla n, fresh n X.
+
+Abella < Define pname : p -> prop by 
+nabla p, pname p.
+
+Abella < Define btctx : olist -> olist -> prop by 
+btctx nil nil;
+nabla x, btctx (bred x x :: L) (tm x :: K) := btctx L K.
+
+Abella < Theorem btctx_mem1 : 
+forall L K F, btctx L K -> member F K -> (exists X, F = tm X /\ name X).
+
+
+  ============================
+   forall L K F, btctx L K -> member F K -> (exists X, F = tm X /\ name X)
+
+btctx_mem1 < induction on 1.
+
+
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  ============================
+   forall L K F, btctx L K @ -> member F K -> (exists X, F = tm X /\ name X)
+
+btctx_mem1 < intros.
+
+  Variables: L, K, F
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H1 : btctx L K @
+  H2 : member F K
+  ============================
+   exists X, F = tm X /\ name X
+
+btctx_mem1 < case H1.
+Subgoal 1:
+
+  Variables: L, K, F
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H2 : member F nil
+  ============================
+   exists X, F = tm X /\ name X
+
+Subgoal 2 is:
+ exists X, F n1 = tm X /\ name X
+
+btctx_mem1 < case H2.
+Subgoal 2:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H2 : member (F n1) (tm n1 :: K1)
+  H3 : btctx L1 K1 *
+  ============================
+   exists X, F n1 = tm X /\ name X
+
+btctx_mem1 < case H2.
+Subgoal 2.1:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H3 : btctx L1 K1 *
+  ============================
+   exists X, tm n1 = tm X /\ name X
+
+Subgoal 2.2 is:
+ exists X, F n1 = tm X /\ name X
+
+btctx_mem1 < search.
+Subgoal 2.2:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H3 : btctx L1 K1 *
+  H4 : member (F n1) K1
+  ============================
+   exists X, F n1 = tm X /\ name X
+
+btctx_mem1 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: L, K, F, K1, L1, X
+  IH : forall L K F, btctx L K * -> member F K -> (exists X, F = tm X /\
+         name X)
+  H3 : btctx L1 K1 *
+  H4 : member (tm (X n1)) K1
+  H5 : name (X n1)
+  ============================
+   exists X1, tm (X n1) = tm X1 /\ name X1
+
+btctx_mem1 < search.
+Proof completed.
+
+Abella < Theorem btctx_mem2 : 
+forall L K F, btctx L K -> member F L -> (exists x, F = bred x x /\ name x).
+
+
+  ============================
+   forall L K F, btctx L K -> member F L -> (exists x, F = bred x x /\
+     name x)
+
+btctx_mem2 < induction on 1.
+
+
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  ============================
+   forall L K F, btctx L K @ -> member F L -> (exists x, F = bred x x /\
+     name x)
+
+btctx_mem2 < intros.
+
+  Variables: L, K, F
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H1 : btctx L K @
+  H2 : member F L
+  ============================
+   exists x, F = bred x x /\ name x
+
+btctx_mem2 < case H1.
+Subgoal 1:
+
+  Variables: L, K, F
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H2 : member F nil
+  ============================
+   exists x, F = bred x x /\ name x
+
+Subgoal 2 is:
+ exists x, F n1 = bred x x /\ name x
+
+btctx_mem2 < case H2.
+Subgoal 2:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H2 : member (F n1) (bred n1 n1 :: L1)
+  H3 : btctx L1 K1 *
+  ============================
+   exists x, F n1 = bred x x /\ name x
+
+btctx_mem2 < case H2.
+Subgoal 2.1:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H3 : btctx L1 K1 *
+  ============================
+   exists x, bred n1 n1 = bred x x /\ name x
+
+Subgoal 2.2 is:
+ exists x, F n1 = bred x x /\ name x
+
+btctx_mem2 < search.
+Subgoal 2.2:
+
+  Variables: L, K, F, K1, L1
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H3 : btctx L1 K1 *
+  H4 : member (F n1) L1
+  ============================
+   exists x, F n1 = bred x x /\ name x
+
+btctx_mem2 < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: L, K, F, K1, L1, x
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H3 : btctx L1 K1 *
+  H4 : member (bred (x n1) (x n1)) L1
+  H5 : name (x n1)
+  ============================
+   exists x1, bred (x n1) (x n1) = bred x1 x1 /\ name x1
+
+btctx_mem2 < case H5.
+Subgoal 2.2.1:
+
+  Variables: L, K, F, K1, L1, x
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H3 : btctx (L1 n2) (K1 n2) *
+  H4 : member (bred n2 n2) (L1 n2)
+  ============================
+   exists x1, bred n2 n2 = bred x1 x1 /\ name x1
+
+Subgoal 2.2.2 is:
+ exists x1, bred n1 n1 = bred x1 x1 /\ name x1
+
+btctx_mem2 < search.
+Subgoal 2.2.2:
+
+  Variables: L, K, F, K1, L1, x
+  IH : forall L K F, btctx L K * -> member F L -> (exists x, F = bred x x /\
+         name x)
+  H3 : btctx L1 K1 *
+  H4 : member (bred n1 n1) L1
+  ============================
+   exists x1, bred n1 n1 = bred x1 x1 /\ name x1
+
+btctx_mem2 < search.
+Proof completed.
+
+Abella < Theorem btctx_sync : 
+forall L K x, btctx L K -> member (tm x) K -> member (bred x x) L.
+
+
+  ============================
+   forall L K x, btctx L K -> member (tm x) K -> member (bred x x) L
+
+btctx_sync < induction on 1.
+
+
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  ============================
+   forall L K x, btctx L K @ -> member (tm x) K -> member (bred x x) L
+
+btctx_sync < intros.
+
+  Variables: L, K, x
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H1 : btctx L K @
+  H2 : member (tm x) K
+  ============================
+   member (bred x x) L
+
+btctx_sync < case H1.
+Subgoal 1:
+
+  Variables: L, K, x
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H2 : member (tm x) nil
+  ============================
+   member (bred x x) nil
+
+Subgoal 2 is:
+ member (bred (x n1) (x n1)) (bred n1 n1 :: L1)
+
+btctx_sync < case H2.
+Subgoal 2:
+
+  Variables: L, K, x, K1, L1
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H2 : member (tm (x n1)) (tm n1 :: K1)
+  H3 : btctx L1 K1 *
+  ============================
+   member (bred (x n1) (x n1)) (bred n1 n1 :: L1)
+
+btctx_sync < case H2.
+Subgoal 2.1:
+
+  Variables: L, K, x, K1, L1
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H3 : btctx L1 K1 *
+  ============================
+   member (bred n1 n1) (bred n1 n1 :: L1)
+
+Subgoal 2.2 is:
+ member (bred (x n1) (x n1)) (bred n1 n1 :: L1)
+
+btctx_sync < search.
+Subgoal 2.2:
+
+  Variables: L, K, x, K1, L1
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H3 : btctx L1 K1 *
+  H4 : member (tm (x n1)) K1
+  ============================
+   member (bred (x n1) (x n1)) (bred n1 n1 :: L1)
+
+btctx_sync < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: L, K, x, K1, L1
+  IH : forall L K x, btctx L K * -> member (tm x) K -> member (bred x x) L
+  H3 : btctx L1 K1 *
+  H4 : member (tm (x n1)) K1
+  H5 : member (bred (x n1) (x n1)) L1
+  ============================
+   member (bred (x n1) (x n1)) (bred n1 n1 :: L1)
+
+btctx_sync < search.
+Proof completed.
+
+Abella < Theorem bred_subst : 
+forall L K R U N V, nabla x, btctx L K ->
+  {L, bred x x |- bred (R x) (U x)} -> {L |- bred N V} ->
+  {L |- bred (R N) (U V)}.
+
+
+  ============================
+   forall L K R U N V, nabla x, btctx L K ->
+     {L, bred x x |- bred (R x) (U x)} -> {L |- bred N V} ->
+     {L |- bred (R N) (U V)}
+
+bred_subst < induction on 2.
+
+
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  ============================
+   forall L K R U N V, nabla x, btctx L K ->
+     {L, bred x x |- bred (R x) (U x)}@ -> {L |- bred N V} ->
+     {L |- bred (R N) (U V)}
+
+bred_subst < intros.
+
+  Variables: L, K, R, U, N, V
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H2 : {L, bred n1 n1 |- bred (R n1) (U n1)}@
+  H3 : {L |- bred N V}
+  ============================
+   {L |- bred (R N) (U V)}
+
+bred_subst < case H2.
+Subgoal 1:
+
+  Variables: L, K, R, U, N, V, U1, M
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, bred n2 n2 |- bred (M n1 n2) (U1 n1 n2)}*
+  ============================
+   {L |- bred (abs (M N)) (abs (U1 V))}
+
+Subgoal 2 is:
+ {L |- bred (app (M N) (N1 N)) (app (U1 V) (V1 V))}
+
+Subgoal 3 is:
+ {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < apply IH to _ H4 H3.
+Subgoal 1:
+
+  Variables: L, K, R, U, N, V, U1, M
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, bred n2 n2 |- bred (M n1 n2) (U1 n1 n2)}*
+  H5 : {L, bred n2 n2 |- bred (M N n2) (U1 V n2)}
+  ============================
+   {L |- bred (abs (M N)) (abs (U1 V))}
+
+Subgoal 2 is:
+ {L |- bred (app (M N) (N1 N)) (app (U1 V) (V1 V))}
+
+Subgoal 3 is:
+ {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < search.
+Subgoal 2:
+
+  Variables: L, K, R, U, N, V, V1, N1, U1, M
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1 |- bred (M n1) (U1 n1)}*
+  H5 : {L, bred n1 n1 |- bred (N1 n1) (V1 n1)}*
+  ============================
+   {L |- bred (app (M N) (N1 N)) (app (U1 V) (V1 V))}
+
+Subgoal 3 is:
+ {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < apply IH to H1 H4 H3.
+Subgoal 2:
+
+  Variables: L, K, R, U, N, V, V1, N1, U1, M
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1 |- bred (M n1) (U1 n1)}*
+  H5 : {L, bred n1 n1 |- bred (N1 n1) (V1 n1)}*
+  H6 : {L |- bred (M N) (U1 V)}
+  ============================
+   {L |- bred (app (M N) (N1 N)) (app (U1 V) (V1 V))}
+
+Subgoal 3 is:
+ {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < apply IH to H1 H5 H3.
+Subgoal 2:
+
+  Variables: L, K, R, U, N, V, V1, N1, U1, M
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1 |- bred (M n1) (U1 n1)}*
+  H5 : {L, bred n1 n1 |- bred (N1 n1) (V1 n1)}*
+  H6 : {L |- bred (M N) (U1 V)}
+  H7 : {L |- bred (N1 N) (V1 V)}
+  ============================
+   {L |- bred (app (M N) (N1 N)) (app (U1 V) (V1 V))}
+
+Subgoal 3 is:
+ {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < search.
+Subgoal 3:
+
+  Variables: L, K, R, U, N, V, N1, R1
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1 |- bred (R1 n1 (N1 n1)) (U n1)}*
+  ============================
+   {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < apply IH to H1 H4 H3.
+Subgoal 3:
+
+  Variables: L, K, R, U, N, V, N1, R1
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1 |- bred (R1 n1 (N1 n1)) (U n1)}*
+  H5 : {L |- bred (R1 N (N1 N)) (U V)}
+  ============================
+   {L |- bred (beta (R1 N) (N1 N)) (U V)}
+
+Subgoal 4 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < search.
+Subgoal 4:
+
+  Variables: L, K, R, U, N, V, F
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, [F n1] |- bred (R n1) (U n1)}*
+  H5 : member (F n1) (bred n1 n1 :: L)
+  ============================
+   {L |- bred (R N) (U V)}
+
+bred_subst < case H5.
+Subgoal 4.1:
+
+  Variables: L, K, R, U, N, V, F
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, [bred n1 n1] |- bred (R n1) (U n1)}*
+  ============================
+   {L |- bred (R N) (U V)}
+
+Subgoal 4.2 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < case H4.
+Subgoal 4.1:
+
+  Variables: L, K, R, U, N, V, F
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  ============================
+   {L |- bred N V}
+
+Subgoal 4.2 is:
+ {L |- bred (R N) (U V)}
+
+bred_subst < search.
+Subgoal 4.2:
+
+  Variables: L, K, R, U, N, V, F
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, [F n1] |- bred (R n1) (U n1)}*
+  H6 : member (F n1) L
+  ============================
+   {L |- bred (R N) (U V)}
+
+bred_subst < apply btctx_mem2 to H1 H6.
+Subgoal 4.2:
+
+  Variables: L, K, R, U, N, V, F, x
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H4 : {L, bred n1 n1, [bred (x n1) (x n1)] |- bred (R n1) (U n1)}*
+  H6 : member (bred (x n1) (x n1)) L
+  H7 : name (x n1)
+  ============================
+   {L |- bred (R N) (U V)}
+
+bred_subst < case H4.
+Subgoal 4.2:
+
+  Variables: L, K, R, U, N, V, F, x
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H6 : member (bred (U n1) (U n1)) L
+  H7 : name (U n1)
+  ============================
+   {L |- bred (U N) (U V)}
+
+bred_subst < case H7.
+Subgoal 4.2.1:
+
+  Variables: L, K, R, U, N, V, F, x
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx (L n2) (K n2)
+  H3 : {L n2 |- bred (N n2) (V n2)}
+  H6 : member (bred n2 n2) (L n2)
+  ============================
+   {L n2 |- bred n2 n2}
+
+Subgoal 4.2.2 is:
+ {L |- bred N V}
+
+bred_subst < search.
+Subgoal 4.2.2:
+
+  Variables: L, K, R, U, N, V, F, x
+  IH : forall L K R U N V, nabla x, btctx L K ->
+         {L, bred x x |- bred (R x) (U x)}* -> {L |- bred N V} ->
+         {L |- bred (R N) (U V)}
+  H1 : btctx L K
+  H3 : {L |- bred N V}
+  H6 : member (bred n1 n1) L
+  ============================
+   {L |- bred N V}
+
+bred_subst < search.
+Proof completed.
+
+Abella < Theorem bred_terminate : 
+forall L K M, btctx L K -> {K |- tm M} -> (exists U, {L |- bred M U}).
+
+
+  ============================
+   forall L K M, btctx L K -> {K |- tm M} -> (exists U, {L |- bred M U})
+
+bred_terminate < induction on 2.
+
+
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  ============================
+   forall L K M, btctx L K -> {K |- tm M}@ -> (exists U, {L |- bred M U})
+
+bred_terminate < intros.
+
+  Variables: L, K, M
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H2 : {K |- tm M}@
+  ============================
+   exists U, {L |- bred M U}
+
+bred_terminate < case H2.
+Subgoal 1:
+
+  Variables: L, K, M, M1
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K, tm n1 |- tm (M1 n1)}*
+  ============================
+   exists U, {L |- bred (abs M1) U}
+
+Subgoal 2 is:
+ exists U, {L |- bred (app M1 N) U}
+
+Subgoal 3 is:
+ exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply IH to _ H3.
+Subgoal 1:
+
+  Variables: L, K, M, M1, U
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K, tm n1 |- tm (M1 n1)}*
+  H4 : {L, bred n1 n1 |- bred (M1 n1) (U n1)}
+  ============================
+   exists U, {L |- bred (abs M1) U}
+
+Subgoal 2 is:
+ exists U, {L |- bred (app M1 N) U}
+
+Subgoal 3 is:
+ exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < search.
+Subgoal 2:
+
+  Variables: L, K, M, N, M1
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm M1}*
+  H4 : {K |- tm N}*
+  ============================
+   exists U, {L |- bred (app M1 N) U}
+
+Subgoal 3 is:
+ exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply IH to H1 H3.
+Subgoal 2:
+
+  Variables: L, K, M, N, M1, U
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm M1}*
+  H4 : {K |- tm N}*
+  H5 : {L |- bred M1 U}
+  ============================
+   exists U, {L |- bred (app M1 N) U}
+
+Subgoal 3 is:
+ exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply IH to H1 H4.
+Subgoal 2:
+
+  Variables: L, K, M, N, M1, U, U1
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm M1}*
+  H4 : {K |- tm N}*
+  H5 : {L |- bred M1 U}
+  H6 : {L |- bred N U1}
+  ============================
+   exists U, {L |- bred (app M1 N) U}
+
+Subgoal 3 is:
+ exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < search.
+Subgoal 3:
+
+  Variables: L, K, M, R, N
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm N}*
+  H4 : {K, tm n1 |- tm (R n1)}*
+  ============================
+   exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply IH to _ H3.
+Subgoal 3:
+
+  Variables: L, K, M, R, N, U
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm N}*
+  H4 : {K, tm n1 |- tm (R n1)}*
+  H5 : {L |- bred N U}
+  ============================
+   exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply IH to _ H4.
+Subgoal 3:
+
+  Variables: L, K, M, R, N, U, U1
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm N}*
+  H4 : {K, tm n1 |- tm (R n1)}*
+  H5 : {L |- bred N U}
+  H6 : {L, bred n1 n1 |- bred (R n1) (U1 n1)}
+  ============================
+   exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < apply bred_subst to H1 H6 H5.
+Subgoal 3:
+
+  Variables: L, K, M, R, N, U, U1
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K |- tm N}*
+  H4 : {K, tm n1 |- tm (R n1)}*
+  H5 : {L |- bred N U}
+  H6 : {L, bred n1 n1 |- bred (R n1) (U1 n1)}
+  H7 : {L |- bred (R N) (U1 U)}
+  ============================
+   exists U, {L |- bred (beta R N) U}
+
+Subgoal 4 is:
+ exists U, {L |- bred M U}
+
+bred_terminate < search.
+Subgoal 4:
+
+  Variables: L, K, M, F
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K, [F] |- tm M}*
+  H4 : member F K
+  ============================
+   exists U, {L |- bred M U}
+
+bred_terminate < apply btctx_mem1 to H1 H4.
+Subgoal 4:
+
+  Variables: L, K, M, F, X
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H3 : {K, [tm X] |- tm M}*
+  H4 : member (tm X) K
+  H5 : name X
+  ============================
+   exists U, {L |- bred M U}
+
+bred_terminate < case H3.
+Subgoal 4:
+
+  Variables: L, K, M, F, X
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H4 : member (tm M) K
+  H5 : name M
+  ============================
+   exists U, {L |- bred M U}
+
+bred_terminate < apply btctx_sync to H1 H4.
+Subgoal 4:
+
+  Variables: L, K, M, F, X
+  IH : forall L K M, btctx L K -> {K |- tm M}* -> (exists U, {L |- bred M U})
+  H1 : btctx L K
+  H4 : member (tm M) K
+  H5 : name M
+  H6 : member (bred M M) L
+  ============================
+   exists U, {L |- bred M U}
+
+bred_terminate < search.
+Proof completed.
+
+Abella < Goodbye.

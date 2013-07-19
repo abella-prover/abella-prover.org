@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Disjoint partitioning of lambda terms into normal and non-normal form - Details</title>
+<link href="http://abella.cs.umn.edu/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella.cs.umn.edu/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella.cs.umn.edu/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella.cs.umn.edu/index.html">
+<img src="http://abella.cs.umn.edu/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "normal".</b>
+Reading specification "normal"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define name : tm -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define ctxs : olist -> olist -> prop by 
+ctxs nil nil;
+nabla x, ctxs (term x :: L) (neutral x :: K) := ctxs L K.</b>
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Theorem ctxs_member_term : 
+forall L K E, ctxs L K -> member E L -> (exists X, E = term X /\
+  member (neutral X) K /\ name X).</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  ============================
+   forall L K E, ctxs L K -> member E L -> (exists X, E = term X /\
+     member (neutral X) K /\ name X)
+
+ctxs_member_term < <b>induction on 1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  ============================
+   forall L K E, ctxs L K @ -> member E L -> (exists X, E = term X /\
+     member (neutral X) K /\ name X)
+
+ctxs_member_term < <b>intros.</b>
+</pre>
+<a name="7"></a>
+<pre>
+
+  Variables: L, K, E
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H1 : ctxs L K @
+  H2 : member E L
+  ============================
+   exists X, E = term X /\ member (neutral X) K /\ name X
+
+ctxs_member_term < <b>case H1.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, E
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H2 : member E nil
+  ============================
+   exists X, E = term X /\ member (neutral X) nil /\ name X
+
+Subgoal 2 is:
+ exists X, E n1 = term X /\ member (neutral X) (neutral n1 :: K1) /\ name X
+
+ctxs_member_term < <b>case H2.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H2 : member (E n1) (term n1 :: L1)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists X, E n1 = term X /\ member (neutral X) (neutral n1 :: K1) /\ name X
+
+ctxs_member_term < <b>case H2.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists X, term n1 = term X /\ member (neutral X) (neutral n1 :: K1) /\
+     name X
+
+Subgoal 2.2 is:
+ exists X, E n1 = term X /\ member (neutral X) (neutral n1 :: K1) /\ name X
+
+ctxs_member_term < <b>search.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, L1
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H3 : ctxs L1 K1 *
+  H4 : member (E n1) L1
+  ============================
+   exists X, E n1 = term X /\ member (neutral X) (neutral n1 :: K1) /\ name X
+
+ctxs_member_term < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, E, K1, L1, X
+  IH : forall L K E, ctxs L K * -> member E L -> (exists X, E = term X /\
+         member (neutral X) K /\ name X)
+  H3 : ctxs L1 K1 *
+  H4 : member (term (X n1)) L1
+  H5 : member (neutral (X n1)) K1
+  H6 : name (X n1)
+  ============================
+   exists X1, term (X n1) = term X1 /\
+     member (neutral X1) (neutral n1 :: K1) /\ name X1
+
+ctxs_member_term < <b>search.</b>
+Proof completed.
+</pre>
+<a name="13"></a>
+<pre class="code">
+Abella < <b>Theorem ctxs_var : 
+forall E L K, ctxs L K -> member E K -> (exists X, E = neutral X /\ name X).</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  ============================
+   forall E L K, ctxs L K -> member E K -> (exists X, E = neutral X /\
+     name X)
+
+ctxs_var < <b>induction on 1.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  ============================
+   forall E L K, ctxs L K @ -> member E K -> (exists X, E = neutral X /\
+     name X)
+
+ctxs_var < <b>intros.</b>
+</pre>
+<a name="16"></a>
+<pre>
+
+  Variables: E, L, K
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H1 : ctxs L K @
+  H2 : member E K
+  ============================
+   exists X, E = neutral X /\ name X
+
+ctxs_var < <b>case H1.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, L, K
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H2 : member E nil
+  ============================
+   exists X, E = neutral X /\ name X
+
+Subgoal 2 is:
+ exists X, E n1 = neutral X /\ name X
+
+ctxs_var < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, L, K, K1, L1
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H2 : member (E n1) (neutral n1 :: K1)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists X, E n1 = neutral X /\ name X
+
+ctxs_var < <b>case H2.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: E, L, K, K1, L1
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H3 : ctxs L1 K1 *
+  ============================
+   exists X, neutral n1 = neutral X /\ name X
+
+Subgoal 2.2 is:
+ exists X, E n1 = neutral X /\ name X
+
+ctxs_var < <b>search.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, L, K, K1, L1
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H3 : ctxs L1 K1 *
+  H4 : member (E n1) K1
+  ============================
+   exists X, E n1 = neutral X /\ name X
+
+ctxs_var < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: E, L, K, K1, L1, X
+  IH : forall E L K, ctxs L K * -> member E K -> (exists X, E = neutral X /\
+         name X)
+  H3 : ctxs L1 K1 *
+  H4 : member (neutral (X n1)) K1
+  H5 : name (X n1)
+  ============================
+   exists X1, neutral (X n1) = neutral X1 /\ name X1
+
+ctxs_var < <b>search.</b>
+Proof completed.
+</pre>
+<a name="22"></a>
+<pre class="code">
+Abella < <b>Theorem total_ext : 
+forall T L K, ctxs L K -> {L |- term T} -> {K |- normal T} \/ {non_normal T}.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+
+  ============================
+   forall T L K, ctxs L K -> {L |- term T} -> {K |- normal T} \/
+     {non_normal T}
+
+total_ext < <b>induction on 2.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  ============================
+   forall T L K, ctxs L K -> {L |- term T}@ -> {K |- normal T} \/
+     {non_normal T}
+
+total_ext < <b>intros.</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+  Variables: T, L, K
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H2 : {L |- term T}@
+  ============================
+   {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H2.</b>
+</pre>
+<a name="26"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="27"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H5 : {K |- normal M} \/ {non_normal M}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="28"></a>
+<pre>
+Subgoal 1:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H5 : {K |- normal M} \/ {non_normal M}
+  H6 : {K |- normal N} \/ {non_normal N}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H5.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 1.1:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H6 : {K |- normal N} \/ {non_normal N}
+  H7 : {K |- normal M}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H6.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 1.1.1:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H7 : {K |- normal M}
+  H8 : {K |- normal N}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H7.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 1.1.1.1:
+
+  Variables: T, L, K, N, M, R
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term (abs R)}*
+  H4 : {L |- term N}*
+  H8 : {K |- normal N}
+  H9 : {K, neutral n1 |- normal (R n1)}
+  ============================
+   {K |- normal (app (abs R) N)} \/ {non_normal (app (abs R) N)}
+
+Subgoal 1.1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.1.3 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 1.1.1.2:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H8 : {K |- normal N}
+  H9 : {K |- neutral M}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.1.3 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 1.1.1.3:
+
+  Variables: T, L, K, N, M, F
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H8 : {K |- normal N}
+  H9 : {K, [F] |- normal M}
+  H10 : member F K
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>apply ctxs_var to H1 H10.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 1.1.1.3:
+
+  Variables: T, L, K, N, M, F, X
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H8 : {K |- normal N}
+  H9 : {K, [neutral X] |- normal M}
+  H10 : member (neutral X) K
+  H11 : name X
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H9.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 1.1.2:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H7 : {K |- normal M}
+  H8 : {non_normal N}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 1.2 is:
+ {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 1.2:
+
+  Variables: T, L, K, N, M
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L |- term M}*
+  H4 : {L |- term N}*
+  H6 : {K |- normal N} \/ {non_normal N}
+  H7 : {non_normal M}
+  ============================
+   {K |- normal (app M N)} \/ {non_normal (app M N)}
+
+Subgoal 2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2:
+
+  Variables: T, L, K, R
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, term n1 |- term (R n1)}*
+  ============================
+   {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>apply IH to _ H3.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 2:
+
+  Variables: T, L, K, R
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, term n1 |- term (R n1)}*
+  H4 : {K, neutral n1 |- normal (R n1)} \/ {non_normal (R n1)}
+  ============================
+   {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H4.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: T, L, K, R
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, term n1 |- term (R n1)}*
+  H5 : {K, neutral n1 |- normal (R n1)}
+  ============================
+   {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 2.2 is:
+ {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: T, L, K, R
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, term n1 |- term (R n1)}*
+  H5 : {non_normal (R n1)}
+  ============================
+   {K |- normal (abs R)} \/ {non_normal (abs R)}
+
+Subgoal 3 is:
+ {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, L, K, F
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, [F] |- term T}*
+  H4 : member F L
+  ============================
+   {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>apply ctxs_member_term to H1 H4.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, L, K, F, X
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H3 : {L, [term X] |- term T}*
+  H4 : member (term X) L
+  H5 : member (neutral X) K
+  H6 : name X
+  ============================
+   {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>case H3.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 3:
+
+  Variables: T, L, K, F, X
+  IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
+         {non_normal T}
+  H1 : ctxs L K
+  H4 : member (term T) L
+  H5 : member (neutral T) K
+  H6 : name T
+  ============================
+   {K |- normal T} \/ {non_normal T}
+
+total_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="44"></a>
+<pre class="code">
+Abella < <b>Theorem total : 
+forall T, {term T} -> {normal T} \/ {non_normal T}.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+
+  ============================
+   forall T, {term T} -> {normal T} \/ {non_normal T}
+
+total < <b>intros.</b>
+</pre>
+<a name="46"></a>
+<pre>
+
+  Variables: T
+  H1 : {term T}
+  ============================
+   {normal T} \/ {non_normal T}
+
+total < <b>apply total_ext to _ H1.</b>
+</pre>
+<a name="47"></a>
+<pre>
+
+  Variables: T
+  H1 : {term T}
+  H2 : {normal T} \/ {non_normal T}
+  ============================
+   {normal T} \/ {non_normal T}
+
+total < <b>search.</b>
+Proof completed.
+</pre>
+<a name="48"></a>
+<pre class="code">
+Abella < <b>Theorem neutral_abs_absurd : 
+forall L K R, ctxs L K -> {K |- neutral (abs R)} -> false.</b>
+</pre>
+<a name="49"></a>
+<pre>
+
+
+  ============================
+   forall L K R, ctxs L K -> {K |- neutral (abs R)} -> false
+
+neutral_abs_absurd < <b>intros.</b>
+</pre>
+<a name="50"></a>
+<pre>
+
+  Variables: L, K, R
+  H1 : ctxs L K
+  H2 : {K |- neutral (abs R)}
+  ============================
+   false
+
+neutral_abs_absurd < <b>case H2.</b>
+</pre>
+<a name="51"></a>
+<pre>
+
+  Variables: L, K, R, F
+  H1 : ctxs L K
+  H3 : {K, [F] |- neutral (abs R)}
+  H4 : member F K
+  ============================
+   false
+
+neutral_abs_absurd < <b>apply ctxs_var to H1 H4.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+  Variables: L, K, R, F, X
+  H1 : ctxs L K
+  H3 : {K, [neutral X] |- neutral (abs R)}
+  H4 : member (neutral X) K
+  H5 : name X
+  ============================
+   false
+
+neutral_abs_absurd < <b>case H3.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+  Variables: L, K, R, F, X
+  H1 : ctxs L K
+  H4 : member (neutral (abs R)) K
+  H5 : name (abs R)
+  ============================
+   false
+
+neutral_abs_absurd < <b>case H5.</b>
+Proof completed.
+</pre>
+<a name="54"></a>
+<pre class="code">
+Abella < <b>Theorem disjoint_ext : 
+forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T} -> false.</b>
+</pre>
+<a name="55"></a>
+<pre>
+
+
+  ============================
+   forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T} -> false
+
+disjoint_ext < <b>induction on 3.</b>
+</pre>
+<a name="56"></a>
+<pre>
+
+
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  ============================
+   forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}@ -> false
+
+disjoint_ext < <b>intros.</b>
+</pre>
+<a name="57"></a>
+<pre>
+
+  Variables: L, K, T
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H2 : {K |- normal T}
+  H3 : {non_normal T}@
+  ============================
+   false
+
+disjoint_ext < <b>case H2.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, R
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal (abs R)}@
+  H4 : {K, neutral n1 |- normal (R n1)}
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H3.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, K, T, R
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H4 : {K, neutral n1 |- normal (R n1)}
+  H5 : {non_normal (R n1)}*
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>apply IH to _ H4 H5.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, K, T
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H4 : {K |- neutral T}
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H4.</b>
+</pre>
+<a name="61"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal (app M N)}@
+  H5 : {K |- neutral M}
+  H6 : {K |- normal N}
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H3.</b>
+</pre>
+<a name="62"></a>
+<pre>
+Subgoal 2.1.1:
+
+  Variables: L, K, T, N, M, R
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H5 : {K |- neutral (abs R)}
+  H6 : {K |- normal N}
+  ============================
+   false
+
+Subgoal 2.1.2 is:
+ false
+
+Subgoal 2.1.3 is:
+ false
+
+Subgoal 2.2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>apply neutral_abs_absurd to H1 H5.</b>
+</pre>
+<a name="63"></a>
+<pre>
+Subgoal 2.1.2:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H5 : {K |- neutral M}
+  H6 : {K |- normal N}
+  H7 : {non_normal M}*
+  ============================
+   false
+
+Subgoal 2.1.3 is:
+ false
+
+Subgoal 2.2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>apply IH to H1 _ H7.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 2.1.3:
+
+  Variables: L, K, T, N, M
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H5 : {K |- neutral M}
+  H6 : {K |- normal N}
+  H7 : {non_normal N}*
+  ============================
+   false
+
+Subgoal 2.2 is:
+ false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>apply IH to H1 H6 H7.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, T, F
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H5 : {K, [F] |- neutral T}
+  H6 : member F K
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>apply ctxs_var to H1 H6.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, T, F, X
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H5 : {K, [neutral X] |- neutral T}
+  H6 : member (neutral X) K
+  H7 : name X
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H5.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, T, F, X
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H6 : member (neutral T) K
+  H7 : name T
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H7.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, K, T, F, X
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs (L n1) (K n1)
+  H3 : {non_normal n1}@
+  H6 : member (neutral n1) (K n1)
+  ============================
+   false
+
+Subgoal 3 is:
+ false
+
+disjoint_ext < <b>case H3.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, F
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H4 : {K, [F] |- normal T}
+  H5 : member F K
+  ============================
+   false
+
+disjoint_ext < <b>apply ctxs_var to H1 H5.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 3:
+
+  Variables: L, K, T, F, X
+  IH : forall L K T, ctxs L K -> {K |- normal T} -> {non_normal T}* -> false
+  H1 : ctxs L K
+  H3 : {non_normal T}@
+  H4 : {K, [neutral X] |- normal T}
+  H5 : member (neutral X) K
+  H6 : name X
+  ============================
+   false
+
+disjoint_ext < <b>case H4.</b>
+Proof completed.
+</pre>
+<a name="71"></a>
+<pre class="code">
+Abella < <b>Theorem disjoint : 
+forall T, {normal T} -> {non_normal T} -> false.</b>
+</pre>
+<a name="72"></a>
+<pre>
+
+
+  ============================
+   forall T, {normal T} -> {non_normal T} -> false
+
+disjoint < <b>intros.</b>
+</pre>
+<a name="73"></a>
+<pre>
+
+  Variables: T
+  H1 : {normal T}
+  H2 : {non_normal T}
+  ============================
+   false
+
+disjoint < <b>apply disjoint_ext to _ H1 H2.</b>
+Proof completed.
+</pre>
+<a name="74"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

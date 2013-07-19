@@ -1,0 +1,2256 @@
+Welcome to Abella 2.0
+Abella < Specification "debruijn_ho".
+Reading specification "debruijn_ho"
+
+Abella < Theorem member_prune : 
+forall E L, nabla x, member (E x) L -> (exists F, E = y\F).
+
+
+  ============================
+   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune < induction on 1.
+
+
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune < intros.
+
+  Variables: E, L
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H1 : member (E n1) L @
+  ============================
+   exists F, E = y\F
+
+member_prune < case H1.
+Subgoal 1:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  ============================
+   exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune < search.
+Subgoal 2:
+
+  Variables: E, L, L3, L2
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member (E n1) L3 *
+  ============================
+   exists F, E = y\F
+
+member_prune < apply IH to H2.
+Subgoal 2:
+
+  Variables: E, L, L3, L2, F
+  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+  H2 : member F L3 *
+  ============================
+   exists F1, z1\F = y\F1
+
+member_prune < search.
+Proof completed.
+
+Abella < Define nat : nat -> prop by 
+nat z;
+nat (s X) := nat X.
+
+Abella < Define le : nat -> nat -> prop by 
+le X X;
+le X (s Y) := le X Y.
+
+Abella < Theorem le_dec : 
+forall X Y, le (s X) Y -> le X Y.
+
+
+  ============================
+   forall X Y, le (s X) Y -> le X Y
+
+le_dec < induction on 1.
+
+
+  IH : forall X Y, le (s X) Y * -> le X Y
+  ============================
+   forall X Y, le (s X) Y @ -> le X Y
+
+le_dec < intros.
+
+  Variables: X, Y
+  IH : forall X Y, le (s X) Y * -> le X Y
+  H1 : le (s X) Y @
+  ============================
+   le X Y
+
+le_dec < case H1.
+Subgoal 1:
+
+  Variables: X, Y
+  IH : forall X Y, le (s X) Y * -> le X Y
+  ============================
+   le X (s X)
+
+Subgoal 2 is:
+ le X (s Y1)
+
+le_dec < search.
+Subgoal 2:
+
+  Variables: X, Y, Y1
+  IH : forall X Y, le (s X) Y * -> le X Y
+  H2 : le (s X) Y1 *
+  ============================
+   le X (s Y1)
+
+le_dec < apply IH to H2.
+Subgoal 2:
+
+  Variables: X, Y, Y1
+  IH : forall X Y, le (s X) Y * -> le X Y
+  H2 : le (s X) Y1 *
+  H3 : le X Y1
+  ============================
+   le X (s Y1)
+
+le_dec < search.
+Proof completed.
+
+Abella < Theorem le_absurd : 
+forall X, nat X -> le (s X) X -> false.
+
+
+  ============================
+   forall X, nat X -> le (s X) X -> false
+
+le_absurd < induction on 1.
+
+
+  IH : forall X, nat X * -> le (s X) X -> false
+  ============================
+   forall X, nat X @ -> le (s X) X -> false
+
+le_absurd < intros.
+
+  Variables: X
+  IH : forall X, nat X * -> le (s X) X -> false
+  H1 : nat X @
+  H2 : le (s X) X
+  ============================
+   false
+
+le_absurd < case H1.
+Subgoal 1:
+
+  Variables: X
+  IH : forall X, nat X * -> le (s X) X -> false
+  H2 : le (s z) z
+  ============================
+   false
+
+Subgoal 2 is:
+ false
+
+le_absurd < case H2.
+Subgoal 2:
+
+  Variables: X, X1
+  IH : forall X, nat X * -> le (s X) X -> false
+  H2 : le (s (s X1)) (s X1)
+  H3 : nat X1 *
+  ============================
+   false
+
+le_absurd < case H2.
+Subgoal 2:
+
+  Variables: X, X1
+  IH : forall X, nat X * -> le (s X) X -> false
+  H3 : nat X1 *
+  H4 : le (s (s X1)) X1
+  ============================
+   false
+
+le_absurd < apply le_dec to H4.
+Subgoal 2:
+
+  Variables: X, X1
+  IH : forall X, nat X * -> le (s X) X -> false
+  H3 : nat X1 *
+  H4 : le (s (s X1)) X1
+  H5 : le (s X1) X1
+  ============================
+   false
+
+le_absurd < apply IH to H3 H5.
+Proof completed.
+
+Abella < Theorem add_le : 
+forall A B C, {add A B C} -> le B C.
+
+
+  ============================
+   forall A B C, {add A B C} -> le B C
+
+add_le < induction on 1.
+
+
+  IH : forall A B C, {add A B C}* -> le B C
+  ============================
+   forall A B C, {add A B C}@ -> le B C
+
+add_le < intros.
+
+  Variables: A, B, C
+  IH : forall A B C, {add A B C}* -> le B C
+  H1 : {add A B C}@
+  ============================
+   le B C
+
+add_le < case H1.
+Subgoal 1:
+
+  Variables: A, B, C
+  IH : forall A B C, {add A B C}* -> le B C
+  ============================
+   le C C
+
+Subgoal 2 is:
+ le B (s C1)
+
+add_le < search.
+Subgoal 2:
+
+  Variables: A, B, C, C1, A1
+  IH : forall A B C, {add A B C}* -> le B C
+  H2 : {add A1 B C1}*
+  ============================
+   le B (s C1)
+
+add_le < apply IH to H2.
+Subgoal 2:
+
+  Variables: A, B, C, C1, A1
+  IH : forall A B C, {add A B C}* -> le B C
+  H2 : {add A1 B C1}*
+  H3 : le B C1
+  ============================
+   le B (s C1)
+
+add_le < search.
+Proof completed.
+
+Abella < Theorem add_absurd : 
+forall A C, nat C -> {add A (s C) C} -> false.
+
+
+  ============================
+   forall A C, nat C -> {add A (s C) C} -> false
+
+add_absurd < intros.
+
+  Variables: A, C
+  H1 : nat C
+  H2 : {add A (s C) C}
+  ============================
+   false
+
+add_absurd < apply add_le to H2.
+
+  Variables: A, C
+  H1 : nat C
+  H2 : {add A (s C) C}
+  H3 : le (s C) C
+  ============================
+   false
+
+add_absurd < apply le_absurd to H1 H3.
+Proof completed.
+
+Abella < Theorem add_zero : 
+forall A C, nat C -> {add A C C} -> A = z.
+
+
+  ============================
+   forall A C, nat C -> {add A C C} -> A = z
+
+add_zero < intros.
+
+  Variables: A, C
+  H1 : nat C
+  H2 : {add A C C}
+  ============================
+   A = z
+
+add_zero < case H2.
+Subgoal 1:
+
+  Variables: A, C
+  H1 : nat C
+  ============================
+   z = z
+
+Subgoal 2 is:
+ s A1 = z
+
+add_zero < search.
+Subgoal 2:
+
+  Variables: A, C, C1, A1
+  H1 : nat (s C1)
+  H3 : {add A1 (s C1) C1}
+  ============================
+   s A1 = z
+
+add_zero < case H1.
+Subgoal 2:
+
+  Variables: A, C, C1, A1
+  H3 : {add A1 (s C1) C1}
+  H4 : nat C1
+  ============================
+   s A1 = z
+
+add_zero < apply add_absurd to H4 H3.
+Proof completed.
+
+Abella < Theorem add_det1 : 
+forall A1 A2 B C, nat C -> {add A1 B C} -> {add A2 B C} -> A1 = A2.
+
+
+  ============================
+   forall A1 A2 B C, nat C -> {add A1 B C} -> {add A2 B C} -> A1 = A2
+
+add_det1 < induction on 2.
+
+
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  ============================
+   forall A1 A2 B C, nat C -> {add A1 B C}@ -> {add A2 B C} -> A1 = A2
+
+add_det1 < intros.
+
+  Variables: A1, A2, B, C
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat C
+  H2 : {add A1 B C}@
+  H3 : {add A2 B C}
+  ============================
+   A1 = A2
+
+add_det1 < case H2.
+Subgoal 1:
+
+  Variables: A1, A2, B, C
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat C
+  H3 : {add A2 C C}
+  ============================
+   z = A2
+
+Subgoal 2 is:
+ s A = A2
+
+add_det1 < apply add_zero to H1 H3.
+Subgoal 1:
+
+  Variables: A1, A2, B, C
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat C
+  H3 : {add z C C}
+  ============================
+   z = z
+
+Subgoal 2 is:
+ s A = A2
+
+add_det1 < search.
+Subgoal 2:
+
+  Variables: A1, A2, B, C, C1, A
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat (s C1)
+  H3 : {add A2 B (s C1)}
+  H4 : {add A B C1}*
+  ============================
+   s A = A2
+
+add_det1 < case H3.
+Subgoal 2.1:
+
+  Variables: A1, A2, B, C, C1, A
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat (s C1)
+  H4 : {add A (s C1) C1}*
+  ============================
+   s A = z
+
+Subgoal 2.2 is:
+ s A = s A3
+
+add_det1 < case H1.
+Subgoal 2.1:
+
+  Variables: A1, A2, B, C, C1, A
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H4 : {add A (s C1) C1}*
+  H5 : nat C1
+  ============================
+   s A = z
+
+Subgoal 2.2 is:
+ s A = s A3
+
+add_det1 < apply add_absurd to H5 H4.
+Subgoal 2.2:
+
+  Variables: A1, A2, B, C, C1, A, A3
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H1 : nat (s C1)
+  H4 : {add A B C1}*
+  H5 : {add A3 B C1}
+  ============================
+   s A = s A3
+
+add_det1 < case H1.
+Subgoal 2.2:
+
+  Variables: A1, A2, B, C, C1, A, A3
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H4 : {add A B C1}*
+  H5 : {add A3 B C1}
+  H6 : nat C1
+  ============================
+   s A = s A3
+
+add_det1 < apply IH to H6 H4 H5.
+Subgoal 2.2:
+
+  Variables: A1, A2, B, C, C1, A, A3
+  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+  H4 : {add A3 B C1}*
+  H5 : {add A3 B C1}
+  H6 : nat C1
+  ============================
+   s A3 = s A3
+
+add_det1 < search.
+Proof completed.
+
+Abella < Theorem add_det2 : 
+forall A B1 B2 C, {add A B1 C} -> {add A B2 C} -> B1 = B2.
+
+
+  ============================
+   forall A B1 B2 C, {add A B1 C} -> {add A B2 C} -> B1 = B2
+
+add_det2 < induction on 1.
+
+
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  ============================
+   forall A B1 B2 C, {add A B1 C}@ -> {add A B2 C} -> B1 = B2
+
+add_det2 < intros.
+
+  Variables: A, B1, B2, C
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  H1 : {add A B1 C}@
+  H2 : {add A B2 C}
+  ============================
+   B1 = B2
+
+add_det2 < case H1.
+Subgoal 1:
+
+  Variables: A, B1, B2, C
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  H2 : {add z B2 C}
+  ============================
+   C = B2
+
+Subgoal 2 is:
+ B1 = B2
+
+add_det2 < case H2.
+Subgoal 1:
+
+  Variables: A, B1, B2, C
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  ============================
+   C = C
+
+Subgoal 2 is:
+ B1 = B2
+
+add_det2 < search.
+Subgoal 2:
+
+  Variables: A, B1, B2, C, C1, A1
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  H2 : {add (s A1) B2 (s C1)}
+  H3 : {add A1 B1 C1}*
+  ============================
+   B1 = B2
+
+add_det2 < case H2.
+Subgoal 2:
+
+  Variables: A, B1, B2, C, C1, A1
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  H3 : {add A1 B1 C1}*
+  H4 : {add A1 B2 C1}
+  ============================
+   B1 = B2
+
+add_det2 < apply IH to H3 H4.
+Subgoal 2:
+
+  Variables: A, B1, B2, C, C1, A1
+  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+  H3 : {add A1 B2 C1}*
+  H4 : {add A1 B2 C1}
+  ============================
+   B2 = B2
+
+add_det2 < search.
+Proof completed.
+
+Abella < Define ctx : olist -> nat -> prop by 
+ctx nil z;
+nabla x, ctx (pi H'\pi DX\add H DX H' => ho2db x H' (dvar DX) :: L) (s H) := ctx L H.
+
+Abella < Define name : hterm -> prop by 
+nabla x, name x.
+
+Abella < Theorem ctx_nat : 
+forall L H, ctx L H -> nat H.
+
+
+  ============================
+   forall L H, ctx L H -> nat H
+
+ctx_nat < induction on 1.
+
+
+  IH : forall L H, ctx L H * -> nat H
+  ============================
+   forall L H, ctx L H @ -> nat H
+
+ctx_nat < intros.
+
+  Variables: L, H
+  IH : forall L H, ctx L H * -> nat H
+  H1 : ctx L H @
+  ============================
+   nat H
+
+ctx_nat < case H1.
+Subgoal 1:
+
+  Variables: L, H
+  IH : forall L H, ctx L H * -> nat H
+  ============================
+   nat z
+
+Subgoal 2 is:
+ nat (s H1)
+
+ctx_nat < search.
+Subgoal 2:
+
+  Variables: L, H, H1, L1
+  IH : forall L H, ctx L H * -> nat H
+  H2 : ctx L1 H1 *
+  ============================
+   nat (s H1)
+
+ctx_nat < apply IH to H2.
+Subgoal 2:
+
+  Variables: L, H, H1, L1
+  IH : forall L H, ctx L H * -> nat H
+  H2 : ctx L1 H1 *
+  H3 : nat H1
+  ============================
+   nat (s H1)
+
+ctx_nat < search.
+Proof completed.
+
+Abella < Theorem ctx_inv : 
+forall E L H, ctx L H -> member E L -> (exists X HX,
+  E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+  le (s HX) H).
+
+
+  ============================
+   forall E L H, ctx L H -> member E L -> (exists X HX,
+     E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+     le (s HX) H)
+
+ctx_inv < induction on 1.
+
+
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  ============================
+   forall E L H, ctx L H @ -> member E L -> (exists X HX,
+     E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+     le (s HX) H)
+
+ctx_inv < intros.
+
+  Variables: E, L, H
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H1 : ctx L H @
+  H2 : member E L
+  ============================
+   exists X HX, E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) H
+
+ctx_inv < case H1.
+Subgoal 1:
+
+  Variables: E, L, H
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H2 : member E nil
+  ============================
+   exists X HX, E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) z
+
+Subgoal 2 is:
+ exists X HX, E n1 = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+   name X /\ le (s HX) (s H1)
+
+ctx_inv < case H2.
+Subgoal 2:
+
+  Variables: E, L, H, H1, L1
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H2 : member (E n1) (pi H'\pi DX\add H1 DX H' => ho2db n1 H' (dvar DX) :: L1)
+  H3 : ctx L1 H1 *
+  ============================
+   exists X HX, E n1 = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) (s H1)
+
+ctx_inv < case H2.
+Subgoal 2.1:
+
+  Variables: E, L, H, H1, L1
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H3 : ctx L1 H1 *
+  ============================
+   exists X HX,
+     pi H'\pi DX\add H1 DX H' => ho2db n1 H' (dvar DX) = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) (s H1)
+
+Subgoal 2.2 is:
+ exists X HX, E n1 = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+   name X /\ le (s HX) (s H1)
+
+ctx_inv < search.
+Subgoal 2.2:
+
+  Variables: E, L, H, H1, L1
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H3 : ctx L1 H1 *
+  H4 : member (E n1) L1
+  ============================
+   exists X HX, E n1 = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) (s H1)
+
+ctx_inv < apply member_prune to H4.
+Subgoal 2.2:
+
+  Variables: E, L, H, H1, L1, F
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H3 : ctx L1 H1 *
+  H4 : member F L1
+  ============================
+   exists X HX, F = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\
+     name X /\ le (s HX) (s H1)
+
+ctx_inv < apply IH to H3 H4.
+Subgoal 2.2:
+
+  Variables: E, L, H, H1, L1, F, X, HX
+  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
+         E = pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) /\ name X /\
+         le (s HX) H)
+  H3 : ctx L1 H1 *
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L1
+  H5 : name X
+  H6 : le (s HX) H1
+  ============================
+   exists X1 HX1,
+     pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX) = pi H'\pi DX\add HX1 DX H' => ho2db X1 H' (dvar DX) /\
+     name X1 /\ le (s HX1) (s H1)
+
+ctx_inv < search.
+Proof completed.
+
+Abella < Theorem ctx_unique1 : 
+forall L H X H1 H2, ctx L H ->
+  member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L ->
+  member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L -> H1 = H2.
+
+
+  ============================
+   forall L H X H1 H2, ctx L H ->
+     member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L ->
+     member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L -> H1 = H2
+
+ctx_unique1 < induction on 2.
+
+
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  ============================
+   forall L H X H1 H2, ctx L H ->
+     member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L @ ->
+     member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L -> H1 = H2
+
+ctx_unique1 < intros.
+
+  Variables: L, H, X, H1, H2
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx L H
+  H2 : member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L @
+  H3 : member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L
+  ============================
+   H1 = H2
+
+ctx_unique1 < case H2.
+Subgoal 1:
+
+  Variables: L, H, X, H1, H2, L1
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX) :: L1) H
+  H3 : member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX) :: L1)
+  ============================
+   H1 = H2
+
+Subgoal 2 is:
+ H1 = H2
+
+ctx_unique1 < case H3.
+Subgoal 1.1:
+
+  Variables: L, H, X, H1, H2, L1
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX) :: L1) H
+  ============================
+   H1 = H1
+
+Subgoal 1.2 is:
+ H1 = H2
+
+Subgoal 2 is:
+ H1 = H2
+
+ctx_unique1 < search.
+Subgoal 1.2:
+
+  Variables: L, H, X, H1, H2, L1
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX) :: L1) H
+  H4 : member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L1
+  ============================
+   H1 = H2
+
+Subgoal 2 is:
+ H1 = H2
+
+ctx_unique1 < case H1.
+Subgoal 1.2:
+
+  Variables: L, H, X, H1, H2, L1, H3, L2
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H4 : member (pi H'\pi DX\add (H2 n1) DX H' => ho2db n1 H' (dvar DX)) L2
+  H5 : ctx L2 H3
+  ============================
+   H3 = H2 n1
+
+Subgoal 2 is:
+ H1 = H2
+
+ctx_unique1 < apply member_prune to H4.
+Subgoal 2:
+
+  Variables: L, H, X, H1, H2, L1, B
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (B :: L1) H
+  H3 : member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) (B :: L1)
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L1 *
+  ============================
+   H1 = H2
+
+ctx_unique1 < case H3.
+Subgoal 2.1:
+
+  Variables: L, H, X, H1, H2, L1, B
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX) :: L1) H
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L1 *
+  ============================
+   H1 = H2
+
+Subgoal 2.2 is:
+ H1 = H2
+
+ctx_unique1 < case H1.
+Subgoal 2.1:
+
+  Variables: L, H, X, H1, H2, L1, B, H3, L2
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H4 : member (pi H'\pi DX\add (H1 n1) DX H' => ho2db n1 H' (dvar DX)) L2 *
+  H5 : ctx L2 H3
+  ============================
+   H1 n1 = H3
+
+Subgoal 2.2 is:
+ H1 = H2
+
+ctx_unique1 < apply member_prune to H4.
+Subgoal 2.2:
+
+  Variables: L, H, X, H1, H2, L1, B
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H1 : ctx (B :: L1) H
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L1 *
+  H5 : member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L1
+  ============================
+   H1 = H2
+
+ctx_unique1 < case H1.
+Subgoal 2.2:
+
+  Variables: L, H, X, H1, H2, L1, B, H3, L2
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H4 : member (pi H'\pi DX\add (H1 n1) DX H' => ho2db (X n1) H' (dvar DX)) L2 *
+  H5 : member (pi H'\pi DX\add (H2 n1) DX H' => ho2db (X n1) H' (dvar DX)) L2
+  H6 : ctx L2 H3
+  ============================
+   H1 n1 = H2 n1
+
+ctx_unique1 < apply IH to H6 H4 H5.
+Subgoal 2.2:
+
+  Variables: L, H, X, H1, H2, L1, B, H3, L2
+  IH : forall L H X H1 H2, ctx L H ->
+         member (pi H'\pi DX\add H1 DX H' => ho2db X H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add H2 DX H' => ho2db X H' (dvar DX)) L ->
+         H1 = H2
+  H4 : member (pi H'\pi DX\add (H2 n1) DX H' => ho2db (X n1) H' (dvar DX)) L2 *
+  H5 : member (pi H'\pi DX\add (H2 n1) DX H' => ho2db (X n1) H' (dvar DX)) L2
+  H6 : ctx L2 H3
+  ============================
+   H2 n1 = H2 n1
+
+ctx_unique1 < search.
+Proof completed.
+
+Abella < Theorem ctx_unique2 : 
+forall L H X1 X2 HX, ctx L H ->
+  member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L ->
+  member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L -> X1 = X2.
+
+
+  ============================
+   forall L H X1 X2 HX, ctx L H ->
+     member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L ->
+     member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L -> X1 = X2
+
+ctx_unique2 < induction on 2.
+
+
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  ============================
+   forall L H X1 X2 HX, ctx L H ->
+     member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L @ ->
+     member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L -> X1 = X2
+
+ctx_unique2 < intros.
+
+  Variables: L, H, X1, X2, HX
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx L H
+  H2 : member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L @
+  H3 : member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L
+  ============================
+   X1 = X2
+
+ctx_unique2 < case H2.
+Subgoal 1:
+
+  Variables: L, H, X1, X2, HX, L1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX) :: L1) H
+  H3 : member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX) :: L1)
+  ============================
+   X1 = X2
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < case H3.
+Subgoal 1.1:
+
+  Variables: L, H, X1, X2, HX, L1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX) :: L1) H
+  ============================
+   X1 = X1
+
+Subgoal 1.2 is:
+ X1 = X2
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < search.
+Subgoal 1.2:
+
+  Variables: L, H, X1, X2, HX, L1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX) :: L1) H
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L1
+  ============================
+   X1 = X2
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < case H1.
+Subgoal 1.2:
+
+  Variables: L, H, X1, X2, HX, L1, H1, L2
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X2 n1) H' (dvar DX)) L2
+  H5 : ctx L2 H1
+  ============================
+   n1 = X2 n1
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < apply ctx_inv to H5 H4.
+Subgoal 1.2:
+
+  Variables: L, H, X1, X2, HX, L1, H1, L2, X, HX1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X n1) H' (dvar DX)) L2
+  H5 : ctx L2 H1
+  H6 : name (X n1)
+  H7 : le (s H1) H1
+  ============================
+   n1 = X n1
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < apply ctx_nat to H5.
+Subgoal 1.2:
+
+  Variables: L, H, X1, X2, HX, L1, H1, L2, X, HX1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X n1) H' (dvar DX)) L2
+  H5 : ctx L2 H1
+  H6 : name (X n1)
+  H7 : le (s H1) H1
+  H8 : nat H1
+  ============================
+   n1 = X n1
+
+Subgoal 2 is:
+ X1 = X2
+
+ctx_unique2 < apply le_absurd to H8 H7.
+Subgoal 2:
+
+  Variables: L, H, X1, X2, HX, L1, B
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (B :: L1) H
+  H3 : member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) (B :: L1)
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L1 *
+  ============================
+   X1 = X2
+
+ctx_unique2 < case H3.
+Subgoal 2.1:
+
+  Variables: L, H, X1, X2, HX, L1, B
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX) :: L1) H
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L1 *
+  ============================
+   X1 = X2
+
+Subgoal 2.2 is:
+ X1 = X2
+
+ctx_unique2 < case H1.
+Subgoal 2.1:
+
+  Variables: L, H, X1, X2, HX, L1, B, H1, L2
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X1 n1) H' (dvar DX)) L2 *
+  H5 : ctx L2 H1
+  ============================
+   X1 n1 = n1
+
+Subgoal 2.2 is:
+ X1 = X2
+
+ctx_unique2 < apply ctx_inv to H5 H4.
+Subgoal 2.1:
+
+  Variables: L, H, X1, X2, HX, L1, B, H1, L2, X, HX1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X n1) H' (dvar DX)) L2 *
+  H5 : ctx L2 H1
+  H6 : name (X n1)
+  H7 : le (s H1) H1
+  ============================
+   X n1 = n1
+
+Subgoal 2.2 is:
+ X1 = X2
+
+ctx_unique2 < apply ctx_nat to H5.
+Subgoal 2.1:
+
+  Variables: L, H, X1, X2, HX, L1, B, H1, L2, X, HX1
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add H1 DX H' => ho2db (X n1) H' (dvar DX)) L2 *
+  H5 : ctx L2 H1
+  H6 : name (X n1)
+  H7 : le (s H1) H1
+  H8 : nat H1
+  ============================
+   X n1 = n1
+
+Subgoal 2.2 is:
+ X1 = X2
+
+ctx_unique2 < apply le_absurd to H8 H7.
+Subgoal 2.2:
+
+  Variables: L, H, X1, X2, HX, L1, B
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H1 : ctx (B :: L1) H
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L1 *
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L1
+  ============================
+   X1 = X2
+
+ctx_unique2 < case H1.
+Subgoal 2.2:
+
+  Variables: L, H, X1, X2, HX, L1, B, H1, L2
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add (HX n1) DX H' => ho2db (X1 n1) H' (dvar DX)) L2 *
+  H5 : member (pi H'\pi DX\add (HX n1) DX H' => ho2db (X2 n1) H' (dvar DX)) L2
+  H6 : ctx L2 H1
+  ============================
+   X1 n1 = X2 n1
+
+ctx_unique2 < apply IH to H6 H4 H5.
+Subgoal 2.2:
+
+  Variables: L, H, X1, X2, HX, L1, B, H1, L2
+  IH : forall L H X1 X2 HX, ctx L H ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X1 H' (dvar DX)) L * ->
+         member (pi H'\pi DX\add HX DX H' => ho2db X2 H' (dvar DX)) L ->
+         X1 = X2
+  H4 : member (pi H'\pi DX\add (HX n1) DX H' => ho2db (X2 n1) H' (dvar DX)) L2 *
+  H5 : member (pi H'\pi DX\add (HX n1) DX H' => ho2db (X2 n1) H' (dvar DX)) L2
+  H6 : ctx L2 H1
+  ============================
+   X2 n1 = X2 n1
+
+ctx_unique2 < search.
+Proof completed.
+
+Abella < Theorem add_ignores_ctx : 
+forall L H A B C, ctx L H -> {L |- add A B C} -> {add A B C}.
+
+
+  ============================
+   forall L H A B C, ctx L H -> {L |- add A B C} -> {add A B C}
+
+add_ignores_ctx < induction on 2.
+
+
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  ============================
+   forall L H A B C, ctx L H -> {L |- add A B C}@ -> {add A B C}
+
+add_ignores_ctx < intros.
+
+  Variables: L, H, A, B, C
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  H2 : {L |- add A B C}@
+  ============================
+   {add A B C}
+
+add_ignores_ctx < case H2.
+Subgoal 1:
+
+  Variables: L, H, A, B, C
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  ============================
+   {add z C C}
+
+Subgoal 2 is:
+ {add (s A1) B (s C1)}
+
+Subgoal 3 is:
+ {add A B C}
+
+add_ignores_ctx < search.
+Subgoal 2:
+
+  Variables: L, H, A, B, C, C1, A1
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  H3 : {L |- add A1 B C1}*
+  ============================
+   {add (s A1) B (s C1)}
+
+Subgoal 3 is:
+ {add A B C}
+
+add_ignores_ctx < apply IH to H1 H3.
+Subgoal 2:
+
+  Variables: L, H, A, B, C, C1, A1
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  H3 : {L |- add A1 B C1}*
+  H4 : {add A1 B C1}
+  ============================
+   {add (s A1) B (s C1)}
+
+Subgoal 3 is:
+ {add A B C}
+
+add_ignores_ctx < search.
+Subgoal 3:
+
+  Variables: L, H, A, B, C, F
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  H3 : {L, [F] |- add A B C}*
+  H4 : member F L
+  ============================
+   {add A B C}
+
+add_ignores_ctx < apply ctx_inv to H1 H4.
+Subgoal 3:
+
+  Variables: L, H, A, B, C, F, X, HX
+  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+  H1 : ctx L H
+  H3 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- add A B C}*
+  H4 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H5 : name X
+  H6 : le (s HX) H
+  ============================
+   {add A B C}
+
+add_ignores_ctx < case H3.
+Proof completed.
+
+Abella < Theorem ho2db_det3 : 
+forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1} -> {L |- ho2db M H D2} ->
+  D1 = D2.
+
+
+  ============================
+   forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1} ->
+     {L |- ho2db M H D2} -> D1 = D2
+
+ho2db_det3 < induction on 2.
+
+
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  ============================
+   forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}@ ->
+     {L |- ho2db M H D2} -> D1 = D2
+
+ho2db_det3 < intros.
+
+  Variables: L, M, D1, D2, H
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H2 : {L |- ho2db M H D1}@
+  H3 : {L |- ho2db M H D2}
+  ============================
+   D1 = D2
+
+ho2db_det3 < case H2.
+Subgoal 1:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H3 : {L |- ho2db (app M1 N) H D2}
+  H4 : {L |- ho2db M1 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  ============================
+   dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H3.
+Subgoal 1.1:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L |- ho2db M1 H DM1}
+  H7 : {L |- ho2db N H DN1}
+  ============================
+   dapp DM DN = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < apply IH to H1 H4 H6.
+Subgoal 1.1:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM1}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L |- ho2db M1 H DM1}
+  H7 : {L |- ho2db N H DN1}
+  ============================
+   dapp DM1 DN = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < apply IH to H1 H5 H7.
+Subgoal 1.1:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM1}*
+  H5 : {L |- ho2db N H DN1}*
+  H6 : {L |- ho2db M1 H DM1}
+  H7 : {L |- ho2db N H DN1}
+  ============================
+   dapp DM1 DN1 = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < search.
+Subgoal 1.2:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, F
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L, [F] |- ho2db (app M1 N) H D2}
+  H7 : member F L
+  ============================
+   dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < apply ctx_inv to H1 H7.
+Subgoal 1.2:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, F, X, HX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db (app M1 N) H D2}
+  H7 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H8 : name X
+  H9 : le (s HX) H
+  ============================
+   dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H6.
+Subgoal 1.2:
+
+  Variables: L, M, D1, D2, H, DN, N, DM, M1, F, X, HX, DX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L |- ho2db M1 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H7 : member (pi H'\pi DX\add HX DX H' => ho2db (app M1 N) H' (dvar DX)) L
+  H8 : name (app M1 N)
+  H9 : le (s HX) H
+  H10 : {L |- add HX DX H}
+  ============================
+   dapp DM DN = dvar DX
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H8.
+Subgoal 2:
+
+  Variables: L, M, D1, D2, H, DR, R
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H3 : {L |- ho2db (lam R) H D2}
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  ============================
+   dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H3.
+Subgoal 2.1:
+
+  Variables: L, M, D1, D2, H, DR, R, DR1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR1}
+  ============================
+   dlam DR = dlam DR1
+
+Subgoal 2.2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < apply IH to _ H4 H5.
+Subgoal 2.1:
+
+  Variables: L, M, D1, D2, H, DR, R, DR1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR1}*
+  H5 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR1}
+  ============================
+   dlam DR1 = dlam DR1
+
+Subgoal 2.2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < search.
+Subgoal 2.2:
+
+  Variables: L, M, D1, D2, H, DR, R, F
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, [F] |- ho2db (lam R) H D2}
+  H6 : member F L
+  ============================
+   dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < apply ctx_inv to H1 H6.
+Subgoal 2.2:
+
+  Variables: L, M, D1, D2, H, DR, R, F, X, HX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db (lam R) H D2}
+  H6 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H7 : name X
+  H8 : le (s HX) H
+  ============================
+   dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H5.
+Subgoal 2.2:
+
+  Variables: L, M, D1, D2, H, DR, R, F, X, HX, DX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H6 : member (pi H'\pi DX\add HX DX H' => ho2db (lam R) H' (dvar DX)) L
+  H7 : name (lam R)
+  H8 : le (s HX) H
+  H9 : {L |- add HX DX H}
+  ============================
+   dlam DR = dvar DX
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < case H7.
+Subgoal 3:
+
+  Variables: L, M, D1, D2, H, F
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H3 : {L |- ho2db M H D2}
+  H4 : {L, [F] |- ho2db M H D1}*
+  H5 : member F L
+  ============================
+   D1 = D2
+
+ho2db_det3 < apply ctx_inv to H1 H5.
+Subgoal 3:
+
+  Variables: L, M, D1, D2, H, F, X, HX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H3 : {L |- ho2db M H D2}
+  H4 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db M H D1}*
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H6 : name X
+  H7 : le (s HX) H
+  ============================
+   D1 = D2
+
+ho2db_det3 < case H4.
+Subgoal 3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H3 : {L |- ho2db M H D2}
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  ============================
+   dvar DX = D2
+
+ho2db_det3 < case H3.
+Subgoal 3.1:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, DN, N, DM, M1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db (app M1 N) H' (dvar DX)) L
+  H6 : name (app M1 N)
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L |- ho2db M1 H DM}
+  H10 : {L |- ho2db N H DN}
+  ============================
+   dvar DX = dapp DM DN
+
+Subgoal 3.2 is:
+ dvar DX = dlam DR
+
+Subgoal 3.3 is:
+ dvar DX = D2
+
+ho2db_det3 < case H6.
+Subgoal 3.2:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, DR, R
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db (lam R) H' (dvar DX)) L
+  H6 : name (lam R)
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}
+  ============================
+   dvar DX = dlam DR
+
+Subgoal 3.3 is:
+ dvar DX = D2
+
+ho2db_det3 < case H6.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L, [F1] |- ho2db M H D2}
+  H10 : member F1 L
+  ============================
+   dvar DX = D2
+
+ho2db_det3 < apply ctx_inv to H1 H10.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L, [pi H'\pi DX\add HX1 DX H' => ho2db X1 H' (dvar DX)] |- ho2db M H D2}
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db X1 H' (dvar DX)) L
+  H11 : name X1
+  H12 : le (s HX1) H
+  ============================
+   dvar DX = D2
+
+ho2db_det3 < case H9.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1, DX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H11 : name M
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX1 H}
+  ============================
+   dvar DX = dvar DX1
+
+ho2db_det3 < apply ctx_unique1 to H1 H5 H10.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1, DX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H11 : name M
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX1 H}
+  ============================
+   dvar DX = dvar DX1
+
+ho2db_det3 < apply add_ignores_ctx to H1 H8.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1, DX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H11 : name M
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX1 H}
+  H14 : {add HX1 DX H}
+  ============================
+   dvar DX = dvar DX1
+
+ho2db_det3 < apply add_ignores_ctx to H1 H13.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1, DX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H11 : name M
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX1 H}
+  H14 : {add HX1 DX H}
+  H15 : {add HX1 DX1 H}
+  ============================
+   dvar DX = dvar DX1
+
+ho2db_det3 < apply add_det2 to H14 H15.
+Subgoal 3.3:
+
+  Variables: L, M, D1, D2, H, F, X, HX, DX, F1, X1, HX1, DX1
+  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+         {L |- ho2db M H D2} -> D1 = D2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H6 : name M
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX1 H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M H' (dvar DX)) L
+  H11 : name M
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX1 H}
+  H14 : {add HX1 DX1 H}
+  H15 : {add HX1 DX1 H}
+  ============================
+   dvar DX1 = dvar DX1
+
+ho2db_det3 < search.
+Proof completed.
+
+Abella < Theorem ho2db_det3_simple : 
+forall M D1 D2, {ho2db M z D1} -> {ho2db M z D2} -> D1 = D2.
+
+
+  ============================
+   forall M D1 D2, {ho2db M z D1} -> {ho2db M z D2} -> D1 = D2
+
+ho2db_det3_simple < intros.
+
+  Variables: M, D1, D2
+  H1 : {ho2db M z D1}
+  H2 : {ho2db M z D2}
+  ============================
+   D1 = D2
+
+ho2db_det3_simple < apply ho2db_det3 to _ H1 H2.
+
+  Variables: M, D1, D2
+  H1 : {ho2db M z D2}
+  H2 : {ho2db M z D2}
+  ============================
+   D2 = D2
+
+ho2db_det3_simple < search.
+Proof completed.
+
+Abella < Theorem ho2db_det1 : 
+forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D} -> {L |- ho2db M2 H D} ->
+  M1 = M2.
+
+
+  ============================
+   forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D} ->
+     {L |- ho2db M2 H D} -> M1 = M2
+
+ho2db_det1 < induction on 2.
+
+
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  ============================
+   forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}@ ->
+     {L |- ho2db M2 H D} -> M1 = M2
+
+ho2db_det1 < intros.
+
+  Variables: L, M1, M2, D, H
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H2 : {L |- ho2db M1 H D}@
+  H3 : {L |- ho2db M2 H D}
+  ============================
+   M1 = M2
+
+ho2db_det1 < case H2.
+Subgoal 1:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H3 : {L |- ho2db M2 H (dapp DM DN)}
+  H4 : {L |- ho2db M H DM}*
+  H5 : {L |- ho2db N H DN}*
+  ============================
+   app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < case H3.
+Subgoal 1.1:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L |- ho2db M H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L |- ho2db M3 H DM}
+  H7 : {L |- ho2db N1 H DN}
+  ============================
+   app M N = app M3 N1
+
+Subgoal 1.2 is:
+ app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < apply IH to H1 H4 H6.
+Subgoal 1.1:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L |- ho2db M3 H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L |- ho2db M3 H DM}
+  H7 : {L |- ho2db N1 H DN}
+  ============================
+   app M3 N = app M3 N1
+
+Subgoal 1.2 is:
+ app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < apply IH to H1 H5 H7.
+Subgoal 1.1:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L |- ho2db M3 H DM}*
+  H5 : {L |- ho2db N1 H DN}*
+  H6 : {L |- ho2db M3 H DM}
+  H7 : {L |- ho2db N1 H DN}
+  ============================
+   app M3 N1 = app M3 N1
+
+Subgoal 1.2 is:
+ app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < search.
+Subgoal 1.2:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M, F
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L |- ho2db M H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L, [F] |- ho2db M2 H (dapp DM DN)}
+  H7 : member F L
+  ============================
+   app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < apply ctx_inv to H1 H7.
+Subgoal 1.2:
+
+  Variables: L, M1, M2, D, H, DN, N, DM, M, F, X, HX
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L |- ho2db M H DM}*
+  H5 : {L |- ho2db N H DN}*
+  H6 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db M2 H (dapp DM DN)}
+  H7 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H8 : name X
+  H9 : le (s HX) H
+  ============================
+   app M N = M2
+
+Subgoal 2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < case H6.
+Subgoal 2:
+
+  Variables: L, M1, M2, D, H, DR, R
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H3 : {L |- ho2db M2 H (dlam DR)}
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  ============================
+   lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < case H3.
+Subgoal 2.1:
+
+  Variables: L, M1, M2, D, H, DR, R, R1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R1 n1) (s H) DR}
+  ============================
+   lam R = lam R1
+
+Subgoal 2.2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < apply IH to _ H4 H5.
+Subgoal 2.1:
+
+  Variables: L, M1, M2, D, H, DR, R, R1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R1 n1) (s H) DR}*
+  H5 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R1 n1) (s H) DR}
+  ============================
+   lam (z1\R1 z1) = lam R1
+
+Subgoal 2.2 is:
+ lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < search.
+Subgoal 2.2:
+
+  Variables: L, M1, M2, D, H, DR, R, F
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, [F] |- ho2db M2 H (dlam DR)}
+  H6 : member F L
+  ============================
+   lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < apply ctx_inv to H1 H6.
+Subgoal 2.2:
+
+  Variables: L, M1, M2, D, H, DR, R, F, X, HX
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H4 : {L, pi H'\pi DX\add H DX H' => ho2db n1 H' (dvar DX) |- ho2db (R n1) (s H) DR}*
+  H5 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db M2 H (dlam DR)}
+  H6 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H7 : name X
+  H8 : le (s HX) H
+  ============================
+   lam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < case H5.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H3 : {L |- ho2db M2 H D}
+  H4 : {L, [F] |- ho2db M1 H D}*
+  H5 : member F L
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply ctx_inv to H1 H5.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H3 : {L |- ho2db M2 H D}
+  H4 : {L, [pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)] |- ho2db M1 H D}*
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db X H' (dvar DX)) L
+  H6 : name X
+  H7 : le (s HX) H
+  ============================
+   M1 = M2
+
+ho2db_det1 < case H4.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H3 : {L |- ho2db M2 H (dvar DX)}
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  ============================
+   M1 = M2
+
+ho2db_det1 < case H3.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L, [F1] |- ho2db M2 H (dvar DX)}
+  H10 : member F1 L
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply ctx_inv to H1 H10.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H9 : {L, [pi H'\pi DX\add HX1 DX H' => ho2db X1 H' (dvar DX)] |- ho2db M2 H (dvar DX)}
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db X1 H' (dvar DX)) L
+  H11 : name X1
+  H12 : le (s HX1) H
+  ============================
+   M1 = M2
+
+ho2db_det1 < case H9.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply add_ignores_ctx to H1 H8.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  H14 : {add HX DX H}
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply add_ignores_ctx to H1 H13.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  H14 : {add HX DX H}
+  H15 : {add HX1 DX H}
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply ctx_nat to H1.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX) H
+  H8 : {L |- add HX DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  H14 : {add HX DX H}
+  H15 : {add HX1 DX H}
+  H16 : nat H
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply add_det1 to H16 H14 H15.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M1 H' (dvar DX)) L
+  H6 : name M1
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  H14 : {add HX1 DX H}
+  H15 : {add HX1 DX H}
+  H16 : nat H
+  ============================
+   M1 = M2
+
+ho2db_det1 < apply ctx_unique2 to H1 H5 H10.
+Subgoal 3:
+
+  Variables: L, M1, M2, D, H, F, X, HX, DX, F1, X1, HX1
+  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+         {L |- ho2db M2 H D} -> M1 = M2
+  H1 : ctx L H
+  H5 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H6 : name M2
+  H7 : le (s HX1) H
+  H8 : {L |- add HX1 DX H}*
+  H10 : member (pi H'\pi DX\add HX1 DX H' => ho2db M2 H' (dvar DX)) L
+  H11 : name M2
+  H12 : le (s HX1) H
+  H13 : {L |- add HX1 DX H}
+  H14 : {add HX1 DX H}
+  H15 : {add HX1 DX H}
+  H16 : nat H
+  ============================
+   M2 = M2
+
+ho2db_det1 < search.
+Proof completed.
+
+Abella < Theorem ho2db_det1_simple : 
+forall M1 M2 D, {ho2db M1 z D} -> {ho2db M2 z D} -> M1 = M2.
+
+
+  ============================
+   forall M1 M2 D, {ho2db M1 z D} -> {ho2db M2 z D} -> M1 = M2
+
+ho2db_det1_simple < intros.
+
+  Variables: M1, M2, D
+  H1 : {ho2db M1 z D}
+  H2 : {ho2db M2 z D}
+  ============================
+   M1 = M2
+
+ho2db_det1_simple < apply ho2db_det1 to _ H1 H2.
+
+  Variables: M1, M2, D
+  H1 : {ho2db M2 z D}
+  H2 : {ho2db M2 z D}
+  ============================
+   M2 = M2
+
+ho2db_det1_simple < search.
+Proof completed.
+
+Abella < Goodbye.
