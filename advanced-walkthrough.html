@@ -212,7 +212,7 @@ proposition cannot be true.
 The way we will realize this restriction is by defining a property
 called <code>ctx</code> that we expect all good contexts to satisfy
 and then requiring this property to hold of <code>L</code> in the
-statement of the theorem. 
+statement of the theorem.
 If you are following this walkthrough in Abella, you first need to
 type "<code>abort.</code>" to give up on our previous proof
 attempt. Then enter the following definition of <code>ctx</code>.
@@ -301,7 +301,7 @@ will follow quickly by using the tactics <code>intros</code> and
 <code>case H1</code>.
 </p>
 
-<p> 
+<p>
 Given that non_occurrence is provable, one might wonder if
 member_nominal_absurd does not follow immediately from it: the
 property is after all similar in that we are trying to show the
@@ -703,7 +703,7 @@ ctx_mem < <b>search.</b>
 Proof completed.
 </pre>
 
-Notice that at one point we did case analysis on <code>ctx (E :: L1)</code> 
+Notice that at one point we did case analysis on <code>ctx (E :: L1)</code>
 which exposes <code>E</code> to be <code>of n1 T</code>. Since <code>n1</code>
 is a nominal constant, a <code>search</code> completed the subgoal.
 </p>
@@ -728,7 +728,7 @@ in three subgoals.
 </p>
 <p>
 
-The entire proof is listed below. We pay special attention to 
+The entire proof is listed below. We pay special attention to
 cases where the typing judgment is derived from the context. We will
 also pause to introduce a convenient feature of the <code>apply</code>
 tactic.
@@ -766,7 +766,7 @@ type_uniq_ext < <b>intros.</b>
 type_uniq_ext < <b>case H2.</b>
 </pre>
 
-In the first case, the goal formula <code>of E T1</code> is 
+In the first case, the goal formula <code>of E T1</code> is
 derived from the program clause for abstraction.
 
 <a name="37"></a>
@@ -1097,8 +1097,8 @@ Subgoal 3 is:
 type_uniq_ext < <b>case H8.</b>
 </pre>
 
-The last case is when the goal formula is derived from some clause <code>F</code> 
-in the context. As described before, we first apply the lemma <code>ctx_mem</code> 
+The last case is when the goal formula is derived from some clause <code>F</code>
+in the context. As described before, we first apply the lemma <code>ctx_mem</code>
 to reveal the structure of <code>F</code>. We then perform case analysis to backchain
 the goal formula on <code>F</code>.
 <a name="49"></a>
@@ -1301,23 +1301,13 @@ the <a href="index.html">homepage</a> and perhaps those smaller
 examples listed <a href="examples/">here</a>. You are also encourage
 to specify and reason about your own logical system. If so, please let
 us hear about
-it: 
+it:
 <a href="http://groups.google.com/group/abella-theorem-prover">Abella
     mailing list</a>
 </p>
 
 </div>
 
-
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-3596815-1");
-pageTracker._initData();
-pageTracker._trackPageview();
-</script>
 </body>
 </html>
 
