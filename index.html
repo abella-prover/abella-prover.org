@@ -1,345 +1,350 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<title>Abella</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="images/favicon.ico"
-        type="image/x-icon" />
+  <meta charset="utf-8" />
+  <title>Abella</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
 
-<div id="logo"/>
-<a href="index.html">
-<img src="images/logo.png"/>
-</a>
-</div>
-
-<div class="section">
-
-<h1>Description</h1>
-
-<p>
-Abella is an interactive theorem prover based on lambda-tree syntax.
-This means that Abella is well-suited for reasoning about the
-meta-theory of programming languages and other logical systems which
-manipulate objects with binding. For example, the following
-applications are included in the distribution of Abella.
-</p>
-
-<ul>
-
-<li><a href="examples/lambda-calculus/eval.html">
-Various results on the lambda calculus involving big-step
-evaluation, small-step evaluation, and typing judgments
-</a></li>
-
-<li><a href="examples/logic/cut.html">
-Cut-admissibility for a sequent calculus
-</a></li>
-
-<li>
-<a href="examples/programming-languages/poplmark-1a.html">Part 1a</a> and
-<a href="examples/programming-languages/poplmark-2a.html">Part 2a</a> of the
-<a href="http://alliance.seas.upenn.edu/~plclub/cgi-bin/poplmark/index.php?title=The_POPLmark_Challenge">
-  POPLmark challenge</a>
-</li>
-
-<li><a href="examples/lambda-calculus/cr.html">
-Takahashi's proof of the Church-Rosser theorem
-</a></li>
-
-<li><a href="examples/lambda-calculus/normalization/stlc-weak-norm.html">
-Tait's logical relations argument for weak normalization of the
-simply-typed lambda calculus
-</a></li>
-
-<li><a href="examples/lambda-calculus/normalization/stlc-strong-norm.html">
-Girard's proof of strong normalization of the simply-typed
-lambda calculus
-</a></li>
-
-<li><a href="examples/process-calculi/pi-calculus/index.html">
-Some &pi;-calculus meta-theory
-</a></li>
-
-<!--
-<li><a href="examples/lambda-calculus/exsub-sn/">
-Preservation of strong normalization for a variant of the
-&lambda;&sigma;-calculus
-</a></li>
--->
-
-<li><a href="examples/higher-order/breduce.html">
-  Relation between &beta;-reduction and paths in &lambda;-calculus
-</a></li>
-</ul>
-
-<p>
-The <a href="examples/">full list of examples</a> is also available.
-</p>
-
-<p>Abella uses a <i>two-level logic</i> approach to reasoning. Specifications
-are made in the logic of second-order hereditary Harrop formulas using
-lambda-tree syntax. This logic is executable and is a subset of the <a
-href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/lProlog/">&lambda;Prolog</a>
-language (see the <a href="http://teyjus.cs.umn.edu/">Teyjus</a>
-system for an implementation of this language). The reasoning logic of
-Abella is the culmination of a series of extensions to proof theory
-for the treatment of definitions, lambda-tree syntax, and generic
-judgments. The reasoning logic of Abella is able to encode the
-semantics of our specification logic as a definition and thereby
-reason over specifications in that logic. More information about this
-approach and the logics involved is available in the publications
-section.
-</p>
-
-<p>
-For an introduction to using Abella, please read this <a
-href="walkthrough.html">walkthrough</a> of an example Abella session
-which covers a proof of subject reduction in the lambda calculus.
-</p>
-</div>
-
-<div class="section">
-<h1>Download</h1>
-<p>
-The current version of Abella is <strong>2.0.0</strong>. This version
-represents a major and backwards incompatible change from earlier
-versions. In particular proof scripts for prior versions will have to
-be modified to work with this version (see below).
-</p>
-
-<ul>
-
-<li>Download and compile
-the <a href="distributions/abella-2.0.0.tar.gz">source tarball</a>.
-This requires an <a href="http://ocaml.org">OCaml installation</a>
-(version 3.12.1 or later)
-</li>
-
-<li>For Windows, a <a href="distributions/abella-2.0.0.zip">binary
-package</a> is available.</li>
-
-<li>Some <a href="updating_scripts.html">instructions for adapting
-  pre-2.x Abella proof scripts</a> to 2.x are also available.
-
-<li><a href="oldversions.html">Prior releases of Abella</a> are also
-  available, but not supported.</li>
-
-</ul>
-
-<p>
-The <a href="changelog.html">changelog</a> lists significant
-changes between versions. The development of Abella is tracked
-on <a href="https://github.com/abella-prover/abella">GitHub</a>.
-</p>
-</div>
-
-<div class="section">
-<h1>Documentation</h1>
-<ul>
-
-<li>New users are encouraged to read the <a
-href="walkthrough.html">walkthrough</a> of an example Abella
-session.</li>
-
-<li>After the first walkthrough, users are encouraged to continue with
-the <a href="advanced-walkthrough.html">advanced walkthrough</a>.
-</li>
-
-<li>After both walkthroughs, users should be ready to understand any
-of the <a href="examples/">examples</a> included in the distribution
-of Abella.</li>
-
-<li>The <a href="reference-guide.html">Abella reference guide</a> has
-a brief description of syntax, commands, and tactics.</li>
-
-<li>The <a href="http://groups.google.com/group/abella-theorem-prover">Abella
-    mailing list</a> is open for questions and discussions.</li>
-
-</ul>
-</div>
-
-<div class="section">
-<h1>Some Relevant Publications</h1>
-<p>
-<ul class="pubs">
-
-<!-- This document was automatically generated with bibtex2html 1.85
-     (see http://www.lri.fr/~filliatr/bibtex2html/),
-     with the following command:
-     bibtex2html --sort-by-date --reverse-sort -nodoc --style andrew --named-field slides slides --named-field arxiv arXiv --no-footer -nokeys -nobiblinks pubs.bib  -->
-
-
-
-
-<li><a name="gacek09phd"></a>
-
-<em>A framework for specifying, prototyping, and reasoning about
-  computational systems</em>, by Andrew Gacek, Ph.D. thesis, University of
-  Minnesota, September 2009.
-[&nbsp;<a href="pubs_bib.html#gacek09phd">bib</a>&nbsp;| 
-<a href="http://arxiv.org/abs/0910.0747">arXiv</a>&nbsp;| 
-<a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek09phd-slides.pdf">slides</a>&nbsp;| 
-<a href="http://www.cs.umn.edu/~agacek/pubs/gacek-thesis/gacek-thesis.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="gacek12jar"></a>
-
-<em>A two-level logic approach to reasoning about computations</em>, by Andrew
-  Gacek, Dale Miller, and Gopalan Nadathur, Journal of Automated
-  Reasoning, 49:241--273, 2012. 
-[&nbsp;<a href="pubs_bib.html#gacek12jar">bib</a>&nbsp;| 
-<a href="http://arxiv.org/abs/0911.2993">arXiv</a>&nbsp;| 
-<a href="http://arxiv.org/pdf/0911.2993.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="gacek11ic"></a>
-
-<em>Nominal abstraction</em>, by Andrew Gacek, Dale Miller, and
-  Gopalan Nadathur, Information and Computation, 209(1): 48--73,
-  2011. 
-[&nbsp;<a href="pubs_bib.html#gacek11ic">bib</a>&nbsp;| 
-<a href="http://arxiv.org/abs/0908.1390">arXiv</a>&nbsp;| 
-<a href="http://arxiv.org/pdf/0908.1390.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="gacek08ijcar"></a>
-
-<em>The Abella interactive theorem prover (system description)</em>, by Andrew
-  Gacek, Proceedings of IJCAR 2008 (A.&nbsp;Armando, P.&nbsp;Baumgartner, and G.&nbsp;Dowek,
-  eds.), Lecture Notes in Artificial Intelligence, vol. 5195, Springer, August
-  2008, pp.&nbsp;154-161.
-[&nbsp;<a href="pubs_bib.html#gacek08ijcar">bib</a>&nbsp;| 
-<a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek08ijcar-slides.pdf">slides</a>&nbsp;| 
-<a href="http://arxiv.org/pdf/0803.2305.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="wang13ppdp"></a>
-
-<em>Reasoning About Higher-Order Relational Specifications</em>, by
-  Yuting Wang, Kaustuv Chaudhuri, Andrew Gacek, and Gopalan Nadathur,
-  Proceedings of PPDP 2013 (to appear). 
-[&nbsp;<a href="pubs_bib.html#wang13ppdp">bib</a>&nbsp;| 
- &nbsp;<a href="http://arxiv.org/abs/1302.2584">arxiv</a>&nbsp; |
-<a href="http://arxiv.org/pdf/1302.2584.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="gacek08lfmtp"></a>
-
-<em>Reasoning in Abella about structural operational semantics
-  specifications</em>, by Andrew Gacek, Dale Miller, and Gopalan Nadathur,
-  International Workshop on Logical Frameworks and Meta-Languages: Theory and
-  Practice (LFMTP 2008) (A.&nbsp;Abel and C.&nbsp;Urban, eds.), Electronic Notes in
-  Theoretical Computer Science, no. 228, 2008, pp.&nbsp;85-100.
-[&nbsp;<a href="pubs_bib.html#gacek08lfmtp">bib</a>&nbsp;| 
-<a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek08lfmtp-slides.pdf">slides</a>&nbsp;| 
-<a href="http://arxiv.org/pdf/0804.3914.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="miller05tocl"></a>
-
-<em>A proof theory for generic judgments</em>, by Dale Miller and Alwen Tiu, ACM
-  Transactions on Computational Logic 6 (2005), no.&nbsp;4, 749-783.
-[&nbsp;<a href="pubs_bib.html#miller05tocl">bib</a>&nbsp;| 
-<a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/tocl-nabla.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="mcdowell02tocl"></a>
-
-<em>Reasoning with higher-order abstract syntax in a logical framework</em>, by
-  Raymond McDowell and Dale Miller, ACM Transactions on Computational Logic
-  3 (2002), no.&nbsp;1, 80-136.
-[&nbsp;<a href="pubs_bib.html#mcdowell02tocl">bib</a>&nbsp;| 
-<a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/mcdowell01.pdf">.pdf</a>&nbsp;]
-
-</li>
-
-<li><a name="nadathur88iclp"></a>
-
-<em>An Overview of &lambda;Prolog</em>, by Gopalan Nadathur and Dale Miller,
-  Fifth International Logic Programming Conference (Seattle), MIT Press,
-  August 1988, pp.&nbsp;810-827.
-[&nbsp;<a href="pubs_bib.html#nadathur88iclp">bib</a>&nbsp;| 
-<a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/iclp88.pdf">.pdf</a>&nbsp;]
-
-</li></ul>
-</p>
-</div>
-
-<div class="section">
-<h1>Contributors</h1>
-<p>
-The Abella system represents a collaboration between a group at 
-the University of Minnesota led by Gopalan Nadathur and the Parsifal group 
-at Ecole Polytechnique and INRIA, Saclay led by Dale Miller. Work on
-this system began as part of an NSF-funded project at the University
-of Minnesota aimed at developing flexible frameworks for specifying,
-prototyping and reasoning about computational processes. The initial
-version of Abella was designed and implemented by Andrew Gacek who 
-also played a significant role in developing the logical foundations
-of the system. Gopalan Nadathur provided guidance in the design of
-that version of Abella and he and Dale Miller contributed to the
-specific logic that Abella is based on. The effort to extend Abella to
-treat a richer specification logic with nested hypothetical judgments
-has been led by Kaustuv Chaudhuri. Yuting Wang has participated in the  
-design of this version and he is its principal implementor. The logic
-underlying Abella builds on the previous work of several people, most
-prominently Alwen Tiu, Dale Miller and Raymond McDowell. Work on
-Abella has benefited from several comments and encouragement provided
-by Alwen Tiu and David Baelde who have also been amongst the first
-users of the system.  Todd Wilson has created several large
-developments in Abella and has incorporated its use into some of his
-graduate courses; his resulting feedback has been invaluable for
-increasing the usability and robustness of the system.
-</div>
-
-<div class="section">
-<h1>Grant Support</h1>
-<p>
-Work on Abella was funded in its early stages by a grant from Boston
-Scientific. Subsequent funding has been provided by the National Science
-Foundation through the Grants CCR-0429572 and CCF-0917140. 
-The NSF grants included supplementary funding from the OISE for
-Slimmer, an international collaborative project between the University
-of Minnesota and the Parsifal group at Ecole Polytechnique and INRIA,
-France. Support for the French portion of this
-collaboration has been provided by "Equipes Associ&eacute;es" award from
-INRIA. Opinions, findings, and conclusions or recommendations
-expressed in this work are those of the authors and do not necessarily
-reflect the views of the National Science Foundation or the other
-funding sources.
-</p>
-</div>
-
-<div class="section">
-<h1>Support &amp; Contact Information</h1>
-<p>Abella is under active development.</p>
-
-<p>For bug reports and feature requests, please use
-the <a href="https://github.com/abella-prover/abella/issues">issues
-tracker</a> on the official repository.</p>
-
-<p>For other kinds of feedback, for inquiries about supoprt, and for
-discussions about the use and development of Abella, please use
-the <a href="http://groups.google.com/group/abella-theorem-prover">Abella
-mailing list</a>.</p>
-</div>
+  <div id="logo">
+    <a href="index.html">
+      <img src="images/logo.png" alt="Abella Logo" />
+    </a>
+  </div> <!-- #logo -->
+
+  <section>
+    <h1>Description</h1>
+
+    <p>
+      Abella is an interactive theorem prover based on lambda-tree syntax. This means that Abella is well-suited for
+      reasoning about the meta-theory of programming languages and other logical systems which manipulate objects with
+      binding. For example, the following applications are included in the distribution of Abella.
+    </p>
+
+    <ul>
+      <li>
+        <a href="examples/lambda-calculus/eval.html">Various results on the lambda calculus involving big-step
+          evaluation, small-step evaluation, and typing judgments</a>
+      </li>
+
+      <li>
+        <a href="examples/logic/cut.html">Cut-admissibility for a sequent calculus</a>
+      </li>
+
+      <li>
+        <a href="examples/programming-languages/poplmark-1a.html">Part 1a</a> and
+        <a href="examples/programming-languages/poplmark-2a.html">Part 2a</a> of the
+        <a href="http://alliance.seas.upenn.edu/~plclub/cgi-bin/poplmark/index.php?title=The_POPLmark_Challenge">POPLmark
+        challenge</a>
+      </li>
+
+      <li>
+        <a href="examples/lambda-calculus/cr.html">Takahashi's proof of the Church-Rosser theorem</a>
+      </li>
+
+      <li>
+        <a href="examples/lambda-calculus/normalization/stlc-weak-norm.html">Tait's logical relations argument for weak
+          normalization of the simply-typed lambda calculus</a>
+      </li>
+
+      <li>
+        <a href="examples/lambda-calculus/normalization/stlc-strong-norm.html">Girard's proof of strong normalization of
+          the simply-typed lambda calculus</a>
+      </li>
+
+      <li>
+        <a href="examples/process-calculi/pi-calculus/index.html">Some π-calculus meta-theory</a>
+      </li>
+
+      <li>
+        <a href="examples/higher-order/breduce.html">Relation between β-reduction and paths in
+        λ-calculus</a>
+      </li>
+    </ul>
+
+    <p>
+      Consult the <a href="examples/index.html">full list of examples</a> for more details.
+    </p>
+
+    <p>
+      Abella uses a <em>two-level logic</em> approach to reasoning. Specifications are made in the logic of second-order
+      hereditary Harrop formulas using lambda-tree syntax. This logic is executable and is a subset of
+      the <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/lProlog/">λProlog</a> language (see
+      the <a href="http://teyjus.cs.umn.edu/">Teyjus</a> system for an implementation of this language). The reasoning
+      logic of Abella is the culmination of a series of extensions to proof theory for the treatment of definitions,
+      lambda-tree syntax, and generic judgments. The reasoning logic of Abella is able to encode the semantics of our
+      specification logic as a definition and thereby reason over specifications in that logic. More information about
+      this approach and the logics involved is available in the publications section.
+    </p>
+
+    <p>
+      For an introduction to using Abella, please read this <a href="walkthrough.html">walkthrough</a> of an example
+      Abella session which covers a proof of subject reduction in the lambda calculus.
+    </p>
+  </section>
+
+  <section>
+    <h1>Download</h1>
+
+    <p>
+      The current version of Abella is <strong>2.0.0</strong>. This version represents a major and backwards
+      incompatible change from earlier versions. In particular proof scripts for prior versions will have to be modified
+      to work with this version (see below).
+    </p>
+
+    <ul>
+      <li>
+        Download and compile the <a href="distributions/abella-2.0.0.tar.gz">source tarball</a>. This requires
+        an <a href="http://ocaml.org">OCaml installation</a> (version 3.12.1 or later).
+      </li>
+
+      <li>
+        For Windows, a <a href="distributions/abella-2.0.0.zip">binary package</a> is available.
+      </li>
+
+      <li>
+        Some <a href="updating_scripts.html">instructions for adapting pre-2.x Abella proof scripts</a> to 2.x are also
+        available.
+      </li>
+
+      <li>
+        <a href="oldversions.html">Prior releases of Abella</a> are also available, but not supported.
+      </li>
+    </ul>
+
+    <p>
+      The <a href="changelog.html">changelog</a> lists significant changes between versions. The development of Abella
+      is tracked on <a href="https://github.com/abella-prover/abella">GitHub</a>.
+    </p>
+  </section>
+
+  <section>
+    <h1>Documentation</h1>
+
+    <ul>
+        <li>
+          New users are encouraged to read the <a href="walkthrough.html">walkthrough</a> of an example Abella
+          session.
+        </li>
+
+        <li>
+          After the first walkthrough, users are encouraged to continue with
+          the <a href="advanced-walkthrough.html">advanced walkthrough</a>.
+        </li>
+
+        <li>
+          After both walkthroughs, users should be ready to understand any of the <a href="examples/">examples</a>
+          included in the distribution of Abella.
+        </li>
+
+        <li>
+          The <a href="reference-guide.html">Abella reference guide</a> has a brief description of syntax, commands, and
+          tactics.
+        </li>
+
+        <li>
+          The <a href="http://groups.google.com/group/abella-theorem-prover">Abella mailing list</a> is open for
+            questions and discussions.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h1>Support</h1>
+
+      <ul>
+        <li>Abella is under active development.</li>
+
+        <li>
+          For bug reports and feature requests, please use
+          the <a href="https://github.com/abella-prover/abella/issues">issues tracker</a> on the official repository.
+        </li>
+
+        <li>
+          For other kinds of feedback, for inquiries about supoprt, and for discussions about the use and development of
+          Abella, please use the <a href="http://groups.google.com/group/abella-theorem-prover">Abella mailing list</a>.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h1>Some Relevant Publications</h1>
+
+      <ul class="pubs">
+        <li id="gacek09phd">
+          <em>A framework for specifying, prototyping, and reasoning about computational systems</em>, by Andrew Gacek,
+          Ph.D. thesis, University of Minnesota, September 2009.
+          [&nbsp;<a href="pubs_bib.html#gacek09phd">bib</a>&nbsp;|
+          <a href="http://arxiv.org/abs/0910.0747">arXiv</a>&nbsp;|
+          <a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek09phd-slides.pdf">slides</a>&nbsp;|
+          <a href="http://www.cs.umn.edu/~agacek/pubs/gacek-thesis/gacek-thesis.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="gacek12jar">
+          <em>A two-level logic approach to reasoning about computations</em>, by Andrew Gacek, Dale Miller, and Gopalan
+          Nadathur, Journal of Automated Reasoning, 49:241--273, 2012.
+          [&nbsp;<a href="pubs_bib.html#gacek12jar">bib</a>&nbsp;|
+          <a href="http://arxiv.org/abs/0911.2993">arXiv</a>&nbsp;|
+          <a href="http://arxiv.org/pdf/0911.2993.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="gacek11ic">
+          <em>Nominal abstraction</em>, by Andrew Gacek, Dale Miller, and Gopalan Nadathur, Information and Computation,
+          209(1): 48--73, 2011. [&nbsp;<a href="pubs_bib.html#gacek11ic">bib</a>&nbsp;|
+          <a href="http://arxiv.org/abs/0908.1390">arXiv</a>&nbsp;|
+          <a href="http://arxiv.org/pdf/0908.1390.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="gacek08ijcar">
+          <em>The Abella interactive theorem prover (system description)</em>, by Andrew Gacek, Proceedings of IJCAR
+          2008 (A.&nbsp;Armando, P.&nbsp;Baumgartner, and G.&nbsp;Dowek, eds.), Lecture Notes in Artificial
+          Intelligence, vol. 5195, Springer, August 2008, pp.&nbsp;154-161.
+          [&nbsp;<a href="pubs_bib.html#gacek08ijcar">bib</a>&nbsp;|
+          <a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek08ijcar-slides.pdf">slides</a>&nbsp;| 
+          <a href="http://arxiv.org/pdf/0803.2305.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="wang13ppdp">
+          <em>Reasoning About Higher-Order Relational Specifications</em>, by Yuting Wang, Kaustuv Chaudhuri, Andrew
+          Gacek, and Gopalan Nadathur, Proceedings of PPDP 2013 (to appear).
+          [&nbsp;<a href="pubs_bib.html#wang13ppdp">bib</a>&nbsp;|
+          <a href="http://arxiv.org/abs/1302.2584">arxiv</a>&nbsp;|
+          <a href="http://arxiv.org/pdf/1302.2584.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="gacek08lfmtp">
+          <em>Reasoning in Abella about structural operational semantics specifications</em>, by Andrew Gacek, Dale
+          Miller, and Gopalan Nadathur, International Workshop on Logical Frameworks and Meta-Languages: Theory and
+          Practice (LFMTP 2008) (A.&nbsp;Abel and C.&nbsp;Urban, eds.), Electronic Notes in Theoretical Computer
+          Science, no. 228, 2008, pp.&nbsp;85-100. [&nbsp;<a href="pubs_bib.html#gacek08lfmtp">bib</a>&nbsp;|
+          <a href="http://www.cs.umn.edu/~agacek/pubs/slides/gacek08lfmtp-slides.pdf">slides</a>&nbsp;| 
+          <a href="http://arxiv.org/pdf/0804.3914.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="miller05tocl">
+          <em>A proof theory for generic judgments</em>, by Dale Miller and Alwen Tiu, ACM Transactions on Computational
+          Logic 6 (2005), no.&nbsp;4, 749-783. [&nbsp;<a href="pubs_bib.html#miller05tocl">bib</a>&nbsp;|
+          <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/tocl-nabla.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="mcdowell02tocl">
+          <em>Reasoning with higher-order abstract syntax in a logical framework</em>, by Raymond McDowell and Dale
+          Miller, ACM Transactions on Computational Logic 3 (2002), no.&nbsp;1, 80-136.
+          [&nbsp;<a href="pubs_bib.html#mcdowell02tocl">bib</a>&nbsp;|
+          <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/mcdowell01.pdf">PDF</a>&nbsp;]
+        </li>
+
+        <li id="nadathur88iclp">
+          <em>An Overview of λProlog</em>, by Gopalan Nadathur and Dale Miller, Fifth International Logic
+          Programming Conference (Seattle), MIT Press, August 1988, pp.&nbsp;810-827.
+          [&nbsp;<a href="pubs_bib.html#nadathur88iclp">bib</a>&nbsp;|
+          <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/iclp88.pdf">PDF</a>&nbsp;]
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h1>Contributors</h1>
+
+      <ul>
+        <li>
+          Abella was designed and implemented
+          by <a href="http://www.cs.umn.edu/~agacek">Andrew Gacek</a>, who also
+          played a significant role in developing the logical foundations of the
+          system.
+        </li>
+
+        <li>
+          From version 2.0.0 onwards, development of Abella continues with two
+          additional developers: Yuting Wang (UMN)
+          and <a href="http://chaudhuri.info">Kaustuv Chaudhuri</a> (INRIA).
+        </li>
+
+        <li>
+          A number of people have contributed to the design and the library of
+          examples in Abella. The following are some of the main contributors,
+          listed in alphabetical order.
+          <ul>
+            <li>
+              <a href="http://www.lsv.ens-cachan.fr/~baelde/">David Baelde</a> (ENS Cachan)
+            </li>
+            <li>
+              <a href="http://www.lix.polytechnique.fr/~dale">Dale Miller</a> (INRIA and LIX/Ecole Polytechnique
+            </li>
+            <li>
+              <a href="http://www.cs.umn.edu/~gopalan">Gopalan Nadathur</a> (UMN)
+            </li>
+            <li>
+              <a href="http://users.cecs.anu.edu.au/~tiu/">Alwen Tiu</a> (ANU)
+            </li>
+            <li>Todd Wilson (CSU Fresno)</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h1>History</h1>
+
+      <p>
+        The Abella system represents a collaboration between a group at the <a href="http://www.cs.umn.edu">University
+        of Minnesota</a> led by Gopalan Nadathur and the <a href="http://team.inria.fr/parsifal/">Parsifal</a> team at
+        <a href="http://www.saclay.inria.fr">INRIA Saclay &ndash; Île-de-France</a>
+        and <a href="http://www.lix.polytechnique.fr">LIX</a>/<a href="http://www.polytechnique.fr">Ecole
+        Polytechnique</a> led by Dale Miller.
+
+        Work on Abella began as part of an NSF-funded project at the University of Minnesota aimed at developing
+        flexible frameworks for specifying, prototyping and reasoning about computational processes. Gopalan Nadathur
+        provided guidance in the design of that version of Abella and he and Dale Miller contributed to the specific
+        logic that Abella is based on.
+
+        The recent extension of Abella to support a richer specification logic has been the result of a transatlantic
+        collaboration as part of the <a href="http://chaudhuri.info/RAPT"><em>Recent Advances in Proof Theory</em></a>
+        (RAPT) Associated Team, led by Kaustuv Chaudhuri (INRIA, France), Brigitte Pientka (McGill, Canada), and Gopalan
+        Nadathur (University of Minnesota, USA). As a part of this effort, Yuting Wang designed and implemented the
+        extension to higher-order hereditary Harrop formulas as the specification language.
+
+        The reasoning logic underlying Abella builds on the previous work of several people, most prominently Alwen Tiu,
+        Dale Miller and Raymond McDowell. Work on Abella has benefited from several comments and encouragement provided
+        by Alwen Tiu and David Baelde who have also been amongst the first users of the system. Todd Wilson has created
+        several large developments in Abella and has incorporated its use into some of his graduate courses; his
+        resulting feedback has been invaluable for increasing the usability and robustness of the system.
+      </p>
+    </section>
+
+    <section>
+      <h1>Funding</h1>
+
+      <p>
+        Work on Abella was funded in its early stages by a grant from Boston Scientific. Subsequent funding has been
+        provided by the National Science Foundation through the Grants CCR-0429572 and CCF-0917140. The NSF grants
+        included supplementary funding from the OISE for Slimmer, an international collaborative project between the
+        University of Minnesota and the Parsifal group at Ecole Polytechnique and INRIA, France. Support for the French
+        portion of this collaboration has been provided by a sequence of <em>Associated Team</em> grants from INRIA.
+      </p>
+
+      <p class="noindent">
+        Opinions, findings, and conclusions or recommendations expressed in this work are those of the authors and do
+        not necessarily reflect the views of the National Science Foundation or the other funding sources.
+      </p>
+    </section>
+
+    <footer>
+      Last updated: <time>2013-07-19 15:21:59+0200</time>
+    </footer>
 
 </body>
 </html>
 
-<!--  LocalWords:  Teyjus OCaml Equipes Associ REUSSI CCR README tarball gz LIX
- -->
-<!--  LocalWords:  changelog Rosser Takahashi's Girard's Ecole Pollack GitHub
- -->
+
+<!-- Local Variables: -->
+<!-- mode: html -->
+<!-- fill-column: 120 -->
+<!-- End: -->
+
+<!--  LocalWords:  Teyjus OCaml Equipes Associ REUSSI CCR README tarball gz LIX -->
+<!--  LocalWords:  changelog Rosser Takahashi's Girard's Ecole Pollack GitHub -->

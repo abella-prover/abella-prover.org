@@ -38,12 +38,14 @@ li {
     border: 0;
 }
 
+section,
 .section {
     padding: 0.25em 1em;
     margin: 1em;
     width: 80%;
 }
 
+section .section,
 .section .section {
     width: 100%;
 }
@@ -69,14 +71,24 @@ h3 {
     font-weight: bold;
 }
 
+section #main,
 .section #main {
     font-size: 24pt;
 }
 
+section p,
 .section p {
+    text-indent: 0;
     text-align: justify;
-    margin: 5px 0 0 0;
+    margin: 5px 0;
 }
+
+section p + p,
+.section p + p {
+    text-indent: 1.5em;
+}
+
+p.noindent { text-indent: 0; margin-top: 5px; }
 
 pre {
     text-align: justify;
@@ -111,4 +123,11 @@ a.import-link {
 .view {
     color: grey;
     font-size: small;
+}
+
+footer {
+  padding: 0.25em 1em;
+  margin: 1em;
+  border-top: 1px solid #444;
+  color: #444;
 }
