@@ -1,0 +1,867 @@
+% Bisimilarity up-to techniques for CCS. 
+
+Set lax_coinduction on.
+
+% A specification of the SOS semantics for CCS.
+% This specification involves the bang constructor.
+
+Kind name,action,proc type.
+
+% Action constructors
+Type tau          action.
+Type up,dn        name -> action.
+
+% Process constructors
+Type null         proc.
+Type plus,par     proc -> proc -> proc.
+Type act          action -> proc -> proc.
+Type repl         proc -> proc.
+
+Define one : proc -> action -> proc -> prop by
+  one (act A P) A P
+; one (plus P1 P2) A Q             := one P1 A Q
+; one (plus P1 P2) A Q             := one P2 A Q
+; one (par P Q) A (par P1 Q)       := one P A P1
+; one (par P Q) A (par P Q1)       := one Q A Q1
+; one (repl P) A (par (repl P) Q)  := one P A Q
+; one (par P Q) tau (par P1 Q1)    :=
+    exists X, one P (up X) P1 /\ one Q (dn X) Q1
+; one (repl P) tau (par (repl P) (par Q R)) :=
+    exists X, one P (up X) Q /\ one P (dn X) R.
+
+
+% Bisimilarity up-to techniques.
+% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
+% Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
+
+CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
+  bisim_up_to Upto P Q :=
+   (forall A P1, one P A P1 ->
+      exists Q1, one Q A Q1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisim_up_to Upto P2 Q2) /\
+   (forall A Q1, one Q A Q1 ->
+      exists P1, one P A P1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisim_up_to Upto P2 Q2).
+
+% An alternative definition of bisimilarity which is based on a "vacuous" up-to technique.
+
+Define refl_t : proc -> proc -> proc -> proc -> prop by refl_t P P Q Q.
+
+% CoDefine bisim : proc -> proc -> prop by bisim P Q := bisim_up_to refl_t P Q.
+
+Theorem bisim_refl : forall P, bisim_up_to refl_t P P.
+coinduction. intros. unfold.
+  intros PaP1. exists P1. split. search.
+   exists P1. exists P1. split. search. backchain CH.
+  intros QaQ1. exists Q1. split. search.
+   exists Q1. exists Q1. split. search. backchain CH.
+
+Theorem bisim_sym : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P.
+coinduction. intros. case H1. unfold.
+  intros. apply H3 to H4. exists P2. split. search. exists P1. exists P2. split. search. case H6. backchain CH.
+  intros. apply H2 to H4. exists Q2. split. search.  exists Q2. exists Q1. split. search. case H6. backchain CH.
+
+Theorem bisim_trans : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q R -> bisim_up_to refl_t P R. 
+coinduction. intros. case H1. case H2. unfold. 
+  intros. apply H3 to H7. apply H5 to H8. case H9. case H12. exists Q4. split. search. exists P3. exists Q4. split. search. backchain CH.
+  intros. apply H6 to H7. apply H4 to H8. case H9. case H12. exists P4. split. search. exists P4. exists Q3. split. search. backchain CH.
+
+% Bisimilarity up-to Bisimilarity.
+
+Define bisim_t : proc -> proc -> proc -> proc -> prop by
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+
+% Bisimilarity up-to transitivity.
+
+Define transitivity_t : proc -> proc -> proc -> proc -> prop by
+        transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
+                                        (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
+
+% Bisimilarity up-to context.
+% (only up-to context, no modulo bisimilarity.)
+
+Define context_t : proc -> proc -> proc -> proc -> prop by
+        context_t P1 P1 Q1 Q1;
+        context_t P1 P3 Q1 Q3 := exists R, P1 = (par P3 R) /\ Q1 = (par Q3 R).
+
+% Bisimilarity up-to bisimilarity and context.
+
+Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
+        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
+					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
+
+
+% Abstract definitions for soundness for the various proof techniques. 
+% They are to be instantiated later at any convenience.
+
+Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound Upto := forall P Q, bisim_up_to Upto P Q -> bisim_up_to refl_t P Q.
+
+Define is_sound_fst : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_fst Upto := forall P Q,
+    (exists R S, bisim_up_to refl_t P R /\ bisim_up_to Upto R S /\ bisim_up_to refl_t S Q)
+    -> bisim_up_to refl_t P Q.
+
+Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_snd Upto := forall P Q, bisim_up_to Upto P Q ->
+    exists R S, bisim_up_to refl_t P R /\ bisim_up_to Upto R S /\ bisim_up_to refl_t S Q.
+
+% Remark: 
+%	the soundness of all the techniques that follow but up-to Context, are proved by two lemmas first and second. 
+%	the up-to Context technique can be proved directly, i.e. with lemma soundness_upToTechnique.
+%	only soundness_upToTechnique_first depends on the particular up-to technique and at a specific point of the proof.
+%	soundness_upToTechnique_second works for all reflexive equivalences: proofs are copy/pasted/adjusted.
+%	soundness_upToTechnique combines the first and second lemma with no intervention from the up-to technique nor even the equivalence relation: proofs are copy/pasted.
+
+
+% Soundness of Bisimilarity up-to Bisimilarity.
+
+Theorem bisim_sound_fst : is_sound_fst bisim_t.
+unfold. coinduction. intros. case H1. unfold.
+
+% Remark:
+% unfold, open the 2 cases of bisimilarity:
+% - transitions from P.
+% - transitions from Q.
+
+% Every case is divided in two independent subproofs. 
+% - given the step from P, we need to find a suitable step from Q.
+% - prove that the derivatives are again in the relation. 
+%	the particular up-to technique will play a role in a specific and localized point of this sub-proof.
+%	i.e. the proof can be packaged as a procedure that can be copy/pasted/adjusted in a well-defined point of the proof.
+
+% transitions from P.
+%   searching for the suitable step from Q. 
+intros.	case H2. apply H6 to H5. case H3. apply H11 to H8. case H4. apply H16 to H13.
+exists Q5. 
+split. search.
+exists P1. exists Q5.	
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+%  proving derivatives are related.
+case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+% Next code is specific of Bisimilarity up-to Bisimilarity.
+	apply bisim_trans to H10 H21.
+	apply bisim_sym to H22.
+	apply bisim_trans to H24 H20.
+backchain CH.
+
+% Case of transitions from Q
+%   searching for the suitable step from P. 
+intros.	case H4. apply H7 to H5. case H3. apply H12 to H8. case H2. apply H17 to H13.
+exists P5.
+split. search.
+exists P5.
+exists Q1.				
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+% proving derivatives are related.
+case H14.				% unfold of up-to technique: we 
+% Next code is specific of Bisimilarity up-to Bisimilarity.
+% Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
+	apply bisim_trans to H20 H21.
+	apply bisim_sym to H22.
+	apply bisim_trans to H24 H10.
+backchain CH.
+
+Theorem bisim_sound_snd : is_sound_snd bisim_t.
+unfold.
+intros.
+apply bisim_refl with P = P.
+apply bisim_refl with P = Q.
+exists P.
+exists Q.
+search.
+
+Theorem bisim_sound : is_sound bisim_t.
+unfold.
+intros.
+apply bisim_sound_snd.
+case H2.
+apply H3 to H1.
+apply bisim_sound_fst.
+case H7.
+backchain H8.
+
+
+
+% Now, we embark ourselves in proving the soundness of Bisimilarity up-to Transitivity.
+% Here below are the lemmas we need for the task. 
+
+Theorem bisimUpToTrans_refl : forall P, bisim_up_to transitivity_t P P. skip. 
+% -- SKIPPED -- problem: coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the +.
+
+Theorem bisimUpToTrans_sym : forall P Q, bisim_up_to transitivity_t P Q -> bisim_up_to transitivity_t Q P.skip.
+% -- SKIPPED -- problem: I need to apply transitivity to something that comes from coinductive (so it has + and would not go).
+
+Theorem bisimUpToTrans_trans : forall P Q R, bisim_up_to transitivity_t P Q -> bisim_up_to transitivity_t Q R -> bisim_up_to transitivity_t P R.
+skip. 
+% -- SKIPPED -- problem: I need to apply the coindutive hypothesis to something that comes from coinductive (so it has + and would not go).
+
+Theorem bisim_imples_bisimUpToTrans : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to transitivity_t P Q. skip. 
+
+
+% Soundness of Bisimilarity up-to Transitivity.
+
+Theorem transitivity_sound_fst : is_sound_fst transitivity_t.
+% Remark: as we pointed out above, this proof is nearly copy/pasted until from the soundness of Bisimilarity up-to Bisimilarity.
+% the specific code for Bisimilarity up-to Transitivity is needed in a precise and localized point. 
+
+unfold. coinduction. intros. case H1. unfold.
+
+% plain transitions from P.
+%   searching for the suitable step from Q. 
+intros.	case H2. apply H6 to H5. case H3. apply H11 to H8. case H4. apply H16 to H13.
+exists Q5. 
+split. search.
+exists P1. exists Q5.	
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+%  proving derivatives are related.
+case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+% Next code is specific of Bisimilarity up-to Transitivity.
+	apply bisimUpToTrans_trans to H21 H22.
+	apply bisimUpToTrans_sym to H24.
+	apply bisimUpToTrans_trans to H15 H26.
+	apply bisimUpToTrans_sym to H23.
+	apply bisimUpToTrans_trans to H27 H28.
+	apply bisimUpToTrans_trans to H25 H29.
+backchain CH.
+
+% Case of transitions from Q
+%   searching for the suitable step from P. 
+
+intros.	case H4. apply H7 to H5. case H3. apply H12 to H8. case H2. apply H17 to H13.
+exists P5.
+split. search.
+exists P5.
+exists Q1.				
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+% proving derivatives are related.
+case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+% Next code is specific of Bisimilarity up-to Transitivity. 
+	apply bisimUpToTrans_trans to H21 H22.
+	apply bisimUpToTrans_sym to H24.
+	apply bisimUpToTrans_trans to H15 H26.
+	apply bisimUpToTrans_sym to H23.
+	apply bisimUpToTrans_trans to H27 H28.
+	apply bisimUpToTrans_trans to H25 H29.
+backchain CH.
+
+% Remark, the "abstract" proof code for tranitivity_t does not depend on Bottom/Top (so they had to switch for bisim_t for transitions from Q).
+% So, we could copy/paste the proof code of the case of transitions from P.
+
+
+Theorem transitivity_sound_snd : is_sound_snd transitivity_t.
+unfold.
+intros.
+apply bisim_refl with P = P.
+apply bisim_refl with P = Q.
+exists P.
+exists Q.
+search.
+
+
+Theorem transitivity_sound : is_sound transitivity_t.
+unfold.
+intros.
+apply transitivity_sound_snd.
+case H2.
+apply H3 to H1.
+apply transitivity_sound_fst.
+case H7.
+backchain H8.
+
+
+% Soundness of Bisimilarity up-to Context
+% The soundness of the up-to context technique can be proved directly, without the lemmas first and second.
+
+Theorem bisimUpToContext_cong : forall P Q R, bisim_up_to context_t P Q -> bisim_up_to context_t (par P R) (par Q R). skip.
+% -- SKIPPED -- problem: upToContext P Q will decompose P and Q inside bisimUpTo upToContext (par P R) and (par Q R).
+%	   therefore we have the obligation proof for bisimUpTo upToContext (par (par P R2) R) and (par (par Q R2) R).
+%	   we need to apply the coinductive hypothesis to something that comes from the coinductive hypothesis (it has a + and would not go).
+
+Theorem context_sound : is_sound context_t.
+unfold. coinduction. intros. case H1. unfold.
+
+% plain transitions from P.
+%   searching for the suitable step from Q. 
+intros.  apply H2 to H4.
+exists Q2.
+split. search.
+exists P1. exists Q2.
+split. search.
+
+%  proving derivatives are related.
+case H6.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+% Next code is specific of Bisimilarity up-to Context (2 cases)
+% - inside no bigger context
+	backchain CH.
+% - inside a bigger context
+	apply bisimUpToContext_cong to H7 with R = R.
+backchain CH.
+
+% plain transitions from Q.
+%   searching for the suitable step from P. 
+intros.  apply H3 to H4.
+exists P2.
+split. search.
+exists P2. exists Q1.
+split. search.
+
+%  proving derivatives are related.
+case H6.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+% Next code is specific of Bisimilarity up-to Context (2 cases)
+% - inside no bigger context
+	backchain CH.
+% - inside a bigger context
+	apply bisimUpToContext_cong to H7 with R = R.
+backchain CH.
+
+
+% Soundness of Bisimilarity up-to Bisimilarity and Context.
+
+Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
+% -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
+
+Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
+unfold. coinduction. intros. case H1. unfold.
+
+% plain transitions from P.
+%   searching for the suitable step from Q. 
+intros.	case H2. apply H6 to H5. case H3. apply H11 to H8. case H4. apply H16 to H13.
+exists Q5. 
+split. search.
+exists P1. exists Q5.	
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+%  proving derivatives are related.
+case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+case H21.
+% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
+% - inside no bigger context
+	case H22.				% unfold upToBisim 
+	apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+	apply bisim_sym to H24.
+	apply bisim_trans to H26 H20.
+	backchain CH.
+% - inside a bigger context
+	case H22.				% unfold upToBisim 
+	apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+	apply bisim_sym to H24.
+	apply bisim_trans to H26 H20.
+	apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+backchain CH.   
+
+% Case of transitions from Q
+%   searching for the suitable step from P. 
+
+intros.	case H4. apply H7 to H5. case H3. apply H12 to H8. case H2. apply H17 to H13.
+exists P5.
+split. search.
+exists P5.
+exists Q1.				
+split. search. 
+
+% applying the information from ReflexiviyTechnique 
+case H9.				
+case H19.
+
+% proving derivatives are related.
+case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
+case H21.
+% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
+% Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
+% - inside no bigger context
+	case H22.				% unfold upToBisim 
+	apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+	apply bisim_sym to H24.
+	apply bisim_trans to H26 H10.
+	backchain CH.
+% - inside a bigger context
+	case H22.				% unfold upToBisim 
+	apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+	apply bisim_sym to H24.
+	apply bisim_trans to H26 H10.
+	apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+backchain CH.   
+
+
+Theorem bisim_context_sound_snd : is_sound_snd bisim_context_t.
+unfold.
+intros.                                 
+apply bisim_refl with P = P.
+apply bisim_refl with P = Q.
+exists P.
+exists Q.
+search.
+
+Theorem bisim_context_sound : is_sound bisim_context_t.
+unfold.
+intros.
+apply bisim_context_sound_snd.
+case H2.
+apply H3 to H1.
+apply bisim_context_sound_fst.
+case H7.
+backchain H8.
+
+% --- EXAMPLES --- %
+%
+% For bisimilarity up-to bisimilarity:
+% -- !(a(c) + b(c)) is bisimilar to !(a(c)) || !(b(c))
+% -- !!a is bisimilar to !a
+%
+% For bisimilarity up-to bisimilarity and context:
+% -- !(a(c).P + b(c).P) is bisimilar to !(a(c)).P || !(b(c)).P
+% -- !!a.P is bisimilar to !a.P
+
+% For bisimilarity up-to bisimilarity:
+
+% Example: !(a(c) + b(c)) is bisimilar to !(a(c)) || !(b(c))
+% Instead of showing a bisimulation between the two processes, we prove that they are bisimilar up-to bisimilarity.
+% Notice that proving the ordinary bisimilarity of those two processes requires an infinite relation.  
+
+Theorem bisim_par_zeroEl : forall P,
+bisim_up_to refl_t (par P null) P. skip.
+
+Theorem bisim_par_comm : forall P Q,
+bisim_up_to refl_t (par P Q) (par Q P).skip.
+
+Theorem bisim_par_assoc : forall P Q R,
+bisim_up_to refl_t (par (par P Q) R) (par P (par Q R)).skip.
+
+Theorem bisim_par_cong_right : forall P Q R, 
+bisim_up_to refl_t P Q -> bisim_up_to refl_t (par P R) (par Q R).skip. 
+
+Theorem bisim_par_cong_left : forall P Q R, 
+bisim_up_to refl_t P Q -> bisim_up_to refl_t (par R P) (par R Q).skip. 
+
+Theorem bisim_repl_absorb : forall P, 
+bisim_up_to refl_t (par (repl P) P) (repl P).skip.
+
+
+Theorem example_1_bisim : forall A B, bisim_up_to bisim_t (repl (plus (act (dn A) null) (act (dn B) null))) (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+coinduction. intros. unfold.					
+
+% It will split to the 2 cases of bisim.
+% - transitions from P: (repl (plus (act (dn A) null) (act (dn B) null))).
+% - transitions from Q: (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+
+% Case of transitions from P. 
+% First case: the a() input move. 
+
+intros. case H1. case H2. case H3.	
+exists (par (par (repl (act (dn A) null)) null) (repl (act (dn B) null))).	% we need to give the result of the transition. 
+split. search.
+
+exists (repl (plus (act (dn A) null) (act (dn B) null))).
+exists (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+split.					
+
+% first we have to prove they are related by the technique.
+
+unfold.
+apply bisim_par_zeroEl with P = (repl (plus (act (dn A) null) (act (dn B) null))).
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+apply bisim_par_cong_right to H4 with R = (repl (act (dn B) null)).          
+search.
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH. 
+
+% Second case: the b() input move. 
+
+case H3.
+exists (par (repl (act (dn A) null)) (par (repl (act (dn B) null)) null)).
+split. search.
+
+exists (repl (plus (act (dn A) null) (act (dn B) null))).
+exists (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+intros. split.
+
+% first we have to prove they are related by the technique.
+
+unfold.
+apply bisim_par_zeroEl with P = (repl (plus (act (dn A) null) (act (dn B) null))).
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn B) null)).
+apply bisim_par_cong_left to H4 with R = (repl (act (dn A) null)).          
+search. 
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH.
+
+% Now, the proof will explore the possibility of interaction because of the communication rule of the parallel operator.
+% This case is not possible as both (act (dn A) null) and (act (dn B) null)) perform an input. 
+% Therefore, this case will be discharged when we reach the "leaves", i.e. one (act (dn A) null) up X ?
+case H2. case H4. case H4.
+
+% Case of transitions from Q. 
+% First case: the a() input move. 
+intros. case H1. case H2. case H3.
+
+exists (par (repl (plus (act (dn A) null) (act (dn B) null))) null).
+split. search.
+
+exists (repl (plus (act (dn A) null) (act (dn B) null))).
+exists (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+split.
+
+% first we have to prove they are related by the technique.
+unfold.
+apply bisim_par_zeroEl with P = (repl (plus (act (dn A) null) (act (dn B) null))).
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+apply bisim_par_cong_right to H4 with R = (repl (act (dn B) null)).          
+search. 
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH.
+
+% Now, the proof will explore the case of interaction because of the communication rule of the parallel operator.
+% This case will be discharged
+case H3.
+
+% Second case: the b() input move. 
+
+case H2. case H3.
+
+exists (par (repl (plus (act (dn A) null) (act (dn B) null))) null).
+split. search.
+
+exists (repl (plus (act (dn A) null) (act (dn B) null))).
+exists (par (repl (act (dn A) null)) (repl (act (dn B) null))).
+split.
+
+% first we have to prove they are related by the technique.
+unfold.
+apply bisim_par_zeroEl with P = (repl (plus (act (dn A) null) (act (dn B) null))).
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn B) null)).
+apply bisim_par_cong_left to H4 with R = (repl (act (dn A) null)).          
+search. 
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH.
+
+% Other cases for interaction that will be discharged. 
+case H3. case H2. case H4.
+
+
+% Example: !!a is bisimilar to !a.
+% Instead of showing a bisimulation between the two processes, we prove that they are bisimilar up-to bisimilarity.
+% Notice that proving the ordinary bisimilarity of those two processes requires an infinite relation.  
+
+Theorem example_2_bisim : forall A, bisim_up_to bisim_t (repl (repl (act (dn A) null))) (repl (act (dn A) null)).
+coinduction. intros. unfold.
+
+% It will split to the 2 cases of bisim.
+% - transitions from P: (repl (repl (act (dn A) null)))
+% - transitions from Q: (repl (act (dn A) null)).
+
+% Case of transitions from P. 
+intros. case H1. case H2. case H3.
+
+exists (par (repl (act (dn A) null)) null).
+split. search.
+
+exists (repl (repl (act (dn A) null))).
+exists (repl (act (dn A) null)).
+split.
+
+% first we have to prove they are related by the technique.
+unfold.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+apply bisim_par_cong_left to H4 with R = (repl (repl (act (dn A) null))).
+apply bisim_repl_absorb with P = (repl (act (dn A) null)).
+apply bisim_trans to H5 H6.
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+search.
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH.
+
+% Now, the proof will explore the case of interaction because of the communication rule of the parallel operator.
+% Some cases for interaction that will be discharged. 
+case H3. case H2. case H4.
+
+% Case of transitions from Q. 
+intros. case H1. case H2.
+
+exists (par (repl (repl (act (dn A) null))) (par (repl (act (dn A) null)) null)).
+split. search.
+
+exists (repl (repl (act (dn A) null))).
+exists (repl (act (dn A) null)).
+split.
+
+% first we have to prove they are related by the technique.
+unfold.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+apply bisim_par_cong_left to H3 with R = (repl (repl (act (dn A) null))).
+apply bisim_repl_absorb with P = (repl (act (dn A) null)).
+apply bisim_trans to H4 H5.
+search.
+apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
+search.
+
+% and then, that they are related by bisimUpTo upToBisimilarity.
+backchain CH.
+
+% An other case for interaction that will be discharged. 
+case H2.
+
+
+% For bisimilarity up-to bisimilarity and context:
+
+% Example: !(a(c).P + b(c).P) is bisimilar to !(a(c).P) || !(b(c).P)
+% Instead of showing a bisimulation between the two processes, we prove that they are bisimilar up-to bisimilarity and context.
+% Notice that proving the ordinary bisimilarity of those two processes requires an infinite relation.  
+
+Theorem example_1_context : forall A B P, bisim_up_to bisim_context_t (repl (plus (act (dn A) P) (act (dn B) P))) (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+coinduction. intros. unfold.					
+
+% It will split to the 2 cases of bisim.
+% - transitions from P (of the bisim def): (repl (plus (act (dn A) P) (act (dn B) P))).
+% - transitions from Q (of the bisim def): (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+
+% Case of transitions from P (of the bisim def). 
+% First case: the a() input move. 
+
+intros. case H1. case H2. case H3.	
+exists (par (par (repl (act (dn A) P)) P) (repl (act (dn B) P))).	% we need to give the result of the transition. 
+split. search.
+
+exists (repl (plus (act (dn A) P) (act (dn B) P))).
+exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+split.					
+
+% first we have to prove they are related by the technique.
+
+unfold. right.
+exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
+exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
+split.
+unfold. 
+apply bisim_refl with P = (par (repl (plus (act (dn A) Q) (act (dn B) Q))) Q).
+search.
+apply bisim_par_comm with P = P, Q = (repl (act (dn B) Q)).
+apply bisim_par_cong_left to H4 with R = (repl (act (dn A) Q)).
+apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = P, R = (repl (act (dn B) Q)).
+apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = (repl (act (dn B) Q)), R = P.
+apply bisim_trans to H6 H5.
+apply bisim_sym to H7.
+apply bisim_trans to H8 H9.
+search.
+
+exists P.							% the common context. 
+split. search. search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext.
+backchain CH. 
+
+% First case: the b() input move. 
+case H3.
+
+exists (par (repl (act (dn A) P)) (par (repl (act (dn B) P)) P)).	% we need to give the result of the transition. 
+split. search.
+
+exists (repl (plus (act (dn A) P) (act (dn B) P))).
+exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+split.					
+
+% first we have to prove they are related by the technique.
+
+unfold. right.
+exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
+exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
+split.
+unfold. 
+apply bisim_refl with P = (par (repl (plus (act (dn A) Q) (act (dn B) Q))) Q).
+search.
+apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = (repl (act (dn B) Q)), R = Q.
+apply bisim_sym to H4.
+search.
+exists Q.							% the common context. 
+split. search. search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext.
+backchain CH.
+
+% An other case for interaction that will be discharged. 
+case H2. case H4. case H4. 
+
+% Case of transitions from Q (of the bisim def). 
+% First case: the a() input move. 
+intros. case H1. case H2. case H3.
+
+exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
+split. search.
+
+exists (repl (plus (act (dn A) P) (act (dn B) P))).
+exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+split.					
+
+% first we have to prove they are related by the technique.
+
+unfold. right.
+exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
+exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
+split.
+unfold.
+apply bisim_refl with P = (par (repl (plus (act (dn A) Q) (act (dn B) Q))) Q).
+search.
+apply bisim_par_comm with P = Q, Q = (repl (act (dn B) Q)).
+apply bisim_par_cong_left to H4 with R = (repl (act (dn A) Q)).
+apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = Q, R = (repl (act (dn B) Q)).
+apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = (repl (act (dn B) Q)), R = Q.
+apply bisim_trans to H6 H5.
+apply bisim_sym to H7.
+apply bisim_trans to H8 H9.
+search.
+exists Q.							% the common context. 
+split. search. search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext.
+backchain CH.
+
+% An other case for interaction that will be discharged. 
+case H3.
+
+% First case: the b() input move. 
+case H2. case H3.
+
+exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
+split. search.
+
+exists (repl (plus (act (dn A) P) (act (dn B) P))).
+exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
+split.					
+
+% first we have to prove they are related by the technique.
+
+unfold. right.
+exists par (repl (plus (act (dn A) P) (act (dn B) P))) Q.
+exists par (par (repl (act (dn A) P)) (repl (act (dn B) P))) Q.
+split.
+unfold.
+apply bisim_refl with P = (par (repl (plus (act (dn A) P) (act (dn B) P))) Q).
+search.
+apply bisim_par_assoc with P = (repl (act (dn A) P)), Q = (repl (act (dn B) P)), R = Q.
+apply bisim_sym to H4.
+search.
+exists Q.							% the common context. 
+split. search. search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext2.
+backchain CH.
+
+% Some other case for interaction that will be discharged. 
+case H3. case H2. case H4.
+
+
+% Example: !!a.P is bisimilar to !a.P.
+% Instead of showing a bisimulation between the two processes, we prove that they are bisimilar up-to bisimilarity and context.
+% Notice that proving the ordinary bisimilarity of those two processes requires an infinite relation.  
+
+Theorem example_2_context : forall A P, bisim_up_to bisim_context_t (repl (repl (act (dn A) P))) (repl (act (dn A) P)).
+coinduction. intros. unfold.
+
+% It will split to the 2 cases of bisim.
+% - transitions from P: (repl (repl (act (dn A) P)))
+% - transitions from Q: (repl (act (dn A) P)).
+
+% Case of transitions from P. 
+intros. case H1. case H2. case H3.
+
+exists (par (repl (act (dn A) P)) P).
+split. search.
+
+exists (repl (repl (act (dn A) P))).
+exists (repl (act (dn A) P)).
+split.
+
+% first we have to prove they are related by the technique.
+unfold. right. 
+
+exists (par (repl (repl (act (dn A) P))) P).
+exists (par (repl (act (dn A) P)) P).
+split.
+unfold.
+apply bisim_repl_absorb with P = (repl (act (dn A) P)).
+apply bisim_par_cong_right to H4 with R = P.
+apply bisim_par_assoc with P = (repl (repl (act (dn A) P))), Q = (repl (act (dn A) P)), R = P.
+apply bisim_sym to H6.
+apply bisim_trans to H7 H5.
+search.
+apply bisim_refl with P = (par (repl (act (dn A) P)) P).
+search.
+exists P.							% the common context. 
+search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext.
+backchain CH.
+
+% Some other case for interaction that will be discharged. 
+case H3. case H2. case H4.
+
+% Case of dn transitions from Q.
+intros. case H1. case H2.
+
+exists (par (repl (repl (act (dn A) P))) (par (repl (act (dn A) P)) P)).
+split. search.
+
+exists (repl (repl (act (dn A) P))).
+exists (repl (act (dn A) P)).
+split.
+
+unfold. right. 
+exists (par (repl (repl (act (dn A) P))) P).
+exists (par (repl (act (dn A) P)) P).
+split.
+unfold.
+apply bisim_repl_absorb with P = (repl (act (dn A) P)).
+apply bisim_par_cong_right to H3 with R = P.
+apply bisim_par_assoc with P = (repl (repl (act (dn A) P))), Q = (repl (act (dn A) P)), R = P.
+apply bisim_sym to H5.
+apply bisim_trans to H6 H4.
+search.
+apply bisim_refl with P = (par (repl (act (dn A) P)) P).
+search.
+exists P.							% the common context. 
+search.
+
+% and then, that they are related by bisimUpTo upToBisimAndContext.
+backchain CH.
+
+% An other case for interaction that will be discharged. 
+case H2.
+
+
+
+
