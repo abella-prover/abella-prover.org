@@ -160,25 +160,6 @@ coinduction. intros. case H1. case H2. unfold.
 Define bisim_t : proc -> proc -> proc -> proc -> prop by
         bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
 
-% Bisimilarity up-to transitivity.
-
-Define transitivity_t : proc -> proc -> proc -> proc -> prop by
-        transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
-                                        (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
-
-% Bisimilarity up-to context.
-% (only up-to context, no modulo bisimilarity.)
-
-Define context_t : proc -> proc -> proc -> proc -> prop by
-        context_t P1 P1 Q1 Q1;
-        context_t P1 P3 Q1 Q3 := exists R, P1 = (par P3 R) /\ Q1 = (par Q3 R).
-
-% Bisimilarity up-to bisimilarity and context.
-
-Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
-        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
-					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
-
 
 % Abstract definitions for soundness for the various proof techniques. 
 % They are to be instantiated later at any convenience.
@@ -381,6 +362,12 @@ backchain H8.
 
 
 % Now, we embark ourselves in proving the soundness of Bisimilarity up-to Transitivity.
+
+Define transitivity_t : proc -> proc -> proc -> proc -> prop by
+        transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
+                                        (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
+
+
 % Here below are the lemmas we need for the task. 
 
 Theorem equality_for_structured_upTrans : equally_structured (bisim_up_to transitivity_t).
@@ -580,147 +567,74 @@ backchain H8.
 % Soundness of Bisimilarity up-to Context
 % The soundness of the up-to context technique can be proved directly, without the lemmas first and second.
 
-Theorem equality_for_structured_bisimCont : equally_structured (bisim_up_to context_t). 
-unfold. intros. case H2. case H3. search.
+Kind idx type.
+Type hole                  idx.
+Type down                  idx -> idx.
+Type plus_left,par_left    idx -> proc -> idx.
+Type plus_right,par_right  proc ->  idx -> idx.
 
-Theorem bisimUpToContext_cong : forall P Q R, bisim_up_to context_t P Q -> bisim_up_to context_t (par P R) (par Q R). skip.
-% -- SKIPPED -- problem: upToContext P Q will decompose P and Q inside bisimUpTo upToContext (par P R) and (par Q R).
-%	   therefore we have the obligation proof for bisimUpTo upToContext (par (par P R2) R) and (par (par Q R2) R).
-%	   we need to apply the coinductive hypothesis to something that comes from the coinductive hypothesis (it has a + and would not go).
+Define is_idx : idx -> prop by
+  is_idx hole
+; is_idx (plus_left C P)   := is_idx C
+; is_idx (plus_right P C)  := is_idx C
+; is_idx (par_left C P)    := is_idx C
+; is_idx (par_right P C)   := is_idx C
+; is_idx (down C)          := is_idx C.
+
+Define is_at : proc -> idx -> proc -> prop by
+  is_at P hole P
+; is_at (plus P Q) (plus_left C Q) R  := is_at P C R
+; is_at (plus P Q) (plus_right P C) R := is_at Q C R
+; is_at (par P Q) (par_left C Q) R   := is_at P C R
+; is_at (par P Q) (par_right P C) R  := is_at Q C R
+; is_at (repl P) (down C) R      := is_at P C R.
+
+Theorem bisim_cong : forall P Q C P1 Q1,
+  is_idx C -> is_at P1 C P -> is_at Q1 C Q ->
+  bisim_up_to refl_t P Q -> bisim_up_to refl_t P1 Q1. skip. 
+
+Define context_t : proc -> proc -> proc -> proc -> prop by
+  context_t P1 P2 Q1 Q2 :=
+    exists C, is_idx C /\ is_at P1 C P2 /\ is_at Q1 C Q2.
 
 Theorem context_sound : is_sound context_t.
-unfold. coinduction. intros. case H1. unfold.
+unfold.
+coinduction. intros PbQ.
+know_l: case PbQ. 
+unfold.
+  intros PaP1. fwd: apply know_l to PaP1. cx: case fwd1.
+   exists Q2. split. search. exists P1. exists Q2. split. search.
+   backchain bisim_cong. backchain CH.
 
-% plain transitions from P.
-%   searching for the suitable step from Q. 
-intros.  apply H2 to H8.
-exists Q2.
-split. search.
-exists P1. exists Q2.
-split. search.
+  intros PaP1. fwd: apply know_l1 to PaP1. 
+   exists N. split. search. exists M. exists N. intros. split. search.
+   apply fwd1 with W = W. case H1. backchain bisim_cong. backchain CH.
 
-%  proving derivatives are related.
-case H10.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H11 with R = R.
-backchain CH.
+  intros PaP1. fwd: apply know_l2 to PaP1. cx: case fwd1.
+   exists N. split. search. exists M. exists N. intros. split. search.
+   backchain bisim_cong. backchain CH.
 
-% dn transitions from P.
-%   searching for the suitable step from Q. 
-intros. apply H3 to H8.
-exists N.
-split. search.
-exists M. exists N.
-intros.
-split. search.
+  intros QaQ1. fwd: apply know_l3 to QaQ1. cx: case fwd1.
+   exists P2. split. search. exists P2. exists Q1. split. search.
+   backchain bisim_cong. backchain CH.
 
-% This next code is a preamble adjustment because of the difference that HOAS necessarily introduces.
-apply H10 with W = W.
+  intros QaP1. fwd: apply know_l4 to QaP1. 
+   exists M. split. search. exists M. exists N. intros. split. search.
+   apply fwd1 with W = W. case H1. backchain bisim_cong. backchain CH.
 
-%  proving derivatives are related.
-case H11.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	apply equality_for_structured_bisimCont.
-	case H15.
-	apply H16 to H12 H14 H13.			
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H12 with P = (M2 W), Q = (N2 W), R = R.
-	apply equality_for_structured_bisimCont.
-	case H16.
-	apply H17 to H15 H13 H14.
-backchain CH.
+  intros QaQ1. fwd: apply know_l5 to QaQ1. cx: case fwd1.
+   exists M. split. search. exists M. exists N. intros. split. search.
+   backchain bisim_cong. backchain CH.
 
-% up transitions from P.
-%   searching for the suitable step from Q. 
-intros. apply H4 to H8.
-exists N.
-split. search.
-exists M. exists N.
-intros.
-split. search.
-
-%  proving derivatives are related.
-case H10.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H11 with P = (M2 n1), Q = (N2 n1), R = (R n1).
-backchain CH.
-
-% plain transitions from Q.
-%   searching for the suitable step from P. 
-intros.  apply H5 to H8.
-exists P2.
-split. search.
-exists P2. exists Q1. 
-split. search.
-
-%  proving derivatives are related.
-case H10.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H11 with P = P3, Q = Q3, R = R.
-backchain CH.
-
-% dn transitions from Q.
-%   searching for the suitable step from P. 
-intros. apply H6 to H8.
-exists M.
-split. search.
-exists M. exists N.
-intros.
-split. search.
-
-% This next code is a preamble adjustment because of the difference that HOAS necessarily introduces.
-apply H10 with W = W.
-
-%  proving derivatives are related.
-case H11.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	apply equality_for_structured_bisimCont.
-	case H15.
-	apply H16 to H12 H14 H13.			
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H12 with P = (M2 W), Q = (N2 W), R = R.
-	apply equality_for_structured_bisimCont.
-	case H16.
-	apply H17 to H15 H13 H14.
-backchain CH.
-
-% up transitions from Q.
-%   searching for the suitable step from P. 
-intros. apply H7 to H8.
-exists M.
-split. search.
-exists M. exists N.
-intros.
-split. search.
-
-%  proving derivatives are related.
-case H10.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H11 with P = (M2 n1), Q = (N2 n1), R = (R n1).
-backchain CH.
 
 % Soundness of Bisimilarity up-to Bisimilarity and Context.
 
+Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
+        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
+					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
+
 Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
 % -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
-
-%Theorem bisim_cong : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (par P R) (par Q R).skip.
 
 
 Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
