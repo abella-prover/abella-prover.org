@@ -20,57 +20,57 @@ Type a, b		name.
 
 
 Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  -> (name -> proc) -> prop by
-	% tau
-	one  (taup P) tau P;
+% tau
+  one  (taup P) tau P;
 
-	% free output
-	one (out X Y P) (up X Y) P;
+% free output
+  one (out X Y P) (up X Y) P;
 
-	% sum
-	one  (plus P Q) A R := one  P A R;
-	one  (plus P Q) A R := one  Q A R;
+% sum
+  one  (plus P Q) A R := one  P A R;
+  one  (plus P Q) A R := one  Q A R;
 
-	% par
-	one  (par P Q) A (par P1 Q) := one P A P1;
-	one  (par P Q) A (par P Q1) := one Q A Q1;
+% par
+  one  (par P Q) A (par P1 Q) := one P A P1;
+  one  (par P Q) A (par P Q1) := one Q A Q1;
 
-	% restriction
-	one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
+% restriction
+  one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
 
-	% close
-	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
-	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
+% close
+  one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
+  one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
 
-	% comm
-	one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
-	one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
+% comm
+  one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
+  one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
 
-	% repl
-	one (repl P) A (par (repl P) P1) := one P A P1;
+% repl
+  one (repl P) A (par (repl P) P1) := one P A P1;
 
-	% repl, further rules for auto-synchronization.
-	one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
-	one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
+% repl, further rules for auto-synchronization.
+  one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
+  one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
 
-	% bound input
-	oneb (in X M) (dn X) M;
+% bound input
+  oneb (in X M) (dn X) M;
 
-	% sum
-	oneb (plus P Q) A M := oneb P A M;
-	oneb (plus P Q) A M := oneb Q A M;
+% sum
+  oneb (plus P Q) A M := oneb P A M;
+  oneb (plus P Q) A M := oneb Q A M;
 
-	% par
-	oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
-	oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
+% par
+  oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
+  oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
 
-	% restriction
-	oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
+% restriction
+  oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
 
-	% open
-	oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
+% open
+  oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
 
-	% repl
-	oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.
+% repl
+  oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.
 
 
 % Bisimilarity up-to techniques.
@@ -79,22 +79,22 @@ Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  
 
 
 CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc -> prop by
-		bisim_up_to Upto P Q := (forall A P1, one P A P1 -> exists Q1, one Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
-		(forall X M, oneb P (dn X) M -> exists N, oneb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
-                                                bisim_up_to Upto (M2 W) (N2 W))) /\
-    		(forall X M, oneb P (up X) M -> exists N, oneb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
-                                                bisim_up_to Upto (M2 W) (N2 W))) /\
-    		(forall A Q1, one Q A Q1 -> exists P1, one P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
-    		(forall X N, oneb Q (dn X) N -> exists M, oneb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
-                                                bisim_up_to Upto (M2 W) (N2 W))) /\ 
-    		(forall X N, oneb Q (up X) N -> exists M, oneb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
-                                                bisim_up_to Upto (M2 W) (N2 W))).
+  bisim_up_to Upto P Q := (forall A P1, one P A P1 -> exists Q1, one Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+   (forall X M, oneb P (dn X) M -> exists N, oneb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+     bisim_up_to Upto (M2 W) (N2 W))) /\
+   (forall X M, oneb P (up X) M -> exists N, oneb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+     bisim_up_to Upto (M2 W) (N2 W))) /\
+   (forall A Q1, one Q A Q1 -> exists P1, one P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+   (forall X N, oneb Q (dn X) N -> exists M, oneb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+      bisim_up_to Upto (M2 W) (N2 W))) /\ 
+   (forall X N, oneb Q (up X) N -> exists M, oneb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+     bisim_up_to Upto (M2 W) (N2 W))).
 
 
 % An alternative definition of bisimilarity which is based on a "vacuous" up-to technique.
 
 Define refl_t : proc -> proc -> proc -> proc -> prop by
-	refl_t P P Q Q.
+  refl_t P P Q Q.
 
 %CoDefine bisim : proc -> proc -> prop by bisim P Q := bisim_up_to refl_t P Q.
 
@@ -105,7 +105,7 @@ Define refl_t : proc -> proc -> proc -> proc -> prop by
 % We therefore need the following lemmas for it.
 
 Define equally_structured : (proc -> proc -> prop) -> prop by
-	equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
+  equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
 
 Theorem equality_for_structured_refl : equally_structured (bisim_up_to refl_t). 
 unfold. intros. case H2. case H3. search.
@@ -158,7 +158,7 @@ coinduction. intros. case H1. case H2. unfold.
 % Bisimilarity up-to Bisimilarity.
 
 Define bisim_t : proc -> proc -> proc -> proc -> prop by
-        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+  bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
 
 
 % Abstract definitions for soundness for the various proof techniques. 
@@ -219,9 +219,9 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H14 H33.
-	apply bisim_sym to H34.
-	apply bisim_trans to H36 H32.
+  apply bisim_trans to H14 H33.
+  apply bisim_sym to H34.
+  apply bisim_trans to H36 H32.
 backchain CH.
 
 % dn transitions from P.
@@ -246,9 +246,9 @@ apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
 %  proving derivatives are related.
 case H32. 				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H42 H44.
-	apply bisim_sym to H45.
-	apply bisim_trans to H47 H43.
+  apply bisim_trans to H42 H44.
+  apply bisim_sym to H45.
+  apply bisim_trans to H47 H43.
 backchain CH.
 
 % up transitions from P.
@@ -267,9 +267,9 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H14 H33.
-	apply bisim_sym to H34.
-	apply bisim_trans to H36 H32.
+  apply bisim_trans to H14 H33.
+  apply bisim_sym to H34.
+  apply bisim_trans to H36 H32.
 backchain CH.
 
 % plain transitions from Q.
@@ -287,9 +287,9 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H32 H33.
-	apply bisim_sym to H34.
-	apply bisim_trans to H36 H14.
+  apply bisim_trans to H32 H33.
+  apply bisim_sym to H34.
+  apply bisim_trans to H36 H14.
 backchain CH.
 
 % dn transitions from Q.
@@ -314,9 +314,9 @@ apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
 %  proving derivatives are related.
 case H32.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H43 H44.
-	apply bisim_sym to H45.
-	apply bisim_trans to H47 H42.
+  apply bisim_trans to H43 H44.
+  apply bisim_sym to H45.
+  apply bisim_trans to H47 H42.
 backchain CH.
 
 % up transitions from Q.
@@ -335,9 +335,9 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H32 H33.
-	apply bisim_sym to H34.
-	apply bisim_trans to H36 H14.
+  apply bisim_trans to H32 H33.
+  apply bisim_sym to H34.
+  apply bisim_trans to H36 H14.
 backchain CH.
 
 
@@ -364,8 +364,8 @@ backchain H8.
 % Now, we embark ourselves in proving the soundness of Bisimilarity up-to Transitivity.
 
 Define transitivity_t : proc -> proc -> proc -> proc -> prop by
-        transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
-                                        (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
+  transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
+   (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
 
 
 % Here below are the lemmas we need for the task. 
@@ -406,12 +406,12 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H33 H34.
-	apply bisimUpToTrans_sym to H36.
-	apply bisimUpToTrans_trans to H23 H38.
-	apply bisimUpToTrans_sym to H35.
-	apply bisimUpToTrans_trans to H39 H40.
-	apply bisimUpToTrans_trans to H37 H41.
+  apply bisimUpToTrans_trans to H33 H34.
+  apply bisimUpToTrans_sym to H36.
+  apply bisimUpToTrans_trans to H23 H38.
+  apply bisimUpToTrans_sym to H35.
+  apply bisimUpToTrans_trans to H39 H40.
+  apply bisimUpToTrans_trans to H37 H41.
 backchain CH.
 
 % dn transitions from P.
@@ -436,12 +436,12 @@ apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
 %  proving derivatives are related.
 case H32. 				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H44 H45.
-	apply bisimUpToTrans_sym to H47.
-	apply bisimUpToTrans_trans to H33 H49.
-	apply bisimUpToTrans_sym to H46.
-	apply bisimUpToTrans_trans to H50 H51.
-	apply bisimUpToTrans_trans to H48 H52.
+  apply bisimUpToTrans_trans to H44 H45.
+  apply bisimUpToTrans_sym to H47.
+  apply bisimUpToTrans_trans to H33 H49.
+  apply bisimUpToTrans_sym to H46.
+  apply bisimUpToTrans_trans to H50 H51.
+  apply bisimUpToTrans_trans to H48 H52.
 backchain CH.
 
 % up transitions from P.
@@ -460,12 +460,12 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H33 H34.
-	apply bisimUpToTrans_sym to H36.
-	apply bisimUpToTrans_trans to H23 H38.
-	apply bisimUpToTrans_sym to H35.
-	apply bisimUpToTrans_trans to H39 H40.
-	apply bisimUpToTrans_trans to H37 H41.
+  apply bisimUpToTrans_trans to H33 H34.
+  apply bisimUpToTrans_sym to H36.
+  apply bisimUpToTrans_trans to H23 H38.
+  apply bisimUpToTrans_sym to H35.
+  apply bisimUpToTrans_trans to H39 H40.
+  apply bisimUpToTrans_trans to H37 H41.
 backchain CH.
 
 
@@ -484,11 +484,11 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H33 H34.
-	apply bisimUpToTrans_trans to H37 H23.
-	apply bisimUpToTrans_trans to H35 H36.
-	apply bisimUpToTrans_sym to H39.
-	apply bisimUpToTrans_trans to H38 H40.
+  apply bisimUpToTrans_trans to H33 H34.
+  apply bisimUpToTrans_trans to H37 H23.
+  apply bisimUpToTrans_trans to H35 H36.
+  apply bisimUpToTrans_sym to H39.
+  apply bisimUpToTrans_trans to H38 H40.
 backchain CH.
 
 % dn transitions from Q.
@@ -513,11 +513,11 @@ apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
 %  proving derivatives are related.
 case H32.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H44 H45.
-	apply bisimUpToTrans_trans to H48 H33.
-	apply bisimUpToTrans_trans to H46 H47.
-	apply bisimUpToTrans_sym to H50.
-	apply bisimUpToTrans_trans to H49 H51.
+  apply bisimUpToTrans_trans to H44 H45.
+  apply bisimUpToTrans_trans to H48 H33.
+  apply bisimUpToTrans_trans to H46 H47.
+  apply bisimUpToTrans_sym to H50.
+  apply bisimUpToTrans_trans to H49 H51.
 backchain CH.
 
 % up transitions from Q.
@@ -536,11 +536,11 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H33 H34.
-	apply bisimUpToTrans_trans to H37 H23.
-	apply bisimUpToTrans_trans to H35 H36.
-	apply bisimUpToTrans_sym to H39.
-	apply bisimUpToTrans_trans to H38 H40.
+  apply bisimUpToTrans_trans to H33 H34.
+  apply bisimUpToTrans_trans to H37 H23.
+  apply bisimUpToTrans_trans to H35 H36.
+  apply bisimUpToTrans_sym to H39.
+  apply bisimUpToTrans_trans to H38 H40.
 backchain CH.
 
 Theorem transitivity_sound_snd : is_sound_snd transitivity_t.
@@ -657,17 +657,17 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H34.				% unfold upToBisim 
-	apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H32.
-	backchain CH.
+  case H34.				% unfold upToBisim 
+  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H32.
+  backchain CH.
 % - inside a bigger context
-	case H34.				% unfold upToBisim 
-	apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H32.
-	apply bisimUpToBisimAndContext_cong to H23 with R = R1.
+  case H34.				% unfold upToBisim 
+  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H32.
+  apply bisimUpToBisimAndContext_cong to H23 with R = R1.
 backchain CH.   
 
 % dn transitions from P.
@@ -694,17 +694,17 @@ case H32. 				% unfold of up-to technique: we observe what the up-to technique i
 case H44.				% unfold upToBisim
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H45.				% unfold upToBisim
-	apply bisim_trans to H42 H46.
-	apply bisim_sym to H47.
-	apply bisim_trans to H49 H43.
-	backchain CH.
+  case H45.				% unfold upToBisim
+  apply bisim_trans to H42 H46.
+  apply bisim_sym to H47.
+  apply bisim_trans to H49 H43.
+  backchain CH.
 % - inside a bigger context
-	case H45.				% unfold upToBisim
-	apply bisim_trans to H42 H46.
-	apply bisim_sym to H47.
-	apply bisim_trans to H49 H43.
-	apply bisimUpToBisimAndContext_cong to H33 with R = R1.
+  case H45.				% unfold upToBisim
+  apply bisim_trans to H42 H46.
+  apply bisim_sym to H47.
+  apply bisim_trans to H49 H43.
+  apply bisimUpToBisimAndContext_cong to H33 with R = R1.
 backchain CH.
 
 % up transitions from P.
@@ -725,17 +725,17 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H34.				% unfold upToBisim 
-	apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H32.
-	backchain CH.
+  case H34.				% unfold upToBisim 
+  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H32.
+  backchain CH.
 % - inside a bigger context
-	case H34.				% unfold upToBisim 
-	apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H32.
-	apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
+  case H34.				% unfold upToBisim 
+  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H32.
+  apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
 backchain CH.
 
 % plain transitions from Q.
@@ -755,17 +755,17 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H34.
-	apply bisim_trans to H32 H35.
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H14.
-	backchain CH.
+  case H34.
+  apply bisim_trans to H32 H35.
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H14.
+  backchain CH.
 % - inside a bigger context
-	case H34.
-	apply bisim_trans to H32 H35.
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H14.
-	apply bisimUpToBisimAndContext_cong to H23 with R = R1.
+  case H34.
+  apply bisim_trans to H32 H35.
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H14.
+  apply bisimUpToBisimAndContext_cong to H23 with R = R1.
 backchain CH.
 
 % dn transitions from Q.
@@ -792,17 +792,17 @@ case H32.				% unfold of up-to technique: we observe what the up-to technique is
 case H44.				
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H45.				% unfold upToBisim
-	apply bisim_trans to H43 H46.
-	apply bisim_sym to H47.
-	apply bisim_trans to H49 H42.
-	backchain CH.
+  case H45.				% unfold upToBisim
+  apply bisim_trans to H43 H46.
+  apply bisim_sym to H47.
+  apply bisim_trans to H49 H42.
+  backchain CH.
 % - inside a bigger context
-	case H45.				% unfold upToBisim
-	apply bisim_trans to H43 H46.
-	apply bisim_sym to H47.
-	apply bisim_trans to H49 H42.
-	apply bisimUpToBisimAndContext_cong to H33 with R = R1.
+  case H45.				% unfold upToBisim
+  apply bisim_trans to H43 H46.
+  apply bisim_sym to H47.
+  apply bisim_trans to H49 H42.
+  apply bisimUpToBisimAndContext_cong to H33 with R = R1.
 backchain CH.
 
 % up transitions from Q.
@@ -823,17 +823,17 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H34.
-	apply bisim_trans to H32 H35.
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H14.
-	backchain CH.
+  case H34.
+  apply bisim_trans to H32 H35.
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H14.
+  backchain CH.
 % - inside a bigger context
-	case H34.
-	apply bisim_trans to H32 H35.
-	apply bisim_sym to H36.
-	apply bisim_trans to H38 H14.
-	apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
+  case H34.
+  apply bisim_trans to H32 H35.
+  apply bisim_sym to H36.
+  apply bisim_trans to H38 H14.
+  apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
 backchain CH.
 
 Theorem bisim_context_sound_snd : is_sound_snd bisim_context_t.
@@ -1330,10 +1330,4 @@ backchain CH.
 % Case of up transitions from Q (bound output): not possible from (in A P).
 % This case will be discharged.
 intros. case H1. case H2.
-
-
-% Example: !P || P is bisimilar to !P.
-% Instead of showing a bisimulation between the two processes, we prove that they are bisimilar up-to bisimilarity and context.
-% Notice that proving the ordinary bisimilarity of those two processes requires an infinite relation.  
-% Theorem bisim_repl_absorb : forall P, bisimUpTo upToBisimAndContext2 (par (repl P) P) (repl P).
 
