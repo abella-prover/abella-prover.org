@@ -48,7 +48,7 @@ CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
 
 Define refl_t : proc -> proc -> proc -> proc -> prop by refl_t P P Q Q.
 
-% CoDefine bisim : proc -> proc -> prop by bisim P Q := bisim_up_to refl_t P Q.
+CoDefine bisimr : proc -> proc -> prop by bisimr P Q := bisim_up_to refl_t P Q.
 
 Theorem bisim_refl : forall P, bisim_up_to refl_t P P.
 coinduction. intros. unfold.
@@ -67,30 +67,6 @@ coinduction. intros. case H1. case H2. unfold.
   intros. apply H3 to H7. apply H5 to H8. case H9. case H12. exists Q4. split. search. exists P3. exists Q4. split. search. backchain CH.
   intros. apply H6 to H7. apply H4 to H8. case H9. case H12. exists P4. split. search. exists P4. exists Q3. split. search. backchain CH.
 
-% Bisimilarity up-to Bisimilarity.
-
-Define bisim_t : proc -> proc -> proc -> proc -> prop by
-        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
-
-% Bisimilarity up-to transitivity.
-
-Define transitivity_t : proc -> proc -> proc -> proc -> prop by
-        transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
-                                        (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
-
-% Bisimilarity up-to context.
-% (only up-to context, no modulo bisimilarity.)
-
-Define context_t : proc -> proc -> proc -> proc -> prop by
-        context_t P1 P1 Q1 Q1;
-        context_t P1 P3 Q1 Q3 := exists R, P1 = (par P3 R) /\ Q1 = (par Q3 R).
-
-% Bisimilarity up-to bisimilarity and context.
-
-Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
-        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
-					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
-
 
 % Abstract definitions for soundness for the various proof techniques. 
 % They are to be instantiated later at any convenience.
@@ -108,14 +84,17 @@ Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
     exists R S, bisim_up_to refl_t P R /\ bisim_up_to Upto R S /\ bisim_up_to refl_t S Q.
 
 % Remark: 
-%	the soundness of all the techniques that follow but up-to Context, are proved by two lemmas first and second. 
-%	the up-to Context technique can be proved directly, i.e. with lemma soundness_upToTechnique.
-%	only soundness_upToTechnique_first depends on the particular up-to technique and at a specific point of the proof.
-%	soundness_upToTechnique_second works for all reflexive equivalences: proofs are copy/pasted/adjusted.
-%	soundness_upToTechnique combines the first and second lemma with no intervention from the up-to technique nor even the equivalence relation: proofs are copy/pasted.
+%	the soundness of all the techniques that follow but up-to context, are proved by two lemmas first and second. 
+%	the up-to context technique can be proved directly, i.e. with lemma is_sound_snd.
+%	only is_sound_fst depends on the particular up-to technique and at a specific point of the proof.
+%	is_sound_snd works for all reflexive equivalences: proofs are copy/pasted/adjusted.
+%	is_sound_snd combines the first and second lemma with no intervention from the up-to technique nor even the equivalence relation: proofs are copy/pasted/adjusted.
 
 
 % Soundness of Bisimilarity up-to Bisimilarity.
+
+Define bisim_t : proc -> proc -> proc -> proc -> prop by
+  bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
 
 Theorem bisim_sound_fst : is_sound_fst bisim_t.
 unfold. coinduction. intros. case H1. unfold.
@@ -139,16 +118,16 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from reflexive refl_t. 
 case H9.				
 case H19.
 
 %  proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-	apply bisim_trans to H10 H21.
-	apply bisim_sym to H22.
-	apply bisim_trans to H24 H20.
+  apply bisim_trans to H10 H21.
+  apply bisim_sym to H22.
+  apply bisim_trans to H24 H20.
 backchain CH.
 
 % Case of transitions from Q
@@ -168,9 +147,9 @@ case H19.
 case H14.				% unfold of up-to technique: we 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
 % Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
-	apply bisim_trans to H20 H21.
-	apply bisim_sym to H22.
-	apply bisim_trans to H24 H10.
+  apply bisim_trans to H20 H21.
+  apply bisim_sym to H22.
+  apply bisim_trans to H24 H10.
 backchain CH.
 
 Theorem bisim_sound_snd : is_sound_snd bisim_t.
@@ -194,7 +173,12 @@ backchain H8.
 
 
 
-% Now, we embark ourselves in proving the soundness of Bisimilarity up-to Transitivity.
+% Soundness of Bisimilarity up-to Transitivity.
+
+Define transitivity_t : proc -> proc -> proc -> proc -> prop by
+  transitivity_t P1 P3 Q1 Q3 := 
+   exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\ (bisim_up_to transitivity_t Q1 Q2) /\ (bisim_up_to transitivity_t  Q2 Q3).
+
 % Here below are the lemmas we need for the task. 
 
 Theorem bisimUpToTrans_refl : forall P, bisim_up_to transitivity_t P P. skip. 
@@ -233,12 +217,12 @@ case H19.
 %  proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity.
-	apply bisimUpToTrans_trans to H21 H22.
-	apply bisimUpToTrans_sym to H24.
-	apply bisimUpToTrans_trans to H15 H26.
-	apply bisimUpToTrans_sym to H23.
-	apply bisimUpToTrans_trans to H27 H28.
-	apply bisimUpToTrans_trans to H25 H29.
+  apply bisimUpToTrans_trans to H21 H22.
+  apply bisimUpToTrans_sym to H24.
+  apply bisimUpToTrans_trans to H15 H26.
+  apply bisimUpToTrans_sym to H23.
+  apply bisimUpToTrans_trans to H27 H28.
+  apply bisimUpToTrans_trans to H25 H29.
 backchain CH.
 
 % Case of transitions from Q
@@ -258,12 +242,12 @@ case H19.
 % proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Transitivity. 
-	apply bisimUpToTrans_trans to H21 H22.
-	apply bisimUpToTrans_sym to H24.
-	apply bisimUpToTrans_trans to H15 H26.
-	apply bisimUpToTrans_sym to H23.
-	apply bisimUpToTrans_trans to H27 H28.
-	apply bisimUpToTrans_trans to H25 H29.
+  apply bisimUpToTrans_trans to H21 H22.
+  apply bisimUpToTrans_sym to H24.
+  apply bisimUpToTrans_trans to H15 H26.
+  apply bisimUpToTrans_sym to H23.
+  apply bisimUpToTrans_trans to H27 H28.
+  apply bisimUpToTrans_trans to H25 H29.
 backchain CH.
 
 % Remark, the "abstract" proof code for tranitivity_t does not depend on Bottom/Top (so they had to switch for bisim_t for transitions from Q).
@@ -292,52 +276,91 @@ backchain H8.
 
 
 % Soundness of Bisimilarity up-to Context
-% The soundness of the up-to context technique can be proved directly, without the lemmas first and second.
 
-Theorem bisimUpToContext_cong : forall P Q R, bisim_up_to context_t P Q -> bisim_up_to context_t (par P R) (par Q R). skip.
-% -- SKIPPED -- problem: upToContext P Q will decompose P and Q inside bisimUpTo upToContext (par P R) and (par Q R).
-%	   therefore we have the obligation proof for bisimUpTo upToContext (par (par P R2) R) and (par (par Q R2) R).
-%	   we need to apply the coinductive hypothesis to something that comes from the coinductive hypothesis (it has a + and would not go).
+Kind idx type.
+Type hole                  idx.
+Type down                  idx -> idx.
+Type plus_left,par_left    idx -> proc -> idx.
+Type plus_right,par_right  proc ->  idx -> idx.
+
+Define is_idx : idx -> prop by
+  is_idx hole
+; is_idx (plus_left C P)   := is_idx C
+; is_idx (plus_right P C)  := is_idx C
+; is_idx (par_left C P)    := is_idx C
+; is_idx (par_right P C)   := is_idx C
+; is_idx (down C)          := is_idx C.
+
+Define is_at : proc -> idx -> proc -> prop by
+  is_at P hole P
+; is_at (plus P Q) (plus_left C Q) R  := is_at P C R
+; is_at (plus P Q) (plus_right P C) R := is_at Q C R
+; is_at (par P Q) (par_left C Q) R   := is_at P C R
+; is_at (par P Q) (par_right P C) R  := is_at Q C R
+; is_at (repl P) (down C) R      := is_at P C R.
+
+Theorem bisim_cong_plus1 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (plus P R) (plus Q R).
+intros. pstep: case H1. rename pstep1 to qstep.
+unfold.
+  intros. case H2.
+    apply pstep to H3. exists Q2. split. search. search.
+    exists P1. split. search. exists P1. exists P1. split. search. backchain bisim_refl.
+  intros. case H2.
+    apply qstep to H3. exists P2. split. search. search.
+    exists Q1. split. search. exists Q1. exists Q1. split. search. backchain bisim_refl.
+
+Theorem bisim_cong_plus2 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (plus R P) (plus R Q).
+intros. pstep: case H1. rename pstep1 to qstep.
+unfold.
+  intros. case H2.
+    exists P1. split. search. exists P1. exists P1. split. search. backchain bisim_refl.
+    apply pstep to H3. exists Q2. split. search. exists P1. exists Q2. split. search. case H5. search.
+  intros. case H2.
+    exists Q1. split. search. exists Q1. exists Q1. split. search. backchain bisim_refl.
+    apply qstep to H3. exists P2. split. search. exists P2. exists Q1. split. search. case H5. search.
+
+Theorem bisim_cong_par1 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (par P R) (par Q R).
+skip.
+
+Theorem bisim_cong_par2 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (par R P) (par R Q).
+skip.
+
+Theorem bisim_cong_repl : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t (repl P) (repl Q).
+skip.
+
+Theorem bisim_cong : forall P Q C P1 Q1,
+  is_idx C -> is_at P1 C P -> is_at Q1 C Q ->
+  bisim_up_to refl_t P Q -> bisim_up_to refl_t P1 Q1.
+induction on 1. intros. case H1 (keep).
+  case H2. case H3. search.
+  case H2. case H3. apply IH to H5 H6 H7 H4. backchain bisim_cong_plus1.
+  case H2. case H3. apply IH to H5 H6 H7 H4. backchain bisim_cong_plus2.
+  case H2. case H3. apply IH to H5 H6 H7 H4. backchain bisim_cong_par1.
+  case H2. case H3. apply IH to H5 H6 H7 H4. backchain bisim_cong_par2.
+  case H2. case H3. apply IH to H5 H6 H7 H4. backchain bisim_cong_repl.
+
+Define context_t : proc -> proc -> proc -> proc -> prop by
+  context_t P1 P2 Q1 Q2 :=
+    exists C, is_idx C /\ is_at P1 C P2 /\ is_at Q1 C Q2.
 
 Theorem context_sound : is_sound context_t.
-unfold. coinduction. intros. case H1. unfold.
-
-% plain transitions from P.
-%   searching for the suitable step from Q. 
-intros.  apply H2 to H4.
-exists Q2.
-split. search.
-exists P1. exists Q2.
-split. search.
-
-%  proving derivatives are related.
-case H6.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H7 with R = R.
-backchain CH.
-
-% plain transitions from Q.
-%   searching for the suitable step from P. 
-intros.  apply H3 to H4.
-exists P2.
-split. search.
-exists P2. exists Q1.
-split. search.
-
-%  proving derivatives are related.
-case H6.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% Next code is specific of Bisimilarity up-to Context (2 cases)
-% - inside no bigger context
-	backchain CH.
-% - inside a bigger context
-	apply bisimUpToContext_cong to H7 with R = R.
-backchain CH.
+unfold.
+coinduction. intros PbQ.
+know_l: case PbQ. rename know_l1 to know_r.
+unfold.
+  intros PaP1. fwd: apply know_l to PaP1. cx: case fwd1.
+   exists Q2. split. search. exists P1. exists Q2. split. search.
+   backchain bisim_cong. backchain CH.
+  intros QaQ1. fwd: apply know_r to QaQ1. cx: case fwd1.
+   exists P2. split. search. exists P2. exists Q1. split. search.
+   backchain bisim_cong. backchain CH.
 
 
 % Soundness of Bisimilarity up-to Bisimilarity and Context.
+
+Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
+        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
+					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
 
 Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
 % -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
@@ -362,17 +385,17 @@ case H14.				% unfold of up-to technique: we observe what the up-to technique is
 case H21.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-	case H22.				% unfold upToBisim 
-	apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H24.
-	apply bisim_trans to H26 H20.
-	backchain CH.
+  case H22.				% unfold upToBisim 
+  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H24.
+  apply bisim_trans to H26 H20.
+  backchain CH.
 % - inside a bigger context
-	case H22.				% unfold upToBisim 
-	apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H24.
-	apply bisim_trans to H26 H20.
-	apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+  case H22.				% unfold upToBisim 
+  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H24.
+  apply bisim_trans to H26 H20.
+  apply bisimUpToBisimAndContext_cong to H15 with R = R1.
 backchain CH.   
 
 % Case of transitions from Q
@@ -395,17 +418,17 @@ case H21.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
 % - inside no bigger context
-	case H22.				% unfold upToBisim 
-	apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H24.
-	apply bisim_trans to H26 H10.
-	backchain CH.
+  case H22.				% unfold upToBisim 
+  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H24.
+  apply bisim_trans to H26 H10.
+  backchain CH.
 % - inside a bigger context
-	case H22.				% unfold upToBisim 
-	apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-	apply bisim_sym to H24.
-	apply bisim_trans to H26 H10.
-	apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+  case H22.				% unfold upToBisim 
+  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H24.
+  apply bisim_trans to H26 H10.
+  apply bisimUpToBisimAndContext_cong to H15 with R = R1.
 backchain CH.   
 
 
