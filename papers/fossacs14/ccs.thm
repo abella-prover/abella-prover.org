@@ -1,5 +1,29 @@
 % Bisimilarity up-to techniques for CCS. 
 
+% Unproved lemmas at the moment:
+%
+% about the up to transitivity technique: (not part of the the FoSSaCS submission)
+%	bisimUpToTrans_refl: reflexivity of the bisimilarity up to transitivity relation. 
+%	problem: it is a little bug of Abella.
+%		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the 
+%		size annotation + necessary to apply coinduction.
+%
+%	bisimUpToTrans_sym and bisimUpToTrans_trans: symmetry and transitivity of the bisimilarity up to transitivity relation. 
+%	problem: It seems provable only by applying transitivity (co-inductive hypothesis) to something that comes already from the coinductive hypothesis. 
+%		At the moment, this reasoning is not available in Abella (and, to our knowledge, not in any interactive theorem provers).
+%
+% about the up to bisimilarity and context technique:
+%	bisimUpToBisimAndContext_cong: congruence of the bisimilarity up to bisimilarity and context technique.
+%	problem: similar reasons as for bisimUpToTrans_trans.
+%
+% these following lemmas are needed ONLY for the examples, i.e. !(a(c) + b(c)) = !a(c) || !b(c), !!a = !a, !(a(c).P + b(c).P) = !a(c).P || !b(c).P, !!a.P = !a.P.
+%	bisim_par_zeroEl: 0 is a zero element for the parallel operator.
+%	bisim_par_comm: the parallel operator is commutative.
+%	bisim_par_assoc: the parallel operator is associative.
+%	bisim_par_cong_right, bisim_par_cong_left: 
+%	bisim_repl_absorb: the structural congruence law !P || P = !P
+%	All of these are well-known to be true, and Abella can address their proofs. They will be proved soon.
+
 Set lax_coinduction on.
 
 % A specification of the SOS semantics for CCS.
@@ -31,7 +55,7 @@ Define one : proc -> action -> proc -> prop by
 
 
 % Bisimilarity up-to techniques.
-% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
+% The predicate bisim_up_to is parametrized by the up-to technique, that is the argument Upto.
 % Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
 
 CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
@@ -118,7 +142,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from reflexive refl_t. 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
@@ -139,14 +163,14 @@ exists P5.
 exists Q1.				
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
 % proving derivatives are related.
 case H14.				% unfold of up-to technique: we 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
-% Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
+% Because it is the symmetric case, we need only to switch H10/H20 in the proof code above.
   apply bisim_trans to H20 H21.
   apply bisim_sym to H22.
   apply bisim_trans to H24 H10.
@@ -171,20 +195,6 @@ apply bisim_sound_fst.
 case H7.
 backchain H8.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% The material above completes the formal proof of the soundness of
-% bisimilarity upto bisimilarity (a theorem claimed in the FOSSACS
-% submission).
-
-% What comes below is a related proof development of the soundness of
-%  bisimilarity up-to transitivity (a topic not addressed in the
-%  submission).  Notice, however, that there are some "skipped" lemmas
-%  below.  The current coinductive treatment of Abella does not allow
-%  us to complete these proofs.  As far as we know, no existing formal
-%  proof system with coinduction currently admits the kind of proof
-%  that seems natural here.
-
 
 % Soundness of Bisimilarity up-to Transitivity.
 
@@ -195,7 +205,8 @@ Define transitivity_t : proc -> proc -> proc -> proc -> prop by
 % Here below are the lemmas we need for the task. 
 
 Theorem bisimUpToTrans_refl : forall P, bisim_up_to transitivity_t P P. skip. 
-% -- SKIPPED -- problem: coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the +.
+% -- SKIPPED -- problem: coinductive step bisim_up_to transitivity_t P1 P1 shows up only after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the +.
+% Therefore, Abella does not allow to apply coinduction. 
 
 Theorem bisimUpToTrans_sym : forall P Q, bisim_up_to transitivity_t P Q -> bisim_up_to transitivity_t Q P.skip.
 % -- SKIPPED -- problem: I need to apply transitivity to something that comes from coinductive (so it has + and would not go).
@@ -204,14 +215,11 @@ Theorem bisimUpToTrans_trans : forall P Q R, bisim_up_to transitivity_t P Q -> b
 skip. 
 % -- SKIPPED -- problem: I need to apply the coindutive hypothesis to something that comes from coinductive (so it has + and would not go).
 
-Theorem bisim_imples_bisimUpToTrans : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to transitivity_t P Q. skip. 
-
-
 % Soundness of Bisimilarity up-to Transitivity.
 
 Theorem transitivity_sound_fst : is_sound_fst transitivity_t.
 % Remark: as we pointed out above, this proof is nearly copy/pasted until from the soundness of Bisimilarity up-to Bisimilarity.
-% the specific code for Bisimilarity up-to Transitivity is needed in a precise and localized point. 
+% The specific code for Bisimilarity up-to Transitivity is needed in a precise and localized point. 
 
 unfold. coinduction. intros. case H1. unfold.
 
@@ -223,7 +231,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
@@ -248,7 +256,7 @@ exists P5.
 exists Q1.				
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
@@ -263,9 +271,9 @@ case H14.				% unfold of up-to technique: we observe what the up-to technique is
   apply bisimUpToTrans_trans to H25 H29.
 backchain CH.
 
-% Remark, the "abstract" proof code for tranitivity_t does not depend on Bottom/Top (so they had to switch for bisim_t for transitions from Q).
-% So, we could copy/paste the proof code of the case of transitions from P.
-
+% Remark: the "abstract" proof code for transitivity_t does not depend on hypothesis that are sensitive of switching, as in the case for up-to Bisimilarity. 
+% Therefore, we could copy/paste the proof code of the case of transitions from P also for the case of those from Q. 
+% This is in contrast to up-to Bisimilarity that would need the switch for transitions from Q.
 
 Theorem transitivity_sound_snd : is_sound_snd transitivity_t.
 unfold.
@@ -332,8 +340,6 @@ unfold.
     exists Q1. split. search. exists Q1. exists Q1. split. search. backchain bisim_refl.
     apply qstep to H3. exists P2. split. search. exists P2. exists Q1. split. search. case H5. search.
 
-% The following skipped proofs should be easy: we leave their completion for later.
-
 Theorem bisim_cong_par1 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (par P R) (par Q R).
 skip.
 
@@ -379,7 +385,7 @@ Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
 
 Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).
 skip.
-% -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
+% -- SKIPPED -- problem: same problems as for bisimUpToTrans_trans.
 
 Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
 unfold. coinduction. intros. case H1. unfold.
@@ -392,7 +398,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
@@ -401,14 +407,14 @@ case H14.				% unfold of up-to technique: we observe what the up-to technique is
 case H21.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H22.				% unfold bisim_t 
+  apply bisim_trans to H10 H23.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H24.
   apply bisim_trans to H26 H20.
   backchain CH.
 % - inside a bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H22.				% unfold bisim_t 
+  apply bisim_trans to H10 H23.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H24.
   apply bisim_trans to H26 H20.
   apply bisimUpToBisimAndContext_cong to H15 with R = R1.
@@ -424,7 +430,7 @@ exists P5.
 exists Q1.				
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
@@ -434,14 +440,14 @@ case H21.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
 % - inside no bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H22.				% unfold bisim_t 
+  apply bisim_trans to H20 H23.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H24.
-  apply bisim_trans to H26 H10.
+  apply bisim_trans to H26 H10.		% Notice that we have again just switched H10/H20
   backchain CH.
 % - inside a bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H22.				% unfold bisim_t 
+  apply bisim_trans to H20 H23.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H24.
   apply bisim_trans to H26 H10.
   apply bisimUpToBisimAndContext_cong to H15 with R = R1.
@@ -529,7 +535,7 @@ apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
 apply bisim_par_cong_right to H4 with R = (repl (act (dn B) null)).          
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH. 
 
 % Second case: the b() input move. 
@@ -551,11 +557,11 @@ apply bisim_par_zeroEl with P = (repl (act (dn B) null)).
 apply bisim_par_cong_left to H4 with R = (repl (act (dn A) null)).          
 search. 
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
-% Now, the proof will explore the possibility of interaction because of the communication rule of the parallel operator.
-% This case is not possible as both (act (dn A) null) and (act (dn B) null)) perform an input. 
+% Now, the proof will explore the possibility of interaction/communication because of the communication rules of the parallel operator.
+% This case is not possible as (act (dn A) null) and (act (dn B) null)) both perform an input. 
 % Therefore, this case will be discharged when we reach the "leaves", i.e. one (act (dn A) null) up X ?
 case H2. case H4. case H4.
 
@@ -578,7 +584,7 @@ apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
 apply bisim_par_cong_right to H4 with R = (repl (act (dn B) null)).          
 search. 
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Now, the proof will explore the case of interaction because of the communication rule of the parallel operator.
@@ -604,7 +610,7 @@ apply bisim_par_zeroEl with P = (repl (act (dn B) null)).
 apply bisim_par_cong_left to H4 with R = (repl (act (dn A) null)).          
 search. 
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Other cases for interaction that will be discharged. 
@@ -642,11 +648,11 @@ search.
 apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Now, the proof will explore the case of interaction because of the communication rule of the parallel operator.
-% Some cases for interaction that will be discharged. 
+% This case is not possible and those proof cases will be discharged. 
 case H3. case H2. case H4.
 
 % Case of transitions from Q. 
@@ -669,7 +675,7 @@ search.
 apply bisim_par_zeroEl with P = (repl (act (dn A) null)).
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % An other case for interaction that will be discharged. 
@@ -721,7 +727,7 @@ search.
 exists P.							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH. 
 
 % First case: the b() input move. 
@@ -749,7 +755,7 @@ search.
 exists Q.							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % An other case for interaction that will be discharged. 
@@ -786,7 +792,7 @@ search.
 exists Q.							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % An other case for interaction that will be discharged. 
@@ -817,7 +823,7 @@ search.
 exists Q.							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Some other case for interaction that will be discharged. 
@@ -863,7 +869,7 @@ search.
 exists P.							% the common context. 
 search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Some other case for interaction that will be discharged. 
@@ -895,7 +901,7 @@ search.
 exists P.							% the common context. 
 search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % An other case for interaction that will be discharged. 
