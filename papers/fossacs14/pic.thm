@@ -1,4 +1,29 @@
-% Bisimilarity up-to techniques.
+% Bisimilarity up-to techniques for pi-calculus.
+
+% Unproved lemmas at the moment:
+%
+% about the up to transitivity technique: (not part of the the FoSSaCS submission)
+%	bisimUpToTrans_refl: reflexivity of the bisimilarity up to transitivity relation. 
+%	problem: it is a little bug of Abella.
+%		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the 
+%		size annotation + necessary to apply coinduction.
+%
+%	bisimUpToTrans_sym and bisimUpToTrans_trans: symmetry and transitivity of the bisimilarity up to transitivity relation. 
+%	problem: It seems provable only by applying transitivity (co-inductive hypothesis) to something that comes already from the coinductive hypothesis. 
+%		At the moment, this reasoning is not available in Abella (and, to our knowledge, not in any interactive theorem provers).
+%
+% about the up to bisimilarity and context technique:
+%	bisimUpToBisimAndContext_cong: congruence of the bisimilarity up to bisimilarity and context technique.
+%	problem: similar reasons as for bisimUpToTrans_trans.
+%
+% these following lemmas are needed ONLY for the examples, i.e. !(a(c) + b(c)) = !a(c) || !b(c), !!a = !a, !(a(c).P + b(c).P) = !a(c).P || !b(c).P, !!a.P = !a.P.
+%	bisim_par_zeroEl: 0 is a zero element for the parallel operator.
+%	bisim_par_comm: the parallel operator is commutative.
+%	bisim_par_assoc: the parallel operator is associative.
+%	bisim_par_cong_right, bisim_par_cong_left: 
+%	bisim_repl_absorb: the structural congruence law !P || P = !P
+%	All of these are well-known to be true, and Abella can address their proofs. They will be proved soon.
+
 
 % A specification of the late transition system for the pi calculus.
 % This specification involves the bang constructor.
@@ -74,7 +99,7 @@ Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  
 
 
 % Bisimilarity up-to techniques.
-% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
+% The predicate bisim_up_to is parametrized by the up-to technique, that is the argument Upto.
 % Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
 
 
@@ -96,13 +121,13 @@ CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc ->
 Define refl_t : proc -> proc -> proc -> proc -> prop by
   refl_t P P Q Q.
 
-%CoDefine bisim : proc -> proc -> prop by bisim P Q := bisim_up_to refl_t P Q.
+CoDefine bisimr : proc -> proc -> prop by bisimr P Q := bisim_up_to refl_t P Q.
 
 
 % As Abella treats equality by means of unification, reasoning with structured equality as in:
 % P = (Q R).
 % would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	
-% We therefore need the following lemmas for it.
+% We therefore need the following lemma for it.
 
 Define equally_structured : (proc -> proc -> prop) -> prop by
   equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
@@ -212,7 +237,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.
 
@@ -237,7 +262,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -260,7 +285,7 @@ exists M. exists N4.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.				
 
@@ -280,7 +305,7 @@ split. search.
 exists P5. exists Q1.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -305,7 +330,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -328,7 +353,7 @@ exists M4. exists N.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -361,7 +386,7 @@ case H7.
 backchain H8.
 
 
-% Now, we embark ourselves in proving the soundness of Bisimilarity up-to Transitivity.
+% Soundness of Bisimilarity up-to Transitivity.
 
 Define transitivity_t : proc -> proc -> proc -> proc -> prop by
   transitivity_t P1 P3 Q1 Q3 := exists P2 Q2, (bisim_up_to transitivity_t P1 P2) /\ (bisim_up_to transitivity_t  P2 P3) /\
@@ -399,7 +424,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.
 
@@ -427,7 +452,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -453,7 +478,7 @@ exists M. exists N4.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.				
 
@@ -477,7 +502,7 @@ split. search.
 exists P5. exists Q1.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -504,7 +529,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -529,7 +554,7 @@ exists M4. exists N.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -634,7 +659,7 @@ Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
 					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
 
 Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
-% -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
+% -- SKIPPED -- problem: same problems as for bisimUpToTrans_trans.
 
 
 Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
@@ -648,7 +673,7 @@ split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.
 
@@ -657,14 +682,14 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H34.				% unfold upToBisim 
-  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H14 H35.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H36.
   apply bisim_trans to H38 H32.
   backchain CH.
 % - inside a bigger context
-  case H34.				% unfold upToBisim 
-  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H14 H35.		% not copy paste. but easily adjusted from the proof schema. 
   apply bisim_sym to H36.
   apply bisim_trans to H38 H32.
   apply bisimUpToBisimAndContext_cong to H23 with R = R1.
@@ -683,7 +708,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -691,17 +716,17 @@ apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
 
 %  proving derivatives are related.
 case H32. 				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-case H44.				% unfold upToBisim
+case H44.				
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H45.				% unfold upToBisim
-  apply bisim_trans to H42 H46.
+  case H45.				% unfold bisim_t 
+  apply bisim_trans to H42 H46.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H47.
   apply bisim_trans to H49 H43.
   backchain CH.
 % - inside a bigger context
-  case H45.				% unfold upToBisim
-  apply bisim_trans to H42 H46.
+  case H45.				% unfold bisim_t 
+  apply bisim_trans to H42 H46.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H47.
   apply bisim_trans to H49 H43.
   apply bisimUpToBisimAndContext_cong to H33 with R = R1.
@@ -716,7 +741,7 @@ exists M. exists N4.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.				
 
@@ -725,14 +750,14 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H34.				% unfold upToBisim 
-  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H14 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H32.
   backchain CH.
 % - inside a bigger context
-  case H34.				% unfold upToBisim 
-  apply bisim_trans to H14 H35.		% NOT copy paste. but calculated with first/bottom etc. 
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H14 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H32.
   apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
@@ -746,7 +771,7 @@ split. search.
 exists P5. exists Q1.
 split. search.
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -755,14 +780,14 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H34.
-  apply bisim_trans to H32 H35.
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H32 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H14.
   backchain CH.
 % - inside a bigger context
-  case H34.
-  apply bisim_trans to H32 H35.
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H32 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H14.
   apply bisimUpToBisimAndContext_cong to H23 with R = R1.
@@ -781,7 +806,7 @@ split. search.
 % from here:
 apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
+% applying the information from the reflexive technique refl_t, but we need structured equality. 
 case H30. case H34.								
 apply equality_for_structured_refl. case H40. 
 apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.				
@@ -792,14 +817,14 @@ case H32.				% unfold of up-to technique: we observe what the up-to technique is
 case H44.				
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H45.				% unfold upToBisim
-  apply bisim_trans to H43 H46.
+  case H45.				% unfold bisim_t 
+  apply bisim_trans to H43 H46.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H47.
   apply bisim_trans to H49 H42.
   backchain CH.
 % - inside a bigger context
-  case H45.				% unfold upToBisim
-  apply bisim_trans to H43 H46.
+  case H45.				% unfold bisim_t 
+  apply bisim_trans to H43 H46.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H47.
   apply bisim_trans to H49 H42.
   apply bisimUpToBisimAndContext_cong to H33 with R = R1.
@@ -814,7 +839,7 @@ exists M4. exists N.
 intros.
 split. search.
 
-% applying the information from ReflexiviyTechnique
+% applying the information from the reflexive technique refl_t.
 case H13.
 case H31.
 
@@ -823,14 +848,14 @@ case H22.				% unfold of up-to technique: we observe what the up-to technique is
 case H33.
 % Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
 % - inside no bigger context
-  case H34.
-  apply bisim_trans to H32 H35.
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H32 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H14.
   backchain CH.
 % - inside a bigger context
-  case H34.
-  apply bisim_trans to H32 H35.
+  case H34.				% unfold bisim_t 
+  apply bisim_trans to H32 H35.		% not copy paste. but easily adjusted from the proof schema.
   apply bisim_sym to H36.
   apply bisim_trans to H38 H14.
   apply bisimUpToBisimAndContext_cong to H23 with R = (R1 n1).
@@ -927,7 +952,7 @@ apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 apply bisim_par_cong_right to H4 with R = (repl (in B (x\null))).          
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH. 
 
 % Second case: the b() input move. 
@@ -949,7 +974,7 @@ apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 apply bisim_par_cong_left to H4 with R = (repl (in A (x\null))).          
 search. 
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Case of up transitions from P (bound output): not possible from (in A x\null) or (in B x\null). 
@@ -980,7 +1005,7 @@ apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 apply bisim_par_cong_right to H4 with R = (repl (in B (x\null))).          
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH. 
 
 % Second case: the a() input move. 
@@ -1002,7 +1027,7 @@ apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 apply bisim_par_cong_left to H4 with R = (repl (in A (x\null))).          
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Case of up transitions from Q (bound output): not possible from (in A x\null) or (in B x\null). 
@@ -1044,7 +1069,7 @@ search.
 apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 % Case of up transitions from P (bound output): not possible from (in A x\null). 
@@ -1075,7 +1100,7 @@ search.
 apply bisim_par_zeroEl with P = (repl (in X (x\null))).
 search.
 
-% and then, that they are related by bisimUpTo upToBisimilarity.
+% and then, that they are related by bisim_up_to bisim_t.
 backchain CH.
 
 
@@ -1132,7 +1157,7 @@ search.
 exists (M1 W).							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Second case: the b() input move. 
@@ -1160,7 +1185,7 @@ search.
 exists (M1 W).							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Case of up transitions from P (bound output): not possible from (in A P) or (in B P). 
@@ -1204,7 +1229,7 @@ search.
 exists (M1 W).							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 
@@ -1233,7 +1258,7 @@ search.
 exists (M W).							% the common context. 
 split. search. search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Case of up transitions from Q (bound output): not possible from (in A P) or (in B P). 
@@ -1284,7 +1309,7 @@ search.
 exists (M2 W).							% the common context. 
 search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 % Case of up transitions from P (bound output): not possible from (in A P).
@@ -1323,7 +1348,7 @@ search.
 exists (M W).							% the common context. 
 search.
 
-% and then, that they are related by bisimUpTo upToBisimAndContext2.
+% and then, that they are related by bisim_up_to bisim_context_t.
 backchain CH.
 
 
