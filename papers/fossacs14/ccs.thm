@@ -171,6 +171,19 @@ apply bisim_sound_fst.
 case H7.
 backchain H8.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The material above completes the formal proof of the soundness of
+% bisimilarity upto bisimilarity (a theorem claimed in the FOSSACS
+% submission).
+
+% What comes below is a related proof development of the soundness of
+%  bisimilarity up-to transitivity (a topic not addressed in the
+%  submission).  Notice, however, that there are some "skipped" lemmas
+%  below.  The current coinductive treatment of Abella does not allow
+%  us to complete these proofs.  As far as we know, no existing formal
+%  proof system with coinduction currently admits the kind of proof
+%  that seems natural here.
 
 
 % Soundness of Bisimilarity up-to Transitivity.
@@ -319,6 +332,8 @@ unfold.
     exists Q1. split. search. exists Q1. exists Q1. split. search. backchain bisim_refl.
     apply qstep to H3. exists P2. split. search. exists P2. exists Q1. split. search. case H5. search.
 
+% The following skipped proofs should be easy: we leave their completion for later.
+
 Theorem bisim_cong_par1 : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t (par P R) (par Q R).
 skip.
 
@@ -362,7 +377,8 @@ Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
         bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
 					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
 
-Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
+Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).
+skip.
 % -- SKIPPED -- problem: same problems as for bisimUpToContext_cong.
 
 Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
