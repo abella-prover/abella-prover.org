@@ -123,6 +123,13 @@ Define refl_t : proc -> proc -> proc -> proc -> prop by
 
 CoDefine bisimr : proc -> proc -> prop by bisimr P Q := bisim_up_to refl_t P Q.
 
+% It is proven in:
+%
+% Alwen Tiu, Dale Miller. Proof search specifications of bisimulation and modal logics for the calculus. 
+% ACM Transactions on Computational Logic (TOCL) 2010.
+%
+% that this definition corresponds to open bisimilarity.
+
 
 % As Abella treats equality by means of unification, reasoning with structured equality as in:
 % P = (Q R).
