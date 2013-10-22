@@ -215,7 +215,6 @@ Theorem bisimUpToTrans_trans : forall P Q R, bisim_up_to transitivity_t P Q -> b
 skip. 
 % -- SKIPPED -- problem: I need to apply the coindutive hypothesis to something that comes from coinductive (so it has + and would not go).
 
-% Soundness of Bisimilarity up-to Transitivity.
 
 Theorem transitivity_sound_fst : is_sound_fst transitivity_t.
 % Remark: as we pointed out above, this proof is nearly copy/pasted until from the soundness of Bisimilarity up-to Bisimilarity.

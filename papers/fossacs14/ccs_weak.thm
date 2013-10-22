@@ -83,17 +83,8 @@ CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
       exists P1, oneWeak P A P1 /\
         exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisimWeak_up_to Upto P2 Q2).
 
-% As Abella treats equality by means of unification, reasoning with structured equality as in:
-% P = (Q R).
-% would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	
-% We therefore need the following lemmas for it.
-
-Define equally_structured : (proc -> proc -> prop) -> prop by
-  equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
-
-Theorem equality_for_structured_weak : equally_structured (bisimWeak_up_to refl_t). 
-unfold. intros. case H2. case H3. search.
-
+% The soundness proof relies on the following lemmas. 
+% All of them are well-known to be true, and Abella can address their proofs with no problem. They will be proved soon.
 
 Theorem bisim_implies_bisimWeak : forall P Q, bisim_up_to refl_t P Q -> bisimWeak_up_to refl_t P Q.skip.
 Theorem bisimWeak_refl : forall P, bisimWeak_up_to refl_t P P.skip.
@@ -128,16 +119,16 @@ exists P1.
 exists Q5.
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
 % proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+% First, we set things in order to be able to copy/paste/adjust the specific code for up-to bisimilarity.
 apply bisim_implies_bisimWeak to H21.
 apply bisim_implies_bisimWeak to H22.
-% Next code is specific of up-to Bisimilarity.
+% Next code is specific of up-to bisimilarity.
   apply bisimWeak_trans to H10 H23.
   apply bisimWeak_sym to H24.
   apply bisimWeak_trans to H26 H20.
@@ -153,7 +144,7 @@ exists P5.
 exists Q1.				
 split. search. 
 
-% applying the information from ReflexiviyTechnique 
+% applying the information from the reflexive technique refl_t.
 case H9.				
 case H19.
 
