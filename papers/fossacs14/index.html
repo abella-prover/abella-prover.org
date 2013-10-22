@@ -90,14 +90,16 @@ file</a>.
 <ul class="navlist">
 <li>
 Up to techniques for CCS: <a href="ccs.thm">ccs.thm</a>. This file contains the specification of CCS, definition of various techniques: up-to bisimilarity, up-to transitivity, up-to
-context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The files also contains several examples illustrating how to use these results.
+context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The file also contains several examples illustrating how to use these results.
 </li>
 <li>
-Up to techniques for &pi;-calculus: <a href="pic.thm">pic.thm</a>. This file contains the specification of &pi;-calculus, definition of various techniques: up-to bisimilarity, up-to transitivity, up-to
-context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The files also contains several examples illustrating how to use these results.
+Up to techniques for &pi;-calculus: <a href="pic.thm">pic.thm</a>. <br/>
+<em>Important Remark</em>: At page 8 and 10 of the paper, we mention in passing that we consider late bisimilarity. It is a text mishappening, the induced bisimilarity is open bisimilarity, as proved in <a href="http://dl.acm.org/authorize?298851"><em>Proof search specifications of bisimulation and modal logics for the calculus</em></a> by Alwen Tiu, Dale Miller, ACM Transactions on Computational Logic (TOCL) 2010, and as stated in Section 5 where bisimilarity for &pi;-calculus is given.<br/>
+The file above contains the specification of &pi;-calculus, the definition of various techniques: up-to bisimilarity, up-to transitivity, up-to context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The file also contains several examples illustrating how to use these results.
 </li>
 <li>
-Up to techniques for weak bisimilarity, CCS: <a href="ccs_weak.thm">ccs_weak.thm</a> and &pi;-calculus: <a href="pic_weak.thm">pic_weak.thm</a>. <em>Important Disclaimer</em>: We have so far considered only the ordinary definition of weak bisimilarity (i.e. that basically plays strong bisimilarity on weak transitions.This definition does not pose problems with up-to techniques, and has a smooth theory of up-to techniques. However, this formulation is usually not useful in practice for proofs ([1], and corresponding references, to know more).
+Up to techniques for weak bisimilarity, CCS: <a href="ccs_weak.thm">ccs_weak.thm</a> and &pi;-calculus: <a href="pic_weak.thm">pic_weak.thm</a>. <br/>
+<em>Important Remark</em>: At page 8 of the paper, we mention quickly that we consider weak bisimilarity. We have so far considered only the ordinary definition of weak bisimilarity (i.e. that basically plays strong bisimilarity on weak transitions. This definition does not pose problems with up-to techniques, and has a smooth theory of up-to techniques. However, this formulation is usually not useful in practice for proofs. 
 </li>
 </ul>
 
@@ -109,8 +111,15 @@ Up to techniques for weak bisimilarity, CCS: <a href="ccs_weak.thm">ccs_weak.thm
 Weak bisimulation for CCS and &pi;-calculus, up-to techniques for the "problematic" weak bisimilarity.
 </li>
 <li>
-Up-to techniques for Higher-order calculi. 
+Up-to techniques for Higher-Order calculi. 
 </li>
+<li>
+Formalization of the theory of compatible functions. 
+</li>
+<li>
+Enhancement of Model Checking by the use of Lemma. (As advocated in the paper <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/cpp2013.pdf"><em>Extracting Proofs from Tabled Proof Search</em></a> by Dale Miller and Alwen Tiu, CPP 2013.) <a href="http://slimmer.gforge.inria.fr/bedwyr/">Bedwyr</a> is a model checker based on recent advances in proof theory. Since its underlying logic is basically the same of the Abella theorem prover, our plan is to enable Bedwyr to make use of lemmas from Abella, available only when formally proved and that can therefore be trusted, in order to avoid the exhaustive search of states space and perform model checking in a smarter, yet sound, way. 
+</li>
+
 </ul>
 
 </div>
