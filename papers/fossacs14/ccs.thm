@@ -4,7 +4,7 @@
 %
 % about the up to transitivity technique: (not part of the the FoSSaCS submission)
 %	bisimUpToTrans_refl: reflexivity of the bisimilarity up to transitivity relation. 
-%	problem: it is a little bug of Abella.
+%	problem: it is a little shortcoming of Abella.
 %		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 (in a sense, out of nowhere) 
 %		and Abella does not remember to carry the size annotation + necessary to apply coinduction.
 %
