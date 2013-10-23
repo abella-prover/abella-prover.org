@@ -4,9 +4,9 @@
 %
 % about the up to transitivity technique: (not part of the the FoSSaCS submission)
 %	bisimUpToTrans_refl: reflexivity of the bisimilarity up to transitivity relation. 
-%	problem: it is a little bug of Abella.
-%		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 and does not carry the 
-%		size annotation + necessary to apply coinduction.
+%	problem: it is a little shortcoming of Abella.
+%		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 (in a sense, out of nowhere) 
+%		and Abella does not remember to carry the size annotation + necessary to apply coinduction.
 %
 %	bisimUpToTrans_sym and bisimUpToTrans_trans: symmetry and transitivity of the bisimilarity up to transitivity relation. 
 %	problem: It seems provable only by applying transitivity (co-inductive hypothesis) to something that comes already from the coinductive hypothesis. 
@@ -319,6 +319,7 @@ case H31.
 %  proving derivatives are related.
 case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
 % Next code is specific of Bisimilarity up-to Bisimilarity.
+% Because it is the symmetric case, we need only to switch H14/H32 in the proof code above.
   apply bisim_trans to H32 H33.
   apply bisim_sym to H34.
   apply bisim_trans to H36 H14.
@@ -418,8 +419,8 @@ skip.
 % Soundness of Bisimilarity up-to Transitivity.
 
 Theorem transitivity_sound_fst : is_sound_fst transitivity_t.
-% Remark: as we pointed out above, this proof is nearly copy/pasted until from the soundness of Bisimilarity up-to Bisimilarity.
-% the specific code for Bisimilarity up-to Transitivity is needed in a precise and localized point. 
+% Remark: as we pointed out above, this proof is nearly copy/pasted from the soundness of Bisimilarity up-to Bisimilarity.
+% The specific code for Bisimilarity up-to Transitivity will replace the one for up-to Bisimilarity at a precise and localized point. 
 
 unfold. coinduction. intros. case H1. unfold.
 
