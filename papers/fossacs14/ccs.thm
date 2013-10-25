@@ -3,14 +3,10 @@
 % Unproved lemmas at the moment:
 %
 % about the up to transitivity technique: (not part of the the FoSSaCS submission)
-%	bisimUpToTrans_refl: reflexivity of the bisimilarity up to transitivity relation. 
-%	problem: it is a little shortcoming of Abella.
-%		the coinductive step bisim_up_to transitivity_t P1 P1 shows up after the unfold of upToTransitivity P1 P1 P1 P1 (in a sense, out of nowhere) 
-%		and Abella does not remember to carry the size annotation + necessary to apply coinduction.
-%
 %	bisimUpToTrans_sym and bisimUpToTrans_trans: symmetry and transitivity of the bisimilarity up to transitivity relation. 
-%	problem: It seems provable only by applying transitivity (co-inductive hypothesis) to something that comes already from the coinductive hypothesis. 
+%	problem: (for transitivity) It seems provable only by applying transitivity (co-inductive hypothesis) to something that comes already from the coinductive hypothesis. 
 %		At the moment, this reasoning is not available in Abella (and, to our knowledge, not in any interactive theorem provers).
+%		for symmetry we have a similar reasons.
 %
 % about the up to bisimilarity and context technique:
 %	bisimUpToBisimAndContext_cong: congruence of the bisimilarity up to bisimilarity and context technique.
