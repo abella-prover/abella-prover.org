@@ -1,0 +1,8 @@
+1. Get ProofGeneral and get it working in Emacs. The source code and installation
+guide are at 'http://proofgeneral.inf.ed.ac.uk/download'.
+2. Untar abella.tar.gz in the top of the ProofGeneral directory.
+3. place proof-site.el in ProofGeneral/generic/.
+4. Add these two lines to your .emacs:
+
+  (load-file "/wherever/ProofGeneral/generic/proof-site.el")
+  (load-file "/wherever/abella/emacs/lprolog.el")
