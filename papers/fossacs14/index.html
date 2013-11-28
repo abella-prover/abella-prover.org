@@ -30,6 +30,13 @@
     border-bottom: none;
     margin-bottom: 0;
 }
+
+section p + p,
+.section p + p {
+    margin-top: 1em !important;
+    text-indent: 0 !important;
+}
+
 </style>
 <link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
 <link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
@@ -48,66 +55,90 @@
 <div class="section">
 <center>
 <h1 id="main">
-  Bisimulation up-to techniques in Abella
+  Formalized Meta-Theory of Bisimulation-Up-To Techniques in Abella
 </h1>
 </center>
 <br/>
 <br/>
 
 <p>
-This webpage contains some supporting material for the paper: </p>
+  This webpage contains some supporting material for the paper:
+</p>
+
 <center>
-<a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/upto-draft.pdf"><em>Formalization of the Bisimulation-Up-To Technique and its Meta Theory</em></a>. Kaustuv Chaudhuri, Matteo Cimini, and Dale Miller,
+  <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/upto-draft.pdf"><em>Formalization
+      of the Bisimulation-Up-To Technique and its Meta Theory</em></a>
+      by Kaustuv Chaudhuri, Matteo Cimini, and Dale Miller,
 </center>
-<br/>
+
 <p>
-which was submitted to <a href="http://www.etaps.org/index.php/2014/fossacs">FoSSaCS 2014</a>.
+  which was submitted
+  to <a href="http://www.etaps.org/index.php/2014/fossacs">FoSSaCS
+  2014</a>. The links below are to the HTML version of the Abella
+  developments. The actual Abella sources are also linked therefrom,
+  but the development can be browsed without running Abella yourself.
 </p>
 
 <p>
-The formal specifications in this paper are written with a slight
-extension to Abella where some higher-order quantification is allowed.
-While our use of such higher-order quantification could easily be
-replaced with only first-order quantification, the readability of the
-specifications would be decreased.  In order to get Abella to treat
-this particular notion of higher-order quantification in coinductive
-proofs, the <tt>lax_coinduction</tt> branch of Abella is needed (for
-more information,
-see <a href="https://github.com/abella-prover/abella/issues/20">this</a>).
-This is available on <a href="http:github.com">github</a> as the
-following <a href="https://github.com/abella-prover/abella/archive/lax_coinduction.zip">zip
-file</a>.
+  <strong>Note</strong>: the development below requires the version of
+  Abella from Git because it relies on some recent bug-fixes. This
+  version of Abella is available as
+  a <a href="https://github.com/abella-prover/abella/archive/master.tar.gz">tarball</a>
+  or
+  a <a href="https://github.com/abella-prover/abella/archive/master.zip">zip</a>
+  from Github. These bugfixes will be part of the next release (2.1.x)
+  of Abella.
 </p>
 
-
-<hr/>
 <br/>
 <h2>Complete formalizations</h2>
 
 <ul class="navlist">
 <li>
-Up to techniques for CCS: <a href="ccs.thm">ccs.thm</a>. This file contains the specification of CCS, definition of various techniques: up-to bisimilarity, up-to transitivity, up-to
-context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The file also contains several examples illustrating how to use these results.
+  <strong>Strong bisimilarity for <a href="ccs.html">CCS</a></strong>
+  <blockquote>
+    This file contains the specification of CCS, definitions of
+    various techniques: up-to-bisimilarity, up-to-context,
+    up-to-bisimularity-and-context, and a variant of
+    up-to-transitivity. It also contains the proofs of soundness of
+    these techniques with respect to bisimilarity for CCS.
+    <br /><br />
+    Several illustrative examples using these theorems are also
+    provided.
+  </blockquote>
 </li>
 <li>
-Up to techniques for &pi;-calculus: <a href="pic.thm">pic.thm</a>. <br/>
-<em>Important Remark</em>: On pages 8 and 10 of the paper, we mention
-in passing that we are considering late bisimilarity.  In fact, the defined
-bisimilarity is open bisimilarity.   This is proved
-in <a href="http://dl.acm.org/authorize?298851"><em>Proof search
-    specifications of bisimulation and modal logics for the
-    calculus</em></a> by Tiu and Miller (ACM Transactions on
-Computational Logic, 2010).  We refer correctly to this bisimilarity
-as open in Section 5 where bisimilarity for &pi;-calculus is
-given.<br/> 
-The file above contains the specification of &pi;-calculus, the definition of various techniques: up-to bisimilarity, up-to transitivity, up-to context, and up-to bisimularity and context. Also, the abstract definitions for soundness theorems and the soundness of those technique for bisimilarity for CCS. The file also contains several examples illustrating how to use these results.
+  <strong>Strong bisimilarity for <a href="pic.html">the
+      &pi;-calculus</a></strong>
+  <blockquote>
+    An extension of the above development for the &pi;-calculus.
+    <br /><br />
+    Also contains several updated examples that make use
+    of communication.
 </li>
 <li>
-Up to techniques for weak bisimilarity, CCS: <a href="ccs_weak.thm">ccs_weak.thm</a> and &pi;-calculus: <a href="pic_weak.thm">pic_weak.thm</a>. <br/>
-<em>Important Remark</em>: At page 8 of the paper, we mention quickly that we consider weak bisimilarity. We have so far considered only the ordinary definition of weak bisimilarity (i.e. that basically plays strong bisimilarity on weak transitions. This definition does not pose problems with up-to techniques, and has a smooth theory of up-to techniques. However, this formulation is usually not useful in practice for proofs. 
+  <strong>Weak bisimilarity using the ordinary definition</strong>:
+  <a href="ccs_weak.html"><strong>CCS</strong></a> and
+  <a href="pic_weak.html"><strong>the &pi;-calculus</strong></a>
+
+  <blockquote>
+    These definitions play the strong bisimulation game on weak transitions.
+  </blockquote>
 </li>
+<li>
+  <strong>Weak bisimilarity with a strong challenger</strong>:
+  <a href="ccs_less_weak.html"><strong>CCS</strong></a> and
+  <a href="pic_less_weak.html"><strong>the &pi;-calculus</strong></a>
+
+  <blockquote>
+    This is a variant of weak bisimilarity that is better suited for
+    proofs. In the bisimulation game, the challenger plays strong
+    transitions. This is the weak bisimilarity that has been
+    extensively studied in the context of up-to-techniques.
+  </blockquote>
 </ul>
 
+<!--
 
 <h2>In Progress</h2>
 
@@ -125,8 +156,13 @@ Formalization of the theory of compatible functions.
 Enhancement of Model Checking by the use of lemmas. (As advocated in the paper <a href="http://www.lix.polytechnique.fr/Labo/Dale.Miller/papers/cpp2013.pdf"><em>Extracting Proofs from Tabled Proof Search</em></a> by Dale Miller and Alwen Tiu, CPP 2013.) <a href="http://slimmer.gforge.inria.fr/bedwyr/">Bedwyr</a> is a model checker based on recent advances in proof theory. Since its underlying logic is basically the same of the Abella theorem prover, our plan is to enable Bedwyr to make use of lemmas from Abella, available only when formally proved and that can therefore be trusted, in order to avoid the exhaustive search of states space and perform model checking in a smarter, yet sound, way. 
 </li>
 
-</ul>
+</ul> -->
 
+</div> <!-- .section -->
+
+<div class="section">
+  <hr />
+  Last updated: 2013-11-28 14:13:45+0100
 </div>
 
 </body>

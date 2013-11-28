@@ -1,0 +1,346 @@
+
+Kind name,action,proc type.
+
+Type null         proc.
+Type taup         proc -> proc.
+Type plus, par    proc -> proc -> proc.
+Type match, out   name -> name -> proc -> proc.
+Type in           name -> (name -> proc) -> proc.
+Type nu           (name -> proc) -> proc.
+Type repl	  proc -> proc.
+
+Type tau          action.
+Type up, dn       name -> name -> action.
+
+Type a, b		name.
+
+
+Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  -> (name -> proc) -> prop by
+	% tau
+	one  (taup P) tau P;
+
+	% free output
+	one (out X Y P) (up X Y) P;
+
+	% sum
+	one  (plus P Q) A R := one  P A R;
+	one  (plus P Q) A R := one  Q A R;
+
+	% par
+	one  (par P Q) A (par P1 Q) := one P A P1;
+	one  (par P Q) A (par P Q1) := one Q A Q1;
+
+	% restriction
+	one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
+
+	% close
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
+
+	% comm
+	one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
+	one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
+
+	% repl
+	one (repl P) A (par (repl P) P1) := one P A P1;
+
+	% repl, further rules for auto-synchronization.
+	one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
+	one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
+
+	% bound input
+	oneb (in X M) (dn X) M;
+
+	% sum
+	oneb (plus P Q) A M := oneb P A M;
+	oneb (plus P Q) A M := oneb Q A M;
+
+	% par
+	oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
+	oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
+
+	% restriction
+	oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
+
+	% open
+	oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
+
+	% repl
+	oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.
+
+
+% Bisimilarity up-to techniques.
+% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
+% Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
+
+
+CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc -> prop by
+		bisim_up_to Upto P Q := 
+		(forall A P1, one P A P1 -> exists Q1, one Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+		(forall X M, oneb P (dn X) M -> exists N, oneb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\
+    		(forall X M, oneb P (up X) M -> exists N, oneb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\
+    		(forall A Q1, one Q A Q1 -> exists P1, one P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+    		(forall X N, oneb Q (dn X) N -> exists M, oneb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\ 
+    		(forall X N, oneb Q (up X) N -> exists M, oneb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))).
+
+
+% An alternative definition of bisimilarity can be obtained using a "vacuous" up-to technique, refl_t.
+
+Define refl_t : proc -> proc -> proc -> proc -> prop by
+	refl_t P P Q Q.
+
+% up-to Bisimilarity.
+
+Define bisim_t : proc -> proc -> proc -> proc -> prop by
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+
+% As Abella treats equality by means of unification, reasoning with structured equality as in:
+% P = (Q R).
+% would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	
+% We therefore need the following lemmas for it.
+
+Define equally_structured : (proc -> proc -> prop) -> prop by
+	equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
+
+Theorem equality_for_structured_refl : equally_structured (bisim_up_to refl_t). 
+unfold. intros. case H2. case H3. search.
+
+
+
+Theorem bisim_refl : forall P, bisim_up_to refl_t P P. 
+coinduction. intros. unfold.
+  intros. apply CH with P = P1. search.
+  intros. exists M. split. search.
+    exists M. exists M.							% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.
+    intros. apply CH with P = M W. search.
+  intros. exists M. split. search.
+    exists M. exists M.							% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.
+    intros. apply CH with P = M n1. search.
+  intros. apply CH with P = Q1. search.
+  intros. exists N. split. search.
+    exists N. exists N.							% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.
+    intros. apply CH with P = N W. search.
+  intros. exists N. split. search.
+    exists N. exists N.							% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.
+    intros. apply CH with P = N n1. search.
+
+Theorem bisim_sym : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P. 
+coinduction. intros. case H1. unfold.
+  intros. apply H5 to H8. exists P2. split. search. exists P1. exists P2. split. search. case H10. backchain CH.
+  intros. apply H6 to H8. exists M1. split. search. exists M. exists M1. intros. split. search. 
+	apply H10 with W = W. case H11. apply equality_for_structured_refl. case H15. apply H16 to H12 H14 H13. backchain CH.
+  intros. apply H7 to H8. exists M1. split. search. exists M. exists M1. intros. split. search. case H10. backchain CH.
+  intros. apply H2 to H8. exists Q2. split. search. exists Q2. exists Q1. split. search. case H10. backchain CH.
+  intros. apply H3 to H8. exists N1. split. search. exists N1. exists N. intros. split. search. 
+	apply H10 with W = W. case H11. apply equality_for_structured_refl. case H15. apply H16 to H12 H14 H13. backchain CH.
+  intros. apply H4 to H8. exists N1. split. search. exists N1. exists N. intros. split. search. case H10. backchain CH.
+
+
+Theorem bisim_trans : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q R -> bisim_up_to refl_t P R. 
+coinduction. intros. case H1. case H2. unfold. 
+  intros. apply H3 to H15. apply H9 to H16. case H17. case H20. exists Q4. split. search. exists P3. exists Q4. split. search. backchain CH.
+  intros. apply H4 to H15. apply H10 to H16. exists N1. split. search. exists M. exists N1. intros. split. search. 
+	apply H17 with W = W. apply H19 with W = W. case H20. case H22. apply equality_for_structured_refl. case H28. apply H29 to H21 H25 H24. apply H29 to H23 H27 H26. backchain CH.
+  intros. apply H5 to H15. apply H11 to H16. exists N1. split. search. exists M. exists N1. intros. split. search. case H17. case H20. backchain CH.
+  intros. apply H12 to H15. apply H6 to H16. case H17. case H20. exists P4. split. search. exists P4. exists Q3. split. search. backchain CH.
+  intros. apply H13 to H15. apply H7 to H16. exists M1. split. search. exists M1. exists N. intros. split. search. 
+	apply H17 with W = W. apply H19 with W = W. case H20. case H22. apply equality_for_structured_refl. case H28. apply H29 to H21 H25 H24. apply H29 to H23 H27 H26. backchain CH.
+  intros. apply H14 to H15. apply H8 to H16. exists M1. split. search. exists M1. exists N. intros. split. search. case H17. case H20. backchain CH.
+
+
+% Weak transitions.
+
+Define oneWeak : proc -> action -> proc -> prop by 
+	oneWeak P tau P;
+	oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
+	oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
+
+Define oneWeakb : proc -> (name -> action)  -> (name -> proc) -> prop by 
+	oneWeakb P A P2 := (exists P1, oneWeak P tau P1 /\ oneb P1 A P2).
+
+
+CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
+  bisimWeak_up_to Upto P Q :=
+		(forall A P1, one P A P1 -> exists Q1, oneWeak Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+		(forall X M, oneb P (dn X) M -> exists N, oneWeakb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall X M, oneb P (up X) M -> exists N, oneWeakb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall A Q1, one Q A Q1 -> exists P1, oneWeak P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+    		(forall X N, oneb Q (dn X) N -> exists M, oneWeakb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\ 
+    		(forall X N, oneb Q (up X) N -> exists M, oneWeakb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))).
+
+Theorem equality_for_structured_weak : equally_structured (bisimWeak_up_to refl_t). 
+unfold. intros. case H2. case H3. search.
+
+
+Theorem bisim_matches_weakTrans : forall P P1 Q, bisim_up_to refl_t P Q -> oneWeak P tau P1 -> (exists Q1, oneWeak Q tau Q1 /\ bisim_up_to refl_t P1 Q1). 
+induction on 2. intros. case H2. 
+exists Q. search. 
+case H1. apply H5 to H3. case H12. apply IH to H13 H4. exists Q1. search.
+assert tau = tau. apply H3 to H7.
+ 
+
+Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound Upto := forall P Q, bisimWeak_up_to Upto P Q -> bisimWeak_up_to refl_t P Q.
+
+Define is_sound_fst : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_fst Upto := forall P Q,
+    (exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q)
+    -> bisimWeak_up_to refl_t P Q.
+
+Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_snd Upto := forall P Q, bisimWeak_up_to Upto P Q ->
+    exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q.
+
+Theorem bisimWeak_sound_fst : is_sound_fst bisim_t.
+unfold. coinduction. intros. case H1. unfold.
+
+% Remark:
+% unfold, open the 6 cases of bisimilarity:
+% - plain transitions from P.
+% - dn transitions from P (bound input).
+% - up transitions from P (bound output).
+% - plain transitions from Q
+% - dn transitions from Q (bound input).
+% - up transitions from Q (bound output).
+
+% plain transitions from P.
+%   searching for the suitable step from Q. 
+intros.	case H2. apply H6 to H5. case H13. case H3. apply H15 to H12. case H21. 
+
+% case of null step: S->S. 
+exists Q. split. search. exists P3. exists Q. split. search.
+
+% proof code for up to bisim.
+    case H22.
+	apply bisim_trans to H14 H24.
+	apply bisim_sym to H25.
+	apply bisim_trans to H27 H4.
+     backchain CH. 
+
+
+% case -tau-> -weakTau->
+case H4. apply H26 to H24. case H33. apply bisim_matches_weakTrans to H34 H25. exists Q7. split. search. exists P3. exists Q7. split. search.
+
+% proof code for up to bisim.
+    case H22.
+	apply bisim_trans to H14 H37.
+	apply bisim_sym to H38.
+	apply bisim_trans to H40 H36.
+     backchain CH.
+
+% case -weakTau-> -A-> -weakTau->
+apply bisim_matches_weakTrans to H4 H25. case H29. apply H30 to H26. case H37. apply bisim_matches_weakTrans to H38 H27. exists Q8. split. search. exists P3. exists Q8. split. search.
+    case H22.
+	apply bisim_trans to H14 H41.
+	apply bisim_sym to H42.
+	apply bisim_trans to H44 H40.
+     backchain CH.
+
+% dn transitions from P.
+intros.	case H2. apply H7 to H5. case H3. apply H15 to H12. case H20. 
+
+% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.
+apply bisim_matches_weakTrans to H4 H22. case H25. apply H27 to H23. exists N4. split. search. exists M. exists N4. intros. split. search. apply H13 with W = W. apply H21 with W = W. apply H33 with W = W. case H34. case H38. apply equality_for_structured_refl. case H44. apply H45 to H35 H41 H40. apply H45 to H39 H43 H42.
+    case H36.
+	apply bisim_trans to H46 H48.
+	apply bisim_sym to H49.
+	apply bisim_trans to H51 H47.
+     backchain CH.
+
+% up transitions from P.
+intros.	case H2. apply H8 to H5. case H13. case H3. apply H17 to H12. case H21. 
+
+% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.
+apply bisim_matches_weakTrans to H4 H24. case H27. apply H30 to H25. case H35. exists (z1\N5 z1). split. search. exists M2. exists N5. intros. split. search.     case H22.
+	apply bisim_trans to H14 H37.
+	apply bisim_sym to H38.
+	apply bisim_trans to H40 H36.
+     backchain CH.
+
+% plain transitions from Q.
+intros.	case H4. apply H9 to H5. case H13. case H3. apply H18 to H12. case H21. 
+
+% case of null step: S->S. 
+exists P. split. search. exists P. exists Q3. split. search.
+
+% proof code for up to bisim.
+    case H22.
+	apply bisim_trans to H2 H24.
+	apply bisim_sym to H25.
+	apply bisim_trans to H27 H14.
+     backchain CH. 
+
+% case -tau-> -weakTau->
+case H2. apply H29 to H24. case H33. apply bisim_sym to H34. apply bisim_matches_weakTrans to H35 H25. exists Q5. split. search. exists Q5. exists Q3. split. search.
+
+% proof code for up to bisim.
+    case H22.
+	apply bisim_sym to H37.
+	apply bisim_trans to H40 H38.
+	apply bisim_sym to H39.
+	apply bisim_trans to H42 H14.
+     backchain CH.
+
+% case -weakTau-> -A-> -weakTau->
+apply bisim_sym to H2. apply bisim_matches_weakTrans to H28 H25. case H30. apply H31 to H26. case H38. apply bisim_matches_weakTrans to H39 H27. exists Q7. split. search. exists Q7. exists Q3. split. search.
+    case H22.
+	apply bisim_sym to H41.
+	apply bisim_trans to H44 H42.
+	apply bisim_sym to H43.
+	apply bisim_trans to H46 H14.
+     backchain CH.
+
+% dn transitions from Q.
+intros.	case H4. apply H10 to H5. case H3. apply H18 to H12. case H20. 
+
+% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.
+apply bisim_sym to H2. apply bisim_matches_weakTrans to H24 H22. case H26. apply H28 to H23. exists N3. split. search. exists N3. exists N. intros. split. search. apply H13 with W = W. apply H21 with W = W. apply H34 with W = W. case H35. case H39. apply equality_for_structured_refl. case H45. apply H46 to H36 H42 H41. apply H46 to H40 H44 H43.
+    case H37.
+	apply bisim_sym to H48.
+	apply bisim_trans to H51 H49.
+	apply bisim_sym to H50.
+	apply bisim_trans to H53 H47.
+     backchain CH.
+
+% up transitions from Q.
+intros.	case H4. apply H11 to H5. case H13. case H3. apply H20 to H12. case H21. 
+
+% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.
+apply bisim_sym to H2. apply bisim_matches_weakTrans to H26 H24. case H28. apply H31 to H25. case H36. exists (z1\N4 z1). split. search. exists N4. exists N2. intros. split. search.
+     case H22.
+	apply bisim_sym to H37.
+	apply bisim_trans to H40 H38.
+	apply bisim_sym to H39.
+	apply bisim_trans to H42 H14.
+     backchain CH.
+
+
+
+Theorem bisimWeak_sound_snd : is_sound_snd bisim_t.
+unfold.
+intros.
+apply bisim_refl with P = P.
+apply bisim_refl with P = Q.
+exists P.
+exists Q.
+search.
+
+Theorem bisimWeak_sound : is_sound bisim_t.
+unfold.
+intros.
+apply bisimWeak_sound_snd.
+case H2.
+apply H3 to H1.
+apply bisimWeak_sound_fst.
+case H7.
+backchain H8.
+

@@ -1,25 +1,15 @@
+%Set lax_coinduction on.
 
 % Formalization of the soundness for weak bisimilarity up-to bisimilarity.
 
 % Remark:
 % Mind that we address the ordinary definition of weak bisimilarity, i.e. that basically plays strong bisimilarity on weak transitions.
 % This definition does not pose problems with up-to techniques, and has a smooth theory of up-to techniques.
-% However, this formulation is usually not useful in practice for proofs, as the first process plays weak transitions and can "challenge" the second process for matching for infinitely many of them. 
+% However, this formulation is usually not useful in practice for proofs, as the first process plays weak transitions and can "challenge" the second process to match for infinitely many of them. 
 
-% A better formulation of weak bisimilarity allows the first process only to perform strong transition (matched by weak transitions from the second process). 
-% Unfortunately, its up-to techniques come with some difficulties, that have been however addressed mainly by Davide Sangiorgi and Damien Pous. 
-% In future, we will tackle this as well.
-
-% Our main motivation for addressing this "less interesting" formulation of weak bisimilarity is the following:
-% For strong bisimilarity of CCS, we have seen that we could identify and localize a proof code that is specific for an up-to technique.
-% Our experiment was to see whether we could just employ (cut/paste/adjust) that specific proof code through the various equivalences: CCS bisimilarity, late bisimilarity of pi-calculus and their weak versions.
-% It turns out that we actually can.
-
-% Unproved lemmas at the moment:
-%	bisim_implies_bisimWeak: if two processes are (strong) bisimilar, then they are also weak bisimilar.
-%	bisimWeak_refl, bisimWeak_sym, bisimWeak_trans: reflexivity, symmetry and transitivity of weak bisimilarity. 
-%
-% All of them are well-known to be true, and Abella can address their proofs with no problem. They will be proved soon.
+% A better formulation is to allow the first process only to perform strong transition (matched by weak transitions from the second process). 
+% This formulation is known to be equivalent to weak bisimilarity, unfortunately its up-to technique comes with some difficulties, that have been however addressed mainly by Davide Sangiorgi and Damien Pous. 
+% In future, we will tackle this also.
 
 
 % A specification of the late transition system for the pi calculus.
@@ -42,60 +32,61 @@ Type a, b		name.
 
 
 Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  -> (name -> proc) -> prop by
-% tau
-  one  (taup P) tau P;
+	% tau
+	one  (taup P) tau P;
 
-% free output
-  one (out X Y P) (up X Y) P;
+	% free output
+	one (out X Y P) (up X Y) P;
 
-% sum
-  one  (plus P Q) A R := one  P A R;
-  one  (plus P Q) A R := one  Q A R;
+	% sum
+	one  (plus P Q) A R := one  P A R;
+	one  (plus P Q) A R := one  Q A R;
 
-% par
-  one  (par P Q) A (par P1 Q) := one P A P1;
-  one  (par P Q) A (par P Q1) := one Q A Q1;
+	% par
+	one  (par P Q) A (par P1 Q) := one P A P1;
+	one  (par P Q) A (par P Q1) := one Q A Q1;
 
-% restriction
-  one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
+	% restriction
+	one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
 
-% close
-  one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
-  one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
+	% close
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
 
-% comm
-  one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
-  one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
+	% comm
+	one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
+	one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
 
-% repl
-  one (repl P) A (par (repl P) P1) := one P A P1;
+	% repl
+	one (repl P) A (par (repl P) P1) := one P A P1;
 
-% repl, further rules for auto-synchronization.
-  one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
-  one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
+	% repl, further rules for auto-synchronization.
+	one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
+	one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
 
-% bound input
-  oneb (in X M) (dn X) M;
+	% bound input
+	oneb (in X M) (dn X) M;
 
-% sum
-  oneb (plus P Q) A M := oneb P A M;
-  oneb (plus P Q) A M := oneb Q A M;
+	% sum
+	oneb (plus P Q) A M := oneb P A M;
+	oneb (plus P Q) A M := oneb Q A M;
 
-% par
-  oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
-  oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
+	% par
+	oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
+	oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
 
-% restriction
-  oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
+	% restriction
+	oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
 
-% open
-  oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
+	% open
+	oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
 
-% repl
-  oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.
+	% repl
+	oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.
+
 
 % Bisimilarity up-to techniques.
-% The predicate bisim_up_to is parametrized by the up-to technique, that is the argument Upto.
+% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
 % Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
 
 
@@ -113,45 +104,54 @@ CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc ->
                                                 bisim_up_to Upto (M2 W) (N2 W))).
 
 
-% An alternative definition of bisimilarity can be obtained using a "vacuous" up-to technique, refl_t.
+% An alternative definition of bisimilarity which is based on a "vacuous" up-to technique.
 
 Define refl_t : proc -> proc -> proc -> proc -> prop by
-  refl_t P P Q Q.
+	refl_t P P Q Q.
 
 % up-to Bisimilarity.
 
 Define bisim_t : proc -> proc -> proc -> proc -> prop by
-  bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
 
 
 % Weak transitions.
 
 Define oneWeak : proc -> action -> proc -> prop by 
-  oneWeak P tau P;
-  oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
-  oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
+	oneWeak P tau P;
+	oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
+	oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
 
 Define oneWeakb : proc -> (name -> action)  -> (name -> proc) -> prop by 
-  oneWeakb P A P2 := (exists P1, oneWeak P tau P1 /\ oneb P1 A P2).
+	oneWeakb P A P2 := (exists P1, oneWeak P tau P1 /\ oneb P1 A P2).
 
 
-CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) -> (proc -> proc -> prop) by
+% comment Matteo: I think that in the paper we said too quick that we were doing weak bisim up-to bisim. that can be understood as we have treated the problem that is well-known to be difficult. 
+% we should say somewhere that we do only the ordinary formulation of weak bisim that does not pose problems. 
+
+CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
   bisimWeak_up_to Upto P Q :=
-   (forall A P1, oneWeak P A P1 -> exists Q1, oneWeak Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
-   (forall X M, oneWeakb P (dn X) M -> exists N, oneWeakb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\ bisimWeak_up_to Upto (M2 W) (N2 W))) /\
-   (forall X M, oneWeakb P (up X) M -> exists N, oneWeakb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\ bisimWeak_up_to Upto (M2 W) (N2 W))) /\
-   (forall A Q1, oneWeak Q A Q1 -> exists P1, oneWeak P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
-   (forall X N, oneWeakb Q (dn X) N -> exists M, oneWeakb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\  bisimWeak_up_to Upto (M2 W) (N2 W))) /\ 
-   (forall X N, oneWeakb Q (up X) N -> exists M, oneWeakb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ bisimWeak_up_to Upto (M2 W) (N2 W))).
+		(forall A P1, oneWeak P A P1 -> exists Q1, oneWeak Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+		(forall X M, oneWeakb P (dn X) M -> exists N, oneWeakb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall X M, oneWeakb P (up X) M -> exists N, oneWeakb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall A Q1, oneWeak Q A Q1 -> exists P1, oneWeak P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+    		(forall X N, oneWeakb Q (dn X) N -> exists M, oneWeakb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\ 
+    		(forall X N, oneWeakb Q (up X) N -> exists M, oneWeakb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))).
+
 
 
 % As Abella treats equality by means of unification, reasoning with structured equality as in:
 % P = (Q R).
 % would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	
-% We therefore need the following lemma for it.
+% We therefore need the following lemmas for it.
 
 Define equally_structured : (proc -> proc -> prop) -> prop by
-  equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
+	equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
 
 Theorem equality_for_structured_weak : equally_structured (bisimWeak_up_to refl_t). 
 unfold. intros. case H2. case H3. search.
@@ -178,165 +178,192 @@ Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
 Theorem bisimWeak_sound_fst : is_sound_fst bisim_t.
 unfold. coinduction. intros. case H1. unfold.
 
-% Remark:
-% unfold, open the 6 cases of bisimilarity:
-% - plain transitions from P.
-% - dn transitions from P (bound input).
-% - up transitions from P (bound output).
-% - plain transitions from Q
-% - dn transitions from Q (bound input).
-% - up transitions from Q (bound output).
-
 % plain transitions from P.
-%   searching for the suitable step from Q. 
 intros.	case H2. apply H6 to H5. case H3. apply H15 to H12. case H4. apply H24 to H21.
 exists Q5. 
 split. search.
 exists P1. exists Q5.	
 split. search. 
 
-% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.
 
-% proving derivatives are related.
-case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H22. 
 apply bisim_implies_bisimWeak to H33.
 apply bisim_implies_bisimWeak to H34.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H14 H35.
-  apply bisimWeak_sym to H36.
-  apply bisimWeak_trans to H38 H32.
+apply bisimWeak_trans to H14 H35.
+apply bisimWeak_sym to H36.
+apply bisimWeak_trans to H38 H32.
 backchain CH.
 
-% dn transitions from P.
-intros.	case H2. apply H7 to H5. case H3. apply H15 to H12. case H4. apply H23 to H20. 
+
+intros.				% dn transitions
+case H2.
+apply H7 to H5.
+case H3.
+apply H15 to H12.
+case H4.
+apply H23 to H20.
 exists N4.
-split. search.
+split.
+search.
+
 exists M. exists N4.
-intros.	 split. search.
+intros.	
+split.
+search.
 
-% This next code is a preamble adjustment because of the difference that HOAS necessarily introduces.
-% from here:
-apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
+apply H13 with W = W.
+apply H21 with W = W.
+apply H29 with W = W.
 
-% applying the information from the reflexive technique refl_t, but we need structured equality. 
-case H30. case H34.
+case H30.				% to substitute thanks to reflexivityTechnque, but we need structured equality. 
+case H34.
 apply equality_for_structured_weak. case H40.
-apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
-% to here.
+apply H41 to H31 H37 H36.
+apply H41 to H35 H39 H38.
 
-% proving derivatives are related.
-case H32. 				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H32. 
+% these two below, will be the two new first and second as argument
+% also, the equivalence should be bisimWeak
+
 apply bisim_implies_bisimWeak to H44.
 apply bisim_implies_bisimWeak to H45.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H42 H46.
-  apply bisimWeak_sym to H47.
-  apply bisimWeak_trans to H49 H43.
+
+apply bisimWeak_trans to H42 H46.
+apply bisimWeak_sym to H47.
+apply bisimWeak_trans to H49 H43.
 backchain CH.
 
 
-% up transitions from P.
-intros.	case H2. apply H8 to H5. case H3. apply H17 to H12. case H4. apply H26 to H21. 
+% up transitions.
+intros.				% up transitions
+case H2.
+apply H8 to H5.
+case H3.
+apply H17 to H12.
+case H4.
+apply H26 to H21.
 exists N4.
-split. search.
+split.
+search.
+
 exists M.
 exists N4.
-intros. split. search.
+intros.
+split.
+search.
 
-% applying the information from the reflexive technique refl_t.
-case H13.				
-case H31.				
+case H13.				% for substituting equals thanks for the reflexivityTechnque.
+case H31.				% this time you won't need structured equality. 
 
-% proving derivatives are related.
-case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H22. 
 apply bisim_implies_bisimWeak to H33.
 apply bisim_implies_bisimWeak to H34.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H14 H35.
-  apply bisimWeak_sym to H36.
-  apply bisimWeak_trans to H38 H32.
+apply bisimWeak_trans to H14 H35.
+apply bisimWeak_sym to H36.
+apply bisimWeak_trans to H38 H32.
 backchain CH.
 
 
 % plain transitions from Q. 
-intros. case H4. apply H9 to H5. case H3. apply H18 to H12. case H2. apply H27 to H21.
+intros.				% plain transitions for Q.
+case H4.
+apply H9 to H5.
+case H3.
+apply H18 to H12.
+case H2.
+apply H27 to H21.
 exists P5.
-split. search.
-exists P5. 
-exists Q1.	
+split.
+search.
+
+
+exists P5. exists Q1.	
 split. search. 
 
-% applying the information from the reflexive technique refl_t.
 case H13.				
 case H31.
 
-% proving derivatives are related.
-case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H22. 
 apply bisim_implies_bisimWeak to H33.
 apply bisim_implies_bisimWeak to H34.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H32 H35.
-  apply bisimWeak_sym to H36.
-  apply bisimWeak_trans to H38 H14.
+apply bisimWeak_trans to H32 H35.
+apply bisimWeak_sym to H36.
+apply bisimWeak_trans to H38 H14.
 backchain CH.
 
 
 % dn transitions from Q.
-intros.	case H4. apply H10 to H5. case H3. apply H18 to H12. case H2. apply H26 to H20.
+intros.				% dn transitions for Q.
+case H4.				
+apply H10 to H5.
+case H3.
+apply H18 to H12.
+case H2.
+apply H26 to H20.
 exists M4.
-split. search.
+split.
+search.
+
 exists M4. exists N.
-intros.	split. search.
+intros.	
+split.
+search.
 
-% This next code is a preamble adjustment because of the difference that HOAS necessarily introduces.
-% from here:
-apply H13 with W = W. apply H21 with W = W. apply H29 with W = W.		% to unwrap universally quantified definitions.
+apply H13 with W = W.
+apply H21 with W = W.
+apply H29 with W = W.
 
-% applying the information from ReflexiviyTechnique, but we need structured equality. 
-case H30. case H34.
+case H30.				% to substitute thanks to reflexivityTechnque, but we need structured equality. 
+case H34.
 apply equality_for_structured_weak. case H40.
-apply H41 to H31 H37 H36. apply H41 to H35 H39 H38.
+apply H41 to H31 H37 H36.
+apply H41 to H35 H39 H38.
 
-% proving derivatives are related.
-case H32. 				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H32. 
+% these two below, will be the two new first and second as argument
+% also, the equivalence should be bisimWeak
+
 apply bisim_implies_bisimWeak to H44.
 apply bisim_implies_bisimWeak to H45.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H43 H46.
-  apply bisimWeak_sym to H47.
-  apply bisimWeak_trans to H49 H42.
+
+apply bisimWeak_trans to H43 H46.
+apply bisimWeak_sym to H47.
+apply bisimWeak_trans to H49 H42.
 backchain CH.
 
 
 % up transitions from Q.
-intros.	case H4. apply H11 to H5. case H3. apply H20 to H12. case H2. apply H29 to H21.   
+intros.					% up transitions for Q
+case H4.
+apply H11 to H5.
+case H3.
+apply H20 to H12.
+case H2.
+apply H29 to H21.   
 exists M4.
-split. search.
+split.
+search.
+
 exists M4.
 exists N.
-intros. split. search.
 
-% applying the information from the reflexive technique refl_t.
-case H13.				
-case H31.				
+intros.
+split.
+search.
 
-% proving derivatives are related.
-case H22.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H13.				% for substituting equals thanks for the reflexivityTechnque.
+case H31.				% this time you won't need structured equality. 
+
+case H22. 
 apply bisim_implies_bisimWeak to H33.
 apply bisim_implies_bisimWeak to H34.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H32 H35.
-  apply bisimWeak_sym to H36.
-  apply bisimWeak_trans to H38 H14.
+apply bisimWeak_trans to H32 H35.
+apply bisimWeak_sym to H36.
+apply bisimWeak_trans to H38 H14.
 backchain CH.
+
 
 
 Theorem bisimWeak_sound_snd : is_sound_snd bisim_t.

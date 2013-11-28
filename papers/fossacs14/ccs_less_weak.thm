@@ -1,0 +1,180 @@
+
+Kind name,action,proc type.
+
+% Action constructors
+Type tau          action.
+Type up,dn        name -> action.
+
+% Process constructors
+Type null         proc.
+Type plus,par     proc -> proc -> proc.
+Type act          action -> proc -> proc.
+Type repl         proc -> proc.
+
+Define one : proc -> action -> proc -> prop by
+  one (act A P) A P
+; one (plus P1 P2) A Q             := one P1 A Q
+; one (plus P1 P2) A Q             := one P2 A Q
+; one (par P Q) A (par P1 Q)       := one P A P1
+; one (par P Q) A (par P Q1)       := one Q A Q1
+; one (repl P) A (par (repl P) Q)  := one P A Q
+; one (par P Q) tau (par P1 Q1)    :=
+    exists X, one P (up X) P1 /\ one Q (dn X) Q1
+; one (repl P) tau (par (repl P) (par Q R)) :=
+    exists X, one P (up X) Q /\ one P (dn X) R.
+
+CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
+  bisim_up_to Upto P Q :=
+   (forall A P1, one P A P1 ->
+      exists Q1, one Q A Q1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisim_up_to Upto P2 Q2) /\
+   (forall A Q1, one Q A Q1 ->
+      exists P1, one P A P1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisim_up_to Upto P2 Q2).
+
+% An alternative definition of bisimilarity which is based on a "vacuous" up-to technique.
+
+Define refl_t : proc -> proc -> proc -> proc -> prop by
+	refl_t P P Q Q.
+
+% Bisimilarity up-to Bisimilarity.
+
+Define bisim_t : proc -> proc -> proc -> proc -> prop by
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+
+Theorem bisim_refl : forall P, bisim_up_to refl_t P P.
+coinduction. intros. unfold.
+  intros PaP1. exists P1. split. search.
+   exists P1. exists P1. split. search. backchain CH.
+  intros QaQ1. exists Q1. split. search.
+   exists Q1. exists Q1. split. search. backchain CH.
+
+Theorem bisim_sym : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P.
+coinduction. intros. case H1. unfold.
+  intros. apply H3 to H4. exists P2. split. search. exists P1. exists P2. split. search. case H6. backchain CH.
+  intros. apply H2 to H4. exists Q2. split. search.  exists Q2. exists Q1. split. search. case H6. backchain CH.
+
+Theorem bisim_trans : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q R -> bisim_up_to refl_t P R. 
+coinduction. intros. case H1. case H2. unfold. 
+  intros. apply H3 to H7. apply H5 to H8. case H9. case H12. exists Q4. split. search. exists P3. exists Q4. split. search. backchain CH.
+  intros. apply H6 to H7. apply H4 to H8. case H9. case H12. exists P4. split. search. exists P4. exists Q3. split. search. backchain CH.
+
+% Weak transitions.
+
+Define oneWeak : proc -> action -> proc -> prop by 
+	oneWeak P tau P;
+	oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
+	oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
+
+
+CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
+  bisimWeak_up_to Upto P Q :=
+   (forall A P1, one P A P1 ->
+      exists Q1, oneWeak Q A Q1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisimWeak_up_to Upto P2 Q2) /\
+   (forall A Q1, one Q A Q1 ->
+      exists P1, oneWeak P A P1 /\
+        exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisimWeak_up_to Upto P2 Q2).
+
+Theorem bisim_matches_weakTrans : forall P P1 Q, bisim_up_to refl_t P Q -> oneWeak P tau P1 -> (exists Q1, oneWeak Q tau Q1 /\ bisim_up_to refl_t P1 Q1). 
+induction on 2. intros. case H2. 
+exists Q. search. 
+case H1. apply H5 to H3. case H8. apply IH to H9 H4. exists Q1. search.
+assert tau = tau. apply H3 to H7.
+
+Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound Upto := forall P Q, bisimWeak_up_to Upto P Q -> bisimWeak_up_to refl_t P Q.
+
+Define is_sound_fst : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_fst Upto := forall P Q,
+    (exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q)
+    -> bisimWeak_up_to refl_t P Q.
+
+Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_snd Upto := forall P Q, bisimWeak_up_to Upto P Q ->
+    exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q.
+
+Theorem bisimWeak_sound_fst : is_sound_fst bisim_t.
+  unfold. coinduction. intros. case H1. unfold.
+   intros. case H2. apply H6 to H5. case H3. apply H11 to H8. case H13.
+% case of null step: S->S. 
+    exists Q. split. search. exists P1. exists Q. split. search. case H9.
+% proof code for up to bisim.
+    case H14.
+	apply bisim_trans to H10 H16.
+	apply bisim_sym to H17.
+	apply bisim_trans to H19 H4.
+     backchain CH. 
+
+% case -tau-> -weakTau->
+    case H4. apply H18 to H16. case H21.  apply bisim_matches_weakTrans to H22 H17.
+exists Q7. split. search. case H9.  exists P3. exists Q7. split. search.
+% proof code for up to bisim.
+    case H14.
+	apply bisim_trans to H10 H25.
+	apply bisim_sym to H26.
+	apply bisim_trans to H28 H24.
+     backchain CH.
+
+% case -weakTau-> -A-> -weakTau->
+    apply bisim_matches_weakTrans to H4 H17. case H21. apply H22 to H18. case H25. apply bisim_matches_weakTrans to H26 H19. exists Q8. split. search. case H9.  exists P3. exists Q8. split. search. 
+% proof code for up to bisim.
+    case H14.
+	apply bisim_trans to H10 H29.
+	apply bisim_sym to H30.
+	apply bisim_trans to H32 H28.
+    backchain CH.
+
+% transitions from Q. 
+   intros. case H4. apply H7 to H5. case H3.  apply H12 to H8. case H13.
+
+% case of S->S. 
+   exists P. split. search. exists P. exists Q1. split. search.  case H9.
+% proof code for up to bisim.
+    case H14.
+	apply bisim_trans to H2 H16.
+	apply bisim_sym to H17.
+	apply bisim_trans to H19 H10.
+    backchain CH. 
+
+% case -tau-> -weakTau->
+   case H2. apply H19 to H16. case H21. apply bisim_sym to H22. apply bisim_matches_weakTrans to H23 H17. exists Q5. split. search.  exists Q5. exists Q1. split. search. case H9.
+% proof code for up to bisim.
+    case H14.
+	apply bisim_sym to H25.
+	apply bisim_trans to H28 H26.
+	apply bisim_sym to H27.
+	apply bisim_trans to H30 H10.
+    backchain CH.
+
+% case -weakTau-> -A-> -weakTau->
+   apply bisim_sym to H2. apply bisim_matches_weakTrans to H20 H17. case H22. apply H23 to H18. case H26. apply bisim_matches_weakTrans to H27 H19. exists Q7. split. search. exists Q7. exists Q1. split. search. case H9. 
+% proof code for up to bisim.
+    case H14.
+	apply bisim_sym to H29.
+	apply bisim_trans to H32 H30.
+	apply bisim_sym to H31.
+	apply bisim_trans to H34 H10.
+    backchain CH. 
+
+Theorem bisimWeak_sound_snd : is_sound_snd bisim_t.
+unfold.
+intros.
+apply bisim_refl with P = P.
+apply bisim_refl with P = Q.
+exists P.
+exists Q.
+search.
+
+Theorem bisimWeak_sound : is_sound bisim_t.
+unfold.
+intros.
+apply bisimWeak_sound_snd.
+case H2.
+apply H3 to H1.
+apply bisimWeak_sound_fst.
+case H7.
+backchain H8.
+

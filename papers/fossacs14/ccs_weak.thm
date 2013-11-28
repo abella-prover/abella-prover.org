@@ -1,26 +1,4 @@
 
-% Formalization of the soundness for weak bisimilarity up-to bisimilarity.
-
-% Remark:
-% Mind that we address the ordinary definition of weak bisimilarity, i.e. that basically plays strong bisimilarity on weak transitions.
-% This definition does not pose problems with up-to techniques, and has a smooth theory of up-to techniques.
-% However, this formulation is usually not useful in practice for proofs, as the first process plays weak transitions and can "challenge" the second process for matching for infinitely many of them. 
-
-% A better formulation of weak bisimilarity allows the first process only to perform strong transition (matched by weak transitions from the second process). 
-% Unfortunately, its up-to techniques come with some difficulties, that have been however addressed mainly by Davide Sangiorgi and Damien Pous. 
-% In future, we will tackle this as well.
-
-% Our main motivation for addressing this "less interesting" formulation of weak bisimilarity is the following:
-% For strong bisimilarity of CCS, we have seen that we could identify and localize a proof code that is specific for an up-to technique.
-% Our experiment was to see whether we could just employ (cut/paste/adjust) that specific proof code through the various equivalences: CCS bisimilarity, late bisimilarity of pi-calculus and their weak versions.
-% It turns out that we actually can.
-
-% Unproved lemmas at the moment:
-%	bisim_implies_bisimWeak: if two processes are (strong) bisimilar, then they are also weak bisimilar.
-%	bisimWeak_refl, bisimWeak_sym, bisimWeak_trans: reflexivity, symmetry and transitivity of weak bisimilarity. 
-%
-% All of them are well-known to be true, and Abella can address their proofs with no problem. They will be proved soon.
-
 Kind name,action,proc type.
 
 % Action constructors
@@ -55,22 +33,22 @@ CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
       exists P1, one P A P1 /\
         exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisim_up_to Upto P2 Q2).
 
-% An alternative definition of bisimilarity can be obtained using a "vacuous" up-to technique, refl_t.
+% An alternative definition of bisimilarity which is based on a "vacuous" up-to technique.
 
 Define refl_t : proc -> proc -> proc -> proc -> prop by
-  refl_t P P Q Q.
+	refl_t P P Q Q.
 
-% up-to Bisimilarity technique.
+% Bisimilarity up-to Bisimilarity.
 
 Define bisim_t : proc -> proc -> proc -> proc -> prop by
-  bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.
 
 % Weak transitions.
 
 Define oneWeak : proc -> action -> proc -> prop by 
-  oneWeak P tau P;
-  oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
-  oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
+	oneWeak P tau P;
+	oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
+	oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).
 
 
 CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
@@ -83,13 +61,23 @@ CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
       exists P1, oneWeak P A P1 /\
         exists P2 Q2, Upto P1 P2 Q1 Q2 /\ bisimWeak_up_to Upto P2 Q2).
 
-% The soundness proof relies on the following lemmas. 
-% All of them are well-known to be true, and Abella can address their proofs with no problem. They will be proved soon.
+% As Abella treats equality by means of unification, reasoning with structured equality as in:
+% P = (Q R).
+% would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	
+% We therefore need the following lemmas for it.
+
+Define equally_structured : (proc -> proc -> prop) -> prop by
+	equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.
+
+Theorem equality_for_structured_weak : equally_structured (bisimWeak_up_to refl_t). 
+unfold. intros. case H2. case H3. search.
+
 
 Theorem bisim_implies_bisimWeak : forall P Q, bisim_up_to refl_t P Q -> bisimWeak_up_to refl_t P Q.skip.
 Theorem bisimWeak_refl : forall P, bisimWeak_up_to refl_t P P.skip.
 Theorem bisimWeak_sym : forall P Q, bisimWeak_up_to refl_t P Q -> bisimWeak_up_to refl_t Q P.skip.
 Theorem bisimWeak_trans : forall P Q R, bisimWeak_up_to refl_t P Q -> bisimWeak_up_to refl_t Q R -> bisimWeak_up_to refl_t P R.skip.
+Theorem bisimWeakUpTo_sym : forall P Q, bisimWeak_up_to refl_t P Q -> bisimWeak_up_to refl_t Q P.skip.
 
 Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
   is_sound Upto := forall P Q, bisimWeak_up_to Upto P Q -> bisimWeak_up_to refl_t P Q.
@@ -104,59 +92,67 @@ Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
     exists R S, bisimWeak_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisimWeak_up_to refl_t S Q.
 
 Theorem bisimWeak_sound_fst : is_sound_fst bisim_t.
-unfold. coinduction. intros. case H1. unfold.
+unfold.
+coinduction.
+intros.				
+case H1.
+unfold.
 
-% unfold, open the 2 cases of bisimilarity:
-% - transitions from P.
-% - transitions from Q.
-
-% Case of transitions from P
-%   searching for the suitable step from Q. 
-intros.	case H2. apply H6 to H5. case H3. apply H11 to H8. case H4. apply H16 to H13.
+intros.					% plain transitions
+case H2.
+apply H6 to H5.
+case H3.
+apply H11 to H8.
+case H4.
+apply H16 to H13.
 exists Q5.
-split. search.
-exists P1.	
-exists Q5.
-split. search. 
+split.
+search.
 
-% applying the information from the reflexive technique refl_t.
-case H9.				
+exists P1.				% now we have 2 cases, first is to prove reflexivityTechnque which is with search. 
+exists Q5.
+split.
+search. 
+
+case H9.				% for substituting equals thanks for the reflexivityTechnque.
 case H19.
 
-% proving derivatives are related.
-case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to bisimilarity.
+case H14. 
 apply bisim_implies_bisimWeak to H21.
 apply bisim_implies_bisimWeak to H22.
-% Next code is specific of up-to bisimilarity.
-  apply bisimWeak_trans to H10 H23.
-  apply bisimWeak_sym to H24.
-  apply bisimWeak_trans to H26 H20.
+apply bisimWeak_trans to H10 H23.
+apply bisimWeak_sym to H24.
+apply bisimWeak_trans to H26 H20.
 backchain CH.
 
 
-% Case of transitions from Q
-%   searching for the suitable step from P. 
-intros.	case H4. apply H7 to H5. case H3. apply H12 to H8. case H2. apply H17 to H13.
-exists P5.
-split. search.
-exists P5.
-exists Q1.				
-split. search. 
+% plain transitions from Q. 
+intros.				% plain transitions for Q.
+case H4.
+apply H7 to H5.
+case H3.
+apply H12 to H8.
+case H2.
+apply H17 to H13.
 
-% applying the information from the reflexive technique refl_t.
-case H9.				
+exists P5.
+split.
+search.
+
+exists P5.
+exists Q1.				% now we have 2 cases, first is to prove reflexivityTechnque which is with search. 
+split.
+search. 
+
+case H9.				% for substituting equals thanks for the reflexivityTechnque.
 case H19.
 
-% proving derivatives are related.
-case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-% First, we set things in order to be able to copy/paste/adjust the specific code for up-to Bisimilarity.
+case H14. 
 apply bisim_implies_bisimWeak to H21.
 apply bisim_implies_bisimWeak to H22.
-% Next code is specific of up-to Bisimilarity.
-  apply bisimWeak_trans to H20 H23.
-  apply bisimWeak_sym to H24.
-  apply bisimWeak_trans to H26 H10.
+apply bisimWeak_trans to H20 H23.
+apply bisimWeak_sym to H24.
+apply bisimWeak_trans to H26 H10.
 backchain CH.
 
 Theorem bisimWeak_sound_snd : is_sound_snd bisim_t.

@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="pic_less_weak.thm">[View pic_less_weak.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="pic_less_weak-details.html#1" class="command">Kind name,action,proc type.</a>
+
+<a href="pic_less_weak-details.html#2" class="command">Type null         proc.</a>
+<a href="pic_less_weak-details.html#3" class="command">Type taup         proc -> proc.</a>
+<a href="pic_less_weak-details.html#4" class="command">Type plus, par    proc -> proc -> proc.</a>
+<a href="pic_less_weak-details.html#5" class="command">Type match, out   name -> name -> proc -> proc.</a>
+<a href="pic_less_weak-details.html#6" class="command">Type in           name -> (name -> proc) -> proc.</a>
+<a href="pic_less_weak-details.html#7" class="command">Type nu           (name -> proc) -> proc.</a>
+<a href="pic_less_weak-details.html#8" class="command">Type repl	  proc -> proc.</a>
+
+<a href="pic_less_weak-details.html#9" class="command">Type tau          action.</a>
+<a href="pic_less_weak-details.html#10" class="command">Type up, dn       name -> name -> action.</a>
+
+<a href="pic_less_weak-details.html#11" class="command">Type a, b		name.</a>
+
+
+<a href="pic_less_weak-details.html#12" class="command">Define one : proc -> action  -> proc  -> prop, oneb : proc -> (name -> action)  -> (name -> proc) -> prop by
+	<span class="comment">% tau</span>
+	one  (taup P) tau P;
+
+	<span class="comment">% free output</span>
+	one (out X Y P) (up X Y) P;
+
+	<span class="comment">% sum</span>
+	one  (plus P Q) A R := one  P A R;
+	one  (plus P Q) A R := one  Q A R;
+
+	<span class="comment">% par</span>
+	one  (par P Q) A (par P1 Q) := one P A P1;
+	one  (par P Q) A (par P Q1) := one Q A Q1;
+
+	<span class="comment">% restriction</span>
+	one  (nu x\P x) A (nu x\Q x) := nabla x, one  (P x) A (Q x);
+
+	<span class="comment">% close</span>
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (dn X) M /\ oneb Q (up X) N;
+	one (par P Q) tau (nu y\ par (M y) (N y)) := exists X, oneb P (up X) M /\ oneb Q (dn X) N;
+
+	<span class="comment">% comm</span>
+	one (par P Q) tau (par (M Y) T) :=  exists X, oneb P (dn X) M /\ one Q (up X Y) T;
+	one (par P Q) tau (par R (M Y)) :=  exists X, oneb Q (dn X) M /\ one P (up X Y) R;
+
+	<span class="comment">% repl</span>
+	one (repl P) A (par (repl P) P1) := one P A P1;
+
+	<span class="comment">% repl, further rules for auto-synchronization.</span>
+	one (repl P) tau (par (par P1 (M Y)) (repl P)) := exists X, one P (up X Y) P1 /\ oneb P (dn X) M;
+	one (repl P) tau (par ((nu y\ par (N y) (M y))) (repl P)) := exists X, oneb P (up X) N /\ oneb P (dn X) M;
+
+	<span class="comment">% bound input</span>
+	oneb (in X M) (dn X) M;
+
+	<span class="comment">% sum</span>
+	oneb (plus P Q) A M := oneb P A M;
+	oneb (plus P Q) A M := oneb Q A M;
+
+	<span class="comment">% par</span>
+	oneb (par P Q) A (x\par (M x) Q) := oneb P A M;
+	oneb (par P Q) A (x\par P (N x)) := oneb Q A N;
+
+	<span class="comment">% restriction</span>
+	oneb (nu x\P x) A (y\ nu x\Q x y) := nabla x, oneb (P x) A (y\ Q x y);
+
+	<span class="comment">% open</span>
+	oneb (nu x\M x) (up X) N := nabla y, one (M y) (up X y) (N y);
+
+	<span class="comment">% repl</span>
+	oneb (repl P) A (x\ par (repl P) (M x)) := oneb P A M.</a>
+
+
+<span class="comment">% Bisimilarity up-to techniques.</span>
+<span class="comment">% The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.</span>
+<span class="comment">% Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."</span>
+
+
+<a href="pic_less_weak-details.html#13" class="command">CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc -> prop by
+		bisim_up_to Upto P Q := 
+		(forall A P1, one P A P1 -> exists Q1, one Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+		(forall X M, oneb P (dn X) M -> exists N, oneb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\
+    		(forall X M, oneb P (up X) M -> exists N, oneb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\
+    		(forall A Q1, one Q A Q1 -> exists P1, one P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisim_up_to Upto P2 Q2) /\
+    		(forall X N, oneb Q (dn X) N -> exists M, oneb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+                                                bisim_up_to Upto (M2 W) (N2 W))) /\ 
+    		(forall X N, oneb Q (up X) N -> exists M, oneb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisim_up_to Upto (M2 W) (N2 W))).</a>
+
+
+<span class="comment">% An alternative definition of bisimilarity can be obtained using a "vacuous" up-to technique, refl_t.</span>
+
+<a href="pic_less_weak-details.html#14" class="command">Define refl_t : proc -> proc -> proc -> proc -> prop by
+	refl_t P P Q Q.</a>
+
+<span class="comment">% up-to Bisimilarity.</span>
+
+<a href="pic_less_weak-details.html#15" class="command">Define bisim_t : proc -> proc -> proc -> proc -> prop by
+        bisim_t P1 P2 Q1 Q2 := bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.</a>
+
+<span class="comment">% As Abella treats equality by means of unification, reasoning with structured equality as in:</span>
+<span class="comment">% P = (Q R).</span>
+<span class="comment">% would not naturally rewrite occurrences of P with the complex (Q R). (as it would if Abella permorfed syntctical rewriting)	</span>
+<span class="comment">% We therefore need the following lemmas for it.</span>
+
+<a href="pic_less_weak-details.html#16" class="command">Define equally_structured : (proc -> proc -> prop) -> prop by
+	equally_structured Pred := forall X1 X2 Y1 Y2, Pred X1 X2 -> Y1 = X1 -> Y2 = X2 -> Pred Y1 Y2.</a>
+
+<a href="pic_less_weak-details.html#17" class="command">Theorem equality_for_structured_refl : equally_structured (bisim_up_to refl_t).</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#18" class="tactic">unfold.</a> <a href="pic_less_weak-details.html#19" class="tactic">intros.</a> <a href="pic_less_weak-details.html#20" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#21" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#22" class="tactic">search.</a></div>
+
+
+<a href="pic_less_weak-details.html#23" class="command">Theorem bisim_refl : forall P, bisim_up_to refl_t P P.</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#24" class="tactic">coinduction.</a> <a href="pic_less_weak-details.html#25" class="tactic">intros.</a> <a href="pic_less_weak-details.html#26" class="tactic">unfold.</a>
+  <a href="pic_less_weak-details.html#27" class="tactic">intros.</a> <a href="pic_less_weak-details.html#28" class="tactic">apply CH with P = P1.</a> <a href="pic_less_weak-details.html#29" class="tactic">search.</a>
+  <a href="pic_less_weak-details.html#30" class="tactic">intros.</a> <a href="pic_less_weak-details.html#31" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#32" class="tactic">split.</a> <a href="pic_less_weak-details.html#33" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#34" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#35" class="tactic">exists M.</a>							<span class="comment">% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.</span>
+    <a href="pic_less_weak-details.html#36" class="tactic">intros.</a> <a href="pic_less_weak-details.html#37" class="tactic">apply CH with P = M W.</a> <a href="pic_less_weak-details.html#38" class="tactic">search.</a>
+  <a href="pic_less_weak-details.html#39" class="tactic">intros.</a> <a href="pic_less_weak-details.html#40" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#41" class="tactic">split.</a> <a href="pic_less_weak-details.html#42" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#43" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#44" class="tactic">exists M.</a>							<span class="comment">% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.</span>
+    <a href="pic_less_weak-details.html#45" class="tactic">intros.</a> <a href="pic_less_weak-details.html#46" class="tactic">apply CH with P = M n1.</a> <a href="pic_less_weak-details.html#47" class="tactic">search.</a>
+  <a href="pic_less_weak-details.html#48" class="tactic">intros.</a> <a href="pic_less_weak-details.html#49" class="tactic">apply CH with P = Q1.</a> <a href="pic_less_weak-details.html#50" class="tactic">search.</a>
+  <a href="pic_less_weak-details.html#51" class="tactic">intros.</a> <a href="pic_less_weak-details.html#52" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#53" class="tactic">split.</a> <a href="pic_less_weak-details.html#54" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#55" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#56" class="tactic">exists N.</a>							<span class="comment">% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.</span>
+    <a href="pic_less_weak-details.html#57" class="tactic">intros.</a> <a href="pic_less_weak-details.html#58" class="tactic">apply CH with P = N W.</a> <a href="pic_less_weak-details.html#59" class="tactic">search.</a>
+  <a href="pic_less_weak-details.html#60" class="tactic">intros.</a> <a href="pic_less_weak-details.html#61" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#62" class="tactic">split.</a> <a href="pic_less_weak-details.html#63" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#64" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#65" class="tactic">exists N.</a>							<span class="comment">% specific of the reflexivityTechnique technique, only difference from the same proof for bisim.</span>
+    <a href="pic_less_weak-details.html#66" class="tactic">intros.</a> <a href="pic_less_weak-details.html#67" class="tactic">apply CH with P = N n1.</a> <a href="pic_less_weak-details.html#68" class="tactic">search.</a></div>
+<a href="pic_less_weak-details.html#69" class="command">Theorem bisim_sym : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P.</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#70" class="tactic">coinduction.</a> <a href="pic_less_weak-details.html#71" class="tactic">intros.</a> <a href="pic_less_weak-details.html#72" class="tactic">case H1.</a> <a href="pic_less_weak-details.html#73" class="tactic">unfold.</a>
+  <a href="pic_less_weak-details.html#74" class="tactic">intros.</a> <a href="pic_less_weak-details.html#75" class="tactic">apply H5 to H8.</a> <a href="pic_less_weak-details.html#76" class="tactic">exists P2.</a> <a href="pic_less_weak-details.html#77" class="tactic">split.</a> <a href="pic_less_weak-details.html#78" class="tactic">search.</a> <a href="pic_less_weak-details.html#79" class="tactic">exists P1.</a> <a href="pic_less_weak-details.html#80" class="tactic">exists P2.</a> <a href="pic_less_weak-details.html#81" class="tactic">split.</a> <a href="pic_less_weak-details.html#82" class="tactic">search.</a> <a href="pic_less_weak-details.html#83" class="tactic">case H10.</a> <a href="pic_less_weak-details.html#84" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#85" class="tactic">intros.</a> <a href="pic_less_weak-details.html#86" class="tactic">apply H6 to H8.</a> <a href="pic_less_weak-details.html#87" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#88" class="tactic">split.</a> <a href="pic_less_weak-details.html#89" class="tactic">search.</a> <a href="pic_less_weak-details.html#90" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#91" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#92" class="tactic">intros.</a> <a href="pic_less_weak-details.html#93" class="tactic">split.</a> <a href="pic_less_weak-details.html#94" class="tactic">search.</a> 
+	<a href="pic_less_weak-details.html#95" class="tactic">apply H10 with W = W.</a> <a href="pic_less_weak-details.html#96" class="tactic">case H11.</a> <a href="pic_less_weak-details.html#97" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#98" class="tactic">case H15.</a> <a href="pic_less_weak-details.html#99" class="tactic">apply H16 to H12 H14 H13.</a> <a href="pic_less_weak-details.html#100" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#101" class="tactic">intros.</a> <a href="pic_less_weak-details.html#102" class="tactic">apply H7 to H8.</a> <a href="pic_less_weak-details.html#103" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#104" class="tactic">split.</a> <a href="pic_less_weak-details.html#105" class="tactic">search.</a> <a href="pic_less_weak-details.html#106" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#107" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#108" class="tactic">intros.</a> <a href="pic_less_weak-details.html#109" class="tactic">split.</a> <a href="pic_less_weak-details.html#110" class="tactic">search.</a> <a href="pic_less_weak-details.html#111" class="tactic">case H10.</a> <a href="pic_less_weak-details.html#112" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#113" class="tactic">intros.</a> <a href="pic_less_weak-details.html#114" class="tactic">apply H2 to H8.</a> <a href="pic_less_weak-details.html#115" class="tactic">exists Q2.</a> <a href="pic_less_weak-details.html#116" class="tactic">split.</a> <a href="pic_less_weak-details.html#117" class="tactic">search.</a> <a href="pic_less_weak-details.html#118" class="tactic">exists Q2.</a> <a href="pic_less_weak-details.html#119" class="tactic">exists Q1.</a> <a href="pic_less_weak-details.html#120" class="tactic">split.</a> <a href="pic_less_weak-details.html#121" class="tactic">search.</a> <a href="pic_less_weak-details.html#122" class="tactic">case H10.</a> <a href="pic_less_weak-details.html#123" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#124" class="tactic">intros.</a> <a href="pic_less_weak-details.html#125" class="tactic">apply H3 to H8.</a> <a href="pic_less_weak-details.html#126" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#127" class="tactic">split.</a> <a href="pic_less_weak-details.html#128" class="tactic">search.</a> <a href="pic_less_weak-details.html#129" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#130" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#131" class="tactic">intros.</a> <a href="pic_less_weak-details.html#132" class="tactic">split.</a> <a href="pic_less_weak-details.html#133" class="tactic">search.</a> 
+	<a href="pic_less_weak-details.html#134" class="tactic">apply H10 with W = W.</a> <a href="pic_less_weak-details.html#135" class="tactic">case H11.</a> <a href="pic_less_weak-details.html#136" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#137" class="tactic">case H15.</a> <a href="pic_less_weak-details.html#138" class="tactic">apply H16 to H12 H14 H13.</a> <a href="pic_less_weak-details.html#139" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#140" class="tactic">intros.</a> <a href="pic_less_weak-details.html#141" class="tactic">apply H4 to H8.</a> <a href="pic_less_weak-details.html#142" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#143" class="tactic">split.</a> <a href="pic_less_weak-details.html#144" class="tactic">search.</a> <a href="pic_less_weak-details.html#145" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#146" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#147" class="tactic">intros.</a> <a href="pic_less_weak-details.html#148" class="tactic">split.</a> <a href="pic_less_weak-details.html#149" class="tactic">search.</a> <a href="pic_less_weak-details.html#150" class="tactic">case H10.</a> <a href="pic_less_weak-details.html#151" class="tactic">backchain CH.</a></div>
+
+<a href="pic_less_weak-details.html#152" class="command">Theorem bisim_trans : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q R -> bisim_up_to refl_t P R.</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#153" class="tactic">coinduction.</a> <a href="pic_less_weak-details.html#154" class="tactic">intros.</a> <a href="pic_less_weak-details.html#155" class="tactic">case H1.</a> <a href="pic_less_weak-details.html#156" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#157" class="tactic">unfold.</a> 
+  <a href="pic_less_weak-details.html#158" class="tactic">intros.</a> <a href="pic_less_weak-details.html#159" class="tactic">apply H3 to H15.</a> <a href="pic_less_weak-details.html#160" class="tactic">apply H9 to H16.</a> <a href="pic_less_weak-details.html#161" class="tactic">case H17.</a> <a href="pic_less_weak-details.html#162" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#163" class="tactic">exists Q4.</a> <a href="pic_less_weak-details.html#164" class="tactic">split.</a> <a href="pic_less_weak-details.html#165" class="tactic">search.</a> <a href="pic_less_weak-details.html#166" class="tactic">exists P3.</a> <a href="pic_less_weak-details.html#167" class="tactic">exists Q4.</a> <a href="pic_less_weak-details.html#168" class="tactic">split.</a> <a href="pic_less_weak-details.html#169" class="tactic">search.</a> <a href="pic_less_weak-details.html#170" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#171" class="tactic">intros.</a> <a href="pic_less_weak-details.html#172" class="tactic">apply H4 to H15.</a> <a href="pic_less_weak-details.html#173" class="tactic">apply H10 to H16.</a> <a href="pic_less_weak-details.html#174" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#175" class="tactic">split.</a> <a href="pic_less_weak-details.html#176" class="tactic">search.</a> <a href="pic_less_weak-details.html#177" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#178" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#179" class="tactic">intros.</a> <a href="pic_less_weak-details.html#180" class="tactic">split.</a> <a href="pic_less_weak-details.html#181" class="tactic">search.</a> 
+	<a href="pic_less_weak-details.html#182" class="tactic">apply H17 with W = W.</a> <a href="pic_less_weak-details.html#183" class="tactic">apply H19 with W = W.</a> <a href="pic_less_weak-details.html#184" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#185" class="tactic">case H22.</a> <a href="pic_less_weak-details.html#186" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#187" class="tactic">case H28.</a> <a href="pic_less_weak-details.html#188" class="tactic">apply H29 to H21 H25 H24.</a> <a href="pic_less_weak-details.html#189" class="tactic">apply H29 to H23 H27 H26.</a> <a href="pic_less_weak-details.html#190" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#191" class="tactic">intros.</a> <a href="pic_less_weak-details.html#192" class="tactic">apply H5 to H15.</a> <a href="pic_less_weak-details.html#193" class="tactic">apply H11 to H16.</a> <a href="pic_less_weak-details.html#194" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#195" class="tactic">split.</a> <a href="pic_less_weak-details.html#196" class="tactic">search.</a> <a href="pic_less_weak-details.html#197" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#198" class="tactic">exists N1.</a> <a href="pic_less_weak-details.html#199" class="tactic">intros.</a> <a href="pic_less_weak-details.html#200" class="tactic">split.</a> <a href="pic_less_weak-details.html#201" class="tactic">search.</a> <a href="pic_less_weak-details.html#202" class="tactic">case H17.</a> <a href="pic_less_weak-details.html#203" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#204" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#205" class="tactic">intros.</a> <a href="pic_less_weak-details.html#206" class="tactic">apply H12 to H15.</a> <a href="pic_less_weak-details.html#207" class="tactic">apply H6 to H16.</a> <a href="pic_less_weak-details.html#208" class="tactic">case H17.</a> <a href="pic_less_weak-details.html#209" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#210" class="tactic">exists P4.</a> <a href="pic_less_weak-details.html#211" class="tactic">split.</a> <a href="pic_less_weak-details.html#212" class="tactic">search.</a> <a href="pic_less_weak-details.html#213" class="tactic">exists P4.</a> <a href="pic_less_weak-details.html#214" class="tactic">exists Q3.</a> <a href="pic_less_weak-details.html#215" class="tactic">split.</a> <a href="pic_less_weak-details.html#216" class="tactic">search.</a> <a href="pic_less_weak-details.html#217" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#218" class="tactic">intros.</a> <a href="pic_less_weak-details.html#219" class="tactic">apply H13 to H15.</a> <a href="pic_less_weak-details.html#220" class="tactic">apply H7 to H16.</a> <a href="pic_less_weak-details.html#221" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#222" class="tactic">split.</a> <a href="pic_less_weak-details.html#223" class="tactic">search.</a> <a href="pic_less_weak-details.html#224" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#225" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#226" class="tactic">intros.</a> <a href="pic_less_weak-details.html#227" class="tactic">split.</a> <a href="pic_less_weak-details.html#228" class="tactic">search.</a> 
+	<a href="pic_less_weak-details.html#229" class="tactic">apply H17 with W = W.</a> <a href="pic_less_weak-details.html#230" class="tactic">apply H19 with W = W.</a> <a href="pic_less_weak-details.html#231" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#232" class="tactic">case H22.</a> <a href="pic_less_weak-details.html#233" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#234" class="tactic">case H28.</a> <a href="pic_less_weak-details.html#235" class="tactic">apply H29 to H21 H25 H24.</a> <a href="pic_less_weak-details.html#236" class="tactic">apply H29 to H23 H27 H26.</a> <a href="pic_less_weak-details.html#237" class="tactic">backchain CH.</a>
+  <a href="pic_less_weak-details.html#238" class="tactic">intros.</a> <a href="pic_less_weak-details.html#239" class="tactic">apply H14 to H15.</a> <a href="pic_less_weak-details.html#240" class="tactic">apply H8 to H16.</a> <a href="pic_less_weak-details.html#241" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#242" class="tactic">split.</a> <a href="pic_less_weak-details.html#243" class="tactic">search.</a> <a href="pic_less_weak-details.html#244" class="tactic">exists M1.</a> <a href="pic_less_weak-details.html#245" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#246" class="tactic">intros.</a> <a href="pic_less_weak-details.html#247" class="tactic">split.</a> <a href="pic_less_weak-details.html#248" class="tactic">search.</a> <a href="pic_less_weak-details.html#249" class="tactic">case H17.</a> <a href="pic_less_weak-details.html#250" class="tactic">case H20.</a> <a href="pic_less_weak-details.html#251" class="tactic">backchain CH.</a></div>
+
+<span class="comment">% Weak transitions.</span>
+
+<a href="pic_less_weak-details.html#252" class="command">Define oneWeak : proc -> action -> proc -> prop by 
+	oneWeak P tau P;
+	oneWeak P tau P2 :=  (exists P1, one P tau P1 /\ oneWeak P1 tau P2);
+	oneWeak P A P3 := ((A = tau) -> false) /\ (exists P1 P2, oneWeak P tau P1 /\ one P1 A P2 /\ oneWeak P2 tau P3).</a>
+
+<a href="pic_less_weak-details.html#253" class="command">Define oneWeakb : proc -> (name -> action)  -> (name -> proc) -> prop by 
+	oneWeakb P A P2 := (exists P1, oneWeak P tau P1 /\ oneb P1 A P2).</a>
+
+
+<a href="pic_less_weak-details.html#254" class="command">CoDefine bisimWeak_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                         (proc -> proc -> prop)                  by
+  bisimWeak_up_to Upto P Q :=
+		(forall A P1, one P A P1 -> exists Q1, oneWeak Q A Q1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+		(forall X M, oneb P (dn X) M -> exists N, oneWeakb Q (dn X) N /\ exists M2 N2, forall W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall X M, oneb P (up X) M -> exists N, oneWeakb Q (up X) N /\ exists M2 N2, nabla W, ((Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\
+    		(forall A Q1, one Q A Q1 -> exists P1, oneWeak P A P1 /\ exists P2 Q2, (Upto P1 P2 Q1 Q2) /\ bisimWeak_up_to Upto P2 Q2) /\
+    		(forall X N, oneb Q (dn X) N -> exists M, oneWeakb P (dn X) M /\ exists M2 N2, (forall W, (Upto (M W) (M2 W) (N W) (N2 W)) /\ 
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))) /\ 
+    		(forall X N, oneb Q (up X) N -> exists M, oneWeakb P (up X) M /\ exists M2 N2, (nabla W, (Upto (M W) (M2 W) (N W) (N2 W)) /\
+                                                bisimWeak_up_to Upto (M2 W) (N2 W))).</a>
+
+<a href="pic_less_weak-details.html#255" class="command">Theorem equality_for_structured_weak : equally_structured (bisimWeak_up_to refl_t).</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#256" class="tactic">unfold.</a> <a href="pic_less_weak-details.html#257" class="tactic">intros.</a> <a href="pic_less_weak-details.html#258" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#259" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#260" class="tactic">search.</a></div>
+
+<a href="pic_less_weak-details.html#261" class="command">Theorem bisim_matches_weakTrans : forall P P1 Q, bisim_up_to refl_t P Q -> oneWeak P tau P1 -> (exists Q1, oneWeak Q tau Q1 /\ bisim_up_to refl_t P1 Q1).</a>
+<div class="proof"> 
+<a href="pic_less_weak-details.html#262" class="tactic">induction on 2.</a> <a href="pic_less_weak-details.html#263" class="tactic">intros.</a> <a href="pic_less_weak-details.html#264" class="tactic">case H2.</a> 
+<a href="pic_less_weak-details.html#265" class="tactic">exists Q.</a> <a href="pic_less_weak-details.html#266" class="tactic">search.</a> 
+<a href="pic_less_weak-details.html#267" class="tactic">case H1.</a> <a href="pic_less_weak-details.html#268" class="tactic">apply H5 to H3.</a> <a href="pic_less_weak-details.html#269" class="tactic">case H12.</a> <a href="pic_less_weak-details.html#270" class="tactic">apply IH to H13 H4.</a> <a href="pic_less_weak-details.html#271" class="tactic">exists Q1.</a> <a href="pic_less_weak-details.html#272" class="tactic">search.</a>
+<a href="pic_less_weak-details.html#273" class="tactic">assert tau = tau.</a> <a href="pic_less_weak-details.html#274" class="tactic">apply H3 to H7.</a></div> 
+
+<a href="pic_less_weak-details.html#275" class="command">Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound Upto := forall P Q, bisimWeak_up_to Upto P Q -> bisimWeak_up_to refl_t P Q.</a>
+
+<a href="pic_less_weak-details.html#276" class="command">Define is_sound_fst : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_fst Upto := forall P Q,
+    (exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q)
+    -> bisimWeak_up_to refl_t P Q.</a>
+
+<a href="pic_less_weak-details.html#277" class="command">Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_snd Upto := forall P Q, bisimWeak_up_to Upto P Q ->
+    exists R S, bisim_up_to refl_t P R /\ bisimWeak_up_to Upto R S /\ bisim_up_to refl_t S Q.</a>
+
+<a href="pic_less_weak-details.html#278" class="command">Theorem bisimWeak_sound_fst : is_sound_fst bisim_t.</a>
+<div class="proof"><a href="pic_less_weak-details.html#279" class="tactic">unfold.</a> <a href="pic_less_weak-details.html#280" class="tactic">coinduction.</a> <a href="pic_less_weak-details.html#281" class="tactic">intros.</a> <a href="pic_less_weak-details.html#282" class="tactic">case H1.</a> <a href="pic_less_weak-details.html#283" class="tactic">unfold.</a>
+
+<span class="comment">% Remark:</span>
+<span class="comment">% unfold, open the 6 cases of bisimilarity:</span>
+<span class="comment">% - plain transitions from P.</span>
+<span class="comment">% - dn transitions from P (bound input).</span>
+<span class="comment">% - up transitions from P (bound output).</span>
+<span class="comment">% - plain transitions from Q</span>
+<span class="comment">% - dn transitions from Q (bound input).</span>
+<span class="comment">% - up transitions from Q (bound output).</span>
+
+<span class="comment">% plain transitions from P.</span>
+<span class="comment">%   searching for the suitable step from Q. </span>
+<a href="pic_less_weak-details.html#284" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#285" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#286" class="tactic">apply H6 to H5.</a> <a href="pic_less_weak-details.html#287" class="tactic">case H13.</a> <a href="pic_less_weak-details.html#288" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#289" class="tactic">apply H15 to H12.</a> <a href="pic_less_weak-details.html#290" class="tactic">case H21.</a> 
+
+<span class="comment">% case of null step: S->S. </span>
+<a href="pic_less_weak-details.html#291" class="tactic">exists Q.</a> <a href="pic_less_weak-details.html#292" class="tactic">split.</a> <a href="pic_less_weak-details.html#293" class="tactic">search.</a> <a href="pic_less_weak-details.html#294" class="tactic">exists P3.</a> <a href="pic_less_weak-details.html#295" class="tactic">exists Q.</a> <a href="pic_less_weak-details.html#296" class="tactic">split.</a> <a href="pic_less_weak-details.html#297" class="tactic">search.</a>
+
+<span class="comment">% proof code for up to bisim.</span>
+    <a href="pic_less_weak-details.html#298" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#299" class="tactic">apply bisim_trans to H14 H24.</a>
+	<a href="pic_less_weak-details.html#300" class="tactic">apply bisim_sym to H25.</a>
+	<a href="pic_less_weak-details.html#301" class="tactic">apply bisim_trans to H27 H4.</a>
+     <a href="pic_less_weak-details.html#302" class="tactic">backchain CH.</a> 
+
+
+<span class="comment">% case -tau-> -weakTau-></span>
+<a href="pic_less_weak-details.html#303" class="tactic">case H4.</a> <a href="pic_less_weak-details.html#304" class="tactic">apply H26 to H24.</a> <a href="pic_less_weak-details.html#305" class="tactic">case H33.</a> <a href="pic_less_weak-details.html#306" class="tactic">apply bisim_matches_weakTrans to H34 H25.</a> <a href="pic_less_weak-details.html#307" class="tactic">exists Q7.</a> <a href="pic_less_weak-details.html#308" class="tactic">split.</a> <a href="pic_less_weak-details.html#309" class="tactic">search.</a> <a href="pic_less_weak-details.html#310" class="tactic">exists P3.</a> <a href="pic_less_weak-details.html#311" class="tactic">exists Q7.</a> <a href="pic_less_weak-details.html#312" class="tactic">split.</a> <a href="pic_less_weak-details.html#313" class="tactic">search.</a>
+
+<span class="comment">% proof code for up to bisim.</span>
+    <a href="pic_less_weak-details.html#314" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#315" class="tactic">apply bisim_trans to H14 H37.</a>
+	<a href="pic_less_weak-details.html#316" class="tactic">apply bisim_sym to H38.</a>
+	<a href="pic_less_weak-details.html#317" class="tactic">apply bisim_trans to H40 H36.</a>
+     <a href="pic_less_weak-details.html#318" class="tactic">backchain CH.</a>
+
+<span class="comment">% case -weakTau-> -A-> -weakTau-></span>
+<a href="pic_less_weak-details.html#319" class="tactic">apply bisim_matches_weakTrans to H4 H25.</a> <a href="pic_less_weak-details.html#320" class="tactic">case H29.</a> <a href="pic_less_weak-details.html#321" class="tactic">apply H30 to H26.</a> <a href="pic_less_weak-details.html#322" class="tactic">case H37.</a> <a href="pic_less_weak-details.html#323" class="tactic">apply bisim_matches_weakTrans to H38 H27.</a> <a href="pic_less_weak-details.html#324" class="tactic">exists Q8.</a> <a href="pic_less_weak-details.html#325" class="tactic">split.</a> <a href="pic_less_weak-details.html#326" class="tactic">search.</a> <a href="pic_less_weak-details.html#327" class="tactic">exists P3.</a> <a href="pic_less_weak-details.html#328" class="tactic">exists Q8.</a> <a href="pic_less_weak-details.html#329" class="tactic">split.</a> <a href="pic_less_weak-details.html#330" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#331" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#332" class="tactic">apply bisim_trans to H14 H41.</a>
+	<a href="pic_less_weak-details.html#333" class="tactic">apply bisim_sym to H42.</a>
+	<a href="pic_less_weak-details.html#334" class="tactic">apply bisim_trans to H44 H40.</a>
+     <a href="pic_less_weak-details.html#335" class="tactic">backchain CH.</a>
+
+<span class="comment">% dn transitions from P.</span>
+<a href="pic_less_weak-details.html#336" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#337" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#338" class="tactic">apply H7 to H5.</a> <a href="pic_less_weak-details.html#339" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#340" class="tactic">apply H15 to H12.</a> <a href="pic_less_weak-details.html#341" class="tactic">case H20.</a> 
+
+<span class="comment">% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.</span>
+<a href="pic_less_weak-details.html#342" class="tactic">apply bisim_matches_weakTrans to H4 H22.</a> <a href="pic_less_weak-details.html#343" class="tactic">case H25.</a> <a href="pic_less_weak-details.html#344" class="tactic">apply H27 to H23.</a> <a href="pic_less_weak-details.html#345" class="tactic">exists N4.</a> <a href="pic_less_weak-details.html#346" class="tactic">split.</a> <a href="pic_less_weak-details.html#347" class="tactic">search.</a> <a href="pic_less_weak-details.html#348" class="tactic">exists M.</a> <a href="pic_less_weak-details.html#349" class="tactic">exists N4.</a> <a href="pic_less_weak-details.html#350" class="tactic">intros.</a> <a href="pic_less_weak-details.html#351" class="tactic">split.</a> <a href="pic_less_weak-details.html#352" class="tactic">search.</a> <a href="pic_less_weak-details.html#353" class="tactic">apply H13 with W = W.</a> <a href="pic_less_weak-details.html#354" class="tactic">apply H21 with W = W.</a> <a href="pic_less_weak-details.html#355" class="tactic">apply H33 with W = W.</a> <a href="pic_less_weak-details.html#356" class="tactic">case H34.</a> <a href="pic_less_weak-details.html#357" class="tactic">case H38.</a> <a href="pic_less_weak-details.html#358" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#359" class="tactic">case H44.</a> <a href="pic_less_weak-details.html#360" class="tactic">apply H45 to H35 H41 H40.</a> <a href="pic_less_weak-details.html#361" class="tactic">apply H45 to H39 H43 H42.</a>
+    <a href="pic_less_weak-details.html#362" class="tactic">case H36.</a>
+	<a href="pic_less_weak-details.html#363" class="tactic">apply bisim_trans to H46 H48.</a>
+	<a href="pic_less_weak-details.html#364" class="tactic">apply bisim_sym to H49.</a>
+	<a href="pic_less_weak-details.html#365" class="tactic">apply bisim_trans to H51 H47.</a>
+     <a href="pic_less_weak-details.html#366" class="tactic">backchain CH.</a>
+
+<span class="comment">% up transitions from P.</span>
+<a href="pic_less_weak-details.html#367" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#368" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#369" class="tactic">apply H8 to H5.</a> <a href="pic_less_weak-details.html#370" class="tactic">case H13.</a> <a href="pic_less_weak-details.html#371" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#372" class="tactic">apply H17 to H12.</a> <a href="pic_less_weak-details.html#373" class="tactic">case H21.</a> 
+
+<span class="comment">% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.</span>
+<a href="pic_less_weak-details.html#374" class="tactic">apply bisim_matches_weakTrans to H4 H24.</a> <a href="pic_less_weak-details.html#375" class="tactic">case H27.</a> <a href="pic_less_weak-details.html#376" class="tactic">apply H30 to H25.</a> <a href="pic_less_weak-details.html#377" class="tactic">case H35.</a> <a href="pic_less_weak-details.html#378" class="tactic">exists (z1\N5 z1).</a> <a href="pic_less_weak-details.html#379" class="tactic">split.</a> <a href="pic_less_weak-details.html#380" class="tactic">search.</a> <a href="pic_less_weak-details.html#381" class="tactic">exists M2.</a> <a href="pic_less_weak-details.html#382" class="tactic">exists N5.</a> <a href="pic_less_weak-details.html#383" class="tactic">intros.</a> <a href="pic_less_weak-details.html#384" class="tactic">split.</a> <a href="pic_less_weak-details.html#385" class="tactic">search.</a>     <a href="pic_less_weak-details.html#386" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#387" class="tactic">apply bisim_trans to H14 H37.</a>
+	<a href="pic_less_weak-details.html#388" class="tactic">apply bisim_sym to H38.</a>
+	<a href="pic_less_weak-details.html#389" class="tactic">apply bisim_trans to H40 H36.</a>
+     <a href="pic_less_weak-details.html#390" class="tactic">backchain CH.</a>
+
+<span class="comment">% plain transitions from Q.</span>
+<a href="pic_less_weak-details.html#391" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#392" class="tactic">case H4.</a> <a href="pic_less_weak-details.html#393" class="tactic">apply H9 to H5.</a> <a href="pic_less_weak-details.html#394" class="tactic">case H13.</a> <a href="pic_less_weak-details.html#395" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#396" class="tactic">apply H18 to H12.</a> <a href="pic_less_weak-details.html#397" class="tactic">case H21.</a> 
+
+<span class="comment">% case of null step: S->S. </span>
+<a href="pic_less_weak-details.html#398" class="tactic">exists P.</a> <a href="pic_less_weak-details.html#399" class="tactic">split.</a> <a href="pic_less_weak-details.html#400" class="tactic">search.</a> <a href="pic_less_weak-details.html#401" class="tactic">exists P.</a> <a href="pic_less_weak-details.html#402" class="tactic">exists Q3.</a> <a href="pic_less_weak-details.html#403" class="tactic">split.</a> <a href="pic_less_weak-details.html#404" class="tactic">search.</a>
+
+<span class="comment">% proof code for up to bisim.</span>
+    <a href="pic_less_weak-details.html#405" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#406" class="tactic">apply bisim_trans to H2 H24.</a>
+	<a href="pic_less_weak-details.html#407" class="tactic">apply bisim_sym to H25.</a>
+	<a href="pic_less_weak-details.html#408" class="tactic">apply bisim_trans to H27 H14.</a>
+     <a href="pic_less_weak-details.html#409" class="tactic">backchain CH.</a> 
+
+<span class="comment">% case -tau-> -weakTau-></span>
+<a href="pic_less_weak-details.html#410" class="tactic">case H2.</a> <a href="pic_less_weak-details.html#411" class="tactic">apply H29 to H24.</a> <a href="pic_less_weak-details.html#412" class="tactic">case H33.</a> <a href="pic_less_weak-details.html#413" class="tactic">apply bisim_sym to H34.</a> <a href="pic_less_weak-details.html#414" class="tactic">apply bisim_matches_weakTrans to H35 H25.</a> <a href="pic_less_weak-details.html#415" class="tactic">exists Q5.</a> <a href="pic_less_weak-details.html#416" class="tactic">split.</a> <a href="pic_less_weak-details.html#417" class="tactic">search.</a> <a href="pic_less_weak-details.html#418" class="tactic">exists Q5.</a> <a href="pic_less_weak-details.html#419" class="tactic">exists Q3.</a> <a href="pic_less_weak-details.html#420" class="tactic">split.</a> <a href="pic_less_weak-details.html#421" class="tactic">search.</a>
+
+<span class="comment">% proof code for up to bisim.</span>
+    <a href="pic_less_weak-details.html#422" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#423" class="tactic">apply bisim_sym to H37.</a>
+	<a href="pic_less_weak-details.html#424" class="tactic">apply bisim_trans to H40 H38.</a>
+	<a href="pic_less_weak-details.html#425" class="tactic">apply bisim_sym to H39.</a>
+	<a href="pic_less_weak-details.html#426" class="tactic">apply bisim_trans to H42 H14.</a>
+     <a href="pic_less_weak-details.html#427" class="tactic">backchain CH.</a>
+
+<span class="comment">% case -weakTau-> -A-> -weakTau-></span>
+<a href="pic_less_weak-details.html#428" class="tactic">apply bisim_sym to H2.</a> <a href="pic_less_weak-details.html#429" class="tactic">apply bisim_matches_weakTrans to H28 H25.</a> <a href="pic_less_weak-details.html#430" class="tactic">case H30.</a> <a href="pic_less_weak-details.html#431" class="tactic">apply H31 to H26.</a> <a href="pic_less_weak-details.html#432" class="tactic">case H38.</a> <a href="pic_less_weak-details.html#433" class="tactic">apply bisim_matches_weakTrans to H39 H27.</a> <a href="pic_less_weak-details.html#434" class="tactic">exists Q7.</a> <a href="pic_less_weak-details.html#435" class="tactic">split.</a> <a href="pic_less_weak-details.html#436" class="tactic">search.</a> <a href="pic_less_weak-details.html#437" class="tactic">exists Q7.</a> <a href="pic_less_weak-details.html#438" class="tactic">exists Q3.</a> <a href="pic_less_weak-details.html#439" class="tactic">split.</a> <a href="pic_less_weak-details.html#440" class="tactic">search.</a>
+    <a href="pic_less_weak-details.html#441" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#442" class="tactic">apply bisim_sym to H41.</a>
+	<a href="pic_less_weak-details.html#443" class="tactic">apply bisim_trans to H44 H42.</a>
+	<a href="pic_less_weak-details.html#444" class="tactic">apply bisim_sym to H43.</a>
+	<a href="pic_less_weak-details.html#445" class="tactic">apply bisim_trans to H46 H14.</a>
+     <a href="pic_less_weak-details.html#446" class="tactic">backchain CH.</a>
+
+<span class="comment">% dn transitions from Q.</span>
+<a href="pic_less_weak-details.html#447" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#448" class="tactic">case H4.</a> <a href="pic_less_weak-details.html#449" class="tactic">apply H10 to H5.</a> <a href="pic_less_weak-details.html#450" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#451" class="tactic">apply H18 to H12.</a> <a href="pic_less_weak-details.html#452" class="tactic">case H20.</a> 
+
+<span class="comment">% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.</span>
+<a href="pic_less_weak-details.html#453" class="tactic">apply bisim_sym to H2.</a> <a href="pic_less_weak-details.html#454" class="tactic">apply bisim_matches_weakTrans to H24 H22.</a> <a href="pic_less_weak-details.html#455" class="tactic">case H26.</a> <a href="pic_less_weak-details.html#456" class="tactic">apply H28 to H23.</a> <a href="pic_less_weak-details.html#457" class="tactic">exists N3.</a> <a href="pic_less_weak-details.html#458" class="tactic">split.</a> <a href="pic_less_weak-details.html#459" class="tactic">search.</a> <a href="pic_less_weak-details.html#460" class="tactic">exists N3.</a> <a href="pic_less_weak-details.html#461" class="tactic">exists N.</a> <a href="pic_less_weak-details.html#462" class="tactic">intros.</a> <a href="pic_less_weak-details.html#463" class="tactic">split.</a> <a href="pic_less_weak-details.html#464" class="tactic">search.</a> <a href="pic_less_weak-details.html#465" class="tactic">apply H13 with W = W.</a> <a href="pic_less_weak-details.html#466" class="tactic">apply H21 with W = W.</a> <a href="pic_less_weak-details.html#467" class="tactic">apply H34 with W = W.</a> <a href="pic_less_weak-details.html#468" class="tactic">case H35.</a> <a href="pic_less_weak-details.html#469" class="tactic">case H39.</a> <a href="pic_less_weak-details.html#470" class="tactic">apply equality_for_structured_refl.</a> <a href="pic_less_weak-details.html#471" class="tactic">case H45.</a> <a href="pic_less_weak-details.html#472" class="tactic">apply H46 to H36 H42 H41.</a> <a href="pic_less_weak-details.html#473" class="tactic">apply H46 to H40 H44 H43.</a>
+    <a href="pic_less_weak-details.html#474" class="tactic">case H37.</a>
+	<a href="pic_less_weak-details.html#475" class="tactic">apply bisim_sym to H48.</a>
+	<a href="pic_less_weak-details.html#476" class="tactic">apply bisim_trans to H51 H49.</a>
+	<a href="pic_less_weak-details.html#477" class="tactic">apply bisim_sym to H50.</a>
+	<a href="pic_less_weak-details.html#478" class="tactic">apply bisim_trans to H53 H47.</a>
+     <a href="pic_less_weak-details.html#479" class="tactic">backchain CH.</a>
+
+<span class="comment">% up transitions from Q.</span>
+<a href="pic_less_weak-details.html#480" class="tactic">intros.</a>	<a href="pic_less_weak-details.html#481" class="tactic">case H4.</a> <a href="pic_less_weak-details.html#482" class="tactic">apply H11 to H5.</a> <a href="pic_less_weak-details.html#483" class="tactic">case H13.</a> <a href="pic_less_weak-details.html#484" class="tactic">case H3.</a> <a href="pic_less_weak-details.html#485" class="tactic">apply H20 to H12.</a> <a href="pic_less_weak-details.html#486" class="tactic">case H21.</a> 
+
+<span class="comment">% ONLY: case -weakTau-> -A-> -weakTau-> IS POSSIBLE.</span>
+<a href="pic_less_weak-details.html#487" class="tactic">apply bisim_sym to H2.</a> <a href="pic_less_weak-details.html#488" class="tactic">apply bisim_matches_weakTrans to H26 H24.</a> <a href="pic_less_weak-details.html#489" class="tactic">case H28.</a> <a href="pic_less_weak-details.html#490" class="tactic">apply H31 to H25.</a> <a href="pic_less_weak-details.html#491" class="tactic">case H36.</a> <a href="pic_less_weak-details.html#492" class="tactic">exists (z1\N4 z1).</a> <a href="pic_less_weak-details.html#493" class="tactic">split.</a> <a href="pic_less_weak-details.html#494" class="tactic">search.</a> <a href="pic_less_weak-details.html#495" class="tactic">exists N4.</a> <a href="pic_less_weak-details.html#496" class="tactic">exists N2.</a> <a href="pic_less_weak-details.html#497" class="tactic">intros.</a> <a href="pic_less_weak-details.html#498" class="tactic">split.</a> <a href="pic_less_weak-details.html#499" class="tactic">search.</a>
+     <a href="pic_less_weak-details.html#500" class="tactic">case H22.</a>
+	<a href="pic_less_weak-details.html#501" class="tactic">apply bisim_sym to H37.</a>
+	<a href="pic_less_weak-details.html#502" class="tactic">apply bisim_trans to H40 H38.</a>
+	<a href="pic_less_weak-details.html#503" class="tactic">apply bisim_sym to H39.</a>
+	<a href="pic_less_weak-details.html#504" class="tactic">apply bisim_trans to H42 H14.</a>
+     <a href="pic_less_weak-details.html#505" class="tactic">backchain CH.</a></div>
+
+
+<a href="pic_less_weak-details.html#506" class="command">Theorem bisimWeak_sound_snd : is_sound_snd bisim_t.</a>
+<div class="proof"><a href="pic_less_weak-details.html#507" class="tactic">unfold.</a>
+<a href="pic_less_weak-details.html#508" class="tactic">intros.</a>
+<a href="pic_less_weak-details.html#509" class="tactic">apply bisim_refl with P = P.</a>
+<a href="pic_less_weak-details.html#510" class="tactic">apply bisim_refl with P = Q.</a>
+<a href="pic_less_weak-details.html#511" class="tactic">exists P.</a>
+<a href="pic_less_weak-details.html#512" class="tactic">exists Q.</a>
+<a href="pic_less_weak-details.html#513" class="tactic">search.</a></div>
+<a href="pic_less_weak-details.html#514" class="command">Theorem bisimWeak_sound : is_sound bisim_t.</a>
+<div class="proof"><a href="pic_less_weak-details.html#515" class="tactic">unfold.</a>
+<a href="pic_less_weak-details.html#516" class="tactic">intros.</a>
+<a href="pic_less_weak-details.html#517" class="tactic">apply bisimWeak_sound_snd.</a>
+<a href="pic_less_weak-details.html#518" class="tactic">case H2.</a>
+<a href="pic_less_weak-details.html#519" class="tactic">apply H3 to H1.</a>
+<a href="pic_less_weak-details.html#520" class="tactic">apply bisimWeak_sound_fst.</a>
+<a href="pic_less_weak-details.html#521" class="tactic">case H7.</a>
+<a href="pic_less_weak-details.html#522" class="tactic">backchain H8.</a></div>
+</pre>
+</div>
+
+</body>
+</html>
