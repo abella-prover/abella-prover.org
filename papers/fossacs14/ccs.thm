@@ -27,10 +27,45 @@ Define one : proc -> action -> proc -> prop by
 ; one (repl P) tau (par (repl P) (par Q R)) :=
     exists X, one P (up X) Q /\ one P (dn X) R.
 
+% Definitions of contexts
+
+Kind ctx type.
+
+Type emptyCtx				ctx. 
+Type noHole				proc -> ctx. 
+Type act_ctx				action -> ctx -> ctx.
+Type par_ctx_l, plus_ctx_l		ctx -> proc -> ctx.
+Type par_ctx_r, plus_ctx_r		proc -> ctx -> ctx.
+
+
+Define in_ctx : ctx -> proc -> proc -> prop by 
+	in_ctx emptyCtx P P;
+	in_ctx (noHole P)		Q	P;
+	in_ctx 	(par_ctx_l C Q) 	P	(par R Q) := in_ctx C P R;
+	in_ctx 	(par_ctx_r P C) 	Q	(par P R) := in_ctx C Q R;
+	in_ctx 	(plus_ctx_l C Q) 	P	(plus R Q) := in_ctx C P R;
+	in_ctx 	(plus_ctx_r P C) 	Q	(plus P R) := in_ctx C Q R;
+	in_ctx 	(act_ctx A C) 		P 	(act A R) := in_ctx C P R.
+
+
+% Definitions for key properties of the relations. 
+
+Define equiv_rel : (proc -> proc -> prop) -> prop by 
+  equiv_rel Rel := 
+   (forall P, Rel P P) /\
+   (forall P Q, Rel P Q -> Rel Q P) /\
+   (forall P Q R, Rel P Q -> Rel Q R -> Rel P R).
+
+Define subst_rel : (proc -> proc -> prop) -> prop by 
+   subst_rel Rel := (forall P Q C P' Q', Rel P Q -> in_ctx C P P' -> in_ctx C Q Q' -> Rel P' Q').
+
+Define cong_rel : (proc -> proc -> prop) -> prop by 
+  cong_rel Rel := equiv_rel Rel /\ subst_rel Rel.
 
 % Bisimilarity up-to techniques.
 % The predicate bisimUpTo is parametrized by the up-to technique, that is the argument Upto.
 % Intuitively: Upto P1 P2 Q1 Q2 means "in the co-inductive step, use P2 instead of P1 and Q2 instead of Q1."
+
 
 CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
                          (proc -> proc -> prop) by
@@ -64,6 +99,10 @@ Theorem bisim_trans : forall P Q R, bisim_up_to refl_t P Q -> bisim_up_to refl_t
 coinduction. intros. case H1. case H2. unfold. 
   intros. apply H3 to H7. apply H5 to H8. case H9. case H12. exists Q4. split. search. exists P3. exists Q4. split. search. backchain CH.
   intros. apply H6 to H7. apply H4 to H8. case H9. case H12. exists P4. split. search. exists P4. exists Q3. split. search. backchain CH.
+
+Theorem bisim_is_equiv_th : equiv_rel (bisim_up_to refl_t). apply bisim_refl. apply bisim_sym. apply bisim_trans. search. 
+Theorem bisim_is_subst_th : subst_rel (bisim_up_to refl_t). skip. % The proof can be found in the standard library of Abella. 
+Theorem bisim_is_cong_th : cong_rel (bisim_up_to refl_t).  apply bisim_is_equiv_th. apply bisim_is_subst_th. search. 
 
 
 % Abstract definitions for soundness for the various proof techniques. 
@@ -282,42 +321,496 @@ backchain H8.
 
 
 % Soundness of Bisimilarity up-to Context
+% The development proceeds as follows:
+% - We prove that CCS has faithful contexts (needed for substitutivity)
+% - We prove substitutivity of the up-to context relation
+% - We prove soundness of the up-to context technique.
+
 
 Define context_t : proc -> proc -> proc -> proc -> prop by
-  context_t P1 P2 Q1 Q2 := (P1 = P2 /\ Q1 = Q2) \/ (exists R, P1 = (par P2 R) /\ Q1 = (par Q2 R)).
+  context_t P1 P2 Q1 Q2 := exists C, in_ctx C P2 P1 /\ in_ctx C Q2 Q1.
 
-Theorem bisimUpToContext_cong : forall P Q R, bisim_up_to context_t P Q -> bisim_up_to context_t (par P R) (par Q R).skip.
+Define concat_ctx : ctx -> ctx -> ctx -> prop by 
+	concat_ctx emptyCtx emptyCtx emptyCtx.
+
+Theorem instanciate_context : forall C P, exists P1, in_ctx C P P1. skip. 
+Theorem concat_ctx_thm : forall C1 C2 P1 P2 P3, in_ctx C1 P2 P1 -> in_ctx C2 P3 P2 -> exists C, concat_ctx C2 C1 C /\ in_ctx C P3 P1. skip. 
+Theorem concat_ctxs_are_equal : forall C1 C2 C3 C4, concat_ctx C2 C1 C3 -> concat_ctx C2 C1 C4 -> C3 = C4. skip. 
+Theorem process_ctxs_are_equal : forall C P Q1 Q2, in_ctx C P Q1 -> in_ctx C P Q2 -> Q1 = Q2. skip.
+ 
+% Faithful contexts in CCS. 
+
+Theorem faithful_contexts : forall C P P1 A R, in_ctx C P P1 -> one P1 A R ->
+				(exists C', in_ctx C' P R /\ (forall Q Q1, exists R1, in_ctx C Q Q1 -> one Q1 A R1 /\ in_ctx C' Q R1)) \/
+				(exists C' P2 B, one P B P2 /\ in_ctx C' P2 R /\ (forall Q Q2, one Q B Q2 -> (forall Q1, in_ctx C Q Q1 -> exists R1, one Q1 A R1 /\ in_ctx C' Q2 R1))).
+induction on 1.
+intros.
+case H1.			% This will split over the contexts. 
+
+% emptyCtx
+right. exists emptyCtx. exists R. exists A. split. search. search. intros. case H4. exists Q2. search. 
+
+% noHole
+left.
+exists (noHole R).
+split. search. 
+intros.  
+exists R. 
+intros. 
+case H3.
+search.
+
+
+% par_ctx_l
+case H2. 			% split for the 3 transitons of par.
+
+%  (par P Q) -> (par P' Q) 
+apply IH to H3 H4. 
+case H5.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left case
+left. exists (par_ctx_l C' Q). split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q1.
+apply H7 with Q = Q1, Q1 = P2.
+apply H9 to H8. 
+exists (par R2 Q).
+intros. case H12.
+apply process_ctxs_are_equal to H8 H13.
+split. search. search. 
+
+% right case
+right.
+exists (par_ctx_l C' Q).
+exists P2. exists B.
+split. search. search. 
+intros. 
+apply H8 to H9.
+apply instanciate_context with C = C1, P = Q1.
+apply H11 to H12.
+exists (par R2 Q).
+case H10. 
+apply process_ctxs_are_equal to H12 H15.
+split. 
+search.
+search.
+
+
+% (par P Q) -> (par P Q') 
+left. 
+exists (par_ctx_l C1 Q2). split. search. 
+intros.
+apply instanciate_context with C = C1, P = Q1. 
+exists (par P2 Q2).
+intros. 
+case H6.
+apply process_ctxs_are_equal to H5 H7.
+split. search. search. 
+
+% synchronization (par P Q) -> (par P' Q') 
+apply IH to H3 H4. 
+case H6.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left case
+left. exists (par_ctx_l C' Q2). split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q1.
+apply H8 with Q = Q1, Q1 = P2.
+apply H10 to H9. 
+exists (par R2 Q2).
+intros.
+case H13. 
+apply process_ctxs_are_equal to H9 H14.
+split. search. search. 
+
+% right case
+right.
+exists (par_ctx_l C' Q2).
+exists P2. exists B.
+split. search. search. 
+intros. 
+apply H9 to H10. 
+apply instanciate_context with C = C1, P = Q1.
+apply H12 to H13.
+exists (par R2 Q2).
+case H11. 
+apply process_ctxs_are_equal to H13 H16.
+split. 
+search.
+search.
+
+
+
+% par_ctx_r
+case H2. 			% split for the 3 transitons of par.
+
+% (par P Q) -> (par P Q') 
+left. 
+exists (par_ctx_r P4 C1). split. search. 
+intros.
+apply instanciate_context with C = C1, P = Q. 
+exists (par P4 P3).
+intros. 
+case H6.
+apply process_ctxs_are_equal to H5 H7.
+split. search. search. 
+
+
+%  (par P Q) -> (par P' Q) 
+apply IH to H3 H4. 
+case H5.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left case
+left. exists (par_ctx_r P2 C'). split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q.
+apply H7 with Q = Q, Q2 = P3.
+apply H9 to H8. 
+exists (par P2 R2).
+intros. case H12.
+apply process_ctxs_are_equal to H8 H13.
+split. search. search. 
+
+% right case
+right.
+exists (par_ctx_r P2 C').
+exists P3. exists B.
+split. search. search. 
+intros. 
+apply H8 to H9.
+apply instanciate_context with C = C1, P = Q.
+apply H11 to H12.
+exists (par P2 R2).
+case H10. 
+apply process_ctxs_are_equal to H12 H15.
+split. 
+search.
+search.
+
+
+% synchronization (par P Q) -> (par P' Q') 
+apply IH to H3 H5. 
+case H6.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left case
+left. exists (par_ctx_r P4 C'). split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q.
+apply H8 with Q = Q, Q2 = P3.
+apply H10 to H9. 
+exists (par P4 R2).
+intros.
+case H13. 
+apply process_ctxs_are_equal to H9 H14.
+split. search. search. 
+
+% right case
+right.
+exists (par_ctx_r P4 C').
+exists P3. exists B.
+split. search. search. 
+intros. 
+apply H9 to H10. 
+apply instanciate_context with C = C1, P = Q.
+apply H12 to H13.
+exists (par P4 R2).
+case H11. 
+apply process_ctxs_are_equal to H13 H16.
+split. 
+search.
+search.
+
+% plus_ctx_l
+case H2.				% This will split into the two cases of +.
+
+% case P + Q -> P'.
+apply IH to H3 H4. 
+case H5.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left
+left. 
+exists C'.
+split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q1.
+apply H7 with Q = Q1, Q1 = P2.
+apply H9 to H8. 
+exists R2.
+intros.
+case H12. 
+apply process_ctxs_are_equal to H13 H8.
+split. search. search. 
+
+% right
+right. 
+exists C'. 
+exists P2. 
+exists B.
+split. search. search. 
+intros. 
+apply H8 to H9.
+apply instanciate_context with C = C1, P = Q1.
+apply H11 to H12.
+exists R2.
+case H10. 
+apply process_ctxs_are_equal to H12 H15.
+split. 
+search.
+search.
+
+% case P + Q -> Q'.
+
+left.
+exists (noHole R).
+split. search.
+intros. 
+exists R. 
+intros. 
+case H5.
+search. 
+
+% plus_ctx_r
+case H2.				% This will split into the two cases of +.
+
+% case P + Q -> P'.
+left.
+exists (noHole R).
+split. search.
+intros. 
+exists R. 
+intros. 
+case H5.
+search. 
+
+% case P + Q -> Q'.
+
+apply IH to H3 H4. 
+case H5.			% here you have to reason on the possible 2 cases of faithful context that YOU have.
+
+% left
+left. 
+exists C'.
+split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q.
+apply H7 with Q = Q, Q1 = P3.
+apply H9 to H8. 
+exists R2.
+intros.
+case H12. 
+apply process_ctxs_are_equal to H13 H8.
+split. search. search. 
+
+% right
+right. 
+exists C'. 
+exists P3. 
+exists B.
+split. search. search. 
+intros. 
+apply H8 to H9.
+apply instanciate_context with C = C1, P = Q.
+apply H11 to H12.
+exists R2.
+case H10. 
+apply process_ctxs_are_equal to H12 H15.
+split. 
+search.
+search.
+
+% act_ctx
+left.
+case H2.
+exists C1.
+split. search.
+intros. 
+apply instanciate_context with C = C1, P = Q.
+exists P2. 
+intros. 
+case H5. 
+apply process_ctxs_are_equal to H4 H6.
+split. search. search. 
+
+
+
+% Substitutivity of the up-to context relation. 
+
+Theorem bisimK_is_subst_th : subst_rel (bisim_up_to context_t). 
+unfold. coinduction. intros. unfold. 
+
+% Transitions from P.
+intros. 
+apply faithful_contexts to H2 H4. 
+case H5.				% it will split into the two cases. 
+
+% First case
+apply H7 with Q = Q, Q1 = Q'.
+apply H8 to H3. 
+exists R1. split. search. 
+exists P1. exists R1. split. search.
+backchain CH. 				%apply CH to H1 H3 H4 with P = P, Q = Q, C = C, P' = P1, Q' = Q1.
+
+% Second case
+% first, since P is bisim_context with Q, we can calculate the step for Q. 
+case H1.
+apply H9 to H6.
+apply H8 to H11.			% this is to apply faithful context. 
+apply H14 to H3.			% this is to apply faithful context.
+exists R1. split. search.
+
+case H12. 
+
+% create the context. 
+apply concat_ctx_thm to H7 H17.		% existence of the concat context.
+apply concat_ctx_thm to H16 H18.	% existence of the concat context.
+apply concat_ctxs_are_equal to H19 H21.	% the two are equal. 
+exists P3. exists Q3. split. search. 
+backchain CH. 
+
+% Transitions from Q.
+intros. 
+apply faithful_contexts to H3 H4. 
+case H5.				% it will split into the two cases. 
+
+% First case
+apply H7 with Q2 = P, Q3 = P'.
+apply H8 to H2. 
+exists R1. split. search. 
+exists R1. exists Q1. split. search.
+backchain CH. 				%apply CH to H1 H3 H4 with P = P, Q = Q, C = C, P' = P1, Q' = Q1.
+
+% Second case
+% first, since P is bisim_context with Q, we can calculate the step for P. 
+case H1.
+apply H10 to H6.
+apply H8 to H11.			% this is to apply faithful context. 
+apply H14 to H2.			% this is to apply faithful context.
+exists R1. split. search.
+
+case H12. 
+
+% create the context. 
+apply concat_ctx_thm to H7 H18.		% existence of the concat context.
+apply concat_ctx_thm to H16 H17.	% existence of the concat context.
+apply concat_ctxs_are_equal to H19 H21.	% the two are equal. 
+exists P3. exists Q3. split. search. 
+backchain CH. 
+
+% Soundness of the up-to context technique. 
 
 Theorem context_sound : is_sound context_t.
-unfold. coinduction. intros. case H1. unfold.
+apply bisimK_is_subst_th. case H1. rename H2 to bisimK_is_subst.  
+unfold. coinduction. intros. case H3. unfold.
+
 
 % transitions from P. 
-intros. apply H2 to H4. 
+intros. apply H4 to H6. 
 exists Q2. split. search. exists P1. exists Q2. split. search. 
-case H6. case H8. 
-% - inside no bigger context
-     backchain CH.
-% - inside a bigger context
-     apply bisimUpToContext_cong to H7 with R = R.
-     backchain CH.
+case H8. 
+   apply bisimK_is_subst to H9 H10 H11.
+   backchain CH.
 
-% transitions from P. 
-intros. apply H3 to H4. 
+% transitions from Q. 
+intros. apply H5 to H6. 
 exists P2. split. search. exists P2. exists Q1. split. search. 
-case H6. case H8. 
-% - inside no bigger context
-     backchain CH.
-% - inside a bigger context
-     apply bisimUpToContext_cong to H7 with R = R.
-     backchain CH.
+case H8. 
+   apply bisimK_is_subst to H9 H10 H11.
+   backchain CH.
+
+
 
 % Soundness of Bisimilarity up-to Bisimilarity and Context.
 
 Define bisim_context_t : proc -> proc -> proc -> proc -> prop by
-        bisim_context_t P1 P3 Q1 Q3 := bisim_t P1 P3 Q1 Q3 \/ (exists P2 Q2, bisim_t P1 P2 Q1 Q2
-					 /\ (exists R, P2 = (par P3 R) /\ Q2 = (par Q3 R))).
+        bisim_context_t P1 P3 Q1 Q3 := exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ context_t P2 P3 Q2 Q3. 
 
-Theorem bisimUpToBisimAndContext_cong : forall P Q R, bisim_up_to bisim_context_t P Q -> bisim_up_to bisim_context_t (par P R) (par Q R).skip.
+Theorem bisimBK_is_subst_th : subst_rel (bisim_up_to bisim_context_t). 
+unfold. coinduction. intros. unfold. 
+
+% Transitions from P.
+intros. 
+apply faithful_contexts to H2 H4. 
+case H5.				% it will split into the two cases. 
+
+% First case
+apply H7 with Q = Q, Q1 = Q'.
+apply H8 to H3. 
+exists R1. split. search. 
+exists P1. exists R1. 
+split. unfold. exists P1. exists R1. split. unfold. backchain bisim_refl. backchain bisim_refl. 
+unfold. exists emptyCtx. search. 
+backchain CH. 		
+
+% Second case
+% first, since P is bisim_context with Q, we can calculate the step for Q. 
+case H1.
+apply H9 to H6.
+apply H8 to H11.			% this is to apply faithful context. 
+apply H14 to H3.			% this is to apply faithful context.
+exists R1. split. search.
+
+case H12. 
+case H17.
+case H18. 
+
+apply bisim_is_subst_th. case H23. 
+apply instanciate_context with C = C', P = P4.
+apply instanciate_context with C = C', P = Q1.
+apply H24 to H19 H7 H25.
+apply H24 to H20 H16 H26.
+
+exists P3. exists Q3. split. 
+unfold. exists P5. exists P6. split. unfold. search. search. unfold. 
+
+apply concat_ctx_thm to H25 H21.		% existence of the concat context.
+apply concat_ctx_thm to H26 H22.	% existence of the concat context.
+apply concat_ctxs_are_equal to H29 H31.	% the two are equal. 
+exists C3. search. 
+backchain CH. 
+
+% Transitions from Q.
+intros. 
+apply faithful_contexts to H3 H4. 
+case H5.				% it will split into the two cases. 
+
+% First case
+apply H7 with Q2 = P, Q3 = P'.
+apply H8 to H2. 
+exists R1. split. search. 
+exists R1. exists Q1.
+split. unfold. exists R1. exists Q1. split. unfold. backchain bisim_refl. backchain bisim_refl. 
+unfold. exists emptyCtx. search. 
+backchain CH. 		
+
+% Second case
+% first, since P is bisim_context with Q, we can calculate the step for P. 
+case H1.
+apply H10 to H6.
+apply H8 to H11.			% this is to apply faithful context. 
+apply H14 to H2.			% this is to apply faithful context.
+exists R1. split. search.
+
+case H12. 
+case H17.
+case H18. 
+
+apply bisim_is_subst_th. case H23. 
+apply instanciate_context with C = C', P = P4.
+apply instanciate_context with C = C', P = Q2.
+apply H24 to H19 H16 H25.
+apply H24 to H20 H7 H26.
+
+exists P3. exists Q3. split. 
+unfold. exists P5. exists P6. split. unfold. search. search. unfold. 
+
+apply concat_ctx_thm to H25 H21.		% existence of the concat context.
+apply concat_ctx_thm to H26 H22.	% existence of the concat context.
+apply concat_ctxs_are_equal to H29 H31.	% the two are equal. 
+exists C3. search. 
+backchain CH. 
+
+
+% Soundness of the up-to bisimilarity and context technique. 
 
 Theorem bisim_context_sound_fst : is_sound_fst bisim_context_t.
 unfold. coinduction. intros. case H1. unfold.
@@ -334,22 +827,16 @@ split. search.
 case H9.				
 case H19.
 
+apply bisimBK_is_subst_th. case H21. rename H22 to bisimBK_is_subst.  
+
 %  proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-case H21.
-% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
-% - inside no bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-  apply bisim_sym to H24.
-  apply bisim_trans to H26 H20.
-  backchain CH.
-% - inside a bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H10 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-  apply bisim_sym to H24.
-  apply bisim_trans to H26 H20.
-  apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+case H23.
+  apply bisim_trans to H10 H25.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H26.
+  apply bisim_trans to H28 H20.
+case H24. 
+  apply bisimBK_is_subst to H15 H30 H31. 
 backchain CH.   
 
 % Case of transitions from Q
@@ -366,23 +853,16 @@ split. search.
 case H9.				
 case H19.
 
-% proving derivatives are related.
+apply bisimBK_is_subst_th. case H21. rename H22 to bisimBK_is_subst.  
+
+%  proving derivatives are related.
 case H14.				% unfold of up-to technique: we observe what the up-to technique is about at this point. 
-case H21.
-% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
-% Because it is the symmetric, we need only to switch H10/H20 in the proof code above.
-% - inside no bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-  apply bisim_sym to H24.
-  apply bisim_trans to H26 H10.
-  backchain CH.
-% - inside a bigger context
-  case H22.				% unfold upToBisim 
-  apply bisim_trans to H20 H23.		% NOT copy paste. but calculated with first/bottom etc. 
-  apply bisim_sym to H24.
-  apply bisim_trans to H26 H10.
-  apply bisimUpToBisimAndContext_cong to H15 with R = R1.
+case H23.
+  apply bisim_trans to H20 H25.		% NOT copy paste. but calculated with first/bottom etc. 
+  apply bisim_sym to H26.
+  apply bisim_trans to H28 H10.
+case H24. 
+  apply bisimBK_is_subst to H15 H30 H31. 
 backchain CH.   
 
 
@@ -512,36 +992,20 @@ Theorem upToBisim_implie_upToBisimT : upTo1ImpliesUpTo2 refl_t transitivity_t.
 unfold. intros. case H1. unfold. left. search. 
 
 Theorem upToBisim_implie_upToBisimK : upTo1ImpliesUpTo2 refl_t context_t.
-unfold. intros. case H1. unfold. left. search.
+unfold. intros. case H1. search.
 
 Theorem upToBisim_implie_upToBisimBK : upTo1ImpliesUpTo2 refl_t bisim_context_t.
-unfold. intros. case H1. unfold. left. unfold. backchain bisim_refl. backchain bisim_refl.
+unfold. intros. case H1. unfold. exists P2. exists Q2. split. unfold. backchain bisim_refl. backchain bisim_refl. search. 
 
 Theorem upToBisimB_implie_upToBisimBK : upTo1ImpliesUpTo2 bisim_t bisim_context_t.
-unfold. intros. case H1. unfold. left. unfold. search. search. 
+unfold. intros. case H1. unfold. exists P2. exists Q2. split. unfold. search. search. search.
 
 Theorem upToBisimK_implie_upToBisimBK : upTo1ImpliesUpTo2 context_t bisim_context_t.
-unfold. intros. case H1. unfold. case H2.
-left. unfold. backchain bisim_refl. backchain bisim_refl.
-right. exists (par P2 R). exists (par Q2 R). split.
-unfold. backchain bisim_refl. backchain bisim_refl.
-exists R. search. 
-
-Define equiv_rel : (proc -> proc -> prop) -> prop by 
-  equiv_rel Rel := 
-   (forall P, Rel P P) /\
-   (forall P Q, Rel P Q -> Rel Q P) /\
-   (forall P Q R, Rel P Q -> Rel Q R -> Rel P R).
+unfold. intros. case H1. unfold. exists P1. exists Q1. split. unfold. backchain bisim_refl. backchain bisim_refl. search. 
 
 Define bisim_is_equiv : prop by bisim_is_equiv := equiv_rel (bisim_up_to refl_t).
 Define bisimB_is_equiv : prop by bisimB_is_equiv := equiv_rel (bisim_up_to bisim_t).
 Define bisimT_is_equiv : prop by bisimT_is_equiv := equiv_rel (bisim_up_to transitivity_t).
-
-Define subst_rel : (proc -> proc -> prop) -> prop by 
-   subst_rel Rel := (forall P Q R, Rel P Q -> Rel (par P R) (par Q R)).
-
-Define cong_rel : (proc -> proc -> prop) -> prop by 
-  cong_rel Rel := equiv_rel Rel /\ subst_rel Rel.
 
 Define bisim_is_subst : prop by bisim_is_subst := subst_rel (bisim_up_to refl_t).
 Define bisimK_is_subst : prop by bisimK_is_subst := subst_rel (bisim_up_to context_t).
@@ -566,11 +1030,11 @@ intros. case H2. apply H4 to H3. case H1. case H6. apply H8 to H5. apply upToBis
 intros. case H2. apply H5 to H3. apply H5 to H4. case H1. case H8. apply H11 to H6 H7. apply upToBisim_implie_upToBisimT. loadLemma : apply bisim_implies_bisimT. implies : case loadLemma. backchain implies.
 
 Theorem bisimK_and_subst_completeness : bisim_is_subst -> is_sound context_t -> bisimK_is_subst.
-intros. unfold. unfold. intros. case H2. apply H4 to H3. case H1. case H6. apply H7 to H5 with R = R. apply upToBisim_implie_upToBisimK. loadLemma : apply bisim_implies_bisimK. implies : case loadLemma. backchain implies.
+intros. unfold. unfold. intros. case H2. apply H6 to H3. case H1. case H8. apply H9 to H7 H4 H5. apply upToBisim_implie_upToBisimK. loadLemma : apply bisim_implies_bisimK. implies : case loadLemma. backchain implies.
 
 Theorem bisimBK_and_subst_completeness : bisim_is_cong -> is_sound bisim_context_t -> bisimBK_is_subst.
 intros. unfold. unfold. 
-intros. case H2. apply H4 to H3. case H1. case H6. case H8. apply H9 to H5 with R = R. apply upToBisim_implie_upToBisimBK. loadLemma : apply bisim_implies_bisimBK. implies : case loadLemma. backchain implies.
+intros. case H2. apply H6 to H3. case H1. case H8. case H10. apply H11 to H7 H4 H5. apply upToBisim_implie_upToBisimBK. loadLemma : apply bisim_implies_bisimBK. implies : case loadLemma. backchain implies.
 
 % Soundness theorems for the characterization theorems above. 
 
@@ -664,12 +1128,7 @@ case H1.				% unfold on bisimBK_is_subst
 case H10.				% unfold on bisimBK_is_subst
 
 case H8.				% unfold the upto technique.
-case H12.
-
-% inside no context 
-backchain CH.
-% inside a bigger context
-	apply H11 to H9 with R = R.	% congruence of Middle in MiddleNew. 
+	apply H11 to H9 H12 H13.	% congruence of Middle in MiddleNew. 
 backchain CH.
 
 % transitions from Q. 
@@ -680,12 +1139,7 @@ case H1.				% unfold on bisimBK_is_subst
 case H10.				% unfold on bisimBK_is_subst
 
 case H8.				% unfold the upto technique.
-case H12.
-
-% inside no context 
-backchain CH.
-% inside a bigger context
-	apply H11 to H9 with R = R.	% congruence of Middle in MiddleNew. 
+	apply H11 to H9 H12 H13.	% congruence of Middle in MiddleNew. 
 backchain CH.
 
 Theorem bisimBK_and_subst_soundness_fst : bisimBK_is_subst -> bisim_is_cong -> is_sound_fst bisim_context_t.  
@@ -701,21 +1155,16 @@ case H29.
 
 %  proving derivatives are related.
 case H24.
+
+% Next code is the specific of up-to bisimilarity. 
 case H31.
-% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
-% - inside no bigger context
-case H32.
 	apply H11 to H20 H33.
 	apply H10 to H34.
 	apply H11 to H36 H30.
-  backchain CH.
-% - inside a bigger context
+% Next code is the specific of up-to context. 
 case H32.
-	apply H11 to H20 H33.
-	apply H10 to H34.
-	apply H11 to H36 H30.
-	apply H5 to H25 with R = R1.
-  backchain CH.
+	apply H5 to H25 H38 H39.
+backchain CH.
 
 % transitions from Q. 
 intros. case H14. apply H17 to H15. case H13. apply H22 to H18. case H12. apply H27 to H23.
@@ -728,21 +1177,17 @@ case H29.
 
 %  proving derivatives are related.
 case H24.
+
+% Next code is the specific of up-to bisimilarity. 
 case H31.
-% Next code is specific of Bisimilarity up-to Bisimilarity and Context (2 cases)
-% - inside no bigger context
-case H32.
 	apply H11 to H30 H33.
 	apply H10 to H34.
 	apply H11 to H36 H20.
-  backchain CH.
-% - inside a bigger context
+% Next code is the specific of up-to context. 
 case H32.
-	apply H11 to H30 H33.
-	apply H10 to H34.
-	apply H11 to H36 H20.
-	apply H5 to H25 with R = R1.
-  backchain CH.
+	apply H5 to H25 H38 H39.
+backchain CH.
+
 
 Theorem bisimBK_and_subst_soundness_snd : bisimBK_is_subst -> bisim_is_cong -> is_sound_snd bisim_context_t.
 intros. unfold. intros. case H2. case H4. case H5. apply H7 with P = P. apply H7 with P = Q. exists P. exists Q. search. 
@@ -778,35 +1223,6 @@ intros. case H1. apply H4 to H3. case H2. apply H9 to H6. exists Q1. split. sear
 apply bisim_sym to H15. apply bisim_trans to H18 H16. apply subst_in_bisimB to H8 H19. backchain CH with P = P3, Q = P2, R = Q4.
 intros. case H2. apply H5 to H3. case H1. apply H10 to H6. exists P1. split. search. exists P4. exists Q3. case H7. case H12. split. unfold. search. search. 
 apply bisim_sym to H17. apply bisim_trans to H18 H14. apply subst_in_bisimB to H13 H19. backchain CH with P = P4, Q = P3, R = Q3.
-
-% Proof that bisimT is an equivalence, and therefore that bisim up to transitivity is sound. 
-
-% Proof that bisimK is substitutive, and therefore that bisimilarity up to context is sound. 
-% This proof necessarily use the insight of the language at hand, and in particular faithful contexts for CCS. 
-
-% Definition of faithful contexts. 
-
-Theorem faithful_par : forall P P1 A R1, 
-				(exists R2, one (par P R1) A P1 -> P1 = (par P R2) /\ (forall Q, one (par Q R1) A (par Q R2))) \/
-				(one (par P R1) A P1 -> 
-					(exists P2 B R2, one P B P2 /\ P1 = (par P2 R2) /\ (forall Q Q1, one Q B Q1 -> one (par Q R1) A (par Q1 R2)))).skip.
-
-Theorem bisimK_is_subst_th : subst_rel (bisim_up_to context_t). skip.
-
-% unfold. coinduction. intros. apply faithful_par. unfold. 
-% transitions from P. 
-% intros. apply H2 with P = P, P1 = P1, A = A, R1 = R. case H4. 
-% apply H5 to H3. apply H6 with Q = Q. exists (par Q R2). split. search. % exists P. exists Q. split. search. search.
-% apply H5 to H3. case H1. apply H8 to H6. apply H7 to H10. exists (par Q2 % R2). split. search. 
-% apply H8 to H5. apply H7 to H10. exists (par Q2 R2). split. search. 
-
-
-
-
-% Proof that bisimBK is substitutive, and therefore that
-%	bisimilarity up to bisimilarity 
-%	bisimilarity up to context 
-%	and bisimilarity up to bisimilarity and context are sound. 
 
 
 
@@ -1044,8 +1460,8 @@ exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
 split.					
 
 % first we have to prove they are related by the technique.
-
-unfold. right.
+% bisim_t
+unfold. 
 exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
 exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
 split.
@@ -1061,8 +1477,8 @@ apply bisim_sym to H7.
 apply bisim_trans to H8 H9.
 search.
 
-exists P.							% the common context. 
-split. search. search.
+% context_t
+search.
 
 % and then, that they are related by bisimUpTo upToBisimAndContext.
 backchain CH. 
@@ -1078,8 +1494,8 @@ exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
 split.					
 
 % first we have to prove they are related by the technique.
-
-unfold. right.
+% bisim_t
+unfold. 
 exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
 exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
 split.
@@ -1089,8 +1505,9 @@ search.
 apply bisim_par_assoc with P = (repl (act (dn A) Q)), Q = (repl (act (dn B) Q)), R = Q.
 apply bisim_sym to H4.
 search.
-exists Q.							% the common context. 
-split. search. search.
+
+% context_t
+search. 
 
 % and then, that they are related by bisimUpTo upToBisimAndContext.
 backchain CH.
@@ -1110,8 +1527,8 @@ exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
 split.					
 
 % first we have to prove they are related by the technique.
-
-unfold. right.
+% bisim_t
+unfold. 
 exists (par (repl (plus (act (dn A) P) (act (dn B) P))) P).
 exists (par (par (repl (act (dn A) P)) (repl (act (dn B) P))) P).
 split.
@@ -1127,8 +1544,9 @@ apply bisim_trans to H6 H5.
 apply bisim_sym to H7.
 apply bisim_trans to H8 H9.
 search.
-exists Q.							% the common context. 
-split. search. search.
+
+% context_t
+search.
 
 % and then, that they are related by bisimUpTo upToBisimAndContext.
 backchain CH.
@@ -1147,8 +1565,8 @@ exists (par (repl (act (dn A) P)) (repl (act (dn B) P))).
 split.					
 
 % first we have to prove they are related by the technique.
-
-unfold. right.
+% bisim_t
+unfold. 
 exists par (repl (plus (act (dn A) P) (act (dn B) P))) Q.
 exists par (par (repl (act (dn A) P)) (repl (act (dn B) P))) Q.
 split.
@@ -1158,8 +1576,9 @@ search.
 apply bisim_par_assoc with P = (repl (act (dn A) P)), Q = (repl (act (dn B) P)), R = Q.
 apply bisim_sym to H4.
 search.
-exists Q.							% the common context. 
-split. search. search.
+
+% context_t
+search.
 
 % and then, that they are related by bisimUpTo upToBisimAndContext2.
 backchain CH.
@@ -1190,8 +1609,8 @@ exists (repl (act (dn A) P)).
 split.
 
 % first we have to prove they are related by the technique.
-unfold. right. 
-
+% bisim_t
+unfold. 
 exists (par (repl (repl (act (dn A) P))) P).
 exists (par (repl (act (dn A) P)) P).
 split.
@@ -1204,7 +1623,8 @@ apply bisim_trans to H7 H5.
 search.
 apply bisim_refl with P = (par (repl (act (dn A) P)) P).
 search.
-exists P.							% the common context. 
+
+% context_t
 search.
 
 % and then, that they are related by bisimUpTo upToBisimAndContext.
@@ -1223,7 +1643,9 @@ exists (repl (repl (act (dn A) P))).
 exists (repl (act (dn A) P)).
 split.
 
-unfold. right. 
+% first we have to prove they are related by the technique.
+% bisim_t
+unfold. 
 exists (par (repl (repl (act (dn A) P))) P).
 exists (par (repl (act (dn A) P)) P).
 split.
@@ -1236,7 +1658,8 @@ apply bisim_trans to H6 H4.
 search.
 apply bisim_refl with P = (par (repl (act (dn A) P)) P).
 search.
-exists P.							% the common context. 
+
+% context_t
 search.
 
 % and then, that they are related by bisimUpTo upToBisimAndContext.
