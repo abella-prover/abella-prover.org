@@ -1,0 +1,751 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="cc.sig">[View cc.sig]</a>
+<a class="view" href="cc.mod">[View cc.mod]</a>
+<pre class="command">
+sig cc.
+
+kind nat type.
+type z nat.
+type s nat -> nat.
+
+type is_nat nat -> o.
+
+<span class="comment">% constants</span>
+kind const type.
+type s++ const.
+type arity  const -> nat -> o.
+
+
+<span class="comment">% Lambda terms; we deal only with closed ones for now</span>
+kind tm type.
+
+type cst  const -> tm.
+type lnat nat -> tm.
+type app  tm -> tm -> tm.
+type abs  (tm -> tm) -> tm.
+
+<span class="comment">% term list</span>
+kind tm_list type.
+type tl_nil tm_list.
+type tl_cons tm -> tm_list -> tm_list.
+type tl_member tm -> tm_list -> o.
+
+
+<span class="comment">% closure converted terms; only what we need for the simple lambda terms</span>
+<span class="comment">% considered</span>
+kind ctm  type.
+
+<span class="comment">% for environments</span>
+type unit ctm.
+type cross ctm -> ctm -> ctm.
+
+type ccst    const -> ctm.
+type clnat   nat -> ctm.
+type c++     ctm -> ctm -> ctm.
+type clet    ctm -> (ctm -> ctm) -> ctm.
+type fst     ctm -> ctm.
+type rst     ctm -> ctm.
+type capp    ctm -> ctm -> ctm.
+type cabs    (ctm -> ctm) -> ctm.
+type cpair   ctm -> ctm -> ctm.
+type cunpair ctm -> (ctm -> ctm -> ctm) -> ctm.
+
+
+<span class="comment">% for representing maps in closure conversion</span>
+kind map type.
+type map tm -> ctm -> map.
+
+<span class="comment">% map list</span>
+kind map_list type.
+type ml_nil map_list.
+type ml_cons map -> map_list -> map_list.
+type ml_member map -> map_list -> o.
+
+<span class="comment">% for creating a map needed in closure conversion</span>
+type mapvar tm_list -> ctm -> map_list -> o.
+
+<span class="comment">% forming the closure environment</span>
+type mapenv tm_list -> map_list -> ctm -> o.
+
+<span class="comment">% for finding free variables in an abstraction</span>
+type notfree tm -> o.
+type fvars tm -> tm_list -> tm_list -> o.
+
+<span class="comment">% combining two lists; avoiding redundancy is not essential for correctness</span>
+type combine tm_list -> tm_list -> tm_list -> o.
+
+
+<span class="comment">% for getting variables bound externally</span>
+type extBndVars map_list -> tm_list -> o.
+
+<span class="comment">% for performing closure conversion; map is a mapping from free variables</span>
+<span class="comment">% to environment variables and tm_list is the list of free variables</span>
+type cc tm -> ctm -> map_list -> tm_list -> o.
+
+type cc' tm -> ctm -> o.
+
+<span class="comment">% for experiment</span>
+type term tm -> o.
+
+
+<span class="comment">% Types for lambda terms and closure converted terms.</span>
+
+kind ty type.
+
+<span class="comment">% Integer type.</span>
+type nat_t ty.
+<span class="comment">% Arrow type for lambda abstractions (in the lambda terms)</span>
+<span class="comment">% and closures (in the closure converted terms).</span>
+type arr ty -> ty -> ty.
+<span class="comment">% "Real" arrow type for lambda abstractions in the closure converted terms.</span>
+type code ty -> ty -> ty.
+<span class="comment">% Product types</span>
+type unit_t ty.
+type product ty -> ty -> ty.
+
+<span class="comment">%</span>
+
+<span class="comment">% typing relation for lambda terms.</span>
+type of  tm -> ty -> o.
+type of_const    const -> ty -> o.
+
+<span class="comment">% typing relation for closuere converted terms.</span>
+type cof  ctm -> ty -> o.
+type cof_const 	 const -> ty -> o.
+
+</pre>
+<pre class="command">
+module cc.
+
+is_nat z.
+is_nat (s N) :- is_nat N.
+
+<span class="comment">% Some generic predicates</span>
+tl_member X (tl_cons X L).
+tl_member X (tl_cons Y L) :- tl_member X L.
+
+ml_member X (ml_cons X L).
+ml_member X (ml_cons Y L) :- ml_member X L.
+
+mapvar tl_nil X ml_nil.
+mapvar (tl_cons X L) Env (ml_cons (map X (fst Env)) LMap) :-
+     mapvar L (rst Env) LMap.
+
+mapenv tl_nil _ unit.
+mapenv (tl_cons X L) Map (cross M ML) :-
+       ml_member (map X M) Map, mapenv L Map ML.
+
+combine tl_nil Fvs2 Fvs2.
+combine (tl_cons X Fvs1) Fvs2 Fvs :-
+      tl_member X Fvs2, combine Fvs1 Fvs2 Fvs.
+combine (tl_cons X Fvs1) Fvs2 (tl_cons X Fvs) :-
+      combine Fvs1 Fvs2 Fvs.
+
+<span class="comment">% free variables in a term; second argument is the list of candidates</span>
+fvars X _ tl_nil :- notfree X.
+fvars (cst C) _ tl_nil.
+fvars (lnat _) _ tl_nil.
+fvars Y Vs (tl_cons Y tl_nil) :- tl_member Y Vs.
+fvars (app M1 M2) Vs CFvs :-
+   fvars M1 Vs Fvs1, fvars M2 Vs Fvs2, combine Fvs1 Fvs2 CFvs.
+fvars (abs M) Vs Fvs :- pi y\ notfree y => fvars (M y) Vs Fvs.
+
+cc X M Map FVs :- ml_member (map X M) Map.
+cc (lnat N) (clnat N) Map FVs.
+cc (abs M) (cpair (cabs x\ (clet (fst x)
+				 (y\ (clet (rst x) xenv\ (P xenv y)))))
+		  PE) Map FVs :-
+   fvars (abs M) FVs NFVs,
+   mapenv NFVs Map PE,
+   (pi xenv\
+	     mapvar NFVs xenv (NMap xenv)),
+   (pi x\ pi y\ pi xenv\
+	     cc (M x) (P xenv y) (ml_cons (map x y) (NMap xenv)) (tl_cons x NFVs)).
+cc (app M1 M2) (cunpair CM1
+			(f\ env\ (capp f (cross CM2 env)))) Map FVs :-
+   cc M1 CM1 Map FVs, cc M2 CM2 Map FVs.
+cc (cst C) (ccst C) Map FVs.
+cc' X M :- cc X M ml_nil tl_nil.
+
+
+term (app (app (abs x\ (abs y\ (app (app (cst s++) x) y))) (lnat z)) (lnat (s z))).
+
+
+<span class="comment">% Definition of the typing relation for lambda terms.</span>
+of (lnat _) nat_t.
+of (cst C) T :- of_const C T.
+of (app M N) T :- of M (arr T1 T), of N T1.
+of (abs M) (arr T1 T2) :- pi x\ of x T1 => of (M x) T2.
+
+of_const s++ (arr nat_t (arr nat_t nat_t)).
+
+<span class="comment">% Definition of the typing relation for closure converted terms.</span>
+cof (clnat _) nat_t.
+cof (ccst C) T :- cof_const C T.
+cof (clet M1 M2) T :-
+    cof M1 T1,
+    (pi x\ cof x T1 => cof (M2 x) T).
+cof unit unit_t.
+cof (cross M1 M2) (product T1 T2) :- cof M1 T1, cof M2 T2.
+cof (fst M) T1 :- cof M (product T1 T2).
+cof (rst M) T2 :- cof M (product T1 T2).
+cof (capp M N) T :- cof M (code T1 T), cof N T1.
+cof (cabs M) (code T1 T2) :- pi x\ cof x T1 => cof (M x) T2.
+cof (cpair P Q) (arr T1 T2) :-
+    cof P (code (product T1 TL) T2),
+    cof Q TL.
+cof (cunpair P Q) T :-
+    cof P (arr T1 T),
+    (pi f\ pi env\ pi l\
+	cof f (code (product T1 l) T) =>
+	cof env l =>
+	cof (Q f env) T).
+
+cof_const (s++) (arr nat_t (arr nat_t nat_t)).
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="cc.thm">[View cc.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="cc-details.html#1" class="command">Specification "cc".</a>
+
+<a href="cc-details.html#2" class="command">Close const, nat, tm, ctm, ty.</a>
+
+<a href="cc-details.html#3" class="command">Define tname : tm -> prop by
+  nabla n, tname n.</a>
+
+<a href="cc-details.html#4" class="command">Theorem mem_of_absurd : forall T L, nabla x,
+  member (of x T) L -> false.</a>
+<div class="proof"><a href="cc-details.html#5" class="tactic">induction on 1.</a> <a href="cc-details.html#6" class="tactic">intros.</a> <a href="cc-details.html#7" class="tactic">case H1.</a> <a href="cc-details.html#8" class="tactic">apply IH to H2.</a></div>
+<a href="cc-details.html#9" class="command">Theorem ml_mem_absurd : forall M ML, nabla x,
+  {ml_member (map x M) ML}  -> false.</a>
+<div class="proof"><a href="cc-details.html#10" class="tactic">induction on 1.</a> <a href="cc-details.html#11" class="tactic">intros.</a> <a href="cc-details.html#12" class="tactic">case H1.</a> <a href="cc-details.html#13" class="tactic">apply IH to H2.</a></div>
+<span class="comment">% Context for typing in the source language</span>
+<a href="cc-details.html#14" class="command">Define sctx : olist -> prop by
+  sctx nil;
+  nabla x, sctx (of x T :: L) := sctx L.</a>
+
+<span class="comment">% A weaker version of typing contexts that may be needed sometimes</span>
+<a href="cc-details.html#15" class="command">Define sctx' : olist -> prop by
+  sctx' nil;
+  sctx' (of X T :: L) := sctx' L /\ tname X /\ forall T',
+			   (member (of X T') L -> T = T').</a>
+
+<a href="cc-details.html#16" class="command">Theorem sctx'_name : forall X T L,
+    sctx' L -> member (of X T) L -> tname X.</a>
+<div class="proof">    <a href="cc-details.html#17" class="tactic">induction on 1.</a> <a href="cc-details.html#18" class="tactic">intros.</a>
+      <a href="cc-details.html#19" class="tactic">case H1.</a> <a href="cc-details.html#20" class="tactic">case H2.</a> <a href="cc-details.html#21" class="tactic">case H2.</a> <a href="cc-details.html#22" class="tactic">search.</a> <a href="cc-details.html#23" class="tactic">apply IH to H3 H6.</a> <a href="cc-details.html#24" class="tactic">search.</a></div>
+<a href="cc-details.html#25" class="command">Theorem sctx'_mem : forall SL O,
+  sctx' SL -> member O SL -> exists X T, O = of X T /\ tname X.</a>
+<div class="proof"><a href="cc-details.html#26" class="tactic">induction on 1.</a> <a href="cc-details.html#27" class="tactic">intros.</a> <a href="cc-details.html#28" class="tactic">case H1.</a>
+  <a href="cc-details.html#29" class="tactic">case H2.</a>
+  <a href="cc-details.html#30" class="tactic">case H2.</a>
+    <a href="cc-details.html#31" class="tactic">search.</a> <a href="cc-details.html#32" class="tactic">apply IH to H3 H6.</a> <a href="cc-details.html#33" class="tactic">search.</a></div>
+<span class="comment">% A context can be extended with a binding for a totally new variable</span>
+<a href="cc-details.html#34" class="command">Theorem sctx'_extend : forall L T, nabla x,
+   sctx' L -> sctx' (of x T :: L).</a>
+<div class="proof">    <a href="cc-details.html#35" class="tactic">intros.</a> <a href="cc-details.html#36" class="tactic">unfold.</a> <a href="cc-details.html#37" class="tactic">search.</a> <a href="cc-details.html#38" class="tactic">search.</a> <a href="cc-details.html#39" class="tactic">intros.</a> <a href="cc-details.html#40" class="tactic">apply mem_of_absurd to H2.</a></div>
+<span class="comment">% Types to the same variable in the weaker context are still identical</span>
+<a href="cc-details.html#41" class="command">Theorem sctx'_equal : forall X T T' L,
+   sctx' L -> member (of X T) L -> member (of X T') L -> T = T'.</a>
+<div class="proof">   <a href="cc-details.html#42" class="tactic">induction on 1.</a> <a href="cc-details.html#43" class="tactic">intros.</a> <a href="cc-details.html#44" class="tactic">case H1.</a>
+       <a href="cc-details.html#45" class="tactic">case H2.</a> <a href="cc-details.html#46" class="tactic">case H2.</a> <a href="cc-details.html#47" class="tactic">case H3.</a> <a href="cc-details.html#48" class="tactic">search.</a>
+     <a href="cc-details.html#49" class="tactic">apply H6 to H7.</a> <a href="cc-details.html#50" class="tactic">search.</a>
+     <a href="cc-details.html#51" class="tactic">case H3.</a> <a href="cc-details.html#52" class="tactic">apply H6 to H7.</a> <a href="cc-details.html#53" class="tactic">search.</a>
+     <a href="cc-details.html#54" class="tactic">apply IH to H4 H7 H8.</a> <a href="cc-details.html#55" class="tactic">search.</a></div>
+
+<span class="comment">% types of constants are independent from the typing context</span>
+<a href="cc-details.html#56" class="command">Theorem of_const_sctx' : forall L C T,
+  sctx' L -> {L |- of_const C T} -> {of_const C T}.</a>
+<div class="proof"><a href="cc-details.html#57" class="tactic">induction on 2.</a> <a href="cc-details.html#58" class="tactic">intros.</a> <a href="cc-details.html#59" class="tactic">case H2.</a>
+  <a href="cc-details.html#60" class="tactic">search.</a>
+  <a href="cc-details.html#61" class="tactic">apply sctx'_mem to H1 H4.</a> <a href="cc-details.html#62" class="tactic">case H3.</a></div>
+<a href="cc-details.html#63" class="command">Theorem presv_const_typ : forall C T,
+  {of_const C T} -> {cof_const C T}.</a>
+<div class="proof"><a href="cc-details.html#64" class="tactic">induction on 1.</a> <a href="cc-details.html#65" class="tactic">intros.</a> <a href="cc-details.html#66" class="tactic">case H1.</a>
+  <a href="cc-details.html#67" class="tactic">search.</a></div>
+
+<span class="comment">% Accumulate the variables in the source context</span>
+<a href="cc-details.html#68" class="command">Define vars_of_sctx : olist -> tm_list -> prop by
+  vars_of_sctx nil tl_nil;
+  vars_of_sctx (of X T :: L) (tl_cons X Vs) := vars_of_sctx L Vs.</a>
+
+<span class="comment">% Context for typing in the target language</span>
+<a href="cc-details.html#69" class="command">Define cctx : olist -> prop by
+  cctx nil;
+  nabla x, cctx (cof x T :: L) := cctx L;
+  nabla f env, cctx (cof f (code (product T1 TE) T) :: cof env TE :: L) := cctx L.</a>
+
+<span class="comment">% The typing rule for the mapping from source variables to closure converted terms</span>
+<a href="cc-details.html#70" class="command">Define of_ml : olist -> map_list -> olist -> prop by
+  of_ml CL ml_nil nil;
+  of_ml CL (ml_cons (map X M) ML) (of X T :: SL) :=
+	tname X /\ {CL |- cof M T} /\ of_ml CL ML SL.</a>
+
+<a href="cc-details.html#71" class="command">Theorem of_ml_exists : forall CL ML SL X M,
+   of_ml CL ML SL -> {ml_member (map X M) ML} -> exists T, member (of X T) SL.</a>
+<div class="proof">   <a href="cc-details.html#72" class="tactic">induction on 1.</a> <a href="cc-details.html#73" class="tactic">intros.</a> <a href="cc-details.html#74" class="tactic">case H1.</a>
+     <a href="cc-details.html#75" class="tactic">case H2.</a>
+     <a href="cc-details.html#76" class="tactic">case H2.</a> <a href="cc-details.html#77" class="tactic">search.</a> <a href="cc-details.html#78" class="tactic">apply IH to H5 H6.</a> <a href="cc-details.html#79" class="tactic">search.</a></div>
+<a href="cc-details.html#80" class="command">Theorem of_ml_member_type : forall CL Map SL X M T,
+  sctx' SL -> of_ml CL Map SL -> {ml_member (map X M) Map} ->
+     member (of X T) SL -> {CL |- cof M T}.</a>
+<div class="proof">   <a href="cc-details.html#81" class="tactic">induction on 2.</a> <a href="cc-details.html#82" class="tactic">intros.</a> <a href="cc-details.html#83" class="tactic">case H2.</a>
+      <a href="cc-details.html#84" class="tactic">case H4.</a>
+      <a href="cc-details.html#85" class="tactic">case H1 (keep).</a> <a href="cc-details.html#86" class="tactic">case H3.</a> <a href="cc-details.html#87" class="tactic">case H4.</a>
+	  <a href="cc-details.html#88" class="tactic">search.</a>
+	  <a href="cc-details.html#89" class="tactic">apply H10 to H11.</a> <a href="cc-details.html#90" class="tactic">search.</a>
+	  <a href="cc-details.html#91" class="tactic">apply of_ml_exists to H7 H11.</a> <a href="cc-details.html#92" class="tactic">apply IH to H8 H7 H11 H12.</a>
+ 	    <a href="cc-details.html#93" class="tactic">assert (member (of X T2) (of X1 T1 :: SL1)).</a> <a href="cc-details.html#94" class="tactic">apply sctx'_equal to H1 H4 H14.</a> <a href="cc-details.html#95" class="tactic">search.</a></div>
+<a href="cc-details.html#96" class="command">Theorem map_name : forall SL CL M X Map,
+  of_ml SL Map CL -> {ml_member (map X M) Map} -> tname X.</a>
+<div class="proof"><a href="cc-details.html#97" class="tactic">induction on 1.</a> <a href="cc-details.html#98" class="tactic">intros.</a> <a href="cc-details.html#99" class="tactic">case H1.</a>
+  <a href="cc-details.html#100" class="tactic">case H2.</a>
+  <a href="cc-details.html#101" class="tactic">case H2.</a> <a href="cc-details.html#102" class="tactic">search.</a> <a href="cc-details.html#103" class="tactic">apply IH to H5 H6.</a> <a href="cc-details.html#104" class="tactic">search.</a></div>
+<a href="cc-details.html#105" class="command">Theorem map_rst : forall M SL X T RT,
+   of_ml (cof (rst X) RT :: nil) M SL ->  of_ml (cof X (product T RT) :: nil) M SL.</a>
+<div class="proof">  <a href="cc-details.html#106" class="tactic">induction on 1.</a> <a href="cc-details.html#107" class="tactic">intros.</a> <a href="cc-details.html#108" class="tactic">case H1.</a>
+    <a href="cc-details.html#109" class="tactic">search.</a>
+    <a href="cc-details.html#110" class="tactic">assert {cof X (product T RT) |- cof (rst X) RT}.</a>
+     <a href="cc-details.html#111" class="tactic">cut H3 with H5.</a>
+     <a href="cc-details.html#112" class="tactic">apply IH to H4 with T = T.</a>
+     <a href="cc-details.html#113" class="tactic">search.</a></div>
+<a href="cc-details.html#114" class="command">Theorem of_ml_extend_cctx : forall CL Map SL X,
+   of_ml CL Map SL -> of_ml (X :: CL) Map SL.</a>
+<div class="proof">   <a href="cc-details.html#115" class="tactic">induction on 1.</a> <a href="cc-details.html#116" class="tactic">intros.</a> <a href="cc-details.html#117" class="tactic">case H1.</a>
+     <a href="cc-details.html#118" class="tactic">search.</a>
+     <a href="cc-details.html#119" class="tactic">assert {CL, X |- cof M T}.</a> <a href="cc-details.html#120" class="tactic">apply IH to H4 with X = X.</a> <a href="cc-details.html#121" class="tactic">search.</a></div>
+<a href="cc-details.html#122" class="command">Theorem of_ml_extend_map : forall CL Map SL X Y T,
+   of_ml CL Map SL -> tname X ->
+     of_ml (cof Y T :: CL) (ml_cons (map X Y) Map) (of X T :: SL).</a>
+<div class="proof">   <a href="cc-details.html#123" class="tactic">intros.</a> <a href="cc-details.html#124" class="tactic">unfold.</a>
+     <a href="cc-details.html#125" class="tactic">search.</a>
+     <a href="cc-details.html#126" class="tactic">search.</a>
+     <a href="cc-details.html#127" class="tactic">apply of_ml_extend_cctx to H1 with X = cof Y T.</a> <a href="cc-details.html#128" class="tactic">search.</a></div>
+
+<a href="cc-details.html#129" class="command">Define bvars : olist -> prop by
+   bvars nil;
+   nabla x, bvars (notfree x :: L) := bvars L.</a>
+
+<a href="cc-details.html#130" class="command">Theorem bvars_mem : forall BVs E,
+  bvars BVs -> member E BVs -> exists X, E = notfree X /\ tname X.</a>
+<div class="proof">   <a href="cc-details.html#131" class="tactic">induction on 1.</a> <a href="cc-details.html#132" class="tactic">intros.</a> <a href="cc-details.html#133" class="tactic">case H1.</a>
+    <a href="cc-details.html#134" class="tactic">case H2.</a>
+    <a href="cc-details.html#135" class="tactic">case H2.</a> <a href="cc-details.html#136" class="tactic">exists n1.</a> <a href="cc-details.html#137" class="tactic">split.</a> <a href="cc-details.html#138" class="tactic">search.</a> <a href="cc-details.html#139" class="tactic">search.</a>
+    <a href="cc-details.html#140" class="tactic">apply IH to H3 H4.</a> <a href="cc-details.html#141" class="tactic">exists (X n1).</a> <a href="cc-details.html#142" class="tactic">split.</a> <a href="cc-details.html#143" class="tactic">search.</a> <a href="cc-details.html#144" class="tactic">search.</a></div>
+<a href="cc-details.html#145" class="command">Theorem vars_of_sctx_mem_name : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs -> {tl_member X Vs} -> tname X.</a>
+<div class="proof"><a href="cc-details.html#146" class="tactic">induction on 1.</a> <a href="cc-details.html#147" class="tactic">intros.</a> <a href="cc-details.html#148" class="tactic">case H1.</a>
+  <a href="cc-details.html#149" class="tactic">case H2.</a> <a href="cc-details.html#150" class="tactic">case H3.</a> 
+  <a href="cc-details.html#151" class="tactic">case H2.</a> <a href="cc-details.html#152" class="tactic">case H3.</a> <a href="cc-details.html#153" class="tactic">search.</a> <a href="cc-details.html#154" class="tactic">apply IH to H4 H7 H8.</a> <a href="cc-details.html#155" class="tactic">search.</a></div> 
+<a href="cc-details.html#156" class="command">Theorem vars_of_sctx_mem_exists : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs -> 
+	{tl_member X Vs} -> exists T, member (of X T) SL.</a>
+<div class="proof">  <a href="cc-details.html#157" class="tactic">induction on 1.</a> <a href="cc-details.html#158" class="tactic">intros.</a> <a href="cc-details.html#159" class="tactic">case H1.</a>
+    <a href="cc-details.html#160" class="tactic">case H2.</a> <a href="cc-details.html#161" class="tactic">case H3.</a> 
+    <a href="cc-details.html#162" class="tactic">case H2.</a> <a href="cc-details.html#163" class="tactic">case H3.</a>
+     <a href="cc-details.html#164" class="tactic">search.</a>
+     <a href="cc-details.html#165" class="tactic">apply IH to H4 H7 H8.</a> <a href="cc-details.html#166" class="tactic">search.</a></div>
+<a href="cc-details.html#167" class="command">Theorem bvars_notfree : forall BVs X,
+   bvars BVs -> {BVs |- notfree X} -> tname X.</a>
+<div class="proof">   <a href="cc-details.html#168" class="tactic">intros.</a> <a href="cc-details.html#169" class="tactic">case H2.</a> <a href="cc-details.html#170" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#171" class="tactic">case H3.</a> <a href="cc-details.html#172" class="tactic">search.</a></div>
+<a href="cc-details.html#173" class="command">Define subset : tm_list -> tm_list -> prop by
+   subset tl_nil L;
+   subset (tl_cons X L1) L2 := {tl_member X L2} /\ subset L1 L2.</a>
+
+<a href="cc-details.html#174" class="command">Define islist : tm_list -> prop by
+   islist tl_nil;
+   islist (tl_cons X L) := islist L.</a>
+
+<a href="cc-details.html#175" class="command">Theorem combine_islist : forall L1 L2 L3,
+   islist L1 -> islist L2 -> {combine L1 L2 L3} -> islist L3.</a>
+<div class="proof">   <a href="cc-details.html#176" class="tactic">induction on 3.</a> <a href="cc-details.html#177" class="tactic">intros.</a> <a href="cc-details.html#178" class="tactic">case H3.</a>
+     <a href="cc-details.html#179" class="tactic">search.</a>
+     <a href="cc-details.html#180" class="tactic">case H1.</a> <a href="cc-details.html#181" class="tactic">apply IH to H6 H2 H5.</a> <a href="cc-details.html#182" class="tactic">search.</a>
+     <a href="cc-details.html#183" class="tactic">case H1.</a> <a href="cc-details.html#184" class="tactic">apply IH to H5 H2 H4.</a> <a href="cc-details.html#185" class="tactic">search.</a></div>
+<a href="cc-details.html#186" class="command">Theorem tl_mem_bvar : forall Ps X L,
+  bvars Ps -> {Ps |- tl_member X L} -> {tl_member X L}.</a>
+<div class="proof"><a href="cc-details.html#187" class="tactic">induction on 2.</a> <a href="cc-details.html#188" class="tactic">intros.</a> <a href="cc-details.html#189" class="tactic">case H2.</a>
+  <a href="cc-details.html#190" class="tactic">search.</a>
+  <a href="cc-details.html#191" class="tactic">apply IH to H1 H3.</a> <a href="cc-details.html#192" class="tactic">search.</a>
+  <a href="cc-details.html#193" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#194" class="tactic">case H3.</a></div>
+<a href="cc-details.html#195" class="command">Theorem combine_bvar : forall L1 L2 L3 Ps,
+  bvars Ps -> {Ps |- combine L1 L2 L3} -> {combine L1 L2 L3}.</a>
+<div class="proof"><a href="cc-details.html#196" class="tactic">induction on 2.</a> <a href="cc-details.html#197" class="tactic">intros.</a> <a href="cc-details.html#198" class="tactic">case H2.</a>
+  <a href="cc-details.html#199" class="tactic">search.</a>
+  <a href="cc-details.html#200" class="tactic">apply IH to H1 H4.</a> <a href="cc-details.html#201" class="tactic">apply tl_mem_bvar to H1 H3.</a> <a href="cc-details.html#202" class="tactic">search.</a>
+  <a href="cc-details.html#203" class="tactic">apply IH to H1 H3.</a> <a href="cc-details.html#204" class="tactic">search.</a> <a href="cc-details.html#205" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#206" class="tactic">case H3.</a></div>
+  
+<span class="comment">% members of a set are also members of a superset</span>
+<a href="cc-details.html#207" class="command">Theorem subset_mem : forall L1 L2 X,
+   subset L1 L2 -> {tl_member X L1} -> {tl_member X L2}.</a>
+<div class="proof">   <a href="cc-details.html#208" class="tactic">induction on 2.</a> <a href="cc-details.html#209" class="tactic">intros.</a> <a href="cc-details.html#210" class="tactic">case H2.</a>
+     <a href="cc-details.html#211" class="tactic">case H1.</a> <a href="cc-details.html#212" class="tactic">search.</a> 
+     <a href="cc-details.html#213" class="tactic">case H1.</a> <a href="cc-details.html#214" class="tactic">apply IH to H5 H3.</a> <a href="cc-details.html#215" class="tactic">search.</a></div>
+<span class="comment">% subset is preserved under additions to superset</span>
+<a href="cc-details.html#216" class="command">Theorem subset_one : forall L1 L2 X,
+   islist L1 -> subset L1 L2 -> subset L1 (tl_cons X L2).</a>
+<div class="proof">   <a href="cc-details.html#217" class="tactic">induction on 1.</a> <a href="cc-details.html#218" class="tactic">intros.</a> <a href="cc-details.html#219" class="tactic">case H1.</a>
+    <a href="cc-details.html#220" class="tactic">search.</a> <a href="cc-details.html#221" class="tactic">case H2.</a> <a href="cc-details.html#222" class="tactic">apply IH to H3 H5 with X = X.</a> <a href="cc-details.html#223" class="tactic">unfold.</a> <a href="cc-details.html#224" class="tactic">search.</a> <a href="cc-details.html#225" class="tactic">search.</a></div>
+<span class="comment">% subset is reflexive</span>
+<a href="cc-details.html#226" class="command">Theorem subset_refl : forall L,
+   islist L -> subset L L.</a>
+<div class="proof">   <a href="cc-details.html#227" class="tactic">induction on 1.</a> <a href="cc-details.html#228" class="tactic">intros.</a> <a href="cc-details.html#229" class="tactic">case H1 (keep).</a>
+     <a href="cc-details.html#230" class="tactic">search.</a>
+     <a href="cc-details.html#231" class="tactic">unfold.</a>
+       <a href="cc-details.html#232" class="tactic">search.</a>
+       <a href="cc-details.html#233" class="tactic">apply IH to H2.</a>
+	 <a href="cc-details.html#234" class="tactic">apply subset_one to H2 H3 with X = X.</a> <a href="cc-details.html#235" class="tactic">search.</a></div>
+<span class="comment">% subset is transitive</span>
+<a href="cc-details.html#236" class="command">Theorem subset_trans : forall L1 L2 L3,
+   subset L1 L2 -> subset L2 L3 -> subset L1 L3.</a>
+<div class="proof">   <a href="cc-details.html#237" class="tactic">induction on 1.</a> <a href="cc-details.html#238" class="tactic">intros.</a> <a href="cc-details.html#239" class="tactic">case H1.</a>
+     <a href="cc-details.html#240" class="tactic">search.</a>
+     <a href="cc-details.html#241" class="tactic">unfold.</a>
+       <a href="cc-details.html#242" class="tactic">apply subset_mem to H2 H3.</a> <a href="cc-details.html#243" class="tactic">search.</a>
+       <a href="cc-details.html#244" class="tactic">apply IH to H4 H2.</a> <a href="cc-details.html#245" class="tactic">search.</a></div>
+<span class="comment">% If L3 is obtained by combining something wit L2 then L2 is a subset of L3</span>
+<a href="cc-details.html#246" class="command">Theorem combine_subset1 : forall L1 L2 L3,
+   islist L2 -> {combine L1 L2 L3} -> subset L2 L3.</a>
+<div class="proof">   <a href="cc-details.html#247" class="tactic">induction on 2.</a> <a href="cc-details.html#248" class="tactic">intros.</a> <a href="cc-details.html#249" class="tactic">case H2.</a>
+     <a href="cc-details.html#250" class="tactic">apply subset_refl to H1.</a> <a href="cc-details.html#251" class="tactic">search.</a>
+     <a href="cc-details.html#252" class="tactic">apply IH to H1 H4 with L1 = Fvs1.</a> <a href="cc-details.html#253" class="tactic">search.</a>
+     <a href="cc-details.html#254" class="tactic">apply IH to H1 H3 with L1 = Fvs1.</a> <a href="cc-details.html#255" class="tactic">apply subset_one to H1 H4 with X = X.</a> <a href="cc-details.html#256" class="tactic">search.</a></div>
+<span class="comment">% If L3 is obtained by combining L1 with something then L1 is a subset of L3</span>
+<a href="cc-details.html#257" class="command">Theorem combine_subset2 : forall L1 L2 L3,
+   islist L1 -> islist L2
+      -> {combine L1 L2 L3} -> subset L1 L3.</a>
+<div class="proof">   <a href="cc-details.html#258" class="tactic">induction on 3.</a> <a href="cc-details.html#259" class="tactic">intros.</a> <a href="cc-details.html#260" class="tactic">case H3.</a>
+     <a href="cc-details.html#261" class="tactic">search.</a>
+     <a href="cc-details.html#262" class="tactic">apply combine_subset1 to H2 H5.</a> 
+       <a href="cc-details.html#263" class="tactic">apply subset_mem to H6 H4.</a> 
+       <a href="cc-details.html#264" class="tactic">case H1.</a> <a href="cc-details.html#265" class="tactic">apply IH to H8 H2 H5.</a> <a href="cc-details.html#266" class="tactic">search.</a>
+     <a href="cc-details.html#267" class="tactic">case H1.</a> <a href="cc-details.html#268" class="tactic">apply IH to H5 H2 H4.</a>
+       <a href="cc-details.html#269" class="tactic">apply subset_one to H5 H6 with X = X.</a> <a href="cc-details.html#270" class="tactic">search.</a></div>
+<span class="comment">% If L1 and L3 are subsets of L4 then their combination is too</span>
+<a href="cc-details.html#271" class="command">Theorem subset_combine : forall L1 L2 L3 L4,
+    islist L1 -> islist L2 -> {combine L1 L2 L3} ->
+       subset L1 L4 -> subset L2 L4 -> subset L3 L4.</a>
+<div class="proof">    <a href="cc-details.html#272" class="tactic">induction on 3.</a> <a href="cc-details.html#273" class="tactic">intros.</a> <a href="cc-details.html#274" class="tactic">case H3.</a>
+      <a href="cc-details.html#275" class="tactic">search.</a>
+      <a href="cc-details.html#276" class="tactic">case H1.</a> <a href="cc-details.html#277" class="tactic">case H4.</a> <a href="cc-details.html#278" class="tactic">apply IH to H8 H2 H7 H10 H5.</a> <a href="cc-details.html#279" class="tactic">search.</a>
+      <a href="cc-details.html#280" class="tactic">case H4.</a> <a href="cc-details.html#281" class="tactic">unfold.</a>
+	<a href="cc-details.html#282" class="tactic">search.</a>
+	<a href="cc-details.html#283" class="tactic">case H1.</a> <a href="cc-details.html#284" class="tactic">apply IH to H9 H2 H6 H8 H5.</a> <a href="cc-details.html#285" class="tactic">search.</a></div>
+<a href="cc-details.html#286" class="command">Theorem fvars_islist : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> islist Vs'.</a>
+<div class="proof">  <a href="cc-details.html#287" class="tactic">induction on 2.</a> <a href="cc-details.html#288" class="tactic">intros.</a> <a href="cc-details.html#289" class="tactic">case H2.</a>
+   <a href="cc-details.html#290" class="tactic">search.</a>
+   <a href="cc-details.html#291" class="tactic">search.</a>
+   <a href="cc-details.html#292" class="tactic">search.</a>
+   <a href="cc-details.html#293" class="tactic">search.</a>
+   <a href="cc-details.html#294" class="tactic">apply IH to H1 H3.</a> <a href="cc-details.html#295" class="tactic">apply IH to H1 H4.</a> <a href="cc-details.html#296" class="tactic">apply combine_bvar to H1 H5.</a> 
+     <a href="cc-details.html#297" class="tactic">apply combine_islist to H6 H7 H8.</a> <a href="cc-details.html#298" class="tactic">search.</a>
+   <a href="cc-details.html#299" class="tactic">assert (bvars (notfree n1 :: Ps)).</a> <a href="cc-details.html#300" class="tactic">apply IH to H4 H3.</a> <a href="cc-details.html#301" class="tactic">search.</a>
+   <a href="cc-details.html#302" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#303" class="tactic">case H3.</a></div>
+<span class="comment">% Computed free variables form a subset of all externally bound variables</span>
+<a href="cc-details.html#304" class="command">Theorem fvars_subset : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> subset Vs' Vs.</a>
+<div class="proof">  <a href="cc-details.html#305" class="tactic">induction on 2.</a> <a href="cc-details.html#306" class="tactic">intros.</a> <a href="cc-details.html#307" class="tactic">case H2.</a>
+    <a href="cc-details.html#308" class="tactic">search.</a>
+    <a href="cc-details.html#309" class="tactic">search.</a>
+    <a href="cc-details.html#310" class="tactic">search.</a>
+    <a href="cc-details.html#311" class="tactic">apply tl_mem_bvar to H1 H3.</a> <a href="cc-details.html#312" class="tactic">search.</a>
+    <a href="cc-details.html#313" class="tactic">apply IH to H1 H3.</a> <a href="cc-details.html#314" class="tactic">apply IH to H1 H4.</a>
+       <a href="cc-details.html#315" class="tactic">apply fvars_islist to H1 H3.</a> <a href="cc-details.html#316" class="tactic">apply fvars_islist to H1 H4.</a>
+       <a href="cc-details.html#317" class="tactic">apply combine_bvar to H1 H5.</a>
+       <a href="cc-details.html#318" class="tactic">apply subset_combine to H8 H9 H10 H6 H7.</a> <a href="cc-details.html#319" class="tactic">search.</a>
+    <a href="cc-details.html#320" class="tactic">assert (bvars (notfree n1 :: Ps)).</a> <a href="cc-details.html#321" class="tactic">apply IH to H4 H3.</a> <a href="cc-details.html#322" class="tactic">search.</a>
+    <a href="cc-details.html#323" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#324" class="tactic">case H3.</a></div>
+<span class="comment">% The starting list for finding free variables can be extended arbitrarily</span>
+<a href="cc-details.html#325" class="command">Theorem fvars_extend : forall M Vs Vs' Ps X,
+   bvars Ps -> {Ps |- fvars M Vs Vs'} -> {Ps |- fvars M (tl_cons X Vs) Vs'}.</a>
+<div class="proof">   <a href="cc-details.html#326" class="tactic">induction on 2.</a> <a href="cc-details.html#327" class="tactic">intros.</a> <a href="cc-details.html#328" class="tactic">case H2.</a>
+     <a href="cc-details.html#329" class="tactic">search.</a>
+     <a href="cc-details.html#330" class="tactic">search.</a>
+     <a href="cc-details.html#331" class="tactic">search.</a>
+     <a href="cc-details.html#332" class="tactic">search.</a>
+     <a href="cc-details.html#333" class="tactic">apply IH to H1 H3 with X = X.</a> <a href="cc-details.html#334" class="tactic">apply IH to H1 H4 with X = X.</a> <a href="cc-details.html#335" class="tactic">search.</a>
+     <a href="cc-details.html#336" class="tactic">assert (bvars (notfree n1 :: Ps)).</a> <a href="cc-details.html#337" class="tactic">apply IH to H4 H3 with X = X.</a> <a href="cc-details.html#338" class="tactic">search.</a>
+     <a href="cc-details.html#339" class="tactic">apply bvars_mem to H1 H4.</a> <a href="cc-details.html#340" class="tactic">case H3.</a></div>
+<span class="comment">% Pruning a type environment down to one based on a list of free variables</span>
+<a href="cc-details.html#341" class="command">Define pruned_env : olist -> tm_list -> olist -> olist -> prop by
+   pruned_env nil tl_nil SL nil;
+   pruned_env nil (tl_cons X FVs) SL ((of X T) :: SL') :=
+	 member (of X T) SL /\ pruned_env nil FVs SL SL';
+   nabla x, pruned_env (notfree x :: BVs) FVs (of x T :: SL) (of x T :: SL') :=
+	 pruned_env BVs FVs SL SL'.</a>
+
+<a href="cc-details.html#342" class="command">Theorem pruned_env_exists : forall SL Vs Vs',
+   sctx' SL -> vars_of_sctx SL Vs ->
+       subset Vs' Vs -> exists SL', pruned_env nil Vs' SL SL'.</a>
+<div class="proof">   <a href="cc-details.html#343" class="tactic">induction on 3.</a> <a href="cc-details.html#344" class="tactic">intros.</a> <a href="cc-details.html#345" class="tactic">case H3.</a>
+     <a href="cc-details.html#346" class="tactic">search.</a>
+     <a href="cc-details.html#347" class="tactic">apply vars_of_sctx_mem_exists to H1 H2 H4.</a>
+       <a href="cc-details.html#348" class="tactic">apply IH to H1 H2 H5.</a> <a href="cc-details.html#349" class="tactic">search.</a></div>
+<a href="cc-details.html#350" class="command">Theorem pruned_env_vars : forall FVs SL SL',
+    pruned_env nil FVs SL SL' -> vars_of_sctx SL' FVs.</a>
+<div class="proof">  <a href="cc-details.html#351" class="tactic">induction on 1.</a> <a href="cc-details.html#352" class="tactic">intros.</a> <a href="cc-details.html#353" class="tactic">case H1.</a>
+    <a href="cc-details.html#354" class="tactic">search.</a>
+    <a href="cc-details.html#355" class="tactic">apply IH to H3.</a> <a href="cc-details.html#356" class="tactic">search.</a></div>
+<a href="cc-details.html#357" class="command">Theorem pruned_env_sctx_source : forall FV SL SL' X T,
+   pruned_env nil FV SL SL' -> member (of X T) SL' -> member (of X T) SL.</a>
+<div class="proof">    <a href="cc-details.html#358" class="tactic">induction on 1.</a> <a href="cc-details.html#359" class="tactic">intros.</a> <a href="cc-details.html#360" class="tactic">case H1.</a> <a href="cc-details.html#361" class="tactic">case H2.</a> <a href="cc-details.html#362" class="tactic">case H2.</a> <a href="cc-details.html#363" class="tactic">search.</a> <a href="cc-details.html#364" class="tactic">apply IH to H4 H5.</a> <a href="cc-details.html#365" class="tactic">search.</a></div>
+<a href="cc-details.html#366" class="command">Theorem pruned_env_sctx : forall SL BVL FVs SL',
+    sctx' SL -> bvars BVL -> pruned_env BVL FVs SL SL' -> sctx' SL'.</a>
+<div class="proof">    <a href="cc-details.html#367" class="tactic">induction on 3.</a> <a href="cc-details.html#368" class="tactic">intros.</a>
+      <a href="cc-details.html#369" class="tactic">case H3.</a>
+	<a href="cc-details.html#370" class="tactic">search.</a>
+	<a href="cc-details.html#371" class="tactic">unfold.</a>
+	  <a href="cc-details.html#372" class="tactic">apply IH to H1 H2 H5.</a> <a href="cc-details.html#373" class="tactic">search.</a>
+	  <a href="cc-details.html#374" class="tactic">apply sctx'_name to H1 H4.</a> <a href="cc-details.html#375" class="tactic">search.</a>
+	  <a href="cc-details.html#376" class="tactic">intros.</a> <a href="cc-details.html#377" class="tactic">apply pruned_env_sctx_source to H5 H6.</a> <a href="cc-details.html#378" class="tactic">apply sctx'_equal to H1 H4 H7.</a> <a href="cc-details.html#379" class="tactic">search.</a>
+	  <a href="cc-details.html#380" class="tactic">unfold.</a>
+	    <a href="cc-details.html#381" class="tactic">case H1.</a> <a href="cc-details.html#382" class="tactic">case H2.</a> <a href="cc-details.html#383" class="tactic">apply IH to H5 H8 H4.</a> <a href="cc-details.html#384" class="tactic">search.</a> <a href="cc-details.html#385" class="tactic">search.</a> <a href="cc-details.html#386" class="tactic">intros.</a>
+	    <a href="cc-details.html#387" class="tactic">apply mem_of_absurd to H5.</a></div>
+<span class="comment">% Bound variables have a type in the pruned environment</span>
+<a href="cc-details.html#388" class="command">Theorem pruned_env_bound : forall BVL FVs SL SL' X T,
+    pruned_env BVL FVs SL SL' -> member (notfree X) BVL ->
+	member (of X T) SL -> member (of X T) SL'.</a>
+<div class="proof">   <a href="cc-details.html#389" class="tactic">induction on 1.</a> <a href="cc-details.html#390" class="tactic">intros.</a> <a href="cc-details.html#391" class="tactic">case H1.</a> <a href="cc-details.html#392" class="tactic">case H2.</a> <a href="cc-details.html#393" class="tactic">case H2.</a> <a href="cc-details.html#394" class="tactic">case H2.</a> <a href="cc-details.html#395" class="tactic">case H3.</a> <a href="cc-details.html#396" class="tactic">search.</a>
+     <a href="cc-details.html#397" class="tactic">apply mem_of_absurd to H5.</a> <a href="cc-details.html#398" class="tactic">case H3.</a> <a href="cc-details.html#399" class="tactic">search.</a> <a href="cc-details.html#400" class="tactic">apply IH to H4 H5 H6.</a> <a href="cc-details.html#401" class="tactic">search.</a></div>
+<span class="comment">% Free variables have a type in the pruned environment; special case</span>
+<a href="cc-details.html#402" class="command">Theorem pruned_env_free_aux : forall FVs SL SL' X T,
+    sctx' SL -> pruned_env nil FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.</a>
+<div class="proof">   <a href="cc-details.html#403" class="tactic">induction on 3.</a> <a href="cc-details.html#404" class="tactic">intros.</a> <a href="cc-details.html#405" class="tactic">case H3.</a>
+     <a href="cc-details.html#406" class="tactic">case H2.</a> <a href="cc-details.html#407" class="tactic">apply sctx'_equal to H1 H4 H5.</a> <a href="cc-details.html#408" class="tactic">search.</a>
+     <a href="cc-details.html#409" class="tactic">case H2.</a> <a href="cc-details.html#410" class="tactic">apply IH to H1 H7 H5 H4.</a> <a href="cc-details.html#411" class="tactic">search.</a></div>
+<span class="comment">% Free variables have a type in the pruned environment</span>
+<a href="cc-details.html#412" class="command">Theorem pruned_env_free : forall BVLs FVs SL SL' X T,
+    sctx' SL -> bvars BVLs -> pruned_env BVLs FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.</a>
+<div class="proof">    <a href="cc-details.html#413" class="tactic">induction on 3.</a> <a href="cc-details.html#414" class="tactic">intros.</a> <a href="cc-details.html#415" class="tactic">case H2.</a>
+      <a href="cc-details.html#416" class="tactic">apply pruned_env_free_aux to H1 H3 H4 H5.</a> <a href="cc-details.html#417" class="tactic">search.</a>
+      <a href="cc-details.html#418" class="tactic">case H3.</a> <a href="cc-details.html#419" class="tactic">case H5.</a>
+	<a href="cc-details.html#420" class="tactic">search.</a>
+	<a href="cc-details.html#421" class="tactic">assert (bvars (notfree n1 :: L)).</a> 
+	  <a href="cc-details.html#422" class="tactic">case H1.</a> <a href="cc-details.html#423" class="tactic">apply IH to H10 H6 H7 H4 H8.</a> <a href="cc-details.html#424" class="tactic">search.</a></div>
+<span class="comment">% pruned environments preserve the typing relation</span>
+<a href="cc-details.html#425" class="command">Theorem pruned_env_typing : forall SL M T FVs BVL FVs' SL' FVs'',
+    sctx' SL -> {SL |- of M T} -> vars_of_sctx SL FVs -> bvars BVL ->
+      {BVL |- fvars M FVs FVs'} -> subset FVs' FVs'' ->
+      pruned_env BVL FVs'' SL SL' -> {SL' |- of M T}.</a>
+<div class="proof">   <a href="cc-details.html#426" class="tactic">induction on 2.</a> <a href="cc-details.html#427" class="tactic">intros.</a> <a href="cc-details.html#428" class="tactic">case H2.</a>
+     <a href="cc-details.html#429" class="tactic">search.</a>
+     <a href="cc-details.html#430" class="tactic">apply of_const_sctx' to H1 H8.</a> <a href="cc-details.html#431" class="tactic">search.</a>
+     <a href="cc-details.html#432" class="tactic">case H5.</a>
+	<a href="cc-details.html#433" class="tactic">apply bvars_notfree to H4 H10.</a> <a href="cc-details.html#434" class="tactic">case H11.</a>
+	<a href="cc-details.html#435" class="tactic">apply tl_mem_bvar to H4 H10.</a> <a href="cc-details.html#436" class="tactic">apply vars_of_sctx_mem_name to H1 H3 H11.</a> <a href="cc-details.html#437" class="tactic">case H12.</a>
+	<a href="cc-details.html#438" class="tactic">apply fvars_islist to H4 H10.</a> <a href="cc-details.html#439" class="tactic">apply fvars_islist to H4 H11.</a>
+	   <a href="cc-details.html#440" class="tactic">apply combine_bvar to H4 H12.</a> <a href="cc-details.html#441" class="tactic">apply combine_islist to H13 H14 H15.</a>
+	      <a href="cc-details.html#442" class="tactic">apply combine_subset2 to H13 H14 H15.</a>
+		 <a href="cc-details.html#443" class="tactic">apply subset_trans to H17 H6.</a>
+		 <a href="cc-details.html#444" class="tactic">apply IH to H1 H8 H3 H4 H10 H18 H7.</a>
+	      <a href="cc-details.html#445" class="tactic">apply combine_subset1 to H14 H15.</a>
+		 <a href="cc-details.html#446" class="tactic">apply subset_trans to H20 H6.</a>
+		 <a href="cc-details.html#447" class="tactic">apply IH to H1 H9 H3 H4 H11 H21 H7.</a>
+	   <a href="cc-details.html#448" class="tactic">search.</a>
+	<a href="cc-details.html#449" class="tactic">apply bvars_mem to H4 H11.</a> <a href="cc-details.html#450" class="tactic">case H10.</a>
+     <a href="cc-details.html#451" class="tactic">case H5.</a>
+	<a href="cc-details.html#452" class="tactic">apply bvars_notfree to H4 H9.</a> <a href="cc-details.html#453" class="tactic">case H10.</a>
+	<a href="cc-details.html#454" class="tactic">apply tl_mem_bvar to H4 H9.</a> <a href="cc-details.html#455" class="tactic">apply vars_of_sctx_mem_name to H1 H3 H10.</a> <a href="cc-details.html#456" class="tactic">case H11.</a>
+	  <a href="cc-details.html#457" class="tactic">assert (pruned_env (notfree n1 :: BVL) FVs'' (of n1 T1 :: SL) (of n1 T1 :: SL')).</a>
+	  <a href="cc-details.html#458" class="tactic">assert (bvars (notfree n1 :: BVL)).</a>
+	  <a href="cc-details.html#459" class="tactic">assert (vars_of_sctx (of n1 T1 :: SL) (tl_cons n1 FVs)).</a>
+	  <a href="cc-details.html#460" class="tactic">apply sctx'_extend to H1 with T = T1.</a>
+	  <a href="cc-details.html#461" class="tactic">apply fvars_extend to H11 H9 with X = n1.</a>
+	  <a href="cc-details.html#462" class="tactic">apply IH to H13 H8 H12 H11 H14 H6 H10.</a> <a href="cc-details.html#463" class="tactic">search.</a>
+	<a href="cc-details.html#464" class="tactic">apply bvars_mem to H4 H10.</a> <a href="cc-details.html#465" class="tactic">case H9.</a>
+     <a href="cc-details.html#466" class="tactic">apply sctx'_mem to H1 H9.</a> <a href="cc-details.html#467" class="tactic">case H8.</a> <a href="cc-details.html#468" class="tactic">case H10.</a>
+	<a href="cc-details.html#469" class="tactic">case H5.</a>
+	  <a href="cc-details.html#470" class="tactic">case H11.</a> <a href="cc-details.html#471" class="tactic">apply bvars_mem to H4 H13.</a> <a href="cc-details.html#472" class="tactic">case H14.</a> <a href="cc-details.html#473" class="tactic">case H12.</a>
+	    <a href="cc-details.html#474" class="tactic">apply pruned_env_bound to H7 H13 H9.</a> <a href="cc-details.html#475" class="tactic">search.</a>
+	  <a href="cc-details.html#476" class="tactic">case H6.</a> <a href="cc-details.html#477" class="tactic">apply pruned_env_free to H1 H4 H7 H12 H9.</a> <a href="cc-details.html#478" class="tactic">search.</a>
+	  <a href="cc-details.html#479" class="tactic">apply bvars_mem to H4 H12.</a> <a href="cc-details.html#480" class="tactic">case H11.</a></div>
+<span class="comment">% Reifying an environment</span>
+<a href="cc-details.html#481" class="command">Define reified_env : olist -> ty -> prop by
+   reified_env nil unit_t;
+   reified_env (of X T :: SL) (product T RT) := reified_env SL RT.</a>
+
+<a href="cc-details.html#482" class="command">Theorem reified_env_exists : forall SL,
+    sctx' SL -> exists Ty, reified_env SL Ty.</a>
+<div class="proof">   <a href="cc-details.html#483" class="tactic">induction on 1.</a> <a href="cc-details.html#484" class="tactic">intros.</a> <a href="cc-details.html#485" class="tactic">case H1.</a>
+     <a href="cc-details.html#486" class="tactic">search.</a>
+     <a href="cc-details.html#487" class="tactic">apply IH to H2.</a> <a href="cc-details.html#488" class="tactic">search.</a></div>
+<span class="comment">% Reification lemma</span>
+<a href="cc-details.html#489" class="command">Theorem pruned_env_reification_type : forall FVs SL SL' RTy Map X,
+  pruned_env nil FVs SL SL' -> sctx' SL' -> {mapvar FVs X Map}
+   -> reified_env SL' RTy -> of_ml (cof X RTy :: nil) Map SL'.</a>
+<div class="proof">  <a href="cc-details.html#490" class="tactic">induction on 1.</a> <a href="cc-details.html#491" class="tactic">intros.</a> <a href="cc-details.html#492" class="tactic">case H1.</a>
+    <a href="cc-details.html#493" class="tactic">case H3.</a> <a href="cc-details.html#494" class="tactic">search.</a>
+    <a href="cc-details.html#495" class="tactic">case H2.</a> <a href="cc-details.html#496" class="tactic">case H8.</a> <a href="cc-details.html#497" class="tactic">case H3.</a> <a href="cc-details.html#498" class="tactic">case H4.</a> <a href="cc-details.html#499" class="tactic">apply IH to H6 H7 H10 H11.</a>
+      <a href="cc-details.html#500" class="tactic">assert { cof X (product T RT) |- cof (fst X) T}.</a>
+      <a href="cc-details.html#501" class="tactic">apply map_rst to H12 with T = T.</a>
+      <a href="cc-details.html#502" class="tactic">assert { cof X (product T RT) |- cof (rst X) RT}.</a>
+      <a href="cc-details.html#503" class="tactic">search.</a></div>
+<a href="cc-details.html#504" class="command">Theorem pruned_env_reification_env : forall CL Map SL SL' Ty PE FVs,
+  sctx' SL -> of_ml CL Map SL -> pruned_env nil FVs SL SL' ->
+      reified_env SL' Ty -> {mapenv FVs Map PE} -> {CL |- cof PE Ty}.</a>
+<div class="proof">  <a href="cc-details.html#505" class="tactic">induction on 3.</a> <a href="cc-details.html#506" class="tactic">intros.</a> <a href="cc-details.html#507" class="tactic">case H3.</a>
+    <a href="cc-details.html#508" class="tactic">case H4.</a> <a href="cc-details.html#509" class="tactic">case H5.</a> <a href="cc-details.html#510" class="tactic">search.</a>
+    <a href="cc-details.html#511" class="tactic">case H5.</a> <a href="cc-details.html#512" class="tactic">case H4.</a> <a href="cc-details.html#513" class="tactic">apply of_ml_member_type to H1 H2 H8 H6.</a>
+      <a href="cc-details.html#514" class="tactic">apply IH to H1 H2 H7 H10 H9.</a> <a href="cc-details.html#515" class="tactic">search.</a></div>
+<span class="comment">% The type preservation lemma</span>
+<a href="cc-details.html#516" class="command">Theorem type_pres : forall SL CL Map M N T Vs,
+  sctx' SL -> cctx CL -> of_ml CL Map SL -> {SL |- of M T} ->
+    vars_of_sctx SL Vs -> {cc M N Map Vs} -> {CL |- cof N T}.</a>
+<div class="proof"><a href="cc-details.html#517" class="tactic">induction on 6.</a> <a href="cc-details.html#518" class="tactic">intros.</a> <a href="cc-details.html#519" class="tactic">case H6.</a>
+
+  <span class="comment">% member (map M N) Map</span>
+  <a href="cc-details.html#520" class="tactic">apply map_name to H3 H7.</a> <a href="cc-details.html#521" class="tactic">case H8.</a> <a href="cc-details.html#522" class="tactic">case H4.</a>
+    <a href="cc-details.html#523" class="tactic">apply sctx'_mem to H1 H10.</a>  <a href="cc-details.html#524" class="tactic">case H11.</a> <a href="cc-details.html#525" class="tactic">case H9.</a> <a href="cc-details.html#526" class="tactic">case H9.</a>
+     <a href="cc-details.html#527" class="tactic">apply of_ml_member_type to H1 H3 H7 H10.</a> <a href="cc-details.html#528" class="tactic">search.</a>
+
+  <span class="comment">% M = lnat _</span>
+  <a href="cc-details.html#529" class="tactic">case H4.</a>
+    <a href="cc-details.html#530" class="tactic">search.</a>
+    <a href="cc-details.html#531" class="tactic">apply sctx'_mem to H1 H8.</a> <a href="cc-details.html#532" class="tactic">case H9.</a> <a href="cc-details.html#533" class="tactic">case H7.</a>
+
+  <span class="comment">% M = abs M1</span>
+  <a href="cc-details.html#534" class="tactic">assert (bvars nil).</a>
+  <a href="cc-details.html#535" class="tactic">apply fvars_subset to H11 H7.</a> <a href="cc-details.html#536" class="tactic">apply pruned_env_exists to H1 H5 H12.</a>
+  <a href="cc-details.html#537" class="tactic">apply fvars_islist to H11 H7.</a> <a href="cc-details.html#538" class="tactic">apply subset_refl to H14.</a>
+  <a href="cc-details.html#539" class="tactic">apply pruned_env_typing to H1 H4 H5 H11 H7 H15 H13.</a>
+  <a href="cc-details.html#540" class="tactic">apply pruned_env_sctx to H1 H11 H13.</a>
+  <a href="cc-details.html#541" class="tactic">apply reified_env_exists to H17.</a>
+  <a href="cc-details.html#542" class="tactic">apply pruned_env_reification_type to H13 H17 H9 H18.</a>
+  <a href="cc-details.html#543" class="tactic">case H16.</a>
+  <a href="cc-details.html#544" class="tactic">assert (tname n1).</a> <a href="cc-details.html#545" class="tactic">apply of_ml_extend_map to H19 H21 with X = n1, Y = n2, T = T1.</a>
+  <a href="cc-details.html#546" class="tactic">apply pruned_env_vars to H13.</a> <a href="cc-details.html#547" class="tactic">assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).</a>
+  <a href="cc-details.html#548" class="tactic">apply sctx'_extend to H17 with T = T1.</a>
+  <a href="cc-details.html#549" class="tactic">assert (cctx (cof n2 T1 :: cof n3 Ty :: nil)).</a>
+  <a href="cc-details.html#550" class="tactic">apply IH to H25 H26 H22 H20 H24 H10.</a>
+  <a href="cc-details.html#551" class="tactic">assert {CL, cof n3 Ty, cof n2 T1 |- cof (P n3 n2) T2}.</a>
+  <a href="cc-details.html#552" class="tactic">apply pruned_env_reification_env to H1 H3 H13 H18 H8.</a>
+  <a href="cc-details.html#553" class="tactic">search 10.</a>
+
+  <a href="cc-details.html#554" class="tactic">apply sctx'_mem to H17 H21.</a> <a href="cc-details.html#555" class="tactic">case H22.</a> <a href="cc-details.html#556" class="tactic">case H20.</a>
+
+  <span class="comment">% M = (app M1 M2)</span>
+  <a href="cc-details.html#557" class="tactic">case H4.</a>
+  <a href="cc-details.html#558" class="tactic">apply IH to H1 H2 H3 H9 H5 H7.</a>
+  <a href="cc-details.html#559" class="tactic">apply IH to H1 H2 H3 H10 H5 H8.</a>
+  <a href="cc-details.html#560" class="tactic">search.</a>
+
+  <a href="cc-details.html#561" class="tactic">apply sctx'_mem to H1 H10.</a> <a href="cc-details.html#562" class="tactic">case H11.</a> <a href="cc-details.html#563" class="tactic">case H9.</a>
+
+  <span class="comment">% M = (cst C)</span>
+  <a href="cc-details.html#564" class="tactic">case H4.</a> <a href="cc-details.html#565" class="tactic">apply of_const_sctx' to H1 H7.</a>
+    <a href="cc-details.html#566" class="tactic">apply presv_const_typ to H8.</a> <a href="cc-details.html#567" class="tactic">search.</a>
+
+  <a href="cc-details.html#568" class="tactic">apply sctx'_mem to H1 H8.</a> <a href="cc-details.html#569" class="tactic">case H7.</a> <a href="cc-details.html#570" class="tactic">case H9.</a></div>
+<a href="cc-details.html#571" class="command">Theorem type_pres' : forall M N T,
+  {of M T} -> {cc' M N} -> {cof N T}.</a>
+<div class="proof"><a href="cc-details.html#572" class="tactic">intros.</a> <a href="cc-details.html#573" class="tactic">case H2.</a> <a href="cc-details.html#574" class="tactic">apply type_pres to _ _ _ H1 _ H3.</a> <a href="cc-details.html#575" class="tactic">search.</a></div>
+
+<a href="cc-details.html#576" class="command">Define name_map : map_list -> prop by
+  name_map ml_nil;
+  name_map (ml_cons (map X V) ML) := 
+    name_map ML /\ tname X.</a>
+
+<a href="cc-details.html#577" class="command">Theorem name_map_nominal : forall Map X V,
+  name_map Map -> {ml_member (map X V) Map} -> tname X.</a>
+<div class="proof"><a href="cc-details.html#578" class="tactic">induction on 1.</a> <a href="cc-details.html#579" class="tactic">intros.</a> <a href="cc-details.html#580" class="tactic">case H1.</a>
+  <a href="cc-details.html#581" class="tactic">case H2.</a>
+  <a href="cc-details.html#582" class="tactic">case H2.</a> <a href="cc-details.html#583" class="tactic">search.</a> <a href="cc-details.html#584" class="tactic">apply IH to H3 H5.</a> <a href="cc-details.html#585" class="tactic">search.</a></div>
+
+<span class="comment">% Function part in a closure is closed</span>
+<a href="cc-details.html#586" class="command">Theorem clos_closed : forall SL Map R F E T1 T2 Vs,
+  sctx' SL -> name_map Map -> {SL |- of (abs R) (arr T1 T2)} ->
+    vars_of_sctx SL Vs -> {cc (abs R) (cpair F E) Map Vs} -> 
+      exists TE, {cof F (code (product T1 TE) T2)}.</a>
+<div class="proof"><a href="cc-details.html#587" class="tactic">intros.</a> <a href="cc-details.html#588" class="tactic">case H5.</a>
+  <a href="cc-details.html#589" class="tactic">apply name_map_nominal to H2 H6.</a> <a href="cc-details.html#590" class="tactic">case H7.</a>
+  <span class="comment">%%%</span>
+  <a href="cc-details.html#591" class="tactic">assert (bvars nil).</a>
+  <a href="cc-details.html#592" class="tactic">apply fvars_subset to H10 H6.</a> <a href="cc-details.html#593" class="tactic">apply pruned_env_exists to H1 H4 H11.</a>
+  <a href="cc-details.html#594" class="tactic">apply fvars_islist to H10 H6.</a> <a href="cc-details.html#595" class="tactic">apply subset_refl to H13.</a>
+  <a href="cc-details.html#596" class="tactic">apply pruned_env_typing to H1 H3 H4 H10 H6 H14 H12.</a>
+  <a href="cc-details.html#597" class="tactic">apply pruned_env_sctx to H1 H10 H12.</a>
+  <a href="cc-details.html#598" class="tactic">apply reified_env_exists to H16.</a>
+  <a href="cc-details.html#599" class="tactic">apply pruned_env_reification_type to H12 H16 H8 H17.</a>
+  <a href="cc-details.html#600" class="tactic">case H15.</a>
+  <a href="cc-details.html#601" class="tactic">assert (tname n1).</a> <a href="cc-details.html#602" class="tactic">apply of_ml_extend_map to H18 H20 with X = n1, Y = n2, T = T1.</a>
+  <a href="cc-details.html#603" class="tactic">apply pruned_env_vars to H12.</a> <a href="cc-details.html#604" class="tactic">assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).</a>
+  <a href="cc-details.html#605" class="tactic">apply sctx'_extend to H16 with T = T1.</a>
+  <a href="cc-details.html#606" class="tactic">assert (cctx (cof n2 T1 :: cof n3 Ty :: nil)).</a>
+  <a href="cc-details.html#607" class="tactic">apply type_pres to H24 H25 H21 H19 H23 H9.</a>
+  <a href="cc-details.html#608" class="tactic">search.</a>
+  <span class="comment">%%%</span>
+  <a href="cc-details.html#609" class="tactic">apply sctx'_mem to H16 H20.</a> <a href="cc-details.html#610" class="tactic">case H19.</a> <a href="cc-details.html#611" class="tactic">case H21.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

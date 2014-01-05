@@ -1,0 +1,1517 @@
+Specification "cc_alt_sim".
+
+Close nat, tm, tm_list, ctm, ctm_list, ty.
+
+Theorem eq_ml_member : forall (A:map_list) B X,
+  A = B -> {ml_member X A} -> {ml_member X B}.
+intros. case H1. search.
+
+Theorem eq_inst_eval : forall (A : ctm -> ctm) B C V, nabla x,
+  A x = B x -> {evalcc (B C) V} -> {evalcc (A C) V}.
+intros. case H1. search.
+
+
+Theorem addnum_det : forall N1 N2 N3 N4,
+  {addnum N1 N2 N3} -> {addnum N1 N2 N4} -> N3 = N4.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.
+
+
+Define tname : tm -> prop by
+  nabla n, tname n.
+
+Define ctname : ctm -> prop by
+  nabla n, ctname n.
+
+Define fresh_tm : tm -> tm -> prop by
+  nabla x, fresh_tm x M.
+
+Define fresh_tm_tm : tm -> (tm -> tm) -> prop by
+  nabla x, fresh_tm_tm x M.
+
+Define fresh_ctm_ctm : ctm -> (ctm -> ctm) -> prop by
+  nabla x, fresh_ctm_ctm x M.
+
+%GN What is this doing? Needs to be documented.
+Define fresh_ctm_ml : ctm -> ctm -> (ctm -> map_list) -> prop by
+  nabla x, fresh_ctm_ml x (M x) N.
+
+
+Define fresh_smap_list : tm -> smap_list -> prop by
+  fresh_smap_list M sml_nil;
+  nabla x, fresh_smap_list M (sml_cons (smap x V) (ML x)) :=
+    nabla x, fresh_smap_list M (ML x).
+
+Define fresh_tmctx : tm -> olist -> prop by
+  nabla x, fresh_tmctx x L.
+
+
+Theorem member_prune_tm : forall M L, nabla (x:tm),
+  member (M x) L -> exists M', M = y\M'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem member_prune_ctm : forall M L, nabla (x:ctm),
+  member (M x) L -> exists M', M = y\M'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem mem_of_absurd : forall T L, nabla x,
+  member (of x T) L -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+Theorem mem_of_absurd' : forall T L, nabla x,
+  member (cof x T) L -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+Theorem sml_mem_absurd : forall V ML, nabla x,
+  {sml_member (smap x (V x)) ML} -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+Theorem cml_mem_absurd : forall V ML, nabla x,
+  {cml_member (cmap x (V x)) ML} -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+Theorem ml_member_prune1 : forall E E' Map, nabla (x:tm),
+  {ml_member (map (E x) E') Map} -> exists E1, E = y\E1.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem ml_member_prune2 : forall E E' Map, nabla (x:ctm),
+  {ml_member (map E (E' x)) Map} -> exists E1', E' = y\E1'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+
+Theorem eq_map_list_inv : forall (A: ctm -> ctm -> map_list) B, nabla (x:ctm),
+  A x = B x -> A = B.
+intros. case H1. search.
+
+Theorem eq_map_list_rewrite : forall (A: ctm -> ctm -> map_list) B X,
+   A = B -> (z1\z2\ml_cons (map X (fst z2)) (A z1 z2)) = (y\z2\ml_cons (map X (fst z2)) (B y z2)).
+intros. case H1. search.
+
+Theorem mapvar_prune : forall FVs ML, nabla (x:ctm),
+  {mapvar FVs (ML x)} -> exists ML', ML = y\ML'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H3. case H2.
+    exists (z2\ml_cons (map X (fst z2)) (ML' (rst z2))).
+    apply eq_map_list_inv to H4.
+    backchain eq_map_list_rewrite.
+
+
+
+Define tmctx : olist -> prop by
+  tmctx nil;
+  nabla x, tmctx (tm x :: L x) := nabla x, tmctx (L x).
+
+Define ctmctx : olist -> prop by
+  ctmctx nil;
+  nabla x, ctmctx (ctm x :: L x) := nabla x, ctmctx (L x).
+
+Theorem tmctx_mem : forall L E,
+  tmctx L -> member E L -> exists X, E = tm X /\ tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem ctmctx_mem : forall L E,
+  ctmctx L -> member E L -> exists X, E = ctm X /\ ctname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H4. search.
+
+
+% closed terms do not contain nominal constants
+Theorem closed_tm_prune_aux : forall M L, nabla (x:tm),
+  tmctx L -> {L |- tm (M x)} -> exists M', M = y\ M'.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to _ H3. search.
+  apply tmctx_mem to H1 H4. case H3. apply member_prune_tm to H4. search.
+
+Theorem closed_tm_prune : forall M, nabla (x:tm),
+  {tm (M x)} -> exists M', M = y\ M'.
+intros. apply closed_tm_prune_aux to _ H1. search.
+
+Theorem closed_ctm_prune_aux : forall M L, nabla (x:ctm),
+  ctmctx L -> {L |- ctm (M x)} -> exists M', M = y\ M'.
+induction on 2. intros. case H2.
+  search.
+  search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to _ H4. search.
+  apply IH to H1 H3. search.
+  apply IH to H1 H3. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to _ H3. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to _ H4. search.
+  apply ctmctx_mem to H1 H4. case H3. apply member_prune_ctm to H4. search.
+
+Theorem closed_ctm_prune : forall M, nabla (x:ctm),
+  {ctm (M x)} -> exists M', M = y\ M'.
+intros. apply closed_ctm_prune_aux to _ H1. search.
+
+
+Define tmctx_rst : o -> olist -> olist -> prop by
+  nabla x, tmctx_rst (tm x) nil nil;
+  nabla x, tmctx_rst (tm x) (tm x :: L x) L' :=
+    nabla x, tmctx_rst (tm x) (L x) L';
+  nabla x, tmctx_rst (tm x) (tm Y :: L x) (tm Y :: L') :=
+    nabla x, tmctx_rst (tm x) (L x) L'.
+
+Theorem tmctx_rst_mem_inv : forall X L L' E,
+  tmctx_rst X L L' -> member E L' -> member E L.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H3 H2. search.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem tmctx_rst_exists : forall L, nabla x,
+  tmctx (L x) -> exists L', tmctx_rst (tm x) (L x) L' /\ fresh_tmctx x L'.
+induction on 1. intros. case H1.
+  search. apply IH to H2. case H4. search.
+  apply IH to H2. case H4. search.
+
+Theorem tmctx_rst_pres : forall L L', nabla x,
+  tmctx (L x) -> tmctx_rst (tm x) (L x) L' -> tmctx L'.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.
+  case H2. apply IH to H3 H4. search.
+
+Theorem tmctx_rst_mem_str : forall L L' X, nabla x,
+  tmctx_rst (tm x) (L x) L' -> member (tm X) (L x) -> member (tm X) L'.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. apply IH to H3 H4. search.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem tm_strenghten : forall L L' M, nabla x,
+  tmctx (L x) -> {L x |- tm M} -> tmctx_rst (tm x) (L x) L' -> {L' |- tm M}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H4 H3. apply IH to H1 H5 H3. search.
+  apply IH to H1 H4 H3. apply IH to H1 H5 H3. search.
+  assert tmctx (tm n2 :: L n1).
+    assert tmctx_rst (tm n1) (tm n2 :: L n1) (tm n2 :: L').
+    apply IH to H5 H4 H6. search.
+  apply tmctx_mem to H1 H5. case H4. case H6.
+    apply tmctx_rst_mem_str to H3 H5. search.
+
+
+Theorem tm_cut : forall L M L' V, nabla x,
+  tmctx (L x) -> {L x |- tm (M x)} ->
+  tmctx_rst (tm x) (L x) L' -> {tm V} -> {L' |- tm (M V)}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H5 H3 H4. apply IH to H1 H6 H3 H4. search.
+  apply IH to H1 H5 H3 H4. apply IH to H1 H6 H3 H4. search.
+  apply IH to _ H5 _ H4. search.
+  apply tmctx_mem to H1 H6. case H5. case H7.
+    apply tmctx_rst_mem_str to H3 H6. search. search.
+
+
+% Definitions for environments
+% element in the environment
+Define env_elem_aux : (ctm -> ctm) -> prop by
+  env_elem_aux (x\x);
+  env_elem_aux (x\ rst (R x)) := env_elem_aux R.
+
+Define env_elem : (ctm -> ctm) -> prop by
+  env_elem (x\ fst (R x)) := env_elem_aux R.
+
+% environment mapping
+Define env_map : (ctm -> map_list) -> prop by
+  env_map (x\ml_nil);
+  env_map (x\ml_cons (map X (V x)) (ML x)) :=
+    env_map ML /\ env_elem V.
+
+Theorem env_elem_aux_closed : forall E, nabla (x:ctm),
+  env_elem_aux (E x) -> exists E', E = y\E'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem env_elem_closed : forall E, nabla (x:ctm),
+  env_elem (E x) -> exists E', E = y\E'.
+intros. case H1. apply env_elem_aux_closed to H2. search.
+
+Theorem env_elem_aux_extend : forall E,
+  env_elem_aux E -> env_elem_aux (x\ E (rst x)).
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem env_elem_extend : forall E,
+  env_elem E -> env_elem (x\ E (rst x)).
+intros. case H1. apply env_elem_aux_extend to H2. search.
+
+Theorem mapvar_mem : forall FVs Map X E Env, nabla x,
+  {mapvar FVs Map} -> {ml_member (map X E) (Map Env)} ->
+    exists E', E = E' Env /\ env_elem E' /\ {ml_member (map X (E' x)) (Map x)}.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    exists (x\fst x). search.
+    apply IH to H3 H4. apply env_elem_closed to H6. exists (x\ E'1 (rst x)).
+    split.
+      search.
+      apply env_elem_extend to H6. search.
+      inst H7 with n1 = rst n1. search.
+
+Theorem env_map_rst : forall Map,
+  env_map Map -> env_map (x\ Map (rst x)).
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. unfold. search. apply env_elem_extend to H3. search.
+
+Theorem mapvar_env_map : forall FVs Map,
+  {mapvar FVs Map} -> env_map Map.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. unfold. apply env_map_rst to H3. search. search.
+
+Theorem env_elem_aux_ctm : forall V, nabla xenv,
+  env_elem_aux V -> {ctm xenv |- ctm (V xenv)}.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem env_elem_ctm : forall V, nabla xenv,
+  env_elem V -> {ctm xenv |- ctm (V xenv)}.
+intros. case H1. apply env_elem_aux_ctm to H2. search.
+
+Theorem env_map_ctm : forall Map V X, nabla xenv,
+  env_map Map -> {ml_member (map X (V xenv)) (Map xenv)} ->
+    {ctm xenv |- ctm (V xenv)}.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    apply env_elem_ctm to H4. search.
+    apply IH to H3 H5. search.
+
+Theorem mapenv_ctm : forall FVs PE Map, nabla x y xenv,
+  env_map Map -> {mapenv (FVs x) (ml_cons (map x y) (Map xenv)) (PE xenv y)} ->
+    {ctm xenv, ctm y |- ctm (PE xenv y)}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H4. case H3. search.
+    apply env_map_ctm to H1 H6. search.
+
+% The closure converted term is a valid term
+Theorem cc_ctm : forall M P Map FVs, nabla x xenv y,
+  env_map Map -> {cc (M x) (P xenv y) (ml_cons (map x y) (Map xenv)) (tl_cons x FVs)} ->
+    {ctm xenv, ctm y |- ctm (P xenv y)}.
+induction on 2. intros. case H2.
+  case H3. search. apply env_map_ctm to H1 H4. search.
+  search.
+  apply mapvar_prune to H5. apply mapvar_prune to H5.
+    apply mapvar_env_map to H5. apply IH to H7 H6. apply mapenv_ctm to H1 H4.
+    assert {ctm n2, ctm n3 |- ctm (cabs (x\clet (fst x) (y\clet (rst x) (xenv\P1 n2 n3 xenv y))))}.
+    search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+
+Define name_map : map_list -> prop by
+  name_map ml_nil;
+  name_map (ml_cons (map X V) ML) :=
+    name_map ML /\ tname X.
+
+Theorem name_map_nominal : forall Map X V,
+  name_map Map -> {ml_member (map X V) Map} -> tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H5. search.
+
+% The function part of a closure is closed.
+Theorem clos_closed : forall Map R E FVs F, nabla x xenv y,
+  name_map (Map xenv) -> env_map Map ->
+  {cc (abs (R x)) (cpair (F xenv y) (E xenv y)) (ml_cons (map x y) (Map xenv)) (tl_cons x FVs)} ->
+  {ctm (F xenv y)}.
+intros. case H3.
+  case H4. assert name_map (Map n2). apply name_map_nominal to H6 H5. case H7.
+  apply mapvar_prune to H6. apply mapvar_prune to H6.
+    apply mapvar_env_map to H6. apply cc_ctm to H8 H7. search.
+
+
+
+% Lemmas for eval
+Theorem val_eval: forall V,
+  {val V} -> {eval V V}.
+intros. case H1. search. search.
+
+Theorem val_eval_refl: forall V M,
+  {val V} -> {eval V M} -> V = M.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. search.
+
+Theorem eval_val : forall M M',
+  {eval M M'} -> {val M'}.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. apply IH to H3. search.
+  apply IH to H4. search.
+  search.
+
+Theorem eval_trans : forall M1 M2 M3,
+  {eval M1 M2} -> {eval M2 M3} -> {eval M1 M3}.
+intros. apply eval_val to H1. apply val_eval_refl to H3 H2. search.
+
+% Theorem eval_app_trans : forall E1 E2 V1 V2 V,
+%   {eval E1 V1} -> {eval E2 V2} -> {eval (app V1 V2) V} -> {eval (app E1 E2) V}.
+% intros. case H3. apply eval_trans to H1 H4. apply eval_trans to H2 H5. search.
+
+Theorem eval_app_forward : forall E V V',
+  {val V} -> {eval (app (abs E) V) V'} -> {eval (E V) V'}.
+intros. case H2. case H3.
+  apply val_eval_refl to H1 H4. search.
+
+Theorem eval_app_backward : forall E V V',
+  {val V} -> {eval (E V) V'} -> {eval (app (abs E) V) V'}.
+intros. apply val_eval to H1. search.
+
+
+% Lemmas for evalcc
+Theorem val_evalcc: forall V,
+  {cval V} -> {evalcc V V}.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. apply IH to H3. search.
+  search.
+  search.
+  apply IH to H2. apply IH to H3. search.
+
+Theorem val_evalcc_refl: forall V M,
+  {cval V} -> {evalcc V M} -> V = M.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  case H2. search.
+  case H2. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+
+Theorem evalcc_val : forall M M',
+  {evalcc M M'} -> {cval M'}.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. apply IH to H3. search.
+  search.
+  apply IH to H2. apply IH to H3. search.
+  apply IH to H2. apply IH to H3. search.
+  apply IH to H2. case H3. search.
+  apply IH to H2. case H3. search.
+  apply IH to H4. search.
+  search.
+  apply IH to H2. apply IH to H3. search.
+  apply IH to H3. search.
+
+Theorem evalcc_trans : forall M1 M2 M3,
+  {evalcc M1 M2} -> {evalcc M2 M3} -> {evalcc M1 M3}.
+  intros. apply evalcc_val to H1. apply val_evalcc_refl to H3 H2. search.
+
+Theorem evalcc_det : forall E V V',
+     {evalcc E V} -> {evalcc E V'} -> V = V'.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  case H2. search.
+  case H2. apply IH to H3 H6. apply IH to H4 H7. apply addnum_det to H5 H8. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  case H2. apply IH to H3 H4. search.
+  case H2. apply IH to H3 H4. search.
+  case H2. apply IH to H3 H6. apply IH to H4 H7.
+    apply IH to H5 H8. search.
+  case H2. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+
+Theorem env_elem_aux_eval_cong : forall E E1 E2 V V',
+  env_elem_aux E -> {evalcc E1 V} -> {evalcc E2 V} ->
+    {evalcc (E E1) V'} -> {evalcc (E E2) V'}.
+induction on 1. intros. case H1.
+  apply evalcc_det to H2 H4. search.
+  case H4. apply IH to H5 H2 H3 H6. search.
+
+Theorem env_elem_eval_cong : forall E E1 E2 V V',
+  env_elem E -> {evalcc E1 V} -> {evalcc E2 V} ->
+    {evalcc (E E1) V'} -> {evalcc (E E2) V'}.
+intros. case H1. case H4.
+  apply env_elem_aux_eval_cong to H5 H2 H3 H6. search.
+
+Theorem evalcc_ctm_pres : forall M N,
+  {evalcc M N} -> {ctm M} -> {ctm N}.
+induction on 1. intros. case H1.
+  search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  search.
+  search.
+  case H2. apply IH to H3 H5. inst H6 with n1 = M'.
+    cut H8 with H7. apply IH to H4 H9. search.
+  case H2. apply IH to H3 H4. case H5. search.
+  case H2. apply IH to H3 H4. case H5. search.
+  case H2. apply IH to H3 H6. apply IH to H4 H7. case H8.
+    inst H10 with n1 = V2. cut H11 with H9.
+    apply IH to H5 H12. search.
+  search.
+  case H2. apply IH to H3 H5. apply IH to H4 H6. search.
+  case H2. apply IH to H3 H5. case H7.
+    inst H6 with n1 = F. inst H10 with n2 = E.
+    cut H11 with H8. cut H12 with H9. apply IH to H4 H13. search.
+
+Theorem evalcc_capp_trans : forall E V F E1 V1,
+  {evalcc E V} -> {evalcc (capp F (cross V E1)) V1} ->
+    {evalcc (capp F (cross E E1)) V1}.
+intros. case H2. case H4. apply evalcc_trans to H1 H6. search.
+
+Theorem evalcc_cunpair_trans : forall E1 E2 F V2 V,
+   {evalcc E1 F} -> {evalcc E2 V2} -> 
+   {evalcc (cunpair F (f\env\ capp f (cross V2 env))) V} ->
+   {evalcc (cunpair E1 (f\env\ capp f (cross E2 env))) V}.
+intros. case H3.
+  apply evalcc_trans to H1 H4.
+  apply evalcc_capp_trans to H2 H5. search.
+
+
+% A weaker version of typing contexts
+Define sctx' : olist -> prop by
+  sctx' nil;
+  sctx' (of X T :: L) := sctx' L /\ tname X /\ forall T',
+			   (member (of X T') L -> T = T').
+
+Define cctx' : olist -> prop by
+  cctx' nil;
+  cctx' (cof X T :: L) := cctx' L /\ ctname X /\ forall T',
+			   (member (cof X T') L -> T = T').
+
+
+Theorem sctx'_name : forall X T L,
+    sctx' L -> member (of X T) L -> tname X.
+    induction on 1. intros.
+      case H1. case H2. case H2. search. apply IH to H3 H6. search.
+
+Theorem sctx'_mem : forall SL O,
+  sctx' SL -> member O SL -> exists X T, O = of X T /\ tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    search. apply IH to H3 H6. search.
+
+% A context can be extended with a binding for a totally new variable
+Theorem sctx'_extend : forall L T, nabla x,
+   sctx' L -> sctx' (of x T :: L).
+    intros. unfold. search. search. intros. apply mem_of_absurd to H2.
+
+Theorem sctx'_equal : forall L X T T',
+  sctx' L -> member (of X T) L -> member (of X T') L -> T = T'.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. case H3. search.
+    apply H6 to H7. search.
+    case H3. apply H6 to H7. search.
+    apply IH to H4 H7 H8. search.
+
+Theorem cctx'_mem : forall SL O,
+  cctx' SL -> member O SL -> exists X T, O = cof X T /\ ctname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    search. apply IH to H3 H6. search.
+
+Theorem cctx'_extend : forall L T, nabla x,
+   cctx' L -> cctx' (cof x T :: L).
+    intros. unfold. search. search. intros. apply mem_of_absurd' to H2.
+
+
+
+% Typing lemmas
+Theorem of_mem : forall X T L,
+  member (of X T) L -> {L |- of X T}.
+intros. search.
+
+Theorem of_nat : forall L N T,
+  sctx' L -> {L |- of (lnat N) T} -> T = nat_t.
+intros. case H2. search.
+  apply sctx'_mem to H1 H4. case H3. case H5.
+
+
+Define sctx'_rst : o -> olist -> olist -> prop by
+  nabla x, sctx'_rst (of x T) (of x T :: L) L;
+  nabla x, sctx'_rst (of x T) (of Y T' :: (L x)) (of Y T' :: L') :=
+    nabla x, sctx'_rst (of x T) (L x) L'.
+
+Theorem sctx'_rst_mem_str : forall T T' L L' E, nabla x,
+  sctx'_rst (of x T) (L x) L' -> member (of E T') (L x) -> member (of E T') L'.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem of_strenghten : forall L L' T E T', nabla x,
+  sctx' (L x) -> {(L x) |- of E T'} -> sctx'_rst (of x T) (L x) L' -> {L' |- of E T'}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H4 H3. apply IH to H1 H5 H3. search.
+  apply IH to H1 H4 H3. apply IH to H1 H5 H3. search.
+  apply sctx'_extend to H1 with x = n2, T = T1.
+    assert sctx'_rst (of n1 T) (of n2 T1 :: (L n1)) (of n2 T1 :: L').
+    apply IH to H5 H4 H6. search.
+  apply sctx'_mem to H1 H5. case H4. apply sctx'_rst_mem_str to H3 H5. search.
+
+Theorem of_strenghten' : forall L T E T', nabla x,
+  sctx' L -> {L, of x T |- of E T'} ->  {L |- of E T'}.
+intros.
+  apply sctx'_extend to H1 with x = n1, T = T.
+  assert sctx'_rst (of n1 T) (of n1 T :: L) L.
+  apply of_strenghten to H3 H2 H4. search.
+
+
+Theorem of_var_mem : forall L F T, nabla x,
+  sctx' (L x) -> {L x, [F x] |- of x T} -> member (F x) (L x) -> member (of x T) (L x).
+intros. apply sctx'_mem to H1 H3. case H2. search.
+
+Theorem of_var_inv : forall X T L T',
+  sctx' (of X T :: L) -> {L, of X T |- of X T'} -> T = T'.
+intros. case H1 (keep). case H4. case H2.
+  apply of_var_mem to H1 H6 H7. case H8.
+    search.
+    apply H5 to H9. search.
+
+Theorem of_var_strenghten : forall Y T L T' T'' X,
+  sctx' (of Y T :: L) -> {L, of Y T |- of X T'} -> tname X ->
+    member (of X T'') L -> {L |- of X T'}.
+intros. case H3. case H2. case H6.
+  case H5. case H1. apply H9 to H4. search.
+  case H1. clear H9. clear H10. apply sctx'_mem to H8 H7.
+    case H5. search.
+
+Theorem of_abs_arrow_typ : forall L R T,
+  sctx' L -> {L |- of (abs R) T} -> exists T1 T2, T = arr T1 T2.
+intros. case H2. search.
+  apply sctx'_mem to H1 H4. case H3. case H5.
+
+Define sctx'_tmctx : olist -> olist -> prop by
+  sctx'_tmctx nil nil;
+  nabla x, sctx'_tmctx (of x T :: L x) (tm x :: L' x) :=
+    nabla x, sctx'_tmctx (L x) (L' x).
+
+Theorem sctx'_tmctx_exists : forall L,
+  sctx' L -> exists L', sctx'_tmctx L L' /\ tmctx L'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. case H3. search.
+
+Theorem sctx'_tmctx_mem1 : forall L L' F,
+  sctx'_tmctx L L' -> member F L ->
+    exists X T, F = of X T /\ tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem sctx'_tmctx_sync1 : forall L L' X T,
+  sctx'_tmctx L L' -> member (of X T) L -> member (tm X) L'.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem sctx'_tmctx_sync2 : forall L L' X,
+  sctx'_tmctx L L' -> member (tm X) L' -> exists T, member (of X T) L.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H4. search.
+
+Theorem of_tm : forall L L' M T,
+  sctx'_tmctx L L' -> {L |- of M T} -> {L' |- tm M}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to _ H3. search.
+  apply sctx'_tmctx_mem1 to H1 H4. case H3.
+    apply sctx'_tmctx_sync1 to H1 H4. search.
+
+Theorem of_closed_tm: forall M T,
+  {of M T} -> {tm M}.
+intros. apply of_tm to _ H1. search.
+
+
+% Typing lemmas for cc
+% Accumulate the variables in the source context
+Define vars_of_sctx : olist -> tm_list -> prop by
+  vars_of_sctx nil tl_nil;
+  vars_of_sctx (of X T :: L) (tl_cons X Vs) := vars_of_sctx L Vs.
+
+Theorem vars_of_sctx_mem_exists : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs ->
+	{tl_member X Vs} -> exists T, member (of X T) SL.
+  induction on 1. intros. case H1.
+    case H2. case H3.
+    case H2. case H3.
+     search.
+     apply IH to H4 H7 H8. search.
+
+Theorem sctx_env_sync : forall L TL Map E V, nabla x,
+  sctx' L -> vars_of_sctx L TL -> {mapvar TL Map} -> {ml_member (map E (V x)) (Map x)} ->
+    exists T, member (of E T) L /\ tname E.
+induction on 2. intros. case H2.
+  case H3. case H4.
+  case H3. case H4.
+    case H1. search.
+    apply eq_ml_member to H7 H8.
+    apply mapvar_mem to H6 H9. apply env_elem_closed to H11. apply env_elem_closed to H11.
+    case H1. apply IH to H13 H5 H6 H12. search.
+
+
+% The following are lemmas for proving type preservation under pruning
+Define bvars : olist -> prop by
+   bvars nil;
+   nabla x, bvars (notfree x :: L) := bvars L.
+
+Theorem bvars_mem : forall BVs E,
+  bvars BVs -> member E BVs -> exists X, E = notfree X /\ tname X.
+   induction on 1. intros. case H1.
+    case H2.
+    case H2. exists n1. split. search. search.
+    apply IH to H3 H4. exists (X n1). split. search. search.
+
+Theorem vars_of_sctx_mem_name : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs -> {tl_member X Vs} -> tname X.
+induction on 1. intros. case H1.
+  case H2. case H3.
+  case H2. case H3. search. apply IH to H4 H7 H8. search.
+
+Theorem bvars_notfree : forall BVs X,
+   bvars BVs -> {BVs |- notfree X} -> tname X.
+   intros. case H2. apply bvars_mem to H1 H4. case H3. search.
+
+Define subset : tm_list -> tm_list -> prop by
+   subset tl_nil L;
+   subset (tl_cons X L1) L2 := {tl_member X L2} /\ subset L1 L2.
+
+Define islist : tm_list -> prop by
+   islist tl_nil;
+   islist (tl_cons X L) := islist L.
+
+Theorem combine_islist : forall L1 L2 L3,
+   islist L1 -> islist L2 -> {combine L1 L2 L3} -> islist L3.
+   induction on 3. intros. case H3.
+     search.
+     case H1. apply IH to H6 H2 H5. search.
+     case H1. apply IH to H5 H2 H4. search.
+
+Theorem tl_mem_bvar : forall Ps X L,
+  bvars Ps -> {Ps |- tl_member X L} -> {tl_member X L}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H3. search.
+  apply bvars_mem to H1 H4. case H3.
+
+Theorem combine_bvar : forall L1 L2 L3 Ps,
+  bvars Ps -> {Ps |- combine L1 L2 L3} -> {combine L1 L2 L3}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H4. apply tl_mem_bvar to H1 H3. search.
+  apply IH to H1 H3. search. apply bvars_mem to H1 H4. case H3.
+
+
+% members of a set are also members of a superset
+Theorem subset_mem : forall L1 L2 X,
+   subset L1 L2 -> {tl_member X L1} -> {tl_member X L2}.
+   induction on 2. intros. case H2.
+     case H1. search.
+     case H1. apply IH to H5 H3. search.
+
+% subset is preserved under additions to superset
+Theorem subset_one : forall L1 L2 X,
+   islist L1 -> subset L1 L2 -> subset L1 (tl_cons X L2).
+   induction on 1. intros. case H1.
+    search. case H2. apply IH to H3 H5 with X = X. unfold. search. search.
+
+% subset is reflexive
+Theorem subset_refl : forall L,
+   islist L -> subset L L.
+   induction on 1. intros. case H1 (keep).
+     search.
+     unfold.
+       search.
+       apply IH to H2.
+	 apply subset_one to H2 H3 with X = X. search.
+
+% subset is transitive
+Theorem subset_trans : forall L1 L2 L3,
+   subset L1 L2 -> subset L2 L3 -> subset L1 L3.
+   induction on 1. intros. case H1.
+     search.
+     unfold.
+       apply subset_mem to H2 H3. search.
+       apply IH to H4 H2. search.
+
+% If L3 is obtained by combining something wit L2 then L2 is a subset of L3
+Theorem combine_subset1 : forall L1 L2 L3,
+   islist L2 -> {combine L1 L2 L3} -> subset L2 L3.
+   induction on 2. intros. case H2.
+     apply subset_refl to H1. search.
+     apply IH to H1 H4 with L1 = Fvs1. search.
+     apply IH to H1 H3 with L1 = Fvs1. apply subset_one to H1 H4 with X = X. search.
+
+% If L3 is obtained by combining L1 with something then L1 is a subset of L3
+Theorem combine_subset2 : forall L1 L2 L3,
+   islist L1 -> islist L2
+      -> {combine L1 L2 L3} -> subset L1 L3.
+   induction on 3. intros. case H3.
+     search.
+     apply combine_subset1 to H2 H5.
+       apply subset_mem to H6 H4.
+       case H1. apply IH to H8 H2 H5. search.
+     case H1. apply IH to H5 H2 H4.
+       apply subset_one to H5 H6 with X = X. search.
+
+% If L1 and L3 are subsets of L4 then their combination is too
+Theorem subset_combine : forall L1 L2 L3 L4,
+    islist L1 -> islist L2 -> {combine L1 L2 L3} ->
+       subset L1 L4 -> subset L2 L4 -> subset L3 L4.
+    induction on 3. intros. case H3.
+      search.
+      case H1. case H4. apply IH to H8 H2 H7 H10 H5. search.
+      case H4. unfold.
+	search.
+	case H1. apply IH to H9 H2 H6 H8 H5. search.
+
+Theorem fvars_islist : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> islist Vs'.
+  induction on 2. intros. case H2.
+   search.
+   search.
+   search.
+   apply IH to H1 H3. apply IH to H1 H4. apply combine_bvar to H1 H5.
+     apply combine_islist to H6 H7 H8. search.
+   apply IH to H1 H3. apply IH to H1 H4. apply combine_bvar to H1 H5.
+     apply combine_islist to H6 H7 H8. search.
+   assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
+   apply bvars_mem to H1 H4. case H3.
+
+% Computed free variables form a subset of all externally bound variables
+Theorem fvars_subset : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> subset Vs' Vs.
+  induction on 2. intros. case H2.
+    search.
+    search.
+    apply tl_mem_bvar to H1 H3. search.
+    apply IH to H1 H3. apply IH to H1 H4.
+       apply fvars_islist to H1 H3. apply fvars_islist to H1 H4.
+       apply combine_bvar to H1 H5.
+       apply subset_combine to H8 H9 H10 H6 H7. search.
+    apply IH to H1 H3. apply IH to H1 H4.
+       apply fvars_islist to H1 H3. apply fvars_islist to H1 H4.
+       apply combine_bvar to H1 H5.
+       apply subset_combine to H8 H9 H10 H6 H7. search.
+    assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
+    apply bvars_mem to H1 H4. case H3.
+
+% The starting list for finding free variables can be extended arbitrarily
+Theorem fvars_extend : forall M Vs Vs' Ps X,
+   bvars Ps -> {Ps |- fvars M Vs Vs'} -> {Ps |- fvars M (tl_cons X Vs) Vs'}.
+   induction on 2. intros. case H2.
+     search.
+     search.
+     search.
+     apply IH to H1 H3 with X = X. apply IH to H1 H4 with X = X. search.
+     apply IH to H1 H3 with X = X. apply IH to H1 H4 with X = X. search.
+     assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3 with X = X. search.
+     apply bvars_mem to H1 H4. case H3.
+
+% Pruning a type environment down to one based on a list of free variables
+Define pruned_env : olist -> tm_list -> olist -> olist -> prop by
+   pruned_env nil tl_nil SL nil;
+   pruned_env nil (tl_cons X FVs) SL ((of X T) :: SL') :=
+	 member (of X T) SL /\ pruned_env nil FVs SL SL';
+   nabla x, pruned_env (notfree x :: BVs) FVs (of x T :: SL) (of x T :: SL') :=
+	 pruned_env BVs FVs SL SL'.
+
+ Theorem pruned_env_vars : forall FVs SL SL',
+     pruned_env nil FVs SL SL' -> vars_of_sctx SL' FVs.
+   induction on 1. intros. case H1.
+     search.
+     apply IH to H3. search.
+
+Theorem pruned_env_sctx_source : forall FV SL SL' X T,
+   pruned_env nil FV SL SL' -> member (of X T) SL' -> member (of X T) SL.
+    induction on 1. intros. case H1. case H2. case H2. search. apply IH to H4 H5. search.
+
+Theorem pruned_env_sctx : forall SL BVL FVs SL',
+    sctx' SL -> bvars BVL -> pruned_env BVL FVs SL SL' -> sctx' SL'.
+    induction on 3. intros.
+      case H3.
+	search.
+	unfold.
+	  apply IH to H1 H2 H5. search.
+	  apply sctx'_name to H1 H4. search.
+	  intros. apply pruned_env_sctx_source to H5 H6. apply sctx'_equal to H1 H4 H7. search.
+	  unfold.
+	    case H1. case H2. apply IH to H5 H8 H4. search. search. intros.
+	    apply mem_of_absurd to H5.
+
+% Bound variables have a type in the pruned environment
+Theorem pruned_env_bound : forall BVL FVs SL SL' X T,
+    pruned_env BVL FVs SL SL' -> member (notfree X) BVL ->
+	member (of X T) SL -> member (of X T) SL'.
+   induction on 1. intros. case H1. case H2. case H2. case H2. case H3. search.
+     apply mem_of_absurd to H5. case H3. search. apply IH to H4 H5 H6. search.
+
+% Free variables have a type in the pruned environment; special case
+Theorem pruned_env_free_aux : forall FVs SL SL' X T,
+    sctx' SL -> pruned_env nil FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.
+   induction on 3. intros. case H3.
+     case H2. apply sctx'_equal to H1 H4 H5. search.
+     case H2. apply IH to H1 H7 H5 H4. search.
+
+% Free variables have a type in the pruned environment
+Theorem pruned_env_free : forall BVLs FVs SL SL' X T,
+    sctx' SL -> bvars BVLs -> pruned_env BVLs FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.
+    induction on 3. intros. case H2.
+      apply pruned_env_free_aux to H1 H3 H4 H5. search.
+      case H3. case H5.
+	search.
+	assert (bvars (notfree n1 :: L)).
+	  case H1. apply IH to H10 H6 H7 H4 H8. search.
+
+% pruned environments preserve the typing relation
+Theorem pruned_env_typing : forall SL M T FVs BVL FVs' SL' FVs'',
+    sctx' SL -> {SL |- of M T} -> vars_of_sctx SL FVs -> bvars BVL ->
+      {BVL |- fvars M FVs FVs'} -> subset FVs' FVs'' ->
+      pruned_env BVL FVs'' SL SL' -> {SL' |- of M T}.
+   induction on 2. intros. case H2.
+     search.
+     case H5.
+	apply bvars_notfree to H4 H10. case H11.
+	apply tl_mem_bvar to H4 H10. apply vars_of_sctx_mem_name to H1 H3 H11. case H12.
+	apply fvars_islist to H4 H10. apply fvars_islist to H4 H11.
+	   apply combine_bvar to H4 H12. apply combine_islist to H13 H14 H15.
+	      apply combine_subset2 to H13 H14 H15.
+		 apply subset_trans to H17 H6.
+		 apply IH to H1 H8 H3 H4 H10 H18 H7.
+	      apply combine_subset1 to H14 H15.
+		 apply subset_trans to H20 H6.
+		 apply IH to H1 H9 H3 H4 H11 H21 H7.
+	   search.
+	apply bvars_mem to H4 H11. case H10.
+     case H5.
+	apply bvars_notfree to H4 H10. case H11.
+	apply tl_mem_bvar to H4 H10. apply vars_of_sctx_mem_name to H1 H3 H11. case H12.
+	apply fvars_islist to H4 H10. apply fvars_islist to H4 H11.
+	   apply combine_bvar to H4 H12. apply combine_islist to H13 H14 H15.
+	      apply combine_subset2 to H13 H14 H15.
+		 apply subset_trans to H17 H6.
+		 apply IH to H1 H8 H3 H4 H10 H18 H7.
+	      apply combine_subset1 to H14 H15.
+		 apply subset_trans to H20 H6.
+		 apply IH to H1 H9 H3 H4 H11 H21 H7.
+	   search.
+	apply bvars_mem to H4 H11. case H10.
+     case H5.
+	apply bvars_notfree to H4 H9. case H10.
+	apply tl_mem_bvar to H4 H9. apply vars_of_sctx_mem_name to H1 H3 H10. case H11.
+	  assert (pruned_env (notfree n1 :: BVL) FVs'' (of n1 T1 :: SL) (of n1 T1 :: SL')).
+	  assert (bvars (notfree n1 :: BVL)).
+	  assert (vars_of_sctx (of n1 T1 :: SL) (tl_cons n1 FVs)).
+	  apply sctx'_extend to H1 with T = T1.
+	  apply fvars_extend to H11 H9 with X = n1.
+	  apply IH to H13 H8 H12 H11 H14 H6 H10. search.
+	apply bvars_mem to H4 H10. case H9.
+     apply sctx'_mem to H1 H9. case H8. case H10.
+	case H5.
+	  case H11. apply bvars_mem to H4 H13. case H14. case H12.
+	    apply pruned_env_bound to H7 H13 H9. search.
+	  case H6. apply pruned_env_free to H1 H4 H7 H12 H9. search.
+	  apply bvars_mem to H4 H12. case H11.
+
+%%%
+Theorem mapvar_named_map : forall L FVs Map X,
+  sctx' L -> vars_of_sctx L FVs -> {mapvar FVs Map} ->
+    name_map (Map X).
+induction on 1. intros. case H1.
+  case H2. case H3. search.
+  case H2. case H3. apply IH to H4 H7 H8 with X = (rst X). search.
+
+
+% simulation relation between expressions and
+% equivalence relation between values in the source and target languages
+Define sim   : ty -> tm -> ctm -> prop,
+       equiv : ty -> tm -> ctm -> prop by
+  sim T M N := forall V, {eval M V} -> exists V', {evalcc N V'} /\ equiv T V V';
+  equiv nat_t (lnat N) (clnat N);
+  equiv (arr T1 T2) M N :=
+    {tm M} /\ {ctm N} /\ {val M} /\ {cval N} /\
+    forall V1 V1', equiv T1 V1 V1' ->
+      sim T2 (app M V1) (cunpair N (f\ env\ capp f (cross V1' env))).
+
+Theorem equiv_val : forall T V V',
+  equiv T V V' -> {val V}.
+intros. case H1. search. search.
+
+Theorem equiv_cval : forall T V V',
+  equiv T V V' -> {cval V'}.
+intros. case H1. search. search.
+
+Theorem equiv_closed_tm : forall T V V',
+  equiv T V V' -> {tm V}.
+intros. case H1. search. search.
+
+Theorem equiv_closed_ctm : forall T V V',
+  equiv T V V' -> {ctm V'}.
+intros. case H1. search. search.
+
+Theorem equiv_to_sim : forall T M N,
+  equiv T M N -> sim T M N.
+intros. unfold. intros. 
+  apply equiv_val to H1. apply val_eval_refl to H3 H2. 
+  apply equiv_cval to H1. apply val_evalcc to H4. search.
+
+
+% substitution for the source language
+Define subst : smap_list -> prop by
+  subst sml_nil;
+  subst (sml_cons (smap X V) ML) :=
+    subst ML /\ tname X /\ {tm V} /\ {val V} /\
+    forall V', {sml_member (smap X V') ML} -> V' = V.
+
+Theorem subst_mem : forall ML E,
+  subst ML -> {sml_member E ML} -> exists X V,
+    E = smap X V /\ tname X /\ {val V} /\ {tm V}.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H8. search.
+
+Theorem subst_extend : forall ML V, nabla x,
+  subst ML -> {tm V} -> {val V} -> subst (sml_cons (smap x V) ML).
+intros. unfold. search. search. search. search.
+  intros. apply sml_mem_absurd to H4.
+
+
+% substitution for the target language
+Define csubst : cmap_list -> prop by
+  csubst cml_nil;
+  csubst (cml_cons (cmap X V) ML) :=
+    csubst ML /\ ctname X /\ {ctm V} /\ {cval V} /\
+    forall V', {cml_member (cmap X V') ML} -> V' = V.
+
+Theorem csubst_mem : forall ML E,
+  csubst ML -> {cml_member E ML} -> exists X V,
+    E = cmap X V /\ ctname X /\ {cval V} /\ {ctm V}.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H8. search.
+
+Theorem csubst_extend : forall ML V, nabla x,
+  csubst ML -> {ctm V} -> {cval V} -> csubst (cml_cons (cmap x V) ML).
+intros. unfold. search. search. search. search.
+  intros. apply cml_mem_absurd to H4.
+
+Theorem csubst_single_inv : forall V VL, nabla x,
+  csubst (cml_cons (cmap x (cross V VL)) cml_nil) ->
+    csubst (cml_cons (cmap x VL) cml_nil).
+intros. case H1. unfold.
+  search. search.
+  case H4. search.
+  case H5. search.
+  intros. case H7.
+
+
+
+% application of substitutions for the source language
+Define app_subst : smap_list -> tm -> tm -> prop by
+  app_subst sml_nil M M;
+  nabla x, app_subst (sml_cons (smap x V) (ML x)) (R x) M :=
+    nabla x, app_subst (ML x) (R V) M.
+
+Theorem subst_closed_tm' : forall M ML,
+  {tm M} -> subst ML -> app_subst ML M M.
+induction on 2. intros. case H2.
+  search.
+  case H4. apply closed_tm_prune to H1. apply closed_tm_prune to H5.
+  apply IH to H1 H3. search.
+
+Theorem subst_closed_tm : forall M ML M',
+  {tm M} -> app_subst ML M M' -> M = M'.
+induction on 2. intros. case H2.
+  search.
+  apply closed_tm_prune to H1. apply IH to H1 H3. search.
+
+Theorem subst_var' : forall V ML X,
+  subst ML -> {sml_member (smap X V) ML} -> app_subst ML X V.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    case H4. apply subst_closed_tm' to H5 H3.
+      apply closed_tm_prune to H5. search.
+    apply subst_mem to H3 H8. case H4.
+      apply closed_tm_prune to H5. apply closed_tm_prune to H11. case H9.
+      % X is not the variable at the head of ML.
+      % The substitution for this variable has no effect on X.
+      apply closed_tm_prune to H11. apply IH to H3 H8. search.
+      % X is the variable at the head of ML
+      % The substituted value must be the same as V by definition.
+      apply H7 to H8. unfold. intros. apply subst_closed_tm' to H5 H3. search.
+
+
+Theorem subst_det : forall ML M M' M'',
+  subst ML -> app_subst ML M M' -> app_subst ML M M'' -> M' = M''.
+induction on 1. intros. case H1.
+  case H2. case H3. search.
+  case H2. case H3. apply IH to H4 H9 H10. search.
+
+Theorem subst_var : forall V ML E X,
+  subst ML -> {sml_member (smap X V) ML} -> app_subst ML X E -> E = V.
+intros. apply subst_var' to H1 H2. apply subst_det to H1 H3 H4. search.
+
+
+Theorem subst_abs : forall ML M E,
+  app_subst ML (abs M) E ->
+    exists M', E = abs M' /\ nabla x, app_subst ML (M x) (M' x).
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem subst_app: forall ML M1 M2 E,
+  app_subst ML (app M1 M2) E ->
+    exists M1' M2', E = app M1' M2' /\ app_subst ML M1 M1' /\ app_subst ML M2 M2'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem subst_s++: forall ML M1 M2 E,
+  app_subst ML (s++ M1 M2) E ->
+    exists M1' M2', E = s++ M1' M2' /\ app_subst ML M1 M1' /\ app_subst ML M2 M2'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+
+
+% Applying a substitution containing all free variables in a term to it
+% results in a closed term.
+% (The funny name V'1 for the existential binder is intended to match the
+% name where the lemma is applied. This is termporay solution to a bug.)
+Theorem subst_result_closed_tm : forall ML L M M',
+  subst ML -> tmctx L -> {L |- tm M} ->
+    (forall X, member (tm X) L -> exists V'1, {sml_member (smap X V'1) ML}) ->
+    app_subst ML M M' -> {tm M'}.
+induction on 5. intros. case H5.
+  case H2. search.
+    assert member (tm n1) (tm n1 ::L1 n1). apply H4 to H7. case H8.
+  case H1.
+    apply tmctx_rst_exists to H2 with x = n1. case H13.
+    apply tm_cut to H2 H3 H12 H9.
+    assert (forall X, member (tm X) L1 -> (exists V, {sml_member (smap X V) (ML1 n1)})).
+      intros. apply tmctx_rst_mem_inv to H12 H15. apply member_prune_tm to H15.
+      apply H4 to H16. case H17. search.
+    apply tmctx_rst_pres to H2 H12.
+    apply IH to H7 H16 H14 H15 H6. search.
+
+Theorem subst_inst : forall ML M M' V, nabla (x:tm),
+  {tm V} -> app_subst ML (M x) (M' x) -> app_subst ML (M V) (M' V).
+induction on 2. intros. case H2.
+  search.
+  apply closed_tm_prune to H1. unfold. intros. apply IH to H1 H3. search.
+
+
+% application of substitutions for the target language
+Define app_csubst : cmap_list -> ctm -> ctm -> prop by
+  app_csubst cml_nil M M;
+  nabla x, app_csubst (cml_cons (cmap x V) (ML x)) (R x) M :=
+    nabla x, app_csubst (ML x) (R V) M.
+
+Theorem csubst_closed_ctm : forall M ML M',
+  {ctm M} -> app_csubst ML M M' -> M = M'.
+induction on 2. intros. case H2.
+  search.
+  apply closed_ctm_prune to H1. apply IH to H1 H3. search.
+
+Theorem csubst_var: forall V ML E X,
+  csubst ML -> {cml_member (cmap X V) ML} -> app_csubst ML X E -> E = V.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    case H3. apply csubst_closed_ctm to H6 H9. search.
+    apply csubst_mem to H4 H9. case H3. case H10.
+      % X is not the variable at the head of ML.
+      % The substitution for this variable has no effect on X.
+      apply IH to H4 H9 H13. search.
+      % X is the variable at the head of ML
+      % The substituted value must be the same as V by definition.
+      apply csubst_closed_ctm to H6 H13.
+      apply H8 to H9. search.
+
+
+Theorem csubst_cpair : forall F ML M E,
+  app_csubst ML (cpair F M) E ->
+    exists M' F', E = (cpair F' M') /\
+      app_csubst ML F F' /\ app_csubst ML M M'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem csubst_cunpair : forall ML CM1 CM2 E,
+  app_csubst ML (cunpair CM1 (f\ env\ (capp f (cross CM2 env)))) E ->
+    exists CM1' CM2', E = (cunpair CM1' (f\ env\ (capp f (cross CM2' env)))) /\
+      app_csubst ML CM1 CM1' /\ app_csubst ML CM2 CM2'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+
+Theorem csubst_c++: forall ML M1 M2 E,
+  app_csubst ML (c++ M1 M2) E ->
+    exists M1' M2', E = c++ M1' M2' /\ app_csubst ML M1 M1' /\ app_csubst ML M2 M2'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+
+
+% equivalence relation between substitutions
+Define subst_equiv : olist -> smap_list -> ctm -> prop by
+  subst_equiv nil ML unit;
+  subst_equiv (of X T :: L) ML (cross V' VL') :=
+    exists V, subst_equiv L ML VL' /\ {sml_member (smap X V) ML} /\ equiv T V V'.
+
+Define subst_equiv' : olist -> smap_list -> cmap_list -> prop by
+  nabla x y xenv, subst_equiv' (of x T :: L) (sml_cons (smap x V) ML)
+			      (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) :=
+    equiv T V V' /\ subst_equiv L ML Venv.
+
+Theorem subst_equiv_cval : forall T ML VE,
+  subst_equiv T ML VE -> {cval VE}.
+induction on 1. intros. case H1.
+  search.
+  apply equiv_cval to H4. apply IH to H2. search.
+
+Theorem subst_equiv_closed_ctm : forall T ML VE,
+  subst_equiv T ML VE -> {ctm VE}.
+induction on 1. intros. case H1.
+  search.
+  apply equiv_closed_ctm to H4. apply IH to H2. search.
+
+Theorem subst_equiv_mem : forall ML X L VE T,
+  subst_equiv L ML VE -> member (of X T) L ->
+    exists V, {sml_member (smap X V) ML}.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H6. search.
+
+Theorem subst_equiv'_mem : forall ML X L VE T,
+  subst_equiv' L ML VE -> member (of X T) L ->
+    exists V, {sml_member (smap X V) ML}.
+intros. case H1. case H2.
+  search.
+  apply subst_equiv_mem to H4 H5. search.
+
+
+% The meaning preservation lemma for the case that
+% the expression is a free variable. That is, it points to
+% some entry in the environment after closure conversion.
+Theorem env_eval_pres : forall T L ML Venv Map FVs E E' V, nabla xenv,
+  sctx' L -> subst ML -> csubst (cml_cons (cmap xenv Venv) cml_nil) ->
+    subst_equiv L ML Venv -> vars_of_sctx L FVs ->
+    {mapvar FVs Map} -> {L |- of E T} ->
+    {ml_member (map E (E' xenv)) (Map xenv)} -> app_subst ML E V ->
+    exists V', {evalcc (E' Venv) V'} /\ equiv T V V'.
+induction on 5. intros. case H5.
+  case H6. case H8.
+  case H6. case H8.
+    % E is the head  of (Map xenv)
+    apply of_var_inv to H1 H7.
+    case H4. apply subst_var to H2 H14 H9.
+      exists V'. split.
+	apply csubst_mem to H3 _. apply val_evalcc to H17. search.
+	search.
+    % E is not the head of (Map xenv)
+    apply eq_ml_member to H12 H13.
+    apply mapvar_mem to H11 H14. apply env_elem_closed to H16.
+      apply env_elem_closed to H16.
+    case H1 (keep). clear H19. clear H20.
+    case H4. clear H22. clear H23. clear H24.
+    apply csubst_single_inv to H3.
+    assert csubst (cml_cons (cmap n2 VL') cml_nil).
+    assert {L1 |- of E T}.
+      apply sctx_env_sync to H18 H10 H11 H17.
+      apply of_var_strenghten to H1 H7 H27 H26.
+      search.
+    apply IH to H18 H2 H25 H21 H10 H11 H26 H17 H9.
+    assert {evalcc (E'3 (rst (cross V' VL'))) V'1}.
+      apply csubst_mem to H3 _. case H30 (keep).
+      apply val_evalcc to H33.
+      assert {evalcc (rst (cross V' VL')) VL'}.
+	apply val_evalcc to H30. search.
+      apply env_elem_eval_cong to H16 H34 H35 H27.
+      search.
+    exists V'1. split.
+      % This should be immediate from E' n1 = E'3 (rst n1)
+      apply eq_inst_eval to H15 H29 with C = (cross V' VL'). search.
+      search.
+
+
+% Lemma of meaning preservation for variable cases
+Theorem var_eval_pres: forall T L V ML V' Venv FVs Map E E' T' VS ES', nabla x y xenv,
+    sctx' (of x T :: L) ->
+    subst (sml_cons (smap x V) ML) ->
+    csubst (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    subst_equiv' (of x T :: L) (sml_cons (smap x V) ML)
+			  (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    vars_of_sctx L FVs -> {mapvar FVs Map} -> {L, of x T |- of (E x) T'} ->
+    {ml_member (map (E x) (E' xenv y)) (ml_cons (map x y) (Map xenv))} ->
+    app_subst (sml_cons (smap x V) ML) (E x) VS ->
+    app_csubst (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) (E' xenv y) ES' ->
+    exists VS', {evalcc ES' VS'} /\ equiv T' VS VS'.
+%
+intros. case H8.
+  % Case arg: (E x) = x, (E' xenv y) = y
+  assert {sml_member (smap n1 V) (sml_cons (smap n1 V) ML)}.
+    apply subst_var to H2 H11 H9.
+    assert {cml_member (cmap n2 V') (cml_cons (cmap n2 V') (cml_cons (cmap n3 Venv) cml_nil))}.
+    apply csubst_var to H3 H12 H10. case H4.
+    case H3. apply val_evalcc to H18. exists V'. split. search.
+    case H7. case H22.
+      case H21. search.
+      case H1. apply sctx'_mem to H24 H23. case H21. apply mem_of_absurd to H23.
+  % Case env:
+  apply ml_member_prune1 to H11. apply ml_member_prune2 to H11.
+    case H2. clear H13. clear H14. clear H15. clear H16.
+    case H3. clear H18. clear H19. clear H20. clear H21.
+    case H9.
+    case H10. case H23. case H24.
+    case H4.
+    case H1. apply of_strenghten' to H27 H7.
+    apply env_eval_pres to H27 H12 H17 H26 H5 H6 H30 H11 H22.  search.
+
+
+
+Theorem mapenv_eval_pres: forall T L V ML V' Venv FVs NFVs Map PE, nabla x y xenv,
+    sctx' (of x T :: L) ->
+    subst (sml_cons (smap x V) ML) ->
+    csubst (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    subst_equiv' (of x T :: L) (sml_cons (smap x V) ML)
+			  (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    vars_of_sctx L FVs -> {mapvar FVs Map} -> subset (NFVs x) (tl_cons x FVs) ->
+    {mapenv (NFVs x) (ml_cons (map x y) (Map xenv)) (PE xenv y)} ->
+    exists VE' L', pruned_env nil (NFVs x) (of x T :: L) L' /\
+      {evalcc (PE Venv V') VE'} /\ subst_equiv L' (sml_cons (smap x V) ML) VE'.
+induction on 8. intros. case H8.
+  exists unit. exists nil. split.
+    search. search. search.
+  case H7.
+    apply vars_of_sctx_mem_exists to H1 _ H11.
+    apply of_mem to H13.
+    assert app_csubst (cml_cons (cmap n2 V') (cml_cons (cmap n3 Venv) cml_nil)) (M n2 n3) (M V' Venv).
+    apply subst_equiv'_mem to H4 H13.
+    apply subst_var' to H2 H16. apply subst_mem to H2 H16. apply closed_tm_prune to H20.
+    apply var_eval_pres to H1 H2 H3 H4 H5 H6 H14 H9 H17 H15.
+    apply IH to H1 H2 H3 H4 H5 H6 H12 H10.
+    exists (cross VS' VE'). exists (of (X n1) T1 :: (L' n1)). split.
+      search.
+      search.
+      unfold. exists M'. split. search. search. search.
+
+
+
+% Meaning preservation theorem
+Theorem eval_pres : forall T L V ML V' Venv FVs Map E E' T' ES ES', nabla x y xenv,
+    sctx' (of x T :: L) ->
+    subst (sml_cons (smap x V) ML) ->
+    csubst (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    subst_equiv' (of x T :: L) (sml_cons (smap x V) ML)
+			  (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) ->
+    vars_of_sctx L FVs -> {mapvar FVs Map} -> {L, of x T |- of (E x) T'} ->
+    {cc (E x) (E' xenv y) (ml_cons (map x y) (Map xenv)) (tl_cons x FVs)} ->
+    app_subst (sml_cons (smap x V) ML) (E x) ES ->
+    app_csubst (cml_cons (cmap y V') (cml_cons (cmap xenv Venv) cml_nil)) (E' xenv y) ES' ->
+    sim T' ES ES'.
+%
+induction on 8. intros. case H8 (keep).
+  % Case ml_member
+  apply var_eval_pres to H1 H2 H3 H4 H5 H6 H7 H11 H9 H10. unfold.
+    intros. apply equiv_val to H13. apply val_eval_refl to H15 H14. 
+    exists VS'. search.
+
+  % Case lnat
+  apply subst_closed_tm to _ H9. apply csubst_closed_ctm to _ H10.
+    assert equiv nat_t (lnat N) (clnat N).
+    apply equiv_to_sim to H11. apply of_nat to H1 H7. search.
+
+  % Case abs
+  % Abstraction must have an arrow type
+  apply of_abs_arrow_typ to H1 H7.
+  % Reveal the structure of ES, ES'
+  apply subst_abs to H9.
+  apply csubst_cpair to H10.
+  % The function in closure should be closed
+  assert name_map (Map n3).
+    case H1. apply mapvar_named_map to H18 H5 H6 with X = n3. search.
+  assert {ctm (cabs (x\clet (fst x) (y\clet (rst x) (xenv\P n3 n2 xenv y))))}.
+    apply mapvar_env_map to H6. apply clos_closed to H18 H19 H8. search.
+  apply csubst_closed_ctm to H19 H16. apply closed_ctm_prune to H19.
+  apply closed_ctm_prune to H19. clear H16. clear H19. clear H18.
+  % The environment evaluates to some value
+  apply fvars_subset to _ H11.
+  apply mapenv_eval_pres to H1 H2 H3 H4 H5 H6 H20 H12.
+  % prove the simulation relation
+  unfold. intros.
+    case H24.    
+    case H17. case H25. case H26.
+    exists (cpair (cabs (x\clet (fst x) (y\clet (rst x) (xenv\ES'3 xenv y)))) VE').
+    split. search. unfold.
+      apply sctx'_tmctx_exists to H1.
+	apply of_tm to H27 H7.
+	assert (forall X, member (tm X) (L'1 n1) ->
+	  exists V', {sml_member (smap X V') (sml_cons (smap n1 V) ML)}).
+	  intros. apply sctx'_tmctx_sync2 to H27 H30.
+	  apply subst_equiv'_mem to H4 H31. search.
+	apply subst_result_closed_tm to H2 H28 H29 H30 H9. search.
+      apply mapvar_env_map to H6.
+	apply cc_ctm to H27 H8. case H28. case H3. case H31.
+	inst H30 with n3 = Venv, n2 = V'. cut H41 with H33. cut H42 with H38.
+	apply evalcc_ctm_pres to H22 H43.
+	case H1. apply mapvar_named_map to H45 H5 H6 with X = n3.
+	apply clos_closed to H48 H27 H8. search.
+	% ctx case
+	case H30. case H29. case H31. case H29. case H32.
+      search.
+      apply evalcc_val to H22. search.
+      % Prove the equality relation between abstraction and closure values
+      intros.
+      assert {L' n1 |- of (abs (M n1)) (arr T1 T2)}. % Need pruned_env_typing
+	assert vars_of_sctx (of n1 T :: L) (tl_cons n1 FVs).
+	apply fvars_islist to _ H11. apply subset_refl to H29.
+	apply pruned_env_typing to H1 H7 H28 _ H11 H30 H21. search.
+      assert subst_equiv' (of n4 T1 :: L' n1)
+			  (sml_cons (smap n4 V2) (sml_cons (smap n1 V) ML))
+			  (cml_cons (cmap n5 V1') (cml_cons (cmap n6 VE') cml_nil)).
+      assert sctx' (of n4 T1 :: L' n1).
+	apply pruned_env_sctx to H1 _ H21.
+	apply sctx'_extend to H30 with x = n4, T = T1. search.
+      assert subst (sml_cons (smap n4 V2) (sml_cons (smap n1 V) ML)).
+	apply equiv_closed_tm to H27. apply equiv_val to H27.
+	apply subst_extend to H2 H31 H32 with x = n4. search.
+      assert csubst (cml_cons (cmap n5 V1') (cml_cons (cmap n6 VE') cml_nil)).
+	apply subst_equiv_closed_ctm to H23. apply subst_equiv_cval to H23.
+	assert csubst cml_nil. apply csubst_extend to H34 H32 H33 with x = n6.
+	apply equiv_closed_ctm to H27. apply equiv_cval to H27.
+	apply csubst_extend to H35 H36 H37 with x = n5. search.
+      assert app_subst (sml_cons (smap n4 V2) (sml_cons (smap n1 V) ML)) (M n1 n4) (ES1 V2).
+	unfold. intros. apply equiv_closed_tm to H27. apply subst_inst to H33 H15. search.
+      assert app_csubst (cml_cons (cmap n5 V1') (cml_cons (cmap n6 VE') cml_nil)) (ES'3 n6 n5) (ES'3 VE' V1').
+      apply pruned_env_vars to H21.
+      apply mapvar_prune to H13. apply mapvar_prune to H13.
+      assert {L' n1, of n4 T1 |- of (M n1 n4) T2}.
+	case H28. search. case H30. apply sctx'_mem to H38 H37. case H36. case H41.
+      apply IH to H30 H31 H32 H29 H35 H13 H36 H14 H33 H34.
+      case H37. unfold. intros. apply equiv_val to H27. apply eval_app_forward to H40 H39. 
+        apply H38 to H41. exists V'1. split.
+	apply evalcc_val to H22. apply val_evalcc to H44.
+	  apply equiv_cval to H27. apply val_evalcc to H46.
+	  assert {evalcc (cpair (cabs (x\clet (fst x) (y\clet (rst x) (xenv\ES'3 xenv y)))) VE')
+			 (cpair (cabs (x\clet (fst x) (y\clet (rst x) (xenv\ES'3 xenv y)))) VE')}.
+	  assert {evalcc (cross V1' VE') (cross V1' VE')}.
+	  assert {evalcc (capp (cabs (x\clet (fst x) (y\clet (rst x) (xenv\ES'3 xenv y)))) (cross V1' VE')) V'1}.
+	  search.
+	search.
+
+  % Case app
+  case H7.
+    apply subst_app to H9. apply csubst_cunpair to H10.
+    apply IH to H1 H2 H3 H4 H5 H6 H13 H11 H15 H17.
+    apply IH to H1 H2 H3 H4 H5 H6 H14 H12 H16 H18.
+    % prove the simulation relation
+    unfold. intros. case H21.
+      case H19. apply H25 to H22. 
+      case H20. apply H28 to H23. 
+      case H27. apply H35 to H30. 
+      apply eval_val to H23. apply eval_app_backward to H37 H24 with E = F.
+      case H36. apply H39 to H38.
+      apply evalcc_cunpair_trans to H26 H29 H40. search.
+
+    % ctx case
+    apply sctx'_mem to H1 H14. case H14. case H13. case H13. case H15.
+
+  % Case s++
+  case H7.
+    apply subst_s++ to H9. apply csubst_c++ to H10.
+    apply IH to H1 H2 H3 H4 H5 H6 H13 H11 H15 H17.
+    apply IH to H1 H2 H3 H4 H5 H6 H14 H12 H16 H18.
+    % prove the simulation relation
+    unfold. intros. case H21.
+      case H19. apply H25 to H22. case H27.
+      case H20. apply H28 to H23. case H30. 
+      exists (clnat N). search.
+
+    % ctx case
+    apply sctx'_mem to H1 H14. case H13. case H15.
+
+
+Theorem fvars_extend : forall L M FVs NFVs, nabla x,
+  bvars L -> {L |- fvars M FVs NFVs} -> {L |- fvars M (tl_cons x FVs) NFVs}.
+induction on 2. intros. case H2.
+  search. search. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.
+  apply IH to H1 H3. apply IH to H1 H4. search.  
+  apply IH to _ H3.   search.
+  apply bvars_mem to H1 H4. case H3.
+
+Theorem mapenv_extend : forall NFVs Map PE, nabla x y,
+  {mapenv NFVs Map PE} -> {mapenv NFVs (ml_cons (map x y) Map) PE}.
+induction on 1. intros. case H1.
+  search.
+  assert {ml_member (map X M) (ml_cons (map n1 n2) Map)}.
+    apply IH to H3. search.
+
+% Closure conversion is not affected by extending the environment with
+% mappings of variables not occuring in the terms to be converted.
+Theorem cc_extend_map : forall E E' Map FVs, nabla x y,
+  {cc E E' Map FVs} ->
+  {cc E E' (ml_cons (map x y) Map) (tl_cons x FVs)}.
+induction on 1. intros. case H1.
+  search.
+  search.
+  apply fvars_extend to _ H2 with x = n1.
+    apply mapenv_extend to H3 with x = n1, y = n2. search.
+  apply IH to H2. apply IH to H3. search.
+  apply IH to H2. apply IH to H3. search.
+
+% Evaluating an source term of the base type results in
+% the same value as evaluating its closure converted form.
+Theorem base_eval_pres : forall E E' N,
+  {of E nat_t} -> {cc E E' ml_nil tl_nil} -> {eval E (lnat N)} -> 
+  {evalcc E' (clnat N)}.
+intros.
+  assert sctx' (of n1 nat_t :: nil).
+    assert sctx' nil. apply sctx'_extend to H4 with x = n1, T = nat_t. search.
+  assert subst (sml_cons (smap n1 (lnat z)) sml_nil).
+    assert subst sml_nil. assert {tm (lnat z)}.
+    assert {val (lnat z)}. apply subst_extend to H5 H6 H7. search.
+  assert csubst (cml_cons (cmap n2 (clnat z)) (cml_cons (cmap n3 unit) cml_nil)).
+    assert csubst cml_nil. assert {ctm unit}. assert {cval unit}.
+    apply csubst_extend to H6 H7 H8. assert {ctm (clnat z)}.
+    assert {cval (clnat z)}. apply csubst_extend to H9 H10 H11. search.
+  assert subst_equiv' (of n1 nat_t :: nil)
+	 (sml_cons (smap n1 (lnat z)) sml_nil)
+	 (cml_cons (cmap n2 (clnat z)) (cml_cons (cmap n3 unit) cml_nil)).
+  assert vars_of_sctx nil tl_nil.
+  assert {mapvar tl_nil (x\ml_nil)}.
+  assert {of n1 nat_t |- of E nat_t}.
+  apply cc_extend_map to H2 with x = n1, y = n2.
+  assert app_subst (sml_cons (smap n1 (lnat z)) sml_nil) E E.
+  assert app_csubst (cml_cons (cmap n2 (clnat z)) (cml_cons (cmap n3 unit) cml_nil)) E' E'.
+  apply eval_pres to H4 H5 H6 H7 H8 H9 H10 H11 H12 H13. case H14.
+  apply H15 to H3. case H17. search.

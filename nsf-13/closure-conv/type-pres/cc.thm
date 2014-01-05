@@ -1,0 +1,517 @@
+Specification "cc".
+
+Close const, nat, tm, ctm, ty.
+
+Define tname : tm -> prop by
+  nabla n, tname n.
+
+Theorem mem_of_absurd : forall T L, nabla x,
+  member (of x T) L -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+Theorem ml_mem_absurd : forall M ML, nabla x,
+  {ml_member (map x M) ML}  -> false.
+induction on 1. intros. case H1. apply IH to H2.
+
+% Context for typing in the source language
+Define sctx : olist -> prop by
+  sctx nil;
+  nabla x, sctx (of x T :: L) := sctx L.
+
+% A weaker version of typing contexts that may be needed sometimes
+Define sctx' : olist -> prop by
+  sctx' nil;
+  sctx' (of X T :: L) := sctx' L /\ tname X /\ forall T',
+			   (member (of X T') L -> T = T').
+
+Theorem sctx'_name : forall X T L,
+    sctx' L -> member (of X T) L -> tname X.
+    induction on 1. intros.
+      case H1. case H2. case H2. search. apply IH to H3 H6. search.
+
+Theorem sctx'_mem : forall SL O,
+  sctx' SL -> member O SL -> exists X T, O = of X T /\ tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    search. apply IH to H3 H6. search.
+
+% A context can be extended with a binding for a totally new variable
+Theorem sctx'_extend : forall L T, nabla x,
+   sctx' L -> sctx' (of x T :: L).
+    intros. unfold. search. search. intros. apply mem_of_absurd to H2.
+
+% Types to the same variable in the weaker context are still identical
+Theorem sctx'_equal : forall X T T' L,
+   sctx' L -> member (of X T) L -> member (of X T') L -> T = T'.
+   induction on 1. intros. case H1.
+       case H2. case H2. case H3. search.
+     apply H6 to H7. search.
+     case H3. apply H6 to H7. search.
+     apply IH to H4 H7 H8. search.
+
+
+% types of constants are independent from the typing context
+Theorem of_const_sctx' : forall L C T,
+  sctx' L -> {L |- of_const C T} -> {of_const C T}.
+induction on 2. intros. case H2.
+  search.
+  apply sctx'_mem to H1 H4. case H3.
+
+Theorem presv_const_typ : forall C T,
+  {of_const C T} -> {cof_const C T}.
+induction on 1. intros. case H1.
+  search.
+
+
+% Accumulate the variables in the source context
+Define vars_of_sctx : olist -> tm_list -> prop by
+  vars_of_sctx nil tl_nil;
+  vars_of_sctx (of X T :: L) (tl_cons X Vs) := vars_of_sctx L Vs.
+
+% Context for typing in the target language
+Define cctx : olist -> prop by
+  cctx nil;
+  nabla x, cctx (cof x T :: L) := cctx L;
+  nabla f env, cctx (cof f (code (product T1 TE) T) :: cof env TE :: L) := cctx L.
+
+% The typing rule for the mapping from source variables to closure converted terms
+Define of_ml : olist -> map_list -> olist -> prop by
+  of_ml CL ml_nil nil;
+  of_ml CL (ml_cons (map X M) ML) (of X T :: SL) :=
+	tname X /\ {CL |- cof M T} /\ of_ml CL ML SL.
+
+Theorem of_ml_exists : forall CL ML SL X M,
+   of_ml CL ML SL -> {ml_member (map X M) ML} -> exists T, member (of X T) SL.
+   induction on 1. intros. case H1.
+     case H2.
+     case H2. search. apply IH to H5 H6. search.
+
+Theorem of_ml_member_type : forall CL Map SL X M T,
+  sctx' SL -> of_ml CL Map SL -> {ml_member (map X M) Map} ->
+     member (of X T) SL -> {CL |- cof M T}.
+   induction on 2. intros. case H2.
+      case H4.
+      case H1 (keep). case H3. case H4.
+	  search.
+	  apply H10 to H11. search.
+	  apply of_ml_exists to H7 H11. apply IH to H8 H7 H11 H12.
+ 	    assert (member (of X T2) (of X1 T1 :: SL1)). apply sctx'_equal to H1 H4 H14. search.
+
+Theorem map_name : forall SL CL M X Map,
+  of_ml SL Map CL -> {ml_member (map X M) Map} -> tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H5 H6. search.
+
+Theorem map_rst : forall M SL X T RT,
+   of_ml (cof (rst X) RT :: nil) M SL ->  of_ml (cof X (product T RT) :: nil) M SL.
+  induction on 1. intros. case H1.
+    search.
+    assert {cof X (product T RT) |- cof (rst X) RT}.
+     cut H3 with H5.
+     apply IH to H4 with T = T.
+     search.
+
+Theorem of_ml_extend_cctx : forall CL Map SL X,
+   of_ml CL Map SL -> of_ml (X :: CL) Map SL.
+   induction on 1. intros. case H1.
+     search.
+     assert {CL, X |- cof M T}. apply IH to H4 with X = X. search.
+
+Theorem of_ml_extend_map : forall CL Map SL X Y T,
+   of_ml CL Map SL -> tname X ->
+     of_ml (cof Y T :: CL) (ml_cons (map X Y) Map) (of X T :: SL).
+   intros. unfold.
+     search.
+     search.
+     apply of_ml_extend_cctx to H1 with X = cof Y T. search.
+
+
+Define bvars : olist -> prop by
+   bvars nil;
+   nabla x, bvars (notfree x :: L) := bvars L.
+
+Theorem bvars_mem : forall BVs E,
+  bvars BVs -> member E BVs -> exists X, E = notfree X /\ tname X.
+   induction on 1. intros. case H1.
+    case H2.
+    case H2. exists n1. split. search. search.
+    apply IH to H3 H4. exists (X n1). split. search. search.
+
+Theorem vars_of_sctx_mem_name : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs -> {tl_member X Vs} -> tname X.
+induction on 1. intros. case H1.
+  case H2. case H3. 
+  case H2. case H3. search. apply IH to H4 H7 H8. search. 
+
+Theorem vars_of_sctx_mem_exists : forall SL Vs X,
+  sctx' SL -> vars_of_sctx SL Vs -> 
+	{tl_member X Vs} -> exists T, member (of X T) SL.
+  induction on 1. intros. case H1.
+    case H2. case H3. 
+    case H2. case H3.
+     search.
+     apply IH to H4 H7 H8. search.
+
+Theorem bvars_notfree : forall BVs X,
+   bvars BVs -> {BVs |- notfree X} -> tname X.
+   intros. case H2. apply bvars_mem to H1 H4. case H3. search.
+
+Define subset : tm_list -> tm_list -> prop by
+   subset tl_nil L;
+   subset (tl_cons X L1) L2 := {tl_member X L2} /\ subset L1 L2.
+
+Define islist : tm_list -> prop by
+   islist tl_nil;
+   islist (tl_cons X L) := islist L.
+
+Theorem combine_islist : forall L1 L2 L3,
+   islist L1 -> islist L2 -> {combine L1 L2 L3} -> islist L3.
+   induction on 3. intros. case H3.
+     search.
+     case H1. apply IH to H6 H2 H5. search.
+     case H1. apply IH to H5 H2 H4. search.
+
+Theorem tl_mem_bvar : forall Ps X L,
+  bvars Ps -> {Ps |- tl_member X L} -> {tl_member X L}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H3. search.
+  apply bvars_mem to H1 H4. case H3.
+
+Theorem combine_bvar : forall L1 L2 L3 Ps,
+  bvars Ps -> {Ps |- combine L1 L2 L3} -> {combine L1 L2 L3}.
+induction on 2. intros. case H2.
+  search.
+  apply IH to H1 H4. apply tl_mem_bvar to H1 H3. search.
+  apply IH to H1 H3. search. apply bvars_mem to H1 H4. case H3.
+
+  
+% members of a set are also members of a superset
+Theorem subset_mem : forall L1 L2 X,
+   subset L1 L2 -> {tl_member X L1} -> {tl_member X L2}.
+   induction on 2. intros. case H2.
+     case H1. search. 
+     case H1. apply IH to H5 H3. search.
+
+% subset is preserved under additions to superset
+Theorem subset_one : forall L1 L2 X,
+   islist L1 -> subset L1 L2 -> subset L1 (tl_cons X L2).
+   induction on 1. intros. case H1.
+    search. case H2. apply IH to H3 H5 with X = X. unfold. search. search.
+
+% subset is reflexive
+Theorem subset_refl : forall L,
+   islist L -> subset L L.
+   induction on 1. intros. case H1 (keep).
+     search.
+     unfold.
+       search.
+       apply IH to H2.
+	 apply subset_one to H2 H3 with X = X. search.
+
+% subset is transitive
+Theorem subset_trans : forall L1 L2 L3,
+   subset L1 L2 -> subset L2 L3 -> subset L1 L3.
+   induction on 1. intros. case H1.
+     search.
+     unfold.
+       apply subset_mem to H2 H3. search.
+       apply IH to H4 H2. search.
+
+% If L3 is obtained by combining something wit L2 then L2 is a subset of L3
+Theorem combine_subset1 : forall L1 L2 L3,
+   islist L2 -> {combine L1 L2 L3} -> subset L2 L3.
+   induction on 2. intros. case H2.
+     apply subset_refl to H1. search.
+     apply IH to H1 H4 with L1 = Fvs1. search.
+     apply IH to H1 H3 with L1 = Fvs1. apply subset_one to H1 H4 with X = X. search.
+
+% If L3 is obtained by combining L1 with something then L1 is a subset of L3
+Theorem combine_subset2 : forall L1 L2 L3,
+   islist L1 -> islist L2
+      -> {combine L1 L2 L3} -> subset L1 L3.
+   induction on 3. intros. case H3.
+     search.
+     apply combine_subset1 to H2 H5. 
+       apply subset_mem to H6 H4. 
+       case H1. apply IH to H8 H2 H5. search.
+     case H1. apply IH to H5 H2 H4.
+       apply subset_one to H5 H6 with X = X. search.
+
+% If L1 and L3 are subsets of L4 then their combination is too
+Theorem subset_combine : forall L1 L2 L3 L4,
+    islist L1 -> islist L2 -> {combine L1 L2 L3} ->
+       subset L1 L4 -> subset L2 L4 -> subset L3 L4.
+    induction on 3. intros. case H3.
+      search.
+      case H1. case H4. apply IH to H8 H2 H7 H10 H5. search.
+      case H4. unfold.
+	search.
+	case H1. apply IH to H9 H2 H6 H8 H5. search.
+
+Theorem fvars_islist : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> islist Vs'.
+  induction on 2. intros. case H2.
+   search.
+   search.
+   search.
+   search.
+   apply IH to H1 H3. apply IH to H1 H4. apply combine_bvar to H1 H5. 
+     apply combine_islist to H6 H7 H8. search.
+   assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
+   apply bvars_mem to H1 H4. case H3.
+
+% Computed free variables form a subset of all externally bound variables
+Theorem fvars_subset : forall M Vs Vs' Ps,
+  bvars Ps -> {Ps |- fvars M Vs Vs'} -> subset Vs' Vs.
+  induction on 2. intros. case H2.
+    search.
+    search.
+    search.
+    apply tl_mem_bvar to H1 H3. search.
+    apply IH to H1 H3. apply IH to H1 H4.
+       apply fvars_islist to H1 H3. apply fvars_islist to H1 H4.
+       apply combine_bvar to H1 H5.
+       apply subset_combine to H8 H9 H10 H6 H7. search.
+    assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
+    apply bvars_mem to H1 H4. case H3.
+
+% The starting list for finding free variables can be extended arbitrarily
+Theorem fvars_extend : forall M Vs Vs' Ps X,
+   bvars Ps -> {Ps |- fvars M Vs Vs'} -> {Ps |- fvars M (tl_cons X Vs) Vs'}.
+   induction on 2. intros. case H2.
+     search.
+     search.
+     search.
+     search.
+     apply IH to H1 H3 with X = X. apply IH to H1 H4 with X = X. search.
+     assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3 with X = X. search.
+     apply bvars_mem to H1 H4. case H3.
+
+% Pruning a type environment down to one based on a list of free variables
+Define pruned_env : olist -> tm_list -> olist -> olist -> prop by
+   pruned_env nil tl_nil SL nil;
+   pruned_env nil (tl_cons X FVs) SL ((of X T) :: SL') :=
+	 member (of X T) SL /\ pruned_env nil FVs SL SL';
+   nabla x, pruned_env (notfree x :: BVs) FVs (of x T :: SL) (of x T :: SL') :=
+	 pruned_env BVs FVs SL SL'.
+
+Theorem pruned_env_exists : forall SL Vs Vs',
+   sctx' SL -> vars_of_sctx SL Vs ->
+       subset Vs' Vs -> exists SL', pruned_env nil Vs' SL SL'.
+   induction on 3. intros. case H3.
+     search.
+     apply vars_of_sctx_mem_exists to H1 H2 H4.
+       apply IH to H1 H2 H5. search.
+
+Theorem pruned_env_vars : forall FVs SL SL',
+    pruned_env nil FVs SL SL' -> vars_of_sctx SL' FVs.
+  induction on 1. intros. case H1.
+    search.
+    apply IH to H3. search.
+
+Theorem pruned_env_sctx_source : forall FV SL SL' X T,
+   pruned_env nil FV SL SL' -> member (of X T) SL' -> member (of X T) SL.
+    induction on 1. intros. case H1. case H2. case H2. search. apply IH to H4 H5. search.
+
+Theorem pruned_env_sctx : forall SL BVL FVs SL',
+    sctx' SL -> bvars BVL -> pruned_env BVL FVs SL SL' -> sctx' SL'.
+    induction on 3. intros.
+      case H3.
+	search.
+	unfold.
+	  apply IH to H1 H2 H5. search.
+	  apply sctx'_name to H1 H4. search.
+	  intros. apply pruned_env_sctx_source to H5 H6. apply sctx'_equal to H1 H4 H7. search.
+	  unfold.
+	    case H1. case H2. apply IH to H5 H8 H4. search. search. intros.
+	    apply mem_of_absurd to H5.
+
+% Bound variables have a type in the pruned environment
+Theorem pruned_env_bound : forall BVL FVs SL SL' X T,
+    pruned_env BVL FVs SL SL' -> member (notfree X) BVL ->
+	member (of X T) SL -> member (of X T) SL'.
+   induction on 1. intros. case H1. case H2. case H2. case H2. case H3. search.
+     apply mem_of_absurd to H5. case H3. search. apply IH to H4 H5 H6. search.
+
+% Free variables have a type in the pruned environment; special case
+Theorem pruned_env_free_aux : forall FVs SL SL' X T,
+    sctx' SL -> pruned_env nil FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.
+   induction on 3. intros. case H3.
+     case H2. apply sctx'_equal to H1 H4 H5. search.
+     case H2. apply IH to H1 H7 H5 H4. search.
+
+% Free variables have a type in the pruned environment
+Theorem pruned_env_free : forall BVLs FVs SL SL' X T,
+    sctx' SL -> bvars BVLs -> pruned_env BVLs FVs SL SL' ->
+	{tl_member X FVs} -> member (of X T) SL -> member (of X T) SL'.
+    induction on 3. intros. case H2.
+      apply pruned_env_free_aux to H1 H3 H4 H5. search.
+      case H3. case H5.
+	search.
+	assert (bvars (notfree n1 :: L)). 
+	  case H1. apply IH to H10 H6 H7 H4 H8. search.
+
+% pruned environments preserve the typing relation
+Theorem pruned_env_typing : forall SL M T FVs BVL FVs' SL' FVs'',
+    sctx' SL -> {SL |- of M T} -> vars_of_sctx SL FVs -> bvars BVL ->
+      {BVL |- fvars M FVs FVs'} -> subset FVs' FVs'' ->
+      pruned_env BVL FVs'' SL SL' -> {SL' |- of M T}.
+   induction on 2. intros. case H2.
+     search.
+     apply of_const_sctx' to H1 H8. search.
+     case H5.
+	apply bvars_notfree to H4 H10. case H11.
+	apply tl_mem_bvar to H4 H10. apply vars_of_sctx_mem_name to H1 H3 H11. case H12.
+	apply fvars_islist to H4 H10. apply fvars_islist to H4 H11.
+	   apply combine_bvar to H4 H12. apply combine_islist to H13 H14 H15.
+	      apply combine_subset2 to H13 H14 H15.
+		 apply subset_trans to H17 H6.
+		 apply IH to H1 H8 H3 H4 H10 H18 H7.
+	      apply combine_subset1 to H14 H15.
+		 apply subset_trans to H20 H6.
+		 apply IH to H1 H9 H3 H4 H11 H21 H7.
+	   search.
+	apply bvars_mem to H4 H11. case H10.
+     case H5.
+	apply bvars_notfree to H4 H9. case H10.
+	apply tl_mem_bvar to H4 H9. apply vars_of_sctx_mem_name to H1 H3 H10. case H11.
+	  assert (pruned_env (notfree n1 :: BVL) FVs'' (of n1 T1 :: SL) (of n1 T1 :: SL')).
+	  assert (bvars (notfree n1 :: BVL)).
+	  assert (vars_of_sctx (of n1 T1 :: SL) (tl_cons n1 FVs)).
+	  apply sctx'_extend to H1 with T = T1.
+	  apply fvars_extend to H11 H9 with X = n1.
+	  apply IH to H13 H8 H12 H11 H14 H6 H10. search.
+	apply bvars_mem to H4 H10. case H9.
+     apply sctx'_mem to H1 H9. case H8. case H10.
+	case H5.
+	  case H11. apply bvars_mem to H4 H13. case H14. case H12.
+	    apply pruned_env_bound to H7 H13 H9. search.
+	  case H6. apply pruned_env_free to H1 H4 H7 H12 H9. search.
+	  apply bvars_mem to H4 H12. case H11.
+
+% Reifying an environment
+Define reified_env : olist -> ty -> prop by
+   reified_env nil unit_t;
+   reified_env (of X T :: SL) (product T RT) := reified_env SL RT.
+
+Theorem reified_env_exists : forall SL,
+    sctx' SL -> exists Ty, reified_env SL Ty.
+   induction on 1. intros. case H1.
+     search.
+     apply IH to H2. search.
+
+% Reification lemma
+Theorem pruned_env_reification_type : forall FVs SL SL' RTy Map X,
+  pruned_env nil FVs SL SL' -> sctx' SL' -> {mapvar FVs X Map}
+   -> reified_env SL' RTy -> of_ml (cof X RTy :: nil) Map SL'.
+  induction on 1. intros. case H1.
+    case H3. search.
+    case H2. case H8. case H3. case H4. apply IH to H6 H7 H10 H11.
+      assert { cof X (product T RT) |- cof (fst X) T}.
+      apply map_rst to H12 with T = T.
+      assert { cof X (product T RT) |- cof (rst X) RT}.
+      search.
+
+Theorem pruned_env_reification_env : forall CL Map SL SL' Ty PE FVs,
+  sctx' SL -> of_ml CL Map SL -> pruned_env nil FVs SL SL' ->
+      reified_env SL' Ty -> {mapenv FVs Map PE} -> {CL |- cof PE Ty}.
+  induction on 3. intros. case H3.
+    case H4. case H5. search.
+    case H5. case H4. apply of_ml_member_type to H1 H2 H8 H6.
+      apply IH to H1 H2 H7 H10 H9. search.
+
+% The type preservation lemma
+Theorem type_pres : forall SL CL Map M N T Vs,
+  sctx' SL -> cctx CL -> of_ml CL Map SL -> {SL |- of M T} ->
+    vars_of_sctx SL Vs -> {cc M N Map Vs} -> {CL |- cof N T}.
+induction on 6. intros. case H6.
+
+  % member (map M N) Map
+  apply map_name to H3 H7. case H8. case H4.
+    apply sctx'_mem to H1 H10.  case H11. case H9. case H9.
+     apply of_ml_member_type to H1 H3 H7 H10. search.
+
+  % M = lnat _
+  case H4.
+    search.
+    apply sctx'_mem to H1 H8. case H9. case H7.
+
+  % M = abs M1
+  assert (bvars nil).
+  apply fvars_subset to H11 H7. apply pruned_env_exists to H1 H5 H12.
+  apply fvars_islist to H11 H7. apply subset_refl to H14.
+  apply pruned_env_typing to H1 H4 H5 H11 H7 H15 H13.
+  apply pruned_env_sctx to H1 H11 H13.
+  apply reified_env_exists to H17.
+  apply pruned_env_reification_type to H13 H17 H9 H18.
+  case H16.
+  assert (tname n1). apply of_ml_extend_map to H19 H21 with X = n1, Y = n2, T = T1.
+  apply pruned_env_vars to H13. assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).
+  apply sctx'_extend to H17 with T = T1.
+  assert (cctx (cof n2 T1 :: cof n3 Ty :: nil)).
+  apply IH to H25 H26 H22 H20 H24 H10.
+  assert {CL, cof n3 Ty, cof n2 T1 |- cof (P n3 n2) T2}.
+  apply pruned_env_reification_env to H1 H3 H13 H18 H8.
+  search 10.
+
+  apply sctx'_mem to H17 H21. case H22. case H20.
+
+  % M = (app M1 M2)
+  case H4.
+  apply IH to H1 H2 H3 H9 H5 H7.
+  apply IH to H1 H2 H3 H10 H5 H8.
+  search.
+
+  apply sctx'_mem to H1 H10. case H11. case H9.
+
+  % M = (cst C)
+  case H4. apply of_const_sctx' to H1 H7.
+    apply presv_const_typ to H8. search.
+
+  apply sctx'_mem to H1 H8. case H7. case H9.
+
+Theorem type_pres' : forall M N T,
+  {of M T} -> {cc' M N} -> {cof N T}.
+intros. case H2. apply type_pres to _ _ _ H1 _ H3. search.
+
+
+Define name_map : map_list -> prop by
+  name_map ml_nil;
+  name_map (ml_cons (map X V) ML) := 
+    name_map ML /\ tname X.
+
+Theorem name_map_nominal : forall Map X V,
+  name_map Map -> {ml_member (map X V) Map} -> tname X.
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search. apply IH to H3 H5. search.
+
+
+% Function part in a closure is closed
+Theorem clos_closed : forall SL Map R F E T1 T2 Vs,
+  sctx' SL -> name_map Map -> {SL |- of (abs R) (arr T1 T2)} ->
+    vars_of_sctx SL Vs -> {cc (abs R) (cpair F E) Map Vs} -> 
+      exists TE, {cof F (code (product T1 TE) T2)}.
+intros. case H5.
+  apply name_map_nominal to H2 H6. case H7.
+  %%%
+  assert (bvars nil).
+  apply fvars_subset to H10 H6. apply pruned_env_exists to H1 H4 H11.
+  apply fvars_islist to H10 H6. apply subset_refl to H13.
+  apply pruned_env_typing to H1 H3 H4 H10 H6 H14 H12.
+  apply pruned_env_sctx to H1 H10 H12.
+  apply reified_env_exists to H16.
+  apply pruned_env_reification_type to H12 H16 H8 H17.
+  case H15.
+  assert (tname n1). apply of_ml_extend_map to H18 H20 with X = n1, Y = n2, T = T1.
+  apply pruned_env_vars to H12. assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).
+  apply sctx'_extend to H16 with T = T1.
+  assert (cctx (cof n2 T1 :: cof n3 Ty :: nil)).
+  apply type_pres to H24 H25 H21 H19 H23 H9.
+  search.
+  %%%
+  apply sctx'_mem to H16 H20. case H19. case H21.
