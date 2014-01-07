@@ -27,26 +27,27 @@
       its properties in <a href="http://abella-prover.org">Abella</a>.  
       TCC is encoded by using the higher-order abstract syntax (HOAS).
       The source language and target language are both encoded in the HOAS style.  
-      Two major properties of TCC are formalized in Abella:
+      Two major properties of TCC are formalized:
     </p>
 
     <ul> 
       <li>
-         TCC preserves types. The term output by TCC has the same type as the input term.
+         TCC preserves types. A term output by TCC has the same type as the input term.
          The formalization is <a href="type-pres/cc.html">here</a>.
       </li>
       <br/>
 
       <li>
-         TCC preserves meaning. The term output by TCC simulates the input term under evaluation.
-         The simulation is defined as logical relations between source and target terms. The proof is
+         TCC preserves meaning. A term output by TCC simulates the input term under evaluation.
+         The simulation is defined as a family of logical relations between source and target terms. The proof is
          based on the <a href="http://www.cs.cmu.edu/~rwh/papers/closures/tr.pdf">"Typed Closure Conversion"</a>
          technical report by Y. Minamide, et al. The formalization is <a href="eval-pres/cc.html">here</a>.
 
-         <br/><br/>
-         In the previous proof, the simulation relation assumes termination of evaluations for the source and
-         target language. However, the termination property might not hold for languages richer than STLC. For this,
-         the meaning preservation is proved by using an alternative definition of simulation that does not assume termination.
+         <br/><br/> In the previous proof, the simulation relation assumes termination of evaluations for the source and
+         target languages. However, the termination property might not hold in general, for instance, for some languages
+         richer than STLC. To solve this problem, an alternative definition of simulation that does not assume
+         termination is used for proving the meaning preservation of TCC for STLC extended with constants
+         (here we use the addition of natural numbers as an example). 
          The formalization is <a href="eval-pres/cc_alt_sim.html">here</a>.
       </li>
     <ul>
