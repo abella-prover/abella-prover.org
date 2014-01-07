@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Proving Properties of Typed Closure Conversion in Abella</title>
+  <link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+  <link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+  <section>
+    <center>
+      <h1 id="main">
+      Proving Properties of Typed Closure Conversion in Abella
+      </h1>
+    </center>
+  </section>
+
+  <section>
+
+    <p>
+      This page contains the formalization of <a href="http://dl.acm.org/citation.cfm?id=237791">typed closure conversion</a>
+      (TCC) for simply-typed lambda calculus (STLC) and 
+      its properties in <a href="http://abella-prover.org">Abella</a>.  
+      TCC is encoded by using the higher-order abstract syntax (HOAS).
+      The source language and target language are both encoded in the HOAS style.  
+      Two major properties of TCC are formalized in Abella:
+    </p>
+
+    <ul> 
+      <li>
+         TCC preserves types. The term output by TCC has the same type as the input term.
+         The formalization is <a href="type-pres/cc.html">here</a>.
+      </li>
+      <br/>
+
+      <li>
+         TCC preserves meaning. The term output by TCC simulates the input term under evaluation.
+         The simulation is defined as logical relations between source and target terms. The proof is
+         based on the <a href="http://www.cs.cmu.edu/~rwh/papers/closures/tr.pdf">"Typed Closure Conversion"</a>
+         technical report by Y. Minamide, et al. The formalization is <a href="eval-pres/cc.html">here</a>.
+
+         <br/><br/>
+         In the previous proof, the simulation relation assumes termination of evaluations for the source and
+         target language. However, the termination property might not hold for languages richer than STLC. For this,
+         the meaning preservation is proved by using an alternative definition of simulation that does not assume termination.
+         The formalization is <a href="eval-pres/cc_alt_sim.html">here</a>.
+      </li>
+    <ul>
+
+  </section>
+
+
+</body>
+</html>
+
+
+<!-- Local Variables: -->
+<!-- mode: html -->
+<!-- fill-column: 120 -->
+<!-- End: -->
+
+<!--  LocalWords:  Teyjus OCaml Equipes Associ REUSSI CCR README tarball gz LIX -->
+<!--  LocalWords:  changelog Rosser Takahashi's Girard's Ecole Pollack GitHub -->
