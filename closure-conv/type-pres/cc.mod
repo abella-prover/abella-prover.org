@@ -1,30 +1,34 @@
+%% Typed Closure Conversion
+
 module cc.
 
 is_nat z.
 is_nat (s N) :- is_nat N.
 
-% Some generic predicates
 tl_member X (tl_cons X L).
 tl_member X (tl_cons Y L) :- tl_member X L.
 
 ml_member X (ml_cons X L).
 ml_member X (ml_cons Y L) :- ml_member X L.
 
-mapvar tl_nil X ml_nil.
-mapvar (tl_cons X L) Env (ml_cons (map X (fst Env)) LMap) :-
-     mapvar L (rst Env) LMap.
+mapvar tl_nil (xenv\ ml_nil).
+mapvar (tl_cons X L) 
+       (xenv\ ml_cons (map X (fst xenv)) (Map (rst xenv))) :-
+     mapvar L Map.
 
 mapenv tl_nil _ unit.
 mapenv (tl_cons X L) Map (cross M ML) :-
        ml_member (map X M) Map, mapenv L Map ML.
 
+% Note: combine works on multisets of free variables
 combine tl_nil Fvs2 Fvs2.
 combine (tl_cons X Fvs1) Fvs2 Fvs :-
       tl_member X Fvs2, combine Fvs1 Fvs2 Fvs.
 combine (tl_cons X Fvs1) Fvs2 (tl_cons X Fvs) :-
       combine Fvs1 Fvs2 Fvs.
 
-% free variables in a term; second argument is the list of candidates
+% Note: Because of how combine works, there might be
+% duplication of free variables in the output.
 fvars X _ tl_nil :- notfree X.
 fvars (cst C) _ tl_nil.
 fvars (lnat _) _ tl_nil.
@@ -40,8 +44,7 @@ cc (abs M) (cpair (cabs x\ (clet (fst x)
 		  PE) Map FVs :-
    fvars (abs M) FVs NFVs,
    mapenv NFVs Map PE,
-   (pi xenv\
-	     mapvar NFVs xenv (NMap xenv)),
+   mapvar NFVs NMap,
    (pi x\ pi y\ pi xenv\
 	     cc (M x) (P xenv y) (ml_cons (map x y) (NMap xenv)) (tl_cons x NFVs)).
 cc (app M1 M2) (cunpair CM1
@@ -53,8 +56,6 @@ cc' X M :- cc X M ml_nil tl_nil.
 
 term (app (app (abs x\ (abs y\ (app (app (cst s++) x) y))) (lnat z)) (lnat (s z))).
 
-
-% Definition of the typing relation for lambda terms.
 of (lnat _) nat_t.
 of (cst C) T :- of_const C T.
 of (app M N) T :- of M (arr T1 T), of N T1.
@@ -62,7 +63,6 @@ of (abs M) (arr T1 T2) :- pi x\ of x T1 => of (M x) T2.
 
 of_const s++ (arr nat_t (arr nat_t nat_t)).
 
-% Definition of the typing relation for closure converted terms.
 cof (clnat _) nat_t.
 cof (ccst C) T :- cof_const C T.
 cof (clet M1 M2) T :-

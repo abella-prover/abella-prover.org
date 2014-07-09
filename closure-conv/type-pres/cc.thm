@@ -1,3 +1,5 @@
+%% Type Preservation of Closure Conversion
+
 Specification "cc".
 
 Close const, nat, tm, ctm, ty.
@@ -13,12 +15,84 @@ Theorem ml_mem_absurd : forall M ML, nabla x,
   {ml_member (map x M) ML}  -> false.
 induction on 1. intros. case H1. apply IH to H2.
 
-% Context for typing in the source language
-Define sctx : olist -> prop by
-  sctx nil;
-  nabla x, sctx (of x T :: L) := sctx L.
+Define islist : tm_list -> prop by
+   islist tl_nil;
+   islist (tl_cons X L) := islist L.
 
-% A weaker version of typing contexts that may be needed sometimes
+Theorem combine_islist : forall L1 L2 L3,
+   islist L1 -> islist L2 -> {combine L1 L2 L3} -> islist L3.
+   induction on 3. intros. case H3.
+     search.
+     case H1. apply IH to H6 H2 H5. search.
+     case H1. apply IH to H5 H2 H4. search.
+
+%%%%
+%% Definition and lemmas for the subset relation
+%%%%
+Define subset : tm_list -> tm_list -> prop by
+   subset tl_nil L;
+   subset (tl_cons X L1) L2 := {tl_member X L2} /\ subset L1 L2.
+
+Theorem subset_mem : forall L1 L2 X,
+   subset L1 L2 -> {tl_member X L1} -> {tl_member X L2}.
+   induction on 2. intros. case H2.
+     case H1. search. 
+     case H1. apply IH to H5 H3. search.
+
+Theorem subset_one : forall L1 L2 X,
+   islist L1 -> subset L1 L2 -> subset L1 (tl_cons X L2).
+   induction on 1. intros. case H1.
+    search. case H2. apply IH to H3 H5 with X = X. unfold. search. search.
+
+Theorem subset_refl : forall L,
+   islist L -> subset L L.
+   induction on 1. intros. case H1 (keep).
+     search.
+     unfold.
+       search.
+       apply IH to H2.
+	 apply subset_one to H2 H3 with X = X. search.
+
+Theorem subset_trans : forall L1 L2 L3,
+   subset L1 L2 -> subset L2 L3 -> subset L1 L3.
+   induction on 1. intros. case H1.
+     search.
+     unfold.
+       apply subset_mem to H2 H3. search.
+       apply IH to H4 H2. search.
+
+Theorem combine_subset1 : forall L1 L2 L3,
+   islist L2 -> {combine L1 L2 L3} -> subset L2 L3.
+   induction on 2. intros. case H2.
+     apply subset_refl to H1. search.
+     apply IH to H1 H4 with L1 = Fvs1. search.
+     apply IH to H1 H3 with L1 = Fvs1. apply subset_one to H1 H4 with X = X. search.
+
+Theorem combine_subset2 : forall L1 L2 L3,
+   islist L1 -> islist L2
+      -> {combine L1 L2 L3} -> subset L1 L3.
+   induction on 3. intros. case H3.
+     search.
+     apply combine_subset1 to H2 H5. 
+       apply subset_mem to H6 H4. 
+       case H1. apply IH to H8 H2 H5. search.
+     case H1. apply IH to H5 H2 H4.
+       apply subset_one to H5 H6 with X = X. search.
+
+Theorem subset_combine : forall L1 L2 L3 L4,
+    islist L1 -> islist L2 -> {combine L1 L2 L3} ->
+       subset L1 L4 -> subset L2 L4 -> subset L3 L4.
+    induction on 3. intros. case H3.
+      search.
+      case H1. case H4. apply IH to H8 H2 H7 H10 H5. search.
+      case H4. unfold.
+	search.
+	case H1. apply IH to H9 H2 H6 H8 H5. search.
+
+
+%%%%%
+%% Definition and lemmas for the typing context for the source language
+%%%%%
 Define sctx' : olist -> prop by
   sctx' nil;
   sctx' (of X T :: L) := sctx' L /\ tname X /\ forall T',
@@ -50,8 +124,7 @@ Theorem sctx'_equal : forall X T T' L,
      case H3. apply H6 to H7. search.
      apply IH to H4 H7 H8. search.
 
-
-% types of constants are independent from the typing context
+% Types of constants are independent from the typing context
 Theorem of_const_sctx' : forall L C T,
   sctx' L -> {L |- of_const C T} -> {of_const C T}.
 induction on 2. intros. case H2.
@@ -63,19 +136,24 @@ Theorem presv_const_typ : forall C T,
 induction on 1. intros. case H1.
   search.
 
-
 % Accumulate the variables in the source context
 Define vars_of_sctx : olist -> tm_list -> prop by
   vars_of_sctx nil tl_nil;
   vars_of_sctx (of X T :: L) (tl_cons X Vs) := vars_of_sctx L Vs.
 
-% Context for typing in the target language
+
+%%%%
+%% Definition for the typing context for the target language
+%%%%
 Define cctx : olist -> prop by
   cctx nil;
   nabla x, cctx (cof x T :: L) := cctx L;
-  nabla f env, cctx (cof f (code (product T1 TE) T) :: cof env TE :: L) := cctx L.
+  nabla f env l, cctx (cof f (code (product T1 l) T) :: cof env l :: L) := cctx L.
 
-% The typing rule for the mapping from source variables to closure converted terms
+%%%%
+%% Definition and lemmas for the typing rule 
+%% for mappings from source variables to target terms
+%%%%
 Define of_ml : olist -> map_list -> olist -> prop by
   of_ml CL ml_nil nil;
   of_ml CL (ml_cons (map X M) ML) (of X T :: SL) :=
@@ -128,6 +206,9 @@ Theorem of_ml_extend_map : forall CL Map SL X Y T,
      apply of_ml_extend_cctx to H1 with X = cof Y T. search.
 
 
+%%%%
+%% Definition and lemmas for the context for computing free variables
+%%%%
 Define bvars : olist -> prop by
    bvars nil;
    nabla x, bvars (notfree x :: L) := bvars L.
@@ -158,21 +239,6 @@ Theorem bvars_notfree : forall BVs X,
    bvars BVs -> {BVs |- notfree X} -> tname X.
    intros. case H2. apply bvars_mem to H1 H4. case H3. search.
 
-Define subset : tm_list -> tm_list -> prop by
-   subset tl_nil L;
-   subset (tl_cons X L1) L2 := {tl_member X L2} /\ subset L1 L2.
-
-Define islist : tm_list -> prop by
-   islist tl_nil;
-   islist (tl_cons X L) := islist L.
-
-Theorem combine_islist : forall L1 L2 L3,
-   islist L1 -> islist L2 -> {combine L1 L2 L3} -> islist L3.
-   induction on 3. intros. case H3.
-     search.
-     case H1. apply IH to H6 H2 H5. search.
-     case H1. apply IH to H5 H2 H4. search.
-
 Theorem tl_mem_bvar : forall Ps X L,
   bvars Ps -> {Ps |- tl_member X L} -> {tl_member X L}.
 induction on 2. intros. case H2.
@@ -187,70 +253,6 @@ induction on 2. intros. case H2.
   apply IH to H1 H4. apply tl_mem_bvar to H1 H3. search.
   apply IH to H1 H3. search. apply bvars_mem to H1 H4. case H3.
 
-  
-% members of a set are also members of a superset
-Theorem subset_mem : forall L1 L2 X,
-   subset L1 L2 -> {tl_member X L1} -> {tl_member X L2}.
-   induction on 2. intros. case H2.
-     case H1. search. 
-     case H1. apply IH to H5 H3. search.
-
-% subset is preserved under additions to superset
-Theorem subset_one : forall L1 L2 X,
-   islist L1 -> subset L1 L2 -> subset L1 (tl_cons X L2).
-   induction on 1. intros. case H1.
-    search. case H2. apply IH to H3 H5 with X = X. unfold. search. search.
-
-% subset is reflexive
-Theorem subset_refl : forall L,
-   islist L -> subset L L.
-   induction on 1. intros. case H1 (keep).
-     search.
-     unfold.
-       search.
-       apply IH to H2.
-	 apply subset_one to H2 H3 with X = X. search.
-
-% subset is transitive
-Theorem subset_trans : forall L1 L2 L3,
-   subset L1 L2 -> subset L2 L3 -> subset L1 L3.
-   induction on 1. intros. case H1.
-     search.
-     unfold.
-       apply subset_mem to H2 H3. search.
-       apply IH to H4 H2. search.
-
-% If L3 is obtained by combining something wit L2 then L2 is a subset of L3
-Theorem combine_subset1 : forall L1 L2 L3,
-   islist L2 -> {combine L1 L2 L3} -> subset L2 L3.
-   induction on 2. intros. case H2.
-     apply subset_refl to H1. search.
-     apply IH to H1 H4 with L1 = Fvs1. search.
-     apply IH to H1 H3 with L1 = Fvs1. apply subset_one to H1 H4 with X = X. search.
-
-% If L3 is obtained by combining L1 with something then L1 is a subset of L3
-Theorem combine_subset2 : forall L1 L2 L3,
-   islist L1 -> islist L2
-      -> {combine L1 L2 L3} -> subset L1 L3.
-   induction on 3. intros. case H3.
-     search.
-     apply combine_subset1 to H2 H5. 
-       apply subset_mem to H6 H4. 
-       case H1. apply IH to H8 H2 H5. search.
-     case H1. apply IH to H5 H2 H4.
-       apply subset_one to H5 H6 with X = X. search.
-
-% If L1 and L3 are subsets of L4 then their combination is too
-Theorem subset_combine : forall L1 L2 L3 L4,
-    islist L1 -> islist L2 -> {combine L1 L2 L3} ->
-       subset L1 L4 -> subset L2 L4 -> subset L3 L4.
-    induction on 3. intros. case H3.
-      search.
-      case H1. case H4. apply IH to H8 H2 H7 H10 H5. search.
-      case H4. unfold.
-	search.
-	case H1. apply IH to H9 H2 H6 H8 H5. search.
-
 Theorem fvars_islist : forall M Vs Vs' Ps,
   bvars Ps -> {Ps |- fvars M Vs Vs'} -> islist Vs'.
   induction on 2. intros. case H2.
@@ -263,7 +265,6 @@ Theorem fvars_islist : forall M Vs Vs' Ps,
    assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
    apply bvars_mem to H1 H4. case H3.
 
-% Computed free variables form a subset of all externally bound variables
 Theorem fvars_subset : forall M Vs Vs' Ps,
   bvars Ps -> {Ps |- fvars M Vs Vs'} -> subset Vs' Vs.
   induction on 2. intros. case H2.
@@ -278,7 +279,6 @@ Theorem fvars_subset : forall M Vs Vs' Ps,
     assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3. search.
     apply bvars_mem to H1 H4. case H3.
 
-% The starting list for finding free variables can be extended arbitrarily
 Theorem fvars_extend : forall M Vs Vs' Ps X,
    bvars Ps -> {Ps |- fvars M Vs Vs'} -> {Ps |- fvars M (tl_cons X Vs) Vs'}.
    induction on 2. intros. case H2.
@@ -290,7 +290,12 @@ Theorem fvars_extend : forall M Vs Vs' Ps X,
      assert (bvars (notfree n1 :: Ps)). apply IH to H4 H3 with X = X. search.
      apply bvars_mem to H1 H4. case H3.
 
-% Pruning a type environment down to one based on a list of free variables
+%%%%
+%% Definition and lemmas about pruning a typing context down to 
+%% one based on a list of free variables. It defines the strengthening
+%% of a typing context to one containing only free variables. 
+%% The typing judgments for bounded variables are kept.
+%%%%
 Define pruned_env : olist -> tm_list -> olist -> olist -> prop by
    pruned_env nil tl_nil SL nil;
    pruned_env nil (tl_cons X FVs) SL ((of X T) :: SL') :=
@@ -352,10 +357,9 @@ Theorem pruned_env_free : forall BVLs FVs SL SL' X T,
       apply pruned_env_free_aux to H1 H3 H4 H5. search.
       case H3. case H5.
 	search.
-	assert (bvars (notfree n1 :: L)). 
-	  case H1. apply IH to H10 H6 H7 H4 H8. search.
+	case H1. apply IH to H9 H6 H7 H4 H8. search.
 
-% pruned environments preserve the typing relation
+% Strengthening lemma. Pruned environments preserve the typing relation.
 Theorem pruned_env_typing : forall SL M T FVs BVL FVs' SL' FVs'',
     sctx' SL -> {SL |- of M T} -> vars_of_sctx SL FVs -> bvars BVL ->
       {BVL |- fvars M FVs FVs'} -> subset FVs' FVs'' ->
@@ -393,7 +397,9 @@ Theorem pruned_env_typing : forall SL M T FVs BVL FVs' SL' FVs'',
 	  case H6. apply pruned_env_free to H1 H4 H7 H12 H9. search.
 	  apply bvars_mem to H4 H12. case H11.
 
-% Reifying an environment
+%%%%
+%% Definition and lemmas for reifying a type environment
+%%%%
 Define reified_env : olist -> ty -> prop by
    reified_env nil unit_t;
    reified_env (of X T :: SL) (product T RT) := reified_env SL RT.
@@ -406,15 +412,18 @@ Theorem reified_env_exists : forall SL,
 
 % Reification lemma
 Theorem pruned_env_reification_type : forall FVs SL SL' RTy Map X,
-  pruned_env nil FVs SL SL' -> sctx' SL' -> {mapvar FVs X Map}
-   -> reified_env SL' RTy -> of_ml (cof X RTy :: nil) Map SL'.
+  pruned_env nil FVs SL SL' -> sctx' SL' -> {mapvar FVs Map}
+   -> reified_env SL' RTy -> of_ml (cof X RTy :: nil) (Map X) SL'.
   induction on 1. intros. case H1.
     case H3. search.
-    case H2. case H8. case H3. case H4. apply IH to H6 H7 H10 H11.
-      assert { cof X (product T RT) |- cof (fst X) T}.
-      apply map_rst to H12 with T = T.
-      assert { cof X (product T RT) |- cof (rst X) RT}.
-      search.
+    case H3. 
+      assert sctx' SL'1.
+        case H2. search.
+      case H4. apply IH to H6 H8 H7 H9 with X = (rst X).
+      unfold.
+        case H2. search.
+        search.
+        apply map_rst to H10 with T = T. search.
 
 Theorem pruned_env_reification_env : forall CL Map SL SL' Ty PE FVs,
   sctx' SL -> of_ml CL Map SL -> pruned_env nil FVs SL SL' ->
@@ -424,7 +433,10 @@ Theorem pruned_env_reification_env : forall CL Map SL SL' Ty PE FVs,
     case H5. case H4. apply of_ml_member_type to H1 H2 H8 H6.
       apply IH to H1 H2 H7 H10 H9. search.
 
-% The type preservation lemma
+
+%%%%
+%% Generalized type preservation theorem
+%%%%
 Theorem type_pres : forall SL CL Map M N T Vs,
   sctx' SL -> cctx CL -> of_ml CL Map SL -> {SL |- of M T} ->
     vars_of_sctx SL Vs -> {cc M N Map Vs} -> {CL |- cof N T}.
@@ -447,7 +459,7 @@ induction on 6. intros. case H6.
   apply pruned_env_typing to H1 H4 H5 H11 H7 H15 H13.
   apply pruned_env_sctx to H1 H11 H13.
   apply reified_env_exists to H17.
-  apply pruned_env_reification_type to H13 H17 H9 H18.
+  apply pruned_env_reification_type to H13 H17 H9 H18 with X = n3.
   case H16.
   assert (tname n1). apply of_ml_extend_map to H19 H21 with X = n1, Y = n2, T = T1.
   apply pruned_env_vars to H13. assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).
@@ -474,44 +486,11 @@ induction on 6. intros. case H6.
 
   apply sctx'_mem to H1 H8. case H7. case H9.
 
+
+%%%%
+%% The main theorem
+%%%%
 Theorem type_pres' : forall M N T,
   {of M T} -> {cc' M N} -> {cof N T}.
 intros. case H2. apply type_pres to _ _ _ H1 _ H3. search.
 
-
-Define name_map : map_list -> prop by
-  name_map ml_nil;
-  name_map (ml_cons (map X V) ML) := 
-    name_map ML /\ tname X.
-
-Theorem name_map_nominal : forall Map X V,
-  name_map Map -> {ml_member (map X V) Map} -> tname X.
-induction on 1. intros. case H1.
-  case H2.
-  case H2. search. apply IH to H3 H5. search.
-
-
-% Function part in a closure is closed
-Theorem clos_closed : forall SL Map R F E T1 T2 Vs,
-  sctx' SL -> name_map Map -> {SL |- of (abs R) (arr T1 T2)} ->
-    vars_of_sctx SL Vs -> {cc (abs R) (cpair F E) Map Vs} -> 
-      exists TE, {cof F (code (product T1 TE) T2)}.
-intros. case H5.
-  apply name_map_nominal to H2 H6. case H7.
-  %%%
-  assert (bvars nil).
-  apply fvars_subset to H10 H6. apply pruned_env_exists to H1 H4 H11.
-  apply fvars_islist to H10 H6. apply subset_refl to H13.
-  apply pruned_env_typing to H1 H3 H4 H10 H6 H14 H12.
-  apply pruned_env_sctx to H1 H10 H12.
-  apply reified_env_exists to H16.
-  apply pruned_env_reification_type to H12 H16 H8 H17.
-  case H15.
-  assert (tname n1). apply of_ml_extend_map to H18 H20 with X = n1, Y = n2, T = T1.
-  apply pruned_env_vars to H12. assert (vars_of_sctx (of n1 T1 :: SL') (tl_cons n1 NFVs)).
-  apply sctx'_extend to H16 with T = T1.
-  assert (cctx (cof n2 T1 :: cof n3 Ty :: nil)).
-  apply type_pres to H24 H25 H21 H19 H23 H9.
-  search.
-  %%%
-  apply sctx'_mem to H16 H20. case H19. case H21.
