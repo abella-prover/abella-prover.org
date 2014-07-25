@@ -83,58 +83,58 @@ Click on a command or tactic to see a detailed view of its use.
 <pre>
 <a href="impcut-details.html#1" class="command">Specification "impcut.elf".</a>
 
-<a href="impcut-details.html#2" class="command">Define ctx : olist -> prop by
+<a href="impcut-details.html#2" class="command">Define ctx : olist -&gt; prop by
   ctx nil
-; nabla p, ctx (<p:hyp A> :: G) := ctx G.</a>
+; nabla p, ctx (&lt;p:hyp A&gt; :: G) := ctx G.</a>
 
-<a href="impcut-details.html#3" class="command">Define name : lfobj -> prop by
+<a href="impcut-details.html#3" class="command">Define name : lfobj -&gt; prop by
   nabla x, name x.</a>
 
-<a href="impcut-details.html#4" class="command">Define fresh : lfobj -> lfobj -> prop by
+<a href="impcut-details.html#4" class="command">Define fresh : lfobj -&gt; lfobj -&gt; prop by
   nabla x, fresh x A.</a>
 
-<a href="impcut-details.html#5" class="command">Theorem prune : forall G E, nabla (n:lfobj), member (E n) G ->
+<a href="impcut-details.html#5" class="command">Theorem prune : forall G E, nabla (n:lfobj), member (E n) G -&gt;
   exists F, E = x\ F.</a>
 <div class="proof"><a href="impcut-details.html#6" class="tactic">induction on 1.</a> <a href="impcut-details.html#7" class="tactic">intros.</a> <a href="impcut-details.html#8" class="tactic">case H1.</a>
   <a href="impcut-details.html#9" class="tactic">search.</a>
   <a href="impcut-details.html#10" class="tactic">apply IH to H2.</a> <a href="impcut-details.html#11" class="tactic">search.</a></div>
-<a href="impcut-details.html#12" class="command">Theorem ctx_mem : forall G E, ctx G -> member E G ->
-                    exists A P, E = <P:hyp A> /\ fresh P A.</a>
+<a href="impcut-details.html#12" class="command">Theorem ctx_mem : forall G E, ctx G -&gt; member E G -&gt;
+                    exists A P, E = &lt;P:hyp A&gt; /\ fresh P A.</a>
 <div class="proof"><a href="impcut-details.html#13" class="tactic">induction on 1.</a> <a href="impcut-details.html#14" class="tactic">intros.</a> <a href="impcut-details.html#15" class="tactic">case H1.</a>
   <a href="impcut-details.html#16" class="tactic">case H2.</a>
   <a href="impcut-details.html#17" class="tactic">case H2.</a>
     <a href="impcut-details.html#18" class="tactic">search.</a>
     <a href="impcut-details.html#19" class="tactic">apply IH to H3 H4.</a> <a href="impcut-details.html#20" class="tactic">search.</a></div>
-<a href="impcut-details.html#21" class="command">Theorem strength_i : forall G U, ctx G ->
-  <G |- U:i> -> <U:i>.</a>
+<a href="impcut-details.html#21" class="command">Theorem strength_i : forall G U, ctx G -&gt;
+  &lt;G |- U:i&gt; -&gt; &lt;U:i&gt;.</a>
 <div class="proof"><a href="impcut-details.html#22" class="tactic">induction on 2.</a> <a href="impcut-details.html#23" class="tactic">intros.</a> <a href="impcut-details.html#24" class="tactic">case H2.</a>
   <a href="impcut-details.html#25" class="tactic">apply ctx_mem to H1 H4.</a> <a href="impcut-details.html#26" class="tactic">case H3.</a></div>
-<a href="impcut-details.html#27" class="command">Theorem strength_form : forall G F, ctx G ->
-  <G |- F:form> -> <F:form>.</a>
+<a href="impcut-details.html#27" class="command">Theorem strength_form : forall G F, ctx G -&gt;
+  &lt;G |- F:form&gt; -&gt; &lt;F:form&gt;.</a>
 <div class="proof"><a href="impcut-details.html#28" class="tactic">induction on 2.</a> <a href="impcut-details.html#29" class="tactic">intros.</a> <a href="impcut-details.html#30" class="tactic">case H2 (keep).</a>
   <a href="impcut-details.html#31" class="tactic">apply IH to H1 H3.</a> <a href="impcut-details.html#32" class="tactic">apply IH to H1 H4.</a> <a href="impcut-details.html#33" class="tactic">search.</a>
   <a href="impcut-details.html#34" class="tactic">apply strength_i to H1 H3.</a> <a href="impcut-details.html#35" class="tactic">search.</a>
   <a href="impcut-details.html#36" class="tactic">apply ctx_mem to H1 H4.</a> <a href="impcut-details.html#37" class="tactic">case H3.</a></div>
-<a href="impcut-details.html#38" class="command">Theorem prune_form : forall F, nabla (x:lfobj), <F x:form> ->
+<a href="impcut-details.html#38" class="command">Theorem prune_form : forall F, nabla (x:lfobj), &lt;F x:form&gt; -&gt;
   exists FF, F = x\ FF.</a>
 <div class="proof"><a href="impcut-details.html#39" class="tactic">induction on 1.</a> <a href="impcut-details.html#40" class="tactic">intros.</a> <a href="impcut-details.html#41" class="tactic">case H1.</a>
   <a href="impcut-details.html#42" class="tactic">apply IH to H2.</a> <a href="impcut-details.html#43" class="tactic">apply IH to H3.</a> <a href="impcut-details.html#44" class="tactic">search.</a>
   <a href="impcut-details.html#45" class="tactic">case H2.</a></div>
 <a href="impcut-details.html#46" class="command">Theorem imp_invert :
-  forall G A B DD, ctx G -> <G |- DD:conc (imp A B)> ->
-  nabla x, exists EE, <G, x:hyp A |- EE:conc B>.</a>
+  forall G A B DD, ctx G -&gt; &lt;G |- DD:conc (imp A B)&gt; -&gt;
+  nabla x, exists EE, &lt;G, x:hyp A |- EE:conc B&gt;.</a>
 <div class="proof"><a href="impcut-details.html#47" class="tactic">induction on 2.</a> <a href="impcut-details.html#48" class="tactic">intros.</a> <a href="impcut-details.html#49" class="tactic">case H2 (keep).</a>
   <a href="impcut-details.html#50" class="tactic">search.</a>
   <a href="impcut-details.html#51" class="tactic">apply IH to _ H7.</a>
    <a href="impcut-details.html#52" class="tactic">case H5.</a>
-     <a href="impcut-details.html#53" class="tactic">assert <G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:conc B>.</a>
+     <a href="impcut-details.html#53" class="tactic">assert &lt;G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:conc B&gt;.</a>
      <a href="impcut-details.html#54" class="tactic">inst H12 with n1 = lf_3.</a> <a href="impcut-details.html#55" class="tactic">cut H13 with H8.</a>
      <a href="impcut-details.html#56" class="tactic">search.</a>
    <a href="impcut-details.html#57" class="tactic">apply ctx_mem to H1 H11.</a> <a href="impcut-details.html#58" class="tactic">case H10.</a>
  <a href="impcut-details.html#59" class="tactic">apply ctx_mem to H1 H4.</a> <a href="impcut-details.html#60" class="tactic">case H3.</a></div>
 <a href="impcut-details.html#61" class="command">Theorem cut_admit :
-  forall G A C D1 D2, nabla x, ctx G ->
-    <A:form> -> <G |- D1:conc A> -> <G, x:hyp A |- D2 x:conc C> -> exists D3, <G |- D3:conc C>.</a>
+  forall G A C D1 D2, nabla x, ctx G -&gt;
+    &lt;A:form&gt; -&gt; &lt;G |- D1:conc A&gt; -&gt; &lt;G, x:hyp A |- D2 x:conc C&gt; -&gt; exists D3, &lt;G |- D3:conc C&gt;.</a>
 <div class="proof"><a href="impcut-details.html#62" class="tactic">induction on 2.</a> <a href="impcut-details.html#63" class="tactic">induction on 4.</a> <a href="impcut-details.html#64" class="tactic">intros.</a> <a href="impcut-details.html#65" class="tactic">case H4 (keep).</a>
   <span class="comment">% init</span>
   <a href="impcut-details.html#66" class="tactic">case H6.</a> <a href="impcut-details.html#67" class="tactic">case H8.</a>
@@ -155,7 +155,7 @@ Click on a command or tactic to see a detailed view of its use.
        <a href="impcut-details.html#91" class="tactic">case H2.</a> <a href="impcut-details.html#92" class="tactic">apply IH to H1 H18 H12 H17.</a> <a href="impcut-details.html#93" class="tactic">apply IH to H1 H19 H20 H14.</a> <a href="impcut-details.html#94" class="tactic">search.</a>
       <a href="impcut-details.html#95" class="tactic">apply prune to H17.</a> <a href="impcut-details.html#96" class="tactic">apply ctx_mem to H1 H17.</a> <a href="impcut-details.html#97" class="tactic">case H15.</a>
        <a href="impcut-details.html#98" class="tactic">apply strength_form to _ H7.</a>
-       <a href="impcut-details.html#99" class="tactic">assert <G |- impL FF FF1 C D3 D4 P : conc C>.</a> <a href="impcut-details.html#100" class="tactic">search.</a>
+       <a href="impcut-details.html#99" class="tactic">assert &lt;G |- impL FF FF1 C D3 D4 P : conc C&gt;.</a> <a href="impcut-details.html#100" class="tactic">search.</a>
   <span class="comment">%% base</span>
   <a href="impcut-details.html#101" class="tactic">case H6.</a> <a href="impcut-details.html#102" class="tactic">case H5.</a>
   <a href="impcut-details.html#103" class="tactic">apply prune to H7.</a> <a href="impcut-details.html#104" class="tactic">apply ctx_mem to H1 H7.</a> <a href="impcut-details.html#105" class="tactic">case H5.</a></div>

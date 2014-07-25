@@ -86,26 +86,26 @@ Click on a command or tactic to see a detailed view of its use.
 <pre>
 <a href="unique-details.html#1" class="command">Specification "unique.elf".</a>
 
-<a href="unique-details.html#2" class="command">Define ctx : olist -> prop by
+<a href="unique-details.html#2" class="command">Define ctx : olist -&gt; prop by
   ctx nil
 ; nabla x p,
-    ctx ( < p : of x A > :: < x : tm > :: G ) := ctx G.</a>
+    ctx ( &lt; p : of x A &gt; :: &lt; x : tm &gt; :: G ) := ctx G.</a>
 
 <a href="unique-details.html#3" class="command">Theorem member_prune : forall G E, nabla (n:lfobj),
-  member (E n) G -> exists F, E = x\ F.</a>
+  member (E n) G -&gt; exists F, E = x\ F.</a>
 <div class="proof"><a href="unique-details.html#4" class="tactic">induction on 1.</a> <a href="unique-details.html#5" class="tactic">intros.</a> <a href="unique-details.html#6" class="tactic">case H1.</a>
   <a href="unique-details.html#7" class="tactic">search.</a>
   <a href="unique-details.html#8" class="tactic">apply IH to H2.</a> <a href="unique-details.html#9" class="tactic">search.</a></div>
-<a href="unique-details.html#10" class="command">Define fresh : lfobj -> lfobj -> prop by
+<a href="unique-details.html#10" class="command">Define fresh : lfobj -&gt; lfobj -&gt; prop by
   nabla x, fresh x A.</a>
 
-<a href="unique-details.html#11" class="command">Define name : lfobj -> prop by
+<a href="unique-details.html#11" class="command">Define name : lfobj -&gt; prop by
   nabla x, name x.</a>
 
 <a href="unique-details.html#12" class="command">Theorem ctx_mem : forall G E,
-  ctx G -> member E G ->
-     (exists X, E = <X : tm> /\ name X)
-  \/ (exists P X A, E = < P : of X A > /\ fresh X A /\ fresh P A).</a>
+  ctx G -&gt; member E G -&gt;
+     (exists X, E = &lt;X : tm&gt; /\ name X)
+  \/ (exists P X A, E = &lt; P : of X A &gt; /\ fresh X A /\ fresh P A).</a>
 <div class="proof"><a href="unique-details.html#13" class="tactic">induction on 1.</a> <a href="unique-details.html#14" class="tactic">intros.</a> <a href="unique-details.html#15" class="tactic">case H1.</a>
   <a href="unique-details.html#16" class="tactic">case H2.</a>
   <a href="unique-details.html#17" class="tactic">case H2.</a> <a href="unique-details.html#18" class="tactic">search.</a>
@@ -113,7 +113,7 @@ Click on a command or tactic to see a detailed view of its use.
     <a href="unique-details.html#21" class="tactic">apply IH to H3 H5.</a> <a href="unique-details.html#22" class="tactic">case H6.</a>
       <a href="unique-details.html#23" class="tactic">search.</a> <a href="unique-details.html#24" class="tactic">search.</a></div>
 <a href="unique-details.html#25" class="command">Theorem ctx_unique : forall G P Q X A B,
-  ctx G -> member < P : of X A > G -> member < Q : of X B > G ->
+  ctx G -&gt; member &lt; P : of X A &gt; G -&gt; member &lt; Q : of X B &gt; G -&gt;
   A = B /\ P = Q.</a>
 <div class="proof"><a href="unique-details.html#26" class="tactic">induction on 1.</a> <a href="unique-details.html#27" class="tactic">intros.</a> <a href="unique-details.html#28" class="tactic">case H1.</a>
   <a href="unique-details.html#29" class="tactic">case H2.</a>
@@ -125,8 +125,8 @@ Click on a command or tactic to see a detailed view of its use.
       <a href="unique-details.html#36" class="tactic">case H5.</a> <a href="unique-details.html#37" class="tactic">apply member_prune to H6.</a>
       <a href="unique-details.html#38" class="tactic">case H5.</a> <a href="unique-details.html#39" class="tactic">case H6.</a> <a href="unique-details.html#40" class="tactic">apply IH to H4 H7 H8.</a> <a href="unique-details.html#41" class="tactic">search.</a></div>
 <a href="unique-details.html#42" class="command">Theorem unique_ty : forall G M A B P1 P2,
-  ctx G ->
-  < G |- P1 : of M A > -> < G |- P2 : of M B > -> A = B.</a>
+  ctx G -&gt;
+  &lt; G |- P1 : of M A &gt; -&gt; &lt; G |- P2 : of M B &gt; -&gt; A = B.</a>
 <div class="proof"><a href="unique-details.html#43" class="tactic">induction on 2.</a> <a href="unique-details.html#44" class="tactic">intros.</a> <a href="unique-details.html#45" class="tactic">case H2.</a>
   <a href="unique-details.html#46" class="tactic">case H3.</a> <a href="unique-details.html#47" class="tactic">search.</a>
     <a href="unique-details.html#48" class="tactic">apply ctx_mem to H1 H5.</a> <a href="unique-details.html#49" class="tactic">case H6.</a>
@@ -153,8 +153,8 @@ Click on a command or tactic to see a detailed view of its use.
         <a href="unique-details.html#82" class="tactic">case H4.</a> <a href="unique-details.html#83" class="tactic">case H9.</a>
          <a href="unique-details.html#84" class="tactic">apply ctx_unique to H1 H5 H10.</a> <a href="unique-details.html#85" class="tactic">search.</a></div>
 <a href="unique-details.html#86" class="command">Theorem unique_proof : forall G M A B P1 P2,
-  ctx G ->
-  < G |- P1 : of M A > -> < G |- P2 : of M B > -> P1 = P2.</a>
+  ctx G -&gt;
+  &lt; G |- P1 : of M A &gt; -&gt; &lt; G |- P2 : of M B &gt; -&gt; P1 = P2.</a>
 <div class="proof"><a href="unique-details.html#87" class="tactic">induction on 2.</a> <a href="unique-details.html#88" class="tactic">intros.</a> <a href="unique-details.html#89" class="tactic">case H2.</a>
   <a href="unique-details.html#90" class="tactic">case H3.</a> <a href="unique-details.html#91" class="tactic">search.</a>
    <a href="unique-details.html#92" class="tactic">apply ctx_mem to H1 H5.</a> <a href="unique-details.html#93" class="tactic">case H6.</a>
