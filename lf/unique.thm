@@ -1,0 +1,103 @@
+Specification "unique.elf".
+
+Define ctx : olist -> prop by
+  ctx nil
+; nabla x p,
+    ctx ( < p : of x A > :: < x : tm > :: G ) := ctx G.
+
+Theorem member_prune : forall G E, nabla (n:lfobj),
+  member (E n) G -> exists F, E = x\ F.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Define fresh : lfobj -> lfobj -> prop by
+  nabla x, fresh x A.
+
+Define name : lfobj -> prop by
+  nabla x, name x.
+
+Theorem ctx_mem : forall G E,
+  ctx G -> member E G ->
+     (exists X, E = <X : tm> /\ name X)
+  \/ (exists P X A, E = < P : of X A > /\ fresh X A /\ fresh P A).
+induction on 1. intros. case H1.
+  case H2.
+  case H2. search.
+    case H4. search.
+    apply IH to H3 H5. case H6.
+      search. search.
+
+Theorem ctx_unique : forall G P Q X A B,
+  ctx G -> member < P : of X A > G -> member < Q : of X B > G ->
+  A = B /\ P = Q.
+induction on 1. intros. case H1.
+  case H2.
+  case H2.
+    case H3.
+      search.
+      case H5. apply member_prune to H6.
+    case H3.
+      case H5. apply member_prune to H6.
+      case H5. case H6. apply IH to H4 H7 H8. search.
+
+Theorem unique_ty : forall G M A B P1 P2,
+  ctx G ->
+  < G |- P1 : of M A > -> < G |- P2 : of M B > -> A = B.
+induction on 2. intros. case H2.
+  case H3. search.
+    apply ctx_mem to H1 H5. case H6.
+      case H4.
+      case H7. case H4.
+  case H3.
+    apply IH to H1 H8 H14. search.
+    apply ctx_mem to H1 H11. case H12.
+      case H10.
+      case H13. case H10.
+  case H3.
+    apply IH to _ H7 H11. search.
+    apply ctx_mem to H1 H9. case H10.
+      case H8.
+      case H11. case H8.
+  apply ctx_mem to H1 H5. case H6.
+    case H4.
+    case H3.
+      case H7. case H4.
+      case H7. case H4.
+      case H7. case H4.
+      apply ctx_mem to H1 H10. case H11.
+        case H9.
+        case H4. case H9.
+         apply ctx_unique to H1 H5 H10. search.
+
+Theorem unique_proof : forall G M A B P1 P2,
+  ctx G ->
+  < G |- P1 : of M A > -> < G |- P2 : of M B > -> P1 = P2.
+induction on 2. intros. case H2.
+  case H3. search.
+   apply ctx_mem to H1 H5. case H6.
+     case H4. case H7. case H4.
+  case H3.
+    apply IH to H1 H8 H14.
+      apply IH to H1 H9 H15.
+      apply unique_ty to H1 H8 H14. search.
+    apply ctx_mem to H1 H11. case H12.
+      case H10.
+      case H13. case H10.
+   case H3.
+     apply IH to _ H7 H11.
+      apply unique_ty to _ H7 H11.
+      search.
+     apply ctx_mem to H1 H9. case H10.
+       case H8.
+       case H11. case H8.
+  apply ctx_mem to H1 H5. case H6.
+    case H4.
+    case H3.
+      case H7. case H4.
+      case H7. case H4.
+      case H7. case H4.
+      apply ctx_mem to H1 H10. case H11.
+        case H9.
+        case H4. case H9.
+         apply ctx_unique to H1 H5 H10. search.
