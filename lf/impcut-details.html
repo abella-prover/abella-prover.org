@@ -1,0 +1,2257 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Cut-elimination for minimal intuitionistic logic. - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-parinati
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "impcut.elf".</b>
+Reading specification "impcut.elf"
+sig impcut.
+  type i lftype.
+  type form lftype.
+  type imp lfobj -> lfobj -> lfobj.
+  type atom lfobj -> lfobj.
+  type hyp lfobj -> lftype.
+  type conc lfobj -> lftype.
+  type init lfobj -> lfobj -> lfobj.
+  type impR lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj.
+  type impL lfobj -> lfobj -> lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj -> lfobj.
+end.
+module impcut.
+  (* i:type *)
+  lfisty i.
+  (* form:type *)
+  lfisty form.
+  (* imp:form -> form -> form *)
+  pi lf_1\lfhas lf_1 form =>
+    pi lf_2\lfhas lf_2 form => lfhas (imp lf_1 lf_2) form.
+  (* atom:i -> form *)
+  pi lf_1\lfhas lf_1 i => lfhas (atom lf_1) form.
+  (* hyp:form -> type *)
+  pi lf_1\lfhas lf_1 form => lfisty (hyp lf_1).
+  (* conc:form -> type *)
+  pi lf_1\lfhas lf_1 form => lfisty (conc lf_1).
+  (* init:({P:i} hyp (atom P) -> conc (atom P)) *)
+  pi P\lfhas P i =>
+    pi lf_1\lfhas lf_1 (hyp (atom P)) => lfhas (init P lf_1) (conc (atom P)).
+  (* impR:({A:form} {B:form} (hyp A -> conc B) -> conc (imp A B)) *)
+  pi A\lfhas A form =>
+    pi B\lfhas B form =>
+      pi lf_1\(pi lf_2\lfhas lf_2 (hyp A) => lfhas (lf_1 lf_2) (conc B)) =>
+        lfhas (impR A B lf_1) (conc (imp A B)).
+  (* impL:
+       ({A:form} {B:form} {C:form} conc A -> (hyp B -> conc C) ->
+          hyp (imp A B) -> conc C) *)
+  pi A\lfhas A form =>
+    pi B\lfhas B form =>
+      pi C\lfhas C form =>
+        pi lf_1\lfhas lf_1 (conc A) =>
+          pi lf_2\(pi lf_3\lfhas lf_3 (hyp B) => lfhas (lf_2 lf_3) (conc C)) =>
+            pi lf_3\lfhas lf_3 (hyp (imp A B)) =>
+              lfhas (impL A B C lf_1 lf_2 lf_3) (conc C).
+end.
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+nabla p, ctx (&lt;p:hyp A&gt; :: G) := ctx G.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define name : lfobj -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Define fresh : lfobj -> lfobj -> prop by 
+nabla x, fresh x A.</b>
+</pre>
+<a name="5"></a>
+<pre class="code">
+Abella < <b>Theorem prune : 
+forall G E, (nabla n, member (E n) G -&gt; (exists F, E = x\F)).</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+============================
+ forall G E, (nabla n, member (E n) G -> (exists F, E = x\F))
+
+prune < <b>induction on 1.</b>
+</pre>
+<a name="7"></a>
+<pre>
+
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+============================
+ forall G E, (nabla n, member (E n) G @ -> (exists F, E = x\F))
+
+prune < <b>intros.</b>
+</pre>
+<a name="8"></a>
+<pre>
+
+Variables: G E
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H1 : member (E n1) G @
+============================
+ exists F, E = x\F
+
+prune < <b>case H1.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 1:
+
+Variables: G2 G1
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+============================
+ exists F, z1\G1 = x\F
+
+Subgoal 2 is:
+ exists F, E = x\F
+
+prune < <b>search.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+Variables: E G2 G1
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H2 : member (E n1) G2 *
+============================
+ exists F, E = x\F
+
+prune < <b>apply IH to H2.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+Variables: G2 G1 F
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H2 : member F G2 *
+============================
+ exists F1, z1\F = x\F1
+
+prune < <b>search.</b>
+Proof completed.
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_mem : 
+forall G E, ctx G -&gt; member E G -&gt; (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A).</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+============================
+ forall G E, ctx G -> member E G -> (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+
+ctx_mem < <b>induction on 1.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+============================
+ forall G E, ctx G @ -> member E G ->
+   (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+
+ctx_mem < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+Variables: G E
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H1 : ctx G @
+H2 : member E G
+============================
+ exists A P, E = &lt;P:hyp A&gt; /\ fresh P A
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+Variables: E
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H2 : member E nil
+============================
+ exists A P, E = &lt;P:hyp A&gt; /\ fresh P A
+
+Subgoal 2 is:
+ exists A P, E n1 = &lt;P:hyp A&gt; /\ fresh P A
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H2 : member (E n1) (&lt;n1:hyp A&gt; :: G1)
+H3 : ctx G1 *
+============================
+ exists A P, E n1 = &lt;P:hyp A&gt; /\ fresh P A
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G1 A
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H3 : ctx G1 *
+============================
+ exists A1 P, &lt;n1:hyp A&gt; = &lt;P:hyp A1&gt; /\ fresh P A1
+
+Subgoal 2.2 is:
+ exists A P, E n1 = &lt;P:hyp A&gt; /\ fresh P A
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H3 : ctx G1 *
+H4 : member (E n1) G1
+============================
+ exists A P, E n1 = &lt;P:hyp A&gt; /\ fresh P A
+
+ctx_mem < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G1 A A1 P
+IH : forall G E, ctx G * -> member E G ->
+       (exists A P, E = &lt;P:hyp A&gt; /\ fresh P A)
+H3 : ctx G1 *
+H4 : member &lt;P n1:hyp (A1 n1)&gt; G1
+H5 : fresh (P n1) (A1 n1)
+============================
+ exists A P1, &lt;P n1:hyp (A1 n1)&gt; = &lt;P1:hyp A&gt; /\ fresh P1 A
+
+ctx_mem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="21"></a>
+<pre class="code">
+Abella < <b>Theorem strength_i : 
+forall G U, ctx G -&gt; &lt;G |- U:i&gt; -&gt; &lt;U:i&gt;.</b>
+</pre>
+<a name="22"></a>
+<pre>
+
+============================
+ forall G U, ctx G -> &lt;G |- U:i&gt; -> &lt;U:i&gt;
+
+strength_i < <b>induction on 2.</b>
+</pre>
+<a name="23"></a>
+<pre>
+
+IH : forall G U, ctx G -> &lt;G |- U:i&gt;* -> &lt;U:i&gt;
+============================
+ forall G U, ctx G -> &lt;G |- U:i&gt;@ -> &lt;U:i&gt;
+
+strength_i < <b>intros.</b>
+</pre>
+<a name="24"></a>
+<pre>
+
+Variables: G U
+IH : forall G U, ctx G -> &lt;G |- U:i&gt;* -> &lt;U:i&gt;
+H1 : ctx G
+H2 : &lt;G |- U:i&gt;@
+============================
+ &lt;U:i&gt;
+
+strength_i < <b>case H2.</b>
+</pre>
+<a name="25"></a>
+<pre>
+
+Variables: G U F
+IH : forall G U, ctx G -> &lt;G |- U:i&gt;* -> &lt;U:i&gt;
+H1 : ctx G
+H3 : &lt;G, [F] |- U:i&gt;*
+H4 : member F G
+============================
+ &lt;U:i&gt;
+
+strength_i < <b>apply ctx_mem to H1 H4.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+Variables: G U A P
+IH : forall G U, ctx G -> &lt;G |- U:i&gt;* -> &lt;U:i&gt;
+H1 : ctx G
+H3 : &lt;G, [P:hyp A] |- U:i&gt;*
+H4 : member &lt;P:hyp A&gt; G
+H5 : fresh P A
+============================
+ &lt;U:i&gt;
+
+strength_i < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="27"></a>
+<pre class="code">
+Abella < <b>Theorem strength_form : 
+forall G F, ctx G -&gt; &lt;G |- F:form&gt; -&gt; &lt;F:form&gt;.</b>
+</pre>
+<a name="28"></a>
+<pre>
+
+============================
+ forall G F, ctx G -> &lt;G |- F:form&gt; -> &lt;F:form&gt;
+
+strength_form < <b>induction on 2.</b>
+</pre>
+<a name="29"></a>
+<pre>
+
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+============================
+ forall G F, ctx G -> &lt;G |- F:form&gt;@ -> &lt;F:form&gt;
+
+strength_form < <b>intros.</b>
+</pre>
+<a name="30"></a>
+<pre>
+
+Variables: G F
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- F:form&gt;@
+============================
+ &lt;F:form&gt;
+
+strength_form < <b>case H2 (keep).</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 1:
+
+Variables: G lf_2 lf_1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- imp lf_1 lf_2:form&gt;@
+H3 : &lt;G |- lf_1:form&gt;*
+H4 : &lt;G |- lf_2:form&gt;*
+============================
+ &lt;imp lf_1 lf_2:form&gt;
+
+Subgoal 2 is:
+ &lt;atom lf_1:form&gt;
+
+Subgoal 3 is:
+ &lt;F:form&gt;
+
+strength_form < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 1:
+
+Variables: G lf_2 lf_1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- imp lf_1 lf_2:form&gt;@
+H3 : &lt;G |- lf_1:form&gt;*
+H4 : &lt;G |- lf_2:form&gt;*
+H5 : &lt;lf_1:form&gt;
+============================
+ &lt;imp lf_1 lf_2:form&gt;
+
+Subgoal 2 is:
+ &lt;atom lf_1:form&gt;
+
+Subgoal 3 is:
+ &lt;F:form&gt;
+
+strength_form < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 1:
+
+Variables: G lf_2 lf_1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- imp lf_1 lf_2:form&gt;@
+H3 : &lt;G |- lf_1:form&gt;*
+H4 : &lt;G |- lf_2:form&gt;*
+H5 : &lt;lf_1:form&gt;
+H6 : &lt;lf_2:form&gt;
+============================
+ &lt;imp lf_1 lf_2:form&gt;
+
+Subgoal 2 is:
+ &lt;atom lf_1:form&gt;
+
+Subgoal 3 is:
+ &lt;F:form&gt;
+
+strength_form < <b>search.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2:
+
+Variables: G lf_1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- atom lf_1:form&gt;@
+H3 : &lt;G |- lf_1:i&gt;*
+============================
+ &lt;atom lf_1:form&gt;
+
+Subgoal 3 is:
+ &lt;F:form&gt;
+
+strength_form < <b>apply strength_i to H1 H3.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2:
+
+Variables: G lf_1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- atom lf_1:form&gt;@
+H3 : &lt;G |- lf_1:i&gt;*
+H4 : &lt;lf_1:i&gt;
+============================
+ &lt;atom lf_1:form&gt;
+
+Subgoal 3 is:
+ &lt;F:form&gt;
+
+strength_form < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 3:
+
+Variables: G F F1
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- F:form&gt;@
+H3 : &lt;G, [F1] |- F:form&gt;*
+H4 : member F1 G
+============================
+ &lt;F:form&gt;
+
+strength_form < <b>apply ctx_mem to H1 H4.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 3:
+
+Variables: G F A P
+IH : forall G F, ctx G -> &lt;G |- F:form&gt;* -> &lt;F:form&gt;
+H1 : ctx G
+H2 : &lt;G |- F:form&gt;@
+H3 : &lt;G, [P:hyp A] |- F:form&gt;*
+H4 : member &lt;P:hyp A&gt; G
+H5 : fresh P A
+============================
+ &lt;F:form&gt;
+
+strength_form < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="38"></a>
+<pre class="code">
+Abella < <b>Theorem prune_form : 
+forall F, (nabla x, &lt;F x:form&gt; -&gt; (exists FF, F = x\FF)).</b>
+</pre>
+<a name="39"></a>
+<pre>
+
+============================
+ forall F, (nabla x, &lt;F x:form&gt; -> (exists FF, F = x\FF))
+
+prune_form < <b>induction on 1.</b>
+</pre>
+<a name="40"></a>
+<pre>
+
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+============================
+ forall F, (nabla x, &lt;F x:form&gt;@ -> (exists FF, F = x\FF))
+
+prune_form < <b>intros.</b>
+</pre>
+<a name="41"></a>
+<pre>
+
+Variables: F
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+H1 : &lt;F n1:form&gt;@
+============================
+ exists FF, F = x\FF
+
+prune_form < <b>case H1.</b>
+</pre>
+<a name="42"></a>
+<pre>
+Subgoal 1:
+
+Variables: lf_2 lf_1
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+H2 : &lt;lf_1 n1:form&gt;*
+H3 : &lt;lf_2 n1:form&gt;*
+============================
+ exists FF, z1\imp (lf_1 z1) (lf_2 z1) = x\FF
+
+Subgoal 2 is:
+ exists FF, z1\atom (lf_1 z1) = x\FF
+
+prune_form < <b>apply IH to H2.</b>
+</pre>
+<a name="43"></a>
+<pre>
+Subgoal 1:
+
+Variables: lf_2 FF
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+H2 : &lt;FF:form&gt;*
+H3 : &lt;lf_2 n1:form&gt;*
+============================
+ exists FF1, z1\imp FF (lf_2 z1) = x\FF1
+
+Subgoal 2 is:
+ exists FF, z1\atom (lf_1 z1) = x\FF
+
+prune_form < <b>apply IH to H3.</b>
+</pre>
+<a name="44"></a>
+<pre>
+Subgoal 1:
+
+Variables: FF FF1
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+H2 : &lt;FF:form&gt;*
+H3 : &lt;FF1:form&gt;*
+============================
+ exists FF2, z1\imp FF FF1 = x\FF2
+
+Subgoal 2 is:
+ exists FF, z1\atom (lf_1 z1) = x\FF
+
+prune_form < <b>search.</b>
+</pre>
+<a name="45"></a>
+<pre>
+Subgoal 2:
+
+Variables: lf_1
+IH : forall F, (nabla x, &lt;F x:form&gt;* -> (exists FF, F = x\FF))
+H2 : &lt;lf_1 n1:i&gt;*
+============================
+ exists FF, z1\atom (lf_1 z1) = x\FF
+
+prune_form < <b>case H2.</b>
+Proof completed.
+</pre>
+<a name="46"></a>
+<pre class="code">
+Abella < <b>Theorem imp_invert : 
+forall G A B DD, ctx G -&gt; &lt;G |- DD:conc (imp A B)&gt; -&gt;
+  (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;)).</b>
+</pre>
+<a name="47"></a>
+<pre>
+
+============================
+ forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt; ->
+   (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+
+imp_invert < <b>induction on 2.</b>
+</pre>
+<a name="48"></a>
+<pre>
+
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+============================
+ forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;@ ->
+   (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+
+imp_invert < <b>intros.</b>
+</pre>
+<a name="49"></a>
+<pre>
+
+Variables: G A B DD
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- DD:conc (imp A B)&gt;@
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>case H2 (keep).</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 1:
+
+Variables: G A B lf_1
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impR A B lf_1:conc (imp A B)&gt;@
+H3 : &lt;G |- A:form&gt;*
+H4 : &lt;G |- B:form&gt;*
+H5 : &lt;G, n1:hyp A |- lf_1 n1:conc B&gt;*
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 2 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>search.</b>
+</pre>
+<a name="51"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H5 : &lt;G |- imp A B:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>apply IH to _ H7.</b>
+</pre>
+<a name="52"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H5 : &lt;G |- imp A B:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>case H5.</b>
+</pre>
+<a name="53"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G |- A:form&gt;*
+H11 : &lt;G |- B:form&gt;*
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 2.2 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>assert &lt;G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:conc B&gt;.</b>
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G |- A:form&gt;*
+H11 : &lt;G |- B:form&gt;*
+H12 : &lt;G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:
+         conc B&gt;
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 2.2 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>inst H12 with n1 = lf_3.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G |- A:form&gt;*
+H11 : &lt;G |- B:form&gt;*
+H12 : &lt;G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:
+         conc B&gt;
+H13 : &lt;G, n2:hyp A, lf_3:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:
+         conc B&gt;
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 2.2 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>cut H13 with H8.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G |- A:form&gt;*
+H11 : &lt;G |- B:form&gt;*
+H12 : &lt;G, n2:hyp A, n1:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:
+         conc B&gt;
+H13 : &lt;G, n2:hyp A, lf_3:hyp (imp A1 B1) |- impL A1 B1 B lf_1 (EE n2) lf_3:
+         conc B&gt;
+H14 : &lt;G, n2:hyp A |- impL A1 B1 B lf_1 (EE n2) lf_3:conc B&gt;
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 2.2 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>search.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE F
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G, [F] |- imp A B:form&gt;*
+H11 : member F G
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>apply ctx_mem to H1 H11.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B B1 A1 lf_3 lf_2 lf_1 EE A2 P
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- impL A1 B1 (imp A B) lf_1 lf_2 lf_3:conc (imp A B)&gt;@
+H3 : &lt;G |- A1:form&gt;*
+H4 : &lt;G |- B1:form&gt;*
+H6 : &lt;G |- lf_1:conc A1&gt;*
+H7 : &lt;G, n1:hyp B1 |- lf_2 n1:conc (imp A B)&gt;*
+H8 : &lt;G |- lf_3:hyp (imp A1 B1)&gt;*
+H9 : &lt;G, n1:hyp B1, n2:hyp A |- EE n2 n1:conc B&gt;
+H10 : &lt;G, [P:hyp A2] |- imp A B:form&gt;*
+H11 : member &lt;P:hyp A2&gt; G
+H12 : fresh P A2
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+Subgoal 3 is:
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>case H10.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A B DD F
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- DD:conc (imp A B)&gt;@
+H3 : &lt;G, [F] |- DD:conc (imp A B)&gt;*
+H4 : member F G
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>apply ctx_mem to H1 H4.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A B DD A1 P
+IH : forall G A B DD, ctx G -> &lt;G |- DD:conc (imp A B)&gt;* ->
+       (nabla x, (exists EE, &lt;G, x:hyp A |- EE:conc B&gt;))
+H1 : ctx G
+H2 : &lt;G |- DD:conc (imp A B)&gt;@
+H3 : &lt;G, [P:hyp A1] |- DD:conc (imp A B)&gt;*
+H4 : member &lt;P:hyp A1&gt; G
+H5 : fresh P A1
+============================
+ exists EE, &lt;G, n1:hyp A |- EE:conc B&gt;
+
+imp_invert < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="61"></a>
+<pre class="code">
+Abella < <b>Theorem cut_admit : 
+forall G A C D1 D2,
+  (nabla x, ctx G -&gt; &lt;A:form&gt; -&gt; &lt;G |- D1:conc A&gt; -&gt;
+     &lt;G, x:hyp A |- D2 x:conc C&gt; -&gt; (exists D3, &lt;G |- D3:conc C&gt;)).</b>
+</pre>
+<a name="62"></a>
+<pre>
+
+============================
+ forall G A C D1 D2,
+   (nabla x, ctx G -> &lt;A:form&gt; -> &lt;G |- D1:conc A&gt; ->
+      &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+
+cut_admit < <b>induction on 2.</b>
+</pre>
+<a name="63"></a>
+<pre>
+
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+============================
+ forall G A C D1 D2,
+   (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+      &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+
+cut_admit < <b>induction on 4.</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+============================
+ forall G A C D1 D2,
+   (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+      &lt;G, x:hyp A |- D2 x:conc C&gt;@@ -> (exists D3, &lt;G |- D3:conc C&gt;))
+
+cut_admit < <b>intros.</b>
+</pre>
+<a name="65"></a>
+<pre>
+
+Variables: G A C D1 D2
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H4 (keep).</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 1:
+
+Variables: G A D1 C1 lf_1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H6 : &lt;G, n1:hyp A |- lf_1 n1:hyp (atom C1)&gt;**
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H6.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 1:
+
+Variables: G A D1 C1 lf_1 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H7 : &lt;G, n1:hyp A, [F n1] |- lf_1 n1:hyp (atom C1)&gt;**
+H8 : member (F n1) (&lt;n1:hyp A&gt; :: G)
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H8.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: G A D1 C1 lf_1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H7 : &lt;G, n1:hyp A, [n1:hyp A] |- lf_1 n1:hyp (atom C1)&gt;**
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 1.2 is:
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H7.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: G D1 C1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;atom C1:form&gt;@
+H3 : &lt;G |- D1:conc (atom C1)&gt;
+H4 : &lt;G, n1:hyp (atom C1) |- init C1 n1:conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp (atom C1) |- C1:i&gt;**
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 1.2 is:
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>search.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 C1 lf_1 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H7 : &lt;G, n1:hyp A, [F n1] |- lf_1 n1:hyp (atom C1)&gt;**
+H9 : member (F n1) G
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply prune to H9.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 C1 lf_1 F1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H7 : &lt;G, n1:hyp A, [F1] |- lf_1 n1:hyp (atom C1)&gt;**
+H9 : member F1 G
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply ctx_mem to H1 H9.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 C1 lf_1 A1 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- init C1 (lf_1 n1):conc (atom C1)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:i&gt;**
+H7 : &lt;G, n1:hyp A, [P:hyp A1] |- lf_1 n1:hyp (atom C1)&gt;**
+H9 : member &lt;P:hyp A1&gt; G
+H10 : fresh P A1
+============================
+ exists D3, &lt;G |- D3:conc (atom C1)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H10.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 C1 lf_1 A2
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx (G n2)
+H2 : &lt;A n2:form&gt;@
+H3 : &lt;G n2 |- D1 n2:conc (A n2)&gt;
+H4 : &lt;G n2, n1:hyp (A n2) |- init (C1 n2) (lf_1 n2 n1):conc (atom (C1 n2))&gt;@@
+H5 : &lt;G n2, n1:hyp (A n2) |- C1 n2:i&gt;**
+H7 : &lt;G n2, n1:hyp (A n2), [n2:hyp A2] |- lf_1 n2 n1:hyp (atom (C1 n2))&gt;**
+H9 : member &lt;n2:hyp A2&gt; (G n2)
+============================
+ exists D3, &lt;G n2 |- D3:conc (atom (C1 n2))&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H7.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 A3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx (G n2)
+H2 : &lt;A n2:form&gt;@
+H3 : &lt;G n2 |- D1 n2:conc (A n2)&gt;
+H4 : &lt;G n2, n1:hyp (A n2) |- init A3 n2:conc (atom A3)&gt;@@
+H5 : &lt;G n2, n1:hyp (A n2) |- A3:i&gt;**
+H9 : member &lt;n2:hyp (atom A3)&gt; (G n2)
+============================
+ exists D3, &lt;G n2 |- D3:conc (atom A3)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_i to _ H5.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G A D1 A3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx (G n2)
+H2 : &lt;A n2:form&gt;@
+H3 : &lt;G n2 |- D1 n2:conc (A n2)&gt;
+H4 : &lt;G n2, n1:hyp (A n2) |- init A3 n2:conc (atom A3)&gt;@@
+H5 : &lt;G n2, n1:hyp (A n2) |- A3:i&gt;**
+H9 : member &lt;n2:hyp (atom A3)&gt; (G n2)
+H11 : &lt;A3:i&gt;
+============================
+ exists D3, &lt;G n2 |- D3:conc (atom A3)&gt;
+
+Subgoal 2 is:
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>search.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A D1 C2 lf_1 C1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impR C1 C2 (lf_1 n1):conc (imp C1 C2)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:form&gt;**
+H6 : &lt;G, n1:hyp A |- C2:form&gt;**
+H7 : &lt;G, n1:hyp A, n2:hyp C1 |- lf_1 n1 n2:conc C2&gt;**
+============================
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_form to _ H5.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A D1 C2 lf_1 C1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impR C1 C2 (lf_1 n1):conc (imp C1 C2)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:form&gt;**
+H6 : &lt;G, n1:hyp A |- C2:form&gt;**
+H7 : &lt;G, n1:hyp A, n2:hyp C1 |- lf_1 n1 n2:conc C2&gt;**
+H8 : &lt;C1:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_form to _ H6.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A D1 C2 lf_1 C1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impR C1 C2 (lf_1 n1):conc (imp C1 C2)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:form&gt;**
+H6 : &lt;G, n1:hyp A |- C2:form&gt;**
+H7 : &lt;G, n1:hyp A, n2:hyp C1 |- lf_1 n1 n2:conc C2&gt;**
+H8 : &lt;C1:form&gt;
+H9 : &lt;C2:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply IH1 to _ H2 H3 H7.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A D1 C2 lf_1 C1 D3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impR C1 C2 (lf_1 n1):conc (imp C1 C2)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:form&gt;**
+H6 : &lt;G, n1:hyp A |- C2:form&gt;**
+H7 : &lt;G, n1:hyp A, n2:hyp C1 |- lf_1 n1 n2:conc C2&gt;**
+H8 : &lt;C1:form&gt;
+H9 : &lt;C2:form&gt;
+H10 : &lt;G, n2:hyp C1 |- D3 n2:conc C2&gt;
+============================
+ exists D3, &lt;G |- D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>exists impR C1 C2 D3.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A D1 C2 lf_1 C1 D3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impR C1 C2 (lf_1 n1):conc (imp C1 C2)&gt;@@
+H5 : &lt;G, n1:hyp A |- C1:form&gt;**
+H6 : &lt;G, n1:hyp A |- C2:form&gt;**
+H7 : &lt;G, n1:hyp A, n2:hyp C1 |- lf_1 n1 n2:conc C2&gt;**
+H8 : &lt;C1:form&gt;
+H9 : &lt;C2:form&gt;
+H10 : &lt;G, n2:hyp C1 |- D3 n2:conc C2&gt;
+============================
+ &lt;G |- impR C1 C2 D3:conc (imp C1 C2)&gt;
+
+Subgoal 3 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>search.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 B A1 lf_3 lf_2 lf_1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL (A1 n1) (B n1) C (lf_1 n1) (lf_2 n1) (lf_3 n1):
+        conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- A1 n1:form&gt;**
+H6 : &lt;G, n1:hyp A |- B n1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc (A1 n1)&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp (B n1) |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp (A1 n1) (B n1))&gt;**
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_form to _ H5.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 B A1 lf_3 lf_2 lf_1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL (A1 n1) (B n1) C (lf_1 n1) (lf_2 n1) (lf_3 n1):
+        conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- A1 n1:form&gt;**
+H6 : &lt;G, n1:hyp A |- B n1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc (A1 n1)&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp (B n1) |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp (A1 n1) (B n1))&gt;**
+H11 : &lt;A1 n1:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply prune_form to H11.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 B lf_3 lf_2 lf_1 FF
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF (B n1) C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- B n1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp (B n1) |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp FF (B n1))&gt;**
+H11 : &lt;FF:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply IH1 to H1 H2 H3 H8.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 B lf_3 lf_2 lf_1 FF D3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF (B n1) C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- B n1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp (B n1) |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp FF (B n1))&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_form to _ H6.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 B lf_3 lf_2 lf_1 FF D3
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF (B n1) C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- B n1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp (B n1) |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp FF (B n1))&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;B n1:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply prune_form to H13.</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply IH1 to _ H2 H3 H9.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H10 : &lt;G, n1:hyp A |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H10.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 3:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H15 : &lt;G, n1:hyp A, [F n1] |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H16 : member (F n1) (&lt;n1:hyp A&gt; :: G)
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H16.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H15 : &lt;G, n1:hyp A, [n1:hyp A] |- lf_3 n1:hyp (imp FF FF1)&gt;**
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H15.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G C D1 lf_2 lf_1 FF D3 FF1 D4
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;imp FF FF1:form&gt;@
+H3 : &lt;G |- D1:conc (imp FF FF1)&gt;
+H4 : &lt;G, n1:hyp (imp FF FF1) |- impL FF FF1 C (lf_1 n1) (lf_2 n1) n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp (imp FF FF1) |- FF:form&gt;**
+H6 : &lt;G, n1:hyp (imp FF FF1) |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp (imp FF FF1) |- C:form&gt;**
+H8 : &lt;G, n1:hyp (imp FF FF1) |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp (imp FF FF1), n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply imp_invert to H1 H3.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G C D1 lf_2 lf_1 FF D3 FF1 D4 EE
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;imp FF FF1:form&gt;@
+H3 : &lt;G |- D1:conc (imp FF FF1)&gt;
+H4 : &lt;G, n1:hyp (imp FF FF1) |- impL FF FF1 C (lf_1 n1) (lf_2 n1) n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp (imp FF FF1) |- FF:form&gt;**
+H6 : &lt;G, n1:hyp (imp FF FF1) |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp (imp FF FF1) |- C:form&gt;**
+H8 : &lt;G, n1:hyp (imp FF FF1) |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp (imp FF FF1), n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : &lt;G, n1:hyp FF |- EE n1:conc FF1&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H2.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G C D1 lf_2 lf_1 FF D3 FF1 D4 EE
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H3 : &lt;G |- D1:conc (imp FF FF1)&gt;
+H4 : &lt;G, n1:hyp (imp FF FF1) |- impL FF FF1 C (lf_1 n1) (lf_2 n1) n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp (imp FF FF1) |- FF:form&gt;**
+H6 : &lt;G, n1:hyp (imp FF FF1) |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp (imp FF FF1) |- C:form&gt;**
+H8 : &lt;G, n1:hyp (imp FF FF1) |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp (imp FF FF1), n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : &lt;G, n1:hyp FF |- EE n1:conc FF1&gt;
+H18 : &lt;FF:form&gt;*
+H19 : &lt;FF1:form&gt;*
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply IH to H1 H18 H12 H17.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G C D1 lf_2 lf_1 FF D3 FF1 D4 EE D5
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H3 : &lt;G |- D1:conc (imp FF FF1)&gt;
+H4 : &lt;G, n1:hyp (imp FF FF1) |- impL FF FF1 C (lf_1 n1) (lf_2 n1) n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp (imp FF FF1) |- FF:form&gt;**
+H6 : &lt;G, n1:hyp (imp FF FF1) |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp (imp FF FF1) |- C:form&gt;**
+H8 : &lt;G, n1:hyp (imp FF FF1) |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp (imp FF FF1), n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : &lt;G, n1:hyp FF |- EE n1:conc FF1&gt;
+H18 : &lt;FF:form&gt;*
+H19 : &lt;FF1:form&gt;*
+H20 : &lt;G |- D5:conc FF1&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply IH to H1 H19 H20 H14.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G C D1 lf_2 lf_1 FF D3 FF1 D4 EE D5 D6
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H3 : &lt;G |- D1:conc (imp FF FF1)&gt;
+H4 : &lt;G, n1:hyp (imp FF FF1) |- impL FF FF1 C (lf_1 n1) (lf_2 n1) n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp (imp FF FF1) |- FF:form&gt;**
+H6 : &lt;G, n1:hyp (imp FF FF1) |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp (imp FF FF1) |- C:form&gt;**
+H8 : &lt;G, n1:hyp (imp FF FF1) |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp (imp FF FF1), n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : &lt;G, n1:hyp FF |- EE n1:conc FF1&gt;
+H18 : &lt;FF:form&gt;*
+H19 : &lt;FF1:form&gt;*
+H20 : &lt;G |- D5:conc FF1&gt;
+H21 : &lt;G |- D6:conc C&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 3.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>search.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H15 : &lt;G, n1:hyp A, [F n1] |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H17 : member (F n1) G
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply prune to H17.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4 F1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H15 : &lt;G, n1:hyp A, [F1] |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H17 : member F1 G
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply ctx_mem to H1 H17.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_3 lf_2 lf_1 FF D3 FF1 D4 A2 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) (lf_3 n1):conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H15 : &lt;G, n1:hyp A, [P:hyp A2] |- lf_3 n1:hyp (imp FF FF1)&gt;**
+H17 : member &lt;P:hyp A2&gt; G
+H18 : fresh P A2
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H15.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_2 lf_1 FF D3 FF1 D4 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) P:conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : member &lt;P:hyp (imp FF FF1)&gt; G
+H18 : fresh P (imp FF FF1)
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply strength_form to _ H7.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_2 lf_1 FF D3 FF1 D4 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) P:conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : member &lt;P:hyp (imp FF FF1)&gt; G
+H18 : fresh P (imp FF FF1)
+H19 : &lt;C:form&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>assert &lt;G |- impL FF FF1 C D3 D4 P:conc C&gt;.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G A C D1 lf_2 lf_1 FF D3 FF1 D4 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- impL FF FF1 C (lf_1 n1) (lf_2 n1) P:conc C&gt;@@
+H5 : &lt;G, n1:hyp A |- FF:form&gt;**
+H6 : &lt;G, n1:hyp A |- FF1:form&gt;**
+H7 : &lt;G, n1:hyp A |- C:form&gt;**
+H8 : &lt;G, n1:hyp A |- lf_1 n1:conc FF&gt;**
+H9 : &lt;G, n1:hyp A, n2:hyp FF1 |- lf_2 n1 n2:conc C&gt;**
+H11 : &lt;FF:form&gt;
+H12 : &lt;G |- D3:conc FF&gt;
+H13 : &lt;FF1:form&gt;
+H14 : &lt;G, n2:hyp FF1 |- D4 n2:conc C&gt;
+H17 : member &lt;P:hyp (imp FF FF1)&gt; G
+H18 : fresh P (imp FF FF1)
+H19 : &lt;C:form&gt;
+H20 : &lt;G |- impL FF FF1 C D3 D4 P:conc C&gt;
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>search.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 4:
+
+Variables: G A C D1 D2 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp A, [F n1] |- D2 n1:conc C&gt;**
+H6 : member (F n1) (&lt;n1:hyp A&gt; :: G)
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H6.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 4.1:
+
+Variables: G A C D1 D2
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp A, [n1:hyp A] |- D2 n1:conc C&gt;**
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+Subgoal 4.2 is:
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H5.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 4.2:
+
+Variables: G A C D1 D2 F
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp A, [F n1] |- D2 n1:conc C&gt;**
+H7 : member (F n1) G
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply prune to H7.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 4.2:
+
+Variables: G A C D1 D2 F1
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp A, [F1] |- D2 n1:conc C&gt;**
+H7 : member F1 G
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>apply ctx_mem to H1 H7.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 4.2:
+
+Variables: G A C D1 D2 A1 P
+IH : forall G A C D1 D2,
+       (nabla x, ctx G -> &lt;A:form&gt;* -> &lt;G |- D1:conc A&gt; ->
+          &lt;G, x:hyp A |- D2 x:conc C&gt; -> (exists D3, &lt;G |- D3:conc C&gt;))
+IH1 : forall G A C D1 D2,
+        (nabla x, ctx G -> &lt;A:form&gt;@ -> &lt;G |- D1:conc A&gt; ->
+           &lt;G, x:hyp A |- D2 x:conc C&gt;** -> (exists D3, &lt;G |- D3:conc C&gt;))
+H1 : ctx G
+H2 : &lt;A:form&gt;@
+H3 : &lt;G |- D1:conc A&gt;
+H4 : &lt;G, n1:hyp A |- D2 n1:conc C&gt;@@
+H5 : &lt;G, n1:hyp A, [P:hyp A1] |- D2 n1:conc C&gt;**
+H7 : member &lt;P:hyp A1&gt; G
+H8 : fresh P A1
+============================
+ exists D3, &lt;G |- D3:conc C&gt;
+
+cut_admit < <b>case H5.</b>
+Proof completed.
+</pre>
+<a name="106"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

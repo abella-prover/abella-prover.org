@@ -1,0 +1,2757 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "unique.elf". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-parinati
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "unique.elf".</b>
+Reading specification "unique.elf"
+sig unique.
+  type ty lftype.
+  type i lfobj.
+  type arr lfobj -> lfobj -> lfobj.
+  type tm lftype.
+  type u lfobj.
+  type lam lfobj -> (lfobj -> lfobj) -> lfobj.
+  type app lfobj -> lfobj -> lfobj.
+  type of lfobj -> lfobj -> lftype.
+  type of/u lfobj.
+  type of/app lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type of/lam lfobj -> lfobj -> (lfobj -> lfobj) -> (lfobj -> lfobj -> lfobj) -> lfobj.
+end.
+module unique.
+  (* ty:type *)
+  lfisty ty.
+  (* i:ty *)
+  lfhas i ty.
+  (* arr:ty -> ty -> ty *)
+  pi lf_1\lfhas lf_1 ty => pi lf_2\lfhas lf_2 ty => lfhas (arr lf_1 lf_2) ty.
+  (* tm:type *)
+  lfisty tm.
+  (* u:tm *)
+  lfhas u tm.
+  (* lam:ty -> (tm -> tm) -> tm *)
+  pi lf_1\lfhas lf_1 ty =>
+    pi lf_2\(pi lf_3\lfhas lf_3 tm => lfhas (lf_2 lf_3) tm) =>
+      lfhas (lam lf_1 lf_2) tm.
+  (* app:tm -> tm -> tm *)
+  pi lf_1\lfhas lf_1 tm => pi lf_2\lfhas lf_2 tm => lfhas (app lf_1 lf_2) tm.
+  (* of:tm -> ty -> type *)
+  pi lf_1\lfhas lf_1 tm => pi lf_2\lfhas lf_2 ty => lfisty (of lf_1 lf_2).
+  (* of/u:of u i *)
+  lfhas of/u (of u i).
+  (* of/app:
+       ({A:ty} {B:ty} {M:tm} {N:tm} of M (arr A B) -> of N A ->
+          of (app M N) B) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi M\lfhas M tm =>
+        pi N\lfhas N tm =>
+          pi lf_1\lfhas lf_1 (of M (arr A B)) =>
+            pi lf_2\lfhas lf_2 (of N A) =>
+              lfhas (of/app A B M N lf_1 lf_2) (of (app M N) B).
+  (* of/lam:
+       ({A:ty} {B:ty} {R:tm -> tm} ({x:tm} of x A -> of (R x) B) ->
+          of (lam A ([x] R x)) (arr A B)) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi R\(pi lf_1\lfhas lf_1 tm => lfhas (R lf_1) tm) =>
+        pi lf_1\(pi x\lfhas x tm =>
+                   pi lf_2\lfhas lf_2 (of x A) =>
+                     lfhas (lf_1 x lf_2) (of (R x) B)) =>
+          lfhas (of/lam A B R lf_1) (of (lam A (x\R x)) (arr A B)).
+end.
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+nabla x p, ctx (&lt;p:of x A&gt; :: &lt;x:tm&gt; :: G) := ctx G.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem member_prune : 
+forall G E, (nabla n, member (E n) G -&gt; (exists F, E = x\F)).</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+============================
+ forall G E, (nabla n, member (E n) G -> (exists F, E = x\F))
+
+member_prune < <b>induction on 1.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+============================
+ forall G E, (nabla n, member (E n) G @ -> (exists F, E = x\F))
+
+member_prune < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+Variables: G E
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H1 : member (E n1) G @
+============================
+ exists F, E = x\F
+
+member_prune < <b>case H1.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+Variables: G2 G1
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+============================
+ exists F, z1\G1 = x\F
+
+Subgoal 2 is:
+ exists F, E = x\F
+
+member_prune < <b>search.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+Variables: E G2 G1
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H2 : member (E n1) G2 *
+============================
+ exists F, E = x\F
+
+member_prune < <b>apply IH to H2.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+Variables: G2 G1 F
+IH : forall G E, (nabla n, member (E n) G * -> (exists F, E = x\F))
+H2 : member F G2 *
+============================
+ exists F1, z1\F = x\F1
+
+member_prune < <b>search.</b>
+Proof completed.
+</pre>
+<a name="10"></a>
+<pre class="code">
+Abella < <b>Define fresh : lfobj -> lfobj -> prop by 
+nabla x, fresh x A.</b>
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Define name : lfobj -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_mem : 
+forall G E, ctx G -&gt; member E G -&gt; (exists X, E = &lt;X:tm&gt; /\ name X) \/
+  (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A).</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+============================
+ forall G E, ctx G -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>induction on 1.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ forall G E, ctx G @ -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+Variables: G E
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H1 : ctx G @
+H2 : member E G
+============================
+ (exists X, E = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+Variables: E
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H2 : member E nil
+============================
+ (exists X, E = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+Subgoal 2 is:
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H2 : member (E n1 n2) (&lt;n2:of n1 A&gt; :: &lt;n1:tm&gt; :: G1)
+H3 : ctx G1 *
+============================
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+============================
+ (exists X, &lt;n2:of n1 A&gt; = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A1, &lt;n2:of n1 A&gt; = &lt;P:of X A1&gt; /\ fresh X A1 /\ fresh P A1)
+
+Subgoal 2.2 is:
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+H4 : member (E n1 n2) (&lt;n1:tm&gt; :: G1)
+============================
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>case H4.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+============================
+ (exists X, &lt;n1:tm&gt; = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, &lt;n1:tm&gt; = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+Subgoal 2.2.2 is:
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+H5 : member (E n1 n2) G1
+============================
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: E G1 A
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+H5 : member (E n1 n2) G1
+H6 : (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ (exists X, E n1 n2 = &lt;X:tm&gt; /\ name X) \/
+   (exists P X A, E n1 n2 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+
+ctx_mem < <b>case H6.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 2.2.2.1:
+
+Variables: G1 A X
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+H5 : member &lt;X n2 n1:tm&gt; G1
+H7 : name (X n2 n1)
+============================
+ (exists X1, &lt;X n2 n1:tm&gt; = &lt;X1:tm&gt; /\ name X1) \/
+   (exists P X1 A, &lt;X n2 n1:tm&gt; = &lt;P:of X1 A&gt; /\ fresh X1 A /\ fresh P A)
+
+Subgoal 2.2.2.2 is:
+ (exists X1, &lt;P n2 n1:of (X n2 n1) (A1 n2 n1)&gt; = &lt;X1:tm&gt; /\ name X1) \/
+   (exists P1 X1 A, &lt;P n2 n1:of (X n2 n1) (A1 n2 n1)&gt; = &lt;P1:of X1 A&gt; /\
+      fresh X1 A /\ fresh P1 A)
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 2.2.2.2:
+
+Variables: G1 A P X A1
+IH : forall G E, ctx G * -> member E G -> (exists X, E = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, E = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+H3 : ctx G1 *
+H5 : member &lt;P n2 n1:of (X n2 n1) (A1 n2 n1)&gt; G1
+H7 : fresh (X n2 n1) (A1 n2 n1)
+H8 : fresh (P n2 n1) (A1 n2 n1)
+============================
+ (exists X1, &lt;P n2 n1:of (X n2 n1) (A1 n2 n1)&gt; = &lt;X1:tm&gt; /\ name X1) \/
+   (exists P1 X1 A, &lt;P n2 n1:of (X n2 n1) (A1 n2 n1)&gt; = &lt;P1:of X1 A&gt; /\
+      fresh X1 A /\ fresh P1 A)
+
+ctx_mem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="25"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_unique : 
+forall G P Q X A B, ctx G -&gt; member &lt;P:of X A&gt; G -&gt; member &lt;Q:of X B&gt; G -&gt;
+  A = B /\ P = Q.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+============================
+ forall G P Q X A B, ctx G -> member &lt;P:of X A&gt; G -> member &lt;Q:of X B&gt; G ->
+   A = B /\ P = Q
+
+ctx_unique < <b>induction on 1.</b>
+</pre>
+<a name="27"></a>
+<pre>
+
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+============================
+ forall G P Q X A B, ctx G @ -> member &lt;P:of X A&gt; G -> member &lt;Q:of X B&gt; G ->
+   A = B /\ P = Q
+
+ctx_unique < <b>intros.</b>
+</pre>
+<a name="28"></a>
+<pre>
+
+Variables: G P Q X A B
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H1 : ctx G @
+H2 : member &lt;P:of X A&gt; G
+H3 : member &lt;Q:of X B&gt; G
+============================
+ A = B /\ P = Q
+
+ctx_unique < <b>case H1.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 1:
+
+Variables: P Q X A B
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H2 : member &lt;P:of X A&gt; nil
+H3 : member &lt;Q:of X B&gt; nil
+============================
+ A = B /\ P = Q
+
+Subgoal 2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H2.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 2:
+
+Variables: P Q X A B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H2 : member &lt;P n1 n2:of (X n1 n2) (A n1 n2)&gt; (&lt;n2:of n1 A1&gt; :: &lt;n1:tm&gt; :: G1)
+H3 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; (&lt;n2:of n1 A1&gt; :: &lt;n1:tm&gt; :: G1)
+H4 : ctx G1 *
+============================
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H2.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: Q B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H3 : member &lt;Q n1 n2:of n1 (B n1 n2)&gt; (&lt;n2:of n1 A1&gt; :: &lt;n1:tm&gt; :: G1)
+H4 : ctx G1 *
+============================
+ A1 = B n1 n2 /\ n2 = Q n1 n2
+
+Subgoal 2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H3.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2.1.1:
+
+Variables: G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+============================
+ A1 = A1 /\ n2 = n2
+
+Subgoal 2.1.2 is:
+ A1 = B n1 n2 /\ n2 = Q n1 n2
+
+Subgoal 2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>search.</b>
+</pre>
+<a name="33"></a>
+<pre>
+Subgoal 2.1.2:
+
+Variables: Q B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H5 : member &lt;Q n1 n2:of n1 (B n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+============================
+ A1 = B n1 n2 /\ n2 = Q n1 n2
+
+Subgoal 2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H5.</b>
+</pre>
+<a name="34"></a>
+<pre>
+Subgoal 2.1.2:
+
+Variables: Q B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H6 : member &lt;Q n1 n2:of n1 (B n1 n2)&gt; G1
+============================
+ A1 = B n1 n2 /\ n2 = Q n1 n2
+
+Subgoal 2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>apply member_prune to H6.</b>
+</pre>
+<a name="35"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: P Q X A B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H3 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; (&lt;n2:of n1 A1&gt; :: &lt;n1:tm&gt; :: G1)
+H4 : ctx G1 *
+H5 : member &lt;P n1 n2:of (X n1 n2) (A n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+============================
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H3.</b>
+</pre>
+<a name="36"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: P A G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H5 : member &lt;P n1 n2:of n1 (A n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+============================
+ A n1 n2 = A1 /\ P n1 n2 = n2
+
+Subgoal 2.2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H5.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: P A G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H6 : member &lt;P n1 n2:of n1 (A n1 n2)&gt; G1
+============================
+ A n1 n2 = A1 /\ P n1 n2 = n2
+
+Subgoal 2.2.2 is:
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>apply member_prune to H6.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: P Q X A B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H5 : member &lt;P n1 n2:of (X n1 n2) (A n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+H6 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+============================
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H5.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: P Q X A B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H6 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; (&lt;n1:tm&gt; :: G1)
+H7 : member &lt;P n1 n2:of (X n1 n2) (A n1 n2)&gt; G1
+============================
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>case H6.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: P Q X A B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H7 : member &lt;P n1 n2:of (X n1 n2) (A n1 n2)&gt; G1
+H8 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; G1
+============================
+ A n1 n2 = B n1 n2 /\ P n1 n2 = Q n1 n2
+
+ctx_unique < <b>apply IH to H4 H7 H8.</b>
+</pre>
+<a name="41"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: Q X B G1 A1
+IH : forall G P Q X A B, ctx G * -> member &lt;P:of X A&gt; G ->
+       member &lt;Q:of X B&gt; G -> A = B /\ P = Q
+H4 : ctx G1 *
+H7 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; G1
+H8 : member &lt;Q n1 n2:of (X n1 n2) (B n1 n2)&gt; G1
+============================
+ B n1 n2 = B n1 n2 /\ Q n1 n2 = Q n1 n2
+
+ctx_unique < <b>search.</b>
+Proof completed.
+</pre>
+<a name="42"></a>
+<pre class="code">
+Abella < <b>Theorem unique_ty : 
+forall G M A B P1 P2, ctx G -&gt; &lt;G |- P1:of M A&gt; -&gt; &lt;G |- P2:of M B&gt; -&gt; A = B.</b>
+</pre>
+<a name="43"></a>
+<pre>
+
+============================
+ forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt; -> &lt;G |- P2:of M B&gt; -> A = B
+
+unique_ty < <b>induction on 2.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+============================
+ forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;@ -> &lt;G |- P2:of M B&gt; -> A =
+   B
+
+unique_ty < <b>intros.</b>
+</pre>
+<a name="45"></a>
+<pre>
+
+Variables: G M A B P1 P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H2 : &lt;G |- P1:of M A&gt;@
+H3 : &lt;G |- P2:of M B&gt;
+============================
+ A = B
+
+unique_ty < <b>case H2.</b>
+</pre>
+<a name="46"></a>
+<pre>
+Subgoal 1:
+
+Variables: G B P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of u B&gt;
+============================
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H3.</b>
+</pre>
+<a name="47"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: G
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+============================
+ i = i
+
+Subgoal 1.2 is:
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>search.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G B P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [F] |- P2:of u B&gt;
+H5 : member F G
+============================
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>apply ctx_mem to H1 H5.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G B P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [F] |- P2:of u B&gt;
+H5 : member F G
+H6 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H6.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 1.2.1:
+
+Variables: G B P2 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [X:tm] |- P2:of u B&gt;
+H5 : member &lt;X:tm&gt; G
+H7 : name X
+============================
+ i = B
+
+Subgoal 1.2.2 is:
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="51"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: G B P2 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P2:of u B&gt;
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ i = B
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H7.</b>
+</pre>
+<a name="52"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: G B P2 P A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A2] |- P2 n1:of u (B n1)&gt;
+H5 : member &lt;P n1:of n1 A2&gt; (G n1)
+H8 : fresh (P n1) A2
+============================
+ i = B n1
+
+Subgoal 2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="53"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of (app M1 N) B&gt;
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+============================
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H3.</b>
+</pre>
+<a name="54"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B A1 N lf_2 M1 lf_1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ A = B
+
+Subgoal 2.2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>apply IH to H1 H8 H14.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G B N lf_2 M1 lf_1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A2:ty&gt;*
+H5 : &lt;G |- B:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A2 B)&gt;*
+H9 : &lt;G |- lf_2:of N A2&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ B = B
+
+Subgoal 2.2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [F] |- P2:of (app M1 N) B&gt;
+H11 : member F G
+============================
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>apply ctx_mem to H1 H11.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [F] |- P2:of (app M1 N) B&gt;
+H11 : member F G
+H12 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H12.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [X:tm] |- P2:of (app M1 N) B&gt;
+H11 : member &lt;X:tm&gt; G
+H13 : name X
+============================
+ A = B
+
+Subgoal 2.2.2 is:
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H10.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 P X A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [P:of X A2] |- P2:of (app M1 N) B&gt;
+H11 : member &lt;P:of X A2&gt; G
+H13 : fresh X A2
+H14 : fresh P A2
+============================
+ A = B
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H13.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 P A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n1)
+H4 : &lt;G n1 |- A1 n1:ty&gt;*
+H5 : &lt;G n1 |- A n1:ty&gt;*
+H6 : &lt;G n1 |- M1 n1:tm&gt;*
+H7 : &lt;G n1 |- N n1:tm&gt;*
+H8 : &lt;G n1 |- lf_1 n1:of (M1 n1) (arr (A1 n1) (A n1))&gt;*
+H9 : &lt;G n1 |- lf_2 n1:of (N n1) (A1 n1)&gt;*
+H10 : &lt;G n1, [P n1:of n1 A3] |- P2 n1:of (app (M1 n1) (N n1)) (B n1)&gt;
+H11 : member &lt;P n1:of n1 A3&gt; (G n1)
+H14 : fresh (P n1) A3
+============================
+ A n1 = B n1
+
+Subgoal 3 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H10.</b>
+</pre>
+<a name="61"></a>
+<pre>
+Subgoal 3:
+
+Variables: G B P2 B1 R lf_1 A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of (lam A1 ([x] R x)) B&gt;
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+============================
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H3.</b>
+</pre>
+<a name="62"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G B1 R lf_1 A1 B2 lf_2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G |- A1:ty&gt;
+H9 : &lt;G |- B2:ty&gt;
+H10 : &lt;G, n1:tm |- R n1:tm&gt;
+H11 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;
+============================
+ arr A1 B1 = arr A1 B2
+
+Subgoal 3.2 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>apply IH to _ H7 H11.</b>
+</pre>
+<a name="63"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G R lf_1 A1 B2 lf_2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B2:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B2&gt;*
+H8 : &lt;G |- A1:ty&gt;
+H9 : &lt;G |- B2:ty&gt;
+H10 : &lt;G, n1:tm |- R n1:tm&gt;
+H11 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;
+============================
+ arr A1 B2 = arr A1 B2
+
+Subgoal 3.2 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>search.</b>
+</pre>
+<a name="64"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G B P2 B1 R lf_1 A1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [F] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member F G
+============================
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>apply ctx_mem to H1 H9.</b>
+</pre>
+<a name="65"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G B P2 B1 R lf_1 A1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [F] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member F G
+H10 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H10.</b>
+</pre>
+<a name="66"></a>
+<pre>
+Subgoal 3.2.1:
+
+Variables: G B P2 B1 R lf_1 A1 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [X:tm] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member &lt;X:tm&gt; G
+H11 : name X
+============================
+ arr A1 B1 = B
+
+Subgoal 3.2.2 is:
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H8.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: G B P2 B1 R lf_1 A1 P X A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [P:of X A2] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member &lt;P:of X A2&gt; G
+H11 : fresh X A2
+H12 : fresh P A2
+============================
+ arr A1 B1 = B
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H11.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: G B P2 B1 R lf_1 A1 P A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n3)
+H4 : &lt;G n3 |- A1 n3:ty&gt;*
+H5 : &lt;G n3 |- B1 n3:ty&gt;*
+H6 : &lt;G n3, n1:tm |- R n3 n1:tm&gt;*
+H7 : &lt;G n3, n1:tm, n2:of n1 (A1 n3) |- lf_1 n3 n1 n2:of (R n3 n1) (B1 n3)&gt;*
+H8 : &lt;G n3, [P n3:of n3 A3] |- P2 n3:of (lam (A1 n3) ([x] R n3 x)) (B n3)&gt;
+H9 : member &lt;P n3:of n3 A3&gt; (G n3)
+H12 : fresh (P n3) A3
+============================
+ arr (A1 n3) (B1 n3) = B n3
+
+Subgoal 4 is:
+ A = B
+
+unique_ty < <b>case H8.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 4:
+
+Variables: G M A B P1 P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [F] |- P1:of M A&gt;*
+H5 : member F G
+============================
+ A = B
+
+unique_ty < <b>apply ctx_mem to H1 H5.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 4:
+
+Variables: G M A B P1 P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [F] |- P1:of M A&gt;*
+H5 : member F G
+H6 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ A = B
+
+unique_ty < <b>case H6.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 4.1:
+
+Variables: G M A B P1 P2 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [X:tm] |- P1:of M A&gt;*
+H5 : member &lt;X:tm&gt; G
+H7 : name X
+============================
+ A = B
+
+Subgoal 4.2 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="72"></a>
+<pre>
+Subgoal 4.2:
+
+Variables: G M A B P1 P2 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ A = B
+
+unique_ty < <b>case H3.</b>
+</pre>
+<a name="73"></a>
+<pre>
+Subgoal 4.2.1:
+
+Variables: G A P1 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of u A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ A = i
+
+Subgoal 4.2.2 is:
+ A = B
+
+Subgoal 4.2.3 is:
+ A = arr A2 B1
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H7.</b>
+</pre>
+<a name="74"></a>
+<pre>
+Subgoal 4.2.1:
+
+Variables: G A P1 P A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A2] |- P1 n1:of u (A n1)&gt;*
+H5 : member &lt;P n1:of n1 A2&gt; (G n1)
+H8 : fresh (P n1) A2
+============================
+ A n1 = i
+
+Subgoal 4.2.2 is:
+ A = B
+
+Subgoal 4.2.3 is:
+ A = arr A2 B1
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="75"></a>
+<pre>
+Subgoal 4.2.2:
+
+Variables: G A B P1 P X A1 A2 N lf_2 M1 lf_1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of (app M1 N) A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G |- A2:ty&gt;
+H10 : &lt;G |- B:ty&gt;
+H11 : &lt;G |- M1:tm&gt;
+H12 : &lt;G |- N:tm&gt;
+H13 : &lt;G |- lf_1:of M1 (arr A2 B)&gt;
+H14 : &lt;G |- lf_2:of N A2&gt;
+============================
+ A = B
+
+Subgoal 4.2.3 is:
+ A = arr A2 B1
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H7.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 4.2.2:
+
+Variables: G A B P1 P A2 N lf_2 M1 lf_1 A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A3] |- P1 n1:of (app (M1 n1) (N n1)) (A n1)&gt;*
+H5 : member &lt;P n1:of n1 A3&gt; (G n1)
+H8 : fresh (P n1) A3
+H9 : &lt;G n1 |- A2 n1:ty&gt;
+H10 : &lt;G n1 |- B n1:ty&gt;
+H11 : &lt;G n1 |- M1 n1:tm&gt;
+H12 : &lt;G n1 |- N n1:tm&gt;
+H13 : &lt;G n1 |- lf_1 n1:of (M1 n1) (arr (A2 n1) (B n1))&gt;
+H14 : &lt;G n1 |- lf_2 n1:of (N n1) (A2 n1)&gt;
+============================
+ A n1 = B n1
+
+Subgoal 4.2.3 is:
+ A = arr A2 B1
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 4.2.3:
+
+Variables: G A P1 P X A1 B1 R lf_1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of (lam A2 ([x] R x)) A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G |- A2:ty&gt;
+H10 : &lt;G |- B1:ty&gt;
+H11 : &lt;G, n1:tm |- R n1:tm&gt;
+H12 : &lt;G, n1:tm, n2:of n1 A2 |- lf_1 n1 n2:of (R n1) B1&gt;
+============================
+ A = arr A2 B1
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H7.</b>
+</pre>
+<a name="78"></a>
+<pre>
+Subgoal 4.2.3:
+
+Variables: G A P1 P B1 R lf_1 A2 A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx (G n3)
+H4 : &lt;G n3, [P n3:of n3 A3] |- P1 n3:of (lam (A2 n3) ([x] R n3 x)) (A n3)&gt;*
+H5 : member &lt;P n3:of n3 A3&gt; (G n3)
+H8 : fresh (P n3) A3
+H9 : &lt;G n3 |- A2 n3:ty&gt;
+H10 : &lt;G n3 |- B1 n3:ty&gt;
+H11 : &lt;G n3, n1:tm |- R n3 n1:tm&gt;
+H12 : &lt;G n3, n1:tm, n2:of n1 (A2 n3) |- lf_1 n3 n1 n2:of (R n3 n1) (B1 n3)&gt;
+============================
+ A n3 = arr (A2 n3) (B1 n3)
+
+Subgoal 4.2.4 is:
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 4.2.4:
+
+Variables: G M A B P1 P2 P X A1 F1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [F1] |- P2:of M B&gt;
+H10 : member F1 G
+============================
+ A = B
+
+unique_ty < <b>apply ctx_mem to H1 H10.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 4.2.4:
+
+Variables: G M A B P1 P2 P X A1 F1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [F1] |- P2:of M B&gt;
+H10 : member F1 G
+H11 : (exists X, F1 = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F1 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ A = B
+
+unique_ty < <b>case H11.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 4.2.4.1:
+
+Variables: G M A B P1 P2 P X A1 X1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [X1:tm] |- P2:of M B&gt;
+H10 : member &lt;X1:tm&gt; G
+H12 : name X1
+============================
+ A = B
+
+Subgoal 4.2.4.2 is:
+ A = B
+
+unique_ty < <b>case H9.</b>
+</pre>
+<a name="82"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2 P X A1 P3 X1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [P3:of X1 A2] |- P2:of M B&gt;
+H10 : member &lt;P3:of X1 A2&gt; G
+H12 : fresh X1 A2
+H13 : fresh P3 A2
+============================
+ A = B
+
+unique_ty < <b>case H4.</b>
+</pre>
+<a name="83"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2 P3 X1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H5 : member &lt;P1:of M A&gt; G
+H7 : fresh M A
+H8 : fresh P1 A
+H9 : &lt;G, [P3:of X1 A2] |- P2:of M B&gt;
+H10 : member &lt;P3:of X1 A2&gt; G
+H12 : fresh X1 A2
+H13 : fresh P3 A2
+============================
+ A = B
+
+unique_ty < <b>case H9.</b>
+</pre>
+<a name="84"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H5 : member &lt;P1:of M A&gt; G
+H7 : fresh M A
+H8 : fresh P1 A
+H10 : member &lt;P2:of M B&gt; G
+H12 : fresh M B
+H13 : fresh P2 B
+============================
+ A = B
+
+unique_ty < <b>apply ctx_unique to H1 H5 H10.</b>
+</pre>
+<a name="85"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M B P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       A = B
+H1 : ctx G
+H5 : member &lt;P2:of M B&gt; G
+H7 : fresh M B
+H8 : fresh P2 B
+H10 : member &lt;P2:of M B&gt; G
+H12 : fresh M B
+H13 : fresh P2 B
+============================
+ B = B
+
+unique_ty < <b>search.</b>
+Proof completed.
+</pre>
+<a name="86"></a>
+<pre class="code">
+Abella < <b>Theorem unique_proof : 
+forall G M A B P1 P2, ctx G -&gt; &lt;G |- P1:of M A&gt; -&gt; &lt;G |- P2:of M B&gt; -&gt; P1 =
+  P2.</b>
+</pre>
+<a name="87"></a>
+<pre>
+
+============================
+ forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt; -> &lt;G |- P2:of M B&gt; -> P1 =
+   P2
+
+unique_proof < <b>induction on 2.</b>
+</pre>
+<a name="88"></a>
+<pre>
+
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+============================
+ forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;@ -> &lt;G |- P2:of M B&gt; -> P1 =
+   P2
+
+unique_proof < <b>intros.</b>
+</pre>
+<a name="89"></a>
+<pre>
+
+Variables: G M A B P1 P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H2 : &lt;G |- P1:of M A&gt;@
+H3 : &lt;G |- P2:of M B&gt;
+============================
+ P1 = P2
+
+unique_proof < <b>case H2.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 1:
+
+Variables: G B P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of u B&gt;
+============================
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H3.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: G
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+============================
+ of/u = of/u
+
+Subgoal 1.2 is:
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>search.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G B P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [F] |- P2:of u B&gt;
+H5 : member F G
+============================
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply ctx_mem to H1 H5.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: G B P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [F] |- P2:of u B&gt;
+H5 : member F G
+H6 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H6.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 1.2.1:
+
+Variables: G B P2 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [X:tm] |- P2:of u B&gt;
+H5 : member &lt;X:tm&gt; G
+H7 : name X
+============================
+ of/u = P2
+
+Subgoal 1.2.2 is:
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: G B P2 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P2:of u B&gt;
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ of/u = P2
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H7.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: G B P2 P A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A2] |- P2 n1:of u (B n1)&gt;
+H5 : member &lt;P n1:of n1 A2&gt; (G n1)
+H8 : fresh (P n1) A2
+============================
+ of/u = P2 n1
+
+Subgoal 2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of (app M1 N) B&gt;
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+============================
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H3.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B A1 N lf_2 M1 lf_1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ of/app A1 A M1 N lf_1 lf_2 = of/app A2 B M1 N lf_3 lf_4
+
+Subgoal 2.2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply IH to H1 H8 H14.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B A1 N lf_2 M1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_3:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ of/app A1 A M1 N lf_3 lf_2 = of/app A2 B M1 N lf_3 lf_4
+
+Subgoal 2.2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply IH to H1 H9 H15.</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G A B A1 N M1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_3:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_4:of N A1&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ of/app A1 A M1 N lf_3 lf_4 = of/app A2 B M1 N lf_3 lf_4
+
+Subgoal 2.2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply unique_ty to H1 H8 H14.</b>
+</pre>
+<a name="101"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: G B N M1 A2 lf_4 lf_3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A2:ty&gt;*
+H5 : &lt;G |- B:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;*
+H9 : &lt;G |- lf_4:of N A2&gt;*
+H10 : &lt;G |- A2:ty&gt;
+H11 : &lt;G |- B:ty&gt;
+H12 : &lt;G |- M1:tm&gt;
+H13 : &lt;G |- N:tm&gt;
+H14 : &lt;G |- lf_3:of M1 (arr A2 B)&gt;
+H15 : &lt;G |- lf_4:of N A2&gt;
+============================
+ of/app A2 B M1 N lf_3 lf_4 = of/app A2 B M1 N lf_3 lf_4
+
+Subgoal 2.2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>search.</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [F] |- P2:of (app M1 N) B&gt;
+H11 : member F G
+============================
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply ctx_mem to H1 H11.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [F] |- P2:of (app M1 N) B&gt;
+H11 : member F G
+H12 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H12.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [X:tm] |- P2:of (app M1 N) B&gt;
+H11 : member &lt;X:tm&gt; G
+H13 : name X
+============================
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 2.2.2 is:
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H10.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 P X A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- A:ty&gt;*
+H6 : &lt;G |- M1:tm&gt;*
+H7 : &lt;G |- N:tm&gt;*
+H8 : &lt;G |- lf_1:of M1 (arr A1 A)&gt;*
+H9 : &lt;G |- lf_2:of N A1&gt;*
+H10 : &lt;G, [P:of X A2] |- P2:of (app M1 N) B&gt;
+H11 : member &lt;P:of X A2&gt; G
+H13 : fresh X A2
+H14 : fresh P A2
+============================
+ of/app A1 A M1 N lf_1 lf_2 = P2
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H13.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: G A B P2 A1 N lf_2 M1 lf_1 P A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n1)
+H4 : &lt;G n1 |- A1 n1:ty&gt;*
+H5 : &lt;G n1 |- A n1:ty&gt;*
+H6 : &lt;G n1 |- M1 n1:tm&gt;*
+H7 : &lt;G n1 |- N n1:tm&gt;*
+H8 : &lt;G n1 |- lf_1 n1:of (M1 n1) (arr (A1 n1) (A n1))&gt;*
+H9 : &lt;G n1 |- lf_2 n1:of (N n1) (A1 n1)&gt;*
+H10 : &lt;G n1, [P n1:of n1 A3] |- P2 n1:of (app (M1 n1) (N n1)) (B n1)&gt;
+H11 : member &lt;P n1:of n1 A3&gt; (G n1)
+H14 : fresh (P n1) A3
+============================
+ of/app (A1 n1) (A n1) (M1 n1) (N n1) (lf_1 n1) (lf_2 n1) = P2 n1
+
+Subgoal 3 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H10.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 3:
+
+Variables: G B P2 B1 R lf_1 A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of (lam A1 ([x] R x)) B&gt;
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+============================
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H3.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G B1 R lf_1 A1 B2 lf_2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G |- A1:ty&gt;
+H9 : &lt;G |- B2:ty&gt;
+H10 : &lt;G, n1:tm |- R n1:tm&gt;
+H11 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;
+============================
+ of/lam A1 B1 R lf_1 = of/lam A1 B2 (z1\R z1) lf_2
+
+Subgoal 3.2 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply IH to _ H7 H11.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G B1 R A1 B2 lf_2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G |- A1:ty&gt;
+H9 : &lt;G |- B2:ty&gt;
+H10 : &lt;G, n1:tm |- R n1:tm&gt;
+H11 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;
+============================
+ of/lam A1 B1 R (z1\z2\lf_2 z1 z2) = of/lam A1 B2 (z1\R z1) lf_2
+
+Subgoal 3.2 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply unique_ty to _ H7 H11.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: G R A1 B2 lf_2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B2:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;*
+H8 : &lt;G |- A1:ty&gt;
+H9 : &lt;G |- B2:ty&gt;
+H10 : &lt;G, n1:tm |- R n1:tm&gt;
+H11 : &lt;G, n1:tm, n2:of n1 A1 |- lf_2 n1 n2:of (R n1) B2&gt;
+============================
+ of/lam A1 B2 R (z1\z2\lf_2 z1 z2) = of/lam A1 B2 (z1\R z1) lf_2
+
+Subgoal 3.2 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>search.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G B P2 B1 R lf_1 A1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [F] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member F G
+============================
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>apply ctx_mem to H1 H9.</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: G B P2 B1 R lf_1 A1 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [F] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member F G
+H10 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H10.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 3.2.1:
+
+Variables: G B P2 B1 R lf_1 A1 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [X:tm] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member &lt;X:tm&gt; G
+H11 : name X
+============================
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 3.2.2 is:
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H8.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: G B P2 B1 R lf_1 A1 P X A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G |- A1:ty&gt;*
+H5 : &lt;G |- B1:ty&gt;*
+H6 : &lt;G, n1:tm |- R n1:tm&gt;*
+H7 : &lt;G, n1:tm, n2:of n1 A1 |- lf_1 n1 n2:of (R n1) B1&gt;*
+H8 : &lt;G, [P:of X A2] |- P2:of (lam A1 ([x] R x)) B&gt;
+H9 : member &lt;P:of X A2&gt; G
+H11 : fresh X A2
+H12 : fresh P A2
+============================
+ of/lam A1 B1 R lf_1 = P2
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H11.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: G B P2 B1 R lf_1 A1 P A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n3)
+H4 : &lt;G n3 |- A1 n3:ty&gt;*
+H5 : &lt;G n3 |- B1 n3:ty&gt;*
+H6 : &lt;G n3, n1:tm |- R n3 n1:tm&gt;*
+H7 : &lt;G n3, n1:tm, n2:of n1 (A1 n3) |- lf_1 n3 n1 n2:of (R n3 n1) (B1 n3)&gt;*
+H8 : &lt;G n3, [P n3:of n3 A3] |- P2 n3:of (lam (A1 n3) ([x] R n3 x)) (B n3)&gt;
+H9 : member &lt;P n3:of n3 A3&gt; (G n3)
+H12 : fresh (P n3) A3
+============================
+ of/lam (A1 n3) (B1 n3) (R n3) (lf_1 n3) = P2 n3
+
+Subgoal 4 is:
+ P1 = P2
+
+unique_proof < <b>case H8.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 4:
+
+Variables: G M A B P1 P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [F] |- P1:of M A&gt;*
+H5 : member F G
+============================
+ P1 = P2
+
+unique_proof < <b>apply ctx_mem to H1 H5.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 4:
+
+Variables: G M A B P1 P2 F
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [F] |- P1:of M A&gt;*
+H5 : member F G
+H6 : (exists X, F = &lt;X:tm&gt; /\ name X) \/
+       (exists P X A, F = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ P1 = P2
+
+unique_proof < <b>case H6.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 4.1:
+
+Variables: G M A B P1 P2 X
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [X:tm] |- P1:of M A&gt;*
+H5 : member &lt;X:tm&gt; G
+H7 : name X
+============================
+ P1 = P2
+
+Subgoal 4.2 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 4.2:
+
+Variables: G M A B P1 P2 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H3 : &lt;G |- P2:of M B&gt;
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ P1 = P2
+
+unique_proof < <b>case H3.</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 4.2.1:
+
+Variables: G A P1 P X A1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of u A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+============================
+ P1 = of/u
+
+Subgoal 4.2.2 is:
+ P1 = of/app A2 B M1 N lf_1 lf_2
+
+Subgoal 4.2.3 is:
+ P1 = of/lam A2 B1 R lf_1
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H7.</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 4.2.1:
+
+Variables: G A P1 P A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A2] |- P1 n1:of u (A n1)&gt;*
+H5 : member &lt;P n1:of n1 A2&gt; (G n1)
+H8 : fresh (P n1) A2
+============================
+ P1 n1 = of/u
+
+Subgoal 4.2.2 is:
+ P1 = of/app A2 B M1 N lf_1 lf_2
+
+Subgoal 4.2.3 is:
+ P1 = of/lam A2 B1 R lf_1
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 4.2.2:
+
+Variables: G A B P1 P X A1 A2 N lf_2 M1 lf_1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of (app M1 N) A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G |- A2:ty&gt;
+H10 : &lt;G |- B:ty&gt;
+H11 : &lt;G |- M1:tm&gt;
+H12 : &lt;G |- N:tm&gt;
+H13 : &lt;G |- lf_1:of M1 (arr A2 B)&gt;
+H14 : &lt;G |- lf_2:of N A2&gt;
+============================
+ P1 = of/app A2 B M1 N lf_1 lf_2
+
+Subgoal 4.2.3 is:
+ P1 = of/lam A2 B1 R lf_1
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H7.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 4.2.2:
+
+Variables: G A B P1 P A2 N lf_2 M1 lf_1 A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n1)
+H4 : &lt;G n1, [P n1:of n1 A3] |- P1 n1:of (app (M1 n1) (N n1)) (A n1)&gt;*
+H5 : member &lt;P n1:of n1 A3&gt; (G n1)
+H8 : fresh (P n1) A3
+H9 : &lt;G n1 |- A2 n1:ty&gt;
+H10 : &lt;G n1 |- B n1:ty&gt;
+H11 : &lt;G n1 |- M1 n1:tm&gt;
+H12 : &lt;G n1 |- N n1:tm&gt;
+H13 : &lt;G n1 |- lf_1 n1:of (M1 n1) (arr (A2 n1) (B n1))&gt;
+H14 : &lt;G n1 |- lf_2 n1:of (N n1) (A2 n1)&gt;
+============================
+ P1 n1 = of/app (A2 n1) (B n1) (M1 n1) (N n1) (lf_1 n1) (lf_2 n1)
+
+Subgoal 4.2.3 is:
+ P1 = of/lam A2 B1 R lf_1
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 4.2.3:
+
+Variables: G A P1 P X A1 B1 R lf_1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of (lam A2 ([x] R x)) A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G |- A2:ty&gt;
+H10 : &lt;G |- B1:ty&gt;
+H11 : &lt;G, n1:tm |- R n1:tm&gt;
+H12 : &lt;G, n1:tm, n2:of n1 A2 |- lf_1 n1 n2:of (R n1) B1&gt;
+============================
+ P1 = of/lam A2 B1 R lf_1
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H7.</b>
+</pre>
+<a name="125"></a>
+<pre>
+Subgoal 4.2.3:
+
+Variables: G A P1 P B1 R lf_1 A2 A3
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx (G n3)
+H4 : &lt;G n3, [P n3:of n3 A3] |- P1 n3:of (lam (A2 n3) ([x] R n3 x)) (A n3)&gt;*
+H5 : member &lt;P n3:of n3 A3&gt; (G n3)
+H8 : fresh (P n3) A3
+H9 : &lt;G n3 |- A2 n3:ty&gt;
+H10 : &lt;G n3 |- B1 n3:ty&gt;
+H11 : &lt;G n3, n1:tm |- R n3 n1:tm&gt;
+H12 : &lt;G n3, n1:tm, n2:of n1 (A2 n3) |- lf_1 n3 n1 n2:of (R n3 n1) (B1 n3)&gt;
+============================
+ P1 n3 = of/lam (A2 n3) (B1 n3) (R n3) (lf_1 n3)
+
+Subgoal 4.2.4 is:
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="126"></a>
+<pre>
+Subgoal 4.2.4:
+
+Variables: G M A B P1 P2 P X A1 F1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [F1] |- P2:of M B&gt;
+H10 : member F1 G
+============================
+ P1 = P2
+
+unique_proof < <b>apply ctx_mem to H1 H10.</b>
+</pre>
+<a name="127"></a>
+<pre>
+Subgoal 4.2.4:
+
+Variables: G M A B P1 P2 P X A1 F1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [F1] |- P2:of M B&gt;
+H10 : member F1 G
+H11 : (exists X, F1 = &lt;X:tm&gt; /\ name X) \/
+        (exists P X A, F1 = &lt;P:of X A&gt; /\ fresh X A /\ fresh P A)
+============================
+ P1 = P2
+
+unique_proof < <b>case H11.</b>
+</pre>
+<a name="128"></a>
+<pre>
+Subgoal 4.2.4.1:
+
+Variables: G M A B P1 P2 P X A1 X1
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [X1:tm] |- P2:of M B&gt;
+H10 : member &lt;X1:tm&gt; G
+H12 : name X1
+============================
+ P1 = P2
+
+Subgoal 4.2.4.2 is:
+ P1 = P2
+
+unique_proof < <b>case H9.</b>
+</pre>
+<a name="129"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2 P X A1 P3 X1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H4 : &lt;G, [P:of X A1] |- P1:of M A&gt;*
+H5 : member &lt;P:of X A1&gt; G
+H7 : fresh X A1
+H8 : fresh P A1
+H9 : &lt;G, [P3:of X1 A2] |- P2:of M B&gt;
+H10 : member &lt;P3:of X1 A2&gt; G
+H12 : fresh X1 A2
+H13 : fresh P3 A2
+============================
+ P1 = P2
+
+unique_proof < <b>case H4.</b>
+</pre>
+<a name="130"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2 P3 X1 A2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H5 : member &lt;P1:of M A&gt; G
+H7 : fresh M A
+H8 : fresh P1 A
+H9 : &lt;G, [P3:of X1 A2] |- P2:of M B&gt;
+H10 : member &lt;P3:of X1 A2&gt; G
+H12 : fresh X1 A2
+H13 : fresh P3 A2
+============================
+ P1 = P2
+
+unique_proof < <b>case H9.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M A B P1 P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H5 : member &lt;P1:of M A&gt; G
+H7 : fresh M A
+H8 : fresh P1 A
+H10 : member &lt;P2:of M B&gt; G
+H12 : fresh M B
+H13 : fresh P2 B
+============================
+ P1 = P2
+
+unique_proof < <b>apply ctx_unique to H1 H5 H10.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 4.2.4.2:
+
+Variables: G M B P2
+IH : forall G M A B P1 P2, ctx G -> &lt;G |- P1:of M A&gt;* -> &lt;G |- P2:of M B&gt; ->
+       P1 = P2
+H1 : ctx G
+H5 : member &lt;P2:of M B&gt; G
+H7 : fresh M B
+H8 : fresh P2 B
+H10 : member &lt;P2:of M B&gt; G
+H12 : fresh M B
+H13 : fresh P2 B
+============================
+ P2 = P2
+
+unique_proof < <b>search.</b>
+Proof completed.
+</pre>
+<a name="133"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>
