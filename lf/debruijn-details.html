@@ -1,0 +1,4895 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "debruijn.elf". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-lf
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "debruijn.elf".</b>
+Reading specification "debruijn.elf"
+sig debruijn.
+  type nat lftype.
+  type z lfobj.
+  type s lfobj -> lfobj.
+  type add lfobj -> lfobj -> lfobj -> lftype.
+  type add/z lfobj -> lfobj.
+  type add/s lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type hterm lftype.
+  type happ lfobj -> lfobj -> lfobj.
+  type hlam (lfobj -> lfobj) -> lfobj.
+  type dterm lftype.
+  type dapp lfobj -> lfobj -> lfobj.
+  type dlam lfobj -> lfobj.
+  type dvar lfobj -> lfobj.
+  type ho2db lfobj -> lfobj -> lfobj -> lftype.
+  type ho2db/app lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type ho2db/lam (lfobj -> lfobj) -> lfobj -> lfobj -> (lfobj -> (lfobj -> lfobj -> lfobj -> lfobj) -> lfobj) -> lfobj.
+end.
+module debruijn.
+  (* nat:type *)
+  lfisty nat.
+  (* z:nat *)
+  lfhas z nat.
+  (* s:nat -> nat *)
+  pi lf_1\lfhas lf_1 nat => lfhas (s lf_1) nat.
+  (* add:nat -> nat -> nat -> type *)
+  pi lf_1\lfhas lf_1 nat =>
+    pi lf_2\lfhas lf_2 nat =>
+      pi lf_3\lfhas lf_3 nat => lfisty (add lf_1 lf_2 lf_3).
+  (* add/z:{C:nat} add z C C *)
+  pi C\lfhas C nat => lfhas (add/z C) (add z C C).
+  (* add/s:{A:nat} {B:nat} {C:nat} add A B C -> add (s A) B (s C) *)
+  pi A\lfhas A nat =>
+    pi B\lfhas B nat =>
+      pi C\lfhas C nat =>
+        pi lf_1\lfhas lf_1 (add A B C) =>
+          lfhas (add/s A B C lf_1) (add (s A) B (s C)).
+  (* hterm:type *)
+  lfisty hterm.
+  (* happ:hterm -> hterm -> hterm *)
+  pi lf_1\lfhas lf_1 hterm =>
+    pi lf_2\lfhas lf_2 hterm => lfhas (happ lf_1 lf_2) hterm.
+  (* hlam:(hterm -> hterm) -> hterm *)
+  pi lf_1\(pi lf_2\lfhas lf_2 hterm => lfhas (lf_1 lf_2) hterm) =>
+    lfhas (hlam lf_1) hterm.
+  (* dterm:type *)
+  lfisty dterm.
+  (* dapp:dterm -> dterm -> dterm *)
+  pi lf_1\lfhas lf_1 dterm =>
+    pi lf_2\lfhas lf_2 dterm => lfhas (dapp lf_1 lf_2) dterm.
+  (* dlam:dterm -> dterm *)
+  pi lf_1\lfhas lf_1 dterm => lfhas (dlam lf_1) dterm.
+  (* dvar:nat -> dterm *)
+  pi lf_1\lfhas lf_1 nat => lfhas (dvar lf_1) dterm.
+  (* ho2db:hterm -> nat -> dterm -> type *)
+  pi lf_1\lfhas lf_1 hterm =>
+    pi lf_2\lfhas lf_2 nat =>
+      pi lf_3\lfhas lf_3 dterm => lfisty (ho2db lf_1 lf_2 lf_3).
+  (* ho2db/app:{M:hterm} {N:hterm} {H:nat} {DM:dterm} {DN:dterm}
+       ho2db M H DM -> ho2db N H DN -> ho2db (happ M N) H (dapp DM DN) *)
+  pi M\lfhas M hterm =>
+    pi N\lfhas N hterm =>
+      pi H\lfhas H nat =>
+        pi DM\lfhas DM dterm =>
+          pi DN\lfhas DN dterm =>
+            pi lf_1\lfhas lf_1 (ho2db M H DM) =>
+              pi lf_2\lfhas lf_2 (ho2db N H DN) =>
+                lfhas (ho2db/app M N H DM DN lf_1 lf_2)
+                  (ho2db (happ M N) H (dapp DM DN)).
+  (* ho2db/lam:{R:hterm -> hterm} {H:nat} {DR:dterm}
+       ({x:hterm} ({hh:nat} {dx:nat} add H dx hh -> ho2db x hh (dvar dx)) ->
+          ho2db (R x) (s H) DR) ->
+       ho2db (hlam R) H (dlam DR) *)
+  pi R\(pi lf_1\lfhas lf_1 hterm => lfhas (R lf_1) hterm) =>
+    pi H\lfhas H nat =>
+      pi DR\lfhas DR dterm =>
+        pi lf_1\(pi x\lfhas x hterm =>
+                   pi lf_2\(pi hh\lfhas hh nat =>
+                              pi dx\lfhas dx nat =>
+                                pi lf_3\lfhas lf_3 (add H dx hh) =>
+                                  lfhas (lf_2 hh dx lf_3)
+                                    (ho2db x hh (dvar dx))) =>
+                     lfhas (lf_1 x lf_2) (ho2db (R x) (s H) DR)) =>
+          lfhas (ho2db/lam R H DR lf_1) (ho2db (hlam R) H (dlam DR)).
+end.
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Theorem member_prune : 
+forall E L, (nabla x, member (E x) L -&gt; (exists F, E = y\F)).</b>
+</pre>
+<a name="3"></a>
+<pre>
+
+============================
+ forall E L, (nabla x, member (E x) L -> (exists F, E = y\F))
+
+member_prune < <b>induction on 1.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+============================
+ forall E L, (nabla x, member (E x) L @ -> (exists F, E = y\F))
+
+member_prune < <b>intros.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+Variables: E L
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H1 : member (E n1) L @
+============================
+ exists F, E = y\F
+
+member_prune < <b>case H1.</b>
+</pre>
+<a name="6"></a>
+<pre>
+Subgoal 1:
+
+Variables: L3 L2
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+============================
+ exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune < <b>search.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 2:
+
+Variables: E L3 L2
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H2 : member (E n1) L3 *
+============================
+ exists F, E = y\F
+
+member_prune < <b>apply IH to H2.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+Variables: L3 L2 F
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H2 : member F L3 *
+============================
+ exists F1, z1\F = y\F1
+
+member_prune < <b>search.</b>
+Proof completed.
+</pre>
+<a name="9"></a>
+<pre class="code">
+Abella < <b>Theorem member_prune3 : 
+forall E L, (nabla x, member (E x) L -&gt; (exists F, E = y\F)).</b>
+</pre>
+<a name="10"></a>
+<pre>
+
+============================
+ forall E L, (nabla x, member (E x) L -> (exists F, E = y\F))
+
+member_prune3 < <b>induction on 1.</b>
+</pre>
+<a name="11"></a>
+<pre>
+
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+============================
+ forall E L, (nabla x, member (E x) L @ -> (exists F, E = y\F))
+
+member_prune3 < <b>intros.</b>
+</pre>
+<a name="12"></a>
+<pre>
+
+Variables: E L
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H1 : member (E n1) L @
+============================
+ exists F, E = y\F
+
+member_prune3 < <b>case H1.</b>
+</pre>
+<a name="13"></a>
+<pre>
+Subgoal 1:
+
+Variables: L3 L2
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+============================
+ exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune3 < <b>search.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 2:
+
+Variables: E L3 L2
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H2 : member (E n1) L3 *
+============================
+ exists F, E = y\F
+
+member_prune3 < <b>apply IH to H2.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 2:
+
+Variables: L3 L2 F
+IH : forall E L, (nabla x, member (E x) L * -> (exists F, E = y\F))
+H2 : member F L3 *
+============================
+ exists F1, z1\F = y\F1
+
+member_prune3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="16"></a>
+<pre class="code">
+Abella < <b>Define le : lfobj -> lfobj -> prop by 
+le X X;
+le X (s Y) := le X Y.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Abella < <b>Theorem le_decr : 
+forall X Y, &lt;X:nat&gt; -&gt; &lt;Y:nat&gt; -&gt; le (s X) Y -&gt; le X Y.</b>
+</pre>
+<a name="18"></a>
+<pre>
+
+============================
+ forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y -> le X Y
+
+le_decr < <b>induction on 3.</b>
+</pre>
+<a name="19"></a>
+<pre>
+
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+============================
+ forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y @ -> le X Y
+
+le_decr < <b>intros.</b>
+</pre>
+<a name="20"></a>
+<pre>
+
+Variables: X Y
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+H1 : &lt;X:nat&gt;
+H2 : &lt;Y:nat&gt;
+H3 : le (s X) Y @
+============================
+ le X Y
+
+le_decr < <b>case H3.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 1:
+
+Variables: X
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+H1 : &lt;X:nat&gt;
+H2 : &lt;s X:nat&gt;
+============================
+ le X (s X)
+
+Subgoal 2 is:
+ le X (s Y1)
+
+le_decr < <b>search.</b>
+</pre>
+<a name="22"></a>
+<pre>
+Subgoal 2:
+
+Variables: X Y1
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+H1 : &lt;X:nat&gt;
+H2 : &lt;s Y1:nat&gt;
+H4 : le (s X) Y1 *
+============================
+ le X (s Y1)
+
+le_decr < <b>case H2.</b>
+</pre>
+<a name="23"></a>
+<pre>
+Subgoal 2:
+
+Variables: X Y1
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+H1 : &lt;X:nat&gt;
+H4 : le (s X) Y1 *
+H5 : &lt;Y1:nat&gt;
+============================
+ le X (s Y1)
+
+le_decr < <b>apply IH to _ _ H4.</b>
+</pre>
+<a name="24"></a>
+<pre>
+Subgoal 2:
+
+Variables: X Y1
+IH : forall X Y, &lt;X:nat&gt; -> &lt;Y:nat&gt; -> le (s X) Y * -> le X Y
+H1 : &lt;X:nat&gt;
+H4 : le (s X) Y1 *
+H5 : &lt;Y1:nat&gt;
+H6 : le X Y1
+============================
+ le X (s Y1)
+
+le_decr < <b>search.</b>
+Proof completed.
+</pre>
+<a name="25"></a>
+<pre class="code">
+Abella < <b>Theorem le_absurd : 
+forall X, &lt;X:nat&gt; -&gt; ~ le (s X) X.</b>
+</pre>
+<a name="26"></a>
+<pre>
+
+============================
+ forall X, &lt;X:nat&gt; -> ~ le (s X) X
+
+le_absurd < <b>induction on 1.</b>
+</pre>
+<a name="27"></a>
+<pre>
+
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+============================
+ forall X, &lt;X:nat&gt;@ -> ~ le (s X) X
+
+le_absurd < <b>intros.</b>
+</pre>
+<a name="28"></a>
+<pre>
+
+Variables: X
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+H1 : &lt;X:nat&gt;@
+H2 : le (s X) X
+============================
+ false
+
+le_absurd < <b>case H1.</b>
+</pre>
+<a name="29"></a>
+<pre>
+Subgoal 1:
+
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+H2 : le (s z) z
+============================
+ false
+
+Subgoal 2 is:
+ false
+
+le_absurd < <b>case H2.</b>
+</pre>
+<a name="30"></a>
+<pre>
+Subgoal 2:
+
+Variables: lf_1
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+H2 : le (s (s lf_1)) (s lf_1)
+H3 : &lt;lf_1:nat&gt;*
+============================
+ false
+
+le_absurd < <b>case H2.</b>
+</pre>
+<a name="31"></a>
+<pre>
+Subgoal 2:
+
+Variables: lf_1
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+H3 : &lt;lf_1:nat&gt;*
+H4 : le (s (s lf_1)) lf_1
+============================
+ false
+
+le_absurd < <b>apply le_decr to _ _ H4.</b>
+</pre>
+<a name="32"></a>
+<pre>
+Subgoal 2:
+
+Variables: lf_1
+IH : forall X, &lt;X:nat&gt;* -> ~ le (s X) X
+H3 : &lt;lf_1:nat&gt;*
+H4 : le (s (s lf_1)) lf_1
+H5 : le (s lf_1) lf_1
+============================
+ false
+
+le_absurd < <b>apply IH to H3 H5.</b>
+Proof completed.
+</pre>
+<a name="33"></a>
+<pre class="code">
+Abella < <b>Theorem add_le : 
+forall A B C P, &lt;A:nat&gt; -&gt; &lt;B:nat&gt; -&gt; &lt;C:nat&gt; -&gt; &lt;P:add A B C&gt; -&gt; le B C.</b>
+</pre>
+<a name="34"></a>
+<pre>
+
+============================
+ forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt; -> le B C
+
+add_le < <b>induction on 4.</b>
+</pre>
+<a name="35"></a>
+<pre>
+
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+============================
+ forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;@ -> le B C
+
+add_le < <b>intros.</b>
+</pre>
+<a name="36"></a>
+<pre>
+
+Variables: A B C P
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+H1 : &lt;A:nat&gt;
+H2 : &lt;B:nat&gt;
+H3 : &lt;C:nat&gt;
+H4 : &lt;P:add A B C&gt;@
+============================
+ le B C
+
+add_le < <b>case H4.</b>
+</pre>
+<a name="37"></a>
+<pre>
+Subgoal 1:
+
+Variables: C
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+H1 : &lt;z:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;C:nat&gt;
+H5 : &lt;C:nat&gt;*
+============================
+ le C C
+
+Subgoal 2 is:
+ le B (s C1)
+
+add_le < <b>search.</b>
+</pre>
+<a name="38"></a>
+<pre>
+Subgoal 2:
+
+Variables: B C1 A1 lf_1
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B:nat&gt;
+H3 : &lt;s C1:nat&gt;
+H5 : &lt;A1:nat&gt;*
+H6 : &lt;B:nat&gt;*
+H7 : &lt;C1:nat&gt;*
+H8 : &lt;lf_1:add A1 B C1&gt;*
+============================
+ le B (s C1)
+
+add_le < <b>case H3.</b>
+</pre>
+<a name="39"></a>
+<pre>
+Subgoal 2:
+
+Variables: B C1 A1 lf_1
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B:nat&gt;
+H5 : &lt;A1:nat&gt;*
+H6 : &lt;B:nat&gt;*
+H7 : &lt;C1:nat&gt;*
+H8 : &lt;lf_1:add A1 B C1&gt;*
+H9 : &lt;C1:nat&gt;
+============================
+ le B (s C1)
+
+add_le < <b>apply IH to _ _ _ H8.</b>
+</pre>
+<a name="40"></a>
+<pre>
+Subgoal 2:
+
+Variables: B C1 A1 lf_1
+IH : forall A B C P, &lt;A:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A B C&gt;* ->
+       le B C
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B:nat&gt;
+H5 : &lt;A1:nat&gt;*
+H6 : &lt;B:nat&gt;*
+H7 : &lt;C1:nat&gt;*
+H8 : &lt;lf_1:add A1 B C1&gt;*
+H9 : &lt;C1:nat&gt;
+H10 : le B C1
+============================
+ le B (s C1)
+
+add_le < <b>search.</b>
+Proof completed.
+</pre>
+<a name="41"></a>
+<pre class="code">
+Abella < <b>Theorem add_absurd : 
+forall A C P, &lt;A:nat&gt; -&gt; &lt;C:nat&gt; -&gt; ~ &lt;P:add A (s C) C&gt;.</b>
+</pre>
+<a name="42"></a>
+<pre>
+
+============================
+ forall A C P, &lt;A:nat&gt; -> &lt;C:nat&gt; -> ~ &lt;P:add A (s C) C&gt;
+
+add_absurd < <b>intros.</b>
+</pre>
+<a name="43"></a>
+<pre>
+
+Variables: A C P
+H1 : &lt;A:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;P:add A (s C) C&gt;
+============================
+ false
+
+add_absurd < <b>apply add_le to _ _ _ H3.</b>
+</pre>
+<a name="44"></a>
+<pre>
+
+Variables: A C P
+H1 : &lt;A:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;P:add A (s C) C&gt;
+H4 : le (s C) C
+============================
+ false
+
+add_absurd < <b>apply le_absurd to _ H4.</b>
+Proof completed.
+</pre>
+<a name="45"></a>
+<pre class="code">
+Abella < <b>Theorem add_zero : 
+forall A C P, &lt;A:nat&gt; -&gt; &lt;C:nat&gt; -&gt; &lt;P:add A C C&gt; -&gt; A = z.</b>
+</pre>
+<a name="46"></a>
+<pre>
+
+============================
+ forall A C P, &lt;A:nat&gt; -> &lt;C:nat&gt; -> &lt;P:add A C C&gt; -> A = z
+
+add_zero < <b>intros.</b>
+</pre>
+<a name="47"></a>
+<pre>
+
+Variables: A C P
+H1 : &lt;A:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;P:add A C C&gt;
+============================
+ A = z
+
+add_zero < <b>case H3.</b>
+</pre>
+<a name="48"></a>
+<pre>
+Subgoal 1:
+
+Variables: C
+H1 : &lt;z:nat&gt;
+H2 : &lt;C:nat&gt;
+H4 : &lt;C:nat&gt;
+============================
+ z = z
+
+Subgoal 2 is:
+ s A1 = z
+
+add_zero < <b>search.</b>
+</pre>
+<a name="49"></a>
+<pre>
+Subgoal 2:
+
+Variables: C1 A1 lf_1
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;s C1:nat&gt;
+H4 : &lt;A1:nat&gt;
+H5 : &lt;s C1:nat&gt;
+H6 : &lt;C1:nat&gt;
+H7 : &lt;lf_1:add A1 (s C1) C1&gt;
+============================
+ s A1 = z
+
+add_zero < <b>case H2.</b>
+</pre>
+<a name="50"></a>
+<pre>
+Subgoal 2:
+
+Variables: C1 A1 lf_1
+H1 : &lt;s A1:nat&gt;
+H4 : &lt;A1:nat&gt;
+H5 : &lt;s C1:nat&gt;
+H6 : &lt;C1:nat&gt;
+H7 : &lt;lf_1:add A1 (s C1) C1&gt;
+H8 : &lt;C1:nat&gt;
+============================
+ s A1 = z
+
+add_zero < <b>apply add_absurd to _ _ H7.</b>
+Proof completed.
+</pre>
+<a name="51"></a>
+<pre class="code">
+Abella < <b>Theorem add_det1 : 
+forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -&gt; &lt;A2:nat&gt; -&gt; &lt;B:nat&gt; -&gt; &lt;C:nat&gt; -&gt;
+  &lt;P1:add A1 B C&gt; -&gt; &lt;P2:add A2 B C&gt; -&gt; A1 = A2.</b>
+</pre>
+<a name="52"></a>
+<pre>
+
+============================
+ forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+   &lt;P1:add A1 B C&gt; -> &lt;P2:add A2 B C&gt; -> A1 = A2
+
+add_det1 < <b>induction on 5.</b>
+</pre>
+<a name="53"></a>
+<pre>
+
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+============================
+ forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+   &lt;P1:add A1 B C&gt;@ -> &lt;P2:add A2 B C&gt; -> A1 = A2
+
+add_det1 < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre>
+
+Variables: A1 A2 B C P1 P2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;A1:nat&gt;
+H2 : &lt;A2:nat&gt;
+H3 : &lt;B:nat&gt;
+H4 : &lt;C:nat&gt;
+H5 : &lt;P1:add A1 B C&gt;@
+H6 : &lt;P2:add A2 B C&gt;
+============================
+ A1 = A2
+
+add_det1 < <b>case H5.</b>
+</pre>
+<a name="55"></a>
+<pre>
+Subgoal 1:
+
+Variables: A2 C P2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;z:nat&gt;
+H2 : &lt;A2:nat&gt;
+H3 : &lt;C:nat&gt;
+H4 : &lt;C:nat&gt;
+H6 : &lt;P2:add A2 C C&gt;
+H7 : &lt;C:nat&gt;*
+============================
+ z = A2
+
+Subgoal 2 is:
+ s A = A2
+
+add_det1 < <b>apply add_zero to _ _ H6.</b>
+</pre>
+<a name="56"></a>
+<pre>
+Subgoal 1:
+
+Variables: C P2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;z:nat&gt;
+H2 : &lt;z:nat&gt;
+H3 : &lt;C:nat&gt;
+H4 : &lt;C:nat&gt;
+H6 : &lt;P2:add z C C&gt;
+H7 : &lt;C:nat&gt;*
+============================
+ z = z
+
+Subgoal 2 is:
+ s A = A2
+
+add_det1 < <b>search.</b>
+</pre>
+<a name="57"></a>
+<pre>
+Subgoal 2:
+
+Variables: A2 B P2 C1 A lf_1
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A:nat&gt;
+H2 : &lt;A2:nat&gt;
+H3 : &lt;B:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H6 : &lt;P2:add A2 B (s C1)&gt;
+H7 : &lt;A:nat&gt;*
+H8 : &lt;B:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A B C1&gt;*
+============================
+ s A = A2
+
+add_det1 < <b>case H6.</b>
+</pre>
+<a name="58"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: C1 A lf_1
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A:nat&gt;
+H2 : &lt;z:nat&gt;
+H3 : &lt;s C1:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H7 : &lt;A:nat&gt;*
+H8 : &lt;s C1:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A (s C1) C1&gt;*
+H11 : &lt;s C1:nat&gt;
+============================
+ s A = z
+
+Subgoal 2.2 is:
+ s A = s A3
+
+add_det1 < <b>case H4.</b>
+</pre>
+<a name="59"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: C1 A lf_1
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A:nat&gt;
+H2 : &lt;z:nat&gt;
+H3 : &lt;s C1:nat&gt;
+H7 : &lt;A:nat&gt;*
+H8 : &lt;s C1:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A (s C1) C1&gt;*
+H11 : &lt;s C1:nat&gt;
+H12 : &lt;C1:nat&gt;
+============================
+ s A = z
+
+Subgoal 2.2 is:
+ s A = s A3
+
+add_det1 < <b>apply add_absurd to _ _ H10.</b>
+</pre>
+<a name="60"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: B C1 A lf_1 A3 lf_2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A:nat&gt;
+H2 : &lt;s A3:nat&gt;
+H3 : &lt;B:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H7 : &lt;A:nat&gt;*
+H8 : &lt;B:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A B C1&gt;*
+H11 : &lt;A3:nat&gt;
+H12 : &lt;B:nat&gt;
+H13 : &lt;C1:nat&gt;
+H14 : &lt;lf_2:add A3 B C1&gt;
+============================
+ s A = s A3
+
+add_det1 < <b>case H4.</b>
+</pre>
+<a name="61"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: B C1 A lf_1 A3 lf_2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A:nat&gt;
+H2 : &lt;s A3:nat&gt;
+H3 : &lt;B:nat&gt;
+H7 : &lt;A:nat&gt;*
+H8 : &lt;B:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A B C1&gt;*
+H11 : &lt;A3:nat&gt;
+H12 : &lt;B:nat&gt;
+H13 : &lt;C1:nat&gt;
+H14 : &lt;lf_2:add A3 B C1&gt;
+H15 : &lt;C1:nat&gt;
+============================
+ s A = s A3
+
+add_det1 < <b>apply IH to _ _ _ _ H10 H14.</b>
+</pre>
+<a name="62"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: B C1 lf_1 A3 lf_2
+IH : forall A1 A2 B C P1 P2, &lt;A1:nat&gt; -> &lt;A2:nat&gt; -> &lt;B:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A1 B C&gt;* -> &lt;P2:add A2 B C&gt; -> A1 = A2
+H1 : &lt;s A3:nat&gt;
+H2 : &lt;s A3:nat&gt;
+H3 : &lt;B:nat&gt;
+H7 : &lt;A3:nat&gt;*
+H8 : &lt;B:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A3 B C1&gt;*
+H11 : &lt;A3:nat&gt;
+H12 : &lt;B:nat&gt;
+H13 : &lt;C1:nat&gt;
+H14 : &lt;lf_2:add A3 B C1&gt;
+H15 : &lt;C1:nat&gt;
+============================
+ s A3 = s A3
+
+add_det1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="63"></a>
+<pre class="code">
+Abella < <b>Theorem add_det2 : 
+forall A B1 B2 C P1 P2, &lt;A:nat&gt; -&gt; &lt;B1:nat&gt; -&gt; &lt;B2:nat&gt; -&gt; &lt;C:nat&gt; -&gt;
+  &lt;P1:add A B1 C&gt; -&gt; &lt;P2:add A B2 C&gt; -&gt; B1 = B2.</b>
+</pre>
+<a name="64"></a>
+<pre>
+
+============================
+ forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+   &lt;P1:add A B1 C&gt; -> &lt;P2:add A B2 C&gt; -> B1 = B2
+
+add_det2 < <b>induction on 5.</b>
+</pre>
+<a name="65"></a>
+<pre>
+
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+============================
+ forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+   &lt;P1:add A B1 C&gt;@ -> &lt;P2:add A B2 C&gt; -> B1 = B2
+
+add_det2 < <b>intros.</b>
+</pre>
+<a name="66"></a>
+<pre>
+
+Variables: A B1 B2 C P1 P2
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;A:nat&gt;
+H2 : &lt;B1:nat&gt;
+H3 : &lt;B2:nat&gt;
+H4 : &lt;C:nat&gt;
+H5 : &lt;P1:add A B1 C&gt;@
+H6 : &lt;P2:add A B2 C&gt;
+============================
+ B1 = B2
+
+add_det2 < <b>case H5.</b>
+</pre>
+<a name="67"></a>
+<pre>
+Subgoal 1:
+
+Variables: B2 C P2
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;z:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;B2:nat&gt;
+H4 : &lt;C:nat&gt;
+H6 : &lt;P2:add z B2 C&gt;
+H7 : &lt;C:nat&gt;*
+============================
+ C = B2
+
+Subgoal 2 is:
+ B1 = B2
+
+add_det2 < <b>case H6.</b>
+</pre>
+<a name="68"></a>
+<pre>
+Subgoal 1:
+
+Variables: C
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;z:nat&gt;
+H2 : &lt;C:nat&gt;
+H3 : &lt;C:nat&gt;
+H4 : &lt;C:nat&gt;
+H7 : &lt;C:nat&gt;*
+H8 : &lt;C:nat&gt;
+============================
+ C = C
+
+Subgoal 2 is:
+ B1 = B2
+
+add_det2 < <b>search.</b>
+</pre>
+<a name="69"></a>
+<pre>
+Subgoal 2:
+
+Variables: B1 B2 P2 C1 A1 lf_1
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B1:nat&gt;
+H3 : &lt;B2:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H6 : &lt;P2:add (s A1) B2 (s C1)&gt;
+H7 : &lt;A1:nat&gt;*
+H8 : &lt;B1:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A1 B1 C1&gt;*
+============================
+ B1 = B2
+
+add_det2 < <b>case H6.</b>
+</pre>
+<a name="70"></a>
+<pre>
+Subgoal 2:
+
+Variables: B1 B2 C1 A1 lf_1 lf_2
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B1:nat&gt;
+H3 : &lt;B2:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H7 : &lt;A1:nat&gt;*
+H8 : &lt;B1:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A1 B1 C1&gt;*
+H11 : &lt;A1:nat&gt;
+H12 : &lt;B2:nat&gt;
+H13 : &lt;C1:nat&gt;
+H14 : &lt;lf_2:add A1 B2 C1&gt;
+============================
+ B1 = B2
+
+add_det2 < <b>apply IH to _ _ _ _ H10 H14.</b>
+</pre>
+<a name="71"></a>
+<pre>
+Subgoal 2:
+
+Variables: B2 C1 A1 lf_1 lf_2
+IH : forall A B1 B2 C P1 P2, &lt;A:nat&gt; -> &lt;B1:nat&gt; -> &lt;B2:nat&gt; -> &lt;C:nat&gt; ->
+       &lt;P1:add A B1 C&gt;* -> &lt;P2:add A B2 C&gt; -> B1 = B2
+H1 : &lt;s A1:nat&gt;
+H2 : &lt;B2:nat&gt;
+H3 : &lt;B2:nat&gt;
+H4 : &lt;s C1:nat&gt;
+H7 : &lt;A1:nat&gt;*
+H8 : &lt;B2:nat&gt;*
+H9 : &lt;C1:nat&gt;*
+H10 : &lt;lf_1:add A1 B2 C1&gt;*
+H11 : &lt;A1:nat&gt;
+H12 : &lt;B2:nat&gt;
+H13 : &lt;C1:nat&gt;
+H14 : &lt;lf_2:add A1 B2 C1&gt;
+============================
+ B2 = B2
+
+add_det2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="72"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> lfobj -> prop by 
+ctx nil z;
+nabla x p, ctx (&lt;p:{hh:nat} {dx:nat} add H dx hh -&gt; ho2db x hh (dvar dx)&gt; :: &lt;x:hterm&gt; :: L) (s H) := ctx L H.</b>
+</pre>
+<a name="73"></a>
+<pre class="code">
+Abella < <b>Define name : lfobj -> prop by 
+nabla x, name x.</b>
+</pre>
+<a name="74"></a>
+<pre class="code">
+Abella < <b>Define fresh : lfobj -> lfobj -> prop by 
+nabla x, fresh x O.</b>
+</pre>
+<a name="75"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_nat : 
+forall L H, ctx L H -&gt; &lt;H:nat&gt;.</b>
+</pre>
+<a name="76"></a>
+<pre>
+
+============================
+ forall L H, ctx L H -> &lt;H:nat&gt;
+
+ctx_nat < <b>induction on 1.</b>
+</pre>
+<a name="77"></a>
+<pre>
+
+IH : forall L H, ctx L H * -> &lt;H:nat&gt;
+============================
+ forall L H, ctx L H @ -> &lt;H:nat&gt;
+
+ctx_nat < <b>intros.</b>
+</pre>
+<a name="78"></a>
+<pre>
+
+Variables: L H
+IH : forall L H, ctx L H * -> &lt;H:nat&gt;
+H1 : ctx L H @
+============================
+ &lt;H:nat&gt;
+
+ctx_nat < <b>case H1.</b>
+</pre>
+<a name="79"></a>
+<pre>
+Subgoal 1:
+
+IH : forall L H, ctx L H * -> &lt;H:nat&gt;
+============================
+ &lt;z:nat&gt;
+
+Subgoal 2 is:
+ &lt;s H1:nat&gt;
+
+ctx_nat < <b>search.</b>
+</pre>
+<a name="80"></a>
+<pre>
+Subgoal 2:
+
+Variables: H1 L1
+IH : forall L H, ctx L H * -> &lt;H:nat&gt;
+H2 : ctx L1 H1 *
+============================
+ &lt;s H1:nat&gt;
+
+ctx_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="81"></a>
+<pre>
+Subgoal 2:
+
+Variables: H1 L1
+IH : forall L H, ctx L H * -> &lt;H:nat&gt;
+H2 : ctx L1 H1 *
+H3 : &lt;H1:nat&gt;
+============================
+ &lt;s H1:nat&gt;
+
+ctx_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="82"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_inv : 
+forall E L H, ctx L H -&gt; member E L -&gt; (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+  (exists X P HX, E =
+     &lt;P:{hh:nat} {dx:nat} add HX dx hh -&gt; ho2db X hh (dvar dx)&gt; /\
+     &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H).</b>
+</pre>
+<a name="83"></a>
+<pre>
+
+============================
+ forall E L H, ctx L H -> member E L ->
+   (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+
+ctx_inv < <b>induction on 1.</b>
+</pre>
+<a name="84"></a>
+<pre>
+
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ forall E L H, ctx L H @ -> member E L ->
+   (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+
+ctx_inv < <b>intros.</b>
+</pre>
+<a name="85"></a>
+<pre>
+
+Variables: E L H
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx L H @
+H2 : member E L
+============================
+ (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+
+ctx_inv < <b>case H1 (keep).</b>
+</pre>
+<a name="86"></a>
+<pre>
+Subgoal 1:
+
+Variables: E
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx nil z @
+H2 : member E nil
+============================
+ (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X z /\ le (s HX) z)
+
+Subgoal 2 is:
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>case H2.</b>
+</pre>
+<a name="87"></a>
+<pre>
+Subgoal 2:
+
+Variables: E H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H2 : member (E n1 n2)
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+H3 : ctx L1 H1 *
+============================
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>case H2.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+============================
+ (exists X, &lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; =
+    &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX,
+      &lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+Subgoal 2.2 is:
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>apply ctx_nat to H3.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H4 : &lt;H1:nat&gt;
+============================
+ (exists X, &lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; =
+    &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX,
+      &lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+Subgoal 2.2 is:
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>search.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: E H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H4 : member (E n1 n2) (&lt;n1:hterm&gt; :: L1)
+============================
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>case H4.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+============================
+ (exists X, &lt;n1:hterm&gt; = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, &lt;n1:hterm&gt; =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+Subgoal 2.2.2 is:
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>left.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+============================
+ exists X, &lt;n1:hterm&gt; = &lt;X:hterm&gt; /\ name X
+
+Subgoal 2.2.2 is:
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>search.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: E H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member (E n1 n2) L1
+============================
+ (exists X, E n1 n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, E n1 n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>apply member_prune to H5.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: H1 L1 F
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member (F n2) L1
+============================
+ (exists X, F n2 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, F n2 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>apply member_prune3 to H5.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: H1 L1 F1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member F1 L1
+============================
+ (exists X, F1 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, F1 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: H1 L1 F1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member F1 L1
+H6 : (exists X, F1 = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, F1 =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H1 /\ le (s HX) H1)
+============================
+ (exists X, F1 = &lt;X:hterm&gt; /\ name X) \/
+   (exists X P HX, F1 =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X (s H1) /\ le (s HX) (s H1))
+
+ctx_inv < <b>case H6.</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 2.2.2.1:
+
+Variables: H1 L1 X
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member &lt;X:hterm&gt; L1
+H7 : name X
+============================
+ (exists X1, &lt;X:hterm&gt; = &lt;X1:hterm&gt; /\ name X1) \/
+   (exists X1 P HX, &lt;X:hterm&gt; =
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; /\
+      &lt;HX:nat&gt; /\ fresh X1 (s H1) /\ le (s HX) (s H1))
+
+Subgoal 2.2.2.2 is:
+ (exists X1, &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; =
+    &lt;X1:hterm&gt; /\ name X1) \/
+   (exists X1 P1 HX1,
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; =
+      &lt;P1:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)&gt; /\
+      &lt;HX1:nat&gt; /\ fresh X1 (s H1) /\ le (s HX1) (s H1))
+
+ctx_inv < <b>search.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 2.2.2.2:
+
+Variables: H1 L1 X P HX
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add H1 dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1)
+       (s H1) @
+H3 : ctx L1 H1 *
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L1
+H7 : &lt;HX:nat&gt;
+H8 : fresh X H1
+H9 : le (s HX) H1
+============================
+ (exists X1, &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; =
+    &lt;X1:hterm&gt; /\ name X1) \/
+   (exists X1 P1 HX1,
+      &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; =
+      &lt;P1:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)&gt; /\
+      &lt;HX1:nat&gt; /\ fresh X1 (s H1) /\ le (s HX1) (s H1))
+
+ctx_inv < <b>case H8.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 2.2.2.2:
+
+Variables: L1 P HX O
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X, E = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, E =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+H1 : ctx
+       (&lt;n2:{hh:nat} {dx:nat} add O dx hh -> ho2db n1 hh (dvar dx)&gt; ::
+          &lt;n1:hterm&gt; :: L1 n3)
+       (s O) @
+H3 : ctx (L1 n3) O *
+H5 : member
+       &lt;P n3:{hh:nat} {dx:nat} add (HX n3) dx hh -> ho2db n3 hh (dvar dx)&gt;
+       (L1 n3)
+H7 : &lt;HX n3:nat&gt;
+H9 : le (s (HX n3)) O
+============================
+ (exists X1,
+    &lt;P n3:{hh:nat} {dx:nat} add (HX n3) dx hh -> ho2db n3 hh (dvar dx)&gt; =
+    &lt;X1:hterm&gt; /\ name X1) \/
+   (exists X1 P1 HX1,
+      &lt;P n3:{hh:nat} {dx:nat} add (HX n3) dx hh -> ho2db n3 hh (dvar dx)&gt; =
+      &lt;P1:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)&gt; /\
+      &lt;HX1:nat&gt; /\ fresh X1 (s O) /\ le (s HX1) (s O))
+
+ctx_inv < <b>search.</b>
+Proof completed.
+</pre>
+<a name="100"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_unique1 : 
+forall L H X P1 P2 H1 H2, ctx L H -&gt;
+  member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -&gt; ho2db X hh (dvar dx)&gt; L -&gt;
+  member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -&gt; ho2db X hh (dvar dx)&gt; L -&gt;
+  H1 = H2 /\ P1 = P2.</b>
+</pre>
+<a name="101"></a>
+<pre>
+
+============================
+ forall L H X P1 P2 H1 H2, ctx L H ->
+   member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+   member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+   H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>induction on 2.</b>
+</pre>
+<a name="102"></a>
+<pre>
+
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+============================
+ forall L H X P1 P2 H1 H2, ctx L H ->
+   member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L @ ->
+   member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+   H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>intros.</b>
+</pre>
+<a name="103"></a>
+<pre>
+
+Variables: L H X P1 P2 H1 H2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx L H
+H2 : member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L @
+H3 : member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L
+============================
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H2.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 1:
+
+Variables: H X P1 P2 H1 H2 L1
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; :: L1)
+       H
+H3 : member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt;
+       (&lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; :: L1)
+============================
+ H1 = H2 /\ P1 = P2
+
+Subgoal 2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H3.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: H X P1 H1 L1
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; :: L1)
+       H
+============================
+ H1 = H1 /\ P1 = z1\z2\z3\P1 z1 z2 z3
+
+Subgoal 1.2 is:
+ H1 = H2 /\ P1 = P2
+
+Subgoal 2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>search.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: H X P1 P2 H1 H2 L1
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; :: L1)
+       H
+H4 : member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L1
+============================
+ H1 = H2 /\ P1 = P2
+
+Subgoal 2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H1.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: P2 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H4 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db n1 hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H5 : ctx L2 H3
+============================
+ H3 = H2 n1 n2 /\ z3\z4\z5\n2 z3 z4 z5 = P2 n1 n2
+
+Subgoal 2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H4.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: P2 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H5 : ctx L2 H3
+H6 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db n1 hh (dvar dx)&gt;
+       L2
+============================
+ H3 = H2 n1 n2 /\ z3\z4\z5\n2 z3 z4 z5 = P2 n1 n2
+
+Subgoal 2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>apply member_prune to H6.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 2:
+
+Variables: H X P1 P2 H1 H2 L1 B
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (B :: L1) H
+H3 : member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt;
+       (B :: L1)
+H4 : member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L1 *
+============================
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H3.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: H X P1 P2 H1 H2 L1
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (&lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; :: L1)
+       H
+H4 : member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L1 *
+============================
+ H1 = H2 /\ P1 = P2
+
+Subgoal 2.2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H1.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: P1 H1 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H4 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (H1 n1 n2) dx hh ->
+          ho2db n1 hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2) *
+H5 : ctx L2 H3
+============================
+ H1 n1 n2 = H3 /\ P1 n1 n2 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H4.</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: P1 H1 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H5 : ctx L2 H3
+H6 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (H1 n1 n2) dx hh ->
+          ho2db n1 hh (dvar dx)&gt;
+       L2 *
+============================
+ H1 n1 n2 = H3 /\ P1 n1 n2 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>apply member_prune to H6.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: H X P1 P2 H1 H2 L1 B
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H1 : ctx (B :: L1) H
+H4 : member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L1 *
+H5 : member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L1
+============================
+ H1 = H2 /\ P1 = P2
+
+ctx_unique1 < <b>case H1.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X P1 P2 H1 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H4 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (H1 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2) *
+H5 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H6 : ctx L2 H3
+============================
+ H1 n1 n2 = H2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique1 < <b>case H4.</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X P1 P2 H1 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H5 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H6 : ctx L2 H3
+H7 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (H1 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       L2 *
+============================
+ H1 n1 n2 = H2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique1 < <b>case H5.</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X P1 P2 H1 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H6 : ctx L2 H3
+H7 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (H1 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       L2 *
+H8 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       L2
+============================
+ H1 n1 n2 = H2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique1 < <b>apply IH to H6 H7 H8.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X P2 H2 H3 L2
+IH : forall L H X P1 P2 H1 H2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add H1 dx hh -> ho2db X hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add H2 dx hh -> ho2db X hh (dvar dx)&gt; L ->
+       H1 = H2 /\ P1 = P2
+H6 : ctx L2 H3
+H7 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       L2 *
+H8 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (H2 n1 n2) dx hh ->
+          ho2db (X n1 n2) hh (dvar dx)&gt;
+       L2
+============================
+ H2 n1 n2 = H2 n1 n2 /\ z3\z4\z5\P2 n1 n2 z3 z4 z5 = P2 n1 n2
+
+ctx_unique1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="118"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_unique2 : 
+forall L H X1 X2 HX P1 P2, ctx L H -&gt;
+  member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -&gt; ho2db X1 hh (dvar dx)&gt; L -&gt;
+  member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -&gt; ho2db X2 hh (dvar dx)&gt; L -&gt;
+  X1 = X2 /\ P1 = P2.</b>
+</pre>
+<a name="119"></a>
+<pre>
+
+============================
+ forall L H X1 X2 HX P1 P2, ctx L H ->
+   member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L ->
+   member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+   X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>induction on 2.</b>
+</pre>
+<a name="120"></a>
+<pre>
+
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+============================
+ forall L H X1 X2 HX P1 P2, ctx L H ->
+   member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L @ ->
+   member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+   X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>intros.</b>
+</pre>
+<a name="121"></a>
+<pre>
+
+Variables: L H X1 X2 HX P1 P2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx L H
+H2 : member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L @
+H3 : member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L
+============================
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H2.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 1:
+
+Variables: H X1 X2 HX P1 P2 L1
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; :: L1)
+       H
+H3 : member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt;
+       (&lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; :: L1)
+============================
+ X1 = X2 /\ P1 = P2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H3.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: H X1 HX P1 L1
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; :: L1)
+       H
+============================
+ X1 = X1 /\ P1 = z1\z2\z3\P1 z1 z2 z3
+
+Subgoal 1.2 is:
+ X1 = X2 /\ P1 = P2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>search.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: H X1 X2 HX P1 P2 L1
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (&lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; :: L1)
+       H
+H4 : member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L1
+============================
+ X1 = X2 /\ P1 = P2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H1.</b>
+</pre>
+<a name="125"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: X2 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H4 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H5 : ctx L2 H1
+============================
+ n1 = X2 n1 n2 /\ z3\z4\z5\n2 z3 z4 z5 = P2 n1 n2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H4.</b>
+</pre>
+<a name="126"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: X2 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       L2
+============================
+ n1 = X2 n1 n2 /\ z3\z4\z5\n2 z3 z4 z5 = P2 n1 n2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>apply ctx_inv to H5 H6.</b>
+</pre>
+<a name="127"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: X2 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       L2
+H7 : (exists X,
+        &lt;P2 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+           ho2db (X2 n1 n2) hh (dvar dx)&gt; =
+        &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX,
+          &lt;P2 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+             ho2db (X2 n1 n2) hh (dvar dx)&gt; =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H1 /\ le (s HX) H1)
+============================
+ n1 = X2 n1 n2 /\ z3\z4\z5\n2 z3 z4 z5 = P2 n1 n2
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H7.</b>
+</pre>
+<a name="128"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: H1 L2 X P
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P n2 n1:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X n2 n1) hh (dvar dx)&gt;
+       L2
+H8 : &lt;H1:nat&gt;
+H9 : fresh (X n2 n1) H1
+H10 : le (s H1) H1
+============================
+ n1 = X n2 n1 /\ z3\z4\z5\n2 z3 z4 z5 = z3\z4\z5\P n2 n1 z3 z4 z5
+
+Subgoal 2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>apply le_absurd to _ H10.</b>
+</pre>
+<a name="129"></a>
+<pre>
+Subgoal 2:
+
+Variables: H X1 X2 HX P1 P2 L1 B
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (B :: L1) H
+H3 : member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt;
+       (B :: L1)
+H4 : member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L1 *
+============================
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H3.</b>
+</pre>
+<a name="130"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: H X1 X2 HX P1 P2 L1
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (&lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; :: L1)
+       H
+H4 : member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L1 *
+============================
+ X1 = X2 /\ P1 = P2
+
+Subgoal 2.2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H1.</b>
+</pre>
+<a name="131"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: X1 P1 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H4 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2) *
+H5 : ctx L2 H1
+============================
+ X1 n1 n2 = n1 /\ P1 n1 n2 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H4.</b>
+</pre>
+<a name="132"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: X1 P1 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       L2 *
+============================
+ X1 n1 n2 = n1 /\ P1 n1 n2 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>apply ctx_inv to H5 H6.</b>
+</pre>
+<a name="133"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: X1 P1 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       L2 *
+H7 : (exists X,
+        &lt;P1 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+           ho2db (X1 n1 n2) hh (dvar dx)&gt; =
+        &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX,
+          &lt;P1 n1 n2:{hh:nat} {dx:nat} add H1 dx hh ->
+             ho2db (X1 n1 n2) hh (dvar dx)&gt; =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H1 /\ le (s HX) H1)
+============================
+ X1 n1 n2 = n1 /\ P1 n1 n2 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H7.</b>
+</pre>
+<a name="134"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: H1 L2 X P
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : ctx L2 H1
+H6 : member
+       &lt;P n2 n1:{hh:nat} {dx:nat} add H1 dx hh ->
+          ho2db (X n2 n1) hh (dvar dx)&gt;
+       L2 *
+H8 : &lt;H1:nat&gt;
+H9 : fresh (X n2 n1) H1
+H10 : le (s H1) H1
+============================
+ X n2 n1 = n1 /\ z3\z4\z5\P n2 n1 z3 z4 z5 = z3\z4\z5\n2 z3 z4 z5
+
+Subgoal 2.2 is:
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>apply le_absurd to _ H10.</b>
+</pre>
+<a name="135"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: H X1 X2 HX P1 P2 L1 B
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H1 : ctx (B :: L1) H
+H4 : member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L1 *
+H5 : member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L1
+============================
+ X1 = X2 /\ P1 = P2
+
+ctx_unique2 < <b>case H1.</b>
+</pre>
+<a name="136"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X1 X2 HX P1 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H4 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2) *
+H5 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H6 : ctx L2 H1
+============================
+ X1 n1 n2 = X2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique2 < <b>case H4.</b>
+</pre>
+<a name="137"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X1 X2 HX P1 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H5 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       (&lt;n1:hterm&gt; :: L2)
+H6 : ctx L2 H1
+H7 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       L2 *
+============================
+ X1 n1 n2 = X2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique2 < <b>case H5.</b>
+</pre>
+<a name="138"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X1 X2 HX P1 P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H6 : ctx L2 H1
+H7 : member
+       &lt;P1 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X1 n1 n2) hh (dvar dx)&gt;
+       L2 *
+H8 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       L2
+============================
+ X1 n1 n2 = X2 n1 n2 /\ P1 n1 n2 = P2 n1 n2
+
+ctx_unique2 < <b>apply IH to _ H7 H8.</b>
+</pre>
+<a name="139"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X2 HX P2 H1 L2
+IH : forall L H X1 X2 HX P1 P2, ctx L H ->
+       member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X1 hh (dvar dx)&gt; L * ->
+       member &lt;P2:{hh:nat} {dx:nat} add HX dx hh -> ho2db X2 hh (dvar dx)&gt; L ->
+       X1 = X2 /\ P1 = P2
+H6 : ctx L2 H1
+H7 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       L2 *
+H8 : member
+       &lt;P2 n1 n2:{hh:nat} {dx:nat} add (HX n1 n2) dx hh ->
+          ho2db (X2 n1 n2) hh (dvar dx)&gt;
+       L2
+============================
+ X2 n1 n2 = X2 n1 n2 /\ z3\z4\z5\P2 n1 n2 z3 z4 z5 = P2 n1 n2
+
+ctx_unique2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="140"></a>
+<pre class="code">
+Abella < <b>Theorem nat_ignores_ctx : 
+forall L H N, ctx L H -&gt; &lt;L |- N:nat&gt; -&gt; &lt;N:nat&gt;.</b>
+</pre>
+<a name="141"></a>
+<pre>
+
+============================
+ forall L H N, ctx L H -> &lt;L |- N:nat&gt; -> &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>induction on 2.</b>
+</pre>
+<a name="142"></a>
+<pre>
+
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+============================
+ forall L H N, ctx L H -> &lt;L |- N:nat&gt;@ -> &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>intros.</b>
+</pre>
+<a name="143"></a>
+<pre>
+
+Variables: L H N
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H2 : &lt;L |- N:nat&gt;@
+============================
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>case H2.</b>
+</pre>
+<a name="144"></a>
+<pre>
+Subgoal 1:
+
+Variables: L H
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+============================
+ &lt;z:nat&gt;
+
+Subgoal 2 is:
+ &lt;s lf_1:nat&gt;
+
+Subgoal 3 is:
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>search.</b>
+</pre>
+<a name="145"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H lf_1
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L |- lf_1:nat&gt;*
+============================
+ &lt;s lf_1:nat&gt;
+
+Subgoal 3 is:
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="146"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H lf_1
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L |- lf_1:nat&gt;*
+H4 : &lt;lf_1:nat&gt;
+============================
+ &lt;s lf_1:nat&gt;
+
+Subgoal 3 is:
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>search.</b>
+</pre>
+<a name="147"></a>
+<pre>
+Subgoal 3:
+
+Variables: L H N F
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L, [F] |- N:nat&gt;*
+H4 : member F L
+============================
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>apply ctx_inv to H1 H4.</b>
+</pre>
+<a name="148"></a>
+<pre>
+Subgoal 3:
+
+Variables: L H N F
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L, [F] |- N:nat&gt;*
+H4 : member F L
+H5 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, F =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>case H5.</b>
+</pre>
+<a name="149"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: L H N X
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L, [X:hterm] |- N:nat&gt;*
+H4 : member &lt;X:hterm&gt; L
+H6 : name X
+============================
+ &lt;N:nat&gt;
+
+Subgoal 3.2 is:
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>case H3.</b>
+</pre>
+<a name="150"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L H N X P HX
+IH : forall L H N, ctx L H -> &lt;L |- N:nat&gt;* -> &lt;N:nat&gt;
+H1 : ctx L H
+H3 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- N:nat&gt;*
+H4 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H6 : &lt;HX:nat&gt;
+H7 : fresh X H
+H8 : le (s HX) H
+============================
+ &lt;N:nat&gt;
+
+nat_ignores_ctx < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="151"></a>
+<pre class="code">
+Abella < <b>Theorem add_ignores_ctx : 
+forall L H A B C P, ctx L H -&gt; &lt;L |- P:add A B C&gt; -&gt;
+  (exists Q, &lt;Q:add A B C&gt;).</b>
+</pre>
+<a name="152"></a>
+<pre>
+
+============================
+ forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt; ->
+   (exists Q, &lt;Q:add A B C&gt;)
+
+add_ignores_ctx < <b>induction on 2.</b>
+</pre>
+<a name="153"></a>
+<pre>
+
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+============================
+ forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;@ ->
+   (exists Q, &lt;Q:add A B C&gt;)
+
+add_ignores_ctx < <b>intros.</b>
+</pre>
+<a name="154"></a>
+<pre>
+
+Variables: L H A B C P
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H2 : &lt;L |- P:add A B C&gt;@
+============================
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>case H2.</b>
+</pre>
+<a name="155"></a>
+<pre>
+Subgoal 1:
+
+Variables: L H C
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- C:nat&gt;*
+============================
+ exists Q, &lt;Q:add z C C&gt;
+
+Subgoal 2 is:
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply nat_ignores_ctx to H1 H3.</b>
+</pre>
+<a name="156"></a>
+<pre>
+Subgoal 1:
+
+Variables: L H C
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- C:nat&gt;*
+H4 : &lt;C:nat&gt;
+============================
+ exists Q, &lt;Q:add z C C&gt;
+
+Subgoal 2 is:
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>search.</b>
+</pre>
+<a name="157"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H B C1 A1 lf_1
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- A1:nat&gt;*
+H4 : &lt;L |- B:nat&gt;*
+H5 : &lt;L |- C1:nat&gt;*
+H6 : &lt;L |- lf_1:add A1 B C1&gt;*
+============================
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply IH to H1 H6.</b>
+</pre>
+<a name="158"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H B C1 A1 lf_1 Q
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- A1:nat&gt;*
+H4 : &lt;L |- B:nat&gt;*
+H5 : &lt;L |- C1:nat&gt;*
+H6 : &lt;L |- lf_1:add A1 B C1&gt;*
+H7 : &lt;Q:add A1 B C1&gt;
+============================
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply nat_ignores_ctx to _ H3.</b>
+</pre>
+<a name="159"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H B C1 A1 lf_1 Q
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- A1:nat&gt;*
+H4 : &lt;L |- B:nat&gt;*
+H5 : &lt;L |- C1:nat&gt;*
+H6 : &lt;L |- lf_1:add A1 B C1&gt;*
+H7 : &lt;Q:add A1 B C1&gt;
+H8 : &lt;A1:nat&gt;
+============================
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply nat_ignores_ctx to _ H4.</b>
+</pre>
+<a name="160"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H B C1 A1 lf_1 Q
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- A1:nat&gt;*
+H4 : &lt;L |- B:nat&gt;*
+H5 : &lt;L |- C1:nat&gt;*
+H6 : &lt;L |- lf_1:add A1 B C1&gt;*
+H7 : &lt;Q:add A1 B C1&gt;
+H8 : &lt;A1:nat&gt;
+H9 : &lt;B:nat&gt;
+============================
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply nat_ignores_ctx to _ H5.</b>
+</pre>
+<a name="161"></a>
+<pre>
+Subgoal 2:
+
+Variables: L H B C1 A1 lf_1 Q
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L |- A1:nat&gt;*
+H4 : &lt;L |- B:nat&gt;*
+H5 : &lt;L |- C1:nat&gt;*
+H6 : &lt;L |- lf_1:add A1 B C1&gt;*
+H7 : &lt;Q:add A1 B C1&gt;
+H8 : &lt;A1:nat&gt;
+H9 : &lt;B:nat&gt;
+H10 : &lt;C1:nat&gt;
+============================
+ exists Q, &lt;Q:add (s A1) B (s C1)&gt;
+
+Subgoal 3 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>search.</b>
+</pre>
+<a name="162"></a>
+<pre>
+Subgoal 3:
+
+Variables: L H A B C P F
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L, [F] |- P:add A B C&gt;*
+H4 : member F L
+============================
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>apply ctx_inv to H1 H4.</b>
+</pre>
+<a name="163"></a>
+<pre>
+Subgoal 3:
+
+Variables: L H A B C P F
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L, [F] |- P:add A B C&gt;*
+H4 : member F L
+H5 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, F =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>case H5.</b>
+</pre>
+<a name="164"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: L H A B C P X
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L, [X:hterm] |- P:add A B C&gt;*
+H4 : member &lt;X:hterm&gt; L
+H6 : name X
+============================
+ exists Q, &lt;Q:add A B C&gt;
+
+Subgoal 3.2 is:
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>case H3.</b>
+</pre>
+<a name="165"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L H A B C P X P1 HX
+IH : forall L H A B C P, ctx L H -> &lt;L |- P:add A B C&gt;* ->
+       (exists Q, &lt;Q:add A B C&gt;)
+H1 : ctx L H
+H3 : &lt;L, [P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P:
+        add A B C&gt;*
+H4 : member &lt;P1:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H6 : &lt;HX:nat&gt;
+H7 : fresh X H
+H8 : le (s HX) H
+============================
+ exists Q, &lt;Q:add A B C&gt;
+
+add_ignores_ctx < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="166"></a>
+<pre class="code">
+Abella < <b>Theorem ho2db_det3 : 
+forall L M D1 D2 H P1 P2, ctx L H -&gt; &lt;L |- P1:ho2db M H D1&gt; -&gt;
+  &lt;L |- P2:ho2db M H D2&gt; -&gt; D1 = D2.</b>
+</pre>
+<a name="167"></a>
+<pre>
+
+============================
+ forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt; ->
+   &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+
+ho2db_det3 < <b>induction on 2.</b>
+</pre>
+<a name="168"></a>
+<pre>
+
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+============================
+ forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;@ ->
+   &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+
+ho2db_det3 < <b>intros.</b>
+</pre>
+<a name="169"></a>
+<pre>
+
+Variables: L M D1 D2 H P1 P2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H2 : &lt;L |- P1:ho2db M H D1&gt;@
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+============================
+ D1 = D2
+
+ho2db_det3 < <b>case H2.</b>
+</pre>
+<a name="170"></a>
+<pre>
+Subgoal 1:
+
+Variables: L D2 H P2 DN N lf_2 DM M1 lf_1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db (happ M1 N) H D2&gt;
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+============================
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H3.</b>
+</pre>
+<a name="171"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H DN N lf_2 DM M1 lf_1 DN1 lf_4 DM1 lf_3
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L |- M1:hterm&gt;
+H12 : &lt;L |- N:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM1:dterm&gt;
+H15 : &lt;L |- DN1:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M1 H DM1&gt;
+H17 : &lt;L |- lf_4:ho2db N H DN1&gt;
+============================
+ dapp DM DN = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>apply IH to _ H9 H16.</b>
+</pre>
+<a name="172"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H DN N lf_2 M1 lf_1 DN1 lf_4 DM1 lf_3
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM1:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM1&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L |- M1:hterm&gt;
+H12 : &lt;L |- N:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM1:dterm&gt;
+H15 : &lt;L |- DN1:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M1 H DM1&gt;
+H17 : &lt;L |- lf_4:ho2db N H DN1&gt;
+============================
+ dapp DM1 DN = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>apply IH to _ H10 H17.</b>
+</pre>
+<a name="173"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H N lf_2 M1 lf_1 DN1 lf_4 DM1 lf_3
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM1:dterm&gt;*
+H8 : &lt;L |- DN1:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM1&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN1&gt;*
+H11 : &lt;L |- M1:hterm&gt;
+H12 : &lt;L |- N:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM1:dterm&gt;
+H15 : &lt;L |- DN1:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M1 H DM1&gt;
+H17 : &lt;L |- lf_4:ho2db N H DN1&gt;
+============================
+ dapp DM1 DN1 = dapp DM1 DN1
+
+Subgoal 1.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>search.</b>
+</pre>
+<a name="174"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: L D2 H P2 DN N lf_2 DM M1 lf_1 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [F] |- P2:ho2db (happ M1 N) H D2&gt;
+H12 : member F L
+============================
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>apply ctx_inv to H1 H12.</b>
+</pre>
+<a name="175"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: L D2 H P2 DN N lf_2 DM M1 lf_1 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [F] |- P2:ho2db (happ M1 N) H D2&gt;
+H12 : member F L
+H13 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H13.</b>
+</pre>
+<a name="176"></a>
+<pre>
+Subgoal 1.2.1:
+
+Variables: L D2 H P2 DN N lf_2 DM M1 lf_1 X
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [X:hterm] |- P2:ho2db (happ M1 N) H D2&gt;
+H12 : member &lt;X:hterm&gt; L
+H14 : name X
+============================
+ dapp DM DN = D2
+
+Subgoal 1.2.2 is:
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H11.</b>
+</pre>
+<a name="177"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: L D2 H P2 DN N lf_2 DM M1 lf_1 X P HX
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L |- M1:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M1 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P2:
+         ho2db (happ M1 N) H D2&gt;
+H12 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H14 : &lt;HX:nat&gt;
+H15 : fresh X H
+H16 : le (s HX) H
+============================
+ dapp DM DN = D2
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H15.</b>
+</pre>
+<a name="178"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: L D2 P2 DN N lf_2 DM M1 lf_1 P HX O
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx (L n1) O
+H4 : &lt;L n1 |- M1 n1:hterm&gt;*
+H5 : &lt;L n1 |- N n1:hterm&gt;*
+H6 : &lt;L n1 |- O:nat&gt;*
+H7 : &lt;L n1 |- DM n1:dterm&gt;*
+H8 : &lt;L n1 |- DN n1:dterm&gt;*
+H9 : &lt;L n1 |- lf_1 n1:ho2db (M1 n1) O (DM n1)&gt;*
+H10 : &lt;L n1 |- lf_2 n1:ho2db (N n1) O (DN n1)&gt;*
+H11 : &lt;L n1,
+         [P n1:{hh:nat} {dx:nat} add (HX n1) dx hh -> ho2db n1 hh (dvar dx)] |-
+         P2 n1:ho2db (happ (M1 n1) (N n1)) O (D2 n1)&gt;
+H12 : member
+        &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H14 : &lt;HX n1:nat&gt;
+H16 : le (s (HX n1)) O
+============================
+ dapp (DM n1) (DN n1) = D2 n1
+
+Subgoal 2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H11.</b>
+</pre>
+<a name="179"></a>
+<pre>
+Subgoal 2:
+
+Variables: L D2 H P2 DR R lf_1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db (hlam R) H D2&gt;
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+============================
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H3.</b>
+</pre>
+<a name="180"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: L H DR R lf_1 DR1 lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, n1:hterm |- R n1:hterm&gt;
+H9 : &lt;L |- H:nat&gt;
+H10 : &lt;L |- DR1:dterm&gt;
+H11 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+         lf_2 n1 n2:ho2db (R n1) (s H) DR1&gt;
+============================
+ dlam DR = dlam DR1
+
+Subgoal 2.2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>apply IH to _ H7 H11.</b>
+</pre>
+<a name="181"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: L H R lf_1 DR1 lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR1:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR1&gt;*
+H8 : &lt;L, n1:hterm |- R n1:hterm&gt;
+H9 : &lt;L |- H:nat&gt;
+H10 : &lt;L |- DR1:dterm&gt;
+H11 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+         lf_2 n1 n2:ho2db (R n1) (s H) DR1&gt;
+============================
+ dlam DR1 = dlam DR1
+
+Subgoal 2.2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>search.</b>
+</pre>
+<a name="182"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: L D2 H P2 DR R lf_1 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [F] |- P2:ho2db (hlam R) H D2&gt;
+H9 : member F L
+============================
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>apply ctx_inv to H1 H9.</b>
+</pre>
+<a name="183"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: L D2 H P2 DR R lf_1 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [F] |- P2:ho2db (hlam R) H D2&gt;
+H9 : member F L
+H10 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H10.</b>
+</pre>
+<a name="184"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: L D2 H P2 DR R lf_1 X
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [X:hterm] |- P2:ho2db (hlam R) H D2&gt;
+H9 : member &lt;X:hterm&gt; L
+H11 : name X
+============================
+ dlam DR = D2
+
+Subgoal 2.2.2 is:
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H8.</b>
+</pre>
+<a name="185"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: L D2 H P2 DR R lf_1 X P HX
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P2:
+        ho2db (hlam R) H D2&gt;
+H9 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H11 : &lt;HX:nat&gt;
+H12 : fresh X H
+H13 : le (s HX) H
+============================
+ dlam DR = D2
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H12.</b>
+</pre>
+<a name="186"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: L D2 P2 DR R lf_1 P HX O
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx (L n3) O
+H4 : &lt;L n3, n1:hterm |- R n3 n1:hterm&gt;*
+H5 : &lt;L n3 |- O:nat&gt;*
+H6 : &lt;L n3 |- DR n3:dterm&gt;*
+H7 : &lt;L n3, n1:hterm,
+      n2:{hh:nat} {dx:nat} add O dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n3 n1 n2:ho2db (R n3 n1) (s O) (DR n3)&gt;*
+H8 : &lt;L n3,
+        [P n3:{hh:nat} {dx:nat} add (HX n3) dx hh -> ho2db n3 hh (dvar dx)] |-
+        P2 n3:ho2db (hlam (R n3)) O (D2 n3)&gt;
+H9 : member
+       &lt;P n3:{hh:nat} {dx:nat} add (HX n3) dx hh -> ho2db n3 hh (dvar dx)&gt;
+       (L n3)
+H11 : &lt;HX n3:nat&gt;
+H13 : le (s (HX n3)) O
+============================
+ dlam (DR n3) = D2 n3
+
+Subgoal 3 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H8.</b>
+</pre>
+<a name="187"></a>
+<pre>
+Subgoal 3:
+
+Variables: L M D1 D2 H P1 P2 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+H4 : &lt;L, [F] |- P1:ho2db M H D1&gt;*
+H5 : member F L
+============================
+ D1 = D2
+
+ho2db_det3 < <b>apply ctx_inv to H1 H5.</b>
+</pre>
+<a name="188"></a>
+<pre>
+Subgoal 3:
+
+Variables: L M D1 D2 H P1 P2 F
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+H4 : &lt;L, [F] |- P1:ho2db M H D1&gt;*
+H5 : member F L
+H6 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, F =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ D1 = D2
+
+ho2db_det3 < <b>case H6.</b>
+</pre>
+<a name="189"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: L M D1 D2 H P1 P2 X
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+H4 : &lt;L, [X:hterm] |- P1:ho2db M H D1&gt;*
+H5 : member &lt;X:hterm&gt; L
+H7 : name X
+============================
+ D1 = D2
+
+Subgoal 3.2 is:
+ D1 = D2
+
+ho2db_det3 < <b>case H4.</b>
+</pre>
+<a name="190"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M D1 D2 H P1 P2 X P HX
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+H4 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P1:
+        ho2db M H D1&gt;*
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh X H
+H9 : le (s HX) H
+============================
+ D1 = D2
+
+ho2db_det3 < <b>case H4.</b>
+</pre>
+<a name="191"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M D2 H P2 P HX dx lf_1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M H D2&gt;
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+============================
+ dvar dx = D2
+
+ho2db_det3 < <b>case H3.</b>
+</pre>
+<a name="192"></a>
+<pre>
+Subgoal 3.2.1:
+
+Variables: L H P HX dx lf_1 DN N lf_3 DM M1 lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member
+       &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db (happ M1 N) hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh (happ M1 N) H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L |- M1:hterm&gt;
+H14 : &lt;L |- N:hterm&gt;
+H15 : &lt;L |- H:nat&gt;
+H16 : &lt;L |- DM:dterm&gt;
+H17 : &lt;L |- DN:dterm&gt;
+H18 : &lt;L |- lf_2:ho2db M1 H DM&gt;
+H19 : &lt;L |- lf_3:ho2db N H DN&gt;
+============================
+ dvar dx = dapp DM DN
+
+Subgoal 3.2.2 is:
+ dvar dx = dlam DR
+
+Subgoal 3.2.3 is:
+ dvar dx = D2
+
+ho2db_det3 < <b>case H8.</b>
+</pre>
+<a name="193"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L H P HX dx lf_1 DR R lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db (hlam R) hh (dvar dx)&gt;
+       L
+H7 : &lt;HX:nat&gt;
+H8 : fresh (hlam R) H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, n1:hterm |- R n1:hterm&gt;
+H14 : &lt;L |- H:nat&gt;
+H15 : &lt;L |- DR:dterm&gt;
+H16 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+         lf_2 n1 n2:ho2db (R n1) (s H) DR&gt;
+============================
+ dvar dx = dlam DR
+
+Subgoal 3.2.3 is:
+ dvar dx = D2
+
+ho2db_det3 < <b>case H8.</b>
+</pre>
+<a name="194"></a>
+<pre>
+Subgoal 3.2.3:
+
+Variables: L M D2 H P2 P HX dx lf_1 F1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [F1] |- P2:ho2db M H D2&gt;
+H14 : member F1 L
+============================
+ dvar dx = D2
+
+ho2db_det3 < <b>apply ctx_inv to H1 H14.</b>
+</pre>
+<a name="195"></a>
+<pre>
+Subgoal 3.2.3:
+
+Variables: L M D2 H P2 P HX dx lf_1 F1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [F1] |- P2:ho2db M H D2&gt;
+H14 : member F1 L
+H15 : (exists X, F1 = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F1 =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ dvar dx = D2
+
+ho2db_det3 < <b>case H15.</b>
+</pre>
+<a name="196"></a>
+<pre>
+Subgoal 3.2.3.1:
+
+Variables: L M D2 H P2 P HX dx lf_1 X1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [X1:hterm] |- P2:ho2db M H D2&gt;
+H14 : member &lt;X1:hterm&gt; L
+H16 : name X1
+============================
+ dvar dx = D2
+
+Subgoal 3.2.3.2 is:
+ dvar dx = D2
+
+ho2db_det3 < <b>case H13.</b>
+</pre>
+<a name="197"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M D2 H P2 P HX dx lf_1 X1 P3 HX1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)] |-
+         P2:ho2db M H D2&gt;
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh X1 H
+H18 : le (s HX1) H
+============================
+ dvar dx = D2
+
+ho2db_det3 < <b>case H13.</b>
+</pre>
+<a name="198"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M H P HX dx lf_1 P3 HX1 dx1 lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+============================
+ dvar dx = dvar dx1
+
+ho2db_det3 < <b>apply ctx_unique1 to H1 H5 H14.</b>
+</pre>
+<a name="199"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+============================
+ dvar dx = dvar dx1
+
+ho2db_det3 < <b>apply add_ignores_ctx to _ H12.</b>
+</pre>
+<a name="200"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2 Q
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx H&gt;
+============================
+ dvar dx = dvar dx1
+
+ho2db_det3 < <b>apply add_ignores_ctx to _ H21.</b>
+</pre>
+<a name="201"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2 Q Q1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx H&gt;
+H23 : &lt;Q1:add HX1 dx1 H&gt;
+============================
+ dvar dx = dvar dx1
+
+ho2db_det3 < <b>apply add_det2 to _ _ _ _ H22 H23.</b>
+</pre>
+<a name="202"></a>
+<pre>
+Subgoal 3.2.3.2.1:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2 Q Q1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx H&gt;
+H23 : &lt;Q1:add HX1 dx1 H&gt;
+============================
+ &lt;H:nat&gt;
+
+Subgoal 3.2.3.2.2 is:
+ &lt;dx1:nat&gt;
+
+Subgoal 3.2.3.2.3 is:
+ &lt;dx:nat&gt;
+
+Subgoal 3.2.3.2 is:
+ dvar dx1 = dvar dx1
+
+ho2db_det3 < <b>backchain nat_ignores_ctx.</b>
+</pre>
+<a name="203"></a>
+<pre>
+Subgoal 3.2.3.2.2:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2 Q Q1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx H&gt;
+H23 : &lt;Q1:add HX1 dx1 H&gt;
+============================
+ &lt;dx1:nat&gt;
+
+Subgoal 3.2.3.2.3 is:
+ &lt;dx:nat&gt;
+
+Subgoal 3.2.3.2 is:
+ dvar dx1 = dvar dx1
+
+ho2db_det3 < <b>backchain nat_ignores_ctx.</b>
+</pre>
+<a name="204"></a>
+<pre>
+Subgoal 3.2.3.2.3:
+
+Variables: L M H dx lf_1 P3 HX1 dx1 lf_2 Q Q1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx H&gt;
+H23 : &lt;Q1:add HX1 dx1 H&gt;
+============================
+ &lt;dx:nat&gt;
+
+Subgoal 3.2.3.2 is:
+ dvar dx1 = dvar dx1
+
+ho2db_det3 < <b>backchain nat_ignores_ctx.</b>
+</pre>
+<a name="205"></a>
+<pre>
+Subgoal 3.2.3.2:
+
+Variables: L M H lf_1 P3 HX1 dx1 lf_2 Q Q1
+IH : forall L M D1 D2 H P1 P2, ctx L H -> &lt;L |- P1:ho2db M H D1&gt;* ->
+       &lt;L |- P2:ho2db M H D2&gt; -> D1 = D2
+H1 : ctx L H
+H5 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H7 : &lt;HX1:nat&gt;
+H8 : fresh M H
+H9 : le (s HX1) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx1:nat&gt;*
+H12 : &lt;L |- lf_1:add HX1 dx1 H&gt;*
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db M hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh M H
+H18 : le (s HX1) H
+H19 : &lt;L |- H:nat&gt;
+H20 : &lt;L |- dx1:nat&gt;
+H21 : &lt;L |- lf_2:add HX1 dx1 H&gt;
+H22 : &lt;Q:add HX1 dx1 H&gt;
+H23 : &lt;Q1:add HX1 dx1 H&gt;
+============================
+ dvar dx1 = dvar dx1
+
+ho2db_det3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="206"></a>
+<pre class="code">
+Abella < <b>Theorem ho2db_det3_simple : 
+forall M D1 D2 P1 P2, &lt;P1:ho2db M z D1&gt; -&gt; &lt;P2:ho2db M z D2&gt; -&gt; D1 = D2.</b>
+</pre>
+<a name="207"></a>
+<pre>
+
+============================
+ forall M D1 D2 P1 P2, &lt;P1:ho2db M z D1&gt; -> &lt;P2:ho2db M z D2&gt; -> D1 = D2
+
+ho2db_det3_simple < <b>intros.</b>
+</pre>
+<a name="208"></a>
+<pre>
+
+Variables: M D1 D2 P1 P2
+H1 : &lt;P1:ho2db M z D1&gt;
+H2 : &lt;P2:ho2db M z D2&gt;
+============================
+ D1 = D2
+
+ho2db_det3_simple < <b>apply ho2db_det3 to _ H1 H2.</b>
+</pre>
+<a name="209"></a>
+<pre>
+
+Variables: M D2 P1 P2
+H1 : &lt;P1:ho2db M z D2&gt;
+H2 : &lt;P2:ho2db M z D2&gt;
+============================
+ D2 = D2
+
+ho2db_det3_simple < <b>search.</b>
+Proof completed.
+</pre>
+<a name="210"></a>
+<pre class="code">
+Abella < <b>Theorem ho2db_det1 : 
+forall L M1 M2 D H P1 P2, ctx L H -&gt; &lt;L |- P1:ho2db M1 H D&gt; -&gt;
+  &lt;L |- P2:ho2db M2 H D&gt; -&gt; M1 = M2.</b>
+</pre>
+<a name="211"></a>
+<pre>
+
+============================
+ forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt; ->
+   &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+
+ho2db_det1 < <b>induction on 2.</b>
+</pre>
+<a name="212"></a>
+<pre>
+
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+============================
+ forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;@ ->
+   &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+
+ho2db_det1 < <b>intros.</b>
+</pre>
+<a name="213"></a>
+<pre>
+
+Variables: L M1 M2 D H P1 P2
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H2 : &lt;L |- P1:ho2db M1 H D&gt;@
+H3 : &lt;L |- P2:ho2db M2 H D&gt;
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H2.</b>
+</pre>
+<a name="214"></a>
+<pre>
+Subgoal 1:
+
+Variables: L M2 H P2 DN N lf_2 DM M lf_1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H (dapp DM DN)&gt;
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+============================
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H3.</b>
+</pre>
+<a name="215"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H DN N lf_2 DM M lf_1 N1 lf_4 M3 lf_3
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L |- M3:hterm&gt;
+H12 : &lt;L |- N1:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM:dterm&gt;
+H15 : &lt;L |- DN:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M3 H DM&gt;
+H17 : &lt;L |- lf_4:ho2db N1 H DN&gt;
+============================
+ happ M N = happ M3 N1
+
+Subgoal 1.2 is:
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>apply IH to _ H9 H16.</b>
+</pre>
+<a name="216"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H DN N lf_2 DM lf_1 N1 lf_4 M3 lf_3
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M3:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M3 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L |- M3:hterm&gt;
+H12 : &lt;L |- N1:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM:dterm&gt;
+H15 : &lt;L |- DN:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M3 H DM&gt;
+H17 : &lt;L |- lf_4:ho2db N1 H DN&gt;
+============================
+ happ M3 N = happ M3 N1
+
+Subgoal 1.2 is:
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>apply IH to _ H10 H17.</b>
+</pre>
+<a name="217"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: L H DN lf_2 DM lf_1 N1 lf_4 M3 lf_3
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M3:hterm&gt;*
+H5 : &lt;L |- N1:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M3 H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N1 H DN&gt;*
+H11 : &lt;L |- M3:hterm&gt;
+H12 : &lt;L |- N1:hterm&gt;
+H13 : &lt;L |- H:nat&gt;
+H14 : &lt;L |- DM:dterm&gt;
+H15 : &lt;L |- DN:dterm&gt;
+H16 : &lt;L |- lf_3:ho2db M3 H DM&gt;
+H17 : &lt;L |- lf_4:ho2db N1 H DN&gt;
+============================
+ happ M3 N1 = happ M3 N1
+
+Subgoal 1.2 is:
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>search.</b>
+</pre>
+<a name="218"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: L M2 H P2 DN N lf_2 DM M lf_1 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [F] |- P2:ho2db M2 H (dapp DM DN)&gt;
+H12 : member F L
+============================
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>apply ctx_inv to _ H12.</b>
+</pre>
+<a name="219"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: L M2 H P2 DN N lf_2 DM M lf_1 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [F] |- P2:ho2db M2 H (dapp DM DN)&gt;
+H12 : member F L
+H13 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H13.</b>
+</pre>
+<a name="220"></a>
+<pre>
+Subgoal 1.2.1:
+
+Variables: L M2 H P2 DN N lf_2 DM M lf_1 X
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [X:hterm] |- P2:ho2db M2 H (dapp DM DN)&gt;
+H12 : member &lt;X:hterm&gt; L
+H14 : name X
+============================
+ happ M N = M2
+
+Subgoal 1.2.2 is:
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H11.</b>
+</pre>
+<a name="221"></a>
+<pre>
+Subgoal 1.2.2:
+
+Variables: L M2 H P2 DN N lf_2 DM M lf_1 X P HX
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L |- M:hterm&gt;*
+H5 : &lt;L |- N:hterm&gt;*
+H6 : &lt;L |- H:nat&gt;*
+H7 : &lt;L |- DM:dterm&gt;*
+H8 : &lt;L |- DN:dterm&gt;*
+H9 : &lt;L |- lf_1:ho2db M H DM&gt;*
+H10 : &lt;L |- lf_2:ho2db N H DN&gt;*
+H11 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P2:
+         ho2db M2 H (dapp DM DN)&gt;
+H12 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H14 : &lt;HX:nat&gt;
+H15 : fresh X H
+H16 : le (s HX) H
+============================
+ happ M N = M2
+
+Subgoal 2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H11.</b>
+</pre>
+<a name="222"></a>
+<pre>
+Subgoal 2:
+
+Variables: L M2 H P2 DR R lf_1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H (dlam DR)&gt;
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+============================
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H3.</b>
+</pre>
+<a name="223"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: L H DR R lf_1 R1 lf_2
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, n1:hterm |- R1 n1:hterm&gt;
+H9 : &lt;L |- H:nat&gt;
+H10 : &lt;L |- DR:dterm&gt;
+H11 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+         lf_2 n1 n2:ho2db (R1 n1) (s H) DR&gt;
+============================
+ hlam R = hlam R1
+
+Subgoal 2.2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>apply IH to _ H7 H11.</b>
+</pre>
+<a name="224"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: L H DR lf_1 R1 lf_2
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R1 n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R1 n1) (s H) DR&gt;*
+H8 : &lt;L, n1:hterm |- R1 n1:hterm&gt;
+H9 : &lt;L |- H:nat&gt;
+H10 : &lt;L |- DR:dterm&gt;
+H11 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+         lf_2 n1 n2:ho2db (R1 n1) (s H) DR&gt;
+============================
+ hlam (z1\R1 z1) = hlam R1
+
+Subgoal 2.2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>search.</b>
+</pre>
+<a name="225"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: L M2 H P2 DR R lf_1 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [F] |- P2:ho2db M2 H (dlam DR)&gt;
+H9 : member F L
+============================
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>apply ctx_inv to _ H9.</b>
+</pre>
+<a name="226"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: L M2 H P2 DR R lf_1 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [F] |- P2:ho2db M2 H (dlam DR)&gt;
+H9 : member F L
+H10 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H10.</b>
+</pre>
+<a name="227"></a>
+<pre>
+Subgoal 2.2.1:
+
+Variables: L M2 H P2 DR R lf_1 X
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [X:hterm] |- P2:ho2db M2 H (dlam DR)&gt;
+H9 : member &lt;X:hterm&gt; L
+H11 : name X
+============================
+ hlam R = M2
+
+Subgoal 2.2.2 is:
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H8.</b>
+</pre>
+<a name="228"></a>
+<pre>
+Subgoal 2.2.2:
+
+Variables: L M2 H P2 DR R lf_1 X P HX
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H4 : &lt;L, n1:hterm |- R n1:hterm&gt;*
+H5 : &lt;L |- H:nat&gt;*
+H6 : &lt;L |- DR:dterm&gt;*
+H7 : &lt;L, n1:hterm, n2:{hh:nat} {dx:nat} add H dx hh -> ho2db n1 hh (dvar dx) |-
+        lf_1 n1 n2:ho2db (R n1) (s H) DR&gt;*
+H8 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P2:
+        ho2db M2 H (dlam DR)&gt;
+H9 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H11 : &lt;HX:nat&gt;
+H12 : fresh X H
+H13 : le (s HX) H
+============================
+ hlam R = M2
+
+Subgoal 3 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H8.</b>
+</pre>
+<a name="229"></a>
+<pre>
+Subgoal 3:
+
+Variables: L M1 M2 D H P1 P2 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H D&gt;
+H4 : &lt;L, [F] |- P1:ho2db M1 H D&gt;*
+H5 : member F L
+============================
+ M1 = M2
+
+ho2db_det1 < <b>apply ctx_inv to _ H5.</b>
+</pre>
+<a name="230"></a>
+<pre>
+Subgoal 3:
+
+Variables: L M1 M2 D H P1 P2 F
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H D&gt;
+H4 : &lt;L, [F] |- P1:ho2db M1 H D&gt;*
+H5 : member F L
+H6 : (exists X, F = &lt;X:hterm&gt; /\ name X) \/
+       (exists X P HX, F =
+          &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+          &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H6.</b>
+</pre>
+<a name="231"></a>
+<pre>
+Subgoal 3.1:
+
+Variables: L M1 M2 D H P1 P2 X
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H D&gt;
+H4 : &lt;L, [X:hterm] |- P1:ho2db M1 H D&gt;*
+H5 : member &lt;X:hterm&gt; L
+H7 : name X
+============================
+ M1 = M2
+
+Subgoal 3.2 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H4.</b>
+</pre>
+<a name="232"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M1 M2 D H P1 P2 X P HX
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H D&gt;
+H4 : &lt;L, [P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)] |- P1:
+        ho2db M1 H D&gt;*
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh X H
+H9 : le (s HX) H
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H4.</b>
+</pre>
+<a name="233"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M1 M2 H P2 P HX dx lf_1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H3 : &lt;L |- P2:ho2db M2 H (dvar dx)&gt;
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M1 hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M1 H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H3.</b>
+</pre>
+<a name="234"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M1 M2 H P2 P HX dx lf_1 F1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M1 hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M1 H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [F1] |- P2:ho2db M2 H (dvar dx)&gt;
+H14 : member F1 L
+============================
+ M1 = M2
+
+ho2db_det1 < <b>apply ctx_inv to _ H14.</b>
+</pre>
+<a name="235"></a>
+<pre>
+Subgoal 3.2:
+
+Variables: L M1 M2 H P2 P HX dx lf_1 F1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M1 hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M1 H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [F1] |- P2:ho2db M2 H (dvar dx)&gt;
+H14 : member F1 L
+H15 : (exists X, F1 = &lt;X:hterm&gt; /\ name X) \/
+        (exists X P HX, F1 =
+           &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db X hh (dvar dx)&gt; /\
+           &lt;HX:nat&gt; /\ fresh X H /\ le (s HX) H)
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H15.</b>
+</pre>
+<a name="236"></a>
+<pre>
+Subgoal 3.2.1:
+
+Variables: L M1 M2 H P2 P HX dx lf_1 X1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M1 hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M1 H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [X1:hterm] |- P2:ho2db M2 H (dvar dx)&gt;
+H14 : member &lt;X1:hterm&gt; L
+H16 : name X1
+============================
+ M1 = M2
+
+Subgoal 3.2.2 is:
+ M1 = M2
+
+ho2db_det1 < <b>case H13.</b>
+</pre>
+<a name="237"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 M2 H P2 P HX dx lf_1 X1 P3 HX1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx L H
+H5 : member &lt;P:{hh:nat} {dx:nat} add HX dx hh -> ho2db M1 hh (dvar dx)&gt; L
+H7 : &lt;HX:nat&gt;
+H8 : fresh M1 H
+H9 : le (s HX) H
+H10 : &lt;L |- H:nat&gt;*
+H11 : &lt;L |- dx:nat&gt;*
+H12 : &lt;L |- lf_1:add HX dx H&gt;*
+H13 : &lt;L, [P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)] |-
+         P2:ho2db M2 H (dvar dx)&gt;
+H14 : member &lt;P3:{hh:nat} {dx:nat} add HX1 dx hh -> ho2db X1 hh (dvar dx)&gt; L
+H16 : &lt;HX1:nat&gt;
+H17 : fresh X1 H
+H18 : le (s HX1) H
+============================
+ M1 = M2
+
+ho2db_det1 < <b>case H17.</b>
+</pre>
+<a name="238"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 M2 P2 P HX dx lf_1 P3 HX1 O
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H13 : &lt;L n1,
+         [P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh ->
+            ho2db n1 hh (dvar dx)] |-
+         P2 n1:ho2db (M2 n1) O (dvar (dx n1))&gt;
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+============================
+ M1 n1 = M2 n1
+
+ho2db_det1 < <b>case H13.</b>
+</pre>
+<a name="239"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 P HX dx lf_1 P3 HX1 O lf_2
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+============================
+ M1 n1 = n1
+
+ho2db_det1 < <b>apply ctx_nat to H1.</b>
+</pre>
+<a name="240"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 P HX dx lf_1 P3 HX1 O lf_2
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+============================
+ M1 n1 = n1
+
+ho2db_det1 < <b>apply add_ignores_ctx to _ H12.</b>
+</pre>
+<a name="241"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 P HX dx lf_1 P3 HX1 O lf_2 Q
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+H23 : &lt;Q n1:add (HX n1) (dx n1) O&gt;
+============================
+ M1 n1 = n1
+
+ho2db_det1 < <b>apply add_ignores_ctx to _ H21.</b>
+</pre>
+<a name="242"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 P HX dx lf_1 P3 HX1 O lf_2 Q Q1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+H23 : &lt;Q n1:add (HX n1) (dx n1) O&gt;
+H24 : &lt;Q1 n1:add (HX1 n1) (dx n1) O&gt;
+============================
+ M1 n1 = n1
+
+ho2db_det1 < <b>apply add_det1 to _ _ _ _ H23 H24.</b>
+</pre>
+<a name="243"></a>
+<pre>
+Subgoal 3.2.2.1:
+
+Variables: L M1 P HX dx lf_1 P3 HX1 O lf_2 Q Q1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+H23 : &lt;Q n1:add (HX n1) (dx n1) O&gt;
+H24 : &lt;Q1 n1:add (HX1 n1) (dx n1) O&gt;
+============================
+ &lt;dx n1:nat&gt;
+
+Subgoal 3.2.2 is:
+ M1 n1 = n1
+
+ho2db_det1 < <b>backchain nat_ignores_ctx.</b>
+</pre>
+<a name="244"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L M1 P dx lf_1 P3 HX1 O lf_2 Q Q1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh ->
+          ho2db (M1 n1) hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX1 n1:nat&gt;
+H8 : fresh (M1 n1) O
+H9 : le (s (HX1 n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX1 n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+H23 : &lt;Q n1:add (HX1 n1) (dx n1) O&gt;
+H24 : &lt;Q1 n1:add (HX1 n1) (dx n1) O&gt;
+============================
+ M1 n1 = n1
+
+ho2db_det1 < <b>apply ctx_unique2 to _ H5 H14.</b>
+</pre>
+<a name="245"></a>
+<pre>
+Subgoal 3.2.2:
+
+Variables: L dx lf_1 P3 HX1 O lf_2 Q Q1
+IH : forall L M1 M2 D H P1 P2, ctx L H -> &lt;L |- P1:ho2db M1 H D&gt;* ->
+       &lt;L |- P2:ho2db M2 H D&gt; -> M1 = M2
+H1 : ctx (L n1) O
+H5 : member
+       &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+       (L n1)
+H7 : &lt;HX1 n1:nat&gt;
+H8 : fresh n1 O
+H9 : le (s (HX1 n1)) O
+H10 : &lt;L n1 |- O:nat&gt;*
+H11 : &lt;L n1 |- dx n1:nat&gt;*
+H12 : &lt;L n1 |- lf_1 n1:add (HX1 n1) (dx n1) O&gt;*
+H14 : member
+        &lt;P3 n1:{hh:nat} {dx:nat} add (HX1 n1) dx hh -> ho2db n1 hh (dvar dx)&gt;
+        (L n1)
+H16 : &lt;HX1 n1:nat&gt;
+H18 : le (s (HX1 n1)) O
+H19 : &lt;L n1 |- O:nat&gt;
+H20 : &lt;L n1 |- dx n1:nat&gt;
+H21 : &lt;L n1 |- lf_2 n1:add (HX1 n1) (dx n1) O&gt;
+H22 : &lt;O:nat&gt;
+H23 : &lt;Q n1:add (HX1 n1) (dx n1) O&gt;
+H24 : &lt;Q1 n1:add (HX1 n1) (dx n1) O&gt;
+============================
+ n1 = n1
+
+ho2db_det1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="246"></a>
+<pre class="code">
+Abella < <b>Theorem ho2db_det1_simple : 
+forall M1 M2 D P1 P2, &lt;P1:ho2db M1 z D&gt; -&gt; &lt;P2:ho2db M2 z D&gt; -&gt; M1 = M2.</b>
+</pre>
+<a name="247"></a>
+<pre>
+
+============================
+ forall M1 M2 D P1 P2, &lt;P1:ho2db M1 z D&gt; -> &lt;P2:ho2db M2 z D&gt; -> M1 = M2
+
+ho2db_det1_simple < <b>intros.</b>
+</pre>
+<a name="248"></a>
+<pre>
+
+Variables: M1 M2 D P1 P2
+H1 : &lt;P1:ho2db M1 z D&gt;
+H2 : &lt;P2:ho2db M2 z D&gt;
+============================
+ M1 = M2
+
+ho2db_det1_simple < <b>apply ho2db_det1 to _ H1 H2.</b>
+</pre>
+<a name="249"></a>
+<pre>
+
+Variables: M2 D P1 P2
+H1 : &lt;P1:ho2db M2 z D&gt;
+H2 : &lt;P2:ho2db M2 z D&gt;
+============================
+ M2 = M2
+
+ho2db_det1_simple < <b>search.</b>
+Proof completed.
+</pre>
+<a name="250"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "lc_diverge.elf". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-lf
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "lc_diverge.elf".</b>
+Reading specification "lc_diverge.elf"
+sig lc_diverge.
+  type tm lftype.
+  type app lfobj -> lfobj -> lfobj.
+  type abs (lfobj -> lfobj) -> lfobj.
+  type eval lfobj -> lfobj -> lftype.
+  type eval/app lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj -> lfobj -> lfobj -> lfobj.
+  type eval/abs (lfobj -> lfobj) -> lfobj.
+end.
+module lc_diverge.
+  (* tm:type *)
+  lfisty tm.
+  (* app:tm -> tm -> tm *)
+  pi lf_1\lfhas lf_1 tm => pi lf_2\lfhas lf_2 tm => lfhas (app lf_1 lf_2) tm.
+  (* abs:(tm -> tm) -> tm *)
+  pi lf_1\(pi lf_2\lfhas lf_2 tm => lfhas (lf_1 lf_2) tm) =>
+    lfhas (abs lf_1) tm.
+  (* eval:tm -> tm -> type *)
+  pi lf_1\lfhas lf_1 tm => pi lf_2\lfhas lf_2 tm => lfisty (eval lf_1 lf_2).
+  (* eval/app:{M:tm} {N:tm} {R:tm -> tm} {V:tm} eval M (abs R) ->
+       eval (R N) V -> eval (app M N) V *)
+  pi M\lfhas M tm =>
+    pi N\lfhas N tm =>
+      pi R\(pi lf_1\lfhas lf_1 tm => lfhas (R lf_1) tm) =>
+        pi V\lfhas V tm =>
+          pi lf_1\lfhas lf_1 (eval M (abs R)) =>
+            pi lf_2\lfhas lf_2 (eval (R N) V) =>
+              lfhas (eval/app M N R V lf_1 lf_2) (eval (app M N) V).
+  (* eval/abs:{R:tm -> tm} eval (abs R) (abs R) *)
+  pi R\(pi lf_1\lfhas lf_1 tm => lfhas (R lf_1) tm) =>
+    lfhas (eval/abs R) (eval (abs R) (abs R)).
+end.
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>CoDefine diverge : lfobj -> prop by 
+diverge (app M N) := diverge M \/
+  (exists R P, &lt;R:tm -&gt; tm&gt; /\ &lt;P:eval M (abs R)&gt; /\ diverge (R N)).</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem omega_diverge : 
+diverge (app (abs (x\app x x)) (abs (x\app x x))).</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+============================
+ diverge (app (abs (x\app x x)) (abs (x\app x x)))
+
+omega_diverge < <b>coinduction.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ diverge (app (abs (x\app x x)) (abs (x\app x x))) #
+
+omega_diverge < <b>unfold.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ diverge (abs (x\app x x)) + \/
+   (exists R P, &lt;n1:tm |- R n1:tm&gt; /\ &lt;P:eval (abs ([x] app x x)) (abs R)&gt; /\
+      diverge (R (abs (x\app x x))) +)
+
+omega_diverge < <b>right.</b>
+</pre>
+<a name="7"></a>
+<pre>
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ exists R P, &lt;n1:tm |- R n1:tm&gt; /\ &lt;P:eval (abs ([x] app x x)) (abs R)&gt; /\
+   diverge (R (abs (x\app x x))) +
+
+omega_diverge < <b>exists x\app x x.</b>
+</pre>
+<a name="8"></a>
+<pre>
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ exists P, &lt;n1:tm |- app n1 n1:tm&gt; /\
+   &lt;P:eval (abs ([x] app x x)) (abs ([x] app x x))&gt; /\
+   diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+
+omega_diverge < <b>exists eval/abs (x\app x x).</b>
+</pre>
+<a name="9"></a>
+<pre>
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ &lt;n1:tm |- app n1 n1:tm&gt; /\
+   &lt;eval/abs ([x] app x x):eval (abs ([x] app x x)) (abs ([x] app x x))&gt; /\
+   diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+
+omega_diverge < <b>split.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 1:
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ &lt;n1:tm |- app n1 n1:tm&gt;
+
+Subgoal 2 is:
+ &lt;eval/abs ([x] app x x):eval (abs ([x] app x x)) (abs ([x] app x x))&gt;
+
+Subgoal 3 is:
+ diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+
+omega_diverge < <b>search.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ &lt;eval/abs ([x] app x x):eval (abs ([x] app x x)) (abs ([x] app x x))&gt;
+
+Subgoal 3 is:
+ diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+
+omega_diverge < <b>search.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 3:
+
+CH : diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+============================
+ diverge (app (abs (x\app x x)) (abs (x\app x x))) +
+
+omega_diverge < <b>search.</b>
+Proof completed.
+</pre>
+<a name="13"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+Specification "lc_diverge.elf".
+
+CoDefine diverge : lfobj -> prop by
+  diverge (app M N) :=
+    (diverge M \/ exists R P, <R:tm -> tm> /\ <P:eval M (abs R)> /\ diverge (R N)).
+
+Theorem omega_diverge :
+  diverge (app (abs x\ app x x) (abs x\ app x x)).
+coinduction. unfold.
+  right.
+  exists x\ app x x. exists eval/abs (x\ app x x). split.
+    search.
+    search.
+    search.

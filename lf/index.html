@@ -112,6 +112,23 @@ We have fixed an error on page 8 of the paper.
 </li>
 
 <li>
+  <strong><a href="debruijn.html">Isomorphism of De Bruijn and HOAS representations of &lambda;-terms</a></strong>
+  <blockquote>
+    This is an LF version of
+    <a href="../examples/higher-order/debruijn_ho.html">existing
+      isomorphism theorem</a> from the mainline Abella. The
+      interesting theorems are <code>ho2db_det1_simple</code> and
+    <code>ho2db_det3_simple</code> that show that the
+    same <code>ho2db</code> type family functions as a witness for
+    both directions of the isomorphism. For those who are aware of
+    Twelf and Beluga, note that this development uses a context
+    relation <code>ctx</code> that is not regular: it counts the
+    number of elements of the context, but regular languages cannot
+    count.
+  </blockquote>
+</li>
+
+<li>
   <strong><a href="impcut.html">Cut-elimination for minimal intuitionistic logic</a></strong>
   <blockquote>
     This development follows the format of
@@ -119,6 +136,15 @@ We have fixed an error on page 8 of the paper.
     example</a> of Abella, except it uses the LF typing derivation of
     formulas directly to reason about the structure of the
     cut-formula, instead of using an auxiliary definition.
+  </blockquote>
+</li>
+
+<li>
+  <strong><a href="lc_diverge.html">Divergence of &Omega; using co-induction</a></strong>
+  <blockquote>
+    We show by co-induction that the term <code>(&lambda;x. x x)(&lambda;x. x x)</code>
+    diverges. This simple example illustrates that Abella's standard co-induction
+    mechanism can reason about LF specifications with no problem.
   </blockquote>
 </li>
 </ul>
