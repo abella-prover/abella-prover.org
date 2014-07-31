@@ -1,0 +1,32 @@
+%%% Intrinsically typed lambda terms
+
+
+ty : type.
+i : ty.
+arr : ty -> ty -> ty.
+
+tm : ty -> type.
+lam : {A:ty} {B:ty} (tm A -> tm B) -> tm (arr A B).
+app : {A:ty} {B:ty} tm (arr A B) -> tm A -> tm B.
+
+eval : {A:ty} tm A -> tm A -> type.
+eval/lam : {A:ty} {B:ty} {R:tm A -> tm B}
+   eval (arr A B) (lam A B R) (lam A B R).
+eval/app : {A:ty} {B:ty} {M:tm (arr A B)} {N:tm A} {R:tm A -> tm B} {V:tm B}
+   eval (arr A B) M (lam A B R) ->
+   eval B (R N) V ->
+   eval B (app A B M N) V.
+
+step : {A:ty} tm A -> tm A -> type.
+step/reduce : {A:ty} {B:ty} {R:tm A -> tm B} {N:tm A}
+   step B (app A B (lam A B R) N) (R N).
+step/head : {A:ty} {B:ty} {M1:tm (arr A B)} {M2:tm (arr A B)} {N:tm A}
+   step B (app A B M1 N) (app A B M2 N).
+
+nstep : {A:ty} tm A -> tm A -> type.
+nstep/zero : {A:ty} {M:tm A} nstep A M M.
+nstep/succ : {A:ty} {M1:tm A} {M2:tm A} {N:tm A}
+   step A M1 M2 -> nstep A M2 N -> nstep A M1 N.
+
+value : {A:ty} tm A -> type.
+value/abs : {A:ty} {B:ty} {R:tm A -> tm B} value (arr A B) (lam A B R).

@@ -1,0 +1,16 @@
+Specification "intrinsic.elf".
+
+Define progr : lfobj -> lfobj -> prop by
+  progr A M := <A:ty> /\ <M:tm A> /\ exists P, <P:value A M>
+; progr A M := <A:ty> /\ <M:tm A> /\ exists N P, <N:tm A> /\ <P:step A M N>.
+
+Theorem progress : forall A M,
+  <A:ty> -> <M:tm A> -> progr A M.
+induction on 2. intros. case H2.
+  search.
+  apply IH to _ H5. apply IH to _ H6.
+    unfold 2. search. search.
+    case H5.
+      inst H11 with n1 = lf_2. cut H12 with H6.
+       exists lf_3 lf_2. search.
+      search.

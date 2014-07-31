@@ -1,0 +1,437 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "intrinsic.elf". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-lf
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "intrinsic.elf".</b>
+Reading specification "intrinsic.elf"
+sig intrinsic.
+  type ty lftype.
+  type i lfobj.
+  type arr lfobj -> lfobj -> lfobj.
+  type tm lfobj -> lftype.
+  type lam lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj.
+  type app lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type eval lfobj -> lfobj -> lfobj -> lftype.
+  type eval/lam lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj.
+  type eval/app lfobj -> lfobj -> lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj -> lfobj -> lfobj -> lfobj.
+  type step lfobj -> lfobj -> lfobj -> lftype.
+  type step/reduce lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj -> lfobj.
+  type step/head lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type nstep lfobj -> lfobj -> lfobj -> lftype.
+  type nstep/zero lfobj -> lfobj -> lfobj.
+  type nstep/succ lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj -> lfobj.
+  type value lfobj -> lfobj -> lftype.
+  type value/abs lfobj -> lfobj -> (lfobj -> lfobj) -> lfobj.
+end.
+module intrinsic.
+  (* ty:type *)
+  lfisty ty.
+  (* i:ty *)
+  lfhas i ty.
+  (* arr:ty -> ty -> ty *)
+  pi lf_1\lfhas lf_1 ty => pi lf_2\lfhas lf_2 ty => lfhas (arr lf_1 lf_2) ty.
+  (* tm:ty -> type *)
+  pi lf_1\lfhas lf_1 ty => lfisty (tm lf_1).
+  (* lam:{A:ty} {B:ty} (tm A -> tm B) -> tm (arr A B) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi lf_1\(pi lf_2\lfhas lf_2 (tm A) => lfhas (lf_1 lf_2) (tm B)) =>
+        lfhas (lam A B lf_1) (tm (arr A B)).
+  (* app:{A:ty} {B:ty} tm (arr A B) -> tm A -> tm B *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi lf_1\lfhas lf_1 (tm (arr A B)) =>
+        pi lf_2\lfhas lf_2 (tm A) => lfhas (app A B lf_1 lf_2) (tm B).
+  (* eval:{A:ty} tm A -> tm A -> type *)
+  pi A\lfhas A ty =>
+    pi lf_1\lfhas lf_1 (tm A) =>
+      pi lf_2\lfhas lf_2 (tm A) => lfisty (eval A lf_1 lf_2).
+  (* eval/lam:{A:ty} {B:ty} {R:tm A -> tm B}
+       eval (arr A B) (lam A B R) (lam A B R) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi R\(pi lf_1\lfhas lf_1 (tm A) => lfhas (R lf_1) (tm B)) =>
+        lfhas (eval/lam A B R) (eval (arr A B) (lam A B R) (lam A B R)).
+  (* eval/app:{A:ty} {B:ty} {M:tm (arr A B)} {N:tm A} {R:tm A -> tm B}
+       {V:tm B} eval (arr A B) M (lam A B R) -> eval B (R N) V ->
+       eval B (app A B M N) V *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi M\lfhas M (tm (arr A B)) =>
+        pi N\lfhas N (tm A) =>
+          pi R\(pi lf_1\lfhas lf_1 (tm A) => lfhas (R lf_1) (tm B)) =>
+            pi V\lfhas V (tm B) =>
+              pi lf_1\lfhas lf_1 (eval (arr A B) M (lam A B R)) =>
+                pi lf_2\lfhas lf_2 (eval B (R N) V) =>
+                  lfhas (eval/app A B M N R V lf_1 lf_2)
+                    (eval B (app A B M N) V).
+  (* step:{A:ty} tm A -> tm A -> type *)
+  pi A\lfhas A ty =>
+    pi lf_1\lfhas lf_1 (tm A) =>
+      pi lf_2\lfhas lf_2 (tm A) => lfisty (step A lf_1 lf_2).
+  (* step/reduce:{A:ty} {B:ty} {R:tm A -> tm B} {N:tm A}
+       step B (app A B (lam A B R) N) (R N) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi R\(pi lf_1\lfhas lf_1 (tm A) => lfhas (R lf_1) (tm B)) =>
+        pi N\lfhas N (tm A) =>
+          lfhas (step/reduce A B R N) (step B (app A B (lam A B R) N) (R N)).
+  (* step/head:{A:ty} {B:ty} {M1:tm (arr A B)} {M2:tm (arr A B)} {N:tm A}
+       step B (app A B M1 N) (app A B M2 N) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi M1\lfhas M1 (tm (arr A B)) =>
+        pi M2\lfhas M2 (tm (arr A B)) =>
+          pi N\lfhas N (tm A) =>
+            lfhas (step/head A B M1 M2 N)
+              (step B (app A B M1 N) (app A B M2 N)).
+  (* nstep:{A:ty} tm A -> tm A -> type *)
+  pi A\lfhas A ty =>
+    pi lf_1\lfhas lf_1 (tm A) =>
+      pi lf_2\lfhas lf_2 (tm A) => lfisty (nstep A lf_1 lf_2).
+  (* nstep/zero:{A:ty} {M:tm A} nstep A M M *)
+  pi A\lfhas A ty =>
+    pi M\lfhas M (tm A) => lfhas (nstep/zero A M) (nstep A M M).
+  (* nstep/succ:{A:ty} {M1:tm A} {M2:tm A} {N:tm A} step A M1 M2 ->
+       nstep A M2 N -> nstep A M1 N *)
+  pi A\lfhas A ty =>
+    pi M1\lfhas M1 (tm A) =>
+      pi M2\lfhas M2 (tm A) =>
+        pi N\lfhas N (tm A) =>
+          pi lf_1\lfhas lf_1 (step A M1 M2) =>
+            pi lf_2\lfhas lf_2 (nstep A M2 N) =>
+              lfhas (nstep/succ A M1 M2 N lf_1 lf_2) (nstep A M1 N).
+  (* value:{A:ty} tm A -> type *)
+  pi A\lfhas A ty => pi lf_1\lfhas lf_1 (tm A) => lfisty (value A lf_1).
+  (* value/abs:{A:ty} {B:ty} {R:tm A -> tm B} value (arr A B) (lam A B R) *)
+  pi A\lfhas A ty =>
+    pi B\lfhas B ty =>
+      pi R\(pi lf_1\lfhas lf_1 (tm A) => lfhas (R lf_1) (tm B)) =>
+        lfhas (value/abs A B R) (value (arr A B) (lam A B R)).
+end.
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define progr : lfobj -> lfobj -> prop by 
+progr A M := &lt;A:ty&gt; /\ &lt;M:tm A&gt; /\ (exists P, &lt;P:value A M&gt;);
+progr A M := &lt;A:ty&gt; /\ &lt;M:tm A&gt; /\ (exists N P, &lt;N:tm A&gt; /\ &lt;P:step A M N&gt;).</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem progress : 
+forall A M, &lt;A:ty&gt; -&gt; &lt;M:tm A&gt; -&gt; progr A M.</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+============================
+ forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt; -> progr A M
+
+progress < <b>induction on 2.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+============================
+ forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;@ -> progr A M
+
+progress < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+Variables: A M
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H2 : &lt;M:tm A&gt;@
+============================
+ progr A M
+
+progress < <b>case H2.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+Variables: B lf_1 A1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;arr A1 B:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;B:ty&gt;*
+H5 : &lt;n1:tm A1 |- lf_1 n1:tm B&gt;*
+============================
+ progr (arr A1 B) (lam A1 B lf_1)
+
+Subgoal 2 is:
+ progr A (app A1 A lf_1 lf_2)
+
+progress < <b>search.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 2:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+============================
+ progr A (app A1 A lf_1 lf_2)
+
+progress < <b>apply IH to _ H5.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) lf_1
+============================
+ progr A (app A1 A lf_1 lf_2)
+
+progress < <b>apply IH to _ H6.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) lf_1
+H8 : progr A1 lf_2
+============================
+ progr A (app A1 A lf_1 lf_2)
+
+progress < <b>unfold 2.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) lf_1
+H8 : progr A1 lf_2
+============================
+ &lt;A:ty&gt;
+
+Subgoal 2.2 is:
+ &lt;app A1 A lf_1 lf_2:tm A&gt;
+
+Subgoal 2.3 is:
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A lf_1 lf_2) N&gt;
+
+progress < <b>search.</b>
+</pre>
+<a name="12"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) lf_1
+H8 : progr A1 lf_2
+============================
+ &lt;app A1 A lf_1 lf_2:tm A&gt;
+
+Subgoal 2.3 is:
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A lf_1 lf_2) N&gt;
+
+progress < <b>search.</b>
+</pre>
+<a name="13"></a>
+<pre>
+Subgoal 2.3:
+
+Variables: A A1 lf_2 lf_1
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H5 : &lt;lf_1:tm (arr A1 A)&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) lf_1
+H8 : progr A1 lf_2
+============================
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A lf_1 lf_2) N&gt;
+
+progress < <b>case H5.</b>
+</pre>
+<a name="14"></a>
+<pre>
+Subgoal 2.3.1:
+
+Variables: A A1 lf_2 lf_3
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) (lam A1 A lf_3)
+H8 : progr A1 lf_2
+H9 : &lt;A1:ty&gt;*
+H10 : &lt;A:ty&gt;*
+H11 : &lt;n1:tm A1 |- lf_3 n1:tm A&gt;*
+============================
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A (lam A1 A lf_3) lf_2) N&gt;
+
+Subgoal 2.3.2 is:
+ exists N P, &lt;N:tm A&gt; /\
+   &lt;P:step A (app A1 A (app A2 (arr A1 A) lf_3 lf_4) lf_2) N&gt;
+
+progress < <b>inst H11 with n1 = lf_2.</b>
+</pre>
+<a name="15"></a>
+<pre>
+Subgoal 2.3.1:
+
+Variables: A A1 lf_2 lf_3
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) (lam A1 A lf_3)
+H8 : progr A1 lf_2
+H9 : &lt;A1:ty&gt;*
+H10 : &lt;A:ty&gt;*
+H11 : &lt;n1:tm A1 |- lf_3 n1:tm A&gt;*
+H12 : &lt;lf_2:tm A1 |- lf_3 lf_2:tm A&gt;*
+============================
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A (lam A1 A lf_3) lf_2) N&gt;
+
+Subgoal 2.3.2 is:
+ exists N P, &lt;N:tm A&gt; /\
+   &lt;P:step A (app A1 A (app A2 (arr A1 A) lf_3 lf_4) lf_2) N&gt;
+
+progress < <b>cut H12 with H6.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 2.3.1:
+
+Variables: A A1 lf_2 lf_3
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) (lam A1 A lf_3)
+H8 : progr A1 lf_2
+H9 : &lt;A1:ty&gt;*
+H10 : &lt;A:ty&gt;*
+H11 : &lt;n1:tm A1 |- lf_3 n1:tm A&gt;*
+H12 : &lt;lf_2:tm A1 |- lf_3 lf_2:tm A&gt;*
+H13 : &lt;lf_3 lf_2:tm A&gt;
+============================
+ exists N P, &lt;N:tm A&gt; /\ &lt;P:step A (app A1 A (lam A1 A lf_3) lf_2) N&gt;
+
+Subgoal 2.3.2 is:
+ exists N P, &lt;N:tm A&gt; /\
+   &lt;P:step A (app A1 A (app A2 (arr A1 A) lf_3 lf_4) lf_2) N&gt;
+
+progress < <b>exists lf_3 lf_2.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 2.3.1:
+
+Variables: A A1 lf_2 lf_3
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) (lam A1 A lf_3)
+H8 : progr A1 lf_2
+H9 : &lt;A1:ty&gt;*
+H10 : &lt;A:ty&gt;*
+H11 : &lt;n1:tm A1 |- lf_3 n1:tm A&gt;*
+H12 : &lt;lf_2:tm A1 |- lf_3 lf_2:tm A&gt;*
+H13 : &lt;lf_3 lf_2:tm A&gt;
+============================
+ exists P, &lt;lf_3 lf_2:tm A&gt; /\
+   &lt;P:step A (app A1 A (lam A1 A lf_3) lf_2) (lf_3 lf_2)&gt;
+
+Subgoal 2.3.2 is:
+ exists N P, &lt;N:tm A&gt; /\
+   &lt;P:step A (app A1 A (app A2 (arr A1 A) lf_3 lf_4) lf_2) N&gt;
+
+progress < <b>search.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2.3.2:
+
+Variables: A A1 lf_2 A2 lf_4 lf_3
+IH : forall A M, &lt;A:ty&gt; -> &lt;M:tm A&gt;* -> progr A M
+H1 : &lt;A:ty&gt;
+H3 : &lt;A1:ty&gt;*
+H4 : &lt;A:ty&gt;*
+H6 : &lt;lf_2:tm A1&gt;*
+H7 : progr (arr A1 A) (app A2 (arr A1 A) lf_3 lf_4)
+H8 : progr A1 lf_2
+H9 : &lt;A2:ty&gt;*
+H10 : &lt;arr A1 A:ty&gt;*
+H11 : &lt;lf_3:tm (arr A2 (arr A1 A))&gt;*
+H12 : &lt;lf_4:tm A2&gt;*
+============================
+ exists N P, &lt;N:tm A&gt; /\
+   &lt;P:step A (app A1 A (app A2 (arr A1 A) lf_3 lf_4) lf_2) N&gt;
+
+progress < <b>search.</b>
+Proof completed.
+</pre>
+<a name="19"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>
