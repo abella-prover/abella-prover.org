@@ -1,0 +1,69 @@
+Kind name,action,proc type.
+
+Import "ccs_bisim".
+Import "ccs_ctx".
+
+
+%%% Define some actions
+Type a,b,c,d name.
+
+Theorem bisim_par_null : forall P, bisim_up_to refl_t (par P null) P.
+coinduction. intros. unfold.
+  intros. case H1.
+    witness P3. split. search.
+      witness par P3 null. witness P3. split. search. backchain CH.
+    case H2.
+    case H3.
+  intros. witness par Q1 null. split. search.
+    witness par Q1 null. witness Q1. split. search. backchain CH.
+
+
+%%% !(a + b) ~ (!a | !b)
+
+Theorem ex_bang_plus :
+  bisim (repl (plus (act (dn a) null) (act (dn b) null)))
+        (par (repl (act (dn a) null)) (repl (act (dn b) null))).
+Sound : apply bisim_sound. Sound : case Sound.
+unfold. backchain Sound. clear Sound.
+coinduction. intros. unfold.
+  intros. case H1.
+    case H2.
+      case H3.
+      witness par (par (repl (act (dn a) null)) null) (repl (act (dn b) null)). split. search.
+        witness repl (plus (act (dn a) null) (act (dn b) null)).
+        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). split.
+          unfold. backchain bisim_par_null.
+          backchain bisim_par_subst_1. backchain bisim_par_null.
+
+          backchain CH.
+      case H3.
+      witness par (repl (act (dn a) null)) (par (repl (act (dn b) null)) null). split. search.
+        witness repl (plus (act (dn a) null) (act (dn b) null)).
+        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). split.
+          unfold. backchain bisim_par_null.
+          backchain bisim_par_subst_2. backchain bisim_par_null.
+
+        backchain CH.
+    case H2.
+      case H4.
+      case H4.
+  intros. case H1.
+    case H2.
+      case H3.
+      witness par (repl (plus (act (dn a) null) (act (dn b) null))) null. split. search.
+        witness repl (plus (act (dn a) null) (act (dn b) null)).
+        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). split.
+          unfold. backchain bisim_par_null.
+          backchain bisim_par_subst_1. backchain bisim_par_null.
+          backchain CH.
+      case H3.
+    case H2.
+      case H3.
+      witness par (repl (plus (act (dn a) null) (act (dn b) null))) null. split. search.
+        witness repl (plus (act (dn a) null) (act (dn b) null)).
+        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). split.
+          unfold. backchain bisim_par_null.
+          backchain bisim_par_subst_2. backchain bisim_par_null.
+          backchain CH.
+      case H3.
+    case H2. case H4.
