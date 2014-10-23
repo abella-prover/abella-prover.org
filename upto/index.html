@@ -76,20 +76,49 @@ section p + p,
   which was submitted to <a href="http://cpp2015.inria.fr/">CPP 2015</a>.</em>
 </p>
 
+<p>You may browse the following development on-line. To run them
+yourself, you will need version 2.0.2 of Abella, available from
+the <a href="http://abella-prover.org">main Abella web-page</a>.</p>
+
 </div>
 
 <div class="section">
 
-<p style="color:red;">
-  MORE DETAILS TO COME IN A FEW DAYS &mdash; STAY TUNED!
-</p>
+  <h3>CCS</h3>
 
+  <ul>
+    <li><a href="ccs_core.html"><code>ccs_core</code></a> contains the
+      core definitions of the labelled transition system of CCS and
+      the definition of bisimulation-up-to. There are also some simple
+      lemmas about ordinary bisimulation (<em>a.k.a.</em> bisimulation
+      up to reflexivity).</li>
+    <li><a href="ccs_bisim.html"><code>ccs_bisim</code></a> contains
+      the soundness proof of <em>bisimulation up to
+      bisimilarity</em>.</li>
+    <li><a href="ccs_ctx.html"><code>ccs_ctx</code></a> contains the
+      definitions of process contexts and the proof that CCS contexts
+      are faithful.</li>
+    <li><a href="ccs_context.html"><code>ccs_context</code></a>
+      contains the soundness proof of <em>bisimulation up to
+      context</em>.</li>
+    <li><a href="ccs_bisim_context.html"><code>ccs_bisim_context</code></a>
+      contains the soundness proof of <em>bisimulation up to
+      bisimilarity and context</em>.</li>
+    <li><a href="ccs.tar.gz"><code>ccs.tar.gz</code></a>, which
+      packages up the above files together with
+      a <code>Makefile</code> to run the sources through Abella in the
+      right order.</li>
+  </ul>
+
+  <h3>The &pi;-calculus</h3>
+
+  <blockquote><p style="color:red">COMING SOON... STAY TUNED!</p></blockquote>
 
 </div> <!-- .section -->
 
 <div class="section">
   <hr />
-  Last updated: 2014-10-13 10:03:02+0200
+  Last updated: <time>2014-10-23 15:55:53+0200</time>
 </div>
 
 </body>
