@@ -23,6 +23,69 @@
 
 
 <div class="section">
+<h2>Version 2.0.2</h2>
+
+<p>Potentially breaking changes.</p>
+<ul>
+ <li>Constants with names matching n[0-9]+ are forcibly treated as
+ nominal constants. This fixes an unsoundness due to ambiguous
+ parsing of such constants in proofs.</li>
+ <li>The tactic <code>exists</code> now has a synonym: <code>witness</code>. This adds
+ <code>witness</code> to the list of keywords.</li>
+</ul>
+
+<p>Additions</p>
+<ul>
+ <li>Specification language now supports <code>&lt;=</code> in addition to <code>=&gt;</code></li>
+ <li>Binders are printed using variable naming hints from the
+ source instead of in a normalized form (x1, x2, etc.)</li>
+ <li>Can unfold the nth clause of an inductive or co-inductive
+ definition block using <code>unfold n</code>.</li>
+ <li>Can name clauses in the specification (in .mod files) using a
+ comment of the form <code>%:nm:</code> right before a clause. There must be a
+ single Abella identifier and no spaces between the two :s.</li>
+ <li>Can unfold a specific clause named <code>nm</code> of a specification using
+ <code>unfold nm</code>.</li>
+ <li>New flag &quot;instantiations&quot; shows variable instantiations at the top
+ of a subgoal.</li>
+ <li>New notation <code>~ F</code> for <code>F -&gt; false</code>.</li>
+ <li>The backchain tactic now allows backchaining formulas that are
+ not prenex-quantified implications. The &quot;head&quot; of the backchained
+ formula is interpreted as any formula that is not an implication.</li>
+ <li>The rename tactic has been extended to also allow renaming
+ variables, with an identical syntax.</li>
+</ul>
+
+<p>Internal changes</p>
+<ul>
+ <li>Terms and meta-terms now have pretty-printer with a plugin
+ architecture for future extensions.</li>
+</ul>
+
+<p>Bug fixes</p>
+<ul>
+ <li>The exists/witness tactics now rename to avoid capture (#22)</li>
+ <li>Raising over nominal constants in spec. sequents raises over the
+ support of the whole sequent rather than just its conclusion.</li>
+ <li>Normalizing of binders now avoid capture (#23)</li>
+ <li>Instantiated variables are no longer printed in the variables list
+ of a sequent.</li>
+ <li>Higher-order definitions have a stricter stratification check that
+ complains both about actual and potential unsound definitions.</li>
+ <li>The subordination checker now does not complain about invalid
+ subterms for types that have not been explicitly Closed.</li>
+ <li>The rename tactic cannot rename lemmas (i.e., theorems proved
+ earlier)</li>
+</ul>
+
+<p>New examples</p>
+<ul>
+ <li>Formalization of the meta-theory of higher-order HH using only the
+ reasoning logic of Abella (<a href='http://abella-prover.org/examples/logic/hh_meta.html'>examples/logic/hh_meta.thm</a>).</li>
+</ul>
+</div>
+
+<div class="section">
 <h2>Version 2.0.1</h2>
 <p>This is a minor bugfix release for 2.0.0</p>
 <ul>
