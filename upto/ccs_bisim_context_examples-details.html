@@ -671,7 +671,7 @@ forall P, bisim_up_to refl_t (par (repl P) P) (repl P).</b>
 ============================
  forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
 
-bisim_repl_absorb < <b>apply bisim_context_sound.</b>
+bisim_repl_absorb < <b>Sound : apply bisim_context_sound.</b>
 </pre>
 <a name="43"></a>
 <pre>
@@ -680,7 +680,7 @@ Sound : is_sound bisim_context_t
 ============================
  forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
 
-bisim_repl_absorb < <b>case Sound : Sound.</b>
+bisim_repl_absorb < <b>Sound : case Sound.</b>
 </pre>
 <a name="44"></a>
 <pre>
@@ -4065,7 +4065,7 @@ forall P, bisim (repl (plus (act (dn a) P) (act (dn b) P)))
  forall P, bisim (repl (plus (act (dn a) P) (act (dn b) P)))
              (par (repl (act (dn a) P)) (repl (act (dn b) P)))
 
-ex_bang_plus_ctx < <b>apply bisim_context_sound.</b>
+ex_bang_plus_ctx < <b>Sound : apply bisim_context_sound.</b>
 </pre>
 <a name="167"></a>
 <pre>
@@ -4075,7 +4075,7 @@ Sound : is_sound bisim_context_t
  forall P, bisim (repl (plus (act (dn a) P) (act (dn b) P)))
              (par (repl (act (dn a) P)) (repl (act (dn b) P)))
 
-ex_bang_plus_ctx < <b>case Sound : Sound.</b>
+ex_bang_plus_ctx < <b>Sound : case Sound.</b>
 </pre>
 <a name="168"></a>
 <pre>
@@ -7858,7 +7858,7 @@ forall P, bisim (repl (repl (act (dn a) P))) (repl (act (dn a) P)).</b>
 ============================
  forall P, bisim (repl (repl (act (dn a) P))) (repl (act (dn a) P))
 
-ex_bang_bang_ctx < <b>apply bisim_context_sound.</b>
+ex_bang_bang_ctx < <b>Sound : apply bisim_context_sound.</b>
 </pre>
 <a name="273"></a>
 <pre>
@@ -7867,7 +7867,7 @@ Sound : is_sound bisim_context_t
 ============================
  forall P, bisim (repl (repl (act (dn a) P))) (repl (act (dn a) P))
 
-ex_bang_bang_ctx < <b>case Sound : Sound.</b>
+ex_bang_bang_ctx < <b>Sound : case Sound.</b>
 </pre>
 <a name="274"></a>
 <pre>

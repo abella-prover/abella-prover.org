@@ -5161,7 +5161,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_context_sound_fst < <b>apply bisim_context_substitutive.</b>
+bisim_context_sound_fst < <b>Lem : apply bisim_context_substitutive.</b>
 </pre>
 <a name="204"></a>
 <pre>
@@ -5195,7 +5195,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_context_sound_fst < <b>case Lem : Lem.</b>
+bisim_context_sound_fst < <b>Lem : case Lem.</b>
 </pre>
 <a name="205"></a>
 <pre>
@@ -6007,7 +6007,7 @@ H25 : bisim_up_to refl_t P6 P7
 Subgoal 2.2.2 is:
  bisim_up_to refl_t P6 Q3 +
 
-bisim_context_sound_fst < <b>apply bisim_context_substitutive.</b>
+bisim_context_sound_fst < <b>Lem : apply bisim_context_substitutive.</b>
 </pre>
 <a name="234"></a>
 <pre>
@@ -6036,7 +6036,7 @@ Lem : substitutive_rel (bisim_up_to bisim_context_t)
 Subgoal 2.2.2 is:
  bisim_up_to refl_t P6 Q3 +
 
-bisim_context_sound_fst < <b>case Lem : Lem.</b>
+bisim_context_sound_fst < <b>Lem : case Lem.</b>
 </pre>
 <a name="235"></a>
 <pre>
@@ -6342,7 +6342,7 @@ H1 : bisim_up_to bisim_context_t P Q
 ============================
  bisim_up_to refl_t P Q
 
-bisim_context_sound < <b>apply bisim_context_sound_snd.</b>
+bisim_context_sound < <b>Snd : apply bisim_context_sound_snd.</b>
 </pre>
 <a name="254"></a>
 <pre>
@@ -6353,7 +6353,7 @@ Snd : is_sound_snd bisim_context_t
 ============================
  bisim_up_to refl_t P Q
 
-bisim_context_sound < <b>case Snd : Snd.</b>
+bisim_context_sound < <b>Snd : case Snd.</b>
 </pre>
 <a name="255"></a>
 <pre>
@@ -6366,7 +6366,7 @@ Snd : forall P Q, bisim_up_to bisim_context_t P Q ->
 ============================
  bisim_up_to refl_t P Q
 
-bisim_context_sound < <b>apply bisim_context_sound_fst.</b>
+bisim_context_sound < <b>Fst : apply bisim_context_sound_fst.</b>
 </pre>
 <a name="256"></a>
 <pre>
@@ -6380,7 +6380,7 @@ Fst : is_sound_fst bisim_context_t
 ============================
  bisim_up_to refl_t P Q
 
-bisim_context_sound < <b>case Fst : Fst.</b>
+bisim_context_sound < <b>Fst : case Fst.</b>
 </pre>
 <a name="257"></a>
 <pre>

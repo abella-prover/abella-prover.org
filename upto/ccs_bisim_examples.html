@@ -76,23 +76,22 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="ccs_bisim_examples-details.html#5" class="command">Theorem ex_bang_plus :
   bisim (repl (plus (act (dn a) null) (act (dn b) null)))
         (par (repl (act (dn a) null)) (repl (act (dn b) null))).</a>
-<div class="proof"><a href="ccs_bisim_examples-details.html#6" class="tactic">
-Sound : </a><a href="ccs_bisim_examples-details.html#7" class="tactic">apply bisim_sound.</a><a href="ccs_bisim_examples-details.html#8" class="tactic"> Sound : </a><a href="ccs_bisim_examples-details.html#9" class="tactic">case Sound.</a>
-<a href="ccs_bisim_examples-details.html#10" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#11" class="tactic">backchain Sound.</a> <a href="ccs_bisim_examples-details.html#12" class="tactic">clear Sound.</a>
-<a href="ccs_bisim_examples-details.html#13" class="tactic">coinduction.</a> <a href="ccs_bisim_examples-details.html#14" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#15" class="tactic">unfold.</a>
-  <a href="ccs_bisim_examples-details.html#16" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#17" class="tactic">case H1.</a>
-    <a href="ccs_bisim_examples-details.html#18" class="tactic">case H2.</a>
-      <a href="ccs_bisim_examples-details.html#19" class="tactic">case H3.</a><a href="ccs_bisim_examples-details.html#20" class="tactic">
-      witness par (par (repl (act (dn a) null)) null) (repl (act (dn b) null)). </a><a href="ccs_bisim_examples-details.html#21" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#22" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#23" class="tactic">
-        witness repl (plus (act (dn a) null) (act (dn b) null)).
-        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). </a><a href="ccs_bisim_examples-details.html#24" class="tactic">split.</a>
-          <a href="ccs_bisim_examples-details.html#25" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#26" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#27" class="tactic">backchain bisim_par_subst_1.</a> <a href="ccs_bisim_examples-details.html#28" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#29" class="tactic">backchain CH.</a>
-      <a href="ccs_bisim_examples-details.html#30" class="tactic">case H3.</a><a href="ccs_bisim_examples-details.html#31" class="tactic">
-      witness par (repl (act (dn a) null)) (par (repl (act (dn b) null)) null). </a><a href="ccs_bisim_examples-details.html#32" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#33" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#34" class="tactic">
-        witness repl (plus (act (dn a) null) (act (dn b) null)).
-        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). </a><a href="ccs_bisim_examples-details.html#35" class="tactic">split.</a>
+<div class="proof"><a href="ccs_bisim_examples-details.html#6" class="tactic">Sound : apply bisim_sound.</a> <a href="ccs_bisim_examples-details.html#7" class="tactic">Sound : case Sound.</a>
+<a href="ccs_bisim_examples-details.html#8" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#9" class="tactic">backchain Sound.</a> <a href="ccs_bisim_examples-details.html#10" class="tactic">clear Sound.</a>
+<a href="ccs_bisim_examples-details.html#11" class="tactic">coinduction.</a> <a href="ccs_bisim_examples-details.html#12" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#13" class="tactic">unfold.</a>
+  <a href="ccs_bisim_examples-details.html#14" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#15" class="tactic">case H1.</a>
+    <a href="ccs_bisim_examples-details.html#16" class="tactic">case H2.</a>
+      <a href="ccs_bisim_examples-details.html#17" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#18" class="tactic">witness par (par (repl (act (dn a) null)) null) (repl (act (dn b) null)).</a> <a href="ccs_bisim_examples-details.html#19" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#20" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#21" class="tactic">witness repl (plus (act (dn a) null) (act (dn b) null)).</a>
+        <a href="ccs_bisim_examples-details.html#22" class="tactic">witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</a> <a href="ccs_bisim_examples-details.html#23" class="tactic">split.</a>
+          <a href="ccs_bisim_examples-details.html#24" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#25" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#26" class="tactic">backchain bisim_par_subst_1.</a> <a href="ccs_bisim_examples-details.html#27" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#28" class="tactic">backchain CH.</a>
+      <a href="ccs_bisim_examples-details.html#29" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#30" class="tactic">witness par (repl (act (dn a) null)) (par (repl (act (dn b) null)) null).</a> <a href="ccs_bisim_examples-details.html#31" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#32" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#33" class="tactic">witness repl (plus (act (dn a) null) (act (dn b) null)).</a>
+        <a href="ccs_bisim_examples-details.html#34" class="tactic">witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</a> <a href="ccs_bisim_examples-details.html#35" class="tactic">split.</a>
           <a href="ccs_bisim_examples-details.html#36" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#37" class="tactic">backchain bisim_par_null.</a>
           <a href="ccs_bisim_examples-details.html#38" class="tactic">backchain bisim_par_subst_2.</a> <a href="ccs_bisim_examples-details.html#39" class="tactic">backchain bisim_par_null.</a>
           <a href="ccs_bisim_examples-details.html#40" class="tactic">backchain CH.</a>
@@ -101,65 +100,64 @@ Sound : </a><a href="ccs_bisim_examples-details.html#7" class="tactic">apply bis
       <a href="ccs_bisim_examples-details.html#43" class="tactic">case H4.</a>
   <a href="ccs_bisim_examples-details.html#44" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#45" class="tactic">case H1.</a>
     <a href="ccs_bisim_examples-details.html#46" class="tactic">case H2.</a>
-      <a href="ccs_bisim_examples-details.html#47" class="tactic">case H3.</a><a href="ccs_bisim_examples-details.html#48" class="tactic">
-      witness par (repl (plus (act (dn a) null) (act (dn b) null))) null. </a><a href="ccs_bisim_examples-details.html#49" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#50" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#51" class="tactic">
-        witness repl (plus (act (dn a) null) (act (dn b) null)).
-        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). </a><a href="ccs_bisim_examples-details.html#52" class="tactic">split.</a>
-          <a href="ccs_bisim_examples-details.html#53" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#54" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#55" class="tactic">backchain bisim_par_subst_1.</a> <a href="ccs_bisim_examples-details.html#56" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#57" class="tactic">backchain CH.</a>
-      <a href="ccs_bisim_examples-details.html#58" class="tactic">case H3.</a>
-    <a href="ccs_bisim_examples-details.html#59" class="tactic">case H2.</a>
-      <a href="ccs_bisim_examples-details.html#60" class="tactic">case H3.</a><a href="ccs_bisim_examples-details.html#61" class="tactic">
-      witness par (repl (plus (act (dn a) null) (act (dn b) null))) null. </a><a href="ccs_bisim_examples-details.html#62" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#63" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#64" class="tactic">
-        witness repl (plus (act (dn a) null) (act (dn b) null)).
-        witness par (repl (act (dn a) null)) (repl (act (dn b) null)). </a><a href="ccs_bisim_examples-details.html#65" class="tactic">split.</a>
-          <a href="ccs_bisim_examples-details.html#66" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#67" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#68" class="tactic">backchain bisim_par_subst_2.</a> <a href="ccs_bisim_examples-details.html#69" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#70" class="tactic">backchain CH.</a>
-      <a href="ccs_bisim_examples-details.html#71" class="tactic">case H3.</a>
-    <a href="ccs_bisim_examples-details.html#72" class="tactic">case H2.</a> <a href="ccs_bisim_examples-details.html#73" class="tactic">case H4.</a>
-    <a href="ccs_bisim_examples-details.html#74" class="tactic">case H3.</a> <a href="ccs_bisim_examples-details.html#75" class="tactic">case H4.</a></div>
+      <a href="ccs_bisim_examples-details.html#47" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#48" class="tactic">witness par (repl (plus (act (dn a) null) (act (dn b) null))) null.</a> <a href="ccs_bisim_examples-details.html#49" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#50" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#51" class="tactic">witness repl (plus (act (dn a) null) (act (dn b) null)).</a>
+        <a href="ccs_bisim_examples-details.html#52" class="tactic">witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</a> <a href="ccs_bisim_examples-details.html#53" class="tactic">split.</a>
+          <a href="ccs_bisim_examples-details.html#54" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#55" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#56" class="tactic">backchain bisim_par_subst_1.</a> <a href="ccs_bisim_examples-details.html#57" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#58" class="tactic">backchain CH.</a>
+      <a href="ccs_bisim_examples-details.html#59" class="tactic">case H3.</a>
+    <a href="ccs_bisim_examples-details.html#60" class="tactic">case H2.</a>
+      <a href="ccs_bisim_examples-details.html#61" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#62" class="tactic">witness par (repl (plus (act (dn a) null) (act (dn b) null))) null.</a> <a href="ccs_bisim_examples-details.html#63" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#64" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#65" class="tactic">witness repl (plus (act (dn a) null) (act (dn b) null)).</a>
+        <a href="ccs_bisim_examples-details.html#66" class="tactic">witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</a> <a href="ccs_bisim_examples-details.html#67" class="tactic">split.</a>
+          <a href="ccs_bisim_examples-details.html#68" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#69" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#70" class="tactic">backchain bisim_par_subst_2.</a> <a href="ccs_bisim_examples-details.html#71" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#72" class="tactic">backchain CH.</a>
+      <a href="ccs_bisim_examples-details.html#73" class="tactic">case H3.</a>
+    <a href="ccs_bisim_examples-details.html#74" class="tactic">case H2.</a> <a href="ccs_bisim_examples-details.html#75" class="tactic">case H4.</a>
+    <a href="ccs_bisim_examples-details.html#76" class="tactic">case H3.</a> <a href="ccs_bisim_examples-details.html#77" class="tactic">case H4.</a></div>
 
 <span class="comment">%%% !!a ~ !a</span>
 
-<a href="ccs_bisim_examples-details.html#76" class="command">Import "ccs_bisim_context_examples".</a> <a class="import-link" href="ccs_bisim_context_examples.html">[View ccs_bisim_context_examples]</a>
+<a href="ccs_bisim_examples-details.html#78" class="command">Import "ccs_bisim_context_examples".</a> <a class="import-link" href="ccs_bisim_context_examples.html">[View ccs_bisim_context_examples]</a>
 <span class="comment">%%% This is needed for: bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)</span>
 
-<a href="ccs_bisim_examples-details.html#77" class="command">Theorem ex_bang_bang :
+<a href="ccs_bisim_examples-details.html#79" class="command">Theorem ex_bang_bang :
   bisim (repl (repl (act (dn a) null)))
         (repl (act (dn a) null)).</a>
-<div class="proof"><a href="ccs_bisim_examples-details.html#78" class="tactic">
-Sound : </a><a href="ccs_bisim_examples-details.html#79" class="tactic">apply bisim_sound.</a><a href="ccs_bisim_examples-details.html#80" class="tactic"> Sound : </a><a href="ccs_bisim_examples-details.html#81" class="tactic">case Sound.</a>
+<div class="proof"><a href="ccs_bisim_examples-details.html#80" class="tactic">Sound : apply bisim_sound.</a> <a href="ccs_bisim_examples-details.html#81" class="tactic">Sound : case Sound.</a>
 <a href="ccs_bisim_examples-details.html#82" class="tactic">unfold.</a> <a href="ccs_bisim_examples-details.html#83" class="tactic">backchain Sound.</a> <a href="ccs_bisim_examples-details.html#84" class="tactic">clear Sound.</a>
 <a href="ccs_bisim_examples-details.html#85" class="tactic">coinduction.</a> <a href="ccs_bisim_examples-details.html#86" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#87" class="tactic">unfold.</a>
   <a href="ccs_bisim_examples-details.html#88" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#89" class="tactic">case H1.</a>
     <a href="ccs_bisim_examples-details.html#90" class="tactic">case H2.</a>
-      <a href="ccs_bisim_examples-details.html#91" class="tactic">case H3.</a><a href="ccs_bisim_examples-details.html#92" class="tactic">
-      witness (par (repl (act (dn a) null)) null). </a><a href="ccs_bisim_examples-details.html#93" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#94" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#95" class="tactic">
-        witness (repl (repl (act (dn a) null))).
-        witness (repl (act (dn a) null)). </a><a href="ccs_bisim_examples-details.html#96" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#97" class="tactic">unfold.</a>
-          <a href="ccs_bisim_examples-details.html#98" class="tactic">apply bisim_par_null with P = (repl (act (dn a) null)).</a>
-          <a href="ccs_bisim_examples-details.html#99" class="tactic">apply bisim_par_subst_2 to H4 with R = (repl (repl (act (dn a) null))).</a>
-          <a href="ccs_bisim_examples-details.html#100" class="tactic">apply bisim_repl_absorb with P = (repl (act (dn a) null)).</a>
-          <a href="ccs_bisim_examples-details.html#101" class="tactic">backchain bisim_transitive_.</a>
-          <a href="ccs_bisim_examples-details.html#102" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#103" class="tactic">backchain CH.</a>
-    <a href="ccs_bisim_examples-details.html#104" class="tactic">case H3.</a>
-      <a href="ccs_bisim_examples-details.html#105" class="tactic">case H2.</a>
-      <a href="ccs_bisim_examples-details.html#106" class="tactic">case H4.</a>
-  <a href="ccs_bisim_examples-details.html#107" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#108" class="tactic">case H1.</a>
-    <a href="ccs_bisim_examples-details.html#109" class="tactic">case H2.</a><a href="ccs_bisim_examples-details.html#110" class="tactic">
-      witness (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)). </a><a href="ccs_bisim_examples-details.html#111" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#112" class="tactic">search.</a><a href="ccs_bisim_examples-details.html#113" class="tactic">
-        witness (repl (repl (act (dn a) null))).
-        witness (repl (act (dn a) null)). </a><a href="ccs_bisim_examples-details.html#114" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#115" class="tactic">unfold.</a>
-          <a href="ccs_bisim_examples-details.html#116" class="tactic">apply bisim_par_null with P = (repl (act (dn a) null)).</a>
-          <a href="ccs_bisim_examples-details.html#117" class="tactic">apply bisim_par_subst_2 to H3 with R = (repl (repl (act (dn a) null))).</a>
-          <a href="ccs_bisim_examples-details.html#118" class="tactic">apply bisim_repl_absorb with P = (repl (act (dn a) null)).</a>
-          <a href="ccs_bisim_examples-details.html#119" class="tactic">backchain bisim_transitive_.</a>
-          <a href="ccs_bisim_examples-details.html#120" class="tactic">backchain bisim_par_null.</a>
-          <a href="ccs_bisim_examples-details.html#121" class="tactic">backchain CH.</a>
-    <a href="ccs_bisim_examples-details.html#122" class="tactic">case H2.</a></div>
+      <a href="ccs_bisim_examples-details.html#91" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#92" class="tactic">witness (par (repl (act (dn a) null)) null).</a> <a href="ccs_bisim_examples-details.html#93" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#94" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#95" class="tactic">witness (repl (repl (act (dn a) null))).</a>
+        <a href="ccs_bisim_examples-details.html#96" class="tactic">witness (repl (act (dn a) null)).</a> <a href="ccs_bisim_examples-details.html#97" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#98" class="tactic">unfold.</a>
+          <a href="ccs_bisim_examples-details.html#99" class="tactic">apply bisim_par_null with P = (repl (act (dn a) null)).</a>
+          <a href="ccs_bisim_examples-details.html#100" class="tactic">apply bisim_par_subst_2 to H4 with R = (repl (repl (act (dn a) null))).</a>
+          <a href="ccs_bisim_examples-details.html#101" class="tactic">apply bisim_repl_absorb with P = (repl (act (dn a) null)).</a>
+          <a href="ccs_bisim_examples-details.html#102" class="tactic">backchain bisim_transitive_.</a>
+          <a href="ccs_bisim_examples-details.html#103" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#104" class="tactic">backchain CH.</a>
+    <a href="ccs_bisim_examples-details.html#105" class="tactic">case H3.</a>
+      <a href="ccs_bisim_examples-details.html#106" class="tactic">case H2.</a>
+      <a href="ccs_bisim_examples-details.html#107" class="tactic">case H4.</a>
+  <a href="ccs_bisim_examples-details.html#108" class="tactic">intros.</a> <a href="ccs_bisim_examples-details.html#109" class="tactic">case H1.</a>
+    <a href="ccs_bisim_examples-details.html#110" class="tactic">case H2.</a>
+      <a href="ccs_bisim_examples-details.html#111" class="tactic">witness (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)).</a> <a href="ccs_bisim_examples-details.html#112" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#113" class="tactic">search.</a>
+        <a href="ccs_bisim_examples-details.html#114" class="tactic">witness (repl (repl (act (dn a) null))).</a>
+        <a href="ccs_bisim_examples-details.html#115" class="tactic">witness (repl (act (dn a) null)).</a> <a href="ccs_bisim_examples-details.html#116" class="tactic">split.</a> <a href="ccs_bisim_examples-details.html#117" class="tactic">unfold.</a>
+          <a href="ccs_bisim_examples-details.html#118" class="tactic">apply bisim_par_null with P = (repl (act (dn a) null)).</a>
+          <a href="ccs_bisim_examples-details.html#119" class="tactic">apply bisim_par_subst_2 to H3 with R = (repl (repl (act (dn a) null))).</a>
+          <a href="ccs_bisim_examples-details.html#120" class="tactic">apply bisim_repl_absorb with P = (repl (act (dn a) null)).</a>
+          <a href="ccs_bisim_examples-details.html#121" class="tactic">backchain bisim_transitive_.</a>
+          <a href="ccs_bisim_examples-details.html#122" class="tactic">backchain bisim_par_null.</a>
+          <a href="ccs_bisim_examples-details.html#123" class="tactic">backchain CH.</a>
+    <a href="ccs_bisim_examples-details.html#124" class="tactic">case H2.</a></div>
 </pre>
 </div>
 

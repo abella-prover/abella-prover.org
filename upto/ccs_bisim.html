@@ -82,44 +82,44 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="ccs_bisim-details.html#6" class="command">Theorem bisim_t_reflexive : forall P, bisim_t P P P P.</a>
 <div class="proof"><a href="ccs_bisim-details.html#7" class="tactic">intros.</a> <a href="ccs_bisim-details.html#8" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#9" class="tactic">backchain bisim_reflexive_.</a> <a href="ccs_bisim-details.html#10" class="tactic">backchain bisim_reflexive_.</a></div>
 <a href="ccs_bisim-details.html#11" class="command">Theorem bisim_sound_fst : is_sound_fst bisim_t.</a>
-<div class="proof"><a href="ccs_bisim-details.html#12" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#13" class="tactic">coinduction.</a> <a href="ccs_bisim-details.html#14" class="tactic">intros.</a> <a href="ccs_bisim-details.html#15" class="tactic">case H1.</a><a href="ccs_bisim-details.html#16" class="tactic">
-rename H2 to Left. rename H3 to Middle. rename H4 to Right.
-</a><a href="ccs_bisim-details.html#17" class="tactic">unfold.</a>
-  <a href="ccs_bisim-details.html#18" class="tactic">intros Pstep.</a><a href="ccs_bisim-details.html#19" class="tactic">
-    Left : </a><a href="ccs_bisim-details.html#20" class="tactic">case Left.</a> <a href="ccs_bisim-details.html#21" class="tactic">clear Left1.</a><a href="ccs_bisim-details.html#22" class="tactic"> Left : </a><a href="ccs_bisim-details.html#23" class="tactic">apply Left to Pstep.</a> <a href="ccs_bisim-details.html#24" class="tactic">clear Left.</a><a href="ccs_bisim-details.html#25" class="tactic"> rename Left1 to PPstep.
-    Middle : </a><a href="ccs_bisim-details.html#26" class="tactic">case Middle.</a> <a href="ccs_bisim-details.html#27" class="tactic">clear Middle1.</a><a href="ccs_bisim-details.html#28" class="tactic"> Middle : </a><a href="ccs_bisim-details.html#29" class="tactic">apply Middle to PPstep.</a> <a href="ccs_bisim-details.html#30" class="tactic">clear Middle.</a><a href="ccs_bisim-details.html#31" class="tactic"> rename Middle1 to QQstep.
-    Right : </a><a href="ccs_bisim-details.html#32" class="tactic">case Right.</a> <a href="ccs_bisim-details.html#33" class="tactic">clear Right1.</a><a href="ccs_bisim-details.html#34" class="tactic"> Right : </a><a href="ccs_bisim-details.html#35" class="tactic">apply Right to QQstep.</a> <a href="ccs_bisim-details.html#36" class="tactic">clear Right.</a><a href="ccs_bisim-details.html#37" class="tactic"> rename Right1 to Qstep.
-    witness Q5. </a><a href="ccs_bisim-details.html#38" class="tactic">split.</a> <a href="ccs_bisim-details.html#39" class="tactic">search.</a><a href="ccs_bisim-details.html#40" class="tactic">
-    witness P1. witness Q5. </a><a href="ccs_bisim-details.html#41" class="tactic">split.</a> <a href="ccs_bisim-details.html#42" class="tactic">search.</a>
-    <a href="ccs_bisim-details.html#43" class="tactic">case Left2.</a> <a href="ccs_bisim-details.html#44" class="tactic">case Right2.</a><a href="ccs_bisim-details.html#45" class="tactic">
-    Bisim : </a><a href="ccs_bisim-details.html#46" class="tactic">case Middle2.</a><a href="ccs_bisim-details.html#47" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#48" class="tactic">apply bisim_transitive_ to Left3 Bisim.</a><a href="ccs_bisim-details.html#49" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#50" class="tactic">apply bisim_symmetric_ to Bisim1.</a><a href="ccs_bisim-details.html#51" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#52" class="tactic">apply bisim_transitive_ to Link1 Right3.</a>
-    <a href="ccs_bisim-details.html#53" class="tactic">backchain CH.</a>
+<div class="proof"><a href="ccs_bisim-details.html#12" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#13" class="tactic">coinduction.</a> <a href="ccs_bisim-details.html#14" class="tactic">intros.</a> <a href="ccs_bisim-details.html#15" class="tactic">case H1.</a>
+<a href="ccs_bisim-details.html#16" class="tactic">rename H2 to Left.</a> <a href="ccs_bisim-details.html#17" class="tactic">rename H3 to Middle.</a> <a href="ccs_bisim-details.html#18" class="tactic">rename H4 to Right.</a>
+<a href="ccs_bisim-details.html#19" class="tactic">unfold.</a>
+  <a href="ccs_bisim-details.html#20" class="tactic">intros Pstep.</a>
+    <a href="ccs_bisim-details.html#21" class="tactic">Left : case Left.</a> <a href="ccs_bisim-details.html#22" class="tactic">clear Left1.</a> <a href="ccs_bisim-details.html#23" class="tactic">Left : apply Left to Pstep.</a> <a href="ccs_bisim-details.html#24" class="tactic">clear Left.</a> <a href="ccs_bisim-details.html#25" class="tactic">rename Left1 to PPstep.</a>
+    <a href="ccs_bisim-details.html#26" class="tactic">Middle : case Middle.</a> <a href="ccs_bisim-details.html#27" class="tactic">clear Middle1.</a> <a href="ccs_bisim-details.html#28" class="tactic">Middle : apply Middle to PPstep.</a> <a href="ccs_bisim-details.html#29" class="tactic">clear Middle.</a> <a href="ccs_bisim-details.html#30" class="tactic">rename Middle1 to QQstep.</a>
+    <a href="ccs_bisim-details.html#31" class="tactic">Right : case Right.</a> <a href="ccs_bisim-details.html#32" class="tactic">clear Right1.</a> <a href="ccs_bisim-details.html#33" class="tactic">Right : apply Right to QQstep.</a> <a href="ccs_bisim-details.html#34" class="tactic">clear Right.</a> <a href="ccs_bisim-details.html#35" class="tactic">rename Right1 to Qstep.</a>
+    <a href="ccs_bisim-details.html#36" class="tactic">witness Q5.</a> <a href="ccs_bisim-details.html#37" class="tactic">split.</a> <a href="ccs_bisim-details.html#38" class="tactic">search.</a>
+    <a href="ccs_bisim-details.html#39" class="tactic">witness P1.</a> <a href="ccs_bisim-details.html#40" class="tactic">witness Q5.</a> <a href="ccs_bisim-details.html#41" class="tactic">split.</a> <a href="ccs_bisim-details.html#42" class="tactic">search.</a>
+    <a href="ccs_bisim-details.html#43" class="tactic">case Left2.</a> <a href="ccs_bisim-details.html#44" class="tactic">case Right2.</a>
+    <a href="ccs_bisim-details.html#45" class="tactic">Bisim : case Middle2.</a>
+    <a href="ccs_bisim-details.html#46" class="tactic">Link : apply bisim_transitive_ to Left3 Bisim.</a>
+    <a href="ccs_bisim-details.html#47" class="tactic">Link : apply bisim_symmetric_ to Bisim1.</a>
+    <a href="ccs_bisim-details.html#48" class="tactic">Link : apply bisim_transitive_ to Link1 Right3.</a>
+    <a href="ccs_bisim-details.html#49" class="tactic">backchain CH.</a>
 
-  <a href="ccs_bisim-details.html#54" class="tactic">intros Qstep.</a><a href="ccs_bisim-details.html#55" class="tactic">
-    Right : </a><a href="ccs_bisim-details.html#56" class="tactic">case Right.</a><a href="ccs_bisim-details.html#57" class="tactic"> Right : </a><a href="ccs_bisim-details.html#58" class="tactic">apply Right1 to Qstep.</a> <a href="ccs_bisim-details.html#59" class="tactic">clear Right Right1.</a><a href="ccs_bisim-details.html#60" class="tactic"> rename Right2 to Pstep.
-    Middle : </a><a href="ccs_bisim-details.html#61" class="tactic">case Middle.</a><a href="ccs_bisim-details.html#62" class="tactic"> Middle : </a><a href="ccs_bisim-details.html#63" class="tactic">apply Middle1 to Pstep.</a> <a href="ccs_bisim-details.html#64" class="tactic">clear Middle Middle1.</a><a href="ccs_bisim-details.html#65" class="tactic"> rename Middle2 to PPstep.
-    Left : </a><a href="ccs_bisim-details.html#66" class="tactic">case Left.</a><a href="ccs_bisim-details.html#67" class="tactic"> Left : </a><a href="ccs_bisim-details.html#68" class="tactic">apply Left1 to PPstep.</a> <a href="ccs_bisim-details.html#69" class="tactic">clear Left Left1.</a><a href="ccs_bisim-details.html#70" class="tactic"> rename Left2 to QQstep.
-    witness P5. </a><a href="ccs_bisim-details.html#71" class="tactic">split.</a> <a href="ccs_bisim-details.html#72" class="tactic">search.</a><a href="ccs_bisim-details.html#73" class="tactic">
-    witness P5. witness Q1. </a><a href="ccs_bisim-details.html#74" class="tactic">split.</a> <a href="ccs_bisim-details.html#75" class="tactic">search.</a>
-    <a href="ccs_bisim-details.html#76" class="tactic">case Left3.</a> <a href="ccs_bisim-details.html#77" class="tactic">case Right3.</a><a href="ccs_bisim-details.html#78" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#79" class="tactic">case Middle3.</a><a href="ccs_bisim-details.html#80" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#81" class="tactic">apply bisim_transitive_ to Left4 Link.</a><a href="ccs_bisim-details.html#82" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#83" class="tactic">apply bisim_symmetric_ to Link1.</a><a href="ccs_bisim-details.html#84" class="tactic">
-    Link : </a><a href="ccs_bisim-details.html#85" class="tactic">apply bisim_transitive_ to Link3 Right4.</a>
-    <a href="ccs_bisim-details.html#86" class="tactic">backchain CH.</a></div>
-<a href="ccs_bisim-details.html#87" class="command">Theorem bisim_sound_snd : is_sound_snd bisim_t.</a>
-<div class="proof"><a href="ccs_bisim-details.html#88" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#89" class="tactic">intros.</a><a href="ccs_bisim-details.html#90" class="tactic">
-witness P. witness Q. </a><a href="ccs_bisim-details.html#91" class="tactic">split.</a>
-  <a href="ccs_bisim-details.html#92" class="tactic">backchain bisim_reflexive_.</a>
-  <a href="ccs_bisim-details.html#93" class="tactic">search.</a>
-  <a href="ccs_bisim-details.html#94" class="tactic">backchain bisim_reflexive_.</a></div>
-<a href="ccs_bisim-details.html#95" class="command">Theorem bisim_sound : is_sound bisim_t.</a>
-<div class="proof"><a href="ccs_bisim-details.html#96" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#97" class="tactic">intros.</a>
-  <a href="ccs_bisim-details.html#98" class="tactic">apply bisim_sound_snd.</a> <a href="ccs_bisim-details.html#99" class="tactic">case H2.</a> <a href="ccs_bisim-details.html#100" class="tactic">apply H3 to H1.</a>
-  <a href="ccs_bisim-details.html#101" class="tactic">apply bisim_sound_fst.</a> <a href="ccs_bisim-details.html#102" class="tactic">case H7.</a> <a href="ccs_bisim-details.html#103" class="tactic">backchain H8.</a></div>
+  <a href="ccs_bisim-details.html#50" class="tactic">intros Qstep.</a>
+    <a href="ccs_bisim-details.html#51" class="tactic">Right : case Right.</a> <a href="ccs_bisim-details.html#52" class="tactic">Right : apply Right1 to Qstep.</a> <a href="ccs_bisim-details.html#53" class="tactic">clear Right Right1.</a> <a href="ccs_bisim-details.html#54" class="tactic">rename Right2 to Pstep.</a>
+    <a href="ccs_bisim-details.html#55" class="tactic">Middle : case Middle.</a> <a href="ccs_bisim-details.html#56" class="tactic">Middle : apply Middle1 to Pstep.</a> <a href="ccs_bisim-details.html#57" class="tactic">clear Middle Middle1.</a> <a href="ccs_bisim-details.html#58" class="tactic">rename Middle2 to PPstep.</a>
+    <a href="ccs_bisim-details.html#59" class="tactic">Left : case Left.</a> <a href="ccs_bisim-details.html#60" class="tactic">Left : apply Left1 to PPstep.</a> <a href="ccs_bisim-details.html#61" class="tactic">clear Left Left1.</a> <a href="ccs_bisim-details.html#62" class="tactic">rename Left2 to QQstep.</a>
+    <a href="ccs_bisim-details.html#63" class="tactic">witness P5.</a> <a href="ccs_bisim-details.html#64" class="tactic">split.</a> <a href="ccs_bisim-details.html#65" class="tactic">search.</a>
+    <a href="ccs_bisim-details.html#66" class="tactic">witness P5.</a> <a href="ccs_bisim-details.html#67" class="tactic">witness Q1.</a> <a href="ccs_bisim-details.html#68" class="tactic">split.</a> <a href="ccs_bisim-details.html#69" class="tactic">search.</a>
+    <a href="ccs_bisim-details.html#70" class="tactic">case Left3.</a> <a href="ccs_bisim-details.html#71" class="tactic">case Right3.</a>
+    <a href="ccs_bisim-details.html#72" class="tactic">Link : case Middle3.</a>
+    <a href="ccs_bisim-details.html#73" class="tactic">Link : apply bisim_transitive_ to Left4 Link.</a>
+    <a href="ccs_bisim-details.html#74" class="tactic">Link : apply bisim_symmetric_ to Link1.</a>
+    <a href="ccs_bisim-details.html#75" class="tactic">Link : apply bisim_transitive_ to Link3 Right4.</a>
+    <a href="ccs_bisim-details.html#76" class="tactic">backchain CH.</a></div>
+<a href="ccs_bisim-details.html#77" class="command">Theorem bisim_sound_snd : is_sound_snd bisim_t.</a>
+<div class="proof"><a href="ccs_bisim-details.html#78" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#79" class="tactic">intros.</a>
+<a href="ccs_bisim-details.html#80" class="tactic">witness P.</a> <a href="ccs_bisim-details.html#81" class="tactic">witness Q.</a> <a href="ccs_bisim-details.html#82" class="tactic">split.</a>
+  <a href="ccs_bisim-details.html#83" class="tactic">backchain bisim_reflexive_.</a>
+  <a href="ccs_bisim-details.html#84" class="tactic">search.</a>
+  <a href="ccs_bisim-details.html#85" class="tactic">backchain bisim_reflexive_.</a></div>
+<a href="ccs_bisim-details.html#86" class="command">Theorem bisim_sound : is_sound bisim_t.</a>
+<div class="proof"><a href="ccs_bisim-details.html#87" class="tactic">unfold.</a> <a href="ccs_bisim-details.html#88" class="tactic">intros.</a>
+  <a href="ccs_bisim-details.html#89" class="tactic">apply bisim_sound_snd.</a> <a href="ccs_bisim-details.html#90" class="tactic">case H2.</a> <a href="ccs_bisim-details.html#91" class="tactic">apply H3 to H1.</a>
+  <a href="ccs_bisim-details.html#92" class="tactic">apply bisim_sound_fst.</a> <a href="ccs_bisim-details.html#93" class="tactic">case H7.</a> <a href="ccs_bisim-details.html#94" class="tactic">backchain H8.</a></div>
 </pre>
 </div>
 

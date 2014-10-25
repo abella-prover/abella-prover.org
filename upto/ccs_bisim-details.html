@@ -258,7 +258,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>case Left : Left.</b>
+bisim_sound_fst < <b>Left : case Left.</b>
 </pre>
 <a name="22"></a>
 <pre>
@@ -311,7 +311,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Left : Left to Pstep.</b>
+bisim_sound_fst < <b>Left : apply Left to Pstep.</b>
 </pre>
 <a name="24"></a>
 <pre>
@@ -389,7 +389,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>case Middle : Middle.</b>
+bisim_sound_fst < <b>Middle : case Middle.</b>
 </pre>
 <a name="27"></a>
 <pre>
@@ -449,7 +449,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Middle : Middle to PPstep.</b>
+bisim_sound_fst < <b>Middle : apply Middle to PPstep.</b>
 </pre>
 <a name="29"></a>
 <pre>
@@ -534,7 +534,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>case Right : Right.</b>
+bisim_sound_fst < <b>Right : case Right.</b>
 </pre>
 <a name="32"></a>
 <pre>
@@ -595,7 +595,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Right : Right to QQstep.</b>
+bisim_sound_fst < <b>Right : apply Right to QQstep.</b>
 </pre>
 <a name="34"></a>
 <pre>
@@ -941,7 +941,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>case Bisim : Middle2.</b>
+bisim_sound_fst < <b>Bisim : case Middle2.</b>
 </pre>
 <a name="46"></a>
 <pre>
@@ -968,7 +968,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Link : bisim_transitive_ to Left3 Bisim.</b>
+bisim_sound_fst < <b>Link : apply bisim_transitive_ to Left3 Bisim.</b>
 </pre>
 <a name="47"></a>
 <pre>
@@ -996,7 +996,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Link : bisim_symmetric_ to Bisim1.</b>
+bisim_sound_fst < <b>Link : apply bisim_symmetric_ to Bisim1.</b>
 </pre>
 <a name="48"></a>
 <pre>
@@ -1025,7 +1025,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
       (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>apply Link : bisim_transitive_ to Link1 Right3.</b>
+bisim_sound_fst < <b>Link : apply bisim_transitive_ to Link1 Right3.</b>
 </pre>
 <a name="49"></a>
 <pre>
@@ -1091,7 +1091,7 @@ Qstep : one Q A Q1
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>case Right : Right.</b>
+bisim_sound_fst < <b>Right : case Right.</b>
 </pre>
 <a name="52"></a>
 <pre>
@@ -1114,7 +1114,7 @@ Right1 : forall A Q1, one Q A Q1 ->
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>apply Right : Right1 to Qstep.</b>
+bisim_sound_fst < <b>Right : apply Right1 to Qstep.</b>
 </pre>
 <a name="53"></a>
 <pre>
@@ -1180,7 +1180,7 @@ Right4 : bisim_up_to refl_t P3 Q3
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>case Middle : Middle.</b>
+bisim_sound_fst < <b>Middle : case Middle.</b>
 </pre>
 <a name="56"></a>
 <pre>
@@ -1207,7 +1207,7 @@ Middle1 : forall A Q1, one S A Q1 ->
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>apply Middle : Middle1 to Pstep.</b>
+bisim_sound_fst < <b>Middle : apply Middle1 to Pstep.</b>
 </pre>
 <a name="57"></a>
 <pre>
@@ -1281,7 +1281,7 @@ Middle4 : bisim_up_to bisim_t P4 Q2
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>case Left : Left.</b>
+bisim_sound_fst < <b>Left : case Left.</b>
 </pre>
 <a name="60"></a>
 <pre>
@@ -1308,7 +1308,7 @@ Left1 : forall A Q1, one R A Q1 ->
  exists P1, one P A P1 /\
    (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
 
-bisim_sound_fst < <b>apply Left : Left1 to PPstep.</b>
+bisim_sound_fst < <b>Left : apply Left1 to PPstep.</b>
 </pre>
 <a name="61"></a>
 <pre>
@@ -1597,7 +1597,7 @@ Left4 : bisim_up_to refl_t P6 Q4
 ============================
  bisim_up_to refl_t P6 Q3 +
 
-bisim_sound_fst < <b>case Link : Middle3.</b>
+bisim_sound_fst < <b>Link : case Middle3.</b>
 </pre>
 <a name="73"></a>
 <pre>
@@ -1619,7 +1619,7 @@ Link1 : bisim_up_to refl_t P3 Q2
 ============================
  bisim_up_to refl_t P6 Q3 +
 
-bisim_sound_fst < <b>apply Link : bisim_transitive_ to Left4 Link.</b>
+bisim_sound_fst < <b>Link : apply bisim_transitive_ to Left4 Link.</b>
 </pre>
 <a name="74"></a>
 <pre>
@@ -1642,7 +1642,7 @@ Link2 : bisim_up_to refl_t P6 P4
 ============================
  bisim_up_to refl_t P6 Q3 +
 
-bisim_sound_fst < <b>apply Link : bisim_symmetric_ to Link1.</b>
+bisim_sound_fst < <b>Link : apply bisim_symmetric_ to Link1.</b>
 </pre>
 <a name="75"></a>
 <pre>
@@ -1666,7 +1666,7 @@ Link3 : bisim_up_to refl_t Q2 P3
 ============================
  bisim_up_to refl_t P6 Q3 +
 
-bisim_sound_fst < <b>apply Link : bisim_transitive_ to Link3 Right4.</b>
+bisim_sound_fst < <b>Link : apply bisim_transitive_ to Link3 Right4.</b>
 </pre>
 <a name="76"></a>
 <pre>

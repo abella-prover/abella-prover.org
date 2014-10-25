@@ -152,47 +152,47 @@ by
 
 <a href="ccs_core-details.html#17" class="command">Theorem bisim_symmetric : symmetric_rel (bisim_up_to refl_t).</a>
 <div class="proof"><a href="ccs_core-details.html#18" class="tactic">unfold.</a> <a href="ccs_core-details.html#19" class="tactic">coinduction.</a> <a href="ccs_core-details.html#20" class="tactic">intros.</a> <a href="ccs_core-details.html#21" class="tactic">case H1.</a> <a href="ccs_core-details.html#22" class="tactic">unfold.</a>
-  <a href="ccs_core-details.html#23" class="tactic">intros.</a> <a href="ccs_core-details.html#24" class="tactic">apply H3 to H4.</a> <a href="ccs_core-details.html#25" class="tactic">case H6.</a> <a href="ccs_core-details.html#26" class="tactic">exists P3.</a> <a href="ccs_core-details.html#27" class="tactic">split.</a> <a href="ccs_core-details.html#28" class="tactic">search.</a><a href="ccs_core-details.html#29" class="tactic">
-    witness Q3. witness P3. </a><a href="ccs_core-details.html#30" class="tactic">split.</a> <a href="ccs_core-details.html#31" class="tactic">search.</a> <a href="ccs_core-details.html#32" class="tactic">backchain CH.</a>
-  <a href="ccs_core-details.html#33" class="tactic">intros.</a> <a href="ccs_core-details.html#34" class="tactic">apply H2 to H4.</a> <a href="ccs_core-details.html#35" class="tactic">case H6.</a> <a href="ccs_core-details.html#36" class="tactic">exists Q3.</a> <a href="ccs_core-details.html#37" class="tactic">split.</a> <a href="ccs_core-details.html#38" class="tactic">search.</a><a href="ccs_core-details.html#39" class="tactic">
-    witness Q3. witness P3. </a><a href="ccs_core-details.html#40" class="tactic">split.</a> <a href="ccs_core-details.html#41" class="tactic">search.</a> <a href="ccs_core-details.html#42" class="tactic">backchain CH.</a></div>
-<a href="ccs_core-details.html#43" class="command">Theorem bisim_symmetric_ : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P.</a>
-<div class="proof"><a href="ccs_core-details.html#44" class="tactic">apply bisim_symmetric.</a> <a href="ccs_core-details.html#45" class="tactic">case H1.</a> <a href="ccs_core-details.html#46" class="tactic">search.</a></div>
-<a href="ccs_core-details.html#47" class="command">Define transitive_rel : (proc -> proc -> prop) -> prop by
+  <a href="ccs_core-details.html#23" class="tactic">intros.</a> <a href="ccs_core-details.html#24" class="tactic">apply H3 to H4.</a> <a href="ccs_core-details.html#25" class="tactic">case H6.</a> <a href="ccs_core-details.html#26" class="tactic">exists P3.</a> <a href="ccs_core-details.html#27" class="tactic">split.</a> <a href="ccs_core-details.html#28" class="tactic">search.</a>
+    <a href="ccs_core-details.html#29" class="tactic">witness Q3.</a> <a href="ccs_core-details.html#30" class="tactic">witness P3.</a> <a href="ccs_core-details.html#31" class="tactic">split.</a> <a href="ccs_core-details.html#32" class="tactic">search.</a> <a href="ccs_core-details.html#33" class="tactic">backchain CH.</a>
+  <a href="ccs_core-details.html#34" class="tactic">intros.</a> <a href="ccs_core-details.html#35" class="tactic">apply H2 to H4.</a> <a href="ccs_core-details.html#36" class="tactic">case H6.</a> <a href="ccs_core-details.html#37" class="tactic">exists Q3.</a> <a href="ccs_core-details.html#38" class="tactic">split.</a> <a href="ccs_core-details.html#39" class="tactic">search.</a>
+    <a href="ccs_core-details.html#40" class="tactic">witness Q3.</a> <a href="ccs_core-details.html#41" class="tactic">witness P3.</a> <a href="ccs_core-details.html#42" class="tactic">split.</a> <a href="ccs_core-details.html#43" class="tactic">search.</a> <a href="ccs_core-details.html#44" class="tactic">backchain CH.</a></div>
+<a href="ccs_core-details.html#45" class="command">Theorem bisim_symmetric_ : forall P Q, bisim_up_to refl_t P Q -> bisim_up_to refl_t Q P.</a>
+<div class="proof"><a href="ccs_core-details.html#46" class="tactic">apply bisim_symmetric.</a> <a href="ccs_core-details.html#47" class="tactic">case H1.</a> <a href="ccs_core-details.html#48" class="tactic">search.</a></div>
+<a href="ccs_core-details.html#49" class="command">Define transitive_rel : (proc -> proc -> prop) -> prop by
   transitive_rel Rel := forall P Q R, Rel P Q -> Rel Q R -> Rel P R.</a>
 
-<a href="ccs_core-details.html#48" class="command">Theorem bisim_transitive : transitive_rel (bisim_up_to refl_t).</a>
-<div class="proof"><a href="ccs_core-details.html#49" class="tactic">unfold.</a> <a href="ccs_core-details.html#50" class="tactic">coinduction.</a> <a href="ccs_core-details.html#51" class="tactic">intros.</a> <a href="ccs_core-details.html#52" class="tactic">case H1.</a> <a href="ccs_core-details.html#53" class="tactic">case H2.</a> <a href="ccs_core-details.html#54" class="tactic">unfold.</a>
-  <a href="ccs_core-details.html#55" class="tactic">intros.</a> <a href="ccs_core-details.html#56" class="tactic">apply H3 to H7.</a> <a href="ccs_core-details.html#57" class="tactic">apply H5 to H8.</a> <a href="ccs_core-details.html#58" class="tactic">case H9.</a> <a href="ccs_core-details.html#59" class="tactic">case H12.</a>
-   <a href="ccs_core-details.html#60" class="tactic">exists Q4.</a> <a href="ccs_core-details.html#61" class="tactic">split.</a> <a href="ccs_core-details.html#62" class="tactic">search.</a><a href="ccs_core-details.html#63" class="tactic"> witness P3. witness Q4. </a><a href="ccs_core-details.html#64" class="tactic">split.</a> <a href="ccs_core-details.html#65" class="tactic">search.</a>
-   <a href="ccs_core-details.html#66" class="tactic">backchain CH.</a>
-  <a href="ccs_core-details.html#67" class="tactic">intros.</a> <a href="ccs_core-details.html#68" class="tactic">apply H6 to H7.</a> <a href="ccs_core-details.html#69" class="tactic">apply H4 to H8.</a> <a href="ccs_core-details.html#70" class="tactic">case H9.</a> <a href="ccs_core-details.html#71" class="tactic">case H12.</a>
-   <a href="ccs_core-details.html#72" class="tactic">exists P4.</a> <a href="ccs_core-details.html#73" class="tactic">split.</a> <a href="ccs_core-details.html#74" class="tactic">search.</a><a href="ccs_core-details.html#75" class="tactic"> witness P4. witness Q3. </a><a href="ccs_core-details.html#76" class="tactic">split.</a> <a href="ccs_core-details.html#77" class="tactic">search.</a>
-   <a href="ccs_core-details.html#78" class="tactic">backchain CH.</a></div>
-<a href="ccs_core-details.html#79" class="command">Theorem bisim_transitive_ : forall P Q R,
+<a href="ccs_core-details.html#50" class="command">Theorem bisim_transitive : transitive_rel (bisim_up_to refl_t).</a>
+<div class="proof"><a href="ccs_core-details.html#51" class="tactic">unfold.</a> <a href="ccs_core-details.html#52" class="tactic">coinduction.</a> <a href="ccs_core-details.html#53" class="tactic">intros.</a> <a href="ccs_core-details.html#54" class="tactic">case H1.</a> <a href="ccs_core-details.html#55" class="tactic">case H2.</a> <a href="ccs_core-details.html#56" class="tactic">unfold.</a>
+  <a href="ccs_core-details.html#57" class="tactic">intros.</a> <a href="ccs_core-details.html#58" class="tactic">apply H3 to H7.</a> <a href="ccs_core-details.html#59" class="tactic">apply H5 to H8.</a> <a href="ccs_core-details.html#60" class="tactic">case H9.</a> <a href="ccs_core-details.html#61" class="tactic">case H12.</a>
+   <a href="ccs_core-details.html#62" class="tactic">exists Q4.</a> <a href="ccs_core-details.html#63" class="tactic">split.</a> <a href="ccs_core-details.html#64" class="tactic">search.</a> <a href="ccs_core-details.html#65" class="tactic">witness P3.</a> <a href="ccs_core-details.html#66" class="tactic">witness Q4.</a> <a href="ccs_core-details.html#67" class="tactic">split.</a> <a href="ccs_core-details.html#68" class="tactic">search.</a>
+   <a href="ccs_core-details.html#69" class="tactic">backchain CH.</a>
+  <a href="ccs_core-details.html#70" class="tactic">intros.</a> <a href="ccs_core-details.html#71" class="tactic">apply H6 to H7.</a> <a href="ccs_core-details.html#72" class="tactic">apply H4 to H8.</a> <a href="ccs_core-details.html#73" class="tactic">case H9.</a> <a href="ccs_core-details.html#74" class="tactic">case H12.</a>
+   <a href="ccs_core-details.html#75" class="tactic">exists P4.</a> <a href="ccs_core-details.html#76" class="tactic">split.</a> <a href="ccs_core-details.html#77" class="tactic">search.</a> <a href="ccs_core-details.html#78" class="tactic">witness P4.</a> <a href="ccs_core-details.html#79" class="tactic">witness Q3.</a> <a href="ccs_core-details.html#80" class="tactic">split.</a> <a href="ccs_core-details.html#81" class="tactic">search.</a>
+   <a href="ccs_core-details.html#82" class="tactic">backchain CH.</a></div>
+<a href="ccs_core-details.html#83" class="command">Theorem bisim_transitive_ : forall P Q R,
   bisim_up_to refl_t P Q ->
   bisim_up_to refl_t Q R ->
   bisim_up_to refl_t P R.</a>
-<div class="proof"><a href="ccs_core-details.html#80" class="tactic">apply bisim_transitive.</a> <a href="ccs_core-details.html#81" class="tactic">case H1.</a> <a href="ccs_core-details.html#82" class="tactic">search.</a></div>
-<a href="ccs_core-details.html#83" class="command">Define reflexive_rel : (proc -> proc -> prop) -> prop by
+<div class="proof"><a href="ccs_core-details.html#84" class="tactic">apply bisim_transitive.</a> <a href="ccs_core-details.html#85" class="tactic">case H1.</a> <a href="ccs_core-details.html#86" class="tactic">search.</a></div>
+<a href="ccs_core-details.html#87" class="command">Define reflexive_rel : (proc -> proc -> prop) -> prop by
   reflexive_rel Rel := forall P, Rel P P.</a>
 
-<a href="ccs_core-details.html#84" class="command">Theorem bisim_reflexive : reflexive_rel (bisim_up_to refl_t).</a>
-<div class="proof"><a href="ccs_core-details.html#85" class="tactic">unfold.</a> <a href="ccs_core-details.html#86" class="tactic">coinduction.</a> <a href="ccs_core-details.html#87" class="tactic">intros.</a> <a href="ccs_core-details.html#88" class="tactic">unfold.</a>
-  <a href="ccs_core-details.html#89" class="tactic">intros.</a><a href="ccs_core-details.html#90" class="tactic"> witness P1. </a><a href="ccs_core-details.html#91" class="tactic">split.</a> <a href="ccs_core-details.html#92" class="tactic">search.</a><a href="ccs_core-details.html#93" class="tactic">
-   witness P1. witness P1. </a><a href="ccs_core-details.html#94" class="tactic">split.</a> <a href="ccs_core-details.html#95" class="tactic">search.</a> <a href="ccs_core-details.html#96" class="tactic">backchain CH.</a>
-  <a href="ccs_core-details.html#97" class="tactic">intros.</a><a href="ccs_core-details.html#98" class="tactic"> witness Q1. </a><a href="ccs_core-details.html#99" class="tactic">split.</a> <a href="ccs_core-details.html#100" class="tactic">search.</a><a href="ccs_core-details.html#101" class="tactic">
-   witness Q1. witness Q1. </a><a href="ccs_core-details.html#102" class="tactic">split.</a> <a href="ccs_core-details.html#103" class="tactic">search.</a> <a href="ccs_core-details.html#104" class="tactic">backchain CH.</a></div>
-<a href="ccs_core-details.html#105" class="command">Theorem bisim_reflexive_ : forall P, bisim_up_to refl_t P P.</a>
-<div class="proof"><a href="ccs_core-details.html#106" class="tactic">apply bisim_reflexive.</a> <a href="ccs_core-details.html#107" class="tactic">case H1.</a> <a href="ccs_core-details.html#108" class="tactic">search.</a></div>
-<a href="ccs_core-details.html#109" class="command">Define equiv_rel : (proc -> proc -> prop) -> prop by
+<a href="ccs_core-details.html#88" class="command">Theorem bisim_reflexive : reflexive_rel (bisim_up_to refl_t).</a>
+<div class="proof"><a href="ccs_core-details.html#89" class="tactic">unfold.</a> <a href="ccs_core-details.html#90" class="tactic">coinduction.</a> <a href="ccs_core-details.html#91" class="tactic">intros.</a> <a href="ccs_core-details.html#92" class="tactic">unfold.</a>
+  <a href="ccs_core-details.html#93" class="tactic">intros.</a> <a href="ccs_core-details.html#94" class="tactic">witness P1.</a> <a href="ccs_core-details.html#95" class="tactic">split.</a> <a href="ccs_core-details.html#96" class="tactic">search.</a>
+   <a href="ccs_core-details.html#97" class="tactic">witness P1.</a> <a href="ccs_core-details.html#98" class="tactic">witness P1.</a> <a href="ccs_core-details.html#99" class="tactic">split.</a> <a href="ccs_core-details.html#100" class="tactic">search.</a> <a href="ccs_core-details.html#101" class="tactic">backchain CH.</a>
+  <a href="ccs_core-details.html#102" class="tactic">intros.</a> <a href="ccs_core-details.html#103" class="tactic">witness Q1.</a> <a href="ccs_core-details.html#104" class="tactic">split.</a> <a href="ccs_core-details.html#105" class="tactic">search.</a>
+   <a href="ccs_core-details.html#106" class="tactic">witness Q1.</a> <a href="ccs_core-details.html#107" class="tactic">witness Q1.</a> <a href="ccs_core-details.html#108" class="tactic">split.</a> <a href="ccs_core-details.html#109" class="tactic">search.</a> <a href="ccs_core-details.html#110" class="tactic">backchain CH.</a></div>
+<a href="ccs_core-details.html#111" class="command">Theorem bisim_reflexive_ : forall P, bisim_up_to refl_t P P.</a>
+<div class="proof"><a href="ccs_core-details.html#112" class="tactic">apply bisim_reflexive.</a> <a href="ccs_core-details.html#113" class="tactic">case H1.</a> <a href="ccs_core-details.html#114" class="tactic">search.</a></div>
+<a href="ccs_core-details.html#115" class="command">Define equiv_rel : (proc -> proc -> prop) -> prop by
   equiv_rel R := reflexive_rel R /\ symmetric_rel R /\ transitive_rel R.</a>
 
-<a href="ccs_core-details.html#110" class="command">Theorem bisim_equiv : equiv_rel (bisim_up_to refl_t).</a>
-<div class="proof"><a href="ccs_core-details.html#111" class="tactic">unfold.</a>
-  <a href="ccs_core-details.html#112" class="tactic">backchain bisim_reflexive.</a>
-  <a href="ccs_core-details.html#113" class="tactic">backchain bisim_symmetric.</a>
-  <a href="ccs_core-details.html#114" class="tactic">backchain bisim_transitive.</a></div>
+<a href="ccs_core-details.html#116" class="command">Theorem bisim_equiv : equiv_rel (bisim_up_to refl_t).</a>
+<div class="proof"><a href="ccs_core-details.html#117" class="tactic">unfold.</a>
+  <a href="ccs_core-details.html#118" class="tactic">backchain bisim_reflexive.</a>
+  <a href="ccs_core-details.html#119" class="tactic">backchain bisim_symmetric.</a>
+  <a href="ccs_core-details.html#120" class="tactic">backchain bisim_transitive.</a></div>
 </pre>
 </div>
 
