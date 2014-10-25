@@ -124,7 +124,6 @@ coinduction. intros. unfold.
 
 Theorem bisim_par_assoc_left : forall P Q R,
   bisim_up_to refl_t (par (par P Q) R) (par (par P R) Q).
-intros.
 intros. apply bisim_reflexive_ with P = par (par P Q) R.
 apply bisim_par_assoc with P = P, Q = Q, R = R.
 apply bisim_par_comm with P = P, Q = par Q R.

@@ -185,20 +185,19 @@ Click on a command or tactic to see a detailed view of its use.
           <a href="ccs_bisim_examples_helper-details.html#232" class="tactic">backchain CH.</a></div>
 <a href="ccs_bisim_examples_helper-details.html#233" class="command">Theorem bisim_par_assoc_left : forall P Q R,
   bisim_up_to refl_t (par (par P Q) R) (par (par P R) Q).</a>
-<div class="proof"><a href="ccs_bisim_examples_helper-details.html#234" class="tactic">intros.</a>
-<a href="ccs_bisim_examples_helper-details.html#235" class="tactic">intros.</a> <a href="ccs_bisim_examples_helper-details.html#236" class="tactic">apply bisim_reflexive_ with P = par (par P Q) R.</a>
-<a href="ccs_bisim_examples_helper-details.html#237" class="tactic">apply bisim_par_assoc with P = P, Q = Q, R = R.</a>
-<a href="ccs_bisim_examples_helper-details.html#238" class="tactic">apply bisim_par_comm with P = P, Q = par Q R.</a>
-<a href="ccs_bisim_examples_helper-details.html#239" class="tactic">apply bisim_par_assoc with P = Q, Q = R, R = P.</a>
-<a href="ccs_bisim_examples_helper-details.html#240" class="tactic">apply bisim_par_comm with P = Q, Q = par R P.</a>
-<a href="ccs_bisim_examples_helper-details.html#241" class="tactic">assert bisim_up_to refl_t (par R P) (par P R).</a> <a href="ccs_bisim_examples_helper-details.html#242" class="tactic">backchain bisim_par_comm.</a>
-<a href="ccs_bisim_examples_helper-details.html#243" class="tactic">apply bisim_par_subst_1 to H6 with R = Q.</a><a href="ccs_bisim_examples_helper-details.html#244" class="tactic">
-Acc : </a><a href="ccs_bisim_examples_helper-details.html#245" class="tactic">apply bisim_transitive_ to H1 H2.</a><a href="ccs_bisim_examples_helper-details.html#246" class="tactic">
-Acc : </a><a href="ccs_bisim_examples_helper-details.html#247" class="tactic">apply bisim_transitive_ to Acc H3.</a><a href="ccs_bisim_examples_helper-details.html#248" class="tactic">
-Acc : </a><a href="ccs_bisim_examples_helper-details.html#249" class="tactic">apply bisim_transitive_ to Acc1 H4.</a><a href="ccs_bisim_examples_helper-details.html#250" class="tactic">
-Acc : </a><a href="ccs_bisim_examples_helper-details.html#251" class="tactic">apply bisim_transitive_ to Acc2 H5.</a><a href="ccs_bisim_examples_helper-details.html#252" class="tactic">
-Acc : </a><a href="ccs_bisim_examples_helper-details.html#253" class="tactic">apply bisim_transitive_ to Acc3 H7.</a>
-<a href="ccs_bisim_examples_helper-details.html#254" class="tactic">search.</a></div>
+<div class="proof"><a href="ccs_bisim_examples_helper-details.html#234" class="tactic">intros.</a> <a href="ccs_bisim_examples_helper-details.html#235" class="tactic">apply bisim_reflexive_ with P = par (par P Q) R.</a>
+<a href="ccs_bisim_examples_helper-details.html#236" class="tactic">apply bisim_par_assoc with P = P, Q = Q, R = R.</a>
+<a href="ccs_bisim_examples_helper-details.html#237" class="tactic">apply bisim_par_comm with P = P, Q = par Q R.</a>
+<a href="ccs_bisim_examples_helper-details.html#238" class="tactic">apply bisim_par_assoc with P = Q, Q = R, R = P.</a>
+<a href="ccs_bisim_examples_helper-details.html#239" class="tactic">apply bisim_par_comm with P = Q, Q = par R P.</a>
+<a href="ccs_bisim_examples_helper-details.html#240" class="tactic">assert bisim_up_to refl_t (par R P) (par P R).</a> <a href="ccs_bisim_examples_helper-details.html#241" class="tactic">backchain bisim_par_comm.</a>
+<a href="ccs_bisim_examples_helper-details.html#242" class="tactic">apply bisim_par_subst_1 to H6 with R = Q.</a><a href="ccs_bisim_examples_helper-details.html#243" class="tactic">
+Acc : </a><a href="ccs_bisim_examples_helper-details.html#244" class="tactic">apply bisim_transitive_ to H1 H2.</a><a href="ccs_bisim_examples_helper-details.html#245" class="tactic">
+Acc : </a><a href="ccs_bisim_examples_helper-details.html#246" class="tactic">apply bisim_transitive_ to Acc H3.</a><a href="ccs_bisim_examples_helper-details.html#247" class="tactic">
+Acc : </a><a href="ccs_bisim_examples_helper-details.html#248" class="tactic">apply bisim_transitive_ to Acc1 H4.</a><a href="ccs_bisim_examples_helper-details.html#249" class="tactic">
+Acc : </a><a href="ccs_bisim_examples_helper-details.html#250" class="tactic">apply bisim_transitive_ to Acc2 H5.</a><a href="ccs_bisim_examples_helper-details.html#251" class="tactic">
+Acc : </a><a href="ccs_bisim_examples_helper-details.html#252" class="tactic">apply bisim_transitive_ to Acc3 H7.</a>
+<a href="ccs_bisim_examples_helper-details.html#253" class="tactic">search.</a></div>
 </pre>
 </div>
 

@@ -6421,18 +6421,9 @@ Variables: P Q R
 ============================
  bisim_up_to refl_t (par (par P Q) R) (par (par P R) Q)
 
-bisim_par_assoc_left < <b>intros.</b>
-</pre>
-<a name="264"></a>
-<pre>
-
-Variables: P Q R
-============================
- bisim_up_to refl_t (par (par P Q) R) (par (par P R) Q)
-
 bisim_par_assoc_left < <b>apply bisim_reflexive_ with P = par (par P Q) R.</b>
 </pre>
-<a name="265"></a>
+<a name="264"></a>
 <pre>
 
 Variables: P Q R
@@ -6442,7 +6433,7 @@ H1 : bisim_up_to refl_t (par (par P Q) R) (par (par P Q) R)
 
 bisim_par_assoc_left < <b>apply bisim_par_assoc with P = P, Q = Q, R = R.</b>
 </pre>
-<a name="266"></a>
+<a name="265"></a>
 <pre>
 
 Variables: P Q R
@@ -6453,7 +6444,7 @@ H2 : bisim_up_to refl_t (par (par P Q) R) (par P (par Q R))
 
 bisim_par_assoc_left < <b>apply bisim_par_comm with P = P, Q = par Q R.</b>
 </pre>
-<a name="267"></a>
+<a name="266"></a>
 <pre>
 
 Variables: P Q R
@@ -6465,7 +6456,7 @@ H3 : bisim_up_to refl_t (par P (par Q R)) (par (par Q R) P)
 
 bisim_par_assoc_left < <b>apply bisim_par_assoc with P = Q, Q = R, R = P.</b>
 </pre>
-<a name="268"></a>
+<a name="267"></a>
 <pre>
 
 Variables: P Q R
@@ -6478,7 +6469,7 @@ H4 : bisim_up_to refl_t (par (par Q R) P) (par Q (par R P))
 
 bisim_par_assoc_left < <b>apply bisim_par_comm with P = Q, Q = par R P.</b>
 </pre>
-<a name="269"></a>
+<a name="268"></a>
 <pre>
 
 Variables: P Q R
@@ -6492,7 +6483,7 @@ H5 : bisim_up_to refl_t (par Q (par R P)) (par (par R P) Q)
 
 bisim_par_assoc_left < <b>assert bisim_up_to refl_t (par R P) (par P R).</b>
 </pre>
-<a name="270"></a>
+<a name="269"></a>
 <pre>
 Subgoal 1:
 
@@ -6510,7 +6501,7 @@ Subgoal is:
 
 bisim_par_assoc_left < <b>backchain bisim_par_comm.</b>
 </pre>
-<a name="271"></a>
+<a name="270"></a>
 <pre>
 
 Variables: P Q R
@@ -6525,7 +6516,7 @@ H6 : bisim_up_to refl_t (par R P) (par P R)
 
 bisim_par_assoc_left < <b>apply bisim_par_subst_1 to H6 with R = Q.</b>
 </pre>
-<a name="272"></a>
+<a name="271"></a>
 <pre>
 
 Variables: P Q R
@@ -6541,7 +6532,7 @@ H7 : bisim_up_to refl_t (par (par R P) Q) (par (par P R) Q)
 
 bisim_par_assoc_left < <b>apply Acc : bisim_transitive_ to H1 H2.</b>
 </pre>
-<a name="273"></a>
+<a name="272"></a>
 <pre>
 
 Variables: P Q R
@@ -6558,7 +6549,7 @@ Acc : bisim_up_to refl_t (par (par P Q) R) (par P (par Q R))
 
 bisim_par_assoc_left < <b>apply Acc : bisim_transitive_ to Acc H3.</b>
 </pre>
-<a name="274"></a>
+<a name="273"></a>
 <pre>
 
 Variables: P Q R
@@ -6576,7 +6567,7 @@ Acc1 : bisim_up_to refl_t (par (par P Q) R) (par (par Q R) P)
 
 bisim_par_assoc_left < <b>apply Acc : bisim_transitive_ to Acc1 H4.</b>
 </pre>
-<a name="275"></a>
+<a name="274"></a>
 <pre>
 
 Variables: P Q R
@@ -6595,7 +6586,7 @@ Acc2 : bisim_up_to refl_t (par (par P Q) R) (par Q (par R P))
 
 bisim_par_assoc_left < <b>apply Acc : bisim_transitive_ to Acc2 H5.</b>
 </pre>
-<a name="276"></a>
+<a name="275"></a>
 <pre>
 
 Variables: P Q R
@@ -6615,7 +6606,7 @@ Acc3 : bisim_up_to refl_t (par (par P Q) R) (par (par R P) Q)
 
 bisim_par_assoc_left < <b>apply Acc : bisim_transitive_ to Acc3 H7.</b>
 </pre>
-<a name="277"></a>
+<a name="276"></a>
 <pre>
 
 Variables: P Q R
@@ -6637,7 +6628,7 @@ Acc4 : bisim_up_to refl_t (par (par P Q) R) (par (par P R) Q)
 bisim_par_assoc_left < <b>search.</b>
 Proof completed.
 </pre>
-<a name="278"></a>
+<a name="277"></a>
 <pre class="code">
 Abella < Goodbye.
 </pre>

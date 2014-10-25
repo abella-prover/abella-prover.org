@@ -186,7 +186,6 @@ coinduction. intros. unfold.
 
 %%% !!a.P ~ !a.P
 
-
 Theorem ex_bang_bang_ctx : forall P,
   bisim (repl (repl (act (dn a) P)))
         (repl (act (dn a) P)).
