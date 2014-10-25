@@ -78,6 +78,7 @@ one (par P Q) A (par P1 Q) := one P A P1;
 one (par P Q) A (par P Q1) := one Q A Q1;
 one (repl P) A (par (repl P) Q) := one P A Q;
 one (par P Q) tau (par P1 Q1) := exists X, one P (up X) P1 /\ one Q (dn X) Q1;
+one (par P Q) tau (par P1 Q1) := exists X, one P (dn X) P1 /\ one Q (up X) Q1;
 one (repl P) tau (par (repl P) (par Q R)) := exists X, one P (up X) Q /\ one P (dn X) R.</b>
 </pre>
 <a name="12"></a>

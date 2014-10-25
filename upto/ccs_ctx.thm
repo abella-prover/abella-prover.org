@@ -27,9 +27,11 @@ induction on 1. intros. case H1.
       apply H6 to H11. search.
       apply H8 to H11. search.
       apply H6 to H11. apply H8 to H12. search.
+      apply H6 to H11. apply H8 to H12. search.
     intros. case H10.
       apply H7 to H11. search.
       apply H9 to H11. search.
+      apply H7 to H11. apply H9 to H12. search.
       apply H7 to H11. apply H9 to H12. search.
 
 Theorem bisim_inv_bisim : forall P Q, bisim_inv P Q -> bisim_up_to refl_t P Q.
@@ -208,6 +210,13 @@ case H2.
      intros. case H11. apply H9 to H10. apply H13 to H12.
      witness par RR Q2. search.
     right. intros. case H8. apply H7 to H9. search.
+  apply IH to H3 H4. case H6.
+    left. left. witness par_l CC Q2. split. search.
+     intros. case H9. apply H8 to H10. witness par RR Q2. search.
+    left. right. witness par_l CC Q2. witness PBP. witness B. split. search. search.
+     intros. case H11. apply H9 to H10. apply H13 to H12.
+     witness par RR Q2. search.
+    right. intros. case H8. apply H7 to H9. search.
 % par_r
 case H2.
   left. left. witness par_r P2 C1. split. search.
@@ -224,6 +233,13 @@ case H2.
     left. right. witness par_r P2 CC. witness PBP. witness B. split. search. search.
      intros. case H11. apply H9 to H10. apply H13 to H12. search.
     right. intros. case H8. apply H7 to H9. search.
+  apply IH to H3 H5. case H6.
+    left. left. witness par_r P2 CC. split. search.
+     intros. case H9. apply H8 to H10. search.
+    left. right. witness par_r P2 CC. witness PBP. witness B. split. search. search.
+     intros. case H11. apply H9 to H10. apply H13 to H12. search.
+    right. intros. case H8. apply H7 to H9. search.
 % act_d
 case H2. left. left. witness C1. split. search.
  intros. case H4. search.
+

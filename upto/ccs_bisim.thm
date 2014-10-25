@@ -59,3 +59,4 @@ Theorem bisim_sound : is_sound bisim_t.
 unfold. intros.
   apply bisim_sound_snd. case H2. apply H3 to H1.
   apply bisim_sound_fst. case H7. backchain H8.
+

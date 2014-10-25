@@ -137,4 +137,3 @@ unfold. intros.
   Snd : apply bisim_context_sound_snd. Snd : case Snd.
   Fst : apply bisim_context_sound_fst. Fst : case Fst.
   apply Snd to H1. backchain Fst.
-

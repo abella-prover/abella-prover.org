@@ -48,457 +48,16 @@ Warning: Definition can be used to defeat stratification
 </pre>
 <a name="4"></a>
 <pre class="code">
-Abella < <b>Type a, b, c, d name.</b>
+Abella < <b>Import "ccs_bisim_examples_helper".</b>
+Importing from ccs_bisim_examples_helper
 </pre>
 <a name="5"></a>
-<pre class="code">
-Abella < <b>Theorem bisim_par_null : 
-forall P, bisim_up_to refl_t (par P null) P.</b>
-</pre>
-<a name="6"></a>
-<pre>
-
-============================
- forall P, bisim_up_to refl_t (par P null) P
-
-bisim_par_null < <b>coinduction.</b>
-</pre>
-<a name="7"></a>
-<pre>
-
-CH : forall P, bisim_up_to refl_t (par P null) P +
-============================
- forall P, bisim_up_to refl_t (par P null) P #
-
-bisim_par_null < <b>intros.</b>
-</pre>
-<a name="8"></a>
-<pre>
-
-Variables: P
-CH : forall P, bisim_up_to refl_t (par P null) P +
-============================
- bisim_up_to refl_t (par P null) P #
-
-bisim_par_null < <b>unfold.</b>
-</pre>
-<a name="9"></a>
-<pre>
-Subgoal 1:
-
-Variables: P
-CH : forall P, bisim_up_to refl_t (par P null) P +
-============================
- forall A P1, one (par P null) A P1 ->
-   (exists Q1, one P A Q1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>intros.</b>
-</pre>
-<a name="10"></a>
-<pre>
-Subgoal 1:
-
-Variables: P A P1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one (par P null) A P1
-============================
- exists Q1, one P A Q1 /\
-   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>case H1.</b>
-</pre>
-<a name="11"></a>
-<pre>
-Subgoal 1.1:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- exists Q1, one P A Q1 /\
-   (exists P2 Q2, refl_t (par P3 null) P2 Q1 Q2 /\
-      bisim_up_to refl_t P2 Q2 +)
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>witness P3.</b>
-</pre>
-<a name="12"></a>
-<pre>
-Subgoal 1.1:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- one P A P3 /\
-   (exists P2 Q2, refl_t (par P3 null) P2 P3 Q2 /\
-      bisim_up_to refl_t P2 Q2 +)
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>split.</b>
-</pre>
-<a name="13"></a>
-<pre>
-Subgoal 1.1.1:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- one P A P3
-
-Subgoal 1.1.2 is:
- exists P2 Q2, refl_t (par P3 null) P2 P3 Q2 /\ bisim_up_to refl_t P2 Q2 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>search.</b>
-</pre>
-<a name="14"></a>
-<pre>
-Subgoal 1.1.2:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- exists P2 Q2, refl_t (par P3 null) P2 P3 Q2 /\ bisim_up_to refl_t P2 Q2 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>witness par P3 null.</b>
-</pre>
-<a name="15"></a>
-<pre>
-Subgoal 1.1.2:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- exists Q2, refl_t (par P3 null) (par P3 null) P3 Q2 /\
-   bisim_up_to refl_t (par P3 null) Q2 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>witness P3.</b>
-</pre>
-<a name="16"></a>
-<pre>
-Subgoal 1.1.2:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- refl_t (par P3 null) (par P3 null) P3 P3 /\
-   bisim_up_to refl_t (par P3 null) P3 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>split.</b>
-</pre>
-<a name="17"></a>
-<pre>
-Subgoal 1.1.2.1:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- refl_t (par P3 null) (par P3 null) P3 P3
-
-Subgoal 1.1.2.2 is:
- bisim_up_to refl_t (par P3 null) P3 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>search.</b>
-</pre>
-<a name="18"></a>
-<pre>
-Subgoal 1.1.2.2:
-
-Variables: P A P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P A P3
-============================
- bisim_up_to refl_t (par P3 null) P3 +
-
-Subgoal 1.2 is:
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>backchain CH.</b>
-</pre>
-<a name="19"></a>
-<pre>
-Subgoal 1.2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one null A Q1
-============================
- exists Q2, one P A Q2 /\
-   (exists P2 Q3, refl_t (par P Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 1.3 is:
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>case H2.</b>
-</pre>
-<a name="20"></a>
-<pre>
-Subgoal 1.3:
-
-Variables: P X Q1 P3
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H2 : one P (up X) P3
-H3 : one null (dn X) Q1
-============================
- exists Q2, one P tau Q2 /\
-   (exists P2 Q3, refl_t (par P3 Q1) P2 Q2 Q3 /\ bisim_up_to refl_t P2 Q3 +)
-
-Subgoal 2 is:
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>case H3.</b>
-</pre>
-<a name="21"></a>
-<pre>
-Subgoal 2:
-
-Variables: P
-CH : forall P, bisim_up_to refl_t (par P null) P +
-============================
- forall A Q1, one P A Q1 ->
-   (exists P1, one (par P null) A P1 /\
-      (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
-
-bisim_par_null < <b>intros.</b>
-</pre>
-<a name="22"></a>
-<pre>
-Subgoal 2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- exists P1, one (par P null) A P1 /\
-   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
-
-bisim_par_null < <b>witness par Q1 null.</b>
-</pre>
-<a name="23"></a>
-<pre>
-Subgoal 2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- one (par P null) A (par Q1 null) /\
-   (exists P2 Q2, refl_t (par Q1 null) P2 Q1 Q2 /\
-      bisim_up_to refl_t P2 Q2 +)
-
-bisim_par_null < <b>split.</b>
-</pre>
-<a name="24"></a>
-<pre>
-Subgoal 2.1:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- one (par P null) A (par Q1 null)
-
-Subgoal 2.2 is:
- exists P2 Q2, refl_t (par Q1 null) P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +
-
-bisim_par_null < <b>search.</b>
-</pre>
-<a name="25"></a>
-<pre>
-Subgoal 2.2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- exists P2 Q2, refl_t (par Q1 null) P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +
-
-bisim_par_null < <b>witness par Q1 null.</b>
-</pre>
-<a name="26"></a>
-<pre>
-Subgoal 2.2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- exists Q2, refl_t (par Q1 null) (par Q1 null) Q1 Q2 /\
-   bisim_up_to refl_t (par Q1 null) Q2 +
-
-bisim_par_null < <b>witness Q1.</b>
-</pre>
-<a name="27"></a>
-<pre>
-Subgoal 2.2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- refl_t (par Q1 null) (par Q1 null) Q1 Q1 /\
-   bisim_up_to refl_t (par Q1 null) Q1 +
-
-bisim_par_null < <b>split.</b>
-</pre>
-<a name="28"></a>
-<pre>
-Subgoal 2.2.1:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- refl_t (par Q1 null) (par Q1 null) Q1 Q1
-
-Subgoal 2.2.2 is:
- bisim_up_to refl_t (par Q1 null) Q1 +
-
-bisim_par_null < <b>search.</b>
-</pre>
-<a name="29"></a>
-<pre>
-Subgoal 2.2.2:
-
-Variables: P A Q1
-CH : forall P, bisim_up_to refl_t (par P null) P +
-H1 : one P A Q1
-============================
- bisim_up_to refl_t (par Q1 null) Q1 +
-
-bisim_par_null < <b>backchain CH.</b>
-Proof completed.
-</pre>
-<a name="30"></a>
 <pre class="code">
 Abella < <b>Theorem ex_bang_plus : 
 bisim (repl (plus (act (dn a) null) (act (dn b) null)))
   (par (repl (act (dn a) null)) (repl (act (dn b) null))).</b>
 </pre>
-<a name="31"></a>
+<a name="6"></a>
 <pre>
 
 ============================
@@ -507,7 +66,7 @@ bisim (repl (plus (act (dn a) null) (act (dn b) null)))
 
 ex_bang_plus < <b>apply bisim_sound.</b>
 </pre>
-<a name="32"></a>
+<a name="7"></a>
 <pre>
 
 Sound : is_sound bisim_t
@@ -517,7 +76,7 @@ Sound : is_sound bisim_t
 
 ex_bang_plus < <b>case Sound : Sound.</b>
 </pre>
-<a name="33"></a>
+<a name="8"></a>
 <pre>
 
 Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
@@ -527,7 +86,7 @@ Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="34"></a>
+<a name="9"></a>
 <pre>
 
 Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
@@ -537,7 +96,7 @@ Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
 
 ex_bang_plus < <b>backchain Sound.</b>
 </pre>
-<a name="35"></a>
+<a name="10"></a>
 <pre>
 
 Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
@@ -547,7 +106,7 @@ Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
 
 ex_bang_plus < <b>clear Sound.</b>
 </pre>
-<a name="36"></a>
+<a name="11"></a>
 <pre>
 
 ============================
@@ -556,7 +115,7 @@ ex_bang_plus < <b>clear Sound.</b>
 
 ex_bang_plus < <b>coinduction.</b>
 </pre>
-<a name="37"></a>
+<a name="12"></a>
 <pre>
 
 CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
@@ -567,7 +126,7 @@ CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="38"></a>
+<a name="13"></a>
 <pre>
 
 CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
@@ -578,7 +137,7 @@ CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="39"></a>
+<a name="14"></a>
 <pre>
 Subgoal 1:
 
@@ -598,7 +157,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="40"></a>
+<a name="15"></a>
 <pre>
 Subgoal 1:
 
@@ -618,7 +177,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="41"></a>
+<a name="16"></a>
 <pre>
 Subgoal 1.1:
 
@@ -650,7 +209,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="42"></a>
+<a name="17"></a>
 <pre>
 Subgoal 1.1.1:
 
@@ -689,7 +248,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="43"></a>
+<a name="18"></a>
 <pre>
 Subgoal 1.1.1:
 
@@ -728,7 +287,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness par (par (repl (act (dn a) null)) null) (repl (act (dn b) null)).</b>
 </pre>
-<a name="44"></a>
+<a name="19"></a>
 <pre>
 Subgoal 1.1.1:
 
@@ -770,7 +329,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="45"></a>
+<a name="20"></a>
 <pre>
 Subgoal 1.1.1.1:
 
@@ -813,7 +372,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="46"></a>
+<a name="21"></a>
 <pre>
 Subgoal 1.1.1.2:
 
@@ -852,7 +411,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness repl (plus (act (dn a) null) (act (dn b) null)).</b>
 </pre>
-<a name="47"></a>
+<a name="22"></a>
 <pre>
 Subgoal 1.1.1.2:
 
@@ -891,7 +450,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</b>
 </pre>
-<a name="48"></a>
+<a name="23"></a>
 <pre>
 Subgoal 1.1.1.2:
 
@@ -929,7 +488,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="49"></a>
+<a name="24"></a>
 <pre>
 Subgoal 1.1.1.2.1:
 
@@ -969,7 +528,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="50"></a>
+<a name="25"></a>
 <pre>
 Subgoal 1.1.1.2.1.1:
 
@@ -1013,7 +572,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="51"></a>
+<a name="26"></a>
 <pre>
 Subgoal 1.1.1.2.1.2:
 
@@ -1052,7 +611,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_1.</b>
 </pre>
-<a name="52"></a>
+<a name="27"></a>
 <pre>
 Subgoal 1.1.1.2.1.2:
 
@@ -1090,7 +649,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="53"></a>
+<a name="28"></a>
 <pre>
 Subgoal 1.1.1.2.2:
 
@@ -1124,7 +683,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="54"></a>
+<a name="29"></a>
 <pre>
 Subgoal 1.1.2:
 
@@ -1156,7 +715,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="55"></a>
+<a name="30"></a>
 <pre>
 Subgoal 1.1.2:
 
@@ -1188,7 +747,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness par (repl (act (dn a) null)) (par (repl (act (dn b) null)) null).</b>
 </pre>
-<a name="56"></a>
+<a name="31"></a>
 <pre>
 Subgoal 1.1.2:
 
@@ -1223,7 +782,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="57"></a>
+<a name="32"></a>
 <pre>
 Subgoal 1.1.2.1:
 
@@ -1259,7 +818,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="58"></a>
+<a name="33"></a>
 <pre>
 Subgoal 1.1.2.2:
 
@@ -1291,7 +850,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness repl (plus (act (dn a) null) (act (dn b) null)).</b>
 </pre>
-<a name="59"></a>
+<a name="34"></a>
 <pre>
 Subgoal 1.1.2.2:
 
@@ -1323,7 +882,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</b>
 </pre>
-<a name="60"></a>
+<a name="35"></a>
 <pre>
 Subgoal 1.1.2.2:
 
@@ -1354,7 +913,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="61"></a>
+<a name="36"></a>
 <pre>
 Subgoal 1.1.2.2.1:
 
@@ -1387,7 +946,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="62"></a>
+<a name="37"></a>
 <pre>
 Subgoal 1.1.2.2.1.1:
 
@@ -1424,7 +983,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="63"></a>
+<a name="38"></a>
 <pre>
 Subgoal 1.1.2.2.1.2:
 
@@ -1456,7 +1015,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_2.</b>
 </pre>
-<a name="64"></a>
+<a name="39"></a>
 <pre>
 Subgoal 1.1.2.2.1.2:
 
@@ -1487,7 +1046,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="65"></a>
+<a name="40"></a>
 <pre>
 Subgoal 1.1.2.2.2:
 
@@ -1514,7 +1073,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="66"></a>
+<a name="41"></a>
 <pre>
 Subgoal 1.2:
 
@@ -1540,7 +1099,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="67"></a>
+<a name="42"></a>
 <pre>
 Subgoal 1.2.1:
 
@@ -1575,7 +1134,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="68"></a>
+<a name="43"></a>
 <pre>
 Subgoal 1.2.2:
 
@@ -1601,7 +1160,7 @@ Subgoal 2 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="69"></a>
+<a name="44"></a>
 <pre>
 Subgoal 2:
 
@@ -1615,7 +1174,7 @@ CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="70"></a>
+<a name="45"></a>
 <pre>
 Subgoal 2:
 
@@ -1629,7 +1188,7 @@ H1 : one (par (repl (act (dn a) null)) (repl (act (dn b) null))) A Q1
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="71"></a>
+<a name="46"></a>
 <pre>
 Subgoal 2.1:
 
@@ -1652,9 +1211,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="72"></a>
+<a name="47"></a>
 <pre>
 Subgoal 2.1.1:
 
@@ -1688,9 +1252,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="73"></a>
+<a name="48"></a>
 <pre>
 Subgoal 2.1.1:
 
@@ -1722,9 +1291,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness par (repl (plus (act (dn a) null) (act (dn b) null))) null.</b>
 </pre>
-<a name="74"></a>
+<a name="49"></a>
 <pre>
 Subgoal 2.1.1:
 
@@ -1760,9 +1334,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="75"></a>
+<a name="50"></a>
 <pre>
 Subgoal 2.1.1.1:
 
@@ -1799,9 +1378,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="76"></a>
+<a name="51"></a>
 <pre>
 Subgoal 2.1.1.2:
 
@@ -1834,9 +1418,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness repl (plus (act (dn a) null) (act (dn b) null)).</b>
 </pre>
-<a name="77"></a>
+<a name="52"></a>
 <pre>
 Subgoal 2.1.1.2:
 
@@ -1869,9 +1458,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</b>
 </pre>
-<a name="78"></a>
+<a name="53"></a>
 <pre>
 Subgoal 2.1.1.2:
 
@@ -1903,9 +1497,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="79"></a>
+<a name="54"></a>
 <pre>
 Subgoal 2.1.1.2.1:
 
@@ -1939,9 +1538,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="80"></a>
+<a name="55"></a>
 <pre>
 Subgoal 2.1.1.2.1.1:
 
@@ -1979,9 +1583,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="81"></a>
+<a name="56"></a>
 <pre>
 Subgoal 2.1.1.2.1.2:
 
@@ -2014,9 +1623,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_subst_1.</b>
 </pre>
-<a name="82"></a>
+<a name="57"></a>
 <pre>
 Subgoal 2.1.1.2.1.2:
 
@@ -2048,9 +1662,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="83"></a>
+<a name="58"></a>
 <pre>
 Subgoal 2.1.1.2.2:
 
@@ -2078,9 +1697,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="84"></a>
+<a name="59"></a>
 <pre>
 Subgoal 2.1.2:
 
@@ -2107,9 +1731,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="85"></a>
+<a name="60"></a>
 <pre>
 Subgoal 2.2:
 
@@ -2127,9 +1756,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="86"></a>
+<a name="61"></a>
 <pre>
 Subgoal 2.2.1:
 
@@ -2158,9 +1792,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="87"></a>
+<a name="62"></a>
 <pre>
 Subgoal 2.2.1:
 
@@ -2187,9 +1826,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness par (repl (plus (act (dn a) null) (act (dn b) null))) null.</b>
 </pre>
-<a name="88"></a>
+<a name="63"></a>
 <pre>
 Subgoal 2.2.1:
 
@@ -2220,9 +1864,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="89"></a>
+<a name="64"></a>
 <pre>
 Subgoal 2.2.1.1:
 
@@ -2254,9 +1903,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="90"></a>
+<a name="65"></a>
 <pre>
 Subgoal 2.2.1.2:
 
@@ -2284,9 +1938,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness repl (plus (act (dn a) null) (act (dn b) null)).</b>
 </pre>
-<a name="91"></a>
+<a name="66"></a>
 <pre>
 Subgoal 2.2.1.2:
 
@@ -2314,9 +1973,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>witness par (repl (act (dn a) null)) (repl (act (dn b) null)).</b>
 </pre>
-<a name="92"></a>
+<a name="67"></a>
 <pre>
 Subgoal 2.2.1.2:
 
@@ -2343,9 +2007,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="93"></a>
+<a name="68"></a>
 <pre>
 Subgoal 2.2.1.2.1:
 
@@ -2374,9 +2043,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="94"></a>
+<a name="69"></a>
 <pre>
 Subgoal 2.2.1.2.1.1:
 
@@ -2409,9 +2083,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="95"></a>
+<a name="70"></a>
 <pre>
 Subgoal 2.2.1.2.1.2:
 
@@ -2439,9 +2118,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_subst_2.</b>
 </pre>
-<a name="96"></a>
+<a name="71"></a>
 <pre>
 Subgoal 2.2.1.2.1.2:
 
@@ -2468,9 +2152,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="97"></a>
+<a name="72"></a>
 <pre>
 Subgoal 2.2.1.2.2:
 
@@ -2493,9 +2182,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="98"></a>
+<a name="73"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -2517,9 +2211,14 @@ Subgoal 2.3 is:
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="99"></a>
+<a name="74"></a>
 <pre>
 Subgoal 2.3:
 
@@ -2533,9 +2232,14 @@ H3 : one (repl (act (dn b) null)) (dn X) Q2
    (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="100"></a>
+<a name="75"></a>
 <pre>
 Subgoal 2.3:
 
@@ -2549,10 +2253,1154 @@ H4 : one (act (dn a) null) (up X) Q
    (exists P3 Q1, bisim_t P2 P3 (par (par (repl (act (dn a) null)) Q) Q2) Q1 /\
       bisim_up_to bisim_t P3 Q1 +)
 
+Subgoal 2.4 is:
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
+ex_bang_plus < <b>case H4.</b>
+</pre>
+<a name="76"></a>
+<pre>
+Subgoal 2.4:
+
+Variables: X Q2 P1
+CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
+       (par (repl (act (dn a) null)) (repl (act (dn b) null))) +
+H2 : one (repl (act (dn a) null)) (dn X) P1
+H3 : one (repl (act (dn b) null)) (up X) Q2
+============================
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 Q2) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
+ex_bang_plus < <b>case H3.</b>
+</pre>
+<a name="77"></a>
+<pre>
+Subgoal 2.4:
+
+Variables: X P1 Q
+CH : bisim_up_to bisim_t (repl (plus (act (dn a) null) (act (dn b) null)))
+       (par (repl (act (dn a) null)) (repl (act (dn b) null))) +
+H2 : one (repl (act (dn a) null)) (dn X) P1
+H4 : one (act (dn b) null) (up X) Q
+============================
+ exists P2, one (repl (plus (act (dn a) null) (act (dn b) null))) tau P2 /\
+   (exists P3 Q1, bisim_t P2 P3 (par P1 (par (repl (act (dn b) null)) Q)) Q1 /\
+      bisim_up_to bisim_t P3 Q1 +)
+
 ex_bang_plus < <b>case H4.</b>
 Proof completed.
 </pre>
+<a name="78"></a>
+<pre class="code">
+Abella < <b>Import "ccs_bisim_context_examples".</b>
+Importing from ccs_bisim_context_examples
+</pre>
+<a name="79"></a>
+<pre class="code">
+Abella < <b>Theorem ex_bang_bang : 
+bisim (repl (repl (act (dn a) null))) (repl (act (dn a) null)).</b>
+</pre>
+<a name="80"></a>
+<pre>
+
+============================
+ bisim (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>apply bisim_sound.</b>
+</pre>
+<a name="81"></a>
+<pre>
+
+Sound : is_sound bisim_t
+============================
+ bisim (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>case Sound : Sound.</b>
+</pre>
+<a name="82"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>unfold.</b>
+</pre>
+<a name="83"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim_up_to refl_t (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>backchain Sound.</b>
+</pre>
+<a name="84"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>clear Sound.</b>
+</pre>
+<a name="85"></a>
+<pre>
+
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null))
+
+ex_bang_bang < <b>coinduction.</b>
+</pre>
+<a name="86"></a>
+<pre>
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) #
+
+ex_bang_bang < <b>intros.</b>
+</pre>
+<a name="87"></a>
+<pre>
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) #
+
+ex_bang_bang < <b>unfold.</b>
+</pre>
+<a name="88"></a>
+<pre>
+Subgoal 1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ forall A P1, one (repl (repl (act (dn a) null))) A P1 ->
+   (exists Q1, one (repl (act (dn a) null)) A Q1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>intros.</b>
+</pre>
+<a name="89"></a>
+<pre>
+Subgoal 1:
+
+Variables: A P1
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H1 : one (repl (repl (act (dn a) null))) A P1
+============================
+ exists Q1, one (repl (act (dn a) null)) A Q1 /\
+   (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H1.</b>
+</pre>
+<a name="90"></a>
+<pre>
+Subgoal 1.1:
+
+Variables: A Q
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H2 : one (repl (act (dn a) null)) A Q
+============================
+ exists Q1, one (repl (act (dn a) null)) A Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) Q) P2 Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H2.</b>
+</pre>
+<a name="91"></a>
+<pre>
+Subgoal 1.1.1:
+
+Variables: A Q1
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : one (act (dn a) null) A Q1
+============================
+ exists Q2, one (repl (act (dn a) null)) A Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) Q1))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H3.</b>
+</pre>
+<a name="92"></a>
+<pre>
+Subgoal 1.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists Q2, one (repl (act (dn a) null)) (dn a) Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) null))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>witness par (repl (act (dn a) null)) null.</b>
+</pre>
+<a name="93"></a>
+<pre>
+Subgoal 1.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ one (repl (act (dn a) null)) (dn a) (par (repl (act (dn a) null)) null) /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) null))
+                    P2 (par (repl (act (dn a) null)) null) Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>split.</b>
+</pre>
+<a name="94"></a>
+<pre>
+Subgoal 1.1.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ one (repl (act (dn a) null)) (dn a) (par (repl (act (dn a) null)) null)
+
+Subgoal 1.1.1.2 is:
+ exists P2 Q3, bisim_t
+                 (par (repl (repl (act (dn a) null)))
+                    (par (repl (act (dn a) null)) null))
+                 P2 (par (repl (act (dn a) null)) null) Q3 /\
+   bisim_up_to bisim_t P2 Q3 +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>search.</b>
+</pre>
+<a name="95"></a>
+<pre>
+Subgoal 1.1.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists P2 Q3, bisim_t
+                 (par (repl (repl (act (dn a) null)))
+                    (par (repl (act (dn a) null)) null))
+                 P2 (par (repl (act (dn a) null)) null) Q3 /\
+   bisim_up_to bisim_t P2 Q3 +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>witness repl (repl (act (dn a) null)).</b>
+</pre>
+<a name="96"></a>
+<pre>
+Subgoal 1.1.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists Q3, bisim_t
+              (par (repl (repl (act (dn a) null)))
+                 (par (repl (act (dn a) null)) null))
+              (repl (repl (act (dn a) null)))
+              (par (repl (act (dn a) null)) null) Q3 /\
+   bisim_up_to bisim_t (repl (repl (act (dn a) null))) Q3 +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>witness repl (act (dn a) null).</b>
+</pre>
+<a name="97"></a>
+<pre>
+Subgoal 1.1.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null)) /\
+   bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+     (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>split.</b>
+</pre>
+<a name="98"></a>
+<pre>
+Subgoal 1.1.1.2.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>unfold.</b>
+</pre>
+<a name="99"></a>
+<pre>
+Subgoal 1.1.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 1.1.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>apply bisim_par_null with P = repl (act (dn a) null).</b>
+</pre>
+<a name="100"></a>
+<pre>
+Subgoal 1.1.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H4 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 1.1.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>apply bisim_par_subst_2 to H4 with R = repl (repl (act (dn a) null)).</b>
+</pre>
 <a name="101"></a>
+<pre>
+Subgoal 1.1.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H4 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+H5 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null)))
+          (par (repl (act (dn a) null)) null))
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 1.1.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>apply bisim_repl_absorb with P = repl (act (dn a) null).</b>
+</pre>
+<a name="102"></a>
+<pre>
+Subgoal 1.1.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H4 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+H5 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null)))
+          (par (repl (act (dn a) null)) null))
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+H6 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+       (repl (repl (act (dn a) null)))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 1.1.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>backchain bisim_transitive_.</b>
+</pre>
+<a name="103"></a>
+<pre>
+Subgoal 1.1.1.2.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 1.1.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>backchain bisim_par_null.</b>
+</pre>
+<a name="104"></a>
+<pre>
+Subgoal 1.1.1.2.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 1.1.2 is:
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>backchain CH.</b>
+</pre>
+<a name="105"></a>
+<pre>
+Subgoal 1.1.2:
+
+Variables: X R Q1
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : one (act (dn a) null) (up X) Q1
+H4 : one (act (dn a) null) (dn X) R
+============================
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) (par Q1 R)))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 1.2 is:
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H3.</b>
+</pre>
+<a name="106"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: X R Q
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H2 : one (repl (act (dn a) null)) (up X) Q
+H3 : one (repl (act (dn a) null)) (dn X) R
+============================
+ exists Q1, one (repl (act (dn a) null)) tau Q1 /\
+   (exists P2 Q2, bisim_t (par (repl (repl (act (dn a) null))) (par Q R)) P2
+                    Q1 Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H2.</b>
+</pre>
+<a name="107"></a>
+<pre>
+Subgoal 1.2:
+
+Variables: X R Q1
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : one (repl (act (dn a) null)) (dn X) R
+H4 : one (act (dn a) null) (up X) Q1
+============================
+ exists Q2, one (repl (act (dn a) null)) tau Q2 /\
+   (exists P2 Q3, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (par (repl (act (dn a) null)) Q1) R))
+                    P2 Q2 Q3 /\
+      bisim_up_to bisim_t P2 Q3 +)
+
+Subgoal 2 is:
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>case H4.</b>
+</pre>
+<a name="108"></a>
+<pre>
+Subgoal 2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ forall A Q1, one (repl (act (dn a) null)) A Q1 ->
+   (exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+      (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +))
+
+ex_bang_bang < <b>intros.</b>
+</pre>
+<a name="109"></a>
+<pre>
+Subgoal 2:
+
+Variables: A Q1
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H1 : one (repl (act (dn a) null)) A Q1
+============================
+ exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+   (exists P2 Q2, bisim_t P1 P2 Q1 Q2 /\ bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>case H1.</b>
+</pre>
+<a name="110"></a>
+<pre>
+Subgoal 2.1:
+
+Variables: A Q
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H2 : one (act (dn a) null) A Q
+============================
+ exists P1, one (repl (repl (act (dn a) null))) A P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) Q) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>case H2.</b>
+</pre>
+<a name="111"></a>
+<pre>
+Subgoal 2.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists P1, one (repl (repl (act (dn a) null))) (dn a) P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) null) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>witness par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null).</b>
+</pre>
+<a name="112"></a>
+<pre>
+Subgoal 2.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ one (repl (repl (act (dn a) null))) (dn a)
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)) /\
+   (exists P2 Q2, bisim_t
+                    (par (repl (repl (act (dn a) null)))
+                       (par (repl (act (dn a) null)) null))
+                    P2 (par (repl (act (dn a) null)) null) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>split.</b>
+</pre>
+<a name="113"></a>
+<pre>
+Subgoal 2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ one (repl (repl (act (dn a) null))) (dn a)
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+
+Subgoal 2.1.2 is:
+ exists P2 Q2, bisim_t
+                 (par (repl (repl (act (dn a) null)))
+                    (par (repl (act (dn a) null)) null))
+                 P2 (par (repl (act (dn a) null)) null) Q2 /\
+   bisim_up_to bisim_t P2 Q2 +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>search.</b>
+</pre>
+<a name="114"></a>
+<pre>
+Subgoal 2.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists P2 Q2, bisim_t
+                 (par (repl (repl (act (dn a) null)))
+                    (par (repl (act (dn a) null)) null))
+                 P2 (par (repl (act (dn a) null)) null) Q2 /\
+   bisim_up_to bisim_t P2 Q2 +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>witness repl (repl (act (dn a) null)).</b>
+</pre>
+<a name="115"></a>
+<pre>
+Subgoal 2.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ exists Q2, bisim_t
+              (par (repl (repl (act (dn a) null)))
+                 (par (repl (act (dn a) null)) null))
+              (repl (repl (act (dn a) null)))
+              (par (repl (act (dn a) null)) null) Q2 /\
+   bisim_up_to bisim_t (repl (repl (act (dn a) null))) Q2 +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>witness repl (act (dn a) null).</b>
+</pre>
+<a name="116"></a>
+<pre>
+Subgoal 2.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null)) /\
+   bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+     (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>split.</b>
+</pre>
+<a name="117"></a>
+<pre>
+Subgoal 2.1.2.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>unfold.</b>
+</pre>
+<a name="118"></a>
+<pre>
+Subgoal 2.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 2.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>apply bisim_par_null with P = repl (act (dn a) null).</b>
+</pre>
+<a name="119"></a>
+<pre>
+Subgoal 2.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 2.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>apply bisim_par_subst_2 to H3 with R = repl (repl (act (dn a) null)).</b>
+</pre>
+<a name="120"></a>
+<pre>
+Subgoal 2.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+H4 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null)))
+          (par (repl (act (dn a) null)) null))
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 2.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>apply bisim_repl_absorb with P = repl (act (dn a) null).</b>
+</pre>
+<a name="121"></a>
+<pre>
+Subgoal 2.1.2.1.1:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H3 : bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+       (repl (act (dn a) null))
+H4 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null)))
+          (par (repl (act (dn a) null)) null))
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+H5 : bisim_up_to refl_t
+       (par (repl (repl (act (dn a) null))) (repl (act (dn a) null)))
+       (repl (repl (act (dn a) null)))
+============================
+ bisim_up_to refl_t
+   (par (repl (repl (act (dn a) null))) (par (repl (act (dn a) null)) null))
+   (repl (repl (act (dn a) null)))
+
+Subgoal 2.1.2.1.2 is:
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>backchain bisim_transitive_.</b>
+</pre>
+<a name="122"></a>
+<pre>
+Subgoal 2.1.2.1.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to refl_t (par (repl (act (dn a) null)) null)
+   (repl (act (dn a) null))
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>backchain bisim_par_null.</b>
+</pre>
+<a name="123"></a>
+<pre>
+Subgoal 2.1.2.2:
+
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+============================
+ bisim_up_to bisim_t (repl (repl (act (dn a) null))) (repl (act (dn a) null)) +
+
+Subgoal 2.2 is:
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>backchain CH.</b>
+</pre>
+<a name="124"></a>
+<pre>
+Subgoal 2.2:
+
+Variables: X R Q
+CH : bisim_up_to bisim_t (repl (repl (act (dn a) null)))
+       (repl (act (dn a) null)) +
+H2 : one (act (dn a) null) (up X) Q
+H3 : one (act (dn a) null) (dn X) R
+============================
+ exists P1, one (repl (repl (act (dn a) null))) tau P1 /\
+   (exists P2 Q2, bisim_t P1 P2 (par (repl (act (dn a) null)) (par Q R)) Q2 /\
+      bisim_up_to bisim_t P2 Q2 +)
+
+ex_bang_bang < <b>case H2.</b>
+Proof completed.
+</pre>
+<a name="125"></a>
 <pre class="code">
 Abella < Goodbye.
 </pre>

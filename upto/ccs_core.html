@@ -114,6 +114,8 @@ Click on a command or tactic to see a detailed view of its use.
 ; one (repl P) A (par (repl P) Q)  := one P A Q
 ; one (par P Q) tau (par P1 Q1)    :=
     exists X, one P (up X) P1 /\ one Q (dn X) Q1
+; one (par P Q) tau (par P1 Q1)    :=
+    exists X, one P (dn X) P1 /\ one Q (up X) Q1
 ; one (repl P) tau (par (repl P) (par Q R)) :=
     exists X, one P (up X) Q /\ one P (dn X) R.</a>
 
