@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="pic_bisim.thm">[View pic_bisim.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="pic_bisim-details.html#1" class="command">Kind name,label,proc type.</a>
+
+<a href="pic_bisim-details.html#2" class="command">Set subgoals off.</a>
+
+<a href="pic_bisim-details.html#3" class="command">Import "pic_core".</a> <a class="import-link" href="pic_core.html">[View pic_core]</a>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% Bisimulation up to bisimilarity</span>
+
+<a href="pic_bisim-details.html#4" class="command">Define bisim_t : proc -> proc -> proc -> proc -> prop by
+  bisim_t P1 P2 Q1 Q2 :=
+    bisim_up_to refl_t P1 P2 /\ bisim_up_to refl_t Q1 Q2.</a>
+
+<a href="pic_bisim-details.html#5" class="command">Define is_sound_fst : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_fst Tech := forall P Q,
+    (exists R S, bisim_up_to refl_t P R /\ bisim_up_to Tech R S /\ bisim_up_to refl_t S Q)
+    -> bisim_up_to refl_t P Q.</a>
+
+<a href="pic_bisim-details.html#6" class="command">Define is_sound_snd : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound_snd Tech := forall P Q, bisim_up_to Tech P Q ->
+    exists R S, bisim_up_to refl_t P R /\ bisim_up_to Tech R S /\ bisim_up_to refl_t S Q.</a>
+
+<a href="pic_bisim-details.html#7" class="command">Theorem bisim_t_reflexive : forall P, bisim_t P P P P.</a>
+<div class="proof"><a href="pic_bisim-details.html#8" class="tactic">intros.</a> <a href="pic_bisim-details.html#9" class="tactic">unfold.</a> <a href="pic_bisim-details.html#10" class="tactic">backchain bisim_reflexive.</a> <a href="pic_bisim-details.html#11" class="tactic">backchain bisim_reflexive.</a></div>
+<a href="pic_bisim-details.html#12" class="command">Theorem bisim_sound_fst : is_sound_fst bisim_t.</a>
+<div class="proof"><a href="pic_bisim-details.html#13" class="tactic">unfold.</a> <a href="pic_bisim-details.html#14" class="tactic">coinduction.</a> <a href="pic_bisim-details.html#15" class="tactic">intros.</a> <a href="pic_bisim-details.html#16" class="tactic">case H1.</a>
+<a href="pic_bisim-details.html#17" class="tactic">rename H2 to Left.</a> <a href="pic_bisim-details.html#18" class="tactic">rename H3 to Middle.</a> <a href="pic_bisim-details.html#19" class="tactic">rename H4 to Right.</a>
+<a href="pic_bisim-details.html#20" class="tactic">unfold.</a>
+  <a href="pic_bisim-details.html#21" class="tactic">intros Pstep.</a><a href="pic_bisim-details.html#22" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#23" class="tactic">case Left.</a> <a href="pic_bisim-details.html#24" class="tactic">Rstep : apply Left1 to Pstep.</a> <a href="pic_bisim-details.html#25" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a>
+  <a href="pic_bisim-details.html#26" class="tactic">case Rstep1.</a><a href="pic_bisim-details.html#27" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#28" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#29" class="tactic">Sstep : apply Middle1 to Rstep.</a> <a href="pic_bisim-details.html#30" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a>
+  <a href="pic_bisim-details.html#31" class="tactic">Sstep : case Sstep1.</a><a href="pic_bisim-details.html#32" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#33" class="tactic">case Right.</a> <a href="pic_bisim-details.html#34" class="tactic">Qstep : apply Right1 to Sstep.</a> <a href="pic_bisim-details.html#35" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a>
+  <a href="pic_bisim-details.html#36" class="tactic">case Qstep1.</a>
+  <a href="pic_bisim-details.html#37" class="tactic">witness Q6.</a> <a href="pic_bisim-details.html#38" class="tactic">split.</a> <a href="pic_bisim-details.html#39" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#40" class="tactic">witness P3.</a> <a href="pic_bisim-details.html#41" class="tactic">witness Q6.</a> <a href="pic_bisim-details.html#42" class="tactic">split.</a> <a href="pic_bisim-details.html#43" class="tactic">search.</a><a href="pic_bisim-details.html#44" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#45" class="tactic">apply bisim_transitive to Rstep2 Sstep1.</a><a href="pic_bisim-details.html#46" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#47" class="tactic">apply bisim_symmetric to Sstep3.</a><a href="pic_bisim-details.html#48" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#49" class="tactic">apply bisim_transitive to Link2 Qstep2.</a>
+      <a href="pic_bisim-details.html#50" class="tactic">clear Rstep2 Sstep1 Sstep3 Qstep2 Link2.</a>
+      <a href="pic_bisim-details.html#51" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim-details.html#52" class="tactic">intros Pstep.</a><a href="pic_bisim-details.html#53" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#54" class="tactic">case Left.</a> <a href="pic_bisim-details.html#55" class="tactic">Rstep : apply Left2 to Pstep.</a> <a href="pic_bisim-details.html#56" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a><a href="pic_bisim-details.html#57" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#58" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#59" class="tactic">Sstep : apply Middle2 to Rstep.</a> <a href="pic_bisim-details.html#60" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a><a href="pic_bisim-details.html#61" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#62" class="tactic">case Right.</a> <a href="pic_bisim-details.html#63" class="tactic">Qstep : apply Right2 to Sstep.</a> <a href="pic_bisim-details.html#64" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a>
+  <a href="pic_bisim-details.html#65" class="tactic">witness Q5.</a> <a href="pic_bisim-details.html#66" class="tactic">split.</a> <a href="pic_bisim-details.html#67" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#68" class="tactic">witness P1.</a> <a href="pic_bisim-details.html#69" class="tactic">witness Q5.</a> <a href="pic_bisim-details.html#70" class="tactic">intros.</a> <a href="pic_bisim-details.html#71" class="tactic">split.</a> <a href="pic_bisim-details.html#72" class="tactic">search.</a>
+      <a href="pic_bisim-details.html#73" class="tactic">clear Pstep Qstep Rstep Sstep.</a>
+      <a href="pic_bisim-details.html#74" class="tactic">Rstep : apply Rstep1 with N = N.</a> <a href="pic_bisim-details.html#75" class="tactic">clear Rstep1.</a>
+      <a href="pic_bisim-details.html#76" class="tactic">Sstep : apply Sstep1 with N = N.</a> <a href="pic_bisim-details.html#77" class="tactic">clear Sstep1.</a>
+      <a href="pic_bisim-details.html#78" class="tactic">Qstep : apply Qstep1 with N = N.</a> <a href="pic_bisim-details.html#79" class="tactic">clear Qstep1.</a><a href="pic_bisim-details.html#80" class="tactic">
+      Eq1 : </a><a href="pic_bisim-details.html#81" class="tactic">case Rstep.</a><a href="pic_bisim-details.html#82" class="tactic"> Eq1 : </a><a href="pic_bisim-details.html#83" class="tactic">case Qstep.</a> <a href="pic_bisim-details.html#84" class="tactic">Bis : case Sstep.</a><a href="pic_bisim-details.html#85" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#86" class="tactic">apply bisim_eq_1R to Rstep2 Eq2.</a> <a href="pic_bisim-details.html#87" class="tactic">clear Rstep2 Eq2.</a><a href="pic_bisim-details.html#88" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#89" class="tactic">apply bisim_eq_2R to Link1 Eq1.</a> <a href="pic_bisim-details.html#90" class="tactic">clear Link1 Eq1.</a><a href="pic_bisim-details.html#91" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#92" class="tactic">apply bisim_transitive to Link2 Bis.</a> <a href="pic_bisim-details.html#93" class="tactic">clear Bis Link2.</a><a href="pic_bisim-details.html#94" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#95" class="tactic">apply bisim_eq_2R to Qstep2 Eq3.</a> <a href="pic_bisim-details.html#96" class="tactic">clear Qstep2 Eq3.</a><a href="pic_bisim-details.html#97" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#98" class="tactic">apply bisim_symmetric to Bis1.</a> <a href="pic_bisim-details.html#99" class="tactic">clear Bis1.</a><a href="pic_bisim-details.html#100" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#101" class="tactic">apply bisim_eq_2L to Link3 Eq4.</a> <a href="pic_bisim-details.html#102" class="tactic">clear Link3 Eq4.</a><a href="pic_bisim-details.html#103" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#104" class="tactic">apply bisim_transitive to Link4 Link2.</a> <a href="pic_bisim-details.html#105" class="tactic">clear Link4 Link2.</a>
+      <a href="pic_bisim-details.html#106" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim-details.html#107" class="tactic">intros Pstep.</a><a href="pic_bisim-details.html#108" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#109" class="tactic">case Left.</a> <a href="pic_bisim-details.html#110" class="tactic">Rstep : apply Left3 to Pstep.</a> <a href="pic_bisim-details.html#111" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a><a href="pic_bisim-details.html#112" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#113" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#114" class="tactic">Sstep : apply Middle3 to Rstep.</a> <a href="pic_bisim-details.html#115" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a><a href="pic_bisim-details.html#116" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#117" class="tactic">case Right.</a> <a href="pic_bisim-details.html#118" class="tactic">Qstep : apply Right3 to Sstep.</a> <a href="pic_bisim-details.html#119" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a>
+  <a href="pic_bisim-details.html#120" class="tactic">witness Q5.</a> <a href="pic_bisim-details.html#121" class="tactic">split.</a> <a href="pic_bisim-details.html#122" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#123" class="tactic">witness P1.</a> <a href="pic_bisim-details.html#124" class="tactic">witness Q5.</a> <a href="pic_bisim-details.html#125" class="tactic">intros.</a> <a href="pic_bisim-details.html#126" class="tactic">split.</a> <a href="pic_bisim-details.html#127" class="tactic">search.</a>
+      <a href="pic_bisim-details.html#128" class="tactic">clear Pstep Qstep Rstep Sstep.</a>
+      <a href="pic_bisim-details.html#129" class="tactic">case Rstep1.</a> <a href="pic_bisim-details.html#130" class="tactic">case Qstep1.</a><a href="pic_bisim-details.html#131" class="tactic"> Sstep1 : </a><a href="pic_bisim-details.html#132" class="tactic">case Sstep1.</a><a href="pic_bisim-details.html#133" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#134" class="tactic">apply bisim_transitive to Rstep2 Sstep1.</a> <a href="pic_bisim-details.html#135" class="tactic">clear Rstep2 Sstep1.</a><a href="pic_bisim-details.html#136" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#137" class="tactic">apply bisim_symmetric to Sstep3.</a> <a href="pic_bisim-details.html#138" class="tactic">clear Sstep3.</a><a href="pic_bisim-details.html#139" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#140" class="tactic">apply bisim_transitive to Link2 Qstep2.</a> <a href="pic_bisim-details.html#141" class="tactic">clear Link2 Qstep2.</a>
+      <a href="pic_bisim-details.html#142" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim-details.html#143" class="tactic">intros Qstep.</a><a href="pic_bisim-details.html#144" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#145" class="tactic">case Right.</a> <a href="pic_bisim-details.html#146" class="tactic">Sstep : apply Right4 to Qstep.</a> <a href="pic_bisim-details.html#147" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a><a href="pic_bisim-details.html#148" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#149" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#150" class="tactic">Rstep : apply Middle4 to Sstep.</a> <a href="pic_bisim-details.html#151" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a><a href="pic_bisim-details.html#152" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#153" class="tactic">case Left.</a> <a href="pic_bisim-details.html#154" class="tactic">Pstep : apply Left4 to Rstep.</a> <a href="pic_bisim-details.html#155" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a>
+  <a href="pic_bisim-details.html#156" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#157" class="tactic">split.</a> <a href="pic_bisim-details.html#158" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#159" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#160" class="tactic">witness Q1.</a> <a href="pic_bisim-details.html#161" class="tactic">split.</a> <a href="pic_bisim-details.html#162" class="tactic">search.</a>
+      <a href="pic_bisim-details.html#163" class="tactic">clear Pstep Qstep Rstep Sstep.</a>
+      <a href="pic_bisim-details.html#164" class="tactic">case Sstep1.</a> <a href="pic_bisim-details.html#165" class="tactic">case Pstep1.</a><a href="pic_bisim-details.html#166" class="tactic"> Rstep1 : </a><a href="pic_bisim-details.html#167" class="tactic">case Rstep1.</a><a href="pic_bisim-details.html#168" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#169" class="tactic">apply bisim_transitive to Pstep2 Rstep1.</a> <a href="pic_bisim-details.html#170" class="tactic">clear Pstep2 Rstep1.</a><a href="pic_bisim-details.html#171" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#172" class="tactic">apply bisim_symmetric to Rstep3.</a> <a href="pic_bisim-details.html#173" class="tactic">clear Rstep3.</a><a href="pic_bisim-details.html#174" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#175" class="tactic">apply bisim_transitive to Link2 Sstep2.</a> <a href="pic_bisim-details.html#176" class="tactic">clear Link2 Sstep2.</a>
+      <a href="pic_bisim-details.html#177" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim-details.html#178" class="tactic">intros Qstep.</a><a href="pic_bisim-details.html#179" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#180" class="tactic">case Right.</a> <a href="pic_bisim-details.html#181" class="tactic">Sstep : apply Right5 to Qstep.</a> <a href="pic_bisim-details.html#182" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a><a href="pic_bisim-details.html#183" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#184" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#185" class="tactic">Rstep : apply Middle5 to Sstep.</a> <a href="pic_bisim-details.html#186" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a><a href="pic_bisim-details.html#187" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#188" class="tactic">case Left.</a> <a href="pic_bisim-details.html#189" class="tactic">Pstep : apply Left5 to Rstep.</a> <a href="pic_bisim-details.html#190" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a>
+  <a href="pic_bisim-details.html#191" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#192" class="tactic">split.</a> <a href="pic_bisim-details.html#193" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#194" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#195" class="tactic">witness Q1.</a> <a href="pic_bisim-details.html#196" class="tactic">intros.</a> <a href="pic_bisim-details.html#197" class="tactic">split.</a> <a href="pic_bisim-details.html#198" class="tactic">search.</a>
+      <a href="pic_bisim-details.html#199" class="tactic">clear Pstep Qstep Rstep Sstep.</a><a href="pic_bisim-details.html#200" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#201" class="tactic">apply Sstep1 with N = N.</a><a href="pic_bisim-details.html#202" class="tactic"> Eq1 : </a><a href="pic_bisim-details.html#203" class="tactic">case Link1.</a> <a href="pic_bisim-details.html#204" class="tactic">clear Sstep1.</a><a href="pic_bisim-details.html#205" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#206" class="tactic">apply Rstep1 with N = N.</a><a href="pic_bisim-details.html#207" class="tactic"> Bis1 : </a><a href="pic_bisim-details.html#208" class="tactic">case Link1.</a> <a href="pic_bisim-details.html#209" class="tactic">clear Rstep1.</a><a href="pic_bisim-details.html#210" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#211" class="tactic">apply Pstep1 with N = N.</a><a href="pic_bisim-details.html#212" class="tactic"> Eq1 : </a><a href="pic_bisim-details.html#213" class="tactic">case Link1.</a> <a href="pic_bisim-details.html#214" class="tactic">clear Pstep1.</a><a href="pic_bisim-details.html#215" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#216" class="tactic">apply bisim_eq_1R to Link4 Eq4.</a> <a href="pic_bisim-details.html#217" class="tactic">clear Link4 Eq4.</a><a href="pic_bisim-details.html#218" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#219" class="tactic">apply bisim_eq_2R to Link1 Eq3.</a> <a href="pic_bisim-details.html#220" class="tactic">clear Link1 Eq3.</a><a href="pic_bisim-details.html#221" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#222" class="tactic">apply bisim_transitive to Link4 Bis1.</a> <a href="pic_bisim-details.html#223" class="tactic">clear Link4 Bis1.</a><a href="pic_bisim-details.html#224" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#225" class="tactic">apply bisim_symmetric to Bis2.</a> <a href="pic_bisim-details.html#226" class="tactic">clear Bis2.</a><a href="pic_bisim-details.html#227" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#228" class="tactic">apply bisim_eq_2L to Link4 Eq2.</a> <a href="pic_bisim-details.html#229" class="tactic">clear Link4 Eq2.</a><a href="pic_bisim-details.html#230" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#231" class="tactic">apply bisim_eq_2R to Link2 Eq1.</a> <a href="pic_bisim-details.html#232" class="tactic">clear Link2 Eq1.</a><a href="pic_bisim-details.html#233" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#234" class="tactic">apply bisim_transitive to Link5 Link4.</a> <a href="pic_bisim-details.html#235" class="tactic">clear Link5 Link4.</a>
+      <a href="pic_bisim-details.html#236" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim-details.html#237" class="tactic">intros Qstep.</a><a href="pic_bisim-details.html#238" class="tactic">
+  Right1 : </a><a href="pic_bisim-details.html#239" class="tactic">case Right.</a> <a href="pic_bisim-details.html#240" class="tactic">Sstep : apply Right6 to Qstep.</a> <a href="pic_bisim-details.html#241" class="tactic">clear Right1 Right2 Right3 Right4 Right5 Right6.</a><a href="pic_bisim-details.html#242" class="tactic">
+  Middle1 : </a><a href="pic_bisim-details.html#243" class="tactic">case Middle.</a> <a href="pic_bisim-details.html#244" class="tactic">Rstep : apply Middle6 to Sstep.</a> <a href="pic_bisim-details.html#245" class="tactic">clear Middle1 Middle2 Middle3 Middle4 Middle5 Middle6.</a><a href="pic_bisim-details.html#246" class="tactic">
+  Left1 : </a><a href="pic_bisim-details.html#247" class="tactic">case Left.</a> <a href="pic_bisim-details.html#248" class="tactic">Pstep : apply Left6 to Rstep.</a> <a href="pic_bisim-details.html#249" class="tactic">clear Left1 Left2 Left3 Left4 Left5 Left6.</a>
+  <a href="pic_bisim-details.html#250" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#251" class="tactic">split.</a> <a href="pic_bisim-details.html#252" class="tactic">search.</a>
+    <a href="pic_bisim-details.html#253" class="tactic">witness P5.</a> <a href="pic_bisim-details.html#254" class="tactic">witness Q1.</a> <a href="pic_bisim-details.html#255" class="tactic">intros.</a> <a href="pic_bisim-details.html#256" class="tactic">split.</a> <a href="pic_bisim-details.html#257" class="tactic">search.</a>
+      <a href="pic_bisim-details.html#258" class="tactic">clear Pstep Qstep Rstep Sstep.</a>
+      <a href="pic_bisim-details.html#259" class="tactic">case Sstep1.</a><a href="pic_bisim-details.html#260" class="tactic"> Link1 : </a><a href="pic_bisim-details.html#261" class="tactic">case Rstep1.</a> <a href="pic_bisim-details.html#262" class="tactic">case Pstep1.</a><a href="pic_bisim-details.html#263" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#264" class="tactic">apply bisim_transitive to Pstep2 Link1.</a> <a href="pic_bisim-details.html#265" class="tactic">clear Pstep2 Link1.</a><a href="pic_bisim-details.html#266" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#267" class="tactic">apply bisim_symmetric to Link2.</a> <a href="pic_bisim-details.html#268" class="tactic">clear Link2.</a><a href="pic_bisim-details.html#269" class="tactic">
+      Link1 : </a><a href="pic_bisim-details.html#270" class="tactic">apply bisim_transitive to Link1 Sstep2.</a> <a href="pic_bisim-details.html#271" class="tactic">clear Link1 Sstep2.</a>
+      <a href="pic_bisim-details.html#272" class="tactic">backchain CH.</a></div>
+
+<a href="pic_bisim-details.html#273" class="command">Theorem bisim_sound_snd : is_sound_snd bisim_t.</a>
+<div class="proof"><a href="pic_bisim-details.html#274" class="tactic">unfold.</a> <a href="pic_bisim-details.html#275" class="tactic">intros.</a>
+<a href="pic_bisim-details.html#276" class="tactic">witness P.</a> <a href="pic_bisim-details.html#277" class="tactic">witness Q.</a> <a href="pic_bisim-details.html#278" class="tactic">split.</a>
+  <a href="pic_bisim-details.html#279" class="tactic">backchain bisim_reflexive.</a>
+  <a href="pic_bisim-details.html#280" class="tactic">search.</a>
+  <a href="pic_bisim-details.html#281" class="tactic">backchain bisim_reflexive.</a></div>
+<a href="pic_bisim-details.html#282" class="command">Theorem bisim_sound : is_sound bisim_t.</a>
+<div class="proof"><a href="pic_bisim-details.html#283" class="tactic">Fst : apply bisim_sound_fst.</a> <a href="pic_bisim-details.html#284" class="tactic">Fst : case Fst.</a>
+<a href="pic_bisim-details.html#285" class="tactic">Snd : apply bisim_sound_snd.</a> <a href="pic_bisim-details.html#286" class="tactic">Snd : case Snd.</a>
+<a href="pic_bisim-details.html#287" class="tactic">unfold.</a> <a href="pic_bisim-details.html#288" class="tactic">intros PQ.</a>
+<a href="pic_bisim-details.html#289" class="tactic">apply Snd to PQ.</a> <a href="pic_bisim-details.html#290" class="tactic">backchain Fst.</a></div>
+</pre>
+</div>
+
+</body>
+</html>
