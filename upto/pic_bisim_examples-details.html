@@ -2412,19 +2412,59 @@ Proof completed.
 <a name="80"></a>
 <pre class="code">
 Abella < <b>Theorem ex_bang_plus : 
-bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
+bisim (repl (plus (inp a x\null) (inp b x\null)))
   (par (repl (inp a x\null)) (repl (inp b x\null))).</b>
 </pre>
 <a name="81"></a>
 <pre>
 
 ============================
+ bisim (repl (plus (inp a x\null) (inp b x\null)))
+   (par (repl (inp a x\null)) (repl (inp b x\null)))
+
+ex_bang_plus < <b>Sound : apply bisim_sound.</b>
+</pre>
+<a name="82"></a>
+<pre>
+
+Sound : is_sound bisim_t
+============================
+ bisim (repl (plus (inp a x\null) (inp b x\null)))
+   (par (repl (inp a x\null)) (repl (inp b x\null)))
+
+ex_bang_plus < <b>Sound : case Sound.</b>
+</pre>
+<a name="83"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim (repl (plus (inp a x\null) (inp b x\null)))
+   (par (repl (inp a x\null)) (repl (inp b x\null)))
+
+ex_bang_plus < <b>unfold.</b>
+</pre>
+<a name="84"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim_up_to refl_t (repl (plus (inp a x\null) (inp b x\null)))
+   (par (repl (inp a x\null)) (repl (inp b x\null)))
+
+ex_bang_plus < <b>backchain Sound.</b>
+</pre>
+<a name="85"></a>
+<pre>
+
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
  bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
    (par (repl (inp a x\null)) (repl (inp b x\null)))
 
-ex_bang_plus < <b>intros bisim_repl_absorb.</b>
+ex_bang_plus < <b>clear Sound.</b>
 </pre>
-<a name="82"></a>
+<a name="86"></a>
 <pre>
 
 ============================
@@ -2433,7 +2473,7 @@ ex_bang_plus < <b>intros bisim_repl_absorb.</b>
 
 ex_bang_plus < <b>coinduction.</b>
 </pre>
-<a name="83"></a>
+<a name="87"></a>
 <pre>
 
 CH : bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
@@ -2444,7 +2484,7 @@ CH : bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="84"></a>
+<a name="88"></a>
 <pre>
 Subgoal 1:
 
@@ -2490,7 +2530,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="85"></a>
+<a name="89"></a>
 <pre>
 Subgoal 1:
 
@@ -2537,7 +2577,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="86"></a>
+<a name="90"></a>
 <pre>
 Subgoal 1.1:
 
@@ -2602,7 +2642,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="87"></a>
+<a name="91"></a>
 <pre>
 Subgoal 1.1.1:
 
@@ -2673,7 +2713,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="88"></a>
+<a name="92"></a>
 <pre>
 Subgoal 1.1.2:
 
@@ -2738,7 +2778,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="89"></a>
+<a name="93"></a>
 <pre>
 Subgoal 1.2:
 
@@ -2798,7 +2838,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="90"></a>
+<a name="94"></a>
 <pre>
 Subgoal 1.2.1:
 
@@ -2866,7 +2906,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="91"></a>
+<a name="95"></a>
 <pre>
 Subgoal 1.2.2:
 
@@ -2926,7 +2966,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="92"></a>
+<a name="96"></a>
 <pre>
 Subgoal 1.3:
 
@@ -2978,7 +3018,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="93"></a>
+<a name="97"></a>
 <pre>
 Subgoal 1.3.1:
 
@@ -3038,7 +3078,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="94"></a>
+<a name="98"></a>
 <pre>
 Subgoal 1.3.2:
 
@@ -3090,7 +3130,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="95"></a>
+<a name="99"></a>
 <pre>
 Subgoal 2:
 
@@ -3131,7 +3171,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="96"></a>
+<a name="100"></a>
 <pre>
 Subgoal 2:
 
@@ -3172,7 +3212,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="97"></a>
+<a name="101"></a>
 <pre>
 Subgoal 2:
 
@@ -3217,7 +3257,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="98"></a>
+<a name="102"></a>
 <pre>
 Subgoal 2.1:
 
@@ -3271,7 +3311,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="99"></a>
+<a name="103"></a>
 <pre>
 Subgoal 2.1:
 
@@ -3323,7 +3363,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (par (repl (inp X x1\null)) null) (repl (inp b x1\null)).</b>
 </pre>
-<a name="100"></a>
+<a name="104"></a>
 <pre>
 Subgoal 2.1:
 
@@ -3379,7 +3419,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="101"></a>
+<a name="105"></a>
 <pre>
 Subgoal 2.1.1:
 
@@ -3436,7 +3476,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="102"></a>
+<a name="106"></a>
 <pre>
 Subgoal 2.1.2:
 
@@ -3489,7 +3529,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\repl (plus (inp X x1\null) (inp b x1\null)).</b>
 </pre>
-<a name="103"></a>
+<a name="107"></a>
 <pre>
 Subgoal 2.1.2:
 
@@ -3541,7 +3581,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (inp X x1\null)) (repl (inp b x1\null)).</b>
 </pre>
-<a name="104"></a>
+<a name="108"></a>
 <pre>
 Subgoal 2.1.2:
 
@@ -3592,7 +3632,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="105"></a>
+<a name="109"></a>
 <pre>
 Subgoal 2.1.2:
 
@@ -3644,7 +3684,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="106"></a>
+<a name="110"></a>
 <pre>
 Subgoal 2.1.2.1:
 
@@ -3698,7 +3738,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="107"></a>
+<a name="111"></a>
 <pre>
 Subgoal 2.1.2.1.1:
 
@@ -3755,7 +3795,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="108"></a>
+<a name="112"></a>
 <pre>
 Subgoal 2.1.2.1.2:
 
@@ -3808,7 +3848,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_1.</b>
 </pre>
-<a name="109"></a>
+<a name="113"></a>
 <pre>
 Subgoal 2.1.2.1.2:
 
@@ -3859,7 +3899,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="110"></a>
+<a name="114"></a>
 <pre>
 Subgoal 2.1.2.2:
 
@@ -3907,7 +3947,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="111"></a>
+<a name="115"></a>
 <pre>
 Subgoal 2.2:
 
@@ -3952,7 +3992,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="112"></a>
+<a name="116"></a>
 <pre>
 Subgoal 2.2:
 
@@ -3995,7 +4035,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (inp a x1\null)) (par (repl (inp X x1\null)) null).</b>
 </pre>
-<a name="113"></a>
+<a name="117"></a>
 <pre>
 Subgoal 2.2:
 
@@ -4042,7 +4082,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="114"></a>
+<a name="118"></a>
 <pre>
 Subgoal 2.2.1:
 
@@ -4090,7 +4130,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="115"></a>
+<a name="119"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -4134,7 +4174,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\repl (plus (inp a x1\null) (inp X x1\null)).</b>
 </pre>
-<a name="116"></a>
+<a name="120"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -4177,7 +4217,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (inp a x1\null)) (repl (inp X x1\null)).</b>
 </pre>
-<a name="117"></a>
+<a name="121"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -4219,7 +4259,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="118"></a>
+<a name="122"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -4262,7 +4302,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="119"></a>
+<a name="123"></a>
 <pre>
 Subgoal 2.2.2.1:
 
@@ -4307,7 +4347,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="120"></a>
+<a name="124"></a>
 <pre>
 Subgoal 2.2.2.1.1:
 
@@ -4355,7 +4395,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="121"></a>
+<a name="125"></a>
 <pre>
 Subgoal 2.2.2.1.2:
 
@@ -4399,7 +4439,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_2.</b>
 </pre>
-<a name="122"></a>
+<a name="126"></a>
 <pre>
 Subgoal 2.2.2.1.2:
 
@@ -4441,7 +4481,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="123"></a>
+<a name="127"></a>
 <pre>
 Subgoal 2.2.2.2:
 
@@ -4480,7 +4520,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="124"></a>
+<a name="128"></a>
 <pre>
 Subgoal 3:
 
@@ -4514,7 +4554,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="125"></a>
+<a name="129"></a>
 <pre>
 Subgoal 3:
 
@@ -4548,7 +4588,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="126"></a>
+<a name="130"></a>
 <pre>
 Subgoal 3:
 
@@ -4585,7 +4625,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="127"></a>
+<a name="131"></a>
 <pre>
 Subgoal 3.1:
 
@@ -4630,7 +4670,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="128"></a>
+<a name="132"></a>
 <pre>
 Subgoal 3.2:
 
@@ -4667,7 +4707,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="129"></a>
+<a name="133"></a>
 <pre>
 Subgoal 4:
 
@@ -4694,7 +4734,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="130"></a>
+<a name="134"></a>
 <pre>
 Subgoal 4:
 
@@ -4722,7 +4762,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="131"></a>
+<a name="135"></a>
 <pre>
 Subgoal 4.1:
 
@@ -4766,7 +4806,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="132"></a>
+<a name="136"></a>
 <pre>
 Subgoal 4.1.1:
 
@@ -4829,7 +4869,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="133"></a>
+<a name="137"></a>
 <pre>
 Subgoal 4.1.2:
 
@@ -4886,7 +4926,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="134"></a>
+<a name="138"></a>
 <pre>
 Subgoal 4.1.3:
 
@@ -4935,7 +4975,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="135"></a>
+<a name="139"></a>
 <pre>
 Subgoal 4.2:
 
@@ -4974,7 +5014,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="136"></a>
+<a name="140"></a>
 <pre>
 Subgoal 4.2.1:
 
@@ -5031,7 +5071,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="137"></a>
+<a name="141"></a>
 <pre>
 Subgoal 4.2.2:
 
@@ -5082,7 +5122,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="138"></a>
+<a name="142"></a>
 <pre>
 Subgoal 4.2.3:
 
@@ -5125,7 +5165,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="139"></a>
+<a name="143"></a>
 <pre>
 Subgoal 4.3:
 
@@ -5162,7 +5202,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="140"></a>
+<a name="144"></a>
 <pre>
 Subgoal 4.3.1:
 
@@ -5202,7 +5242,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="141"></a>
+<a name="145"></a>
 <pre>
 Subgoal 4.3.1:
 
@@ -5242,7 +5282,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H5.</b>
 </pre>
-<a name="142"></a>
+<a name="146"></a>
 <pre>
 Subgoal 4.3.2:
 
@@ -5277,7 +5317,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="143"></a>
+<a name="147"></a>
 <pre>
 Subgoal 4.3.2:
 
@@ -5312,7 +5352,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H5.</b>
 </pre>
-<a name="144"></a>
+<a name="148"></a>
 <pre>
 Subgoal 4.4:
 
@@ -5344,7 +5384,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="145"></a>
+<a name="149"></a>
 <pre>
 Subgoal 4.4.1:
 
@@ -5379,7 +5419,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H4.</b>
 </pre>
-<a name="146"></a>
+<a name="150"></a>
 <pre>
 Subgoal 4.4.1:
 
@@ -5415,7 +5455,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H5.</b>
 </pre>
-<a name="147"></a>
+<a name="151"></a>
 <pre>
 Subgoal 4.4.2:
 
@@ -5445,7 +5485,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="148"></a>
+<a name="152"></a>
 <pre>
 Subgoal 4.4.2:
 
@@ -5476,7 +5516,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H5.</b>
 </pre>
-<a name="149"></a>
+<a name="153"></a>
 <pre>
 Subgoal 5:
 
@@ -5498,7 +5538,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="150"></a>
+<a name="154"></a>
 <pre>
 Subgoal 5:
 
@@ -5520,7 +5560,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="151"></a>
+<a name="155"></a>
 <pre>
 Subgoal 5.1:
 
@@ -5549,7 +5589,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="152"></a>
+<a name="156"></a>
 <pre>
 Subgoal 5.1:
 
@@ -5580,7 +5620,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="153"></a>
+<a name="157"></a>
 <pre>
 Subgoal 5.1:
 
@@ -5609,7 +5649,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (plus (inp X x1\null) (inp b x1\null))) null.</b>
 </pre>
-<a name="154"></a>
+<a name="158"></a>
 <pre>
 Subgoal 5.1:
 
@@ -5643,7 +5683,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="155"></a>
+<a name="159"></a>
 <pre>
 Subgoal 5.1.1:
 
@@ -5678,7 +5718,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="156"></a>
+<a name="160"></a>
 <pre>
 Subgoal 5.1.2:
 
@@ -5709,7 +5749,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\repl (plus (inp X x1\null) (inp b x1\null)).</b>
 </pre>
-<a name="157"></a>
+<a name="161"></a>
 <pre>
 Subgoal 5.1.2:
 
@@ -5739,7 +5779,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (inp X x1\null)) (repl (inp b x1\null)).</b>
 </pre>
-<a name="158"></a>
+<a name="162"></a>
 <pre>
 Subgoal 5.1.2:
 
@@ -5768,7 +5808,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="159"></a>
+<a name="163"></a>
 <pre>
 Subgoal 5.1.2:
 
@@ -5798,7 +5838,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="160"></a>
+<a name="164"></a>
 <pre>
 Subgoal 5.1.2.1:
 
@@ -5830,7 +5870,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="161"></a>
+<a name="165"></a>
 <pre>
 Subgoal 5.1.2.1.1:
 
@@ -5865,7 +5905,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="162"></a>
+<a name="166"></a>
 <pre>
 Subgoal 5.1.2.1.2:
 
@@ -5896,7 +5936,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_1.</b>
 </pre>
-<a name="163"></a>
+<a name="167"></a>
 <pre>
 Subgoal 5.1.2.1.2:
 
@@ -5925,7 +5965,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="164"></a>
+<a name="168"></a>
 <pre>
 Subgoal 5.1.2.2:
 
@@ -5951,7 +5991,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="165"></a>
+<a name="169"></a>
 <pre>
 Subgoal 5.2:
 
@@ -5974,7 +6014,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="166"></a>
+<a name="170"></a>
 <pre>
 Subgoal 5.2:
 
@@ -5999,7 +6039,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="167"></a>
+<a name="171"></a>
 <pre>
 Subgoal 5.2:
 
@@ -6022,7 +6062,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (plus (inp a x1\null) (inp X x1\null))) null.</b>
 </pre>
-<a name="168"></a>
+<a name="172"></a>
 <pre>
 Subgoal 5.2:
 
@@ -6050,7 +6090,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="169"></a>
+<a name="173"></a>
 <pre>
 Subgoal 5.2.1:
 
@@ -6079,7 +6119,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>search.</b>
 </pre>
-<a name="170"></a>
+<a name="174"></a>
 <pre>
 Subgoal 5.2.2:
 
@@ -6104,7 +6144,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\repl (plus (inp a x1\null) (inp X x1\null)).</b>
 </pre>
-<a name="171"></a>
+<a name="175"></a>
 <pre>
 Subgoal 5.2.2:
 
@@ -6128,7 +6168,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>witness x\par (repl (inp a x1\null)) (repl (inp X x1\null)).</b>
 </pre>
-<a name="172"></a>
+<a name="176"></a>
 <pre>
 Subgoal 5.2.2:
 
@@ -6151,7 +6191,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="173"></a>
+<a name="177"></a>
 <pre>
 Subgoal 5.2.2:
 
@@ -6175,7 +6215,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>split.</b>
 </pre>
-<a name="174"></a>
+<a name="178"></a>
 <pre>
 Subgoal 5.2.2.1:
 
@@ -6201,7 +6241,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>unfold.</b>
 </pre>
-<a name="175"></a>
+<a name="179"></a>
 <pre>
 Subgoal 5.2.2.1.1:
 
@@ -6230,7 +6270,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="176"></a>
+<a name="180"></a>
 <pre>
 Subgoal 5.2.2.1.2:
 
@@ -6255,7 +6295,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_subst_2.</b>
 </pre>
-<a name="177"></a>
+<a name="181"></a>
 <pre>
 Subgoal 5.2.2.1.2:
 
@@ -6278,7 +6318,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="178"></a>
+<a name="182"></a>
 <pre>
 Subgoal 5.2.2.2:
 
@@ -6298,7 +6338,7 @@ Subgoal 6 is:
 
 ex_bang_plus < <b>backchain CH.</b>
 </pre>
-<a name="179"></a>
+<a name="183"></a>
 <pre>
 Subgoal 6:
 
@@ -6313,7 +6353,7 @@ CH : bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
 
 ex_bang_plus < <b>intros.</b>
 </pre>
-<a name="180"></a>
+<a name="184"></a>
 <pre>
 Subgoal 6:
 
@@ -6328,7 +6368,7 @@ H1 : oneb (par (repl (inp a x\null)) (repl (inp b x\null))) (up X) Q1
 
 ex_bang_plus < <b>case H1.</b>
 </pre>
-<a name="181"></a>
+<a name="185"></a>
 <pre>
 Subgoal 6.1:
 
@@ -6350,7 +6390,7 @@ Subgoal 6.2 is:
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="182"></a>
+<a name="186"></a>
 <pre>
 Subgoal 6.1:
 
@@ -6374,7 +6414,7 @@ Subgoal 6.2 is:
 
 ex_bang_plus < <b>case H3.</b>
 </pre>
-<a name="183"></a>
+<a name="187"></a>
 <pre>
 Subgoal 6.2:
 
@@ -6390,7 +6430,7 @@ H2 : oneb (repl (inp b x\null)) (up X) R
 
 ex_bang_plus < <b>case H2.</b>
 </pre>
-<a name="184"></a>
+<a name="188"></a>
 <pre>
 Subgoal 6.2:
 
@@ -6409,22 +6449,71 @@ H3 : oneb (inp b x\null) (up X) R1
 ex_bang_plus < <b>case H3.</b>
 Proof completed.
 </pre>
-<a name="185"></a>
+<a name="189"></a>
 <pre class="code">
 Abella < <b>Theorem ex_bang_bang : 
 (forall P, bisim_up_to refl_t (par (repl P) P) (repl P)) ->
-  bisim_up_to bisim_t (repl (repl (inp a x\null))) (repl (inp a x\null)).</b>
+  bisim (repl (repl (inp a x\null))) (repl (inp a x\null)).</b>
 </pre>
-<a name="186"></a>
+<a name="190"></a>
 <pre>
 
 ============================
  (forall P, bisim_up_to refl_t (par (repl P) P) (repl P)) ->
-   bisim_up_to bisim_t (repl (repl (inp a x\null))) (repl (inp a x\null))
+   bisim (repl (repl (inp a x\null))) (repl (inp a x\null))
 
 ex_bang_bang < <b>intros bisim_repl_absorb.</b>
 </pre>
-<a name="187"></a>
+<a name="191"></a>
+<pre>
+
+bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
+============================
+ bisim (repl (repl (inp a x\null))) (repl (inp a x\null))
+
+ex_bang_bang < <b>Sound : apply bisim_sound.</b>
+</pre>
+<a name="192"></a>
+<pre>
+
+bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
+Sound : is_sound bisim_t
+============================
+ bisim (repl (repl (inp a x\null))) (repl (inp a x\null))
+
+ex_bang_bang < <b>Sound : case Sound.</b>
+</pre>
+<a name="193"></a>
+<pre>
+
+bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim (repl (repl (inp a x\null))) (repl (inp a x\null))
+
+ex_bang_bang < <b>unfold.</b>
+</pre>
+<a name="194"></a>
+<pre>
+
+bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim_up_to refl_t (repl (repl (inp a x\null))) (repl (inp a x\null))
+
+ex_bang_bang < <b>backchain Sound.</b>
+</pre>
+<a name="195"></a>
+<pre>
+
+bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
+Sound : forall P Q, bisim_up_to bisim_t P Q -> bisim_up_to refl_t P Q
+============================
+ bisim_up_to bisim_t (repl (repl (inp a x\null))) (repl (inp a x\null))
+
+ex_bang_bang < <b>clear Sound.</b>
+</pre>
+<a name="196"></a>
 <pre>
 
 bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
@@ -6433,7 +6522,7 @@ bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
 
 ex_bang_bang < <b>coinduction.</b>
 </pre>
-<a name="188"></a>
+<a name="197"></a>
 <pre>
 
 bisim_repl_absorb : forall P, bisim_up_to refl_t (par (repl P) P) (repl P)
@@ -6443,7 +6532,7 @@ CH : bisim_up_to bisim_t (repl (repl (inp a x\null))) (repl (inp a x\null)) +
 
 ex_bang_bang < <b>unfold.</b>
 </pre>
-<a name="189"></a>
+<a name="198"></a>
 <pre>
 Subgoal 1:
 
@@ -6485,7 +6574,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="190"></a>
+<a name="199"></a>
 <pre>
 Subgoal 1:
 
@@ -6528,7 +6617,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="191"></a>
+<a name="200"></a>
 <pre>
 Subgoal 1.1:
 
@@ -6586,7 +6675,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="192"></a>
+<a name="201"></a>
 <pre>
 Subgoal 1.1.1:
 
@@ -6663,7 +6752,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="193"></a>
+<a name="202"></a>
 <pre>
 Subgoal 1.1.2:
 
@@ -6733,7 +6822,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="194"></a>
+<a name="203"></a>
 <pre>
 Subgoal 1.1.3:
 
@@ -6795,7 +6884,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="195"></a>
+<a name="204"></a>
 <pre>
 Subgoal 1.2:
 
@@ -6849,7 +6938,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="196"></a>
+<a name="205"></a>
 <pre>
 Subgoal 1.2:
 
@@ -6905,7 +6994,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="197"></a>
+<a name="206"></a>
 <pre>
 Subgoal 1.2:
 
@@ -6962,7 +7051,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H4.</b>
 </pre>
-<a name="198"></a>
+<a name="207"></a>
 <pre>
 Subgoal 1.3:
 
@@ -7010,7 +7099,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="199"></a>
+<a name="208"></a>
 <pre>
 Subgoal 1.3:
 
@@ -7058,7 +7147,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H4.</b>
 </pre>
-<a name="200"></a>
+<a name="209"></a>
 <pre>
 Subgoal 2:
 
@@ -7095,7 +7184,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="201"></a>
+<a name="210"></a>
 <pre>
 Subgoal 2:
 
@@ -7133,7 +7222,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="202"></a>
+<a name="211"></a>
 <pre>
 Subgoal 2:
 
@@ -7172,7 +7261,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="203"></a>
+<a name="212"></a>
 <pre>
 Subgoal 2:
 
@@ -7213,7 +7302,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="204"></a>
+<a name="213"></a>
 <pre>
 Subgoal 2:
 
@@ -7252,7 +7341,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\par (repl (inp X x1\null)) null.</b>
 </pre>
-<a name="205"></a>
+<a name="214"></a>
 <pre>
 Subgoal 2:
 
@@ -7292,7 +7381,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>split.</b>
 </pre>
-<a name="206"></a>
+<a name="215"></a>
 <pre>
 Subgoal 2.1:
 
@@ -7333,7 +7422,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>search.</b>
 </pre>
-<a name="207"></a>
+<a name="216"></a>
 <pre>
 Subgoal 2.2:
 
@@ -7371,7 +7460,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\repl (repl (inp X x1\null)).</b>
 </pre>
-<a name="208"></a>
+<a name="217"></a>
 <pre>
 Subgoal 2.2:
 
@@ -7410,7 +7499,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\repl (inp X x1\null).</b>
 </pre>
-<a name="209"></a>
+<a name="218"></a>
 <pre>
 Subgoal 2.2:
 
@@ -7449,7 +7538,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="210"></a>
+<a name="219"></a>
 <pre>
 Subgoal 2.2:
 
@@ -7487,7 +7576,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>split.</b>
 </pre>
-<a name="211"></a>
+<a name="220"></a>
 <pre>
 Subgoal 2.2.1:
 
@@ -7527,7 +7616,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>unfold.</b>
 </pre>
-<a name="212"></a>
+<a name="221"></a>
 <pre>
 Subgoal 2.2.1.1:
 
@@ -7570,7 +7659,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_par_null with P = repl (inp X x\null).</b>
 </pre>
-<a name="213"></a>
+<a name="222"></a>
 <pre>
 Subgoal 2.2.1.1:
 
@@ -7615,7 +7704,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_par_subst_2 to H4 with R = repl (repl (inp X x\null)).</b>
 </pre>
-<a name="214"></a>
+<a name="223"></a>
 <pre>
 Subgoal 2.2.1.1:
 
@@ -7663,7 +7752,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_repl_absorb with P = repl (inp X x\null).</b>
 </pre>
-<a name="215"></a>
+<a name="224"></a>
 <pre>
 Subgoal 2.2.1.1:
 
@@ -7714,7 +7803,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain bisim_transitive.</b>
 </pre>
-<a name="216"></a>
+<a name="225"></a>
 <pre>
 Subgoal 2.2.1.2:
 
@@ -7752,7 +7841,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="217"></a>
+<a name="226"></a>
 <pre>
 Subgoal 2.2.2:
 
@@ -7787,7 +7876,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain CH.</b>
 </pre>
-<a name="218"></a>
+<a name="227"></a>
 <pre>
 Subgoal 3:
 
@@ -7818,7 +7907,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="219"></a>
+<a name="228"></a>
 <pre>
 Subgoal 3:
 
@@ -7850,7 +7939,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="220"></a>
+<a name="229"></a>
 <pre>
 Subgoal 3:
 
@@ -7883,7 +7972,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="221"></a>
+<a name="230"></a>
 <pre>
 Subgoal 3:
 
@@ -7918,7 +8007,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H3.</b>
 </pre>
-<a name="222"></a>
+<a name="231"></a>
 <pre>
 Subgoal 4:
 
@@ -7943,7 +8032,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="223"></a>
+<a name="232"></a>
 <pre>
 Subgoal 4:
 
@@ -7969,7 +8058,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="224"></a>
+<a name="233"></a>
 <pre>
 Subgoal 4.1:
 
@@ -8007,7 +8096,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="225"></a>
+<a name="234"></a>
 <pre>
 Subgoal 4.2:
 
@@ -8041,7 +8130,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="226"></a>
+<a name="235"></a>
 <pre>
 Subgoal 4.3:
 
@@ -8070,7 +8159,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="227"></a>
+<a name="236"></a>
 <pre>
 Subgoal 5:
 
@@ -8090,7 +8179,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="228"></a>
+<a name="237"></a>
 <pre>
 Subgoal 5:
 
@@ -8111,7 +8200,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="229"></a>
+<a name="238"></a>
 <pre>
 Subgoal 5:
 
@@ -8133,7 +8222,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>case H2.</b>
 </pre>
-<a name="230"></a>
+<a name="239"></a>
 <pre>
 Subgoal 5:
 
@@ -8153,7 +8242,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\par (repl (repl (inp X x1\null))) (par (repl (inp X x1\null)) null).</b>
 </pre>
-<a name="231"></a>
+<a name="240"></a>
 <pre>
 Subgoal 5:
 
@@ -8177,7 +8266,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>split.</b>
 </pre>
-<a name="232"></a>
+<a name="241"></a>
 <pre>
 Subgoal 5.1:
 
@@ -8202,7 +8291,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>search.</b>
 </pre>
-<a name="233"></a>
+<a name="242"></a>
 <pre>
 Subgoal 5.2:
 
@@ -8223,7 +8312,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\repl (repl (inp X x1\null)).</b>
 </pre>
-<a name="234"></a>
+<a name="243"></a>
 <pre>
 Subgoal 5.2:
 
@@ -8245,7 +8334,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>witness x\repl (inp X x1\null).</b>
 </pre>
-<a name="235"></a>
+<a name="244"></a>
 <pre>
 Subgoal 5.2:
 
@@ -8267,7 +8356,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="236"></a>
+<a name="245"></a>
 <pre>
 Subgoal 5.2:
 
@@ -8288,7 +8377,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>split.</b>
 </pre>
-<a name="237"></a>
+<a name="246"></a>
 <pre>
 Subgoal 5.2.1:
 
@@ -8311,7 +8400,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>unfold.</b>
 </pre>
-<a name="238"></a>
+<a name="247"></a>
 <pre>
 Subgoal 5.2.1.1:
 
@@ -8337,7 +8426,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_par_null with P = repl (inp X x\null).</b>
 </pre>
-<a name="239"></a>
+<a name="248"></a>
 <pre>
 Subgoal 5.2.1.1:
 
@@ -8365,7 +8454,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_par_subst_2 to H3 with R = repl (repl (inp X x\null)).</b>
 </pre>
-<a name="240"></a>
+<a name="249"></a>
 <pre>
 Subgoal 5.2.1.1:
 
@@ -8396,7 +8485,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>apply bisim_repl_absorb with P = repl (inp X x\null).</b>
 </pre>
-<a name="241"></a>
+<a name="250"></a>
 <pre>
 Subgoal 5.2.1.1:
 
@@ -8430,7 +8519,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain bisim_transitive.</b>
 </pre>
-<a name="242"></a>
+<a name="251"></a>
 <pre>
 Subgoal 5.2.1.2:
 
@@ -8451,7 +8540,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain bisim_par_null.</b>
 </pre>
-<a name="243"></a>
+<a name="252"></a>
 <pre>
 Subgoal 5.2.2:
 
@@ -8469,7 +8558,7 @@ Subgoal 6 is:
 
 ex_bang_bang < <b>backchain CH.</b>
 </pre>
-<a name="244"></a>
+<a name="253"></a>
 <pre>
 Subgoal 6:
 
@@ -8483,7 +8572,7 @@ CH : bisim_up_to bisim_t (repl (repl (inp a x\null))) (repl (inp a x\null)) +
 
 ex_bang_bang < <b>intros.</b>
 </pre>
-<a name="245"></a>
+<a name="254"></a>
 <pre>
 Subgoal 6:
 
@@ -8498,7 +8587,7 @@ H1 : oneb (repl (inp a x\null)) (up X) Q1
 
 ex_bang_bang < <b>case H1.</b>
 </pre>
-<a name="246"></a>
+<a name="255"></a>
 <pre>
 Subgoal 6:
 
@@ -8515,7 +8604,7 @@ H2 : oneb (inp a x\null) (up X) R
 ex_bang_bang < <b>case H2.</b>
 Proof completed.
 </pre>
-<a name="247"></a>
+<a name="256"></a>
 <pre class="code">
 Abella < Goodbye.
 </pre>

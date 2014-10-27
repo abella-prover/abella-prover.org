@@ -38,10 +38,12 @@ coinduction. intros. unfold.
 
 %%% !(a(x) + b(x)) ~ (!a(x) | !b(x))
 
+
 Theorem ex_bang_plus :
-  bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
+  bisim (repl (plus (inp a x\null) (inp b x\null)))
         (par (repl (inp a x\null)) (repl (inp b x\null))).
-intros bisim_repl_absorb.
+Sound : apply bisim_sound. Sound : case Sound.
+unfold. backchain Sound. clear Sound.
 coinduction. unfold.
   intros. case H1.
     case H2.
@@ -130,9 +132,11 @@ coinduction. unfold.
 
 Theorem ex_bang_bang :
   (forall P, bisim_up_to refl_t (par (repl P) P) (repl P)) ->
-  bisim_up_to bisim_t (repl (repl (inp a x\null)))
+  bisim (repl (repl (inp a x\null)))
         (repl (inp a x\null)).
 intros bisim_repl_absorb.
+Sound : apply bisim_sound. Sound : case Sound.
+unfold. backchain Sound. clear Sound.
 coinduction. unfold.
   intros. case H1.
     case H2.

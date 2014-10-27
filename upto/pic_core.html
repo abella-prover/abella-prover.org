@@ -80,27 +80,24 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="pic_core-details.html#3" class="command">Type inp          name -> (name -> proc) -> proc.</a>
 <a href="pic_core-details.html#4" class="command">Type oup          name -> name -> proc -> proc.</a>
 
-<span class="comment">%% match</span>
-<a href="pic_core-details.html#5" class="command">Type match        name -> name -> proc -> proc.</a>
-
 <span class="comment">%% name restriction</span>
-<a href="pic_core-details.html#6" class="command">Type nu           (name -> proc) -> proc.</a>
+<a href="pic_core-details.html#5" class="command">Type nu           (name -> proc) -> proc.</a>
 
 <span class="comment">%% replication</span>
-<a href="pic_core-details.html#7" class="command">Type repl         proc -> proc.</a>
+<a href="pic_core-details.html#6" class="command">Type repl         proc -> proc.</a>
 
 <span class="comment">%% core process algebra</span>
-<a href="pic_core-details.html#8" class="command">Type plus, par    proc -> proc -> proc.</a>
-<a href="pic_core-details.html#9" class="command">Type null         proc.</a>
+<a href="pic_core-details.html#7" class="command">Type plus, par    proc -> proc -> proc.</a>
+<a href="pic_core-details.html#8" class="command">Type null         proc.</a>
 
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%% Labels of the LTS</span>
 
-<a href="pic_core-details.html#10" class="command">Kind label type.</a>
+<a href="pic_core-details.html#9" class="command">Kind label type.</a>
 
-<a href="pic_core-details.html#11" class="command">Type tau          label.</a>
-<a href="pic_core-details.html#12" class="command">Type up, dn       name -> name -> label.</a>
+<a href="pic_core-details.html#10" class="command">Type tau          label.</a>
+<a href="pic_core-details.html#11" class="command">Type up, dn       name -> name -> label.</a>
 
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
@@ -110,7 +107,7 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">% one for closed steps and oneb for bound steps, i.e., steps that contain</span>
 <span class="comment">% a name that is restricted (nu) or bound (inp) in an outer scope.</span>
 
-<a href="pic_core-details.html#13" class="command">Define
+<a href="pic_core-details.html#12" class="command">Define
    one  : proc -> label -> proc -> prop,
    oneb : proc -> (name -> label) -> (name -> proc) -> prop
 by
@@ -169,7 +166,7 @@ by
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%%% Bisimilarity-up-to</span>
 
-<a href="pic_core-details.html#14" class="command">CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
+<a href="pic_core-details.html#13" class="command">CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
                        proc -> proc -> prop by
   bisim_up_to Tech P Q :=
      (forall L P1, one P L P1 ->
@@ -201,8 +198,14 @@ by
             Tech (P1 x) (P2 x) (Q1 x) (Q2 x) /\
             bisim_up_to Tech (P2 x) (Q2 x)).</a>
 
-<a href="pic_core-details.html#15" class="command">Define refl_t : proc -> proc -> proc -> proc -> prop by
+<a href="pic_core-details.html#14" class="command">Define refl_t : proc -> proc -> proc -> proc -> prop by
   refl_t P P Q Q.</a>
+
+<span class="comment">%%% The ordinary bisimilarity</span>
+
+<a href="pic_core-details.html#15" class="command">CoDefine bisim : proc -> proc -> prop by
+  bisim P Q := bisim_up_to refl_t P Q.</a>
+
 
 <a href="pic_core-details.html#16" class="command">Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
   is_sound Tech :=

@@ -2,41 +2,8 @@ Kind name,label,proc type.
 
 Import "pic_core".
 
-Set subgoals off.
-
-Kind ctx type.
-
-Type hole      ctx.
-
-Type taup_d    ctx -> ctx.
-Type inp_d     name -> (name -> ctx) -> ctx.
-Type oup_d     name -> name -> ctx -> ctx.
-
-Type nu_d      (name -> ctx) -> ctx.
-
-Type par_l     ctx -> proc -> ctx.
-Type par_r     proc -> ctx -> ctx.
-
-Type plus_l    ctx -> proc -> ctx.
-Type plus_r    proc -> ctx -> ctx.
-
-
-Define
-  at  : ctx -> proc -> proc -> prop
-by
-  at hole P P
-
-; at (taup_d C) P (taup Q) := at C P Q
-; nabla x, at (inp_d X C) (P x) (inp X Q) := forall Y, at (C Y) (P Y) (Q Y)
-; at (oup_d X Y C) P (oup X Y Q) := at C P Q
-
-; nabla x, at (nu_d C) (P x) (nu Q) := nabla x, at (C x) (P x) (Q x)
-
-; at (par_l C R) P (par Q R) := at C P Q
-; at (par_r R C) P (par R Q) := at C P Q
-
-; at (plus_l C R) P (plus Q R) := at C P Q
-; at (plus_r R C) P (plus R Q) := at C P Q.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% par and nu contexts are substitutive
 
 Define inv : proc -> proc -> prop by
   inv P Q := bisim_up_to refl_t P Q
@@ -178,5 +145,11 @@ intros. apply bisim_reflexive with P = R.
 Theorem bisim_par_subst_2 : forall P Q R,
   bisim_up_to refl_t P Q -> bisim_up_to refl_t (par R P) (par R Q).
 intros. apply bisim_reflexive with P = R.
+ backchain bisim_inv_bisim.
+ backchain inv_bisim_inv.
+
+Theorem bisim_nu_subst : forall P Q,
+  (nabla x, bisim_up_to refl_t (P x) (Q x)) -> bisim_up_to refl_t (nu P) (nu Q).
+intros. apply H1 with x = n1.
  backchain bisim_inv_bisim.
  backchain inv_bisim_inv.

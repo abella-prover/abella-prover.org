@@ -17,9 +17,6 @@ Type taup         proc -> proc.
 Type inp          name -> (name -> proc) -> proc.
 Type oup          name -> name -> proc -> proc.
 
-%% match
-Type match        name -> name -> proc -> proc.
-
 %% name restriction
 Type nu           (name -> proc) -> proc.
 
@@ -140,6 +137,12 @@ CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
 
 Define refl_t : proc -> proc -> proc -> proc -> prop by
   refl_t P P Q Q.
+
+%%% The ordinary bisimilarity
+
+CoDefine bisim : proc -> proc -> prop by
+  bisim P Q := bisim_up_to refl_t P Q.
+
 
 Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
   is_sound Tech :=

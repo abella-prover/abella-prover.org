@@ -101,87 +101,89 @@ Click on a command or tactic to see a detailed view of its use.
       <a href="pic_bisim_examples-details.html#79" class="tactic">backchain CH.</a></div>
 <span class="comment">%%% !(a(x) + b(x)) ~ (!a(x) | !b(x))</span>
 
+
 <a href="pic_bisim_examples-details.html#80" class="command">Theorem ex_bang_plus :
-  bisim_up_to bisim_t (repl (plus (inp a x\null) (inp b x\null)))
+  bisim (repl (plus (inp a x\null) (inp b x\null)))
         (par (repl (inp a x\null)) (repl (inp b x\null))).</a>
-<div class="proof"><a href="pic_bisim_examples-details.html#81" class="tactic">intros bisim_repl_absorb.</a>
-<a href="pic_bisim_examples-details.html#82" class="tactic">coinduction.</a> <a href="pic_bisim_examples-details.html#83" class="tactic">unfold.</a>
-  <a href="pic_bisim_examples-details.html#84" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#85" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#86" class="tactic">case H2.</a>
-    <a href="pic_bisim_examples-details.html#87" class="tactic">case H3.</a>
-    <a href="pic_bisim_examples-details.html#88" class="tactic">case H3.</a>
-    <a href="pic_bisim_examples-details.html#89" class="tactic">case H2.</a>
-    <a href="pic_bisim_examples-details.html#90" class="tactic">case H4.</a> <a href="pic_bisim_examples-details.html#91" class="tactic">case H4.</a>
-    <a href="pic_bisim_examples-details.html#92" class="tactic">case H2.</a> <a href="pic_bisim_examples-details.html#93" class="tactic">case H4.</a> <a href="pic_bisim_examples-details.html#94" class="tactic">case H4.</a>
+<div class="proof"><a href="pic_bisim_examples-details.html#81" class="tactic">Sound : apply bisim_sound.</a> <a href="pic_bisim_examples-details.html#82" class="tactic">Sound : case Sound.</a>
+<a href="pic_bisim_examples-details.html#83" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#84" class="tactic">backchain Sound.</a> <a href="pic_bisim_examples-details.html#85" class="tactic">clear Sound.</a>
+<a href="pic_bisim_examples-details.html#86" class="tactic">coinduction.</a> <a href="pic_bisim_examples-details.html#87" class="tactic">unfold.</a>
+  <a href="pic_bisim_examples-details.html#88" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#89" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#90" class="tactic">case H2.</a>
+    <a href="pic_bisim_examples-details.html#91" class="tactic">case H3.</a>
+    <a href="pic_bisim_examples-details.html#92" class="tactic">case H3.</a>
+    <a href="pic_bisim_examples-details.html#93" class="tactic">case H2.</a>
+    <a href="pic_bisim_examples-details.html#94" class="tactic">case H4.</a> <a href="pic_bisim_examples-details.html#95" class="tactic">case H4.</a>
+    <a href="pic_bisim_examples-details.html#96" class="tactic">case H2.</a> <a href="pic_bisim_examples-details.html#97" class="tactic">case H4.</a> <a href="pic_bisim_examples-details.html#98" class="tactic">case H4.</a>
 
-  <a href="pic_bisim_examples-details.html#95" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#96" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#97" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#98" class="tactic">case H3.</a>
-       <a href="pic_bisim_examples-details.html#99" class="tactic">witness x\par (par (repl (inp X (x\null))) ((x\null) x)) (repl (inp b (x\null))).</a> <a href="pic_bisim_examples-details.html#100" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#101" class="tactic">search.</a>
-       <a href="pic_bisim_examples-details.html#102" class="tactic">witness x\(repl (plus (inp X (x\null)) (inp b (x\null)))).</a>
-       <a href="pic_bisim_examples-details.html#103" class="tactic">witness x\ (par (repl (inp X (x\null))) (repl (inp b (x\null)))).</a> <a href="pic_bisim_examples-details.html#104" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#105" class="tactic">split.</a>
-        <a href="pic_bisim_examples-details.html#106" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#107" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#108" class="tactic">backchain bisim_par_subst_1.</a> <a href="pic_bisim_examples-details.html#109" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#110" class="tactic">backchain CH.</a>
+  <a href="pic_bisim_examples-details.html#99" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#100" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#101" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#102" class="tactic">case H3.</a>
+       <a href="pic_bisim_examples-details.html#103" class="tactic">witness x\par (par (repl (inp X (x\null))) ((x\null) x)) (repl (inp b (x\null))).</a> <a href="pic_bisim_examples-details.html#104" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#105" class="tactic">search.</a>
+       <a href="pic_bisim_examples-details.html#106" class="tactic">witness x\(repl (plus (inp X (x\null)) (inp b (x\null)))).</a>
+       <a href="pic_bisim_examples-details.html#107" class="tactic">witness x\ (par (repl (inp X (x\null))) (repl (inp b (x\null)))).</a> <a href="pic_bisim_examples-details.html#108" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#109" class="tactic">split.</a>
+        <a href="pic_bisim_examples-details.html#110" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#111" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#112" class="tactic">backchain bisim_par_subst_1.</a> <a href="pic_bisim_examples-details.html#113" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#114" class="tactic">backchain CH.</a>
 
-      <a href="pic_bisim_examples-details.html#111" class="tactic">case H3.</a>
-       <a href="pic_bisim_examples-details.html#112" class="tactic">witness x\par (repl (inp a (x\null))) (par (repl (inp X (x\null))) ((x\null) x)).</a> <a href="pic_bisim_examples-details.html#113" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#114" class="tactic">search.</a>
-       <a href="pic_bisim_examples-details.html#115" class="tactic">witness x\(repl (plus (inp a (x\null)) (inp X (x\null)))).</a>
-       <a href="pic_bisim_examples-details.html#116" class="tactic">witness x\ (par (repl (inp a (x\null))) (repl (inp X (x\null)))).</a> <a href="pic_bisim_examples-details.html#117" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#118" class="tactic">split.</a>
-       <a href="pic_bisim_examples-details.html#119" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#120" class="tactic">backchain bisim_par_null.</a>
-       <a href="pic_bisim_examples-details.html#121" class="tactic">backchain bisim_par_subst_2.</a> <a href="pic_bisim_examples-details.html#122" class="tactic">backchain bisim_par_null.</a>
-       <a href="pic_bisim_examples-details.html#123" class="tactic">backchain CH.</a>
+      <a href="pic_bisim_examples-details.html#115" class="tactic">case H3.</a>
+       <a href="pic_bisim_examples-details.html#116" class="tactic">witness x\par (repl (inp a (x\null))) (par (repl (inp X (x\null))) ((x\null) x)).</a> <a href="pic_bisim_examples-details.html#117" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#118" class="tactic">search.</a>
+       <a href="pic_bisim_examples-details.html#119" class="tactic">witness x\(repl (plus (inp a (x\null)) (inp X (x\null)))).</a>
+       <a href="pic_bisim_examples-details.html#120" class="tactic">witness x\ (par (repl (inp a (x\null))) (repl (inp X (x\null)))).</a> <a href="pic_bisim_examples-details.html#121" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#122" class="tactic">split.</a>
+       <a href="pic_bisim_examples-details.html#123" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#124" class="tactic">backchain bisim_par_null.</a>
+       <a href="pic_bisim_examples-details.html#125" class="tactic">backchain bisim_par_subst_2.</a> <a href="pic_bisim_examples-details.html#126" class="tactic">backchain bisim_par_null.</a>
+       <a href="pic_bisim_examples-details.html#127" class="tactic">backchain CH.</a>
 
-  <a href="pic_bisim_examples-details.html#124" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#125" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#126" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#127" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#128" class="tactic">case H3.</a>
-
-  <a href="pic_bisim_examples-details.html#129" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#130" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#131" class="tactic">case H2.</a>
+  <a href="pic_bisim_examples-details.html#128" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#129" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#130" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#131" class="tactic">case H3.</a>
       <a href="pic_bisim_examples-details.html#132" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#133" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#134" class="tactic">case H3.</a>
+
+  <a href="pic_bisim_examples-details.html#133" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#134" class="tactic">case H1.</a>
     <a href="pic_bisim_examples-details.html#135" class="tactic">case H2.</a>
       <a href="pic_bisim_examples-details.html#136" class="tactic">case H3.</a>
       <a href="pic_bisim_examples-details.html#137" class="tactic">case H3.</a>
       <a href="pic_bisim_examples-details.html#138" class="tactic">case H3.</a>
-
     <a href="pic_bisim_examples-details.html#139" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#140" class="tactic">case H4.</a>
-      <a href="pic_bisim_examples-details.html#141" class="tactic">case H5.</a>
+      <a href="pic_bisim_examples-details.html#140" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#141" class="tactic">case H3.</a>
       <a href="pic_bisim_examples-details.html#142" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#143" class="tactic">case H5.</a>
 
-    <a href="pic_bisim_examples-details.html#144" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#145" class="tactic">case H4.</a>
-      <a href="pic_bisim_examples-details.html#146" class="tactic">case H5.</a>
-      <a href="pic_bisim_examples-details.html#147" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#148" class="tactic">case H5.</a>
+    <a href="pic_bisim_examples-details.html#143" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#144" class="tactic">case H4.</a>
+      <a href="pic_bisim_examples-details.html#145" class="tactic">case H5.</a>
+      <a href="pic_bisim_examples-details.html#146" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#147" class="tactic">case H5.</a>
 
-  <a href="pic_bisim_examples-details.html#149" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#150" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#151" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#152" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#153" class="tactic">witness x\par (repl (plus (inp X (x\null)) (inp b (x\null)))) ((x\null) x).</a> <a href="pic_bisim_examples-details.html#154" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#155" class="tactic">search.</a>
-      <a href="pic_bisim_examples-details.html#156" class="tactic">witness x\(repl (plus (inp X (x\null)) (inp b (x\null)))).</a>
-      <a href="pic_bisim_examples-details.html#157" class="tactic">witness x\(par (repl (inp X (x\null))) (repl (inp b (x\null)))).</a> <a href="pic_bisim_examples-details.html#158" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#159" class="tactic">split.</a>
-          <a href="pic_bisim_examples-details.html#160" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#161" class="tactic">backchain bisim_par_null.</a>
-          <a href="pic_bisim_examples-details.html#162" class="tactic">backchain bisim_par_subst_1.</a> <a href="pic_bisim_examples-details.html#163" class="tactic">backchain bisim_par_null.</a>
-          <a href="pic_bisim_examples-details.html#164" class="tactic">backchain CH.</a>
-    <a href="pic_bisim_examples-details.html#165" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#166" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#167" class="tactic">witness x\par (repl (plus (inp a (x\null)) (inp X (x\null)))) ((x\null) x).</a> <a href="pic_bisim_examples-details.html#168" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#169" class="tactic">search.</a>
-        <a href="pic_bisim_examples-details.html#170" class="tactic">witness x\(repl (plus (inp a (x\null)) (inp X (x\null)))).</a>
-        <a href="pic_bisim_examples-details.html#171" class="tactic">witness x\ (par (repl (inp a (x\null))) (repl (inp X (x\null)))).</a> <a href="pic_bisim_examples-details.html#172" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#173" class="tactic">split.</a>
-        <a href="pic_bisim_examples-details.html#174" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#175" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#176" class="tactic">backchain bisim_par_subst_2.</a> <a href="pic_bisim_examples-details.html#177" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#178" class="tactic">backchain CH.</a>
+    <a href="pic_bisim_examples-details.html#148" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#149" class="tactic">case H4.</a>
+      <a href="pic_bisim_examples-details.html#150" class="tactic">case H5.</a>
+      <a href="pic_bisim_examples-details.html#151" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#152" class="tactic">case H5.</a>
 
-  <a href="pic_bisim_examples-details.html#179" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#180" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#181" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#182" class="tactic">case H3.</a>
-    <a href="pic_bisim_examples-details.html#183" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#184" class="tactic">case H3.</a></div>
+  <a href="pic_bisim_examples-details.html#153" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#154" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#155" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#156" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#157" class="tactic">witness x\par (repl (plus (inp X (x\null)) (inp b (x\null)))) ((x\null) x).</a> <a href="pic_bisim_examples-details.html#158" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#159" class="tactic">search.</a>
+      <a href="pic_bisim_examples-details.html#160" class="tactic">witness x\(repl (plus (inp X (x\null)) (inp b (x\null)))).</a>
+      <a href="pic_bisim_examples-details.html#161" class="tactic">witness x\(par (repl (inp X (x\null))) (repl (inp b (x\null)))).</a> <a href="pic_bisim_examples-details.html#162" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#163" class="tactic">split.</a>
+          <a href="pic_bisim_examples-details.html#164" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#165" class="tactic">backchain bisim_par_null.</a>
+          <a href="pic_bisim_examples-details.html#166" class="tactic">backchain bisim_par_subst_1.</a> <a href="pic_bisim_examples-details.html#167" class="tactic">backchain bisim_par_null.</a>
+          <a href="pic_bisim_examples-details.html#168" class="tactic">backchain CH.</a>
+    <a href="pic_bisim_examples-details.html#169" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#170" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#171" class="tactic">witness x\par (repl (plus (inp a (x\null)) (inp X (x\null)))) ((x\null) x).</a> <a href="pic_bisim_examples-details.html#172" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#173" class="tactic">search.</a>
+        <a href="pic_bisim_examples-details.html#174" class="tactic">witness x\(repl (plus (inp a (x\null)) (inp X (x\null)))).</a>
+        <a href="pic_bisim_examples-details.html#175" class="tactic">witness x\ (par (repl (inp a (x\null))) (repl (inp X (x\null)))).</a> <a href="pic_bisim_examples-details.html#176" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#177" class="tactic">split.</a>
+        <a href="pic_bisim_examples-details.html#178" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#179" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#180" class="tactic">backchain bisim_par_subst_2.</a> <a href="pic_bisim_examples-details.html#181" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#182" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim_examples-details.html#183" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#184" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#185" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#186" class="tactic">case H3.</a>
+    <a href="pic_bisim_examples-details.html#187" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#188" class="tactic">case H3.</a></div>
 
 <span class="comment">%%% !!a(x) ~ !a(x)</span>
 <span class="comment">%%%</span>
@@ -190,63 +192,65 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">%%%</span>
 <span class="comment">%%%         (this is often assumed as a structural equivalence)</span>
 
-<a href="pic_bisim_examples-details.html#185" class="command">Theorem ex_bang_bang :
+<a href="pic_bisim_examples-details.html#189" class="command">Theorem ex_bang_bang :
   (forall P, bisim_up_to refl_t (par (repl P) P) (repl P)) ->
-  bisim_up_to bisim_t (repl (repl (inp a x\null)))
+  bisim (repl (repl (inp a x\null)))
         (repl (inp a x\null)).</a>
-<div class="proof"><a href="pic_bisim_examples-details.html#186" class="tactic">intros bisim_repl_absorb.</a>
-<a href="pic_bisim_examples-details.html#187" class="tactic">coinduction.</a> <a href="pic_bisim_examples-details.html#188" class="tactic">unfold.</a>
-  <a href="pic_bisim_examples-details.html#189" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#190" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#191" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#192" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#193" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#194" class="tactic">case H3.</a>
-
-    <a href="pic_bisim_examples-details.html#195" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#196" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#197" class="tactic">case H4.</a>
-
-    <a href="pic_bisim_examples-details.html#198" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#199" class="tactic">case H4.</a>
-
-  <a href="pic_bisim_examples-details.html#200" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#201" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#202" class="tactic">case H2.</a>
+<div class="proof"><a href="pic_bisim_examples-details.html#190" class="tactic">intros bisim_repl_absorb.</a>
+<a href="pic_bisim_examples-details.html#191" class="tactic">Sound : apply bisim_sound.</a> <a href="pic_bisim_examples-details.html#192" class="tactic">Sound : case Sound.</a>
+<a href="pic_bisim_examples-details.html#193" class="tactic">unfold.</a> <a href="pic_bisim_examples-details.html#194" class="tactic">backchain Sound.</a> <a href="pic_bisim_examples-details.html#195" class="tactic">clear Sound.</a>
+<a href="pic_bisim_examples-details.html#196" class="tactic">coinduction.</a> <a href="pic_bisim_examples-details.html#197" class="tactic">unfold.</a>
+  <a href="pic_bisim_examples-details.html#198" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#199" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#200" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#201" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#202" class="tactic">case H3.</a>
       <a href="pic_bisim_examples-details.html#203" class="tactic">case H3.</a>
-      <a href="pic_bisim_examples-details.html#204" class="tactic">witness (x\par (repl (inp X (x\null))) ((x\null) x)).</a> <a href="pic_bisim_examples-details.html#205" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#206" class="tactic">search.</a>
-        <a href="pic_bisim_examples-details.html#207" class="tactic">witness x\(repl (repl (inp X (x\null)))).</a>
-        <a href="pic_bisim_examples-details.html#208" class="tactic">witness x\(repl (inp X (x\null))).</a> <a href="pic_bisim_examples-details.html#209" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#210" class="tactic">split.</a>
-        <a href="pic_bisim_examples-details.html#211" class="tactic">unfold.</a>
-        <a href="pic_bisim_examples-details.html#212" class="tactic">apply bisim_par_null with P = (repl (inp X (x\null))).</a>
-        <a href="pic_bisim_examples-details.html#213" class="tactic">apply bisim_par_subst_2 to H4 with R = (repl (repl (inp X (x\null)))).</a>
-        <a href="pic_bisim_examples-details.html#214" class="tactic">apply bisim_repl_absorb with P = (repl (inp X (x\null))).</a>
-        <a href="pic_bisim_examples-details.html#215" class="tactic">backchain bisim_transitive.</a>
-        <a href="pic_bisim_examples-details.html#216" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#217" class="tactic">backchain CH.</a>
 
-  <a href="pic_bisim_examples-details.html#218" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#219" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#220" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#221" class="tactic">case H3.</a>
+    <a href="pic_bisim_examples-details.html#204" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#205" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#206" class="tactic">case H4.</a>
 
-  <a href="pic_bisim_examples-details.html#222" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#223" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#224" class="tactic">case H2.</a>
-    <a href="pic_bisim_examples-details.html#225" class="tactic">case H2.</a>
-    <a href="pic_bisim_examples-details.html#226" class="tactic">case H2.</a>
+    <a href="pic_bisim_examples-details.html#207" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#208" class="tactic">case H4.</a>
+
+  <a href="pic_bisim_examples-details.html#209" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#210" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#211" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#212" class="tactic">case H3.</a>
+      <a href="pic_bisim_examples-details.html#213" class="tactic">witness (x\par (repl (inp X (x\null))) ((x\null) x)).</a> <a href="pic_bisim_examples-details.html#214" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#215" class="tactic">search.</a>
+        <a href="pic_bisim_examples-details.html#216" class="tactic">witness x\(repl (repl (inp X (x\null)))).</a>
+        <a href="pic_bisim_examples-details.html#217" class="tactic">witness x\(repl (inp X (x\null))).</a> <a href="pic_bisim_examples-details.html#218" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#219" class="tactic">split.</a>
+        <a href="pic_bisim_examples-details.html#220" class="tactic">unfold.</a>
+        <a href="pic_bisim_examples-details.html#221" class="tactic">apply bisim_par_null with P = (repl (inp X (x\null))).</a>
+        <a href="pic_bisim_examples-details.html#222" class="tactic">apply bisim_par_subst_2 to H4 with R = (repl (repl (inp X (x\null)))).</a>
+        <a href="pic_bisim_examples-details.html#223" class="tactic">apply bisim_repl_absorb with P = (repl (inp X (x\null))).</a>
+        <a href="pic_bisim_examples-details.html#224" class="tactic">backchain bisim_transitive.</a>
+        <a href="pic_bisim_examples-details.html#225" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#226" class="tactic">backchain CH.</a>
 
   <a href="pic_bisim_examples-details.html#227" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#228" class="tactic">case H1.</a>
     <a href="pic_bisim_examples-details.html#229" class="tactic">case H2.</a>
-      <a href="pic_bisim_examples-details.html#230" class="tactic">witness (x\(par (repl (repl (inp X (x\null)))) (par (repl (inp X (x\null))) ((x\null) x)))).</a> <a href="pic_bisim_examples-details.html#231" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#232" class="tactic">search.</a>
-        <a href="pic_bisim_examples-details.html#233" class="tactic">witness x\(repl (repl (inp X (x\null)))).</a>
-        <a href="pic_bisim_examples-details.html#234" class="tactic">witness x\(repl (inp X (x\null))).</a> <a href="pic_bisim_examples-details.html#235" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#236" class="tactic">split.</a>
-        <a href="pic_bisim_examples-details.html#237" class="tactic">unfold.</a>
-        <a href="pic_bisim_examples-details.html#238" class="tactic">apply bisim_par_null with P = (repl (inp X (x\null))).</a>
-        <a href="pic_bisim_examples-details.html#239" class="tactic">apply bisim_par_subst_2 to H3 with R = (repl (repl (inp X (x\null)))).</a>
-        <a href="pic_bisim_examples-details.html#240" class="tactic">apply bisim_repl_absorb with P = (repl (inp X (x\null))).</a>
-        <a href="pic_bisim_examples-details.html#241" class="tactic">backchain bisim_transitive.</a>
-        <a href="pic_bisim_examples-details.html#242" class="tactic">backchain bisim_par_null.</a>
-        <a href="pic_bisim_examples-details.html#243" class="tactic">backchain CH.</a>
+      <a href="pic_bisim_examples-details.html#230" class="tactic">case H3.</a>
 
-  <a href="pic_bisim_examples-details.html#244" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#245" class="tactic">case H1.</a>
-    <a href="pic_bisim_examples-details.html#246" class="tactic">case H2.</a></div>
+  <a href="pic_bisim_examples-details.html#231" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#232" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#233" class="tactic">case H2.</a>
+    <a href="pic_bisim_examples-details.html#234" class="tactic">case H2.</a>
+    <a href="pic_bisim_examples-details.html#235" class="tactic">case H2.</a>
+
+  <a href="pic_bisim_examples-details.html#236" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#237" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#238" class="tactic">case H2.</a>
+      <a href="pic_bisim_examples-details.html#239" class="tactic">witness (x\(par (repl (repl (inp X (x\null)))) (par (repl (inp X (x\null))) ((x\null) x)))).</a> <a href="pic_bisim_examples-details.html#240" class="tactic">split.</a> <a href="pic_bisim_examples-details.html#241" class="tactic">search.</a>
+        <a href="pic_bisim_examples-details.html#242" class="tactic">witness x\(repl (repl (inp X (x\null)))).</a>
+        <a href="pic_bisim_examples-details.html#243" class="tactic">witness x\(repl (inp X (x\null))).</a> <a href="pic_bisim_examples-details.html#244" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#245" class="tactic">split.</a>
+        <a href="pic_bisim_examples-details.html#246" class="tactic">unfold.</a>
+        <a href="pic_bisim_examples-details.html#247" class="tactic">apply bisim_par_null with P = (repl (inp X (x\null))).</a>
+        <a href="pic_bisim_examples-details.html#248" class="tactic">apply bisim_par_subst_2 to H3 with R = (repl (repl (inp X (x\null)))).</a>
+        <a href="pic_bisim_examples-details.html#249" class="tactic">apply bisim_repl_absorb with P = (repl (inp X (x\null))).</a>
+        <a href="pic_bisim_examples-details.html#250" class="tactic">backchain bisim_transitive.</a>
+        <a href="pic_bisim_examples-details.html#251" class="tactic">backchain bisim_par_null.</a>
+        <a href="pic_bisim_examples-details.html#252" class="tactic">backchain CH.</a>
+
+  <a href="pic_bisim_examples-details.html#253" class="tactic">intros.</a> <a href="pic_bisim_examples-details.html#254" class="tactic">case H1.</a>
+    <a href="pic_bisim_examples-details.html#255" class="tactic">case H2.</a></div>
 </pre>
 </div>
 

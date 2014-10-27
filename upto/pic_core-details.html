@@ -38,37 +38,33 @@ Abella < <b>Type oup name -> name -> proc -> proc.</b>
 </pre>
 <a name="5"></a>
 <pre class="code">
-Abella < <b>Type match name -> name -> proc -> proc.</b>
+Abella < <b>Type nu (name -> proc) -> proc.</b>
 </pre>
 <a name="6"></a>
 <pre class="code">
-Abella < <b>Type nu (name -> proc) -> proc.</b>
+Abella < <b>Type repl proc -> proc.</b>
 </pre>
 <a name="7"></a>
 <pre class="code">
-Abella < <b>Type repl proc -> proc.</b>
+Abella < <b>Type plus, par proc -> proc -> proc.</b>
 </pre>
 <a name="8"></a>
 <pre class="code">
-Abella < <b>Type plus, par proc -> proc -> proc.</b>
+Abella < <b>Type null proc.</b>
 </pre>
 <a name="9"></a>
 <pre class="code">
-Abella < <b>Type null proc.</b>
+Abella < <b>Kind label type.</b>
 </pre>
 <a name="10"></a>
 <pre class="code">
-Abella < <b>Kind label type.</b>
+Abella < <b>Type tau label.</b>
 </pre>
 <a name="11"></a>
 <pre class="code">
-Abella < <b>Type tau label.</b>
-</pre>
-<a name="12"></a>
-<pre class="code">
 Abella < <b>Type up, dn name -> name -> label.</b>
 </pre>
-<a name="13"></a>
+<a name="12"></a>
 <pre class="code">
 Abella < <b>Define one : proc -> label -> proc -> prop,	
 oneb : proc -> (name -> label) -> (name -> proc) -> prop by 
@@ -95,7 +91,7 @@ oneb (par P Q) L (x\par P (R x)) := oneb Q L R;
 oneb (repl P) L (x\par (repl P) (R x)) := oneb P L R;
 oneb (nu P) L (y\nu (x\R x y)) := nabla x, oneb (P x) L (R x).</b>
 </pre>
-<a name="14"></a>
+<a name="13"></a>
 <pre class="code">
 Abella < <b>CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) -> proc -> proc -> prop by 
 bisim_up_to Tech P Q := (forall L P1, one P L P1 ->
@@ -121,10 +117,15 @@ bisim_up_to Tech P Q := (forall L P1, one P L P1 ->
         (exists P2 Q2, nabla x, Tech (P1 x) (P2 x) (Q1 x) (Q2 x) /\
            bisim_up_to Tech (P2 x) (Q2 x)))).</b>
 </pre>
-<a name="15"></a>
+<a name="14"></a>
 <pre class="code">
 Abella < <b>Define refl_t : proc -> proc -> proc -> proc -> prop by 
 refl_t P P Q Q.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+Abella < <b>CoDefine bisim : proc -> proc -> prop by 
+bisim P Q := bisim_up_to refl_t P Q.</b>
 </pre>
 <a name="16"></a>
 <pre class="code">
