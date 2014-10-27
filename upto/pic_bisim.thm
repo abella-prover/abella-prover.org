@@ -1,10 +1,7 @@
 Kind name,label,proc type.
 
-Set subgoals off.
-
 Import "pic_core".
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Bisimulation up to bisimilarity
 
 Define bisim_t : proc -> proc -> proc -> proc -> prop by

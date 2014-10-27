@@ -7,9 +7,6 @@
 %%%   bisimulation-up-to" by K. Chaudhuri, M. Cimini, and
 %%%   D. Miller, 2014
 
-Set subgoals off.
-Set instantiations on.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Processes
 
@@ -55,7 +52,7 @@ Define
    oneb : proc -> (name -> label) -> (name -> proc) -> prop
 by
    /* internal steps */
-;  one (taup P) tau P
+   one (taup P) tau P
 
    /* closed output */
 ;  one (oup X Y P) (up X Y) P
@@ -64,7 +61,7 @@ by
 ;  one (plus P Q) L R := one P L R
 ;  one (plus P Q) L R := one Q L R
 ;  one (par P Q) L (par R Q) := one P L R
-;  one (par P Q) L (par P R) := one P L R
+;  one (par P Q) L (par P R) := one Q L R
 ;  one (repl P) L (par (repl P) R) := one P L R
 ;  one (nu P) L (nu Q) := nabla x, one (P x) L (Q x)
 
@@ -81,7 +78,7 @@ by
          one P (up X Y) PP
       /\ oneb P (dn X) R /\ QQ = R Y
 
-   /* bound communication (a.k.a. close) */
+   /* bound communication */
 ;  one (par P Q) tau (nu y\ par (PP y) (QQ y)) :=
       /* case of P getting input */
       (exists X, oneb P (dn X) PP /\ oneb Q (up X) QQ)
@@ -92,7 +89,7 @@ by
 ;  one (repl P) tau (par (repl P) (nu y\ par (PP y) (QQ y))) :=
       exists X, oneb P (up X) PP /\ oneb P (dn X) QQ
 
-   /* bound output (a.k.a. open) */
+   /* bound output */
 ;  oneb (nu P) (up X) R := nabla y, one (P y) (up X y) (R y)
 
    /* bound input */
@@ -110,8 +107,7 @@ by
 %%% Bisimilarity-up-to
 
 CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
-                       proc -> proc -> prop
-by
+                       proc -> proc -> prop by
   bisim_up_to Tech P Q :=
      (forall L P1, one P L P1 ->
         exists Q1, one Q L Q1 /\
