@@ -120,7 +120,7 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="stlc-details.html#21" class="tactic">case H1.</a> <a href="stlc-details.html#22" class="tactic">apply IH to H4 H3.</a> <a href="stlc-details.html#23" class="tactic">search.</a></div>
 <span class="comment">%% The strengthening lemma in B.3 which is used in Section 5.3</span>
 <a href="stlc-details.html#24" class="command">Theorem ty_indep_tm  : forall L T, nabla x,
-  ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {ty T'}.</a>
+  ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {L |- ty T'}.</a>
 <div class="proof"><a href="stlc-details.html#25" class="tactic">induction on 2.</a> <a href="stlc-details.html#26" class="tactic">intros.</a> <a href="stlc-details.html#27" class="tactic">case H2.</a>
   <span class="comment">% Case: T x = b</span>
   <a href="stlc-details.html#28" class="tactic">search.</a>

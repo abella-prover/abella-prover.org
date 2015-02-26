@@ -92,27 +92,36 @@ Click on a command or tactic to see a detailed view of its use.
 <div class="proof"><a href="str1-details.html#4" class="tactic">induction on 2.</a> <a href="str1-details.html#5" class="tactic">intros.</a> <a href="str1-details.html#6" class="tactic">case H2.</a>
   <a href="str1-details.html#7" class="tactic">case H1.</a> <a href="str1-details.html#8" class="tactic">search.</a>
   <a href="str1-details.html#9" class="tactic">case H1.</a> <a href="str1-details.html#10" class="tactic">apply IH to H4 H3.</a> <a href="str1-details.html#11" class="tactic">search.</a></div>
-<span class="comment">%% Since p depends on q. This lemma is NOT provable.</span>
-<a href="str1-details.html#12" class="command">Theorem p_indep_q : forall L M,
-  ctx L -> {L, p M |- q M} -> {L |- q M}.</a>
-<div class="proof"><a href="str1-details.html#13" class="tactic">induction on 2.</a> <a href="str1-details.html#14" class="tactic">intros.</a> <a href="str1-details.html#15" class="tactic">case H2.</a>
-  <a href="str1-details.html#16" class="tactic">case H4.</a> 
-    <a href="str1-details.html#17" class="tactic">case H3.</a>
-    <a href="str1-details.html#18" class="tactic">apply ctx_mem to _ H5.</a> <a href="str1-details.html#19" class="tactic">case H3.</a>
-      <span class="comment">% Cannot proceed.</span>
-      <a href="str1-details.html#20" class="tactic">skip.</a></div>  
-<span class="comment">% p depends on r because p depends on q and </span>
-<span class="comment">% q depends on r. This lemma is NOT provable.</span>
-<a href="str1-details.html#21" class="command">Theorem p_indep_r : forall L M,
-  ctx L -> {L, p M |- r M} -> {L |- r M}.</a>
-<div class="proof"><a href="str1-details.html#22" class="tactic">induction on 2.</a> <a href="str1-details.html#23" class="tactic">intros.</a> <a href="str1-details.html#24" class="tactic">case H2.</a>
-  <a href="str1-details.html#25" class="tactic">apply IH to _ H3.</a> <a href="str1-details.html#26" class="tactic">search.</a>
-  <span class="comment">% The application of p_indep_q is not valid </span>
-  <span class="comment">% since p_indep_q is not provable.</span>
-  <a href="str1-details.html#27" class="tactic">apply p_indep_q to _ H3.</a> <a href="str1-details.html#28" class="tactic">search.</a>
-  <a href="str1-details.html#29" class="tactic">case H4.</a> 
-    <a href="str1-details.html#30" class="tactic">case H3.</a>
-    <a href="str1-details.html#31" class="tactic">apply ctx_mem to _ H5.</a> <a href="str1-details.html#32" class="tactic">case H3.</a></div>
+<span class="comment">%% This lemma is NOT provable since r depends on q </span>
+<span class="comment">%% which in turn depends on p. </span>
+<a href="str1-details.html#12" class="command">Theorem indep : 
+   (forall L M,
+      ctx L -> {L, p M |- p M} -> {L |- p M})
+/\ (forall L M,
+      ctx L -> {L, p M |- q M} -> {L |- q M})
+/\ (forall L M,
+      ctx L -> {L, p M |- r M} -> {L |- r M}).</a>
+<div class="proof"><a href="str1-details.html#13" class="tactic">induction on 2 2 2.</a> <a href="str1-details.html#14" class="tactic">intros.</a> <a href="str1-details.html#15" class="tactic">split.</a> 
+  <span class="comment">% p is independent of p (which is NOT provable)</span>
+  <a href="str1-details.html#16" class="tactic">intros.</a> <a href="str1-details.html#17" class="tactic">case H2.</a> 
+    <a href="str1-details.html#18" class="tactic">case H4.</a> 
+      <a href="str1-details.html#19" class="tactic">case H3.</a> <a href="str1-details.html#20" class="tactic">skip.</a> <span class="comment">% Cannot proceed</span>
+      <a href="str1-details.html#21" class="tactic">apply ctx_mem to _ H5.</a> <a href="str1-details.html#22" class="tactic">case H3.</a>
+  <span class="comment">% p is independent of q (again, not provable)</span>
+  <a href="str1-details.html#23" class="tactic">intros.</a> <a href="str1-details.html#24" class="tactic">case H2.</a>
+    <a href="str1-details.html#25" class="tactic">case H4.</a>
+      <a href="str1-details.html#26" class="tactic">case H3.</a>
+      <a href="str1-details.html#27" class="tactic">apply ctx_mem to _ H5.</a> <a href="str1-details.html#28" class="tactic">case H3.</a>
+        <span class="comment">% application of IH which is not provable</span>
+        <a href="str1-details.html#29" class="tactic">apply IH to _ H6.</a> <a href="str1-details.html#30" class="tactic">search.</a>
+  <span class="comment">% p is independent of r (not provable)</span>
+  <a href="str1-details.html#31" class="tactic">intros.</a> <a href="str1-details.html#32" class="tactic">case H2.</a>
+    <a href="str1-details.html#33" class="tactic">apply IH2 to _ H3.</a> <a href="str1-details.html#34" class="tactic">search.</a>
+    <span class="comment">% application of IH1 which is not provable</span>
+    <a href="str1-details.html#35" class="tactic">apply IH1 to _ H3.</a> <a href="str1-details.html#36" class="tactic">search.</a>
+    <a href="str1-details.html#37" class="tactic">case H4.</a>
+      <a href="str1-details.html#38" class="tactic">case H3.</a>
+      <a href="str1-details.html#39" class="tactic">apply ctx_mem to _ H5.</a> <a href="str1-details.html#40" class="tactic">case H3.</a></div>
 </pre>
 </div>
 

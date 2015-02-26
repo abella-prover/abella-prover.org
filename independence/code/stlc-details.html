@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.2-dev
+Welcome to Abella 2.0.3-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Specification "stlc".</b>
@@ -33,32 +33,30 @@ forall T, nabla x, {tm x |- ty (T x)} -> (exists T', T = y\T' /\ {ty T'}).</b>
 <a name="3"></a>
 <pre>
 
-
-  ============================
-   forall T, nabla x, {tm x |- ty (T x)} -> (exists T', T = y\T' /\ {ty T'})
+============================
+ forall T, nabla x, {tm x |- ty (T x)} -> (exists T', T = y\T' /\ {ty T'})
 
 ty_indep_tm_simp < <b>induction on 1.</b>
 </pre>
 <a name="4"></a>
 <pre>
 
-
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  ============================
-   forall T, nabla x, {tm x |- ty (T x)}@ -> (exists T', T = y\T' /\ {ty T'})
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+============================
+ forall T, nabla x, {tm x |- ty (T x)}@ -> (exists T', T = y\T' /\ {ty T'})
 
 ty_indep_tm_simp < <b>intros.</b>
 </pre>
 <a name="5"></a>
 <pre>
 
-  Variables: T
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H1 : {tm n1 |- ty (T n1)}@
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: T
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H1 : {tm n1 |- ty (T n1)}@
+============================
+ exists T', T = y\T' /\ {ty T'}
 
 ty_indep_tm_simp < <b>case H1.</b>
 </pre>
@@ -66,11 +64,10 @@ ty_indep_tm_simp < <b>case H1.</b>
 <pre>
 Subgoal 1:
 
-
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  ============================
-   exists T', z1\b = y\T' /\ {ty T'}
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+============================
+ exists T', z1\b = y\T' /\ {ty T'}
 
 Subgoal 2 is:
  exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {ty T'}
@@ -84,13 +81,13 @@ ty_indep_tm_simp < <b>search.</b>
 <pre>
 Subgoal 2:
 
-  Variables: T2, T1
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1 |- ty (T1 n1)}*
-  H3 : {tm n1 |- ty (T2 n1)}*
-  ============================
-   exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {ty T'}
+Variables: T2 T1
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1 |- ty (T1 n1)}*
+H3 : {tm n1 |- ty (T2 n1)}*
+============================
+ exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {ty T'}
 
 Subgoal 3 is:
  exists T', T = y\T' /\ {ty T'}
@@ -101,14 +98,14 @@ ty_indep_tm_simp < <b>apply IH to H2.</b>
 <pre>
 Subgoal 2:
 
-  Variables: T2, T'
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1 |- ty T'}*
-  H3 : {tm n1 |- ty (T2 n1)}*
-  H4 : {ty T'}
-  ============================
-   exists T'1, z1\arr T' (T2 z1) = y\T'1 /\ {ty T'1}
+Variables: T2 T'
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1 |- ty T'}*
+H3 : {tm n1 |- ty (T2 n1)}*
+H4 : {ty T'}
+============================
+ exists T'1, z1\arr T' (T2 z1) = y\T'1 /\ {ty T'1}
 
 Subgoal 3 is:
  exists T', T = y\T' /\ {ty T'}
@@ -119,15 +116,15 @@ ty_indep_tm_simp < <b>apply IH to H3.</b>
 <pre>
 Subgoal 2:
 
-  Variables: T', T'1
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1 |- ty T'}*
-  H3 : {tm n1 |- ty T'1}*
-  H4 : {ty T'}
-  H5 : {ty T'1}
-  ============================
-   exists T'2, z1\arr T' T'1 = y\T'2 /\ {ty T'2}
+Variables: T' T'1
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1 |- ty T'}*
+H3 : {tm n1 |- ty T'1}*
+H4 : {ty T'}
+H5 : {ty T'1}
+============================
+ exists T'2, z1\arr T' T'1 = y\T'2 /\ {ty T'2}
 
 Subgoal 3 is:
  exists T', T = y\T' /\ {ty T'}
@@ -138,13 +135,13 @@ ty_indep_tm_simp < <b>search.</b>
 <pre>
 Subgoal 3:
 
-  Variables: T, F
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1, [F n1] |- ty (T n1)}*
-  H3 : member (F n1) (tm n1 :: nil)
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: T F
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1, [F n1] |- ty (T n1)}*
+H3 : member (F n1) (tm n1 :: nil)
+============================
+ exists T', T = y\T' /\ {ty T'}
 
 ty_indep_tm_simp < <b>case H3.</b>
 </pre>
@@ -152,12 +149,12 @@ ty_indep_tm_simp < <b>case H3.</b>
 <pre>
 Subgoal 3.1:
 
-  Variables: T
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1, [tm n1] |- ty (T n1)}*
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: T
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1, [tm n1] |- ty (T n1)}*
+============================
+ exists T', T = y\T' /\ {ty T'}
 
 Subgoal 3.2 is:
  exists T', T = y\T' /\ {ty T'}
@@ -168,25 +165,27 @@ ty_indep_tm_simp < <b>case H2.</b>
 <pre>
 Subgoal 3.2:
 
-  Variables: T, F
-  IH : forall T, nabla x, {tm x |- ty (T x)}* -> (exists T', T = y\T' /\
-         {ty T'})
-  H2 : {tm n1, [F n1] |- ty (T n1)}*
-  H4 : member (F n1) nil
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: T F
+IH : forall T, nabla x, {tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {ty T'})
+H2 : {tm n1, [F n1] |- ty (T n1)}*
+H4 : member (F n1) nil
+============================
+ exists T', T = y\T' /\ {ty T'}
 
 ty_indep_tm_simp < <b>case H4.</b>
 Proof completed.
 </pre>
 <a name="13"></a>
 <pre class="code">
-Abella < <b>Define name : tm -> prop by 
+Abella < <b>Define name : tm ->
+prop by 
 nabla x, name x.</b>
 </pre>
 <a name="14"></a>
 <pre class="code">
-Abella < <b>Define ctx : olist -> prop by 
+Abella < <b>Define ctx : olist ->
+prop by 
 ctx nil;
 nabla x, ctx (tm x :: L) := ctx L.</b>
 </pre>
@@ -198,31 +197,29 @@ forall L E, ctx L -> member E L -> (exists X, E = tm X /\ name X).</b>
 <a name="16"></a>
 <pre>
 
-
-  ============================
-   forall L E, ctx L -> member E L -> (exists X, E = tm X /\ name X)
+============================
+ forall L E, ctx L -> member E L -> (exists X, E = tm X /\ name X)
 
 ctx_mem < <b>induction on 2.</b>
 </pre>
 <a name="17"></a>
 <pre>
 
-
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  ============================
-   forall L E, ctx L -> member E L @ -> (exists X, E = tm X /\ name X)
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+============================
+ forall L E, ctx L -> member E L @ -> (exists X, E = tm X /\ name X)
 
 ctx_mem < <b>intros.</b>
 </pre>
 <a name="18"></a>
 <pre>
 
-  Variables: L, E
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H1 : ctx L
-  H2 : member E L @
-  ============================
-   exists X, E = tm X /\ name X
+Variables: L E
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H1 : ctx L
+H2 : member E L @
+============================
+ exists X, E = tm X /\ name X
 
 ctx_mem < <b>case H2.</b>
 </pre>
@@ -230,11 +227,11 @@ ctx_mem < <b>case H2.</b>
 <pre>
 Subgoal 1:
 
-  Variables: E, L1
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H1 : ctx (E :: L1)
-  ============================
-   exists X, E = tm X /\ name X
+Variables: E L1
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H1 : ctx (E :: L1)
+============================
+ exists X, E = tm X /\ name X
 
 Subgoal 2 is:
  exists X, E = tm X /\ name X
@@ -245,11 +242,11 @@ ctx_mem < <b>case H1.</b>
 <pre>
 Subgoal 1:
 
-  Variables: L2
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H3 : ctx L2
-  ============================
-   exists X, tm n1 = tm X /\ name X
+Variables: L2
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H3 : ctx L2
+============================
+ exists X, tm n1 = tm X /\ name X
 
 Subgoal 2 is:
  exists X, E = tm X /\ name X
@@ -260,12 +257,12 @@ ctx_mem < <b>search.</b>
 <pre>
 Subgoal 2:
 
-  Variables: E, L1, B
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H1 : ctx (B :: L1)
-  H3 : member E L1 *
-  ============================
-   exists X, E = tm X /\ name X
+Variables: E L1 B
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H1 : ctx (B :: L1)
+H3 : member E L1 *
+============================
+ exists X, E = tm X /\ name X
 
 ctx_mem < <b>case H1.</b>
 </pre>
@@ -273,12 +270,12 @@ ctx_mem < <b>case H1.</b>
 <pre>
 Subgoal 2:
 
-  Variables: E, L2
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H3 : member (E n1) L2 *
-  H4 : ctx L2
-  ============================
-   exists X, E n1 = tm X /\ name X
+Variables: E L2
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H3 : member (E n1) L2 *
+H4 : ctx L2
+============================
+ exists X, E n1 = tm X /\ name X
 
 ctx_mem < <b>apply IH to H4 H3.</b>
 </pre>
@@ -286,13 +283,13 @@ ctx_mem < <b>apply IH to H4 H3.</b>
 <pre>
 Subgoal 2:
 
-  Variables: L2, X
-  IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
-  H3 : member (tm (X n1)) L2 *
-  H4 : ctx L2
-  H5 : name (X n1)
-  ============================
-   exists X1, tm (X n1) = tm X1 /\ name X1
+Variables: L2 X
+IH : forall L E, ctx L -> member E L * -> (exists X, E = tm X /\ name X)
+H3 : member (tm (X n1)) L2 *
+H4 : ctx L2
+H5 : name (X n1)
+============================
+ exists X1, tm (X n1) = tm X1 /\ name X1
 
 ctx_mem < <b>search.</b>
 Proof completed.
@@ -300,41 +297,39 @@ Proof completed.
 <a name="24"></a>
 <pre class="code">
 Abella < <b>Theorem ty_indep_tm : 
-forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)} -> (exists T',
-  T = y\T' /\ {ty T'}).</b>
+forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)} ->
+  (exists T', T = y\T' /\ {L |- ty T'}).</b>
 </pre>
 <a name="25"></a>
 <pre>
 
-
-  ============================
-   forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)} -> (exists T',
-     T = y\T' /\ {ty T'})
+============================
+ forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)} ->
+   (exists T', T = y\T' /\ {L |- ty T'})
 
 ty_indep_tm < <b>induction on 2.</b>
 </pre>
 <a name="26"></a>
 <pre>
 
-
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  ============================
-   forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}@ -> (exists T',
-     T = y\T' /\ {ty T'})
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+============================
+ forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}@ ->
+   (exists T', T = y\T' /\ {L |- ty T'})
 
 ty_indep_tm < <b>intros.</b>
 </pre>
 <a name="27"></a>
 <pre>
 
-  Variables: L, T
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H2 : {L, tm n1 |- ty (T n1)}@
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: L T
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H2 : {L, tm n1 |- ty (T n1)}@
+============================
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>case H2.</b>
 </pre>
@@ -342,18 +337,18 @@ ty_indep_tm < <b>case H2.</b>
 <pre>
 Subgoal 1:
 
-  Variables: L
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  ============================
-   exists T', z1\b = y\T' /\ {ty T'}
+Variables: L
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+============================
+ exists T', z1\b = y\T' /\ {L |- ty T'}
 
 Subgoal 2 is:
- exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {ty T'}
+ exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {L |- ty T'}
 
 Subgoal 3 is:
- exists T', T = y\T' /\ {ty T'}
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>search.</b>
 </pre>
@@ -361,17 +356,17 @@ ty_indep_tm < <b>search.</b>
 <pre>
 Subgoal 2:
 
-  Variables: L, T2, T1
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1 |- ty (T1 n1)}*
-  H4 : {L, tm n1 |- ty (T2 n1)}*
-  ============================
-   exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {ty T'}
+Variables: L T2 T1
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1 |- ty (T1 n1)}*
+H4 : {L, tm n1 |- ty (T2 n1)}*
+============================
+ exists T', z1\arr (T1 z1) (T2 z1) = y\T' /\ {L |- ty T'}
 
 Subgoal 3 is:
- exists T', T = y\T' /\ {ty T'}
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>apply IH to _ H3.</b>
 </pre>
@@ -379,18 +374,18 @@ ty_indep_tm < <b>apply IH to _ H3.</b>
 <pre>
 Subgoal 2:
 
-  Variables: L, T2, T'
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1 |- ty T'}*
-  H4 : {L, tm n1 |- ty (T2 n1)}*
-  H5 : {ty T'}
-  ============================
-   exists T'1, z1\arr T' (T2 z1) = y\T'1 /\ {ty T'1}
+Variables: L T2 T'
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1 |- ty T'}*
+H4 : {L, tm n1 |- ty (T2 n1)}*
+H5 : {L |- ty T'}
+============================
+ exists T'1, z1\arr T' (T2 z1) = y\T'1 /\ {L |- ty T'1}
 
 Subgoal 3 is:
- exists T', T = y\T' /\ {ty T'}
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>apply IH to _ H4.</b>
 </pre>
@@ -398,19 +393,19 @@ ty_indep_tm < <b>apply IH to _ H4.</b>
 <pre>
 Subgoal 2:
 
-  Variables: L, T', T'1
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1 |- ty T'}*
-  H4 : {L, tm n1 |- ty T'1}*
-  H5 : {ty T'}
-  H6 : {ty T'1}
-  ============================
-   exists T'2, z1\arr T' T'1 = y\T'2 /\ {ty T'2}
+Variables: L T' T'1
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1 |- ty T'}*
+H4 : {L, tm n1 |- ty T'1}*
+H5 : {L |- ty T'}
+H6 : {L |- ty T'1}
+============================
+ exists T'2, z1\arr T' T'1 = y\T'2 /\ {L |- ty T'2}
 
 Subgoal 3 is:
- exists T', T = y\T' /\ {ty T'}
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>search.</b>
 </pre>
@@ -418,14 +413,14 @@ ty_indep_tm < <b>search.</b>
 <pre>
 Subgoal 3:
 
-  Variables: L, T, F
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1, [F n1] |- ty (T n1)}*
-  H4 : member (F n1) (tm n1 :: L)
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: L T F
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1, [F n1] |- ty (T n1)}*
+H4 : member (F n1) (tm n1 :: L)
+============================
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>case H4.</b>
 </pre>
@@ -433,16 +428,16 @@ ty_indep_tm < <b>case H4.</b>
 <pre>
 Subgoal 3.1:
 
-  Variables: L, T
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1, [tm n1] |- ty (T n1)}*
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: L T
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1, [tm n1] |- ty (T n1)}*
+============================
+ exists T', T = y\T' /\ {L |- ty T'}
 
 Subgoal 3.2 is:
- exists T', T = y\T' /\ {ty T'}
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>case H3.</b>
 </pre>
@@ -450,14 +445,14 @@ ty_indep_tm < <b>case H3.</b>
 <pre>
 Subgoal 3.2:
 
-  Variables: L, T, F
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1, [F n1] |- ty (T n1)}*
-  H5 : member (F n1) L
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: L T F
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1, [F n1] |- ty (T n1)}*
+H5 : member (F n1) L
+============================
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>apply ctx_mem to H1 H5.</b>
 </pre>
@@ -465,15 +460,15 @@ ty_indep_tm < <b>apply ctx_mem to H1 H5.</b>
 <pre>
 Subgoal 3.2:
 
-  Variables: L, T, X
-  IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* -> (exists T',
-         T = y\T' /\ {ty T'})
-  H1 : ctx L
-  H3 : {L, tm n1, [tm (X n1)] |- ty (T n1)}*
-  H5 : member (tm (X n1)) L
-  H6 : name (X n1)
-  ============================
-   exists T', T = y\T' /\ {ty T'}
+Variables: L T X
+IH : forall L T, nabla x, ctx L -> {L, tm x |- ty (T x)}* ->
+       (exists T', T = y\T' /\ {L |- ty T'})
+H1 : ctx L
+H3 : {L, tm n1, [tm (X n1)] |- ty (T n1)}*
+H5 : member (tm (X n1)) L
+H6 : name (X n1)
+============================
+ exists T', T = y\T' /\ {L |- ty T'}
 
 ty_indep_tm < <b>case H3.</b>
 Proof completed.

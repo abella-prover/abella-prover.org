@@ -92,7 +92,7 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="str-details.html#7" class="tactic">case H1.</a> <a href="str-details.html#8" class="tactic">search.</a>
   <a href="str-details.html#9" class="tactic">case H1.</a> <a href="str-details.html#10" class="tactic">apply IH to H4 H3.</a> <a href="str-details.html#11" class="tactic">search.</a></div>  
 <span class="comment">% p is independent of r.</span>
-<a href="str-details.html#12" class="command">Theorem p_indep_r : forall L M,
+<a href="str-details.html#12" class="command">Theorem indep : forall L M,
   ctx L -> {L, p M |- r M} -> {L |- r M}.</a>
 <div class="proof"><a href="str-details.html#13" class="tactic">induction on 2.</a> <a href="str-details.html#14" class="tactic">intros.</a> <a href="str-details.html#15" class="tactic">case H2.</a>
   <a href="str-details.html#16" class="tactic">apply IH to _ H3.</a> <a href="str-details.html#17" class="tactic">search.</a>

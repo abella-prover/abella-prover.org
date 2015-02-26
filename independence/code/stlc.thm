@@ -26,7 +26,7 @@ induction on 2. intros. case H2.
 
 %% The strengthening lemma in B.3 which is used in Section 5.3
 Theorem ty_indep_tm  : forall L T, nabla x,
-  ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {ty T'}.
+  ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {L |- ty T'}.
 induction on 2. intros. case H2.
   % Case: T x = b
   search.

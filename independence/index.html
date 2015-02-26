@@ -56,7 +56,7 @@ section p + p,
 <div class="section">
 <center>
 <h1 id="main">
-  Examples of Independence in the Simply Typed Lambda Calculus in Abella
+  Examples of Independence in the Simply Type Theory in Abella
 </h1>
 </center>
 <br/>
@@ -75,7 +75,7 @@ section p + p,
 <p>You may browse the following development on-line. To run them
 yourself, you will need Abella in the master branch containing the
 most recent bug fixes, which is available from
-the <a href="http://abella-prover.org">main Abella web-page</a>.</p>
+the <a href="https://github.com/abella-prover/abella">Abella github web-page</a>.</p>
 
 </div>
 
@@ -89,26 +89,38 @@ the <a href="http://abella-prover.org">main Abella web-page</a>.</p>
       strengthening lemmas that show types in simply typed lambda
       calculus (STLC) do not depend on terms a) in an empty context
       (the example in Section 5.1), and b) in a context containing
-      terms.
+      terms (the example in the Appendix B.3 which is used in Section 5.3).
     </li>
   </ul>
 
   <h2> Additional Examples of Independence</h2>
-
+  
+  <br/>
+  Additional examples showing the differences between independence and
+  <a href = "http://twelf.org/wiki/Subordination">subordination</a>.
   <ul>
-    <li> <a href="code/str.html"><code>str</code></a> contains the
-    proof for the example in Appendix B.1 </li>
-    <li> <a href="code/str1.html"><code>str1</code></a> contains the
-    proof for the example in Appendix B.2. By adding a clause that
-    introduces the dependence between <code>q</code>
-    and <code>r</code>, the independence of <code>q</code>
-    and <code>r</code> can no longer be proved. </li>
+    <li> 
+      <a href="code/str.html"><code>str</code></a> contains the proof
+      for the example in the Appendix B.1. Given <code>(p => q) => r =>
+      r</code>, <code>p</code> is subordinate
+      to <code>r</code>. However, <code>p</code> is independent
+      of <code>r</code>.
+      </li>
+    <li> 
+      <a href="code/str1.html"><code>str1</code></a> contains the
+      proof for the example in Appendix B.2. By adding a clause <code>
+      q => r </code> that introduces the dependence
+      between <code>q</code> and <code>r</code>, <code>p</code> is
+      still subordinate to <code>r</code>. However, <code>p</code> is
+      no longer independent of <code>r</code>.
+    </li>
   </ul>
 </div>
-<!-- <div class="section"> -->
-<!--   <hr /> -->
-<!--   Last updated: <time>2014-11-27 10:30:00+0100</time> -->
-<!-- </div> -->
+
+<div class="section">
+  <hr />
+  Last updated: <time>Thu Feb 26 16:03:00 CST 2015</time>
+</div>
 
 </body>
 </html>

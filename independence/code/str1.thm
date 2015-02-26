@@ -10,25 +10,34 @@ induction on 2. intros. case H2.
   case H1. search.
   case H1. apply IH to H4 H3. search.
 
-%% Since p depends on q. This lemma is NOT provable.
-Theorem p_indep_q : forall L M,
-  ctx L -> {L, p M |- q M} -> {L |- q M}.
-induction on 2. intros. case H2.
-  case H4. 
-    case H3.
-    apply ctx_mem to _ H5. case H3.
-      % Cannot proceed.
-      skip.
-  
-% p depends on r because p depends on q and 
-% q depends on r. This lemma is NOT provable.
-Theorem p_indep_r : forall L M,
-  ctx L -> {L, p M |- r M} -> {L |- r M}.
-induction on 2. intros. case H2.
-  apply IH to _ H3. search.
-  % The application of p_indep_q is not valid 
-  % since p_indep_q is not provable.
-  apply p_indep_q to _ H3. search.
-  case H4. 
-    case H3.
-    apply ctx_mem to _ H5. case H3.
+%% This lemma is NOT provable since r depends on q 
+%% which in turn depends on p. 
+Theorem indep : 
+   (forall L M,
+      ctx L -> {L, p M |- p M} -> {L |- p M})
+/\ (forall L M,
+      ctx L -> {L, p M |- q M} -> {L |- q M})
+/\ (forall L M,
+      ctx L -> {L, p M |- r M} -> {L |- r M}).
+induction on 2 2 2. intros. split. 
+  % p is independent of p (which is NOT provable)
+  intros. case H2. 
+    case H4. 
+      case H3. skip. % Cannot proceed
+      apply ctx_mem to _ H5. case H3.
+  % p is independent of q (again, not provable)
+  intros. case H2.
+    case H4.
+      case H3.
+      apply ctx_mem to _ H5. case H3.
+        % application of IH which is not provable
+        apply IH to _ H6. search.
+  % p is independent of r (not provable)
+  intros. case H2.
+    apply IH2 to _ H3. search.
+    % application of IH1 which is not provable
+    apply IH1 to _ H3. search.
+    case H4.
+      case H3.
+      apply ctx_mem to _ H5. case H3.
+

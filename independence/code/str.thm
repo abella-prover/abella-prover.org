@@ -11,7 +11,7 @@ induction on 2. intros. case H2.
   case H1. apply IH to H4 H3. search.
   
 % p is independent of r.
-Theorem p_indep_r : forall L M,
+Theorem indep : forall L M,
   ctx L -> {L, p M |- r M} -> {L |- r M}.
 induction on 2. intros. case H2.
   apply IH to _ H3. search.
