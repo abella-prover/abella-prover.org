@@ -56,7 +56,7 @@ section p + p,
 <div class="section">
 <center>
 <h1 id="main">
-  Examples of Independence in Simply Typed Lambda Calculus in Abella
+  Examples of Independence in the Simply Typed Lambda Calculus in Abella
 </h1>
 </center>
 <br/>
@@ -81,16 +81,30 @@ the <a href="http://abella-prover.org">main Abella web-page</a>.</p>
 
 <div class="section">
 
-  <h2>Strengthening Lemmas about Types and Terms in Simply Typed Lambda Calculus</h2>
+  <h2>Independence between Types and Terms in Simply Typed Lambda Calculus</h2>
 
-  <p>
-  <a href="code/stlc.html"><code>stlc</code></a> contains strengthening
-  lemmas that show types in simply typed lambda calculus (STLC) do
-  not depend on terms a) in an empty context (the example in Section
-  5.1), and b) in an context containing terms.
-  </p>
+  <ul>
+    <li>
+      <a href="code/stlc.html"><code>stlc</code></a> contains
+      strengthening lemmas that show types in simply typed lambda
+      calculus (STLC) do not depend on terms a) in an empty context
+      (the example in Section 5.1), and b) in a context containing
+      terms.
+    </li>
+  </ul>
+
+  <h2> Additional Examples of Independence</h2>
+
+  <ul>
+    <li> <a href="code/str.html"><code>str</code></a> contains the
+    proof for the example in Appendix B.1 </li>
+    <li> <a href="code/str1.html"><code>str1</code></a> contains the
+    proof for the example in Appendix B.2. By adding a clause that
+    introduces the dependence between <code>q</code>
+    and <code>r</code>, the independence of <code>q</code>
+    and <code>r</code> can no longer be proved. </li>
+  </ul>
 </div>
-
 <!-- <div class="section"> -->
 <!--   <hr /> -->
 <!--   Last updated: <time>2014-11-27 10:30:00+0100</time> -->

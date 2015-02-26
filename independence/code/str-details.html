@@ -1,0 +1,275 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "str". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.2-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "str".</b>
+Reading specification "str"
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+ctx ((p M => q M) :: L) := ctx L.</b>
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_mem : 
+forall L E, ctx L -> member E L -> (exists M, E = p M => q M).</b>
+</pre>
+<a name="4"></a>
+<pre>
+
+
+  ============================
+   forall L E, ctx L -> member E L -> (exists M, E = p M => q M)
+
+ctx_mem < <b>induction on 2.</b>
+</pre>
+<a name="5"></a>
+<pre>
+
+
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  ============================
+   forall L E, ctx L -> member E L @ -> (exists M, E = p M => q M)
+
+ctx_mem < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre>
+
+  Variables: L, E
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H1 : ctx L
+  H2 : member E L @
+  ============================
+   exists M, E = p M => q M
+
+ctx_mem < <b>case H2.</b>
+</pre>
+<a name="7"></a>
+<pre>
+Subgoal 1:
+
+  Variables: E, L1
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H1 : ctx (E :: L1)
+  ============================
+   exists M, E = p M => q M
+
+Subgoal 2 is:
+ exists M, E = p M => q M
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="8"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L1, M
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H3 : ctx L1
+  ============================
+   exists M1, p M => q M = p M1 => q M1
+
+Subgoal 2 is:
+ exists M, E = p M => q M
+
+ctx_mem < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, L1, B
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H1 : ctx (B :: L1)
+  H3 : member E L1 *
+  ============================
+   exists M, E = p M => q M
+
+ctx_mem < <b>case H1.</b>
+</pre>
+<a name="10"></a>
+<pre>
+Subgoal 2:
+
+  Variables: E, L1, M
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H3 : member E L1 *
+  H4 : ctx L1
+  ============================
+   exists M, E = p M => q M
+
+ctx_mem < <b>apply IH to H4 H3.</b>
+</pre>
+<a name="11"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L1, M, M1
+  IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+  H3 : member (p M1 => q M1) L1 *
+  H4 : ctx L1
+  ============================
+   exists M, p M1 => q M1 = p M => q M
+
+ctx_mem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Theorem p_indep_r : 
+forall L M, ctx L -> {L, p M |- r M} -> {L |- r M}.</b>
+</pre>
+<a name="13"></a>
+<pre>
+
+
+  ============================
+   forall L M, ctx L -> {L, p M |- r M} -> {L |- r M}
+
+p_indep_r < <b>induction on 2.</b>
+</pre>
+<a name="14"></a>
+<pre>
+
+
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  ============================
+   forall L M, ctx L -> {L, p M |- r M}@ -> {L |- r M}
+
+p_indep_r < <b>intros.</b>
+</pre>
+<a name="15"></a>
+<pre>
+
+  Variables: L, M
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H2 : {L, p M |- r M}@
+  ============================
+   {L |- r M}
+
+p_indep_r < <b>case H2.</b>
+</pre>
+<a name="16"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, M
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, p M => q M |- r M}*
+  ============================
+   {L |- r M}
+
+Subgoal 2 is:
+ {L |- r M}
+
+p_indep_r < <b>apply IH to _ H3.</b>
+</pre>
+<a name="17"></a>
+<pre>
+Subgoal 1:
+
+  Variables: L, M
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, p M => q M |- r M}*
+  H4 : {L, p M => q M |- r M}
+  ============================
+   {L |- r M}
+
+Subgoal 2 is:
+ {L |- r M}
+
+p_indep_r < <b>search.</b>
+</pre>
+<a name="18"></a>
+<pre>
+Subgoal 2:
+
+  Variables: L, M, F
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, [F] |- r M}*
+  H4 : member F (p M :: L)
+  ============================
+   {L |- r M}
+
+p_indep_r < <b>case H4.</b>
+</pre>
+<a name="19"></a>
+<pre>
+Subgoal 2.1:
+
+  Variables: L, M
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, [p M] |- r M}*
+  ============================
+   {L |- r M}
+
+Subgoal 2.2 is:
+ {L |- r M}
+
+p_indep_r < <b>case H3.</b>
+</pre>
+<a name="20"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, M, F
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, [F] |- r M}*
+  H5 : member F L
+  ============================
+   {L |- r M}
+
+p_indep_r < <b>apply ctx_mem to _ H5.</b>
+</pre>
+<a name="21"></a>
+<pre>
+Subgoal 2.2:
+
+  Variables: L, M, M1
+  IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+  H1 : ctx L
+  H3 : {L, p M, [p M1 => q M1] |- r M}*
+  H5 : member (p M1 => q M1) L
+  ============================
+   {L |- r M}
+
+p_indep_r < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="22"></a>
+<pre class="code">
+Abella < Goodbye.
+</pre>
+</div>
+
+</body>
+</html>

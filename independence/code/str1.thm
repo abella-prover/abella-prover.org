@@ -1,0 +1,34 @@
+Specification "str1".
+
+Define ctx : olist -> prop by
+  ctx nil;
+  ctx ((p M => q M) :: L) := ctx L.
+
+Theorem ctx_mem : forall L E,
+  ctx L -> member E L -> exists M, E = (p M => q M).
+induction on 2. intros. case H2.
+  case H1. search.
+  case H1. apply IH to H4 H3. search.
+
+%% Since p depends on q. This lemma is NOT provable.
+Theorem p_indep_q : forall L M,
+  ctx L -> {L, p M |- q M} -> {L |- q M}.
+induction on 2. intros. case H2.
+  case H4. 
+    case H3.
+    apply ctx_mem to _ H5. case H3.
+      % Cannot proceed.
+      skip.
+  
+% p depends on r because p depends on q and 
+% q depends on r. This lemma is NOT provable.
+Theorem p_indep_r : forall L M,
+  ctx L -> {L, p M |- r M} -> {L |- r M}.
+induction on 2. intros. case H2.
+  apply IH to _ H3. search.
+  % The application of p_indep_q is not valid 
+  % since p_indep_q is not provable.
+  apply p_indep_q to _ H3. search.
+  case H4. 
+    case H3.
+    apply ctx_mem to _ H5. case H3.

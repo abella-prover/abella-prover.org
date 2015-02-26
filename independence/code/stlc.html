@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="stlc.sig">[View stlc.sig]</a>
+<a class="view" href="stlc.mod">[View stlc.mod]</a>
+<pre class="command">
+sig stlc.
+
+kind	tm, ty		type.
+
+type 	arr 		ty -> ty -> ty.
+type    b               ty.
+
+type	app		tm -> tm -> tm.
+type 	abs		ty -> (tm -> tm) -> tm.
+
+type    ty              ty -> o.
+type    tm              tm -> o.
+
+</pre>
+<pre class="command">
+module stlc.
+
+ty b.
+ty (arr T1 T2) :- ty T1, ty T2.
+
+tm (app M1 M2) :- tm M1, tm M2.
+tm (abs T R) :- ty T, pi x\ tm x => tm (R x).
+
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="stlc.thm">[View stlc.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="stlc-details.html#1" class="command">Specification "stlc".</a>
+
+<span class="comment">%% The strengthening lemma in Section 5.1 and its proof</span>
+<a href="stlc-details.html#2" class="command">Theorem ty_indep_tm_simp : forall T, nabla x,
+  {tm x |- ty (T x)} -> exists T', T = y\T' /\ {ty T'}.</a>
+<div class="proof"><a href="stlc-details.html#3" class="tactic">induction on 1.</a> <a href="stlc-details.html#4" class="tactic">intros.</a> <a href="stlc-details.html#5" class="tactic">case H1.</a>
+  <span class="comment">% Case: T x = b</span>
+  <a href="stlc-details.html#6" class="tactic">search.</a>
+  <span class="comment">% Case: T x = arr (T1 x) (T2 x)</span>
+  <a href="stlc-details.html#7" class="tactic">apply IH to H2.</a> <a href="stlc-details.html#8" class="tactic">apply IH to H3.</a> <a href="stlc-details.html#9" class="tactic">search.</a>
+  <span class="comment">% Case: context</span>
+  <a href="stlc-details.html#10" class="tactic">case H3.</a> <a href="stlc-details.html#11" class="tactic">case H2.</a> <a href="stlc-details.html#12" class="tactic">case H4.</a></div>
+<a href="stlc-details.html#13" class="command">Define name : tm -> prop by 
+  nabla x, name x.</a>
+ 
+<a href="stlc-details.html#14" class="command">Define ctx : olist -> prop by
+  ctx nil;
+  nabla x, ctx (tm x :: L) := ctx L.</a>
+
+<a href="stlc-details.html#15" class="command">Theorem ctx_mem : forall L E,
+  ctx L -> member E L -> exists X, E = tm X /\ name X.</a>
+<div class="proof"><a href="stlc-details.html#16" class="tactic">induction on 2.</a> <a href="stlc-details.html#17" class="tactic">intros.</a> <a href="stlc-details.html#18" class="tactic">case H2.</a>
+  <a href="stlc-details.html#19" class="tactic">case H1.</a> <a href="stlc-details.html#20" class="tactic">search.</a>
+  <a href="stlc-details.html#21" class="tactic">case H1.</a> <a href="stlc-details.html#22" class="tactic">apply IH to H4 H3.</a> <a href="stlc-details.html#23" class="tactic">search.</a></div>
+<span class="comment">%% The strengthening lemma in B.3 which is used in Section 5.3</span>
+<a href="stlc-details.html#24" class="command">Theorem ty_indep_tm  : forall L T, nabla x,
+  ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {ty T'}.</a>
+<div class="proof"><a href="stlc-details.html#25" class="tactic">induction on 2.</a> <a href="stlc-details.html#26" class="tactic">intros.</a> <a href="stlc-details.html#27" class="tactic">case H2.</a>
+  <span class="comment">% Case: T x = b</span>
+  <a href="stlc-details.html#28" class="tactic">search.</a>
+  <span class="comment">% Case: T x = arr (T1 x) (T2 x)</span>
+  <a href="stlc-details.html#29" class="tactic">apply IH to _ H3.</a> <a href="stlc-details.html#30" class="tactic">apply IH to _ H4.</a> <a href="stlc-details.html#31" class="tactic">search.</a>
+  <span class="comment">% Case: context</span>
+  <a href="stlc-details.html#32" class="tactic">case H4.</a> 
+    <a href="stlc-details.html#33" class="tactic">case H3.</a> 
+    <a href="stlc-details.html#34" class="tactic">apply ctx_mem to H1 H5.</a> <a href="stlc-details.html#35" class="tactic">case H3.</a></div>
+</pre>
+</div>
+
+</body>
+</html>
