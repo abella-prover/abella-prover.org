@@ -24,7 +24,7 @@ induction on 2. intros. case H2.
   case H1. search.
   case H1. apply IH to H4 H3. search.
 
-%% The strengthening lemma in B.3
+%% The strengthening lemma in B.3 which is used in Section 5.3
 Theorem ty_indep_tm  : forall L T, nabla x,
   ctx L -> {L, tm x |- ty (T x)} -> exists T', T = y\T' /\ {ty T'}.
 induction on 2. intros. case H2.
@@ -38,86 +38,3 @@ induction on 2. intros. case H2.
     apply ctx_mem to H1 H5. case H3.
 
 
-Type of  tm -> ty -> o.
-
-% Auxiliary definitions and lemmas for the pruning example
-Define is_olist : olist -> prop by
-  is_olist nil;
-  is_olist (E :: L) := is_olist L.
-
-Theorem ctx_olist : forall L,
-  ctx L -> is_olist L.
-induction on 1. intros. case H1.
-  search.
-  unfold. backchain IH.
-
-Define mem_rst : o -> olist -> olist -> prop by
-  mem_rst X (X :: L) L;
-  mem_rst X (Y :: L) (Y :: L') := mem_rst X L L'.
-
-Theorem mem_rst_prune : forall E L L', nabla (x:tm),
-  mem_rst E (L x) L' -> exists L'', L = y\L''.
-induction on 1. intros. case H1.
-  search.
-  apply IH to H2. search.
-
-Define permute : olist -> olist -> prop by
-  permute nil nil;
-  permute (X :: L1) L2 := exists L2', mem_rst X L2 L2' /\ permute L1 L2'.
-
-Theorem permute_prune : forall L L', nabla (x:tm),
-  permute L (L' x) -> exists L'', L' = y\L''.
-induction on 1. intros. case H1.
-  search.
-  apply IH to H3. apply mem_rst_prune to H2. search.
-
-Theorem permute_refl : forall L,
-  is_olist L -> permute L L.
-induction on 1. intros. case H1.
-  search.
-  unfold. exists L1. apply IH to H2. search.
-
-Theorem ctx_permute : forall L, nabla x,
-  ctx (L x) -> exists L', L = y\L' \/ permute (L x) (tm x :: L').
-induction on 1. intros. case H1.
-  search.
-  apply IH to H2. case H3.
-    search.
-    exists (tm n2 :: L' n1). search.
-  apply IH to H2. case H3.
-    exists L1. right. backchain permute_refl. unfold. backchain ctx_olist.
-    search.
-
-Theorem mem_rst_ctx : forall L L', nabla x,
-  ctx L' -> mem_rst (tm x) (L x) L' -> ctx (L x).
-induction on 2. intros. case H2.
-  search.
-  case H1. apply mem_rst_prune to H3.
-    apply IH to H4 H3. search.
-
-Theorem ctx_pres : forall L L',
-  ctx L -> permute L L' -> ctx L'.
-induction on 2. intros. case H2.
-  search.
-  case H1. apply permute_prune to H4.
-    apply IH to H5 H4. apply mem_rst_ctx to _ H3. search.
-
-Theorem ty_pruning  : forall L T, nabla (x:tm),
-  ctx L -> {L |- ty (T x)} -> exists T', T = y\T'.
-induction on 2. intros. case H2.
-  % Case: T x = b
-  search.
-  % Case: T x = arr (T1 x) (T2 x)
-  apply IH to _ H3. apply IH to _ H4. search.
-  % Case: context
-  apply ctx_mem to H1 H4. case H3.
-
-%% The pruning example in Section 5.3. 
-%% It uses the strengthening lemma above.
-Theorem pruning : forall X L T,
-  ctx L -> {L |- ty T} -> name X -> {of X T} -> false.
-intros. case H3.
-  apply ctx_permute to H1. case H5.
-    apply ty_pruning to _ H2. skip.
-    apply ctx_pres to H1 H6. case H7.
-    
