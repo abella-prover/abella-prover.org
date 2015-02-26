@@ -81,89 +81,15 @@ the <a href="http://abella-prover.org">main Abella web-page</a>.</p>
 
 <div class="section">
 
-  <h3>Simple Strengthening Lemma</h3>
+  <h2>Strengthening Lemmas about Types and Terms in Simply Typed Lambda Calculus</h2>
 
-  <a href="code/stlc.html"><code>ccs_core</code></a>This is the example in Section 5.1, showing that types in simply
-  typed lambda calculus (STLC) does not depend on terms in an empty
-  context.
-
-  <ul>
-    <li><a href="ccs_core.html"><code>ccs_core</code></a> contains the
-      core definitions of the labelled transition system of CCS and
-      the definition of bisimulation-up-to. There are also some simple
-      lemmas about ordinary bisimulation (<em>a.k.a.</em> bisimulation
-      up to reflexivity).</li>
-    <li><a href="ccs_bisim.html"><code>ccs_bisim</code></a> contains
-      the soundness proof of <em>bisimulation up to
-      bisimilarity</em>.</li>
-    <li><a href="ccs_ctx.html"><code>ccs_ctx</code></a> contains the
-      definitions of process contexts and the proof that CCS contexts
-      are faithful.</li>
-    <li><a href="ccs_context.html"><code>ccs_context</code></a>
-      contains the soundness proof of <em>bisimulation up to
-      context</em>.</li>
-    <li><a href="ccs_bisim_context.html"><code>ccs_bisim_context</code></a>
-      contains the soundness proof of <em>bisimulation up to
-      bisimilarity and context</em>.</li>
-  </ul>
-
-  <p>Examples</p>
-
-  <ul>
-    <li><a href="ccs_bisim_examples_helper.html"><code>ccs_bisim_examples_helper</code></a>
-      contains some common lemmas for the examples.</li></li>
-    <li><a href="ccs_bisim_examples.html"><code>ccs_bisim_examples</code></a>
-      and <a href="ccs_bisim_context_examples.html"><code>ccs_bisim_context_examples</code></a>
-      contain some examples of the use of the up-to-bisimilarity
-      technique to show the bisimilarity of processes that have only
-      infinite bisimulations.</li>
-  </ul>
-
-  <p>Package</p>
-
-  <ul>
-    <li><a href="ccs.tar.gz"><code>ccs.tar.gz</code></a>, which
-      packages up the above files together with
-      a <code>Makefile</code> to run the sources through Abella in the
-      right order.</li>
-  </ul>
-
-  <h3>The &pi;-calculus</h3>
-
-  <ul>
-    <li><a href="pic_core.html"><code>pic_core</code></a> contains the
-      core definitions of the labelled transition system of the
-      &pi;-calculus and the definition of bisimulation-up-to. There
-      are also some simple lemmas about ordinary bisimulation
-      (<em>a.k.a.</em> bisimulation up to reflexivity).</li>
-    <li><a href="pic_bisim.html"><code>pic_bisim</code></a> contains
-      the soundness proof of <em>bisimulation up to
-      bisimilarity</em>.</li>
-    <li><a href="pic_ctx.html"><code>pic_ctx</code></a> contains a
-      proof that par and nu contexts are substitutive.</li>
-  </ul>
-
-  <p>Examples</p>
-
-  <ul>
-    <li><a href="pic_bisim_examples.html"><code>pic_bisim_examples</code></a>
-      contains some examples of the use of the up-to-bisimilarity
-      technique to show the bisimilarity of processes that have only
-      infinite bisimulations. Note: some of these proofs are
-      parametric on an assumed structural congruence for
-      replication.</li>
-  </ul>
-
-  <p>Package</p>
-
-  <ul>
-    <li><a href="pic.tar.gz"><code>pic.tar.gz</code></a>, which
-      packages up the above files together with
-      a <code>Makefile</code> to run the sources through Abella in the
-      right order.</li>
-  </ul>
-
-</div> <!-- .section -->
+  <p>
+  <a href="code/stlc.html"><code>stlc</code></a> contains strengthening
+  lemmas that show types in simply typed lambda calculus (STLC) do
+  not depend on terms a) in an empty context (the example in Section
+  5.1), and b) in an context containing terms.
+  </p>
+</div>
 
 <!-- <div class="section"> -->
 <!--   <hr /> -->
