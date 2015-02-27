@@ -2,10 +2,10 @@ Specification "str1".
 
 Define ctx : olist -> prop by
   ctx nil;
-  ctx ((p M => q M) :: L) := ctx L.
+  ctx ((p => q) :: L) := ctx L.
 
 Theorem ctx_mem : forall L E,
-  ctx L -> member E L -> exists M, E = (p M => q M).
+  ctx L -> member E L -> E = (p => q).
 induction on 2. intros. case H2.
   case H1. search.
   case H1. apply IH to H4 H3. search.
@@ -13,12 +13,12 @@ induction on 2. intros. case H2.
 %% This lemma is NOT provable since r depends on q 
 %% which in turn depends on p. 
 Theorem indep : 
-   (forall L M,
-      ctx L -> {L, p M |- p M} -> {L |- p M})
-/\ (forall L M,
-      ctx L -> {L, p M |- q M} -> {L |- q M})
-/\ (forall L M,
-      ctx L -> {L, p M |- r M} -> {L |- r M}).
+   (forall L,
+      ctx L -> {L, p |- p} -> {L |- p})
+/\ (forall L,
+      ctx L -> {L, p |- q} -> {L |- q})
+/\ (forall L,
+      ctx L -> {L, p |- r} -> {L |- r}).
 induction on 2 2 2. intros. split. 
   % p is independent of p (which is NOT provable)
   intros. case H2. 

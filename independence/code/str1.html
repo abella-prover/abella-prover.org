@@ -60,14 +60,13 @@ $(function() {
 <pre class="command">
 sig str1.
 
-kind   i        type.
-type   p, q, r  i -> o.
+type   p, q, r          o.
 </pre>
 <pre class="command">
 module str1.
 
-r M :- (p M => q M) => r M.
-r M :- q M.
+r :- (p => q) => r.
+r :- q.
 </pre>
 
 </div>
@@ -85,22 +84,22 @@ Click on a command or tactic to see a detailed view of its use.
 
 <a href="str1-details.html#2" class="command">Define ctx : olist -> prop by
   ctx nil;
-  ctx ((p M => q M) :: L) := ctx L.</a>
+  ctx ((p => q) :: L) := ctx L.</a>
 
 <a href="str1-details.html#3" class="command">Theorem ctx_mem : forall L E,
-  ctx L -> member E L -> exists M, E = (p M => q M).</a>
+  ctx L -> member E L -> E = (p => q).</a>
 <div class="proof"><a href="str1-details.html#4" class="tactic">induction on 2.</a> <a href="str1-details.html#5" class="tactic">intros.</a> <a href="str1-details.html#6" class="tactic">case H2.</a>
   <a href="str1-details.html#7" class="tactic">case H1.</a> <a href="str1-details.html#8" class="tactic">search.</a>
   <a href="str1-details.html#9" class="tactic">case H1.</a> <a href="str1-details.html#10" class="tactic">apply IH to H4 H3.</a> <a href="str1-details.html#11" class="tactic">search.</a></div>
 <span class="comment">%% This lemma is NOT provable since r depends on q </span>
 <span class="comment">%% which in turn depends on p. </span>
 <a href="str1-details.html#12" class="command">Theorem indep : 
-   (forall L M,
-      ctx L -> {L, p M |- p M} -> {L |- p M})
-/\ (forall L M,
-      ctx L -> {L, p M |- q M} -> {L |- q M})
-/\ (forall L M,
-      ctx L -> {L, p M |- r M} -> {L |- r M}).</a>
+   (forall L,
+      ctx L -> {L, p |- p} -> {L |- p})
+/\ (forall L,
+      ctx L -> {L, p |- q} -> {L |- q})
+/\ (forall L,
+      ctx L -> {L, p |- r} -> {L |- r}).</a>
 <div class="proof"><a href="str1-details.html#13" class="tactic">induction on 2 2 2.</a> <a href="str1-details.html#14" class="tactic">intros.</a> <a href="str1-details.html#15" class="tactic">split.</a> 
   <span class="comment">% p is independent of p (which is NOT provable)</span>
   <a href="str1-details.html#16" class="tactic">intros.</a> <a href="str1-details.html#17" class="tactic">case H2.</a> 

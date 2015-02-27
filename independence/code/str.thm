@@ -2,17 +2,17 @@ Specification "str".
 
 Define ctx : olist -> prop by
   ctx nil;
-  ctx ((p M => q M) :: L) := ctx L.
+  ctx ((p => q) :: L) := ctx L.
 
 Theorem ctx_mem : forall L E,
-  ctx L -> member E L -> exists M, E = (p M => q M).
+  ctx L -> member E L -> E = (p => q).
 induction on 2. intros. case H2.
   case H1. search.
   case H1. apply IH to H4 H3. search.
   
 % p is independent of r.
-Theorem indep : forall L M,
-  ctx L -> {L, p M |- r M} -> {L |- r M}.
+Theorem indep : forall L,
+  ctx L -> {L, p |- r} -> {L |- r}.
 induction on 2. intros. case H2.
   apply IH to _ H3. search.
   case H4. 

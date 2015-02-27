@@ -30,27 +30,27 @@ Reading specification "str"
 Abella < <b>Define ctx : olist ->
 prop by 
 ctx nil;
-ctx ((p M => q M) :: L) := ctx L.</b>
+ctx ((p => q) :: L) := ctx L.</b>
 </pre>
 <a name="3"></a>
 <pre class="code">
 Abella < <b>Theorem ctx_mem : 
-forall L E, ctx L -> member E L -> (exists M, E = p M => q M).</b>
+forall L E, ctx L -> member E L -> E = p => q.</b>
 </pre>
 <a name="4"></a>
 <pre>
 
 ============================
- forall L E, ctx L -> member E L -> (exists M, E = p M => q M)
+ forall L E, ctx L -> member E L -> E = p => q
 
 ctx_mem < <b>induction on 2.</b>
 </pre>
 <a name="5"></a>
 <pre>
 
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+IH : forall L E, ctx L -> member E L * -> E = p => q
 ============================
- forall L E, ctx L -> member E L @ -> (exists M, E = p M => q M)
+ forall L E, ctx L -> member E L @ -> E = p => q
 
 ctx_mem < <b>intros.</b>
 </pre>
@@ -58,11 +58,11 @@ ctx_mem < <b>intros.</b>
 <pre>
 
 Variables: L E
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+IH : forall L E, ctx L -> member E L * -> E = p => q
 H1 : ctx L
 H2 : member E L @
 ============================
- exists M, E = p M => q M
+ E = p => q
 
 ctx_mem < <b>case H2.</b>
 </pre>
@@ -71,13 +71,13 @@ ctx_mem < <b>case H2.</b>
 Subgoal 1:
 
 Variables: E L1
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+IH : forall L E, ctx L -> member E L * -> E = p => q
 H1 : ctx (E :: L1)
 ============================
- exists M, E = p M => q M
+ E = p => q
 
 Subgoal 2 is:
- exists M, E = p M => q M
+ E = p => q
 
 ctx_mem < <b>case H1.</b>
 </pre>
@@ -85,14 +85,14 @@ ctx_mem < <b>case H1.</b>
 <pre>
 Subgoal 1:
 
-Variables: L1 M
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+Variables: L1
+IH : forall L E, ctx L -> member E L * -> E = p => q
 H3 : ctx L1
 ============================
- exists M1, p M => q M = p M1 => q M1
+ p => q = p => q
 
 Subgoal 2 is:
- exists M, E = p M => q M
+ E = p => q
 
 ctx_mem < <b>search.</b>
 </pre>
@@ -101,11 +101,11 @@ ctx_mem < <b>search.</b>
 Subgoal 2:
 
 Variables: E L1 B
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+IH : forall L E, ctx L -> member E L * -> E = p => q
 H1 : ctx (B :: L1)
 H3 : member E L1 *
 ============================
- exists M, E = p M => q M
+ E = p => q
 
 ctx_mem < <b>case H1.</b>
 </pre>
@@ -113,12 +113,12 @@ ctx_mem < <b>case H1.</b>
 <pre>
 Subgoal 2:
 
-Variables: E L1 M
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
+Variables: E L1
+IH : forall L E, ctx L -> member E L * -> E = p => q
 H3 : member E L1 *
 H4 : ctx L1
 ============================
- exists M, E = p M => q M
+ E = p => q
 
 ctx_mem < <b>apply IH to H4 H3.</b>
 </pre>
@@ -126,12 +126,12 @@ ctx_mem < <b>apply IH to H4 H3.</b>
 <pre>
 Subgoal 2:
 
-Variables: L1 M M1
-IH : forall L E, ctx L -> member E L * -> (exists M, E = p M => q M)
-H3 : member (p M1 => q M1) L1 *
+Variables: L1
+IH : forall L E, ctx L -> member E L * -> E = p => q
+H3 : member (p => q) L1 *
 H4 : ctx L1
 ============================
- exists M, p M1 => q M1 = p M => q M
+ p => q = p => q
 
 ctx_mem < <b>search.</b>
 Proof completed.
@@ -139,34 +139,34 @@ Proof completed.
 <a name="12"></a>
 <pre class="code">
 Abella < <b>Theorem indep : 
-forall L M, ctx L -> {L, p M |- r M} -> {L |- r M}.</b>
+forall L, ctx L -> {L, p |- r} -> {L |- r}.</b>
 </pre>
 <a name="13"></a>
 <pre>
 
 ============================
- forall L M, ctx L -> {L, p M |- r M} -> {L |- r M}
+ forall L, ctx L -> {L, p |- r} -> {L |- r}
 
 indep < <b>induction on 2.</b>
 </pre>
 <a name="14"></a>
 <pre>
 
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 ============================
- forall L M, ctx L -> {L, p M |- r M}@ -> {L |- r M}
+ forall L, ctx L -> {L, p |- r}@ -> {L |- r}
 
 indep < <b>intros.</b>
 </pre>
 <a name="15"></a>
 <pre>
 
-Variables: L M
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H2 : {L, p M |- r M}@
+H2 : {L, p |- r}@
 ============================
- {L |- r M}
+ {L |- r}
 
 indep < <b>case H2.</b>
 </pre>
@@ -174,15 +174,15 @@ indep < <b>case H2.</b>
 <pre>
 Subgoal 1:
 
-Variables: L M
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, p M => q M |- r M}*
+H3 : {L, p, p => q |- r}*
 ============================
- {L |- r M}
+ {L |- r}
 
 Subgoal 2 is:
- {L |- r M}
+ {L |- r}
 
 indep < <b>apply IH to _ H3.</b>
 </pre>
@@ -190,16 +190,16 @@ indep < <b>apply IH to _ H3.</b>
 <pre>
 Subgoal 1:
 
-Variables: L M
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, p M => q M |- r M}*
-H4 : {L, p M => q M |- r M}
+H3 : {L, p, p => q |- r}*
+H4 : {L, p => q |- r}
 ============================
- {L |- r M}
+ {L |- r}
 
 Subgoal 2 is:
- {L |- r M}
+ {L |- r}
 
 indep < <b>search.</b>
 </pre>
@@ -207,13 +207,13 @@ indep < <b>search.</b>
 <pre>
 Subgoal 2:
 
-Variables: L M F
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L F
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, [F] |- r M}*
-H4 : member F (p M :: L)
+H3 : {L, p, [F] |- r}*
+H4 : member F (p :: L)
 ============================
- {L |- r M}
+ {L |- r}
 
 indep < <b>case H4.</b>
 </pre>
@@ -221,15 +221,15 @@ indep < <b>case H4.</b>
 <pre>
 Subgoal 2.1:
 
-Variables: L M
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, [p M] |- r M}*
+H3 : {L, p, [p] |- r}*
 ============================
- {L |- r M}
+ {L |- r}
 
 Subgoal 2.2 is:
- {L |- r M}
+ {L |- r}
 
 indep < <b>case H3.</b>
 </pre>
@@ -237,13 +237,13 @@ indep < <b>case H3.</b>
 <pre>
 Subgoal 2.2:
 
-Variables: L M F
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L F
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, [F] |- r M}*
+H3 : {L, p, [F] |- r}*
 H5 : member F L
 ============================
- {L |- r M}
+ {L |- r}
 
 indep < <b>apply ctx_mem to _ H5.</b>
 </pre>
@@ -251,13 +251,13 @@ indep < <b>apply ctx_mem to _ H5.</b>
 <pre>
 Subgoal 2.2:
 
-Variables: L M M1
-IH : forall L M, ctx L -> {L, p M |- r M}* -> {L |- r M}
+Variables: L
+IH : forall L, ctx L -> {L, p |- r}* -> {L |- r}
 H1 : ctx L
-H3 : {L, p M, [p M1 => q M1] |- r M}*
-H5 : member (p M1 => q M1) L
+H3 : {L, p, [p => q] |- r}*
+H5 : member (p => q) L
 ============================
- {L |- r M}
+ {L |- r}
 
 indep < <b>case H3.</b>
 Proof completed.
