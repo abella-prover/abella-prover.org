@@ -1,0 +1,7414 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Girard's proof of strong normalization of the simply-typed lambda-calculus - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.4-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "stlc-strong-norm".</b>
+Reading specification "stlc-strong-norm"
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Close tm, ty.</b>
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define sn : tm -> prop by 
+sn M := forall N, {step M N} -> sn N.</b>
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Define neutral : tm -> prop by 
+neutral M := forall A R, M = abs A R -> false.</b>
+
+</pre>
+<a name="5"></a>
+<pre class="code">
+Abella < <b>Recursive reduce : tm -> ty -> prop by 
+reduce M top := {of M top} /\ sn M;
+reduce M (arrow A B) := {of M (arrow A B)} /\ (forall U, reduce U A -> reduce (app M U) B).</b>
+Inferred reducible on argument(s): 2
+
+</pre>
+<a name="6"></a>
+<pre class="code">
+Abella < <b>Theorem reduce_of : 
+forall A M, reduce M A -> {of M A}.</b>
+
+</pre>
+<a name="7"></a>
+<pre class="code">
+
+============================
+ forall A M, reduce M A -> {of M A}
+
+reduce_of < <b>intros.</b>
+</pre>
+<a name="8"></a>
+<pre class="code">
+
+Variables: A M
+H1 : reduce M A
+============================
+ {of M A}
+
+reduce_of < <b>case H1.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M
+H2 : {of M top}
+H3 : sn M
+============================
+ {of M top}
+
+Subgoal 2 is:
+ {of M (arrow A1 B)}
+
+reduce_of < <b>search.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M B A1
+H2 : {of M (arrow A1 B)}
+H3 : forall U, reduce U A1 -> reduce (app M U) B
+============================
+ {of M (arrow A1 B)}
+
+reduce_of < <b>search.</b>
+Proof completed.
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Define ctx : olist -> prop by 
+ctx nil;
+nabla x, ctx (of x A :: L) := {ty A} /\ ctx L.</b>
+
+</pre>
+<a name="12"></a>
+<pre class="code">
+Abella < <b>Define name : tm -> prop by 
+nabla x, name x.</b>
+
+</pre>
+<a name="13"></a>
+<pre class="code">
+Abella < <b>Theorem ctx_member : 
+forall E L, ctx L -> member E L ->
+  (exists X A, E = of X A /\ name X /\ {ty A}).</b>
+
+</pre>
+<a name="14"></a>
+<pre class="code">
+
+============================
+ forall E L, ctx L -> member E L ->
+   (exists X A, E = of X A /\ name X /\ {ty A})
+
+ctx_member < <b>induction on 1.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+============================
+ forall E L, ctx L @ -> member E L ->
+   (exists X A, E = of X A /\ name X /\ {ty A})
+
+ctx_member < <b>intros.</b>
+</pre>
+<a name="16"></a>
+<pre class="code">
+
+Variables: E L
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H1 : ctx L @
+H2 : member E L
+============================
+ exists X A, E = of X A /\ name X /\ {ty A}
+
+ctx_member < <b>case H1.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: E
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H2 : member E nil
+============================
+ exists X A, E = of X A /\ name X /\ {ty A}
+
+Subgoal 2 is:
+ exists X A, E n1 = of X A /\ name X /\ {ty A}
+
+ctx_member < <b>case H2.</b>
+</pre>
+<a name="18"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: E L1 A
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H2 : member (E n1) (of n1 A :: L1)
+H3 : {ty A}
+H4 : ctx L1 *
+============================
+ exists X A, E n1 = of X A /\ name X /\ {ty A}
+
+ctx_member < <b>case H2.</b>
+</pre>
+<a name="19"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 A
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H3 : {ty A}
+H4 : ctx L1 *
+============================
+ exists X A1, of n1 A = of X A1 /\ name X /\ {ty A1}
+
+Subgoal 2.2 is:
+ exists X A, E n1 = of X A /\ name X /\ {ty A}
+
+ctx_member < <b>search.</b>
+</pre>
+<a name="20"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: E L1 A
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H3 : {ty A}
+H4 : ctx L1 *
+H5 : member (E n1) L1
+============================
+ exists X A, E n1 = of X A /\ name X /\ {ty A}
+
+ctx_member < <b>apply IH to H4 H5.</b>
+</pre>
+<a name="21"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: L1 A X A1
+IH : forall E L, ctx L * -> member E L ->
+       (exists X A, E = of X A /\ name X /\ {ty A})
+H3 : {ty A}
+H4 : ctx L1 *
+H5 : member (of (X n1) A1) L1
+H6 : name (X n1)
+H7 : {ty A1}
+============================
+ exists X1 A, of (X n1) A1 = of X1 A /\ name X1 /\ {ty A}
+
+ctx_member < <b>search.</b>
+Proof completed.
+</pre>
+<a name="22"></a>
+<pre class="code">
+Abella < <b>Theorem ty_ignores_ctx : 
+forall L A, ctx L -> {L |- ty A} -> {ty A}.</b>
+
+</pre>
+<a name="23"></a>
+<pre class="code">
+
+============================
+ forall L A, ctx L -> {L |- ty A} -> {ty A}
+
+ty_ignores_ctx < <b>induction on 2.</b>
+</pre>
+<a name="24"></a>
+<pre class="code">
+
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+============================
+ forall L A, ctx L -> {L |- ty A}@ -> {ty A}
+
+ty_ignores_ctx < <b>intros.</b>
+</pre>
+<a name="25"></a>
+<pre class="code">
+
+Variables: L A
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H2 : {L |- ty A}@
+============================
+ {ty A}
+
+ty_ignores_ctx < <b>case H2.</b>
+</pre>
+<a name="26"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+============================
+ {ty top}
+
+Subgoal 2 is:
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+ty_ignores_ctx < <b>search.</b>
+</pre>
+<a name="27"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B A1
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L |- ty B}*
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+ty_ignores_ctx < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="28"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B A1
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L |- ty B}*
+H5 : {ty A1}
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+ty_ignores_ctx < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="29"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B A1
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L |- ty B}*
+H5 : {ty A1}
+H6 : {ty B}
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+ty_ignores_ctx < <b>search.</b>
+</pre>
+<a name="30"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A F
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H3 : {L, [F] |- ty A}*
+H4 : member F L
+============================
+ {ty A}
+
+ty_ignores_ctx < <b>apply ctx_member to H1 H4.</b>
+</pre>
+<a name="31"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A X A1
+IH : forall L A, ctx L -> {L |- ty A}* -> {ty A}
+H1 : ctx L
+H3 : {L, [of X A1] |- ty A}*
+H4 : member (of X A1) L
+H5 : name X
+H6 : {ty A1}
+============================
+ {ty A}
+
+ty_ignores_ctx < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="32"></a>
+<pre class="code">
+Abella < <b>Theorem case_of_app : 
+forall L M N B, ctx L -> {L |- of (app M N) B} ->
+  (exists A, {L |- of M (arrow A B)} /\ {L |- of N A}).</b>
+
+</pre>
+<a name="33"></a>
+<pre class="code">
+
+============================
+ forall L M N B, ctx L -> {L |- of (app M N) B} ->
+   (exists A, {L |- of M (arrow A B)} /\ {L |- of N A})
+
+case_of_app < <b>intros.</b>
+</pre>
+<a name="34"></a>
+<pre class="code">
+
+Variables: L M N B
+H1 : ctx L
+H2 : {L |- of (app M N) B}
+============================
+ exists A, {L |- of M (arrow A B)} /\ {L |- of N A}
+
+case_of_app < <b>case H2.</b>
+</pre>
+<a name="35"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L M N B A
+H1 : ctx L
+H3 : {L |- of M (arrow A B)}
+H4 : {L |- of N A}
+============================
+ exists A, {L |- of M (arrow A B)} /\ {L |- of N A}
+
+Subgoal 2 is:
+ exists A, {L |- of M (arrow A B)} /\ {L |- of N A}
+
+case_of_app < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M N B F
+H1 : ctx L
+H3 : {L, [F] |- of (app M N) B}
+H4 : member F L
+============================
+ exists A, {L |- of M (arrow A B)} /\ {L |- of N A}
+
+case_of_app < <b>apply ctx_member to H1 H4.</b>
+</pre>
+<a name="37"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M N B X A
+H1 : ctx L
+H3 : {L, [of X A] |- of (app M N) B}
+H4 : member (of X A) L
+H5 : name X
+H6 : {ty A}
+============================
+ exists A, {L |- of M (arrow A B)} /\ {L |- of N A}
+
+case_of_app < <b>case H5.</b>
+</pre>
+<a name="38"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M N B A
+H1 : ctx (L n1)
+H3 : {L n1, [of n1 A] |- of (app (M n1) (N n1)) B}
+H4 : member (of n1 A) (L n1)
+H6 : {ty A}
+============================
+ exists A, {L n1 |- of (M n1) (arrow A B)} /\ {L n1 |- of (N n1) A}
+
+case_of_app < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="39"></a>
+<pre class="code">
+Abella < <b>Theorem case_of_abs : 
+forall L M A B, ctx L -> {L |- of (abs A M) B} ->
+  (exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})).</b>
+
+</pre>
+<a name="40"></a>
+<pre class="code">
+
+============================
+ forall L M A B, ctx L -> {L |- of (abs A M) B} ->
+   (exists C, B = arrow A C /\ {ty A} /\
+        (nabla x, {L, of x A |- of (M x) C}))
+
+case_of_abs < <b>intros.</b>
+</pre>
+<a name="41"></a>
+<pre class="code">
+
+Variables: L M A B
+H1 : ctx L
+H2 : {L |- of (abs A M) B}
+============================
+ exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})
+
+case_of_abs < <b>case H2.</b>
+</pre>
+<a name="42"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L M A B1
+H1 : ctx L
+H3 : {L |- ty A}
+H4 : {L, of n1 A |- of (M n1) B1}
+============================
+ exists C, arrow A B1 = arrow A C /\ {ty A} /\
+   (nabla x, {L, of x A |- of (M x) C})
+
+Subgoal 2 is:
+ exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})
+
+case_of_abs < <b>apply ty_ignores_ctx to H1 H3.</b>
+</pre>
+<a name="43"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L M A B1
+H1 : ctx L
+H3 : {L |- ty A}
+H4 : {L, of n1 A |- of (M n1) B1}
+H5 : {ty A}
+============================
+ exists C, arrow A B1 = arrow A C /\ {ty A} /\
+   (nabla x, {L, of x A |- of (M x) C})
+
+Subgoal 2 is:
+ exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})
+
+case_of_abs < <b>search.</b>
+</pre>
+<a name="44"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M A B F
+H1 : ctx L
+H3 : {L, [F] |- of (abs A M) B}
+H4 : member F L
+============================
+ exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})
+
+case_of_abs < <b>apply ctx_member to H1 H4.</b>
+</pre>
+<a name="45"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M A B X A1
+H1 : ctx L
+H3 : {L, [of X A1] |- of (abs A M) B}
+H4 : member (of X A1) L
+H5 : name X
+H6 : {ty A1}
+============================
+ exists C, B = arrow A C /\ {ty A} /\ (nabla x, {L, of x A |- of (M x) C})
+
+case_of_abs < <b>case H5.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L M A B A1
+H1 : ctx (L n1)
+H3 : {L n1, [of n1 A1] |- of (abs A (M n1)) B}
+H4 : member (of n1 A1) (L n1)
+H6 : {ty A1}
+============================
+ exists C, B = arrow A C /\ {ty A} /\
+   (nabla x, {L n1, of x A |- of (M n1 x) C})
+
+case_of_abs < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="47"></a>
+<pre class="code">
+Abella < <b>Theorem of_step_ext : 
+forall L M N A, ctx L -> {L |- of M A} -> {step M N} -> {L |- of N A}.</b>
+
+</pre>
+<a name="48"></a>
+<pre class="code">
+
+============================
+ forall L M N A, ctx L -> {L |- of M A} -> {step M N} -> {L |- of N A}
+
+of_step_ext < <b>induction on 3.</b>
+</pre>
+<a name="49"></a>
+<pre class="code">
+
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+============================
+ forall L M N A, ctx L -> {L |- of M A} -> {step M N}@ -> {L |- of N A}
+
+of_step_ext < <b>intros.</b>
+</pre>
+<a name="50"></a>
+<pre class="code">
+
+Variables: L M N A
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of M A}
+H3 : {step M N}@
+============================
+ {L |- of N A}
+
+of_step_ext < <b>case H3.</b>
+</pre>
+<a name="51"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A M' M1 N1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step M1 M'}*
+============================
+ {L |- of (app M' N1) A}
+
+Subgoal 2 is:
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply case_of_app to H1 H2.</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A M' M1 N1 A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step M1 M'}*
+H5 : {L |- of M1 (arrow A1 A)}
+H6 : {L |- of N1 A1}
+============================
+ {L |- of (app M' N1) A}
+
+Subgoal 2 is:
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply IH to H1 H5 H4.</b>
+</pre>
+<a name="53"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A M' M1 N1 A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step M1 M'}*
+H5 : {L |- of M1 (arrow A1 A)}
+H6 : {L |- of N1 A1}
+H7 : {L |- of M' (arrow A1 A)}
+============================
+ {L |- of (app M' N1) A}
+
+Subgoal 2 is:
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>search.</b>
+</pre>
+<a name="54"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L A N' N1 M1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step N1 N'}*
+============================
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply case_of_app to H1 H2.</b>
+</pre>
+<a name="55"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L A N' N1 M1 A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step N1 N'}*
+H5 : {L |- of M1 (arrow A1 A)}
+H6 : {L |- of N1 A1}
+============================
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply IH to H1 H6 H4.</b>
+</pre>
+<a name="56"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L A N' N1 M1 A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app M1 N1) A}
+H4 : {step N1 N'}*
+H5 : {L |- of M1 (arrow A1 A)}
+H6 : {L |- of N1 A1}
+H7 : {L |- of N' A1}
+============================
+ {L |- of (app M1 N') A}
+
+Subgoal 3 is:
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>search.</b>
+</pre>
+<a name="57"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A M1 R A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app (abs A1 R) M1) A}
+============================
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply case_of_app to H1 H2.</b>
+</pre>
+<a name="58"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A M1 R A1 A2
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app (abs A1 R) M1) A}
+H4 : {L |- of (abs A1 R) (arrow A2 A)}
+H5 : {L |- of M1 A2}
+============================
+ {L |- of (R M1) A}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply case_of_abs to H1 H4.</b>
+</pre>
+<a name="59"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L M1 R A1 C
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app (abs A1 R) M1) C}
+H4 : {L |- of (abs A1 R) (arrow A1 C)}
+H5 : {L |- of M1 A1}
+H6 : {ty A1}
+H7 : {L, of n1 A1 |- of (R n1) C}
+============================
+ {L |- of (R M1) C}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b> inst H7 with n1 = M1.</b>
+</pre>
+<a name="60"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L M1 R A1 C
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app (abs A1 R) M1) C}
+H4 : {L |- of (abs A1 R) (arrow A1 C)}
+H5 : {L |- of M1 A1}
+H6 : {ty A1}
+H7 : {L, of n1 A1 |- of (R n1) C}
+H8 : {L, of M1 A1 |- of (R M1) C}
+============================
+ {L |- of (R M1) C}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>cut H8 with H5.</b>
+</pre>
+<a name="61"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L M1 R A1 C
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (app (abs A1 R) M1) C}
+H4 : {L |- of (abs A1 R) (arrow A1 C)}
+H5 : {L |- of M1 A1}
+H6 : {ty A1}
+H7 : {L, of n1 A1 |- of (R n1) C}
+H8 : {L, of M1 A1 |- of (R M1) C}
+H9 : {L |- of (R M1) C}
+============================
+ {L |- of (R M1) C}
+
+Subgoal 4 is:
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>search.</b>
+</pre>
+<a name="62"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L A R' R A1
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (abs A1 R) A}
+H4 : {step (R n1) (R' n1)}*
+============================
+ {L |- of (abs A1 R') A}
+
+of_step_ext < <b>apply case_of_abs to H1 H2.</b>
+</pre>
+<a name="63"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R' R A1 C
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (abs A1 R) (arrow A1 C)}
+H4 : {step (R n1) (R' n1)}*
+H5 : {ty A1}
+H6 : {L, of n1 A1 |- of (R n1) C}
+============================
+ {L |- of (abs A1 R') (arrow A1 C)}
+
+of_step_ext < <b>apply IH to _ H6 H4.</b>
+</pre>
+<a name="64"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R' R A1 C
+IH : forall L M N A, ctx L -> {L |- of M A} -> {step M N}* -> {L |- of N A}
+H1 : ctx L
+H2 : {L |- of (abs A1 R) (arrow A1 C)}
+H4 : {step (R n1) (R' n1)}*
+H5 : {ty A1}
+H6 : {L, of n1 A1 |- of (R n1) C}
+H7 : {L, of n1 A1 |- of (R' n1) C}
+============================
+ {L |- of (abs A1 R') (arrow A1 C)}
+
+of_step_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="65"></a>
+<pre class="code">
+Abella < <b>Theorem of_step : 
+forall M N A, {of M A} -> {step M N} -> {of N A}.</b>
+
+</pre>
+<a name="66"></a>
+<pre class="code">
+
+============================
+ forall M N A, {of M A} -> {step M N} -> {of N A}
+
+of_step < <b>intros.</b>
+</pre>
+<a name="67"></a>
+<pre class="code">
+
+Variables: M N A
+H1 : {of M A}
+H2 : {step M N}
+============================
+ {of N A}
+
+of_step < <b>apply of_step_ext to _ H1 H2.</b>
+</pre>
+<a name="68"></a>
+<pre class="code">
+
+Variables: M N A
+H1 : {of M A}
+H2 : {step M N}
+H3 : {of N A}
+============================
+ {of N A}
+
+of_step < <b>search.</b>
+Proof completed.
+</pre>
+<a name="69"></a>
+<pre class="code">
+Abella < <b>Theorem sn_step : 
+forall M N, sn M -> {step M N} -> sn N.</b>
+
+</pre>
+<a name="70"></a>
+<pre class="code">
+
+============================
+ forall M N, sn M -> {step M N} -> sn N
+
+sn_step < <b>intros.</b>
+</pre>
+<a name="71"></a>
+<pre class="code">
+
+Variables: M N
+H1 : sn M
+H2 : {step M N}
+============================
+ sn N
+
+sn_step < <b>case H1.</b>
+</pre>
+<a name="72"></a>
+<pre class="code">
+
+Variables: M N
+H2 : {step M N}
+H3 : forall N, {step M N} -> sn N
+============================
+ sn N
+
+sn_step < <b>apply H3 to H2.</b>
+</pre>
+<a name="73"></a>
+<pre class="code">
+
+Variables: M N
+H2 : {step M N}
+H3 : forall N, {step M N} -> sn N
+H4 : sn N
+============================
+ sn N
+
+sn_step < <b>search.</b>
+Proof completed.
+</pre>
+<a name="74"></a>
+<pre class="code">
+Abella < <b>Theorem reduce_step : 
+forall M N A, {ty A} -> reduce M A -> {step M N} -> reduce N A.</b>
+
+</pre>
+<a name="75"></a>
+<pre class="code">
+
+============================
+ forall M N A, {ty A} -> reduce M A -> {step M N} -> reduce N A
+
+reduce_step < <b>induction on 1.</b>
+</pre>
+<a name="76"></a>
+<pre class="code">
+
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+============================
+ forall M N A, {ty A}@ -> reduce M A -> {step M N} -> reduce N A
+
+reduce_step < <b>intros.</b>
+</pre>
+<a name="77"></a>
+<pre class="code">
+
+Variables: M N A
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H1 : {ty A}@
+H2 : reduce M A
+H3 : {step M N}
+============================
+ reduce N A
+
+reduce_step < <b>case H1.</b>
+</pre>
+<a name="78"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H2 : reduce M top
+H3 : {step M N}
+============================
+ reduce N top
+
+Subgoal 2 is:
+ reduce N (arrow A1 B)
+
+reduce_step < <b>case H2.</b>
+</pre>
+<a name="79"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {of M top}
+H5 : sn M
+============================
+ reduce N top
+
+Subgoal 2 is:
+ reduce N (arrow A1 B)
+
+reduce_step < <b>apply sn_step to H5 H3.</b>
+</pre>
+<a name="80"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {of M top}
+H5 : sn M
+H6 : sn N
+============================
+ reduce N top
+
+Subgoal 2 is:
+ reduce N (arrow A1 B)
+
+reduce_step < <b>apply of_step to H4 H3.</b>
+</pre>
+<a name="81"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {of M top}
+H5 : sn M
+H6 : sn N
+H7 : {of N top}
+============================
+ reduce N top
+
+Subgoal 2 is:
+ reduce N (arrow A1 B)
+
+reduce_step < <b>search.</b>
+</pre>
+<a name="82"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N B A1
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H2 : reduce M (arrow A1 B)
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+============================
+ reduce N (arrow A1 B)
+
+reduce_step < <b>case H2.</b>
+</pre>
+<a name="83"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N B A1
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+============================
+ reduce N (arrow A1 B)
+
+reduce_step < <b>unfold.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: M N B A1
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+============================
+ {of N (arrow A1 B)}
+
+Subgoal 2.2 is:
+ forall U, reduce U A1 -> reduce (app N U) B
+
+reduce_step < <b>apply of_step to H6 H3.</b>
+</pre>
+<a name="85"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: M N B A1
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+H8 : {of N (arrow A1 B)}
+============================
+ {of N (arrow A1 B)}
+
+Subgoal 2.2 is:
+ forall U, reduce U A1 -> reduce (app N U) B
+
+reduce_step < <b>search.</b>
+</pre>
+<a name="86"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M N B A1
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+============================
+ forall U, reduce U A1 -> reduce (app N U) B
+
+reduce_step < <b>intros.</b>
+</pre>
+<a name="87"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M N B A1 U
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+H8 : reduce U A1
+============================
+ reduce (app N U) B
+
+reduce_step < <b>apply H7 to H8.</b>
+</pre>
+<a name="88"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M N B A1 U
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+H8 : reduce U A1
+H9 : reduce (app M U) B
+============================
+ reduce (app N U) B
+
+reduce_step < <b>apply IH to H5 H9 _.</b>
+</pre>
+<a name="89"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M N B A1 U
+IH : forall M N A, {ty A}* -> reduce M A -> {step M N} -> reduce N A
+H3 : {step M N}
+H4 : {ty A1}*
+H5 : {ty B}*
+H6 : {of M (arrow A1 B)}
+H7 : forall U, reduce U A1 -> reduce (app M U) B
+H8 : reduce U A1
+H9 : reduce (app M U) B
+H10 : reduce (app N U) B
+============================
+ reduce (app N U) B
+
+reduce_step < <b>search.</b>
+Proof completed.
+</pre>
+<a name="90"></a>
+<pre class="code">
+Abella < <b>Theorem sn_app_c : 
+forall M, sn (app M c) -> sn M.</b>
+
+</pre>
+<a name="91"></a>
+<pre class="code">
+
+============================
+ forall M, sn (app M c) -> sn M
+
+sn_app_c < <b>induction on 1.</b>
+</pre>
+<a name="92"></a>
+<pre class="code">
+
+IH : forall M, sn (app M c) * -> sn M
+============================
+ forall M, sn (app M c) @ -> sn M
+
+sn_app_c < <b>intros.</b>
+</pre>
+<a name="93"></a>
+<pre class="code">
+
+Variables: M
+IH : forall M, sn (app M c) * -> sn M
+H1 : sn (app M c) @
+============================
+ sn M
+
+sn_app_c < <b>case H1.</b>
+</pre>
+<a name="94"></a>
+<pre class="code">
+
+Variables: M
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+============================
+ sn M
+
+sn_app_c < <b>unfold.</b>
+</pre>
+<a name="95"></a>
+<pre class="code">
+
+Variables: M
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+============================
+ forall N, {step M N} -> sn N
+
+sn_app_c < <b>intros.</b>
+</pre>
+<a name="96"></a>
+<pre class="code">
+
+Variables: M N
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+H3 : {step M N}
+============================
+ sn N
+
+sn_app_c < <b>assert {step (app M c) (app N c)}.</b>
+</pre>
+<a name="97"></a>
+<pre class="code">
+
+Variables: M N
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+H3 : {step M N}
+H4 : {step (app M c) (app N c)}
+============================
+ sn N
+
+sn_app_c < <b>apply H2 to H4.</b>
+</pre>
+<a name="98"></a>
+<pre class="code">
+
+Variables: M N
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+H3 : {step M N}
+H4 : {step (app M c) (app N c)}
+H5 : sn (app N c) *
+============================
+ sn N
+
+sn_app_c < <b>apply IH to H5.</b>
+</pre>
+<a name="99"></a>
+<pre class="code">
+
+Variables: M N
+IH : forall M, sn (app M c) * -> sn M
+H2 : forall N, {step (app M c) N} -> sn N *
+H3 : {step M N}
+H4 : {step (app M c) (app N c)}
+H5 : sn (app N c) *
+H6 : sn N
+============================
+ sn N
+
+sn_app_c < <b>search.</b>
+Proof completed.
+</pre>
+<a name="100"></a>
+<pre class="code">
+Abella < <b>Theorem of_ty_ext : 
+forall L M A, ctx L -> {L |- of M A} -> {ty A}.</b>
+
+</pre>
+<a name="101"></a>
+<pre class="code">
+
+============================
+ forall L M A, ctx L -> {L |- of M A} -> {ty A}
+
+of_ty_ext < <b>induction on 2.</b>
+</pre>
+<a name="102"></a>
+<pre class="code">
+
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+============================
+ forall L M A, ctx L -> {L |- of M A}@ -> {ty A}
+
+of_ty_ext < <b>intros.</b>
+</pre>
+<a name="103"></a>
+<pre class="code">
+
+Variables: L M A
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H2 : {L |- of M A}@
+============================
+ {ty A}
+
+of_ty_ext < <b>case H2.</b>
+</pre>
+<a name="104"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- of M1 (arrow A1 A)}*
+H4 : {L |- of N A1}*
+============================
+ {ty A}
+
+Subgoal 2 is:
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="105"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- of M1 (arrow A1 A)}*
+H4 : {L |- of N A1}*
+H5 : {ty (arrow A1 A)}
+============================
+ {ty A}
+
+Subgoal 2 is:
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>case H5.</b>
+</pre>
+<a name="106"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- of M1 (arrow A1 A)}*
+H4 : {L |- of N A1}*
+H6 : {ty A1}
+H7 : {ty A}
+============================
+ {ty A}
+
+Subgoal 2 is:
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>search.</b>
+</pre>
+<a name="107"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R A1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n1 A1 |- of (R n1) B}*
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>apply ty_ignores_ctx to H1 H3.</b>
+</pre>
+<a name="108"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R A1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n1 A1 |- of (R n1) B}*
+H5 : {ty A1}
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>apply IH to _ H4.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R A1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n1 A1 |- of (R n1) B}*
+H5 : {ty A1}
+H6 : {ty B}
+============================
+ {ty (arrow A1 B)}
+
+Subgoal 3 is:
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>search.</b>
+</pre>
+<a name="110"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A}*
+============================
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>apply ty_ignores_ctx to H1 H3.</b>
+</pre>
+<a name="111"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L |- ty A}*
+H4 : {ty A}
+============================
+ {ty A}
+
+Subgoal 4 is:
+ {ty A}
+
+of_ty_ext < <b>search.</b>
+</pre>
+<a name="112"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M A F
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L, [F] |- of M A}*
+H4 : member F L
+============================
+ {ty A}
+
+of_ty_ext < <b>apply ctx_member to H1 H4.</b>
+</pre>
+<a name="113"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M A X A1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx L
+H3 : {L, [of X A1] |- of M A}*
+H4 : member (of X A1) L
+H5 : name X
+H6 : {ty A1}
+============================
+ {ty A}
+
+of_ty_ext < <b>case H5.</b>
+</pre>
+<a name="114"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M A A1
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx (L n1)
+H3 : {L n1, [of n1 A1] |- of (M n1) A}*
+H4 : member (of n1 A1) (L n1)
+H6 : {ty A1}
+============================
+ {ty A}
+
+of_ty_ext < <b>case H3.</b>
+</pre>
+<a name="115"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L A
+IH : forall L M A, ctx L -> {L |- of M A}* -> {ty A}
+H1 : ctx (L n1)
+H4 : member (of n1 A) (L n1)
+H6 : {ty A}
+============================
+ {ty A}
+
+of_ty_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="116"></a>
+<pre class="code">
+Abella < <b>Theorem of_ty : 
+forall M A, {of M A} -> {ty A}.</b>
+
+</pre>
+<a name="117"></a>
+<pre class="code">
+
+============================
+ forall M A, {of M A} -> {ty A}
+
+of_ty < <b>intros.</b>
+</pre>
+<a name="118"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+============================
+ {ty A}
+
+of_ty < <b>apply of_ty_ext to _ H1.</b>
+</pre>
+<a name="119"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+H2 : {ty A}
+============================
+ {ty A}
+
+of_ty < <b>search.</b>
+Proof completed.
+</pre>
+<a name="120"></a>
+<pre class="code">
+Abella < <b>Theorem cr1_cr3 : 
+forall A, {ty A} -> (forall M, reduce M A -> sn M) /\
+  (forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+       reduce M A).</b>
+
+</pre>
+<a name="121"></a>
+<pre class="code">
+
+============================
+ forall A, {ty A} -> (forall M, reduce M A -> sn M) /\
+   (forall M, neutral M -> {of M A} ->
+        (forall P, {step M P} -> reduce P A) -> reduce M A)
+
+cr1_cr3 < <b>induction on 1.</b>
+</pre>
+<a name="122"></a>
+<pre class="code">
+
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+============================
+ forall A, {ty A}@ -> (forall M, reduce M A -> sn M) /\
+   (forall M, neutral M -> {of M A} ->
+        (forall P, {step M P} -> reduce P A) -> reduce M A)
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="123"></a>
+<pre class="code">
+
+Variables: A
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty A}@
+============================
+ (forall M, reduce M A -> sn M) /\
+   (forall M, neutral M -> {of M A} ->
+        (forall P, {step M P} -> reduce P A) -> reduce M A)
+
+cr1_cr3 < <b>split*.</b>
+</pre>
+<a name="124"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty A}@
+============================
+ forall M, reduce M A -> sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="125"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty A}@
+H2 : reduce M A
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>case H2.</b>
+</pre>
+<a name="126"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty top}@
+H3 : {of M top}
+H4 : sn M
+============================
+ sn M
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="127"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty (arrow A1 B)}@
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>case H1.</b>
+</pre>
+<a name="128"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>assert neutral c.</b>
+</pre>
+<a name="129"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+============================
+ neutral c
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>unfold.</b>
+</pre>
+<a name="130"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+============================
+ forall A R, c = abs A R -> false
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="131"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: M B A1 A2 R
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : c = abs A2 R
+============================
+ false
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>case H7.</b>
+</pre>
+<a name="132"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>assert {of c A1}.</b>
+</pre>
+<a name="133"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>assert forall P, {step c P} -> reduce P A1.</b>
+</pre>
+<a name="134"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+============================
+ forall P, {step c P} -> reduce P A1
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="135"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: M B A1 P
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : {step c P}
+============================
+ reduce P A1
+
+Subgoal 1.2 is:
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>case H9.</b>
+</pre>
+<a name="136"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply IH to H5.</b>
+</pre>
+<a name="137"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply H11 to H7 H8 H9.</b>
+</pre>
+<a name="138"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H12 : reduce c A1
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply H4 to H12.</b>
+</pre>
+<a name="139"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H12 : reduce c A1
+H13 : reduce (app M c) B
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply IH to H6.</b>
+</pre>
+<a name="140"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H12 : reduce c A1
+H13 : reduce (app M c) B
+H14 : forall M, reduce M B -> sn M
+H15 : forall M, neutral M -> {of M B} ->
+        (forall P, {step M P} -> reduce P B) -> reduce M B
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply H14 to H13.</b>
+</pre>
+<a name="141"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H12 : reduce c A1
+H13 : reduce (app M c) B
+H14 : forall M, reduce M B -> sn M
+H15 : forall M, neutral M -> {of M B} ->
+        (forall P, {step M P} -> reduce P B) -> reduce M B
+H16 : sn (app M c)
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>apply sn_app_c to H16.</b>
+</pre>
+<a name="142"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H3 : {of M (arrow A1 B)}
+H4 : forall U, reduce U A1 -> reduce (app M U) B
+H5 : {ty A1}*
+H6 : {ty B}*
+H7 : neutral c
+H8 : {of c A1}
+H9 : forall P, {step c P} -> reduce P A1
+H10 : forall M, reduce M A1 -> sn M
+H11 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H12 : reduce c A1
+H13 : reduce (app M c) B
+H14 : forall M, reduce M B -> sn M
+H15 : forall M, neutral M -> {of M B} ->
+        (forall P, {step M P} -> reduce P B) -> reduce M B
+H16 : sn (app M c)
+H17 : sn M
+============================
+ sn M
+
+Subgoal 2 is:
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="143"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty A}@
+H2 : forall M, reduce M A -> sn M
+============================
+ forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
+   reduce M A
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="144"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H1 : {ty A}@
+H2 : forall M, reduce M A -> sn M
+H3 : neutral M
+H4 : {of M A}
+H5 : forall P, {step M P} -> reduce P A
+============================
+ reduce M A
+
+cr1_cr3 < <b>case H1.</b>
+</pre>
+<a name="145"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+============================
+ reduce M top
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>unfold.</b>
+</pre>
+<a name="146"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+============================
+ {of M top}
+
+Subgoal 2.1.2 is:
+ sn M
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="147"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+============================
+ sn M
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>unfold.</b>
+</pre>
+<a name="148"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: M
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+============================
+ forall N, {step M N} -> sn N
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="149"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: M N
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+H6 : {step M N}
+============================
+ sn N
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>apply H5 to H6.</b>
+</pre>
+<a name="150"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: M N
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+H6 : {step M N}
+H7 : reduce N top
+============================
+ sn N
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>apply H2 to H7.</b>
+</pre>
+<a name="151"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: M N
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M top -> sn M
+H3 : neutral M
+H4 : {of M top}
+H5 : forall P, {step M P} -> reduce P top
+H6 : {step M N}
+H7 : reduce N top
+H8 : sn N
+============================
+ sn N
+
+Subgoal 2.2 is:
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="152"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+============================
+ reduce M (arrow A1 B)
+
+cr1_cr3 < <b>unfold.</b>
+</pre>
+<a name="153"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+============================
+ {of M (arrow A1 B)}
+
+Subgoal 2.2.2 is:
+ forall U, reduce U A1 -> reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="154"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+============================
+ forall U, reduce U A1 -> reduce (app M U) B
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="155"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+============================
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply IH to H6.</b>
+</pre>
+<a name="156"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+============================
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H9 to H8.</b>
+</pre>
+<a name="157"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+============================
+ reduce (app M U) B
+
+cr1_cr3 < <b>assert forall U, sn U -> reduce U A1 -> reduce (app M U) B.</b>
+</pre>
+<a name="158"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+============================
+ forall U, sn U -> reduce U A1 -> reduce (app M U) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>induction on 1.</b>
+</pre>
+<a name="159"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+============================
+ forall U, sn U @@ -> reduce U A1 -> reduce (app M U) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="160"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H12 : sn U1 @@
+H13 : reduce U1 A1
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>case H12.</b>
+</pre>
+<a name="161"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>assert forall P, {step (app M U1) P} -> reduce P B.</b>
+</pre>
+<a name="162"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+============================
+ forall P, {step (app M U1) P} -> reduce P B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="163"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1:
+
+Variables: M B A1 U U1 P
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : {step (app M U1) P}
+============================
+ reduce P B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>case H15.</b>
+</pre>
+<a name="164"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.1:
+
+Variables: M B A1 U U1 M'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step M M'}
+============================
+ reduce (app M' U1) B
+
+Subgoal 2.2.2.1.1.2 is:
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H5 to H16.</b>
+</pre>
+<a name="165"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.1:
+
+Variables: M B A1 U U1 M'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step M M'}
+H17 : reduce M' (arrow A1 B)
+============================
+ reduce (app M' U1) B
+
+Subgoal 2.2.2.1.1.2 is:
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>case H17.</b>
+</pre>
+<a name="166"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.1:
+
+Variables: M B A1 U U1 M'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step M M'}
+H18 : {of M' (arrow A1 B)}
+H19 : forall U, reduce U A1 -> reduce (app M' U) B
+============================
+ reduce (app M' U1) B
+
+Subgoal 2.2.2.1.1.2 is:
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H19 to H13.</b>
+</pre>
+<a name="167"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.1:
+
+Variables: M B A1 U U1 M'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step M M'}
+H18 : {of M' (arrow A1 B)}
+H19 : forall U, reduce U A1 -> reduce (app M' U) B
+H20 : reduce (app M' U1) B
+============================
+ reduce (app M' U1) B
+
+Subgoal 2.2.2.1.1.2 is:
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="168"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.2:
+
+Variables: M B A1 U U1 N'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step U1 N'}
+============================
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H14 to H16.</b>
+</pre>
+<a name="169"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.2:
+
+Variables: M B A1 U U1 N'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step U1 N'}
+H17 : sn N' **
+============================
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply reduce_step to _ H13 H16.</b>
+</pre>
+<a name="170"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.2:
+
+Variables: M B A1 U U1 N'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step U1 N'}
+H17 : sn N' **
+H18 : reduce N' A1
+============================
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply IH1 to H17 H18.</b>
+</pre>
+<a name="171"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.2:
+
+Variables: M B A1 U U1 N'
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : {step U1 N'}
+H17 : sn N' **
+H18 : reduce N' A1
+H19 : reduce (app M N') B
+============================
+ reduce (app M N') B
+
+Subgoal 2.2.2.1.1.3 is:
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="172"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.3:
+
+Variables: B A1 U U1 R A2
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral (abs A2 R)
+H4 : {of (abs A2 R) (arrow A1 B)}
+H5 : forall P, {step (abs A2 R) P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app (abs A2 R) U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+============================
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>case H3.</b>
+</pre>
+<a name="173"></a>
+<pre class="code">
+Subgoal 2.2.2.1.1.3:
+
+Variables: B A1 U U1 R A2
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H4 : {of (abs A2 R) (arrow A1 B)}
+H5 : forall P, {step (abs A2 R) P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app (abs A2 R) U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H16 : forall A R1, abs A2 R = abs A R1 -> false
+============================
+ reduce (R U1) B
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H16 to _.</b>
+</pre>
+<a name="174"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>assert neutral (app M U1).</b>
+</pre>
+<a name="175"></a>
+<pre class="code">
+Subgoal 2.2.2.1.2:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+============================
+ neutral (app M U1)
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>unfold.</b>
+</pre>
+<a name="176"></a>
+<pre class="code">
+Subgoal 2.2.2.1.2:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+============================
+ forall A R, app M U1 = abs A R -> false
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>intros.</b>
+</pre>
+<a name="177"></a>
+<pre class="code">
+Subgoal 2.2.2.1.2:
+
+Variables: M B A1 U U1 A2 R
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : app M U1 = abs A2 R
+============================
+ false
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>case H16.</b>
+</pre>
+<a name="178"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>assert {of (app M U1) B}.</b>
+</pre>
+<a name="179"></a>
+<pre class="code">
+Subgoal 2.2.2.1.3:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+============================
+ {of (app M U1) B}
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply reduce_of to H13.</b>
+</pre>
+<a name="180"></a>
+<pre class="code">
+Subgoal 2.2.2.1.3:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+H17 : {of U1 A1}
+============================
+ {of (app M U1) B}
+
+Subgoal 2.2.2.1 is:
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="181"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+H17 : {of (app M U1) B}
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply IH to H7.</b>
+</pre>
+<a name="182"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+H17 : {of (app M U1) B}
+H18 : forall M, reduce M B -> sn M
+H19 : forall M, neutral M -> {of M B} ->
+        (forall P, {step M P} -> reduce P B) -> reduce M B
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H19 to H16 H17 H15.</b>
+</pre>
+<a name="183"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: M B A1 U U1
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+IH1 : forall U, sn U ** -> reduce U A1 -> reduce (app M U) B
+H13 : reduce U1 A1
+H14 : forall N, {step U1 N} -> sn N **
+H15 : forall P, {step (app M U1) P} -> reduce P B
+H16 : neutral (app M U1)
+H17 : {of (app M U1) B}
+H18 : forall M, reduce M B -> sn M
+H19 : forall M, neutral M -> {of M B} ->
+        (forall P, {step M P} -> reduce P B) -> reduce M B
+H20 : reduce (app M U1) B
+============================
+ reduce (app M U1) B
+
+Subgoal 2.2.2 is:
+ reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+</pre>
+<a name="184"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+H12 : forall U, sn U -> reduce U A1 -> reduce (app M U) B
+============================
+ reduce (app M U) B
+
+cr1_cr3 < <b>apply H12 to H11 H8.</b>
+</pre>
+<a name="185"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: M B A1 U
+IH : forall A, {ty A}* -> (forall M, reduce M A -> sn M) /\
+       (forall M, neutral M -> {of M A} ->
+            (forall P, {step M P} -> reduce P A) -> reduce M A)
+H2 : forall M, reduce M (arrow A1 B) -> sn M
+H3 : neutral M
+H4 : {of M (arrow A1 B)}
+H5 : forall P, {step M P} -> reduce P (arrow A1 B)
+H6 : {ty A1}*
+H7 : {ty B}*
+H8 : reduce U A1
+H9 : forall M, reduce M A1 -> sn M
+H10 : forall M, neutral M -> {of M A1} ->
+        (forall P, {step M P} -> reduce P A1) -> reduce M A1
+H11 : sn U
+H12 : forall U, sn U -> reduce U A1 -> reduce (app M U) B
+H13 : reduce (app M U) B
+============================
+ reduce (app M U) B
+
+cr1_cr3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="186"></a>
+<pre class="code">
+Abella < <b>Theorem reduce_sn : 
+forall A M, {ty A} -> reduce M A -> sn M.</b>
+
+</pre>
+<a name="187"></a>
+<pre class="code">
+
+============================
+ forall A M, {ty A} -> reduce M A -> sn M
+
+reduce_sn < <b>intros.</b>
+</pre>
+<a name="188"></a>
+<pre class="code">
+
+Variables: A M
+H1 : {ty A}
+H2 : reduce M A
+============================
+ sn M
+
+reduce_sn < <b>apply cr1_cr3 to H1.</b>
+</pre>
+<a name="189"></a>
+<pre class="code">
+
+Variables: A M
+H1 : {ty A}
+H2 : reduce M A
+H3 : forall M, reduce M A -> sn M
+H4 : forall M, neutral M -> {of M A} ->
+       (forall P, {step M P} -> reduce P A) -> reduce M A
+============================
+ sn M
+
+reduce_sn < <b>apply H3 to H2.</b>
+</pre>
+<a name="190"></a>
+<pre class="code">
+
+Variables: A M
+H1 : {ty A}
+H2 : reduce M A
+H3 : forall M, reduce M A -> sn M
+H4 : forall M, neutral M -> {of M A} ->
+       (forall P, {step M P} -> reduce P A) -> reduce M A
+H5 : sn M
+============================
+ sn M
+
+reduce_sn < <b>search.</b>
+Proof completed.
+</pre>
+<a name="191"></a>
+<pre class="code">
+Abella < <b>Theorem neutral_step_reduce : 
+forall A M, neutral M -> {of M A} -> {ty A} ->
+  (forall P, {step M P} -> reduce P A) -> reduce M A.</b>
+
+</pre>
+<a name="192"></a>
+<pre class="code">
+
+============================
+ forall A M, neutral M -> {of M A} -> {ty A} ->
+   (forall P, {step M P} -> reduce P A) -> reduce M A
+
+neutral_step_reduce < <b>intros.</b>
+</pre>
+<a name="193"></a>
+<pre class="code">
+
+Variables: A M
+H1 : neutral M
+H2 : {of M A}
+H3 : {ty A}
+H4 : forall P, {step M P} -> reduce P A
+============================
+ reduce M A
+
+neutral_step_reduce < <b>apply cr1_cr3 to H3.</b>
+</pre>
+<a name="194"></a>
+<pre class="code">
+
+Variables: A M
+H1 : neutral M
+H2 : {of M A}
+H3 : {ty A}
+H4 : forall P, {step M P} -> reduce P A
+H5 : forall M, reduce M A -> sn M
+H6 : forall M, neutral M -> {of M A} ->
+       (forall P, {step M P} -> reduce P A) -> reduce M A
+============================
+ reduce M A
+
+neutral_step_reduce < <b>apply H6 to H1 H2 H4.</b>
+</pre>
+<a name="195"></a>
+<pre class="code">
+
+Variables: A M
+H1 : neutral M
+H2 : {of M A}
+H3 : {ty A}
+H4 : forall P, {step M P} -> reduce P A
+H5 : forall M, reduce M A -> sn M
+H6 : forall M, neutral M -> {of M A} ->
+       (forall P, {step M P} -> reduce P A) -> reduce M A
+H7 : reduce M A
+============================
+ reduce M A
+
+neutral_step_reduce < <b>search.</b>
+Proof completed.
+</pre>
+<a name="196"></a>
+<pre class="code">
+Abella < <b>Theorem reduce_const : 
+forall C, {ty C} -> reduce c C.</b>
+
+</pre>
+<a name="197"></a>
+<pre class="code">
+
+============================
+ forall C, {ty C} -> reduce c C
+
+reduce_const < <b>intros.</b>
+</pre>
+<a name="198"></a>
+<pre class="code">
+
+Variables: C
+H1 : {ty C}
+============================
+ reduce c C
+
+reduce_const < <b>assert neutral c.</b>
+</pre>
+<a name="199"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: C
+H1 : {ty C}
+============================
+ neutral c
+
+Subgoal is:
+ reduce c C
+
+reduce_const < <b>unfold.</b>
+</pre>
+<a name="200"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: C
+H1 : {ty C}
+============================
+ forall A R, c = abs A R -> false
+
+Subgoal is:
+ reduce c C
+
+reduce_const < <b>intros.</b>
+</pre>
+<a name="201"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: C A R
+H1 : {ty C}
+H2 : c = abs A R
+============================
+ false
+
+Subgoal is:
+ reduce c C
+
+reduce_const < <b>case H2.</b>
+</pre>
+<a name="202"></a>
+<pre class="code">
+
+Variables: C
+H1 : {ty C}
+H2 : neutral c
+============================
+ reduce c C
+
+reduce_const < <b>assert forall P, {step c P} -> reduce P C.</b>
+</pre>
+<a name="203"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: C
+H1 : {ty C}
+H2 : neutral c
+============================
+ forall P, {step c P} -> reduce P C
+
+Subgoal is:
+ reduce c C
+
+reduce_const < <b>intros.</b>
+</pre>
+<a name="204"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: C P
+H1 : {ty C}
+H2 : neutral c
+H3 : {step c P}
+============================
+ reduce P C
+
+Subgoal is:
+ reduce c C
+
+reduce_const < <b>case H3.</b>
+</pre>
+<a name="205"></a>
+<pre class="code">
+
+Variables: C
+H1 : {ty C}
+H2 : neutral c
+H3 : forall P, {step c P} -> reduce P C
+============================
+ reduce c C
+
+reduce_const < <b>apply neutral_step_reduce to H2 _ H1 H3.</b>
+</pre>
+<a name="206"></a>
+<pre class="code">
+
+Variables: C
+H1 : {ty C}
+H2 : neutral c
+H3 : forall P, {step c P} -> reduce P C
+H4 : reduce c C
+============================
+ reduce c C
+
+reduce_const < <b>search.</b>
+Proof completed.
+</pre>
+<a name="207"></a>
+<pre class="code">
+Abella < <b>Theorem abs_step_reduce_lemma : 
+forall U M A B, sn U -> sn (M c) -> reduce U A ->
+  (forall V, reduce V A -> reduce (M V) B) -> {of (abs A M) (arrow A B)} ->
+  reduce (app (abs A M) U) B.</b>
+
+</pre>
+<a name="208"></a>
+<pre class="code">
+
+============================
+ forall U M A B, sn U -> sn (M c) -> reduce U A ->
+   (forall V, reduce V A -> reduce (M V) B) -> {of (abs A M) (arrow A B)} ->
+   reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>induction on 1.</b>
+</pre>
+<a name="209"></a>
+<pre class="code">
+
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+============================
+ forall U M A B, sn U @ -> sn (M c) -> reduce U A ->
+   (forall V, reduce V A -> reduce (M V) B) -> {of (abs A M) (arrow A B)} ->
+   reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>induction on 2.</b>
+</pre>
+<a name="210"></a>
+<pre class="code">
+
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+============================
+ forall U M A B, sn U @ -> sn (M c) @@ -> reduce U A ->
+   (forall V, reduce V A -> reduce (M V) B) -> {of (abs A M) (arrow A B)} ->
+   reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>intros.</b>
+</pre>
+<a name="211"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>assert forall P, {step (app (abs A M) U) P} -> reduce P B.</b>
+</pre>
+<a name="212"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+============================
+ forall P, {step (app (abs A M) U) P} -> reduce P B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>intros.</b>
+</pre>
+<a name="213"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: U M A B P
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : {step (app (abs A M) U) P}
+============================
+ reduce P B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H6.</b>
+</pre>
+<a name="214"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B M'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step (abs A M) M'}
+============================
+ reduce (app M' U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H7.</b>
+</pre>
+<a name="215"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+============================
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b> inst H8 with n1 = c.</b>
+</pre>
+<a name="216"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+============================
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H2.</b>
+</pre>
+<a name="217"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+============================
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply H10 to H9.</b>
+</pre>
+<a name="218"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+============================
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply IH1 to H1 H11 H3 _ _ with M = R', B = B.</b>
+</pre>
+<a name="219"></a>
+<pre class="code">
+Subgoal 1.1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+============================
+ {of (abs A R') (arrow A B)}
+
+Subgoal 1.1.2 is:
+ forall V, reduce V A -> reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply of_step to H5 _.</b>
+</pre>
+<a name="220"></a>
+<pre class="code">
+Subgoal 1.1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : {of (abs A (z1\R' z1)) (arrow A B)}
+============================
+ {of (abs A R') (arrow A B)}
+
+Subgoal 1.1.2 is:
+ forall V, reduce V A -> reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="221"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+============================
+ forall V, reduce V A -> reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>intros.</b>
+</pre>
+<a name="222"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+============================
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply H4 to H12.</b>
+</pre>
+<a name="223"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+============================
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b> inst H8 with n1 = V.</b>
+</pre>
+<a name="224"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+H14 : {step (M V) (R' V)}
+============================
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply reduce_step to _ H13 H14.</b>
+</pre>
+<a name="225"></a>
+<pre class="code">
+Subgoal 1.1.2.1:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+H14 : {step (M V) (R' V)}
+============================
+ {ty B}
+
+Subgoal 1.1.2 is:
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply of_ty to H5.</b>
+</pre>
+<a name="226"></a>
+<pre class="code">
+Subgoal 1.1.2.1:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+H14 : {step (M V) (R' V)}
+H15 : {ty (arrow A B)}
+============================
+ {ty B}
+
+Subgoal 1.1.2 is:
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H15.</b>
+</pre>
+<a name="227"></a>
+<pre class="code">
+Subgoal 1.1.2.1:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+H14 : {step (M V) (R' V)}
+H16 : {ty A}
+H17 : {ty B}
+============================
+ {ty B}
+
+Subgoal 1.1.2 is:
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="228"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: U M A B R' V
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce V A
+H13 : reduce (M V) B
+H14 : {step (M V) (R' V)}
+H15 : reduce (R' V) B
+============================
+ reduce (R' V) B
+
+Subgoal 1.1 is:
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="229"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: U M A B R'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H8 : {step (M n1) (R' n1)}
+H9 : {step (M c) (R' c)}
+H10 : forall N, {step (M c) N} -> sn N **
+H11 : sn (R' c) **
+H12 : reduce (app (abs A R') U) B
+============================
+ reduce (app (abs A R') U) B
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="230"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+============================
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H1.</b>
+</pre>
+<a name="231"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+============================
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply H8 to H7.</b>
+</pre>
+<a name="232"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+============================
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply reduce_step to _ H3 H7.</b>
+</pre>
+<a name="233"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+============================
+ {ty A}
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply of_ty to H5.</b>
+</pre>
+<a name="234"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+H10 : {ty (arrow A B)}
+============================
+ {ty A}
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H10.</b>
+</pre>
+<a name="235"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+H11 : {ty A}
+H12 : {ty B}
+============================
+ {ty A}
+
+Subgoal 1.2 is:
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="236"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+H10 : reduce N' A
+============================
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply IH to H9 H2 H10 H4 H5 with M = M.</b>
+</pre>
+<a name="237"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: U M A B N'
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : {step U N'}
+H8 : forall N, {step U N} -> sn N *
+H9 : sn N' *
+H10 : reduce N' A
+H11 : reduce (app (abs A M) N') B
+============================
+ reduce (app (abs A M) N') B
+
+Subgoal 1.3 is:
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="238"></a>
+<pre class="code">
+Subgoal 1.3:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+============================
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply H4 to H3.</b>
+</pre>
+<a name="239"></a>
+<pre class="code">
+Subgoal 1.3:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H7 : reduce (M U) B
+============================
+ reduce (M U) B
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="240"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>assert neutral (app (abs A M) U).</b>
+</pre>
+<a name="241"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+============================
+ neutral (app (abs A M) U)
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>unfold.</b>
+</pre>
+<a name="242"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+============================
+ forall A1 R, app (abs A M) U = abs A1 R -> false
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>intros.</b>
+</pre>
+<a name="243"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M A B A1 R
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : app (abs A M) U = abs A1 R
+============================
+ false
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>case H7.</b>
+</pre>
+<a name="244"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>assert {of (app (abs A M) U) B}.</b>
+</pre>
+<a name="245"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+============================
+ {of (app (abs A M) U) B}
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply reduce_of to H3.</b>
+</pre>
+<a name="246"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+H8 : {of U A}
+============================
+ {of (app (abs A M) U) B}
+
+Subgoal is:
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+</pre>
+<a name="247"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+H8 : {of (app (abs A M) U) B}
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply of_ty to H8.</b>
+</pre>
+<a name="248"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+H8 : {of (app (abs A M) U) B}
+H9 : {ty B}
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>apply neutral_step_reduce to H7 H8 H9 H6.</b>
+</pre>
+<a name="249"></a>
+<pre class="code">
+
+Variables: U M A B
+IH : forall U M A B, sn U * -> sn (M c) -> reduce U A ->
+       (forall V, reduce V A -> reduce (M V) B) ->
+       {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+IH1 : forall U M A B, sn U @ -> sn (M c) ** -> reduce U A ->
+        (forall V, reduce V A -> reduce (M V) B) ->
+        {of (abs A M) (arrow A B)} -> reduce (app (abs A M) U) B
+H1 : sn U @
+H2 : sn (M c) @@
+H3 : reduce U A
+H4 : forall V, reduce V A -> reduce (M V) B
+H5 : {of (abs A M) (arrow A B)}
+H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
+H7 : neutral (app (abs A M) U)
+H8 : {of (app (abs A M) U) B}
+H9 : {ty B}
+H10 : reduce (app (abs A M) U) B
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="250"></a>
+<pre class="code">
+Abella < <b>Theorem abs_step_reduce : 
+forall M A B, {of (abs A M) (arrow A B)} ->
+  (forall V, reduce V A -> reduce (M V) B) -> reduce (abs A M) (arrow A B).</b>
+
+</pre>
+<a name="251"></a>
+<pre class="code">
+
+============================
+ forall M A B, {of (abs A M) (arrow A B)} ->
+   (forall V, reduce V A -> reduce (M V) B) -> reduce (abs A M) (arrow A B)
+
+abs_step_reduce < <b>intros.</b>
+</pre>
+<a name="252"></a>
+<pre class="code">
+
+Variables: M A B
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+============================
+ reduce (abs A M) (arrow A B)
+
+abs_step_reduce < <b>unfold.</b>
+</pre>
+<a name="253"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M A B
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+============================
+ {of (abs A M) (arrow A B)}
+
+Subgoal 2 is:
+ forall U, reduce U A -> reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>search.</b>
+</pre>
+<a name="254"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+============================
+ forall U, reduce U A -> reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>intros.</b>
+</pre>
+<a name="255"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply of_ty to H1.</b>
+</pre>
+<a name="256"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H4 : {ty (arrow A B)}
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>case H4.</b>
+</pre>
+<a name="257"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply reduce_const to H5.</b>
+</pre>
+<a name="258"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+H7 : reduce c A
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply H2 to H7.</b>
+</pre>
+<a name="259"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+H7 : reduce c A
+H8 : reduce (M c) B
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply reduce_sn to H5 H3.</b>
+</pre>
+<a name="260"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+H7 : reduce c A
+H8 : reduce (M c) B
+H9 : sn U
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply reduce_sn to H6 H8.</b>
+</pre>
+<a name="261"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+H7 : reduce c A
+H8 : reduce (M c) B
+H9 : sn U
+H10 : sn (M c)
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>apply abs_step_reduce_lemma to H9 H10 H3 H2 H1 with M = M.</b>
+</pre>
+<a name="262"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A B U
+H1 : {of (abs A M) (arrow A B)}
+H2 : forall V, reduce V A -> reduce (M V) B
+H3 : reduce U A
+H5 : {ty A}
+H6 : {ty B}
+H7 : reduce c A
+H8 : reduce (M c) B
+H9 : sn U
+H10 : sn (M c)
+H11 : reduce (app (abs A M) U) B
+============================
+ reduce (app (abs A M) U) B
+
+abs_step_reduce < <b>search.</b>
+Proof completed.
+</pre>
+<a name="263"></a>
+<pre class="code">
+Abella < <b>Define closed : tm -> prop by 
+closed M := exists A, {of M A}.</b>
+
+</pre>
+<a name="264"></a>
+<pre class="code">
+Abella < <b>Theorem member_prune : 
+forall L E, nabla x, member (E x) L -> (exists F, E = y\F).</b>
+
+</pre>
+<a name="265"></a>
+<pre class="code">
+
+============================
+ forall L E, nabla x, member (E x) L -> (exists F, E = y\F)
+
+member_prune < <b>induction on 1.</b>
+</pre>
+<a name="266"></a>
+<pre class="code">
+
+IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+============================
+ forall L E, nabla x, member (E x) L @ -> (exists F, E = y\F)
+
+member_prune < <b>intros.</b>
+</pre>
+<a name="267"></a>
+<pre class="code">
+
+Variables: L E
+IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+H1 : member (E n1) L @
+============================
+ exists F, E = y\F
+
+member_prune < <b>case H1.</b>
+</pre>
+<a name="268"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L3 L2
+IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+============================
+ exists F, z1\L2 = y\F
+
+Subgoal 2 is:
+ exists F, E = y\F
+
+member_prune < <b>search.</b>
+</pre>
+<a name="269"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: E L3 L2
+IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+H2 : member (E n1) L3 *
+============================
+ exists F, E = y\F
+
+member_prune < <b>apply IH to H2.</b>
+</pre>
+<a name="270"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L3 L2 F
+IH : forall L E, nabla x, member (E x) L * -> (exists F, E = y\F)
+H2 : member F L3 *
+============================
+ exists F1, z1\F = y\F1
+
+member_prune < <b>search.</b>
+Proof completed.
+</pre>
+<a name="271"></a>
+<pre class="code">
+Abella < <b>Theorem prune_of : 
+forall L R A, nabla x, ctx L -> {L |- of (R x) A} -> (exists M, R = y\M).</b>
+
+</pre>
+<a name="272"></a>
+<pre class="code">
+
+============================
+ forall L R A, nabla x, ctx L -> {L |- of (R x) A} -> (exists M, R = y\M)
+
+prune_of < <b>induction on 2.</b>
+</pre>
+<a name="273"></a>
+<pre class="code">
+
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+============================
+ forall L R A, nabla x, ctx L -> {L |- of (R x) A}@ -> (exists M, R = y\M)
+
+prune_of < <b>intros.</b>
+</pre>
+<a name="274"></a>
+<pre class="code">
+
+Variables: L R A
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H2 : {L |- of (R n1) A}@
+============================
+ exists M, R = y\M
+
+prune_of < <b>case H2.</b>
+</pre>
+<a name="275"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- of (M n1) (arrow A1 A)}*
+H4 : {L |- of (N n1) A1}*
+============================
+ exists M1, z1\app (M z1) (N z1) = y\M1
+
+Subgoal 2 is:
+ exists M, z1\abs A1 (R1 z1) = y\M
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>apply IH to H1 H3.</b>
+</pre>
+<a name="276"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- of M1 (arrow A1 A)}*
+H4 : {L |- of (N n1) A1}*
+============================
+ exists M2, z1\app M1 (N z1) = y\M2
+
+Subgoal 2 is:
+ exists M, z1\abs A1 (R1 z1) = y\M
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="277"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 M1 M2
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- of M1 (arrow A1 A)}*
+H4 : {L |- of M2 A1}*
+============================
+ exists M3, z1\app M1 M2 = y\M3
+
+Subgoal 2 is:
+ exists M, z1\abs A1 (R1 z1) = y\M
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>search.</b>
+</pre>
+<a name="278"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R1 A1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n2 A1 |- of (R1 n1 n2) B}*
+============================
+ exists M, z1\abs A1 (R1 z1) = y\M
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>apply ty_ignores_ctx to H1 H3.</b>
+</pre>
+<a name="279"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R1 A1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n2 A1 |- of (R1 n1 n2) B}*
+H5 : {ty A1}
+============================
+ exists M, z1\abs A1 (R1 z1) = y\M
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>apply IH to _ H4.</b>
+</pre>
+<a name="280"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B A1 M
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- ty A1}*
+H4 : {L, of n2 A1 |- of (M n2) B}*
+H5 : {ty A1}
+============================
+ exists M1, z1\abs A1 (z2\M z2) = y\M1
+
+Subgoal 3 is:
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>search.</b>
+</pre>
+<a name="281"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L |- ty A}*
+============================
+ exists M, z1\c = y\M
+
+Subgoal 4 is:
+ exists M, R = y\M
+
+prune_of < <b>search.</b>
+</pre>
+<a name="282"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A F
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L, [F n1] |- of (R n1) A}*
+H4 : member (F n1) L
+============================
+ exists M, R = y\M
+
+prune_of < <b>apply member_prune to H4.</b>
+</pre>
+<a name="283"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A F1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L, [F1] |- of (R n1) A}*
+H4 : member F1 L
+============================
+ exists M, R = y\M
+
+prune_of < <b>apply ctx_member to H1 H4.</b>
+</pre>
+<a name="284"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A X A1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx L
+H3 : {L, [of X A1] |- of (R n1) A}*
+H4 : member (of X A1) L
+H5 : name X
+H6 : {ty A1}
+============================
+ exists M, R = y\M
+
+prune_of < <b>case H5.</b>
+</pre>
+<a name="285"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A A1
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx (L n2)
+H3 : {L n2, [of n2 A1] |- of (R n2 n1) A}*
+H4 : member (of n2 A1) (L n2)
+H6 : {ty A1}
+============================
+ exists M, R n2 = y\M
+
+prune_of < <b>case H3.</b>
+</pre>
+<a name="286"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L A
+IH : forall L R A, nabla x, ctx L -> {L |- of (R x) A}* ->
+       (exists M, R = y\M)
+H1 : ctx (L n2)
+H4 : member (of n2 A) (L n2)
+H6 : {ty A}
+============================
+ exists M, z2\n2 = y\M
+
+prune_of < <b>search.</b>
+Proof completed.
+</pre>
+<a name="287"></a>
+<pre class="code">
+Abella < <b>Theorem prune_closed : 
+forall R, nabla x, closed (R x) -> (exists M, R = y\M).</b>
+
+</pre>
+<a name="288"></a>
+<pre class="code">
+
+============================
+ forall R, nabla x, closed (R x) -> (exists M, R = y\M)
+
+prune_closed < <b>intros.</b>
+</pre>
+<a name="289"></a>
+<pre class="code">
+
+Variables: R
+H1 : closed (R n1)
+============================
+ exists M, R = y\M
+
+prune_closed < <b>case H1.</b>
+</pre>
+<a name="290"></a>
+<pre class="code">
+
+Variables: R A
+H2 : {of (R n1) A}
+============================
+ exists M, R = y\M
+
+prune_closed < <b>apply prune_of to _ H2.</b>
+</pre>
+<a name="291"></a>
+<pre class="code">
+
+Variables: A M
+H2 : {of M A}
+============================
+ exists M1, z1\M = y\M1
+
+prune_closed < <b>search.</b>
+Proof completed.
+</pre>
+<a name="292"></a>
+<pre class="code">
+Abella < <b>Theorem reduce_closed : 
+forall M A, reduce M A -> closed M.</b>
+
+</pre>
+<a name="293"></a>
+<pre class="code">
+
+============================
+ forall M A, reduce M A -> closed M
+
+reduce_closed < <b>intros.</b>
+</pre>
+<a name="294"></a>
+<pre class="code">
+
+Variables: M A
+H1 : reduce M A
+============================
+ closed M
+
+reduce_closed < <b>apply reduce_of to H1.</b>
+</pre>
+<a name="295"></a>
+<pre class="code">
+
+Variables: M A
+H1 : reduce M A
+H2 : {of M A}
+============================
+ closed M
+
+reduce_closed < <b>search.</b>
+Proof completed.
+</pre>
+<a name="296"></a>
+<pre class="code">
+Abella < <b>Theorem prune_reduce : 
+forall R A, nabla x, reduce (R x) A -> (exists M, R = y\M).</b>
+
+</pre>
+<a name="297"></a>
+<pre class="code">
+
+============================
+ forall R A, nabla x, reduce (R x) A -> (exists M, R = y\M)
+
+prune_reduce < <b>intros.</b>
+</pre>
+<a name="298"></a>
+<pre class="code">
+
+Variables: R A
+H1 : reduce (R n1) A
+============================
+ exists M, R = y\M
+
+prune_reduce < <b>apply reduce_closed to H1.</b>
+</pre>
+<a name="299"></a>
+<pre class="code">
+
+Variables: R A
+H1 : reduce (R n1) A
+H2 : closed (R n1)
+============================
+ exists M, R = y\M
+
+prune_reduce < <b>apply prune_closed to H2.</b>
+</pre>
+<a name="300"></a>
+<pre class="code">
+
+Variables: A M
+H1 : reduce M A
+H2 : closed M
+============================
+ exists M1, z1\M = y\M1
+
+prune_reduce < <b>search.</b>
+Proof completed.
+</pre>
+<a name="301"></a>
+<pre class="code">
+Abella < <b>Define subst : olist -> tm -> tm -> prop by 
+subst nil M M;
+nabla x, subst (of x A :: L) (R x) M := exists U, reduce U A /\ subst L (R U) M.</b>
+
+</pre>
+<a name="302"></a>
+<pre class="code">
+Abella < <b>Theorem closed_subst : 
+forall L M N, closed M -> subst L M N -> M = N.</b>
+
+</pre>
+<a name="303"></a>
+<pre class="code">
+
+============================
+ forall L M N, closed M -> subst L M N -> M = N
+
+closed_subst < <b>induction on 2.</b>
+</pre>
+<a name="304"></a>
+<pre class="code">
+
+IH : forall L M N, closed M -> subst L M N * -> M = N
+============================
+ forall L M N, closed M -> subst L M N @ -> M = N
+
+closed_subst < <b>intros.</b>
+</pre>
+<a name="305"></a>
+<pre class="code">
+
+Variables: L M N
+IH : forall L M N, closed M -> subst L M N * -> M = N
+H1 : closed M
+H2 : subst L M N @
+============================
+ M = N
+
+closed_subst < <b>case H2.</b>
+</pre>
+<a name="306"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: N
+IH : forall L M N, closed M -> subst L M N * -> M = N
+H1 : closed N
+============================
+ N = N
+
+Subgoal 2 is:
+ M n1 = M1
+
+closed_subst < <b>search.</b>
+</pre>
+<a name="307"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M U M1 L1 A
+IH : forall L M N, closed M -> subst L M N * -> M = N
+H1 : closed (M n1)
+H3 : reduce U A
+H4 : subst L1 (M U) M1 *
+============================
+ M n1 = M1
+
+closed_subst < <b>apply prune_closed to H1.</b>
+</pre>
+<a name="308"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M1 L1 A M2
+IH : forall L M N, closed M -> subst L M N * -> M = N
+H1 : closed M2
+H3 : reduce U A
+H4 : subst L1 M2 M1 *
+============================
+ M2 = M1
+
+closed_subst < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="309"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M1 L1 A
+IH : forall L M N, closed M -> subst L M N * -> M = N
+H1 : closed M1
+H3 : reduce U A
+H4 : subst L1 M1 M1 *
+============================
+ M1 = M1
+
+closed_subst < <b>search.</b>
+Proof completed.
+</pre>
+<a name="310"></a>
+<pre class="code">
+Abella < <b>Theorem subst_const : 
+forall L M, subst L c M -> M = c.</b>
+
+</pre>
+<a name="311"></a>
+<pre class="code">
+
+============================
+ forall L M, subst L c M -> M = c
+
+subst_const < <b>induction on 1.</b>
+</pre>
+<a name="312"></a>
+<pre class="code">
+
+IH : forall L M, subst L c M * -> M = c
+============================
+ forall L M, subst L c M @ -> M = c
+
+subst_const < <b>intros.</b>
+</pre>
+<a name="313"></a>
+<pre class="code">
+
+Variables: L M
+IH : forall L M, subst L c M * -> M = c
+H1 : subst L c M @
+============================
+ M = c
+
+subst_const < <b>case H1.</b>
+</pre>
+<a name="314"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall L M, subst L c M * -> M = c
+============================
+ c = c
+
+Subgoal 2 is:
+ M1 = c
+
+subst_const < <b>search.</b>
+</pre>
+<a name="315"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U M1 L1 A
+IH : forall L M, subst L c M * -> M = c
+H2 : reduce U A
+H3 : subst L1 c M1 *
+============================
+ M1 = c
+
+subst_const < <b>apply IH to H3.</b>
+</pre>
+<a name="316"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: U L1 A
+IH : forall L M, subst L c M * -> M = c
+H2 : reduce U A
+H3 : subst L1 c c *
+============================
+ c = c
+
+subst_const < <b>search.</b>
+Proof completed.
+</pre>
+<a name="317"></a>
+<pre class="code">
+Abella < <b>Theorem subst_var : 
+forall L M N A, ctx L -> member (of M A) L -> subst L M N -> reduce N A.</b>
+
+</pre>
+<a name="318"></a>
+<pre class="code">
+
+============================
+ forall L M N A, ctx L -> member (of M A) L -> subst L M N -> reduce N A
+
+subst_var < <b>induction on 1.</b>
+</pre>
+<a name="319"></a>
+<pre class="code">
+
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+============================
+ forall L M N A, ctx L @ -> member (of M A) L -> subst L M N -> reduce N A
+
+subst_var < <b>intros.</b>
+</pre>
+<a name="320"></a>
+<pre class="code">
+
+Variables: L M N A
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H1 : ctx L @
+H2 : member (of M A) L
+H3 : subst L M N
+============================
+ reduce N A
+
+subst_var < <b>case H1.</b>
+</pre>
+<a name="321"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N A
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H2 : member (of M A) nil
+H3 : subst nil M N
+============================
+ reduce N A
+
+Subgoal 2 is:
+ reduce (N n1) A
+
+subst_var < <b>case H2.</b>
+</pre>
+<a name="322"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N A L1 A1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H2 : member (of (M n1) A) (of n1 A1 :: L1)
+H3 : subst (of n1 A1 :: L1) (M n1) (N n1)
+H4 : {ty A1}
+H5 : ctx L1 *
+============================
+ reduce (N n1) A
+
+subst_var < <b>case H2.</b>
+</pre>
+<a name="323"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: N L1 A1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H3 : subst (of n1 A1 :: L1) n1 (N n1)
+H4 : {ty A1}
+H5 : ctx L1 *
+============================
+ reduce (N n1) A1
+
+Subgoal 2.2 is:
+ reduce (N n1) A
+
+subst_var < <b>case H3.</b>
+</pre>
+<a name="324"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 A1 U M1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 U M1
+============================
+ reduce M1 A1
+
+Subgoal 2.2 is:
+ reduce (N n1) A
+
+subst_var < <b>apply reduce_closed to H6.</b>
+</pre>
+<a name="325"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 A1 U M1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 U M1
+H8 : closed U
+============================
+ reduce M1 A1
+
+Subgoal 2.2 is:
+ reduce (N n1) A
+
+subst_var < <b>apply closed_subst to H8 H7.</b>
+</pre>
+<a name="326"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 A1 M1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce M1 A1
+H7 : subst L1 M1 M1
+H8 : closed M1
+============================
+ reduce M1 A1
+
+Subgoal 2.2 is:
+ reduce (N n1) A
+
+subst_var < <b>search.</b>
+</pre>
+<a name="327"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M N A L1 A1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H3 : subst (of n1 A1 :: L1) (M n1) (N n1)
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : member (of (M n1) A) L1
+============================
+ reduce (N n1) A
+
+subst_var < <b>case H3.</b>
+</pre>
+<a name="328"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : member (of (M n1) A) L1
+H7 : reduce U A1
+H8 : subst L1 (M U) M1
+============================
+ reduce M1 A
+
+subst_var < <b>apply member_prune to H6.</b>
+</pre>
+<a name="329"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 A1 U M1 F1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : member (of F1 A) L1
+H7 : reduce U A1
+H8 : subst L1 F1 M1
+============================
+ reduce M1 A
+
+subst_var < <b>apply IH to H5 H6 H8.</b>
+</pre>
+<a name="330"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 A1 U M1 F1
+IH : forall L M N A, ctx L * -> member (of M A) L -> subst L M N ->
+       reduce N A
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : member (of F1 A) L1
+H7 : reduce U A1
+H8 : subst L1 F1 M1
+H9 : reduce M1 A
+============================
+ reduce M1 A
+
+subst_var < <b>search.</b>
+Proof completed.
+</pre>
+<a name="331"></a>
+<pre class="code">
+Abella < <b>Theorem subst_app : 
+forall L M N R, ctx L -> subst L (app M N) R ->
+  (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR).</b>
+
+</pre>
+<a name="332"></a>
+<pre class="code">
+
+============================
+ forall L M N R, ctx L -> subst L (app M N) R ->
+   (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+
+subst_app < <b>induction on 1.</b>
+</pre>
+<a name="333"></a>
+<pre class="code">
+
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+============================
+ forall L M N R, ctx L @ -> subst L (app M N) R ->
+   (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+
+subst_app < <b>intros.</b>
+</pre>
+<a name="334"></a>
+<pre class="code">
+
+Variables: L M N R
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+H1 : ctx L @
+H2 : subst L (app M N) R
+============================
+ exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR
+
+subst_app < <b>case H1.</b>
+</pre>
+<a name="335"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N R
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+H2 : subst nil (app M N) R
+============================
+ exists MR NR, R = app MR NR /\ subst nil M MR /\ subst nil N NR
+
+Subgoal 2 is:
+ exists MR NR, R n1 = app MR NR /\ subst (of n1 A :: L1) (M n1) MR /\
+   subst (of n1 A :: L1) (N n1) NR
+
+subst_app < <b>case H2.</b>
+</pre>
+<a name="336"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+============================
+ exists MR NR, app M N = app MR NR /\ subst nil M MR /\ subst nil N NR
+
+Subgoal 2 is:
+ exists MR NR, R n1 = app MR NR /\ subst (of n1 A :: L1) (M n1) MR /\
+   subst (of n1 A :: L1) (N n1) NR
+
+subst_app < <b>search.</b>
+</pre>
+<a name="337"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N R L1 A
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+H2 : subst (of n1 A :: L1) (app (M n1) (N n1)) (R n1)
+H3 : {ty A}
+H4 : ctx L1 *
+============================
+ exists MR NR, R n1 = app MR NR /\ subst (of n1 A :: L1) (M n1) MR /\
+   subst (of n1 A :: L1) (N n1) NR
+
+subst_app < <b>case H2.</b>
+</pre>
+<a name="338"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N L1 A U M1
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+H3 : {ty A}
+H4 : ctx L1 *
+H5 : reduce U A
+H6 : subst L1 (app (M U) (N U)) M1
+============================
+ exists MR NR, M1 = app MR NR /\ subst (of n1 A :: L1) (M n1) MR /\
+   subst (of n1 A :: L1) (N n1) NR
+
+subst_app < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="339"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N L1 A U MR NR
+IH : forall L M N R, ctx L * -> subst L (app M N) R ->
+       (exists MR NR, R = app MR NR /\ subst L M MR /\ subst L N NR)
+H3 : {ty A}
+H4 : ctx L1 *
+H5 : reduce U A
+H6 : subst L1 (app (M U) (N U)) (app MR NR)
+H7 : subst L1 (M U) MR
+H8 : subst L1 (N U) NR
+============================
+ exists MR1 NR1, app MR NR = app MR1 NR1 /\
+   subst (of n1 A :: L1) (M n1) MR1 /\ subst (of n1 A :: L1) (N n1) NR1
+
+subst_app < <b>search.</b>
+Proof completed.
+</pre>
+<a name="340"></a>
+<pre class="code">
+Abella < <b>Theorem subst_abs : 
+forall L M R A, ctx L -> subst L (abs A M) R -> {ty A} ->
+  (exists MR, R = abs A MR /\
+       (forall U, reduce U A -> (nabla x, subst (of x A :: L) (M x) (MR U)))).</b>
+
+</pre>
+<a name="341"></a>
+<pre class="code">
+
+============================
+ forall L M R A, ctx L -> subst L (abs A M) R -> {ty A} ->
+   (exists MR, R = abs A MR /\
+        (forall U, reduce U A -> (nabla x, subst (of x A :: L) (M x) (MR U))))
+
+subst_abs < <b>induction on 1.</b>
+</pre>
+<a name="342"></a>
+<pre class="code">
+
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+============================
+ forall L M R A, ctx L @ -> subst L (abs A M) R -> {ty A} ->
+   (exists MR, R = abs A MR /\
+        (forall U, reduce U A -> (nabla x, subst (of x A :: L) (M x) (MR U))))
+
+subst_abs < <b>intros.</b>
+</pre>
+<a name="343"></a>
+<pre class="code">
+
+Variables: L M R A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H1 : ctx L @
+H2 : subst L (abs A M) R
+H3 : {ty A}
+============================
+ exists MR, R = abs A MR /\
+   (forall U, reduce U A -> (nabla x, subst (of x A :: L) (M x) (MR U)))
+
+subst_abs < <b>case H1.</b>
+</pre>
+<a name="344"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M R A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H2 : subst nil (abs A M) R
+H3 : {ty A}
+============================
+ exists MR, R = abs A MR /\
+   (forall U, reduce U A -> (nabla x, subst (of x A :: nil) (M x) (MR U)))
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>case H2.</b>
+</pre>
+<a name="345"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+============================
+ exists MR, abs A M = abs A MR /\
+   (forall U, reduce U A -> (nabla x, subst (of x A :: nil) (M x) (MR U)))
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>exists M.</b>
+</pre>
+<a name="346"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+============================
+ abs A M = abs A M /\
+   (forall U, reduce U A -> (nabla x, subst (of x A :: nil) (M x) (M U)))
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>split.</b>
+</pre>
+<a name="347"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: M A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+============================
+ abs A M = abs A M
+
+Subgoal 1.2 is:
+ forall U, reduce U A -> (nabla x, subst (of x A :: nil) (M x) (M U))
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>search.</b>
+</pre>
+<a name="348"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M A
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+============================
+ forall U, reduce U A -> (nabla x, subst (of x A :: nil) (M x) (M U))
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>intros.</b>
+</pre>
+<a name="349"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: M A U
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : reduce U A
+============================
+ subst (of n1 A :: nil) (M n1) (M U)
+
+Subgoal 2 is:
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>search.</b>
+</pre>
+<a name="350"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M R A L1 A1
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H2 : subst (of n1 A1 :: L1) (abs A (M n1)) (R n1)
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+============================
+ exists MR, R n1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>case H2.</b>
+</pre>
+<a name="351"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) M1
+============================
+ exists MR, M1 = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>apply IH to H5 H7 H3.</b>
+</pre>
+<a name="352"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U MR
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+============================
+ exists MR1, abs A MR = abs A MR1 /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR1 U)))
+
+subst_abs < <b>exists MR.</b>
+</pre>
+<a name="353"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U MR
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+============================
+ abs A MR = abs A MR /\
+   (forall U, reduce U A ->
+        (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U)))
+
+subst_abs < <b>split.</b>
+</pre>
+<a name="354"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: M A L1 A1 U MR
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+============================
+ abs A MR = abs A MR
+
+Subgoal 2.2 is:
+ forall U, reduce U A ->
+   (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U))
+
+subst_abs < <b>search.</b>
+</pre>
+<a name="355"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U MR
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+============================
+ forall U, reduce U A ->
+   (nabla x, subst (of x A :: of n1 A1 :: L1) (M n1 x) (MR U))
+
+subst_abs < <b>intros.</b>
+</pre>
+<a name="356"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U MR U1
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+H9 : reduce (U1 n1) A
+============================
+ subst (of n2 A :: of n1 A1 :: L1) (M n1 n2) (MR (U1 n1))
+
+subst_abs < <b>apply prune_reduce to H9.</b>
+</pre>
+<a name="357"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U MR M2
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+H9 : reduce M2 A
+============================
+ subst (of n2 A :: of n1 A1 :: L1) (M n1 n2) (MR M2)
+
+subst_abs < <b>apply H8 to H9.</b>
+</pre>
+<a name="358"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U MR M2
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+H9 : reduce M2 A
+H10 : subst (of n1 A :: L1) (M U n1) (MR M2)
+============================
+ subst (of n2 A :: of n1 A1 :: L1) (M n1 n2) (MR M2)
+
+subst_abs < <b>case H10.</b>
+</pre>
+<a name="359"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: M A L1 A1 U MR M2 U2
+IH : forall L M R A, ctx L * -> subst L (abs A M) R -> {ty A} ->
+       (exists MR, R = abs A MR /\
+            (forall U, reduce U A ->
+                 (nabla x, subst (of x A :: L) (M x) (MR U))))
+H3 : {ty A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (abs A (M U)) (abs A MR)
+H8 : forall U1, reduce U1 A ->
+       (nabla x, subst (of x A :: L1) (M U x) (MR U1))
+H9 : reduce M2 A
+H11 : reduce U2 A
+H12 : subst L1 (M U U2) (MR M2)
+============================
+ subst (of n2 A :: of n1 A1 :: L1) (M n1 n2) (MR M2)
+
+subst_abs < <b>search.</b>
+Proof completed.
+</pre>
+<a name="360"></a>
+<pre class="code">
+Abella < <b>Theorem subst_preserves_ty : 
+forall L M N A, ctx L -> subst L M N -> {L |- of M A} -> {of N A}.</b>
+
+</pre>
+<a name="361"></a>
+<pre class="code">
+
+============================
+ forall L M N A, ctx L -> subst L M N -> {L |- of M A} -> {of N A}
+
+subst_preserves_ty < <b>induction on 1.</b>
+</pre>
+<a name="362"></a>
+<pre class="code">
+
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+============================
+ forall L M N A, ctx L @ -> subst L M N -> {L |- of M A} -> {of N A}
+
+subst_preserves_ty < <b>intros.</b>
+</pre>
+<a name="363"></a>
+<pre class="code">
+
+Variables: L M N A
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H1 : ctx L @
+H2 : subst L M N
+H3 : {L |- of M A}
+============================
+ {of N A}
+
+subst_preserves_ty < <b>case H1.</b>
+</pre>
+<a name="364"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: M N A
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H2 : subst nil M N
+H3 : {of M A}
+============================
+ {of N A}
+
+Subgoal 2 is:
+ {of (N n1) A}
+
+subst_preserves_ty < <b>case H2.</b>
+</pre>
+<a name="365"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: N A
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {of N A}
+============================
+ {of N A}
+
+Subgoal 2 is:
+ {of (N n1) A}
+
+subst_preserves_ty < <b>search.</b>
+</pre>
+<a name="366"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M N A L1 A1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H2 : subst (of n1 A1 :: L1) (M n1) (N n1)
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+============================
+ {of (N n1) A}
+
+subst_preserves_ty < <b>case H2.</b>
+</pre>
+<a name="367"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b>apply reduce_of to H6.</b>
+</pre>
+<a name="368"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+H8 : {of U A1}
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b> inst H3 with n1 = U.</b>
+</pre>
+<a name="369"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+H8 : {of U A1}
+H9 : {L1, of U A1 |- of (M U) A}
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b>cut H9 with H8.</b>
+</pre>
+<a name="370"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+H8 : {of U A1}
+H9 : {L1, of U A1 |- of (M U) A}
+H10 : {L1 |- of (M U) A}
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b>apply of_ty_ext to _ H3.</b>
+</pre>
+<a name="371"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+H8 : {of U A1}
+H9 : {L1, of U A1 |- of (M U) A}
+H10 : {L1 |- of (M U) A}
+H11 : {ty A}
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b>apply IH to H5 H7 H10.</b>
+</pre>
+<a name="372"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: M A L1 A1 U M1
+IH : forall L M N A, ctx L * -> subst L M N -> {L |- of M A} -> {of N A}
+H3 : {L1, of n1 A1 |- of (M n1) A}
+H4 : {ty A1}
+H5 : ctx L1 *
+H6 : reduce U A1
+H7 : subst L1 (M U) M1
+H8 : {of U A1}
+H9 : {L1, of U A1 |- of (M U) A}
+H10 : {L1 |- of (M U) A}
+H11 : {ty A}
+H12 : {of M1 A}
+============================
+ {of M1 A}
+
+subst_preserves_ty < <b>search.</b>
+Proof completed.
+</pre>
+<a name="373"></a>
+<pre class="code">
+Abella < <b>Theorem strong_norm_ext : 
+forall L M R A, ctx L -> {L |- of M A} -> subst L M R -> reduce R A.</b>
+
+</pre>
+<a name="374"></a>
+<pre class="code">
+
+============================
+ forall L M R A, ctx L -> {L |- of M A} -> subst L M R -> reduce R A
+
+strong_norm_ext < <b>induction on 2.</b>
+</pre>
+<a name="375"></a>
+<pre class="code">
+
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+============================
+ forall L M R A, ctx L -> {L |- of M A}@ -> subst L M R -> reduce R A
+
+strong_norm_ext < <b>intros.</b>
+</pre>
+<a name="376"></a>
+<pre class="code">
+
+Variables: L M R A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of M A}@
+H3 : subst L M R
+============================
+ reduce R A
+
+strong_norm_ext < <b>case H2 (keep).</b>
+</pre>
+<a name="377"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L R A A1 N M1
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) R
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+============================
+ reduce R A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply subst_app to H1 H3.</b>
+</pre>
+<a name="378"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1 MR NR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) (app MR NR)
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+H6 : subst L M1 MR
+H7 : subst L N NR
+============================
+ reduce (app MR NR) A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply IH to H1 H4 H6.</b>
+</pre>
+<a name="379"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1 MR NR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) (app MR NR)
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+H6 : subst L M1 MR
+H7 : subst L N NR
+H8 : reduce MR (arrow A1 A)
+============================
+ reduce (app MR NR) A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply IH to H1 H5 H7.</b>
+</pre>
+<a name="380"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1 MR NR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) (app MR NR)
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+H6 : subst L M1 MR
+H7 : subst L N NR
+H8 : reduce MR (arrow A1 A)
+H9 : reduce NR A1
+============================
+ reduce (app MR NR) A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>case H8.</b>
+</pre>
+<a name="381"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1 MR NR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) (app MR NR)
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+H6 : subst L M1 MR
+H7 : subst L N NR
+H9 : reduce NR A1
+H10 : {of MR (arrow A1 A)}
+H11 : forall U, reduce U A1 -> reduce (app MR U) A
+============================
+ reduce (app MR NR) A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply H11 to H9.</b>
+</pre>
+<a name="382"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A A1 N M1 MR NR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (app M1 N) A}@
+H3 : subst L (app M1 N) (app MR NR)
+H4 : {L |- of M1 (arrow A1 A)}*
+H5 : {L |- of N A1}*
+H6 : subst L M1 MR
+H7 : subst L N NR
+H9 : reduce NR A1
+H10 : {of MR (arrow A1 A)}
+H11 : forall U, reduce U A1 -> reduce (app MR U) A
+H12 : reduce (app MR NR) A
+============================
+ reduce (app MR NR) A
+
+Subgoal 2 is:
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>search.</b>
+</pre>
+<a name="383"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L R B R1 A1
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) R
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+============================
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply ty_ignores_ctx to H1 H4.</b>
+</pre>
+<a name="384"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L R B R1 A1
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) R
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+============================
+ reduce R (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply subst_abs to H1 H3 H6.</b>
+</pre>
+<a name="385"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R1 A1 MR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+============================
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply subst_preserves_ty to H1 H3 H2.</b>
+</pre>
+<a name="386"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R1 A1 MR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+============================
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply abs_step_reduce to H8 _.</b>
+</pre>
+<a name="387"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L B R1 A1 MR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+============================
+ forall V, reduce V A1 -> reduce (MR V) B
+
+Subgoal 2 is:
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>intros.</b>
+</pre>
+<a name="388"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L B R1 A1 MR V
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+H9 : reduce V A1
+============================
+ reduce (MR V) B
+
+Subgoal 2 is:
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply ty_ignores_ctx to H1 H4.</b>
+</pre>
+<a name="389"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L B R1 A1 MR V
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+H9 : reduce V A1
+H10 : {ty A1}
+============================
+ reduce (MR V) B
+
+Subgoal 2 is:
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply H7 to H9.</b>
+</pre>
+<a name="390"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L B R1 A1 MR V
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+H9 : reduce V A1
+H10 : {ty A1}
+H11 : subst (of n1 A1 :: L) (R1 n1) (MR V)
+============================
+ reduce (MR V) B
+
+Subgoal 2 is:
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply IH to _ H5 H11.</b>
+</pre>
+<a name="391"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L B R1 A1 MR V
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+H9 : reduce V A1
+H10 : {ty A1}
+H11 : subst (of n1 A1 :: L) (R1 n1) (MR V)
+H12 : reduce (MR V) B
+============================
+ reduce (MR V) B
+
+Subgoal 2 is:
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>search.</b>
+</pre>
+<a name="392"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L B R1 A1 MR
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of (abs A1 R1) (arrow A1 B)}@
+H3 : subst L (abs A1 R1) (abs A1 MR)
+H4 : {L |- ty A1}*
+H5 : {L, of n1 A1 |- of (R1 n1) B}*
+H6 : {ty A1}
+H7 : forall U, reduce U A1 -> (nabla x, subst (of x A1 :: L) (R1 x) (MR U))
+H8 : {of (abs A1 MR) (arrow A1 B)}
+H9 : reduce (abs A1 MR) (arrow A1 B)
+============================
+ reduce (abs A1 MR) (arrow A1 B)
+
+Subgoal 3 is:
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>search.</b>
+</pre>
+<a name="393"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L R A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of c A}@
+H3 : subst L c R
+H4 : {L |- ty A}*
+============================
+ reduce R A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply subst_const to H3.</b>
+</pre>
+<a name="394"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of c A}@
+H3 : subst L c c
+H4 : {L |- ty A}*
+============================
+ reduce c A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply ty_ignores_ctx to H1 H4.</b>
+</pre>
+<a name="395"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of c A}@
+H3 : subst L c c
+H4 : {L |- ty A}*
+H5 : {ty A}
+============================
+ reduce c A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>apply reduce_const to H5.</b>
+</pre>
+<a name="396"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: L A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of c A}@
+H3 : subst L c c
+H4 : {L |- ty A}*
+H5 : {ty A}
+H6 : reduce c A
+============================
+ reduce c A
+
+Subgoal 4 is:
+ reduce R A
+
+strong_norm_ext < <b>search.</b>
+</pre>
+<a name="397"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M R A F
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of M A}@
+H3 : subst L M R
+H4 : {L, [F] |- of M A}*
+H5 : member F L
+============================
+ reduce R A
+
+strong_norm_ext < <b>apply ctx_member to H1 H5.</b>
+</pre>
+<a name="398"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M R A X A1
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx L
+H2 : {L |- of M A}@
+H3 : subst L M R
+H4 : {L, [of X A1] |- of M A}*
+H5 : member (of X A1) L
+H6 : name X
+H7 : {ty A1}
+============================
+ reduce R A
+
+strong_norm_ext < <b>case H6.</b>
+</pre>
+<a name="399"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L M R A A1
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx (L n1)
+H2 : {L n1 |- of (M n1) A}@
+H3 : subst (L n1) (M n1) (R n1)
+H4 : {L n1, [of n1 A1] |- of (M n1) A}*
+H5 : member (of n1 A1) (L n1)
+H7 : {ty A1}
+============================
+ reduce (R n1) A
+
+strong_norm_ext < <b>case H4.</b>
+</pre>
+<a name="400"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx (L n1)
+H2 : {L n1 |- of n1 A}@
+H3 : subst (L n1) n1 (R n1)
+H5 : member (of n1 A) (L n1)
+H7 : {ty A}
+============================
+ reduce (R n1) A
+
+strong_norm_ext < <b>apply subst_var to H1 H5 H3.</b>
+</pre>
+<a name="401"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: L R A
+IH : forall L M R A, ctx L -> {L |- of M A}* -> subst L M R -> reduce R A
+H1 : ctx (L n1)
+H2 : {L n1 |- of n1 A}@
+H3 : subst (L n1) n1 (R n1)
+H5 : member (of n1 A) (L n1)
+H7 : {ty A}
+H8 : reduce (R n1) A
+============================
+ reduce (R n1) A
+
+strong_norm_ext < <b>search.</b>
+Proof completed.
+</pre>
+<a name="402"></a>
+<pre class="code">
+Abella < <b>Theorem strong_norm : 
+forall M A, {of M A} -> sn M.</b>
+
+</pre>
+<a name="403"></a>
+<pre class="code">
+
+============================
+ forall M A, {of M A} -> sn M
+
+strong_norm < <b>intros.</b>
+</pre>
+<a name="404"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+============================
+ sn M
+
+strong_norm < <b>apply strong_norm_ext to _ H1 _.</b>
+</pre>
+<a name="405"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+H2 : reduce M A
+============================
+ sn M
+
+strong_norm < <b>apply of_ty to H1.</b>
+</pre>
+<a name="406"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+H2 : reduce M A
+H3 : {ty A}
+============================
+ sn M
+
+strong_norm < <b>apply reduce_sn to _ H2.</b>
+</pre>
+<a name="407"></a>
+<pre class="code">
+
+Variables: M A
+H1 : {of M A}
+H2 : reduce M A
+H3 : {ty A}
+H4 : sn M
+============================
+ sn M
+
+strong_norm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="408"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>
