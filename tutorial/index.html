@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Abella Tutorial</title>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- LOCAL -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Mono:400,400italic,700' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href="tutorial.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <header class="header page-header">
+        <a href="http://abella-prover.org">
+          <img src="../images/logo.png" alt="[ABELLA LOGO]" height="100px"
+               class="pull-right">
+        </a>
+        <h1>Abella Tutorial: Reasoning about Computational Systems using Abella</h1>
+        <h2>August 2, 2015</h2>
+        <h4>Presented at <a href="http://conference.mi.fu-berlin.de/cade-25/home">CADE</a></h4>
+        <h5>Speakers: <a href="http://chaudhuri.info">Kaustuv Chaudhuri</a> and
+          <a href="http://www.cs.umn.edu/~gopalan">Gopalan Nadathur</a></h5>
+      </header>
+
+      <section>
+        <h3>Preparation</h3>
+
+        <p>Abella can be used in two modes: online and offline.</p>
+
+        <h4>Online</h4>
+
+        <ol>
+          <li>Go
+          to <a href="http://chaudhuri.info/try/try.html"><code>http://abella-prover.org/try</code></a>
+            with a modern Web Browser.</li>
+          <li>Make sure JavaScript is enabled.</li>
+          <li>There is nothing to install or configure! Abella will
+          run completely inside your Browser.</li>
+        </ol>
+
+        <h4>Offline</h4>
+
+        <p>You will need to have a
+        working <a href="http://www.ocaml.org">OCaml</a> toolchain,
+        preferably managed with the help
+        of <a href="http://opam.ocaml.org">OPAM</a>. Follow these
+        steps to install Abella:</p>
+
+        <ol>
+          <li>Run the command <code>opam install abella</code> to
+            install Abella in <code>`opam config var bin`</code>
+            (which should be in your <code>$PATH</code>).</li>
+          <li>Optional but recommended: If you
+          want <a href="http://proofgeneral.inf.ed.ac.uk/">ProofGeneral</a>
+          support for Abella, then:
+            <ol>
+              <li><a href="http://proofgeneral.inf.ed.ac.uk/devel">Download
+              and install</a> ProofGeneral. <em>Abella is only
+              compatible with development versions with version
+              numbers beginning with <code>4.3pre</code></em>.</li>
+              <li>Navigate to your <code>ProofGeneral</code> installation.</li>
+              <li>Create a subdirectory <code>abella</code> from the
+                topmost directory of the ProofGeneral installation.</li>
+              <li>Copy the files <code>`opam config var
+                  share`/abella/emacs/pg/*.el</code> to
+                that <code>abella</code> directory.</li>
+              <li>Run <code>M-x customize-variable
+                  proof-assistant-table</code> from within Emacs and
+                  add the entry <code>(abella "Abela" "thm")</code> to
+                  the list.<br>
+
+                If this variable is not customizable, you need to make
+                  sure that <code>ProofGeneral/generic</code> is in
+                  your <code>load-path</code> and then eval
+                   <code>(require 'proof-site)</code>.
+              </li>
+              <li>Restart Emacs.</li>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h3>Content</h3>
+
+        <ul>
+          <li><a href="slides.pdf">Slides</a> (PDF) from the presentation</li>
+          <li>The full list of examples, executable right in your browser</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Links</h3>
+
+        <ul>
+          <li><a href="abella-tutorial.pdf"><em>Abella: A System for
+          Reasoning about Relational Specifications</em></a> (PDF) by
+          D. Baelde, K. Chaudhuri, A. Gacek, D. Miller, G. Nadathur,
+          A. Tiu, and Y. Wang. Journal of Formalized Reasoning, v.
+          7(2). 2014</li>
+          <li><a href="gn-notes.pdf"><em>Specifying and Reasoning
+                About Computational Systems</em></a> (PDF) by G.
+            Nadathur. Lecture notes for a graduate course.</li>
+          <li><a href="https://sites.google.com/site/proghol/"><em>Programming
+                with Higher-Order Logic</em></a> by D. Miller and G.
+            Nadathur. Cambridge University Press. 2012.</li>
+        </ul>
+
+      </section>
+
+      <footer>
+        <p>
+          Made with the help
+          of <a href="http://getbootstrap.com">Bootstrap</a>
+          and <a href="http://jquery.com">jQuery</a>.
+
+          Last updated: 2015-07-27 14:54:01+0200
+        </p>
+      </footer>
+    </div> <!-- container -->
+  </body>
+</html>

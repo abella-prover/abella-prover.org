@@ -1,0 +1,23 @@
+body {
+    font-family: Lato, sans-serif;
+}
+
+h1 {
+    font-weight: bold;
+    color: maroon;
+}
+
+code {
+    color: inherit;
+}
+
+footer {
+    border-top: 1px solid grey;
+    position:absolute;
+    height: 3em;
+    left: 0; right: 0; bottom: 0;
+}
+
+footer p {
+    text-align: center;
+}
