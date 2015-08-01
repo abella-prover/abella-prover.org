@@ -13,11 +13,10 @@ code {
 
 footer {
     border-top: 1px solid grey;
-    position:absolute;
-    height: 3em;
-    left: 0; right: 0; bottom: 0;
+    margin-top: 3em;
 }
 
 footer p {
     text-align: center;
+    color: grey;
 }
