@@ -1,0 +1,44 @@
+% Line comments
+/* Block comments */
+
+/* Declaring new types */
+
+Kind tm        type.
+Kind ty        type.
+
+/* Declaring new constants */
+
+Type app       tm -> tm -> tm.
+Type abs      (tm -> tm) -> tm.
+
+Type bas       ty.
+Type arrow     ty -> ty -> ty.
+
+/* Stating theorems */
+
+Theorem thm_name : forall M N1 N2, app M N1 = app M N2 -> N1 = N2.
+
+/* proof commands (tactics) immediately follow */
+
+intros.
+
+case H1.
+
+search.
+
+/* proof ends when there are no remaining subgoals */
+
+/* Proof state manipulation */
+
+Theorem impossible : forall R M V, app (abs R) M = V -> V = R M.
+intros.
+abort.  % aborts proof
+% skip. % admits subgoal
+
+/* Axioms are theorems with omitted proofs */
+
+Type omega    tm.
+Type reduces  tm -> tm -> prop.
+
+Theorem omega_reduction : reduces omega omega.
+skip.

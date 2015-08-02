@@ -1,0 +1,29 @@
+%% Basic Logic
+
+
+Theorem t : true.
+search.
+
+
+Type a,b,c prop.
+
+Theorem t : a -> b -> a /\ b.
+intros.
+split.
+search.
+search.
+
+Theorem t : a -> a \/ b.
+intros.
+left.
+search.
+
+Theorem s : (a -> b -> c) -> (a -> b) -> (a -> c).
+intros.
+assert b.
+  backchain H2.
+apply H1 to H3 H4.
+ search.
+
+Theorem k : a -> b -> a.
+intros. search.
