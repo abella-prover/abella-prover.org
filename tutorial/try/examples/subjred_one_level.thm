@@ -1,0 +1,284 @@
+% Developed by Gopalan Nadathur for the CADE 2015 Tutorial
+%
+% A proof of some meta-theorems about the simply typed lambda calculus
+% in which the two-level logic approach is not used. Of special interest
+% is the proof of subject reduction. Here we have to explicitly induct on
+% the heights of typing derivations; it is simpler if the two-level logic
+% approach is used.
+
+% A representation of natural numbers and some properties pertaining
+% to them. We need these to reason inductively on the height of typing
+% derivations in proving subject reduction
+Kind  nat    type.
+
+Type  z      nat.
+Type  s      nat -> nat.
+
+Close nat.
+
+Define isnat : nat -> prop by
+  isnat z ;
+  isnat (s N) := isnat N.
+
+Define leq : nat -> nat -> prop by
+  leq z N := isnat N ;
+  leq (s N) (s M) := leq N M.
+
+% leq is reflexive on natural numbers
+Theorem leq_refl : forall N, isnat N -> leq N N.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem leq_succ : forall N O,
+       isnat N -> leq N O -> leq N (s O).
+induction on 1. intros. case H1.
+   case H2. search.
+   case H2. apply IH to H3 H4. search.
+
+% There is a natural number bigger than any two natural numbers
+Theorem sup_nat : forall M N,
+    isnat M -> isnat N -> exists O, leq M O /\ leq N O.
+induction on 1. intros. case H1.
+  exists N. split. search. apply leq_refl to H2. search.
+  apply IH to H3 H2. exists (s O). split.
+      search.
+      apply leq_succ to H2 H5. search.
+
+% Actually, the fact that the second argument of leq is a nat is only
+% implicit.
+Theorem leq_snd : forall M N, leq M N -> isnat N.
+induction on 1. intros. case H1.
+   search.
+   apply IH to H2. search.
+
+% Now we get on to simply typed lambda terms. First a representation
+% for simple types.
+Kind  ty     type.
+
+Type  arrow  ty -> ty -> ty.
+
+Close ty.
+
+% Next a representation for terms; we stick with the pure lambda
+% calculus here.
+Kind  tm     type.
+
+Type  app    tm -> tm -> tm.
+Type  abs    ty -> (tm -> tm) -> tm.
+
+% A formalization of call-by-name evaluation
+Define eval : tm -> tm -> prop by
+   eval (abs T R) (abs T R) ;
+   eval (app M N) V :=  exists R T, eval M (abs T R) /\ eval (R N) V.
+
+% Next a formalization of typing. We first describe a representation
+% for typing contexts
+Kind  ctx    type.
+
+Type  empty  ctx.
+Type  extend tm -> ty -> ctx -> ctx.
+
+% We will actually typically deal with contexts that assign unique
+% types to nominal constants.
+Define is_ctx : ctx -> prop by
+  is_ctx empty ;
+  nabla x, is_ctx (extend x T G) := is_ctx G.
+
+% Now a formalization of type assignment
+Define in_ctx : ctx -> tm -> ty -> prop by
+  in_ctx (extend X Ty G) X Ty ;
+  in_ctx (extend Y Ty' G) X Ty := in_ctx G X Ty.
+
+Define of : ctx -> tm -> ty -> prop by
+  of G U T := in_ctx G U T ;
+  of G (abs T R) (arrow T U) :=
+      nabla x, of (extend x T G) (R x) U;
+  of G (app M N) T := exists U, of G M (arrow U T) /\ of G N U.
+
+% Type assignment for closed terms.
+Define of_closed : tm -> ty -> prop by
+  of_closed U T := of empty U T.
+
+% Contexts that assign types to only nominal constants do not type
+% applications or abstractions directly.
+Theorem ctx_noapp : forall G M N T,
+   is_ctx G -> in_ctx G (app M N) T -> false.
+induction on 1. intros. case H1.
+   case H2.
+   case H2. apply IH to H3 H4.
+
+Theorem ctx_noabs : forall G R T T',
+   is_ctx G -> in_ctx G (abs T' R) T -> false.
+induction on 1. intros. case H1.
+   case H2.
+   case H2. apply IH to H3 H4.
+
+% A dependency property that is useful in analyzing terms. A nominal
+% constant that does not appear in a context cannot appear in any term
+% typed by the context.
+Theorem ctx_vacuous : forall G U T,
+  nabla (y:tm), in_ctx G (U y) T -> exists E, U = x\E.
+induction on 1. intros. case H1.
+   search.
+   apply IH to H2. search.
+
+Theorem ctx_uniqueness : forall G U T1 T2,
+   is_ctx G -> in_ctx G U T1 -> in_ctx G U T2 -> T1 = T2.
+induction on 1. intros. case H1.
+   case H2.
+   case H2.
+     case H3.
+       search.
+       apply ctx_vacuous to H5.
+     case H3.
+        apply ctx_vacuous to H5.
+        apply IH to H4 H5 H6. search.
+
+Theorem type_uniqueness : forall G U T1 T2,
+   is_ctx G -> of G U T1 -> of G U T2 -> T1 = T2.
+induction on 2. intros. case H2.
+   case H3.
+      apply ctx_uniqueness to H1 H4 H5. search.
+      apply ctx_noabs to H1 H4.
+      apply ctx_noapp to H1 H4.
+   case H3.
+      apply ctx_noabs to H1 H5.
+      assert (is_ctx (extend n1 T G)). apply IH to H6 H4 H5. search.
+   case H3.
+      apply ctx_noapp to H1 H6.
+      apply IH to H1 H4 H6. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                %
+%      Subject Reduction for STLC                                %
+%                                                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% When we prove subject reduction in the one-level formulation, we
+% do not get to use meta-theoretic properties such as cut and
+% instantation directly. One way around this issue is to make the
+% heights of typing derivations explicit in the typing judgement and
+% to argue inductively on these heights.
+Define of' : nat -> ctx -> tm -> ty -> prop by
+  of' N G U T := isnat N /\ in_ctx G U T ;
+  of' (s N) G (abs T R) (arrow T U) :=
+      nabla x, of' N (extend x T G) (R x) U;
+  of' (s N)  G (app U V) T :=
+       exists T', of' N G U (arrow T' T) /\ of' N G V T'.
+
+% Some properties about derivation heights. First, the height is
+% indeed a natural number.
+Theorem of'_isnat : forall M G U T, of' M G U T -> isnat M.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+  apply IH to H2. search.
+
+% Next, if there is derivation of a given height then there is one for
+% any larger height.
+Theorem of'_leq : forall N M G U T,
+      of' N G U T -> leq N M -> of' M G U T.
+induction on 1. intros. case H1.
+   apply leq_snd to H2. search.
+   case H2. apply IH to H3 H4. search.
+   case H2. apply IH to H3 H5. apply IH to H4 H5. search.
+
+% Given two typing derivations of different heights, we can always
+% find one for both of the same height.
+Theorem of'_nat : forall N1 N2 G1 G2 U V T1 T2,
+     of' N1 G1 U T1 -> of' N2 G2 V T2 ->
+             exists N3, of' N3 G1 U T1 /\ of' N3 G2 V T2.
+intros. apply of'_isnat to H1. apply of'_isnat to H2.
+   apply sup_nat to H3 H4. exists O. split.
+      apply of'_leq to H1 H5. search.
+      apply of'_leq to H2 H6. search.
+
+% Relating the formalization of typing with and without explicit
+% heights
+Theorem of'_of : forall N G U T, of' N G U T -> of G U T.
+induction on 1. intros. case H1.
+   search.
+   apply IH to H2. search.
+   apply IH to H2. apply IH to H3. search.
+
+Theorem of_of' : forall G U T, of G U T -> exists N, of' N G U T.
+induction on 1. intros. case H1.
+  exists z. search.
+  apply IH to H2. search.
+  apply IH to H2. apply IH to H3. apply of'_nat to H4 H5.
+    exists (s N3). search.
+
+% A weakening property for contexts; a context with more assumptions
+% preserves typing judgements.
+Theorem ctx_weaken : forall G G' R U N,
+   (forall X T, in_ctx G X T -> in_ctx G' X T) ->
+     of' N G R U -> of' N G' R U.
+induction on 2. intros. case H2.
+   apply H1 to H4. search.
+   assert (forall X T', in_ctx (extend n1 T G) X T' ->
+               in_ctx (extend n1 T G') X T').
+     intros. case H4.
+       search.
+       apply H1 to H5. search.
+    apply IH to H4 H3. search.
+   apply IH to H1 H3. apply IH to H1 H4. search.
+
+% A key "substitution lemma:" replacing a nominal constant of a
+% certain type with a term of the same type preserves typing. The
+% height of the typing derivation can change because it also depends
+% on the height of the typing derivation for the term being
+% substituted.
+Theorem subst_preserves_typing' : forall N M G U V T1 T2,
+   nabla x, isnat N -> of' N (extend x T2 G) (U x) T1
+                    -> of' M G V T2 -> exists M', of' M' G (U V) T1.
+induction on 1. intros. case H1.
+   case H2. case H5.
+     search.
+     apply ctx_vacuous to H6. search.
+     case H2. case H6.
+       search.
+       apply ctx_vacuous to H7. search.
+       assert (forall X T', in_ctx (extend n2 T (extend n1 T2 G)) X T'
+                  -> in_ctx (extend n1 T2 (extend n2 T G)) X T').
+          intros. case H6.
+            search.
+            case H7.
+              search.
+              search.
+         apply ctx_weaken to H6 H5.
+         assert (forall X T', in_ctx G X T' -> in_ctx (extend n2 T G) X T').
+         apply ctx_weaken to H8 H3.
+         apply IH to H4 H7 H9.
+         exists (s M'). search.
+         apply IH to H4 H5 H3. apply IH to H4 H6 H3.
+            apply of'_nat to H7 H8. exists (s N3). search.
+
+% The substitution lemma lifted to the conventional typing relation without
+% heights
+Theorem subst_preserves_typing : forall G U V T1 T2,
+   nabla x, of (extend x T2 G) (U x) T1
+               -> of G V T2 -> of G (U V) T1.
+intros. apply of_of' to H1. apply of'_isnat to H3.
+apply of_of' to H2. apply subst_preserves_typing' to H4 H3 H5.
+apply of'_of to H6. search.
+
+% Subject reduction for open terms
+Theorem subj_red : forall G U V Ty,
+    is_ctx G -> of G U Ty -> eval U V -> of G V Ty.
+induction on 3. intros. case H3.
+   search.
+   case H2.
+     apply ctx_noapp to H1 H6.
+     apply IH to H1 H6 H4.
+     case H8.
+        apply ctx_noabs to H1 H9.
+        apply subst_preserves_typing to H9 H7.
+        apply IH to H1 H10 H5.
+        search.
+
+% Finally a version of subject reduction restricted to closed terms
+Theorem subj_red_closed : forall U V T,
+  of_closed U T -> eval U V -> of_closed V T.
+intros. case H1. assert (is_ctx empty).
+    apply subj_red to H4 H3 H2. search.

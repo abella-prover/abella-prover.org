@@ -1,0 +1,44 @@
+Kind  ty   type.
+
+Type  bas  ty.
+Type  arr  ty -> ty -> ty.
+
+Kind  tm   type.
+
+Type  app  tm -> tm -> tm.
+Type  abs  (tm -> tm) -> tm.
+
+Kind  ctx  type.
+
+Type  emp  ctx.
+Type  add  ctx -> tm -> ty -> ctx.
+
+Define mem : ctx -> tm -> ty -> prop by
+  mem (add L X A) X A ;
+  mem (add L Y B) X A := mem L X A.
+
+Define of : ctx -> tm -> ty -> prop by
+  of L X A := mem L X A ;
+
+  of L (app M N) B :=
+    exists A, of L M (arr A B) /\ of L N A ;
+
+  of L (abs R) (arr A B) :=
+    nabla x, of (add L x A) (R x) B.
+
+Theorem id : of emp (abs x\ x) (arr bas bas).
+unfold 3. intros.
+unfold 1.
+  unfold 1. search.
+
+%%
+
+Theorem neg : forall A,
+  of emp (abs x\ app x x) A -> false.
+intros. case H1.
+  case H2.
+  case H2.
+    case H3. case H4.
+    case H4. case H5. case H3. case H6. case H7.
+      case H6.
+

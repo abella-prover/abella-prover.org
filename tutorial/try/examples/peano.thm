@@ -1,0 +1,16 @@
+Kind nat type.
+
+Type z nat.
+Type s nat -> nat.
+
+%%% Axiom 2 : zero is different from successor
+Theorem ax2 : forall N, z = s N -> false.
+intros. case H1.
+
+%%% Axiom 3 : successor is injective
+Theorem ax3 : forall M N, s M = s N -> M = N.
+intros. case H1. search.
+
+%%% Finiteness
+Theorem finite : forall N, s N = N -> false.
+intros. case H1.

@@ -1,0 +1,48 @@
+Kind  ilist  type.
+Kind  i      type.
+
+Type  cons   i -> ilist -> ilist.
+Type  nill   ilist.
+
+Define append : ilist -> ilist -> ilist -> prop by
+  append nill L L ;
+  append (cons X L1) L2 (cons X L3) := append L1 L2 L3.
+
+%%
+
+Theorem append_injective : forall L1 L2 L3 L4,
+   append L1 L2 L3 -> append L1 L2 L4 -> L3 = L4.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.
+
+%%
+
+Define rev : ilist -> ilist -> prop by
+   rev nill nill ;
+   rev (cons X L1) L2 := exists L3, rev L1 L3 /\ append L3 (cons X nill) L2.
+
+Theorem append_rev : forall L1 L2 L3 X,
+    rev L1 L2 -> append L1 (cons X nill) L3 -> rev L3 (cons X L2).
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H5. search.
+%       unfold. exists (cons X L5). split. search. unfold. search.
+
+Theorem rev_conv : forall L1 L2,
+    rev L1 L2 -> rev L2 L1.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. apply append_rev to H4 H3. search.
+
+%%
+
+Define is_list : ilist -> prop by
+  is_list nill ;
+  is_list (cons X L) := is_list L.
+
+Theorem append_total : forall L1 L2,
+   is_list L1 -> exists L3, append L1 L2 L3.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2 with L2 = L2. search.

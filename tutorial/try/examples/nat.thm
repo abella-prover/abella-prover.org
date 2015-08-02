@@ -1,0 +1,77 @@
+Kind nat type.
+
+Type z nat.
+Type s nat -> nat.
+
+Define is_nat : nat -> prop by
+  is_nat z ;
+  is_nat (s N) := is_nat N.
+
+%%
+
+Define is_nat_alt : nat -> prop by
+  is_nat_alt z ;
+  is_nat_alt (s N) := is_nat_alt N.
+
+Theorem same : forall N, is_nat N -> is_nat_alt N.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+%%
+
+Define plus : nat -> nat -> nat -> prop by
+  plus z N N ;
+  plus (s M) N (s K) := plus M N K.
+
+Theorem plus_det : forall M N K1 K2,
+  plus M N K1 -> plus M N K2 -> K1 = K2.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.
+
+%%
+
+Theorem plus_assoc : forall M N K MN NK MNK,
+  plus M N MN -> plus MN K MNK -> plus N K NK -> plus M NK MNK.
+induction on 1. intros. case H1.
+  apply plus_det to H2 H3. search.
+  case H2. apply IH to H4 H5 H3. search.
+
+%%
+
+Theorem plus_comm : forall M N K,
+  is_nat M -> plus M N K -> plus N M K.
+induction on 1. intros. case H1.
+  case H2.
+    abort.
+
+Theorem plus_z : forall K, is_nat K -> plus K z K.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+
+Theorem plus_comm : forall M N K,
+  is_nat M -> is_nat N -> plus M N K -> plus N M K.
+induction on 1. intros. case H1.
+  case H3.
+    backchain plus_z.
+  case H3.
+    apply IH to H4 H2 H5.
+    abort.
+
+Theorem plus_step : forall M N K,
+  is_nat M -> is_nat N ->
+  plus M N K -> plus M (s N) (s K).
+induction on 1. intros. case H1.
+  case H3. search.
+  case H3. apply IH to H4 H2 H5. search.
+
+Theorem plus_comm : forall M N K,
+  is_nat M -> is_nat N -> plus M N K -> plus N M K.
+induction on 1. intros. case H1.
+  case H3.
+    backchain plus_z.
+  case H3.
+    apply IH to H4 H2 H5.
+    backchain plus_step.

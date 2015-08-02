@@ -1,0 +1,19 @@
+Kind st,lab       type.
+Type p0,p1,q0,q1  st.
+Type a,b          lab.
+
+Define step : st -> lab -> st -> prop by
+  step p0 a p0 ; step p0 b p1 ;
+  step q0 a q1 ; step q1 a q0.
+
+CoDefine sim : st -> st -> prop by
+  sim P Q :=
+    forall L Pn, step P L Pn ->
+      exists Qn, step Q L Qn /\ sim Pn Qn.
+
+Theorem q0_sim_p0 : sim q0 p0.
+coinduction. unfold. intros.
+case H1. witness p0. split. search.
+unfold. intros.
+case H2. witness p0. split. search.
+search.

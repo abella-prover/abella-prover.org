@@ -1,0 +1,11 @@
+Define p : prop by
+  p := p -> false.
+
+Theorem p_true : p.
+unfold. intros. case H1 (keep). apply H2 to H1.
+
+Theorem notp_true : p -> false.
+intros. case H1 (keep). apply H2 to H1.
+
+Theorem inconsistency : false.
+apply notp_true to p_true.

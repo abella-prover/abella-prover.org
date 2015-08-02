@@ -1,0 +1,34 @@
+Kind nat type.
+
+Type z nat.
+Type s nat -> nat.
+
+Define plus : nat -> nat -> nat -> prop by
+  plus z N N ;
+  plus (s M) N (s K) := plus M N K.
+
+Set instantiations off.
+
+Theorem plus_s : forall M N K, plus M N (s K) ->
+  (exists J, M = s J) \/ (exists J, N = s J).
+intros.
+case H1.
+  right. search.
+  left. search.
+
+Theorem ex1 : plus (s z) (s (s z)) (s (s (s z))).
+unfold.
+unfold.
+search.
+
+Theorem ex2 : plus (s z) (s (s z)) (s z) -> false.
+intros. case H1. case H2.
+
+Theorem ex3 : forall M N, plus (s (s M)) N (s (s (s N))) -> M = s z.
+intros.
+  case H1.
+  case H2.
+  case H3.
+  case H4.
+    search.
+    skip.
