@@ -19,90 +19,110 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.1-dev
+Welcome to Abella 2.0.4-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind nat, tm, ty type.</b>
+
 </pre>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Kind atm, atmlist type.</b>
+
 </pre>
 <a name="3"></a>
 <pre class="code">
 Abella < <b>Type z nat.</b>
+
 </pre>
 <a name="4"></a>
 <pre class="code">
 Abella < <b>Type s nat -> nat.</b>
+
 </pre>
 <a name="5"></a>
 <pre class="code">
 Abella < <b>Type app tm -> tm -> tm.</b>
+
 </pre>
 <a name="6"></a>
 <pre class="code">
 Abella < <b>Type abs (tm -> tm) -> tm.</b>
+
 </pre>
 <a name="7"></a>
 <pre class="code">
 Abella < <b>Type arrow ty -> ty -> ty.</b>
+
 </pre>
 <a name="8"></a>
 <pre class="code">
 Abella < <b>Type nl atmlist.</b>
+
 </pre>
 <a name="9"></a>
 <pre class="code">
 Abella < <b>Type cons atm -> atmlist -> atmlist.</b>
+
 </pre>
 <a name="10"></a>
 <pre class="code">
 Abella < <b>Type eval tm -> tm -> atm.</b>
+
 </pre>
 <a name="11"></a>
 <pre class="code">
 Abella < <b>Type of tm -> ty -> atm.</b>
+
 </pre>
 <a name="12"></a>
 <pre class="code">
 Abella < <b>Type tt o.</b>
+
 </pre>
 <a name="13"></a>
 <pre class="code">
 Abella < <b>Type atom atm -> o.</b>
+
 </pre>
 <a name="14"></a>
 <pre class="code">
 Abella < <b>Type or, and o -> o -> o.</b>
+
 </pre>
 <a name="15"></a>
 <pre class="code">
 Abella < <b>Type imp atm -> o -> o.</b>
+
 </pre>
 <a name="16"></a>
 <pre class="code">
 Abella < <b>Type all (tm -> o) -> o.</b>
+
 </pre>
 <a name="17"></a>
 <pre class="code">
 Abella < <b>Type ex (tm -> o) -> o.</b>
+
 </pre>
 <a name="18"></a>
 <pre class="code">
 Abella < <b>Close nat, tm, ty.</b>
+
 </pre>
 <a name="19"></a>
 <pre class="code">
 Abella < <b>Define nat : nat -> prop by 
 nat z;
 nat (s N) := nat N.</b>
+
 </pre>
 <a name="20"></a>
 <pre class="code">
 Abella < <b>Define lt : nat -> nat -> prop by 
 lt z (s N);
 lt (s M) (s N) := lt M N.</b>
+
 </pre>
 <a name="21"></a>
 <pre class="code">
@@ -111,12 +131,14 @@ prog (eval (abs R) (abs R)) tt;
 prog (eval (app P Q) V) (and (atom (eval P (abs R))) (atom (eval (R Q) V)));
 prog (of (abs R) (arrow A B)) (all (x\imp (of x A) (atom (of (R x) B))));
 prog (of (app P Q) B) (and (atom (of P (arrow A B))) (atom (of Q A))).</b>
+
 </pre>
 <a name="22"></a>
 <pre class="code">
 Abella < <b>Define mem : atm -> atmlist -> prop by 
 mem A (cons A L);
 mem A (cons B L) := mem A L.</b>
+
 </pre>
 <a name="23"></a>
 <pre class="code">
@@ -130,58 +152,58 @@ seq (s N) L (imp A B) := seq N (cons A L) B;
 seq (s N) L (all G) := nabla x, seq N L (G x);
 seq (s N) L (ex G) := exists X, seq N L (G X);
 seq (s N) L (atom A) := exists B, prog A B /\ seq N L B.</b>
+
 </pre>
 <a name="24"></a>
 <pre class="code">
 Abella < <b>Theorem seq_subset : 
 forall L1 L2 G N, seq N L1 G -> (forall X, mem X L1 -> mem X L2) ->
   seq N L2 G.</b>
+
 </pre>
 <a name="25"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L1 L2 G N, seq N L1 G -> (forall X, mem X L1 -> mem X L2) ->
-     seq N L2 G
+============================
+ forall L1 L2 G N, seq N L1 G -> (forall X, mem X L1 -> mem X L2) ->
+   seq N L2 G
 
 seq_subset < <b>induction on 1.</b>
 </pre>
 <a name="26"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  ============================
-   forall L1 L2 G N, seq N L1 G @ -> (forall X, mem X L1 -> mem X L2) ->
-     seq N L2 G
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+============================
+ forall L1 L2 G N, seq N L1 G @ -> (forall X, mem X L1 -> mem X L2) ->
+   seq N L2 G
 
 seq_subset < <b>intros.</b>
 </pre>
 <a name="27"></a>
-<pre>
+<pre class="code">
 
-  Variables: L1, L2, G, N
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H1 : seq N L1 G @
-  H2 : forall X, mem X L1 -> mem X L2
-  ============================
-   seq N L2 G
+Variables: L1 L2 G N
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H1 : seq N L1 G @
+H2 : forall X, mem X L1 -> mem X L2
+============================
+ seq N L2 G
 
 seq_subset < <b>case H1.</b>
 </pre>
 <a name="28"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L1, L2, G, N, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  ============================
-   seq (s N1) L2 tt
+Variables: L1 L2 N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+============================
+ seq (s N1) L2 tt
 
 Subgoal 2 is:
  seq (s N1) L2 (atom A)
@@ -210,16 +232,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="29"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L1, L2, G, N, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : mem A L1
-  ============================
-   seq (s N1) L2 (atom A)
+Variables: L1 L2 A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : mem A L1
+============================
+ seq (s N1) L2 (atom A)
 
 Subgoal 3 is:
  seq (s N1) L2 (or A B)
@@ -245,17 +267,17 @@ Subgoal 9 is:
 seq_subset < <b>apply H2 to H3.</b>
 </pre>
 <a name="30"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L1, L2, G, N, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : mem A L1
-  H4 : mem A L2
-  ============================
-   seq (s N1) L2 (atom A)
+Variables: L1 L2 A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : mem A L1
+H4 : mem A L2
+============================
+ seq (s N1) L2 (atom A)
 
 Subgoal 3 is:
  seq (s N1) L2 (or A B)
@@ -281,16 +303,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="31"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 A *
-  ============================
-   seq (s N1) L2 (or A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 A *
+============================
+ seq (s N1) L2 (or A B)
 
 Subgoal 4 is:
  seq (s N1) L2 (or A B)
@@ -313,17 +335,17 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H2.</b>
 </pre>
 <a name="32"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 A *
-  H4 : seq N1 L2 A
-  ============================
-   seq (s N1) L2 (or A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 A *
+H4 : seq N1 L2 A
+============================
+ seq (s N1) L2 (or A B)
 
 Subgoal 4 is:
  seq (s N1) L2 (or A B)
@@ -346,16 +368,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="33"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 B *
-  ============================
-   seq (s N1) L2 (or A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 B *
+============================
+ seq (s N1) L2 (or A B)
 
 Subgoal 5 is:
  seq (s N1) L2 (and A B)
@@ -375,17 +397,17 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H2.</b>
 </pre>
 <a name="34"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 B *
-  H4 : seq N1 L2 B
-  ============================
-   seq (s N1) L2 (or A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 B *
+H4 : seq N1 L2 B
+============================
+ seq (s N1) L2 (or A B)
 
 Subgoal 5 is:
  seq (s N1) L2 (and A B)
@@ -405,17 +427,17 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="35"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 A *
-  H4 : seq N1 L1 B *
-  ============================
-   seq (s N1) L2 (and A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 A *
+H4 : seq N1 L1 B *
+============================
+ seq (s N1) L2 (and A B)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -432,18 +454,18 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H2.</b>
 </pre>
 <a name="36"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 A *
-  H4 : seq N1 L1 B *
-  H5 : seq N1 L2 A
-  ============================
-   seq (s N1) L2 (and A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 A *
+H4 : seq N1 L1 B *
+H5 : seq N1 L2 A
+============================
+ seq (s N1) L2 (and A B)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -460,19 +482,19 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H4 H2.</b>
 </pre>
 <a name="37"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 A *
-  H4 : seq N1 L1 B *
-  H5 : seq N1 L2 A
-  H6 : seq N1 L2 B
-  ============================
-   seq (s N1) L2 (and A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 A *
+H4 : seq N1 L1 B *
+H5 : seq N1 L2 A
+H6 : seq N1 L2 B
+============================
+ seq (s N1) L2 (and A B)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -489,16 +511,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="38"></a>
-<pre>
+<pre class="code">
 Subgoal 6:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  ============================
-   seq (s N1) L2 (imp A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+============================
+ seq (s N1) L2 (imp A B)
 
 Subgoal 7 is:
  seq (s N1) L2 (all G1)
@@ -512,16 +534,16 @@ Subgoal 9 is:
 seq_subset < <b>assert forall X, mem X (cons A L1) -> mem X (cons A L2).</b>
 </pre>
 <a name="39"></a>
-<pre>
+<pre class="code">
 Subgoal 6.1:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  ============================
-   forall X, mem X (cons A L1) -> mem X (cons A L2)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+============================
+ forall X, mem X (cons A L1) -> mem X (cons A L2)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -538,17 +560,17 @@ Subgoal 9 is:
 seq_subset < <b>intros.</b>
 </pre>
 <a name="40"></a>
-<pre>
+<pre class="code">
 Subgoal 6.1:
 
-  Variables: L1, L2, G, N, B, A, N1, X
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  H4 : mem X (cons A L1)
-  ============================
-   mem X (cons A L2)
+Variables: L1 L2 B A N1 X
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+H4 : mem X (cons A L1)
+============================
+ mem X (cons A L2)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -565,16 +587,16 @@ Subgoal 9 is:
 seq_subset < <b>case H4.</b>
 </pre>
 <a name="41"></a>
-<pre>
+<pre class="code">
 Subgoal 6.1.1:
 
-  Variables: L1, L2, G, N, B, A, N1, X
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  ============================
-   mem A (cons A L2)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+============================
+ mem A (cons A L2)
 
 Subgoal 6.1.2 is:
  mem X (cons A L2)
@@ -594,17 +616,17 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="42"></a>
-<pre>
+<pre class="code">
 Subgoal 6.1.2:
 
-  Variables: L1, L2, G, N, B, A, N1, X
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  H5 : mem X L1
-  ============================
-   mem X (cons A L2)
+Variables: L1 L2 B A N1 X
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+H5 : mem X L1
+============================
+ mem X (cons A L2)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -621,18 +643,18 @@ Subgoal 9 is:
 seq_subset < <b>apply H2 to H5.</b>
 </pre>
 <a name="43"></a>
-<pre>
+<pre class="code">
 Subgoal 6.1.2:
 
-  Variables: L1, L2, G, N, B, A, N1, X
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  H5 : mem X L1
-  H6 : mem X L2
-  ============================
-   mem X (cons A L2)
+Variables: L1 L2 B A N1 X
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+H5 : mem X L1
+H6 : mem X L2
+============================
+ mem X (cons A L2)
 
 Subgoal 6 is:
  seq (s N1) L2 (imp A B)
@@ -649,17 +671,17 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="44"></a>
-<pre>
+<pre class="code">
 Subgoal 6:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  H4 : forall X, mem X (cons A L1) -> mem X (cons A L2)
-  ============================
-   seq (s N1) L2 (imp A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+H4 : forall X, mem X (cons A L1) -> mem X (cons A L2)
+============================
+ seq (s N1) L2 (imp A B)
 
 Subgoal 7 is:
  seq (s N1) L2 (all G1)
@@ -673,18 +695,18 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="45"></a>
-<pre>
+<pre class="code">
 Subgoal 6:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 (cons A L1) B *
-  H4 : forall X, mem X (cons A L1) -> mem X (cons A L2)
-  H5 : seq N1 (cons A L2) B
-  ============================
-   seq (s N1) L2 (imp A B)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 (cons A L1) B *
+H4 : forall X, mem X (cons A L1) -> mem X (cons A L2)
+H5 : seq N1 (cons A L2) B
+============================
+ seq (s N1) L2 (imp A B)
 
 Subgoal 7 is:
  seq (s N1) L2 (all G1)
@@ -698,16 +720,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="46"></a>
-<pre>
+<pre class="code">
 Subgoal 7:
 
-  Variables: L1, L2, G, N, G1, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 (G1 n1) *
-  ============================
-   seq (s N1) L2 (all G1)
+Variables: L1 L2 G1 N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 (G1 n1) *
+============================
+ seq (s N1) L2 (all G1)
 
 Subgoal 8 is:
  seq (s N1) L2 (ex G1)
@@ -718,17 +740,17 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H2.</b>
 </pre>
 <a name="47"></a>
-<pre>
+<pre class="code">
 Subgoal 7:
 
-  Variables: L1, L2, G, N, G1, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 (G1 n1) *
-  H4 : seq N1 L2 (G1 n1)
-  ============================
-   seq (s N1) L2 (all G1)
+Variables: L1 L2 G1 N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 (G1 n1) *
+H4 : seq N1 L2 (G1 n1)
+============================
+ seq (s N1) L2 (all G1)
 
 Subgoal 8 is:
  seq (s N1) L2 (ex G1)
@@ -739,16 +761,16 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="48"></a>
-<pre>
+<pre class="code">
 Subgoal 8:
 
-  Variables: L1, L2, G, N, X, G1, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 (G1 X) *
-  ============================
-   seq (s N1) L2 (ex G1)
+Variables: L1 L2 X G1 N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 (G1 X) *
+============================
+ seq (s N1) L2 (ex G1)
 
 Subgoal 9 is:
  seq (s N1) L2 (atom A)
@@ -756,17 +778,17 @@ Subgoal 9 is:
 seq_subset < <b>apply IH to H3 H2.</b>
 </pre>
 <a name="49"></a>
-<pre>
+<pre class="code">
 Subgoal 8:
 
-  Variables: L1, L2, G, N, X, G1, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : seq N1 L1 (G1 X) *
-  H4 : seq N1 L2 (G1 X)
-  ============================
-   seq (s N1) L2 (ex G1)
+Variables: L1 L2 X G1 N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : seq N1 L1 (G1 X) *
+H4 : seq N1 L2 (G1 X)
+============================
+ seq (s N1) L2 (ex G1)
 
 Subgoal 9 is:
  seq (s N1) L2 (atom A)
@@ -774,33 +796,33 @@ Subgoal 9 is:
 seq_subset < <b>search.</b>
 </pre>
 <a name="50"></a>
-<pre>
+<pre class="code">
 Subgoal 9:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : prog A B
-  H4 : seq N1 L1 B *
-  ============================
-   seq (s N1) L2 (atom A)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : prog A B
+H4 : seq N1 L1 B *
+============================
+ seq (s N1) L2 (atom A)
 
 seq_subset < <b>apply IH to H4 H2.</b>
 </pre>
 <a name="51"></a>
-<pre>
+<pre class="code">
 Subgoal 9:
 
-  Variables: L1, L2, G, N, B, A, N1
-  IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
-         seq N L2 G
-  H2 : forall X, mem X L1 -> mem X L2
-  H3 : prog A B
-  H4 : seq N1 L1 B *
-  H5 : seq N1 L2 B
-  ============================
-   seq (s N1) L2 (atom A)
+Variables: L1 L2 B A N1
+IH : forall L1 L2 G N, seq N L1 G * -> (forall X, mem X L1 -> mem X L2) ->
+       seq N L2 G
+H2 : forall X, mem X L1 -> mem X L2
+H3 : prog A B
+H4 : seq N1 L1 B *
+H5 : seq N1 L2 B
+============================
+ seq (s N1) L2 (atom A)
 
 seq_subset < <b>search.</b>
 Proof completed.
@@ -809,47 +831,46 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem seq_lt : 
 forall L G N M, lt M N -> seq M L G -> seq N L G.</b>
+
 </pre>
 <a name="53"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G N M, lt M N -> seq M L G -> seq N L G
+============================
+ forall L G N M, lt M N -> seq M L G -> seq N L G
 
 seq_lt < <b>induction on 1.</b>
 </pre>
 <a name="54"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  ============================
-   forall L G N M, lt M N @ -> seq M L G -> seq N L G
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+============================
+ forall L G N M, lt M N @ -> seq M L G -> seq N L G
 
 seq_lt < <b>intros.</b>
 </pre>
 <a name="55"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G, N, M
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H1 : lt M N @
-  H2 : seq M L G
-  ============================
-   seq N L G
+Variables: L G N M
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H1 : lt M N @
+H2 : seq M L G
+============================
+ seq N L G
 
 seq_lt < <b>case H1.</b>
 </pre>
 <a name="56"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, G, N, M, N1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H2 : seq z L G
-  ============================
-   seq (s N1) L G
+Variables: L G N1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H2 : seq z L G
+============================
+ seq (s N1) L G
 
 Subgoal 2 is:
  seq (s N1) L G
@@ -857,27 +878,27 @@ Subgoal 2 is:
 seq_lt < <b>case H2.</b>
 </pre>
 <a name="57"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, G, N, M, N1, M1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H2 : seq (s M1) L G
-  H3 : lt M1 N1 *
-  ============================
-   seq (s N1) L G
+Variables: L G N1 M1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H2 : seq (s M1) L G
+H3 : lt M1 N1 *
+============================
+ seq (s N1) L G
 
 seq_lt < <b>case H2.</b>
 </pre>
 <a name="58"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, G, N, M, N1, M1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  ============================
-   seq (s N1) L tt
+Variables: L N1 M1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+============================
+ seq (s N1) L tt
 
 Subgoal 2.2 is:
  seq (s N1) L (atom A)
@@ -906,15 +927,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="59"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, G, N, M, N1, M1, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : mem A L
-  ============================
-   seq (s N1) L (atom A)
+Variables: L N1 M1 A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : mem A L
+============================
+ seq (s N1) L (atom A)
 
 Subgoal 2.3 is:
  seq (s N1) L (or A B)
@@ -940,15 +961,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="60"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L A
-  ============================
-   seq (s N1) L (or A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L A
+============================
+ seq (s N1) L (or A B)
 
 Subgoal 2.4 is:
  seq (s N1) L (or A B)
@@ -971,16 +992,16 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="61"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L A
-  H5 : seq N1 L A
-  ============================
-   seq (s N1) L (or A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L A
+H5 : seq N1 L A
+============================
+ seq (s N1) L (or A B)
 
 Subgoal 2.4 is:
  seq (s N1) L (or A B)
@@ -1003,15 +1024,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="62"></a>
-<pre>
+<pre class="code">
 Subgoal 2.4:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L B
-  ============================
-   seq (s N1) L (or A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L B
+============================
+ seq (s N1) L (or A B)
 
 Subgoal 2.5 is:
  seq (s N1) L (and A B)
@@ -1031,16 +1052,16 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="63"></a>
-<pre>
+<pre class="code">
 Subgoal 2.4:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L B
-  H5 : seq N1 L B
-  ============================
-   seq (s N1) L (or A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L B
+H5 : seq N1 L B
+============================
+ seq (s N1) L (or A B)
 
 Subgoal 2.5 is:
  seq (s N1) L (and A B)
@@ -1060,16 +1081,16 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="64"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L A
-  H5 : seq M1 L B
-  ============================
-   seq (s N1) L (and A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L A
+H5 : seq M1 L B
+============================
+ seq (s N1) L (and A B)
 
 Subgoal 2.6 is:
  seq (s N1) L (imp A B)
@@ -1086,17 +1107,17 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="65"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L A
-  H5 : seq M1 L B
-  H6 : seq N1 L A
-  ============================
-   seq (s N1) L (and A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L A
+H5 : seq M1 L B
+H6 : seq N1 L A
+============================
+ seq (s N1) L (and A B)
 
 Subgoal 2.6 is:
  seq (s N1) L (imp A B)
@@ -1113,18 +1134,18 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H5.</b>
 </pre>
 <a name="66"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L A
-  H5 : seq M1 L B
-  H6 : seq N1 L A
-  H7 : seq N1 L B
-  ============================
-   seq (s N1) L (and A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L A
+H5 : seq M1 L B
+H6 : seq N1 L A
+H7 : seq N1 L B
+============================
+ seq (s N1) L (and A B)
 
 Subgoal 2.6 is:
  seq (s N1) L (imp A B)
@@ -1141,15 +1162,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="67"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 (cons A L) B
-  ============================
-   seq (s N1) L (imp A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 (cons A L) B
+============================
+ seq (s N1) L (imp A B)
 
 Subgoal 2.7 is:
  seq (s N1) L (all G1)
@@ -1163,16 +1184,16 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="68"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 (cons A L) B
-  H5 : seq N1 (cons A L) B
-  ============================
-   seq (s N1) L (imp A B)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 (cons A L) B
+H5 : seq N1 (cons A L) B
+============================
+ seq (s N1) L (imp A B)
 
 Subgoal 2.7 is:
  seq (s N1) L (all G1)
@@ -1186,15 +1207,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="69"></a>
-<pre>
+<pre class="code">
 Subgoal 2.7:
 
-  Variables: L, G, N, M, N1, M1, G1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L (G1 n1)
-  ============================
-   seq (s N1) L (all G1)
+Variables: L N1 M1 G1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L (G1 n1)
+============================
+ seq (s N1) L (all G1)
 
 Subgoal 2.8 is:
  seq (s N1) L (ex G1)
@@ -1205,16 +1226,16 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="70"></a>
-<pre>
+<pre class="code">
 Subgoal 2.7:
 
-  Variables: L, G, N, M, N1, M1, G1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L (G1 n1)
-  H5 : seq N1 L (G1 n1)
-  ============================
-   seq (s N1) L (all G1)
+Variables: L N1 M1 G1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L (G1 n1)
+H5 : seq N1 L (G1 n1)
+============================
+ seq (s N1) L (all G1)
 
 Subgoal 2.8 is:
  seq (s N1) L (ex G1)
@@ -1225,15 +1246,15 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="71"></a>
-<pre>
+<pre class="code">
 Subgoal 2.8:
 
-  Variables: L, G, N, M, N1, M1, X, G1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L (G1 X)
-  ============================
-   seq (s N1) L (ex G1)
+Variables: L N1 M1 X G1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L (G1 X)
+============================
+ seq (s N1) L (ex G1)
 
 Subgoal 2.9 is:
  seq (s N1) L (atom A)
@@ -1241,16 +1262,16 @@ Subgoal 2.9 is:
 seq_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="72"></a>
-<pre>
+<pre class="code">
 Subgoal 2.8:
 
-  Variables: L, G, N, M, N1, M1, X, G1
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : seq M1 L (G1 X)
-  H5 : seq N1 L (G1 X)
-  ============================
-   seq (s N1) L (ex G1)
+Variables: L N1 M1 X G1
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : seq M1 L (G1 X)
+H5 : seq N1 L (G1 X)
+============================
+ seq (s N1) L (ex G1)
 
 Subgoal 2.9 is:
  seq (s N1) L (atom A)
@@ -1258,31 +1279,31 @@ Subgoal 2.9 is:
 seq_lt < <b>search.</b>
 </pre>
 <a name="73"></a>
-<pre>
+<pre class="code">
 Subgoal 2.9:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : prog A B
-  H5 : seq M1 L B
-  ============================
-   seq (s N1) L (atom A)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : prog A B
+H5 : seq M1 L B
+============================
+ seq (s N1) L (atom A)
 
 seq_lt < <b>apply IH to H3 H5.</b>
 </pre>
 <a name="74"></a>
-<pre>
+<pre class="code">
 Subgoal 2.9:
 
-  Variables: L, G, N, M, N1, M1, B, A
-  IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
-  H3 : lt M1 N1 *
-  H4 : prog A B
-  H5 : seq M1 L B
-  H6 : seq N1 L B
-  ============================
-   seq (s N1) L (atom A)
+Variables: L N1 M1 B A
+IH : forall L G N M, lt M N * -> seq M L G -> seq N L G
+H3 : lt M1 N1 *
+H4 : prog A B
+H5 : seq M1 L B
+H6 : seq N1 L B
+============================
+ seq (s N1) L (atom A)
 
 seq_lt < <b>search.</b>
 Proof completed.
@@ -1291,47 +1312,46 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem nat_lt : 
 forall A B, nat A -> nat B -> lt A B \/ A = B \/ lt B A.</b>
+
 </pre>
 <a name="76"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A B, nat A -> nat B -> lt A B \/ A = B \/ lt B A
+============================
+ forall A B, nat A -> nat B -> lt A B \/ A = B \/ lt B A
 
 nat_lt < <b>induction on 1.</b>
 </pre>
 <a name="77"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  ============================
-   forall A B, nat A @ -> nat B -> lt A B \/ A = B \/ lt B A
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+============================
+ forall A B, nat A @ -> nat B -> lt A B \/ A = B \/ lt B A
 
 nat_lt < <b>intros.</b>
 </pre>
 <a name="78"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, B
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H1 : nat A @
-  H2 : nat B
-  ============================
-   lt A B \/ A = B \/ lt B A
+Variables: A B
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H1 : nat A @
+H2 : nat B
+============================
+ lt A B \/ A = B \/ lt B A
 
 nat_lt < <b>case H1.</b>
 </pre>
 <a name="79"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H2 : nat B
-  ============================
-   lt z B \/ z = B \/ lt B z
+Variables: B
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H2 : nat B
+============================
+ lt z B \/ z = B \/ lt B z
 
 Subgoal 2 is:
  lt (s N) B \/ s N = B \/ lt B (s N)
@@ -1339,13 +1359,12 @@ Subgoal 2 is:
 nat_lt < <b>case H2.</b>
 </pre>
 <a name="80"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: A, B
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  ============================
-   lt z z \/ z = z \/ lt z z
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+============================
+ lt z z \/ z = z \/ lt z z
 
 Subgoal 1.2 is:
  lt z (s N) \/ z = s N \/ lt (s N) z
@@ -1356,14 +1375,14 @@ Subgoal 2 is:
 nat_lt < <b>search.</b>
 </pre>
 <a name="81"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: A, B, N
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N
-  ============================
-   lt z (s N) \/ z = s N \/ lt (s N) z
+Variables: N
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N
+============================
+ lt z (s N) \/ z = s N \/ lt (s N) z
 
 Subgoal 2 is:
  lt (s N) B \/ s N = B \/ lt B (s N)
@@ -1371,27 +1390,27 @@ Subgoal 2 is:
 nat_lt < <b>search.</b>
 </pre>
 <a name="82"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, N
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H2 : nat B
-  H3 : nat N *
-  ============================
-   lt (s N) B \/ s N = B \/ lt B (s N)
+Variables: B N
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H2 : nat B
+H3 : nat N *
+============================
+ lt (s N) B \/ s N = B \/ lt B (s N)
 
 nat_lt < <b>case H2.</b>
 </pre>
 <a name="83"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: A, B, N
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N *
-  ============================
-   lt (s N) z \/ s N = z \/ lt z (s N)
+Variables: N
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N *
+============================
+ lt (s N) z \/ s N = z \/ lt z (s N)
 
 Subgoal 2.2 is:
  lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
@@ -1399,43 +1418,43 @@ Subgoal 2.2 is:
 nat_lt < <b>search.</b>
 </pre>
 <a name="84"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: A, B, N, N1
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N *
-  H4 : nat N1
-  ============================
-   lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
+Variables: N N1
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N *
+H4 : nat N1
+============================
+ lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
 
 nat_lt < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="85"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: A, B, N, N1
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N *
-  H4 : nat N1
-  H5 : lt N N1 \/ N = N1 \/ lt N1 N
-  ============================
-   lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
+Variables: N N1
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N *
+H4 : nat N1
+H5 : lt N N1 \/ N = N1 \/ lt N1 N
+============================
+ lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
 
 nat_lt < <b>case H5.</b>
 </pre>
 <a name="86"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.1:
 
-  Variables: A, B, N, N1
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N *
-  H4 : nat N1
-  H6 : lt N N1
-  ============================
-   lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
+Variables: N N1
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N *
+H4 : nat N1
+H6 : lt N N1
+============================
+ lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
 
 Subgoal 2.2.2 is:
  lt (s N1) (s N1) \/ s N1 = s N1 \/ lt (s N1) (s N1)
@@ -1446,15 +1465,15 @@ Subgoal 2.2.3 is:
 nat_lt < <b>search.</b>
 </pre>
 <a name="87"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2:
 
-  Variables: A, B, N, N1
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N1 *
-  H4 : nat N1
-  ============================
-   lt (s N1) (s N1) \/ s N1 = s N1 \/ lt (s N1) (s N1)
+Variables: N1
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N1 *
+H4 : nat N1
+============================
+ lt (s N1) (s N1) \/ s N1 = s N1 \/ lt (s N1) (s N1)
 
 Subgoal 2.2.3 is:
  lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
@@ -1462,16 +1481,16 @@ Subgoal 2.2.3 is:
 nat_lt < <b>search.</b>
 </pre>
 <a name="88"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.3:
 
-  Variables: A, B, N, N1
-  IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
-  H3 : nat N *
-  H4 : nat N1
-  H6 : lt N1 N
-  ============================
-   lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
+Variables: N N1
+IH : forall A B, nat A * -> nat B -> lt A B \/ A = B \/ lt B A
+H3 : nat N *
+H4 : nat N1
+H6 : lt N1 N
+============================
+ lt (s N) (s N1) \/ s N = s N1 \/ lt (s N1) (s N)
 
 nat_lt < <b>search.</b>
 Proof completed.
@@ -1481,56 +1500,55 @@ Proof completed.
 Abella < <b>Theorem seq_cut : 
 forall K L G N M, nat N -> seq N (cons K L) G -> nat M -> seq M L (atom K) ->
   (exists P, nat P /\ seq P L G).</b>
+
 </pre>
 <a name="90"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall K L G N M, nat N -> seq N (cons K L) G -> nat M ->
-     seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+============================
+ forall K L G N M, nat N -> seq N (cons K L) G -> nat M ->
+   seq M L (atom K) -> (exists P, nat P /\ seq P L G)
 
 seq_cut < <b>induction on 1.</b>
 </pre>
 <a name="91"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  ============================
-   forall K L G N M, nat N @ -> seq N (cons K L) G -> nat M ->
-     seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+============================
+ forall K L G N M, nat N @ -> seq N (cons K L) G -> nat M ->
+   seq M L (atom K) -> (exists P, nat P /\ seq P L G)
 
 seq_cut < <b>intros.</b>
 </pre>
 <a name="92"></a>
-<pre>
+<pre class="code">
 
-  Variables: K, L, G, N, M
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H1 : nat N @
-  H2 : seq N (cons K L) G
-  H3 : nat M
-  H4 : seq M L (atom K)
-  ============================
-   exists P, nat P /\ seq P L G
+Variables: K L G N M
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H1 : nat N @
+H2 : seq N (cons K L) G
+H3 : nat M
+H4 : seq M L (atom K)
+============================
+ exists P, nat P /\ seq P L G
 
 seq_cut < <b>case H1.</b>
 </pre>
 <a name="93"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: K, L, G, N, M
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H2 : seq z (cons K L) G
-  H3 : nat M
-  H4 : seq M L (atom K)
-  ============================
-   exists P, nat P /\ seq P L G
+Variables: K L G M
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H2 : seq z (cons K L) G
+H3 : nat M
+H4 : seq M L (atom K)
+============================
+ exists P, nat P /\ seq P L G
 
 Subgoal 2 is:
  exists P, nat P /\ seq P L G
@@ -1538,33 +1556,33 @@ Subgoal 2 is:
 seq_cut < <b>case H2.</b>
 </pre>
 <a name="94"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: K, L, G, N, M, N1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H2 : seq (s N1) (cons K L) G
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  ============================
-   exists P, nat P /\ seq P L G
+Variables: K L G M N1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H2 : seq (s N1) (cons K L) G
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+============================
+ exists P, nat P /\ seq P L G
 
 seq_cut < <b>case H2.</b>
 </pre>
 <a name="95"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: K, L, G, N, M, N1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  ============================
-   exists P, nat P /\ seq P L tt
+Variables: K L M N1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+============================
+ exists P, nat P /\ seq P L tt
 
 Subgoal 2.2 is:
  exists P, nat P /\ seq P L (atom A)
@@ -1593,18 +1611,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="96"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: K, L, G, N, M, N1, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : mem A (cons K L)
-  ============================
-   exists P, nat P /\ seq P L (atom A)
+Variables: K L M N1 A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : mem A (cons K L)
+============================
+ exists P, nat P /\ seq P L (atom A)
 
 Subgoal 2.3 is:
  exists P, nat P /\ seq P L (or A B)
@@ -1630,17 +1648,17 @@ Subgoal 2.9 is:
 seq_cut < <b>case H6.</b>
 </pre>
 <a name="97"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.1:
 
-  Variables: K, L, G, N, M, N1, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  ============================
-   exists P, nat P /\ seq P L (atom K)
+Variables: K L M N1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+============================
+ exists P, nat P /\ seq P L (atom K)
 
 Subgoal 2.2.2 is:
  exists P, nat P /\ seq P L (atom A)
@@ -1669,18 +1687,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="98"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2:
 
-  Variables: K, L, G, N, M, N1, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H7 : mem A L
-  ============================
-   exists P, nat P /\ seq P L (atom A)
+Variables: K L M N1 A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H7 : mem A L
+============================
+ exists P, nat P /\ seq P L (atom A)
 
 Subgoal 2.3 is:
  exists P, nat P /\ seq P L (or A B)
@@ -1706,18 +1724,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="99"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  ============================
-   exists P, nat P /\ seq P L (or A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+============================
+ exists P, nat P /\ seq P L (or A B)
 
 Subgoal 2.4 is:
  exists P, nat P /\ seq P L (or A B)
@@ -1740,20 +1758,20 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H6 H3 H4.</b>
 </pre>
 <a name="100"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: K, L, G, N, M, N1, B, A, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : nat P
-  H8 : seq P L A
-  ============================
-   exists P, nat P /\ seq P L (or A B)
+Variables: K L M N1 B A P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : nat P
+H8 : seq P L A
+============================
+ exists P, nat P /\ seq P L (or A B)
 
 Subgoal 2.4 is:
  exists P, nat P /\ seq P L (or A B)
@@ -1776,18 +1794,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="101"></a>
-<pre>
+<pre class="code">
 Subgoal 2.4:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) B
-  ============================
-   exists P, nat P /\ seq P L (or A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) B
+============================
+ exists P, nat P /\ seq P L (or A B)
 
 Subgoal 2.5 is:
  exists P, nat P /\ seq P L (and A B)
@@ -1807,20 +1825,20 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H6 H3 H4.</b>
 </pre>
 <a name="102"></a>
-<pre>
+<pre class="code">
 Subgoal 2.4:
 
-  Variables: K, L, G, N, M, N1, B, A, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) B
-  H7 : nat P
-  H8 : seq P L B
-  ============================
-   exists P, nat P /\ seq P L (or A B)
+Variables: K L M N1 B A P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) B
+H7 : nat P
+H8 : seq P L B
+============================
+ exists P, nat P /\ seq P L (or A B)
 
 Subgoal 2.5 is:
  exists P, nat P /\ seq P L (and A B)
@@ -1840,19 +1858,19 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="103"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -1869,21 +1887,21 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H6 H3 H4.</b>
 </pre>
 <a name="104"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: K, L, G, N, M, N1, B, A, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -1900,23 +1918,23 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H7 H3 H4.</b>
 </pre>
 <a name="105"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -1933,24 +1951,24 @@ Subgoal 2.9 is:
 seq_cut < <b>apply nat_lt to H8 H10.</b>
 </pre>
 <a name="106"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  H12 : lt P P1 \/ P = P1 \/ lt P1 P
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+H12 : lt P P1 \/ P = P1 \/ lt P1 P
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -1967,24 +1985,24 @@ Subgoal 2.9 is:
 seq_cut < <b>case H12.</b>
 </pre>
 <a name="107"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5.1:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  H13 : lt P P1
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+H13 : lt P P1
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.5.2 is:
  exists P, nat P /\ seq P L (and A B)
@@ -2007,25 +2025,25 @@ Subgoal 2.9 is:
 seq_cut < <b>apply seq_lt to H13 H9.</b>
 </pre>
 <a name="108"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5.1:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  H13 : lt P P1
-  H14 : seq P1 L A
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+H13 : lt P P1
+H14 : seq P1 L A
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.5.2 is:
  exists P, nat P /\ seq P L (and A B)
@@ -2048,23 +2066,23 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="109"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5.2:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P1
-  H9 : seq P1 L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P1
+H9 : seq P1 L A
+H10 : nat P1
+H11 : seq P1 L B
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.5.3 is:
  exists P, nat P /\ seq P L (and A B)
@@ -2084,24 +2102,24 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="110"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5.3:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  H13 : lt P1 P
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+H13 : lt P1 P
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2118,25 +2136,25 @@ Subgoal 2.9 is:
 seq_cut < <b>apply seq_lt to H13 H11.</b>
 </pre>
 <a name="111"></a>
-<pre>
+<pre class="code">
 Subgoal 2.5.3:
 
-  Variables: K, L, G, N, M, N1, B, A, P, P1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) A
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L A
-  H10 : nat P1
-  H11 : seq P1 L B
-  H13 : lt P1 P
-  H14 : seq P L B
-  ============================
-   exists P, nat P /\ seq P L (and A B)
+Variables: K L M N1 B A P P1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) A
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L A
+H10 : nat P1
+H11 : seq P1 L B
+H13 : lt P1 P
+H14 : seq P L B
+============================
+ exists P, nat P /\ seq P L (and A B)
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2153,18 +2171,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="112"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2178,18 +2196,18 @@ Subgoal 2.9 is:
 seq_cut < <b>assert forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L)).</b>
 </pre>
 <a name="113"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  ============================
-   forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+============================
+ forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2206,19 +2224,19 @@ Subgoal 2.9 is:
 seq_cut < <b>intros.</b>
 </pre>
 <a name="114"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1:
 
-  Variables: K, L, G, N, M, N1, B, A, X
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : mem X (cons A (cons K L))
-  ============================
-   mem X (cons K (cons A L))
+Variables: K L M N1 B A X
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : mem X (cons A (cons K L))
+============================
+ mem X (cons K (cons A L))
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2235,18 +2253,18 @@ Subgoal 2.9 is:
 seq_cut < <b>case H7.</b>
 </pre>
 <a name="115"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1.1:
 
-  Variables: K, L, G, N, M, N1, B, A, X
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  ============================
-   mem A (cons K (cons A L))
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+============================
+ mem A (cons K (cons A L))
 
 Subgoal 2.6.1.2 is:
  mem X (cons K (cons A L))
@@ -2266,19 +2284,19 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="116"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1.2:
 
-  Variables: K, L, G, N, M, N1, B, A, X
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H8 : mem X (cons K L)
-  ============================
-   mem X (cons K (cons A L))
+Variables: K L M N1 B A X
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H8 : mem X (cons K L)
+============================
+ mem X (cons K (cons A L))
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2295,18 +2313,18 @@ Subgoal 2.9 is:
 seq_cut < <b>case H8.</b>
 </pre>
 <a name="117"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1.2.1:
 
-  Variables: K, L, G, N, M, N1, B, A, X
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  ============================
-   mem K (cons K (cons A L))
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+============================
+ mem K (cons K (cons A L))
 
 Subgoal 2.6.1.2.2 is:
  mem X (cons K (cons A L))
@@ -2326,19 +2344,19 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="118"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6.1.2.2:
 
-  Variables: K, L, G, N, M, N1, B, A, X
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H9 : mem X L
-  ============================
-   mem X (cons K (cons A L))
+Variables: K L M N1 B A X
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H9 : mem X L
+============================
+ mem X (cons K (cons A L))
 
 Subgoal 2.6 is:
  exists P, nat P /\ seq P L (imp A B)
@@ -2355,19 +2373,19 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="119"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2381,20 +2399,20 @@ Subgoal 2.9 is:
 seq_cut < <b>apply seq_subset to H6 H7.</b>
 </pre>
 <a name="120"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
-  H8 : seq N1 (cons K (cons A L)) B
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+H8 : seq N1 (cons K (cons A L)) B
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2408,21 +2426,21 @@ Subgoal 2.9 is:
 seq_cut < <b>assert forall X, mem X L -> mem X (cons A L).</b>
 </pre>
 <a name="121"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
-  H8 : seq N1 (cons K (cons A L)) B
-  H9 : forall X, mem X L -> mem X (cons A L)
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+H8 : seq N1 (cons K (cons A L)) B
+H9 : forall X, mem X L -> mem X (cons A L)
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2436,22 +2454,22 @@ Subgoal 2.9 is:
 seq_cut < <b>apply seq_subset to H4 H9.</b>
 </pre>
 <a name="122"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
-  H8 : seq N1 (cons K (cons A L)) B
-  H9 : forall X, mem X L -> mem X (cons A L)
-  H10 : seq M (cons A L) (atom K)
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+H8 : seq N1 (cons K (cons A L)) B
+H9 : forall X, mem X L -> mem X (cons A L)
+H10 : seq M (cons A L) (atom K)
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2465,24 +2483,24 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H8 H3 H10.</b>
 </pre>
 <a name="123"></a>
-<pre>
+<pre class="code">
 Subgoal 2.6:
 
-  Variables: K, L, G, N, M, N1, B, A, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons A (cons K L)) B
-  H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
-  H8 : seq N1 (cons K (cons A L)) B
-  H9 : forall X, mem X L -> mem X (cons A L)
-  H10 : seq M (cons A L) (atom K)
-  H11 : nat P
-  H12 : seq P (cons A L) B
-  ============================
-   exists P, nat P /\ seq P L (imp A B)
+Variables: K L M N1 B A P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons A (cons K L)) B
+H7 : forall X, mem X (cons A (cons K L)) -> mem X (cons K (cons A L))
+H8 : seq N1 (cons K (cons A L)) B
+H9 : forall X, mem X L -> mem X (cons A L)
+H10 : seq M (cons A L) (atom K)
+H11 : nat P
+H12 : seq P (cons A L) B
+============================
+ exists P, nat P /\ seq P L (imp A B)
 
 Subgoal 2.7 is:
  exists P, nat P /\ seq P L (all G1)
@@ -2496,18 +2514,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="124"></a>
-<pre>
+<pre class="code">
 Subgoal 2.7:
 
-  Variables: K, L, G, N, M, N1, G1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) (G1 n1)
-  ============================
-   exists P, nat P /\ seq P L (all G1)
+Variables: K L M N1 G1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) (G1 n1)
+============================
+ exists P, nat P /\ seq P L (all G1)
 
 Subgoal 2.8 is:
  exists P, nat P /\ seq P L (ex G1)
@@ -2518,20 +2536,20 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H6 H3 H4.</b>
 </pre>
 <a name="125"></a>
-<pre>
+<pre class="code">
 Subgoal 2.7:
 
-  Variables: K, L, G, N, M, N1, G1, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) (G1 n1)
-  H7 : nat P
-  H8 : seq P L (G1 n1)
-  ============================
-   exists P, nat P /\ seq P L (all G1)
+Variables: K L M N1 G1 P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) (G1 n1)
+H7 : nat P
+H8 : seq P L (G1 n1)
+============================
+ exists P, nat P /\ seq P L (all G1)
 
 Subgoal 2.8 is:
  exists P, nat P /\ seq P L (ex G1)
@@ -2542,18 +2560,18 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="126"></a>
-<pre>
+<pre class="code">
 Subgoal 2.8:
 
-  Variables: K, L, G, N, M, N1, X, G1
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) (G1 X)
-  ============================
-   exists P, nat P /\ seq P L (ex G1)
+Variables: K L M N1 X G1
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) (G1 X)
+============================
+ exists P, nat P /\ seq P L (ex G1)
 
 Subgoal 2.9 is:
  exists P, nat P /\ seq P L (atom A)
@@ -2561,20 +2579,20 @@ Subgoal 2.9 is:
 seq_cut < <b>apply IH to H5 H6 H3 H4.</b>
 </pre>
 <a name="127"></a>
-<pre>
+<pre class="code">
 Subgoal 2.8:
 
-  Variables: K, L, G, N, M, N1, X, G1, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : seq N1 (cons K L) (G1 X)
-  H7 : nat P
-  H8 : seq P L (G1 X)
-  ============================
-   exists P, nat P /\ seq P L (ex G1)
+Variables: K L M N1 X G1 P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : seq N1 (cons K L) (G1 X)
+H7 : nat P
+H8 : seq P L (G1 X)
+============================
+ exists P, nat P /\ seq P L (ex G1)
 
 Subgoal 2.9 is:
  exists P, nat P /\ seq P L (atom A)
@@ -2582,38 +2600,38 @@ Subgoal 2.9 is:
 seq_cut < <b>search.</b>
 </pre>
 <a name="128"></a>
-<pre>
+<pre class="code">
 Subgoal 2.9:
 
-  Variables: K, L, G, N, M, N1, B, A
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : prog A B
-  H7 : seq N1 (cons K L) B
-  ============================
-   exists P, nat P /\ seq P L (atom A)
+Variables: K L M N1 B A
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : prog A B
+H7 : seq N1 (cons K L) B
+============================
+ exists P, nat P /\ seq P L (atom A)
 
 seq_cut < <b>apply IH to H5 H7 H3 H4.</b>
 </pre>
 <a name="129"></a>
-<pre>
+<pre class="code">
 Subgoal 2.9:
 
-  Variables: K, L, G, N, M, N1, B, A, P
-  IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
-         seq M L (atom K) -> (exists P, nat P /\ seq P L G)
-  H3 : nat M
-  H4 : seq M L (atom K)
-  H5 : nat N1 *
-  H6 : prog A B
-  H7 : seq N1 (cons K L) B
-  H8 : nat P
-  H9 : seq P L B
-  ============================
-   exists P, nat P /\ seq P L (atom A)
+Variables: K L M N1 B A P
+IH : forall K L G N M, nat N * -> seq N (cons K L) G -> nat M ->
+       seq M L (atom K) -> (exists P, nat P /\ seq P L G)
+H3 : nat M
+H4 : seq M L (atom K)
+H5 : nat N1 *
+H6 : prog A B
+H7 : seq N1 (cons K L) B
+H8 : nat P
+H9 : seq P L B
+============================
+ exists P, nat P /\ seq P L (atom A)
 
 seq_cut < <b>search.</b>
 Proof completed.
@@ -2622,45 +2640,44 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem mem_inst : 
 forall L A T, nabla x, mem (A x) (L x) -> mem (A T) (L T).</b>
+
 </pre>
 <a name="131"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L A T, nabla x, mem (A x) (L x) -> mem (A T) (L T)
+============================
+ forall L A T, nabla x, mem (A x) (L x) -> mem (A T) (L T)
 
 mem_inst < <b>induction on 1.</b>
 </pre>
 <a name="132"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
-  ============================
-   forall L A T, nabla x, mem (A x) (L x) @ -> mem (A T) (L T)
+IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
+============================
+ forall L A T, nabla x, mem (A x) (L x) @ -> mem (A T) (L T)
 
 mem_inst < <b>intros.</b>
 </pre>
 <a name="133"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, A, T
-  IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
-  H1 : mem (A n1) (L n1) @
-  ============================
-   mem (A T) (L T)
+Variables: L A T
+IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
+H1 : mem (A n1) (L n1) @
+============================
+ mem (A T) (L T)
 
 mem_inst < <b>case H1.</b>
 </pre>
 <a name="134"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, A, T, L1
-  IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
-  ============================
-   mem (A T) (cons (A T) (L1 T))
+Variables: A T L1
+IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
+============================
+ mem (A T) (cons (A T) (L1 T))
 
 Subgoal 2 is:
  mem (A T) (cons (B T) (L1 T))
@@ -2668,27 +2685,27 @@ Subgoal 2 is:
 mem_inst < <b>search.</b>
 </pre>
 <a name="135"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, A, T, L1, B
-  IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
-  H2 : mem (A n1) (L1 n1) *
-  ============================
-   mem (A T) (cons (B T) (L1 T))
+Variables: A T L1 B
+IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
+H2 : mem (A n1) (L1 n1) *
+============================
+ mem (A T) (cons (B T) (L1 T))
 
 mem_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="136"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, A, T, L1, B
-  IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
-  H2 : mem (A n1) (L1 n1) *
-  H3 : mem (A T) (L1 T)
-  ============================
-   mem (A T) (cons (B T) (L1 T))
+Variables: A T L1 B
+IH : forall L A T, nabla x, mem (A x) (L x) * -> mem (A T) (L T)
+H2 : mem (A n1) (L1 n1) *
+H3 : mem (A T) (L1 T)
+============================
+ mem (A T) (cons (B T) (L1 T))
 
 mem_inst < <b>search.</b>
 Proof completed.
@@ -2697,81 +2714,90 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem prog_inst : 
 forall A B T, nabla x, prog (A x) (B x) -> prog (A T) (B T).</b>
+
 </pre>
 <a name="138"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A B T, nabla x, prog (A x) (B x) -> prog (A T) (B T)
+============================
+ forall A B T, nabla x, prog (A x) (B x) -> prog (A T) (B T)
 
 prog_inst < <b>intros.</b>
 </pre>
 <a name="139"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, B, T
-  H1 : prog (A n1) (B n1)
-  ============================
-   prog (A T) (B T)
+Variables: A B T
+H1 : prog (A n1) (B n1)
+============================
+ prog (A T) (B T)
 
 prog_inst < <b>case H1.</b>
 </pre>
 <a name="140"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B, T, R
-  ============================
-   prog (eval (abs (R T)) (abs (R T))) tt
+Variables: T R
+============================
+ prog (eval (abs (R T)) (abs (R T))) tt
 
 Subgoal 2 is:
- prog (eval (app (P T) (Q T)) (V T)) (and (atom (eval (P T) (abs (R T)))) (atom (eval (R T (Q T)) (V T))))
+ prog (eval (app (P T) (Q T)) (V T))
+   (and (atom (eval (P T) (abs (R T)))) (atom (eval (R T (Q T)) (V T))))
 
 Subgoal 3 is:
- prog (of (abs (R T)) (arrow A1 B1)) (all (x\imp (of x A1) (atom (of (R T x) B1))))
+ prog (of (abs (R T)) (arrow A1 B1))
+   (all (x\imp (of x A1) (atom (of (R T x) B1))))
 
 Subgoal 4 is:
- prog (of (app (P T) (Q T)) B1) (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
+ prog (of (app (P T) (Q T)) B1)
+   (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
 
 prog_inst < <b>search.</b>
 </pre>
 <a name="141"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, T, V, Q, R, P
-  ============================
-   prog (eval (app (P T) (Q T)) (V T)) (and (atom (eval (P T) (abs (R T)))) (atom (eval (R T (Q T)) (V T))))
+Variables: T V Q R P
+============================
+ prog (eval (app (P T) (Q T)) (V T))
+   (and (atom (eval (P T) (abs (R T)))) (atom (eval (R T (Q T)) (V T))))
 
 Subgoal 3 is:
- prog (of (abs (R T)) (arrow A1 B1)) (all (x\imp (of x A1) (atom (of (R T x) B1))))
+ prog (of (abs (R T)) (arrow A1 B1))
+   (all (x\imp (of x A1) (atom (of (R T x) B1))))
 
 Subgoal 4 is:
- prog (of (app (P T) (Q T)) B1) (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
+ prog (of (app (P T) (Q T)) B1)
+   (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
 
 prog_inst < <b>search.</b>
 </pre>
 <a name="142"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: A, B, T, B1, R, A1
-  ============================
-   prog (of (abs (R T)) (arrow A1 B1)) (all (x\imp (of x A1) (atom (of (R T x) B1))))
+Variables: T B1 R A1
+============================
+ prog (of (abs (R T)) (arrow A1 B1))
+   (all (x\imp (of x A1) (atom (of (R T x) B1))))
 
 Subgoal 4 is:
- prog (of (app (P T) (Q T)) B1) (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
+ prog (of (app (P T) (Q T)) B1)
+   (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
 
 prog_inst < <b>search.</b>
 </pre>
 <a name="143"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: A, B, T, A1, Q, B1, P
-  ============================
-   prog (of (app (P T) (Q T)) B1) (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
+Variables: T A1 Q B1 P
+============================
+ prog (of (app (P T) (Q T)) B1)
+   (and (atom (of (P T) (arrow A1 B1))) (atom (of (Q T) A1)))
 
 prog_inst < <b>search.</b>
 Proof completed.
@@ -2780,45 +2806,44 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem seq_inst : 
 forall N L G T, nabla x, seq N (L x) (G x) -> seq N (L T) (G T).</b>
+
 </pre>
 <a name="145"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall N L G T, nabla x, seq N (L x) (G x) -> seq N (L T) (G T)
+============================
+ forall N L G T, nabla x, seq N (L x) (G x) -> seq N (L T) (G T)
 
 seq_inst < <b>induction on 1.</b>
 </pre>
 <a name="146"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  ============================
-   forall N L G T, nabla x, seq N (L x) (G x) @ -> seq N (L T) (G T)
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+============================
+ forall N L G T, nabla x, seq N (L x) (G x) @ -> seq N (L T) (G T)
 
 seq_inst < <b>intros.</b>
 </pre>
 <a name="147"></a>
-<pre>
+<pre class="code">
 
-  Variables: N, L, G, T
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H1 : seq N (L n1) (G n1) @
-  ============================
-   seq N (L T) (G T)
+Variables: N L G T
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H1 : seq N (L n1) (G n1) @
+============================
+ seq N (L T) (G T)
 
 seq_inst < <b>case H1.</b>
 </pre>
 <a name="148"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: N, L, G, T, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  ============================
-   seq (s N1) (L T) tt
+Variables: L T N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+============================
+ seq (s N1) (L T) tt
 
 Subgoal 2 is:
  seq (s N1) (L T) (atom (A T))
@@ -2847,14 +2872,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="149"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: N, L, G, T, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : mem (A n1) (L n1)
-  ============================
-   seq (s N1) (L T) (atom (A T))
+Variables: L T A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : mem (A n1) (L n1)
+============================
+ seq (s N1) (L T) (atom (A T))
 
 Subgoal 3 is:
  seq (s N1) (L T) (or (A T) (B T))
@@ -2880,15 +2905,15 @@ Subgoal 9 is:
 seq_inst < <b>apply mem_inst to H2 with T = T.</b>
 </pre>
 <a name="150"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: N, L, G, T, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : mem (A n1) (L n1)
-  H3 : mem (A T) (L T)
-  ============================
-   seq (s N1) (L T) (atom (A T))
+Variables: L T A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : mem (A n1) (L n1)
+H3 : mem (A T) (L T)
+============================
+ seq (s N1) (L T) (atom (A T))
 
 Subgoal 3 is:
  seq (s N1) (L T) (or (A T) (B T))
@@ -2914,14 +2939,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="151"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (A n1) *
-  ============================
-   seq (s N1) (L T) (or (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (A n1) *
+============================
+ seq (s N1) (L T) (or (A T) (B T))
 
 Subgoal 4 is:
  seq (s N1) (L T) (or (A T) (B T))
@@ -2944,15 +2969,15 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="152"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (A n1) *
-  H3 : seq N1 (L T) (A T)
-  ============================
-   seq (s N1) (L T) (or (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (A n1) *
+H3 : seq N1 (L T) (A T)
+============================
+ seq (s N1) (L T) (or (A T) (B T))
 
 Subgoal 4 is:
  seq (s N1) (L T) (or (A T) (B T))
@@ -2975,14 +3000,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="153"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (B n1) *
-  ============================
-   seq (s N1) (L T) (or (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (B n1) *
+============================
+ seq (s N1) (L T) (or (A T) (B T))
 
 Subgoal 5 is:
  seq (s N1) (L T) (and (A T) (B T))
@@ -3002,15 +3027,15 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="154"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (B n1) *
-  H3 : seq N1 (L T) (B T)
-  ============================
-   seq (s N1) (L T) (or (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (B n1) *
+H3 : seq N1 (L T) (B T)
+============================
+ seq (s N1) (L T) (or (A T) (B T))
 
 Subgoal 5 is:
  seq (s N1) (L T) (and (A T) (B T))
@@ -3030,15 +3055,15 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="155"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (A n1) *
-  H3 : seq N1 (L n1) (B n1) *
-  ============================
-   seq (s N1) (L T) (and (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (A n1) *
+H3 : seq N1 (L n1) (B n1) *
+============================
+ seq (s N1) (L T) (and (A T) (B T))
 
 Subgoal 6 is:
  seq (s N1) (L T) (imp (A T) (B T))
@@ -3055,16 +3080,16 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="156"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (A n1) *
-  H3 : seq N1 (L n1) (B n1) *
-  H4 : seq N1 (L T) (A T)
-  ============================
-   seq (s N1) (L T) (and (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (A n1) *
+H3 : seq N1 (L n1) (B n1) *
+H4 : seq N1 (L T) (A T)
+============================
+ seq (s N1) (L T) (and (A T) (B T))
 
 Subgoal 6 is:
  seq (s N1) (L T) (imp (A T) (B T))
@@ -3081,17 +3106,17 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H3 with T = T.</b>
 </pre>
 <a name="157"></a>
-<pre>
+<pre class="code">
 Subgoal 5:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (A n1) *
-  H3 : seq N1 (L n1) (B n1) *
-  H4 : seq N1 (L T) (A T)
-  H5 : seq N1 (L T) (B T)
-  ============================
-   seq (s N1) (L T) (and (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (A n1) *
+H3 : seq N1 (L n1) (B n1) *
+H4 : seq N1 (L T) (A T)
+H5 : seq N1 (L T) (B T)
+============================
+ seq (s N1) (L T) (and (A T) (B T))
 
 Subgoal 6 is:
  seq (s N1) (L T) (imp (A T) (B T))
@@ -3108,14 +3133,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="158"></a>
-<pre>
+<pre class="code">
 Subgoal 6:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (cons (A n1) (L n1)) (B n1) *
-  ============================
-   seq (s N1) (L T) (imp (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (cons (A n1) (L n1)) (B n1) *
+============================
+ seq (s N1) (L T) (imp (A T) (B T))
 
 Subgoal 7 is:
  seq (s N1) (L T) (all (G1 T))
@@ -3129,15 +3154,15 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="159"></a>
-<pre>
+<pre class="code">
 Subgoal 6:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (cons (A n1) (L n1)) (B n1) *
-  H3 : seq N1 (cons (A T) (L T)) (B T)
-  ============================
-   seq (s N1) (L T) (imp (A T) (B T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (cons (A n1) (L n1)) (B n1) *
+H3 : seq N1 (cons (A T) (L T)) (B T)
+============================
+ seq (s N1) (L T) (imp (A T) (B T))
 
 Subgoal 7 is:
  seq (s N1) (L T) (all (G1 T))
@@ -3151,14 +3176,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="160"></a>
-<pre>
+<pre class="code">
 Subgoal 7:
 
-  Variables: N, L, G, T, G1, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (G1 n1 n2) *
-  ============================
-   seq (s N1) (L T) (all (G1 T))
+Variables: L T G1 N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (G1 n1 n2) *
+============================
+ seq (s N1) (L T) (all (G1 T))
 
 Subgoal 8 is:
  seq (s N1) (L T) (ex (G1 T))
@@ -3169,15 +3194,15 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="161"></a>
-<pre>
+<pre class="code">
 Subgoal 7:
 
-  Variables: N, L, G, T, G1, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (G1 n1 n2) *
-  H3 : seq N1 (L T) (G1 T n2)
-  ============================
-   seq (s N1) (L T) (all (G1 T))
+Variables: L T G1 N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (G1 n1 n2) *
+H3 : seq N1 (L T) (G1 T n2)
+============================
+ seq (s N1) (L T) (all (G1 T))
 
 Subgoal 8 is:
  seq (s N1) (L T) (ex (G1 T))
@@ -3188,14 +3213,14 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="162"></a>
-<pre>
+<pre class="code">
 Subgoal 8:
 
-  Variables: N, L, G, T, X, G1, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (G1 n1 (X n1)) *
-  ============================
-   seq (s N1) (L T) (ex (G1 T))
+Variables: L T X G1 N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (G1 n1 (X n1)) *
+============================
+ seq (s N1) (L T) (ex (G1 T))
 
 Subgoal 9 is:
  seq (s N1) (L T) (atom (A T))
@@ -3203,15 +3228,15 @@ Subgoal 9 is:
 seq_inst < <b>apply IH to H2 with T = T.</b>
 </pre>
 <a name="163"></a>
-<pre>
+<pre class="code">
 Subgoal 8:
 
-  Variables: N, L, G, T, X, G1, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : seq N1 (L n1) (G1 n1 (X n1)) *
-  H3 : seq N1 (L T) (G1 T (X T))
-  ============================
-   seq (s N1) (L T) (ex (G1 T))
+Variables: L T X G1 N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : seq N1 (L n1) (G1 n1 (X n1)) *
+H3 : seq N1 (L T) (G1 T (X T))
+============================
+ seq (s N1) (L T) (ex (G1 T))
 
 Subgoal 9 is:
  seq (s N1) (L T) (atom (A T))
@@ -3219,44 +3244,44 @@ Subgoal 9 is:
 seq_inst < <b>search.</b>
 </pre>
 <a name="164"></a>
-<pre>
+<pre class="code">
 Subgoal 9:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : prog (A n1) (B n1)
-  H3 : seq N1 (L n1) (B n1) *
-  ============================
-   seq (s N1) (L T) (atom (A T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : prog (A n1) (B n1)
+H3 : seq N1 (L n1) (B n1) *
+============================
+ seq (s N1) (L T) (atom (A T))
 
 seq_inst < <b>apply prog_inst to H2 with T = T.</b>
 </pre>
 <a name="165"></a>
-<pre>
+<pre class="code">
 Subgoal 9:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : prog (A n1) (B n1)
-  H3 : seq N1 (L n1) (B n1) *
-  H4 : prog (A T) (B T)
-  ============================
-   seq (s N1) (L T) (atom (A T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : prog (A n1) (B n1)
+H3 : seq N1 (L n1) (B n1) *
+H4 : prog (A T) (B T)
+============================
+ seq (s N1) (L T) (atom (A T))
 
 seq_inst < <b>apply IH to H3 with T = T.</b>
 </pre>
 <a name="166"></a>
-<pre>
+<pre class="code">
 Subgoal 9:
 
-  Variables: N, L, G, T, B, A, N1
-  IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
-  H2 : prog (A n1) (B n1)
-  H3 : seq N1 (L n1) (B n1) *
-  H4 : prog (A T) (B T)
-  H5 : seq N1 (L T) (B T)
-  ============================
-   seq (s N1) (L T) (atom (A T))
+Variables: L T B A N1
+IH : forall N L G T, nabla x, seq N (L x) (G x) * -> seq N (L T) (G T)
+H2 : prog (A n1) (B n1)
+H3 : seq N1 (L n1) (B n1) *
+H4 : prog (A T) (B T)
+H5 : seq N1 (L T) (B T)
+============================
+ seq (s N1) (L T) (atom (A T))
 
 seq_inst < <b>search.</b>
 Proof completed.
@@ -3265,45 +3290,44 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lt_s : 
 forall A B, lt A B -> lt A (s B).</b>
+
 </pre>
 <a name="168"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A B, lt A B -> lt A (s B)
+============================
+ forall A B, lt A B -> lt A (s B)
 
 lt_s < <b>induction on 1.</b>
 </pre>
 <a name="169"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall A B, lt A B * -> lt A (s B)
-  ============================
-   forall A B, lt A B @ -> lt A (s B)
+IH : forall A B, lt A B * -> lt A (s B)
+============================
+ forall A B, lt A B @ -> lt A (s B)
 
 lt_s < <b>intros.</b>
 </pre>
 <a name="170"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, B
-  IH : forall A B, lt A B * -> lt A (s B)
-  H1 : lt A B @
-  ============================
-   lt A (s B)
+Variables: A B
+IH : forall A B, lt A B * -> lt A (s B)
+H1 : lt A B @
+============================
+ lt A (s B)
 
 lt_s < <b>case H1.</b>
 </pre>
 <a name="171"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B, N
-  IH : forall A B, lt A B * -> lt A (s B)
-  ============================
-   lt z (s (s N))
+Variables: N
+IH : forall A B, lt A B * -> lt A (s B)
+============================
+ lt z (s (s N))
 
 Subgoal 2 is:
  lt (s M) (s (s N))
@@ -3311,27 +3335,27 @@ Subgoal 2 is:
 lt_s < <b>search.</b>
 </pre>
 <a name="172"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, N, M
-  IH : forall A B, lt A B * -> lt A (s B)
-  H2 : lt M N *
-  ============================
-   lt (s M) (s (s N))
+Variables: N M
+IH : forall A B, lt A B * -> lt A (s B)
+H2 : lt M N *
+============================
+ lt (s M) (s (s N))
 
 lt_s < <b>apply IH to H2.</b>
 </pre>
 <a name="173"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, N, M
-  IH : forall A B, lt A B * -> lt A (s B)
-  H2 : lt M N *
-  H3 : lt M (s N)
-  ============================
-   lt (s M) (s (s N))
+Variables: N M
+IH : forall A B, lt A B * -> lt A (s B)
+H2 : lt M N *
+H3 : lt M (s N)
+============================
+ lt (s M) (s (s N))
 
 lt_s < <b>search.</b>
 Proof completed.
@@ -3340,65 +3364,64 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem sr : 
 forall E V A M N N', nat N' -> lt N N' -> seq N nl (atom (eval E V)) ->
-  nat M -> seq M nl (atom (of E A)) -> (exists P, nat P /\
-  seq P nl (atom (of V A))).</b>
+  nat M -> seq M nl (atom (of E A)) ->
+  (exists P, nat P /\ seq P nl (atom (of V A))).</b>
+
 </pre>
 <a name="175"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall E V A M N N', nat N' -> lt N N' -> seq N nl (atom (eval E V)) ->
-     nat M -> seq M nl (atom (of E A)) -> (exists P, nat P /\
-     seq P nl (atom (of V A)))
+============================
+ forall E V A M N N', nat N' -> lt N N' -> seq N nl (atom (eval E V)) ->
+   nat M -> seq M nl (atom (of E A)) ->
+   (exists P, nat P /\ seq P nl (atom (of V A)))
 
 sr < <b>induction on 1.</b>
 </pre>
 <a name="176"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  ============================
-   forall E V A M N N', nat N' @ -> lt N N' -> seq N nl (atom (eval E V)) ->
-     nat M -> seq M nl (atom (of E A)) -> (exists P, nat P /\
-     seq P nl (atom (of V A)))
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+============================
+ forall E V A M N N', nat N' @ -> lt N N' -> seq N nl (atom (eval E V)) ->
+   nat M -> seq M nl (atom (of E A)) ->
+   (exists P, nat P /\ seq P nl (atom (of V A)))
 
 sr < <b>intros.</b>
 </pre>
 <a name="177"></a>
-<pre>
+<pre class="code">
 
-  Variables: E, V, A, M, N, N'
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H1 : nat N' @
-  H2 : lt N N'
-  H3 : seq N nl (atom (eval E V))
-  H4 : nat M
-  H5 : seq M nl (atom (of E A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: E V A M N N'
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H1 : nat N' @
+H2 : lt N N'
+H3 : seq N nl (atom (eval E V))
+H4 : nat M
+H5 : seq M nl (atom (of E A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H1.</b>
 </pre>
 <a name="178"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: E, V, A, M, N, N'
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt N z
-  H3 : seq N nl (atom (eval E V))
-  H4 : nat M
-  H5 : seq M nl (atom (of E A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: E V A M N
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt N z
+H3 : seq N nl (atom (eval E V))
+H4 : nat M
+H5 : seq M nl (atom (of E A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 Subgoal 2 is:
  exists P, nat P /\ seq P nl (atom (of V A))
@@ -3406,38 +3429,38 @@ Subgoal 2 is:
 sr < <b>case H2.</b>
 </pre>
 <a name="179"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: E, V, A, M, N, N', N1
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt N (s N1)
-  H3 : seq N nl (atom (eval E V))
-  H4 : nat M
-  H5 : seq M nl (atom (of E A))
-  H6 : nat N1 *
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: E V A M N N1
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt N (s N1)
+H3 : seq N nl (atom (eval E V))
+H4 : nat M
+H5 : seq M nl (atom (of E A))
+H6 : nat N1 *
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H3.</b>
 </pre>
 <a name="180"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: E, V, A, M, N, N', N1, N2
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s N2) (s N1)
-  H4 : nat M
-  H5 : seq M nl (atom (of E A))
-  H6 : nat N1 *
-  H7 : mem (eval E V) nl
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: E V A M N1 N2
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s N2) (s N1)
+H4 : nat M
+H5 : seq M nl (atom (of E A))
+H6 : nat N1 *
+H7 : mem (eval E V) nl
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 Subgoal 2.2 is:
  exists P, nat P /\ seq P nl (atom (of V A))
@@ -3445,39 +3468,39 @@ Subgoal 2.2 is:
 sr < <b>case H7.</b>
 </pre>
 <a name="181"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s N2) (s N1)
-  H4 : nat M
-  H5 : seq M nl (atom (of E A))
-  H6 : nat N1 *
-  H7 : prog (eval E V) B
-  H8 : seq N2 nl B
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: E V A M N1 B N2
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s N2) (s N1)
+H4 : nat M
+H5 : seq M nl (atom (of E A))
+H6 : nat N1 *
+H7 : prog (eval E V) B
+H8 : seq N2 nl B
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H7.</b>
 </pre>
 <a name="182"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.1:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, R
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s N2) (s N1)
-  H4 : nat M
-  H5 : seq M nl (atom (of (abs R) A))
-  H6 : nat N1 *
-  H8 : seq N2 nl tt
-  ============================
-   exists P, nat P /\ seq P nl (atom (of (abs R) A))
+Variables: A M N1 N2 R
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s N2) (s N1)
+H4 : nat M
+H5 : seq M nl (atom (of (abs R) A))
+H6 : nat N1 *
+H8 : seq N2 nl tt
+============================
+ exists P, nat P /\ seq P nl (atom (of (abs R) A))
 
 Subgoal 2.2.2 is:
  exists P, nat P /\ seq P nl (atom (of V A))
@@ -3485,58 +3508,58 @@ Subgoal 2.2.2 is:
 sr < <b>search.</b>
 </pre>
 <a name="183"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s N2) (s N1)
-  H4 : nat M
-  H5 : seq M nl (atom (of (app P Q) A))
-  H6 : nat N1 *
-  H8 : seq N2 nl (and (atom (eval P (abs R))) (atom (eval (R Q) V)))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A M N1 N2 Q R P
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s N2) (s N1)
+H4 : nat M
+H5 : seq M nl (atom (of (app P Q) A))
+H6 : nat N1 *
+H8 : seq N2 nl (and (atom (eval P (abs R))) (atom (eval (R Q) V)))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H8.</b>
 </pre>
 <a name="184"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s (s N3)) (s N1)
-  H4 : nat M
-  H5 : seq M nl (atom (of (app P Q) A))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A M N1 Q R P N3
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s (s N3)) (s N1)
+H4 : nat M
+H5 : seq M nl (atom (of (app P Q) A))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H5.</b>
 </pre>
 <a name="185"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.1:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, N4
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s (s N3)) (s N1)
-  H4 : nat (s N4)
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H11 : mem (of (app P Q) A) nl
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 N4
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s (s N3)) (s N1)
+H4 : nat (s N4)
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H11 : mem (of (app P Q) A) nl
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 Subgoal 2.2.2.2 is:
  exists P, nat P /\ seq P nl (atom (of V A))
@@ -3544,212 +3567,211 @@ Subgoal 2.2.2.2 is:
 sr < <b>case H11.</b>
 </pre>
 <a name="186"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s (s N3)) (s N1)
-  H4 : nat (s N4)
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H11 : prog (of (app P Q) A) B1
-  H12 : seq N4 nl B1
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 B1 N4
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s (s N3)) (s N1)
+H4 : nat (s N4)
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H11 : prog (of (app P Q) A) B1
+H12 : seq N4 nl B1
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H11.</b>
 </pre>
 <a name="187"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s (s N3)) (s N1)
-  H4 : nat (s N4)
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H12 : seq N4 nl (and (atom (of P (arrow A1 A))) (atom (of Q A1)))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 N4 A1
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s (s N3)) (s N1)
+H4 : nat (s N4)
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H12 : seq N4 nl (and (atom (of P (arrow A1 A))) (atom (of Q A1)))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H12.</b>
 </pre>
 <a name="188"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H2 : lt (s (s N3)) (s N1)
-  H4 : nat (s (s N5))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H2 : lt (s (s N3)) (s N1)
+H4 : nat (s (s N5))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H2.</b>
 </pre>
 <a name="189"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H4 : nat (s (s N5))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H4 : nat (s (s N5))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>apply lt_s to H15.</b>
 </pre>
 <a name="190"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H4 : nat (s (s N5))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H16 : lt (s N3) (s N1)
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H4 : nat (s (s N5))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H16 : lt (s N3) (s N1)
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H16.</b>
 </pre>
 <a name="191"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H4 : nat (s (s N5))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H4 : nat (s (s N5))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H4.</b>
 </pre>
 <a name="192"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H18 : nat (s N5)
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H18 : nat (s N5)
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H18.</b>
 </pre>
 <a name="193"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>apply IH to H6 H17 H9 H19 H13.</b>
 </pre>
 <a name="194"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat P1
-  H21 : seq P1 nl (atom (of (abs R) (arrow A1 A)))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 P1
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat P1
+H21 : seq P1 nl (atom (of (abs R) (arrow A1 A)))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H21.</b>
 </pre>
 <a name="195"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.1:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             N6
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s N6)
-  H22 : mem (of (abs R) (arrow A1 A)) nl
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N6
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s N6)
+H22 : mem (of (abs R) (arrow A1 A)) nl
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 Subgoal 2.2.2.2.2 is:
  exists P, nat P /\ seq P nl (atom (of V A))
@@ -3757,255 +3779,245 @@ Subgoal 2.2.2.2.2 is:
 sr < <b>case H22.</b>
 </pre>
 <a name="196"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s N6)
-  H22 : prog (of (abs R) (arrow A1 A)) B2
-  H23 : seq N6 nl B2
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 B2 N6
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s N6)
+H22 : prog (of (abs R) (arrow A1 A)) B2
+H23 : seq N6 nl B2
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H22.</b>
 </pre>
 <a name="197"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s N6)
-  H23 : seq N6 nl (all (x\imp (of x A1) (atom (of (R x) A))))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N6
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s N6)
+H23 : seq N6 nl (all (x\imp (of x A1) (atom (of (R x) A))))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H23.</b>
 </pre>
 <a name="198"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s (s N7))
-  H24 : seq N7 nl (imp (of n1 A1) (atom (of (R n1) A)))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N7
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s (s N7))
+H24 : seq N7 nl (imp (of n1 A1) (atom (of (R n1) A)))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H24.</b>
 </pre>
 <a name="199"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s (s (s N8)))
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s (s (s N8)))
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>apply seq_inst to H25 with T = Q.</b>
 </pre>
 <a name="200"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H20 : nat (s (s (s N8)))
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H20 : nat (s (s (s N8)))
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H20.</b>
 </pre>
 <a name="201"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  H27 : nat (s (s N8))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+H27 : nat (s (s N8))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H27.</b>
 </pre>
 <a name="202"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  H28 : nat (s N8)
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+H28 : nat (s N8)
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>case H28.</b>
 </pre>
 <a name="203"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  H29 : nat N8
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+H29 : nat N8
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>apply seq_cut to H29 H26 H19 H14.</b>
 </pre>
 <a name="204"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8, P2
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  H29 : nat N8
-  H30 : nat P2
-  H31 : seq P2 nl (atom (of (R Q) A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8 P2
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+H29 : nat N8
+H30 : nat P2
+H31 : seq P2 nl (atom (of (R Q) A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>apply IH to H6 H17 H10 H30 H31.</b>
 </pre>
 <a name="205"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2.2.2.2:
 
-  Variables: E, V, A, M, N, N', N1, B, N2, Q, R, P, N3, B1, N4, A1, N5, P1,
-             B2, N6, N7, N8, P2, P3
-  IH : forall E V A M N N', nat N' * -> lt N N' ->
-         seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
-         (exists P, nat P /\ seq P nl (atom (of V A)))
-  H6 : nat N1 *
-  H9 : seq N3 nl (atom (eval P (abs R)))
-  H10 : seq N3 nl (atom (eval (R Q) V))
-  H13 : seq N5 nl (atom (of P (arrow A1 A)))
-  H14 : seq N5 nl (atom (of Q A1))
-  H15 : lt (s N3) N1
-  H17 : lt N3 N1
-  H19 : nat N5
-  H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
-  H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
-  H29 : nat N8
-  H30 : nat P2
-  H31 : seq P2 nl (atom (of (R Q) A))
-  H32 : nat P3
-  H33 : seq P3 nl (atom (of V A))
-  ============================
-   exists P, nat P /\ seq P nl (atom (of V A))
+Variables: V A N1 Q R P N3 A1 N5 N8 P2 P3
+IH : forall E V A M N N', nat N' * -> lt N N' ->
+       seq N nl (atom (eval E V)) -> nat M -> seq M nl (atom (of E A)) ->
+       (exists P, nat P /\ seq P nl (atom (of V A)))
+H6 : nat N1 *
+H9 : seq N3 nl (atom (eval P (abs R)))
+H10 : seq N3 nl (atom (eval (R Q) V))
+H13 : seq N5 nl (atom (of P (arrow A1 A)))
+H14 : seq N5 nl (atom (of Q A1))
+H15 : lt (s N3) N1
+H17 : lt N3 N1
+H19 : nat N5
+H25 : seq N8 (cons (of n1 A1) nl) (atom (of (R n1) A))
+H26 : seq N8 (cons (of Q A1) nl) (atom (of (R Q) A))
+H29 : nat N8
+H30 : nat P2
+H31 : seq P2 nl (atom (of (R Q) A))
+H32 : nat P3
+H33 : seq P3 nl (atom (of V A))
+============================
+ exists P, nat P /\ seq P nl (atom (of V A))
 
 sr < <b>search.</b>
 Proof completed.
@@ -4014,27 +4026,28 @@ Proof completed.
 <pre class="code">
 Abella < <b>Define tridot : atmlist -> o -> prop by 
 tridot L G := exists N, nat N /\ seq N L G.</b>
+
 </pre>
 <a name="207"></a>
 <pre class="code">
 Abella < <b>Theorem lem1 : 
 forall L, tridot L tt.</b>
+
 </pre>
 <a name="208"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L, tridot L tt
+============================
+ forall L, tridot L tt
 
 lem1 < <b>intros.</b>
 </pre>
 <a name="209"></a>
-<pre>
+<pre class="code">
 
-  Variables: L
-  ============================
-   tridot L tt
+Variables: L
+============================
+ tridot L tt
 
 lem1 < <b>search.</b>
 Proof completed.
@@ -4043,34 +4056,34 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem2 : 
 forall L G1 G2, tridot L G1 -> tridot L (or G1 G2).</b>
+
 </pre>
 <a name="211"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G1 G2, tridot L G1 -> tridot L (or G1 G2)
+============================
+ forall L G1 G2, tridot L G1 -> tridot L (or G1 G2)
 
 lem2 < <b>intros.</b>
 </pre>
 <a name="212"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2
-  H1 : tridot L G1
-  ============================
-   tridot L (or G1 G2)
+Variables: L G1 G2
+H1 : tridot L G1
+============================
+ tridot L (or G1 G2)
 
 lem2 < <b>case H1.</b>
 </pre>
 <a name="213"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2, N
-  H2 : nat N
-  H3 : seq N L G1
-  ============================
-   tridot L (or G1 G2)
+Variables: L G1 G2 N
+H2 : nat N
+H3 : seq N L G1
+============================
+ tridot L (or G1 G2)
 
 lem2 < <b>search.</b>
 Proof completed.
@@ -4079,34 +4092,34 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem3 : 
 forall L G1 G2, tridot L G2 -> tridot L (or G1 G2).</b>
+
 </pre>
 <a name="215"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G1 G2, tridot L G2 -> tridot L (or G1 G2)
+============================
+ forall L G1 G2, tridot L G2 -> tridot L (or G1 G2)
 
 lem3 < <b>intros.</b>
 </pre>
 <a name="216"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2
-  H1 : tridot L G2
-  ============================
-   tridot L (or G1 G2)
+Variables: L G1 G2
+H1 : tridot L G2
+============================
+ tridot L (or G1 G2)
 
 lem3 < <b>case H1.</b>
 </pre>
 <a name="217"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2, N
-  H2 : nat N
-  H3 : seq N L G2
-  ============================
-   tridot L (or G1 G2)
+Variables: L G1 G2 N
+H2 : nat N
+H3 : seq N L G2
+============================
+ tridot L (or G1 G2)
 
 lem3 < <b>search.</b>
 Proof completed.
@@ -4115,78 +4128,78 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem4 : 
 forall L G1 G2, tridot L G1 -> tridot L G2 -> tridot L (and G1 G2).</b>
+
 </pre>
 <a name="219"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G1 G2, tridot L G1 -> tridot L G2 -> tridot L (and G1 G2)
+============================
+ forall L G1 G2, tridot L G1 -> tridot L G2 -> tridot L (and G1 G2)
 
 lem4 < <b>intros.</b>
 </pre>
 <a name="220"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2
-  H1 : tridot L G1
-  H2 : tridot L G2
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2
+H1 : tridot L G1
+H2 : tridot L G2
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>case H1.</b>
 </pre>
 <a name="221"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2, N
-  H2 : tridot L G2
-  H3 : nat N
-  H4 : seq N L G1
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N
+H2 : tridot L G2
+H3 : nat N
+H4 : seq N L G1
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>case H2.</b>
 </pre>
 <a name="222"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>apply nat_lt to H3 H5.</b>
 </pre>
 <a name="223"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  H7 : lt N N1 \/ N = N1 \/ lt N1 N
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+H7 : lt N N1 \/ N = N1 \/ lt N1 N
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>case H7.</b>
 </pre>
 <a name="224"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  H8 : lt N N1
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+H8 : lt N N1
+============================
+ tridot L (and G1 G2)
 
 Subgoal 2 is:
  tridot L (and G1 G2)
@@ -4197,18 +4210,18 @@ Subgoal 3 is:
 lem4 < <b>apply seq_lt to H8 H4.</b>
 </pre>
 <a name="225"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  H8 : lt N N1
-  H9 : seq N1 L G1
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+H8 : lt N N1
+H9 : seq N1 L G1
+============================
+ tridot L (and G1 G2)
 
 Subgoal 2 is:
  tridot L (and G1 G2)
@@ -4219,16 +4232,16 @@ Subgoal 3 is:
 lem4 < <b>search.</b>
 </pre>
 <a name="226"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N1
-  H4 : seq N1 L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N1
+H3 : nat N1
+H4 : seq N1 L G1
+H5 : nat N1
+H6 : seq N1 L G2
+============================
+ tridot L (and G1 G2)
 
 Subgoal 3 is:
  tridot L (and G1 G2)
@@ -4236,33 +4249,33 @@ Subgoal 3 is:
 lem4 < <b>search.</b>
 </pre>
 <a name="227"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  H8 : lt N1 N
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+H8 : lt N1 N
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>apply seq_lt to H8 H6.</b>
 </pre>
 <a name="228"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, G1, G2, N, N1
-  H3 : nat N
-  H4 : seq N L G1
-  H5 : nat N1
-  H6 : seq N1 L G2
-  H8 : lt N1 N
-  H9 : seq N L G2
-  ============================
-   tridot L (and G1 G2)
+Variables: L G1 G2 N N1
+H3 : nat N
+H4 : seq N L G1
+H5 : nat N1
+H6 : seq N1 L G2
+H8 : lt N1 N
+H9 : seq N L G2
+============================
+ tridot L (and G1 G2)
 
 lem4 < <b>search.</b>
 Proof completed.
@@ -4271,34 +4284,34 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem5 : 
 forall L A G, tridot (cons A L) G -> tridot L (imp A G).</b>
+
 </pre>
 <a name="230"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L A G, tridot (cons A L) G -> tridot L (imp A G)
+============================
+ forall L A G, tridot (cons A L) G -> tridot L (imp A G)
 
 lem5 < <b>intros.</b>
 </pre>
 <a name="231"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, A, G
-  H1 : tridot (cons A L) G
-  ============================
-   tridot L (imp A G)
+Variables: L A G
+H1 : tridot (cons A L) G
+============================
+ tridot L (imp A G)
 
 lem5 < <b>case H1.</b>
 </pre>
 <a name="232"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, A, G, N
-  H2 : nat N
-  H3 : seq N (cons A L) G
-  ============================
-   tridot L (imp A G)
+Variables: L A G N
+H2 : nat N
+H3 : seq N (cons A L) G
+============================
+ tridot L (imp A G)
 
 lem5 < <b>search.</b>
 Proof completed.
@@ -4307,44 +4320,44 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem6 : 
 forall L G, (nabla x, tridot L (G x)) -> tridot L (all G).</b>
+
 </pre>
 <a name="234"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G, (nabla x, tridot L (G x)) -> tridot L (all G)
+============================
+ forall L G, (nabla x, tridot L (G x)) -> tridot L (all G)
 
 lem6 < <b>intros.</b>
 </pre>
 <a name="235"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G
-  H1 : nabla x, tridot L (G x)
-  ============================
-   tridot L (all G)
+Variables: L G
+H1 : nabla x, tridot L (G x)
+============================
+ tridot L (all G)
 
 lem6 < <b>case H1.</b>
 </pre>
 <a name="236"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G
-  H2 : tridot L (G n1)
-  ============================
-   tridot L (all G)
+Variables: L G
+H2 : tridot L (G n1)
+============================
+ tridot L (all G)
 
 lem6 < <b>case H2.</b>
 </pre>
 <a name="237"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G, N
-  H3 : nat N
-  H4 : seq N L (G n1)
-  ============================
-   tridot L (all G)
+Variables: L G N
+H3 : nat N
+H4 : seq N L (G n1)
+============================
+ tridot L (all G)
 
 lem6 < <b>search.</b>
 Proof completed.
@@ -4353,41 +4366,41 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem lem7 : 
 forall L G T, tridot L (G T) -> tridot L (ex G).</b>
+
 </pre>
 <a name="239"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L G T, tridot L (G T) -> tridot L (ex G)
+============================
+ forall L G T, tridot L (G T) -> tridot L (ex G)
 
 lem7 < <b>intros.</b>
 </pre>
 <a name="240"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G, T
-  H1 : tridot L (G T)
-  ============================
-   tridot L (ex G)
+Variables: L G T
+H1 : tridot L (G T)
+============================
+ tridot L (ex G)
 
 lem7 < <b>case H1.</b>
 </pre>
 <a name="241"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, G, T, N
-  H2 : nat N
-  H3 : seq N L (G T)
-  ============================
-   tridot L (ex G)
+Variables: L G T N
+H2 : nat N
+H3 : seq N L (G T)
+============================
+ tridot L (ex G)
 
 lem7 < <b>search.</b>
 Proof completed.
 </pre>
 <a name="242"></a>
 <pre class="code">
-Abella < Goodbye.
+Abella < 
 </pre>
 </div>
 

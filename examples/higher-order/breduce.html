@@ -80,12 +80,12 @@ type tm    tm -> o.
 module breduce.
 
 bred (abs M) (abs U) :-
-  pi x\ bred x x => bred (M x) (U x).
+  pi x\ bred (M x) (U x) <= bred x x.
 bred (app M N) (app U V) :-
   bred M U, bred N V.
 bred (beta R N) V :-
-  pi x\ (pi u\ bred N u => bred x u)
-    => bred (R x) V.
+  pi x\ bred (R x) V <=
+    pi u\ bred x u <= bred N u.
 
 path (abs M) (bnd P) :-
   pi x\ pi p\ path x p => path (M x) (P p).
@@ -94,16 +94,15 @@ path (app M N) (left P) :-
 path (app M N) (right P) :-
   path N P.
 path (beta R N) P :-
-  pi x\
-    (pi q\ path N q => path x q) =>
-    path (R x) P.
+  pi x\ path (R x) P <=
+    pi q\ path x q <= path N q.
 
-bfree (abs M) :- pi x\ bfree x => bfree (M x).
+bfree (abs M) :- pi x\ bfree (M x) <= bfree x.
 bfree (app M N) :- bfree M, bfree N.
 
 tm (abs M) :- pi x\ tm x => tm (M x).
 tm (app M N) :- tm M, tm N.
-tm (beta R N) :- tm N, pi x\ tm x => tm (R x).
+tm (beta R N) :- tm N, pi x\ tm (R x) <= tm x.
 </pre>
 
 </div>
@@ -120,14 +119,14 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="breduce-details.html#1" class="command">Specification "breduce".</a>
 
 <a href="breduce-details.html#2" class="command">Close tm, p.</a>
- 
+
 <a href="breduce-details.html#3" class="command">Define ctx2 : olist -> olist -> prop by
   ctx2 nil nil
 ; nabla x p,
     ctx2 (bred x x :: G) (path x p :: D) := ctx2 G D
 ; nabla x,
-    ctx2 ((pi u\ bred N u => bred x u) :: G)
-         ((pi q\ path N q => path x q) :: D) :=
+    ctx2 ((pi u\ bred x u <= bred N u) :: G)
+         ((pi q\ path x q <= path N q) :: D) :=
       ctx2 G D.</a>
 
 <a href="breduce-details.html#4" class="command">Define name : tm -> prop by
@@ -143,7 +142,7 @@ Click on a command or tactic to see a detailed view of its use.
     forall G D F,
     ctx2 G D -> member F G ->
     (   (exists x, F = bred x x /\ name x)
-     \/ (exists x N, F = (pi u\ bred N u => bred x u) /\ fresh x N)).</a>
+     \/ (exists x N, F = (pi u\ bred x u <= bred N u) /\ fresh x N)).</a>
 <div class="proof"><a href="breduce-details.html#8" class="tactic">induction on 1.</a> <a href="breduce-details.html#9" class="tactic">intros.</a> <a href="breduce-details.html#10" class="tactic">case H1.</a>
   <a href="breduce-details.html#11" class="tactic">case H2.</a>
   <a href="breduce-details.html#12" class="tactic">case H2.</a>
@@ -154,7 +153,7 @@ Click on a command or tactic to see a detailed view of its use.
   forall G D F,
   ctx2 G D -> member F D ->
   (   (exists x p, F = path x p /\ name x /\ pname p)
-   \/ (exists x N, F = (pi q\ path N q => path x q) /\ fresh x N) ).</a>
+   \/ (exists x N, F = (pi q\ path x q <= path N q) /\ fresh x N) ).</a>
 <div class="proof"><a href="breduce-details.html#25" class="tactic">induction on 1.</a> <a href="breduce-details.html#26" class="tactic">intros.</a> <a href="breduce-details.html#27" class="tactic">case H1.</a>
   <a href="breduce-details.html#28" class="tactic">case H2.</a>
   <a href="breduce-details.html#29" class="tactic">case H2.</a>
@@ -164,8 +163,8 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="breduce-details.html#41" class="command">Theorem ctx2_uniform :
   forall G D X, nabla n,
   ctx2 (G n) (D n) ->
-  member (pi u\ bred X u => bred n u) (G n) ->
-  member (pi q\ path X q => path n q) (D n).</a>
+  member (pi u\ bred n u <= bred X u) (G n) ->
+  member (pi q\ path n q <= path X q) (D n).</a>
 <div class="proof"><a href="breduce-details.html#42" class="tactic">induction on 1.</a> <a href="breduce-details.html#43" class="tactic">intros.</a> <a href="breduce-details.html#44" class="tactic">case H1.</a>
   <a href="breduce-details.html#45" class="tactic">case H2.</a>
   <a href="breduce-details.html#46" class="tactic">case H2.</a> <a href="breduce-details.html#47" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#48" class="tactic">search.</a>
@@ -183,8 +182,8 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="breduce-details.html#74" class="command">Theorem member_D_determinate :
    forall G D X Y, nabla n,
    ctx2 (G n) (D n) ->
-   member (pi q\ path X q => path n q) (D n) ->
-   member (pi q\ path Y q => path n q) (D n) ->
+   member (pi q\ path n q <= path X q) (D n) ->
+   member (pi q\ path n q <= path Y q) (D n) ->
    X = Y.</a>
 <div class="proof"><a href="breduce-details.html#75" class="tactic">induction on 1.</a> <a href="breduce-details.html#76" class="tactic">intros.</a> <a href="breduce-details.html#77" class="tactic">case H1.</a>
   <a href="breduce-details.html#78" class="tactic">case H2.</a>
@@ -196,7 +195,7 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="breduce-details.html#96" class="command">Theorem member_D_discrim :
    forall G D X P, nabla n,
    ctx2 (G n) (D n) ->
-   member (pi q\ path X q => path n q) (D n) ->
+   member (pi q\ path n q <= path X q) (D n) ->
    member (path n P) (D n) ->
    false.</a>
 <div class="proof"><a href="breduce-details.html#97" class="tactic">induction on 1.</a> <a href="breduce-details.html#98" class="tactic">intros.</a> <a href="breduce-details.html#99" class="tactic">case H1.</a>
@@ -208,7 +207,7 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="breduce-details.html#111" class="command">Theorem jump_D_invert :
    forall G D X P, nabla n,
    ctx2 (G n) (D n) ->
-   member (pi q\ path X q => path n q) (D n) ->
+   member (pi q\ path n q <= path X q) (D n) ->
    { D n |- path n P } -> { D n |- path X P }.</a>
 <div class="proof"><a href="breduce-details.html#112" class="tactic">intros.</a> <a href="breduce-details.html#113" class="tactic">case H3.</a>
 <a href="breduce-details.html#114" class="tactic">apply ctx2_mem_D to H1 H5.</a> <a href="breduce-details.html#115" class="tactic">case H6.</a>
@@ -233,7 +232,7 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="breduce-details.html#146" class="tactic">case H3.</a>
     <a href="breduce-details.html#147" class="tactic">apply IH to _ H4 H5.</a>
      <a href="breduce-details.html#148" class="tactic">inst H6 with n1 = N1.</a>
-     <a href="breduce-details.html#149" class="tactic">assert {D |- pi q\ path N1 q => path N1 q}.</a>
+     <a href="breduce-details.html#149" class="tactic">assert {D |- pi q\ path N1 q <= path N1 q}.</a>
      <a href="breduce-details.html#150" class="tactic">cut H7 with H8.</a> <a href="breduce-details.html#151" class="tactic">search.</a>
     <a href="breduce-details.html#152" class="tactic">apply ctx2_mem_D to H1 H6.</a> <a href="breduce-details.html#153" class="tactic">case H7.</a>
       <a href="breduce-details.html#154" class="tactic">case H8.</a> <a href="breduce-details.html#155" class="tactic">case H5.</a> <a href="breduce-details.html#156" class="tactic">case H8.</a> <a href="breduce-details.html#157" class="tactic">case H5.</a>
@@ -260,7 +259,7 @@ Click on a command or tactic to see a detailed view of its use.
     <a href="breduce-details.html#187" class="tactic">apply IH to _ H5 H6.</a> <a href="breduce-details.html#188" class="tactic">search.</a>
     <a href="breduce-details.html#189" class="tactic">apply ctx2_mem_D to H1 H7.</a> <a href="breduce-details.html#190" class="tactic">case H8.</a>
       <a href="breduce-details.html#191" class="tactic">case H9.</a> <a href="breduce-details.html#192" class="tactic">case H6.</a> <a href="breduce-details.html#193" class="tactic">case H9.</a> <a href="breduce-details.html#194" class="tactic">case H6.</a>
-  <a href="breduce-details.html#195" class="tactic">assert {D, (pi q\ path N1 q => path n1 q) |- path N P}.</a>
+  <a href="breduce-details.html#195" class="tactic">assert {D, (pi q\ path n1 q <= path N1 q) |- path N P}.</a>
    <a href="breduce-details.html#196" class="tactic">apply IH to _ H4 H5.</a> <a href="breduce-details.html#197" class="tactic">search.</a>
   <a href="breduce-details.html#198" class="tactic">apply ctx2_mem_G to H1 H5.</a> <a href="breduce-details.html#199" class="tactic">case H6.</a>
     <a href="breduce-details.html#200" class="tactic">case H7.</a> <a href="breduce-details.html#201" class="tactic">case H4.</a> <a href="breduce-details.html#202" class="tactic">search.</a>
@@ -269,7 +268,7 @@ Click on a command or tactic to see a detailed view of its use.
      <a href="breduce-details.html#206" class="tactic">apply ctx2_uniform to H1 H5.</a> <a href="breduce-details.html#207" class="tactic">search.</a></div>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%</span>
-<span class="comment">% Two lambda terms must beta-reduce to a common term </span>
+<span class="comment">% Two lambda terms must beta-reduce to a common term</span>
 <span class="comment">% if they have the same paths</span>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%</span>
 
@@ -311,156 +310,156 @@ Click on a command or tactic to see a detailed view of its use.
   bfctx L K -> {L |- bfree M} -> exists P, {K |- path M P}.</a>
 <div class="proof"><a href="breduce-details.html#249" class="tactic">induction on 2.</a> <a href="breduce-details.html#250" class="tactic">intros.</a> <a href="breduce-details.html#251" class="tactic">case H2.</a>
   <a href="breduce-details.html#252" class="tactic">assert bfctx (bfree n1 :: L) (path n1 n2 :: K).</a>
-    <a href="breduce-details.html#253" class="tactic">apply IH to H4 H3.</a> <a href="breduce-details.html#254" class="tactic">search.</a>
-  <a href="breduce-details.html#255" class="tactic">apply IH to H1 H3.</a> <a href="breduce-details.html#256" class="tactic">search.</a>
-  <a href="breduce-details.html#257" class="tactic">apply bfctx_member1 to H1 H4.</a> <a href="breduce-details.html#258" class="tactic">case H3.</a> <a href="breduce-details.html#259" class="tactic">search.</a></div>
-<a href="breduce-details.html#260" class="command">Theorem bfree_beta_absurd : forall L K R N,
+    <a href="breduce-details.html#253" class="tactic">apply IH to H4 H3.</a> <a href="breduce-details.html#254" class="tactic">exists (bnd P).</a>  <a href="breduce-details.html#255" class="tactic">search.</a>
+  <a href="breduce-details.html#256" class="tactic">apply IH to H1 H3.</a> <a href="breduce-details.html#257" class="tactic">search.</a>
+  <a href="breduce-details.html#258" class="tactic">apply bfctx_member1 to H1 H4.</a> <a href="breduce-details.html#259" class="tactic">case H3.</a> <a href="breduce-details.html#260" class="tactic">search.</a></div>
+<a href="breduce-details.html#261" class="command">Theorem bfree_beta_absurd : forall L K R N,
   bfctx L K -> {L |- bfree (beta R N)} -> false.</a>
-<div class="proof"><a href="breduce-details.html#261" class="tactic">intros.</a> <a href="breduce-details.html#262" class="tactic">case H2.</a>
-<a href="breduce-details.html#263" class="tactic">apply bfctx_member1 to H1 H4.</a> <a href="breduce-details.html#264" class="tactic">case H5.</a> <a href="breduce-details.html#265" class="tactic">case H3.</a></div>
-<a href="breduce-details.html#266" class="command">Theorem path_app : forall L K M N Y,
+<div class="proof"><a href="breduce-details.html#262" class="tactic">intros.</a> <a href="breduce-details.html#263" class="tactic">case H2.</a>
+<a href="breduce-details.html#264" class="tactic">apply bfctx_member1 to H1 H4.</a> <a href="breduce-details.html#265" class="tactic">case H5.</a> <a href="breduce-details.html#266" class="tactic">case H3.</a></div>
+<a href="breduce-details.html#267" class="command">Theorem path_app : forall L K M N Y,
   bfctx L K -> {L |- bfree (app M N)} -> {L |- bfree Y} ->
     (forall P, {K |- path (app M N) P} -> {K |- path Y P}) ->
       exists YM YN, Y = app YM YN.</a>
-<div class="proof"><a href="breduce-details.html#267" class="tactic">intros.</a> <a href="breduce-details.html#268" class="tactic">case H2.</a> 
-  <a href="breduce-details.html#269" class="tactic">apply path_exists to H1 H5.</a>
-    <a href="breduce-details.html#270" class="tactic">assert {K |- path (app M N) (left P)}.</a>
-    <a href="breduce-details.html#271" class="tactic">apply H4 to H8.</a>
-    <a href="breduce-details.html#272" class="tactic">case H9.</a>
-      <a href="breduce-details.html#273" class="tactic">search.</a>
-      <a href="breduce-details.html#274" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
-      <a href="breduce-details.html#275" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#276" class="tactic">case H13.</a> <a href="breduce-details.html#277" class="tactic">case H10.</a>
-  <a href="breduce-details.html#278" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#279" class="tactic">case H5.</a> <a href="breduce-details.html#280" class="tactic">case H7.</a></div>
-<a href="breduce-details.html#281" class="command">Theorem path_abs : forall L K R Y,
+<div class="proof"><a href="breduce-details.html#268" class="tactic">intros.</a> <a href="breduce-details.html#269" class="tactic">case H2.</a>
+  <a href="breduce-details.html#270" class="tactic">apply path_exists to H1 H5.</a>
+    <a href="breduce-details.html#271" class="tactic">assert {K |- path (app M N) (left P)}.</a>
+    <a href="breduce-details.html#272" class="tactic">apply H4 to H8.</a>
+    <a href="breduce-details.html#273" class="tactic">case H9.</a>
+      <a href="breduce-details.html#274" class="tactic">search.</a>
+      <a href="breduce-details.html#275" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
+      <a href="breduce-details.html#276" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#277" class="tactic">case H13.</a> <a href="breduce-details.html#278" class="tactic">case H10.</a>
+  <a href="breduce-details.html#279" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#280" class="tactic">case H5.</a> <a href="breduce-details.html#281" class="tactic">case H7.</a></div>
+<a href="breduce-details.html#282" class="command">Theorem path_abs : forall L K R Y,
   bfctx L K -> {L |- bfree (abs R)} -> {L |- bfree Y} ->
     (forall P, {K |- path (abs R) P} -> {K |- path Y P}) ->
       exists YR, Y = abs YR.</a>
-<div class="proof"><a href="breduce-details.html#282" class="tactic">intros.</a> <a href="breduce-details.html#283" class="tactic">case H2.</a>
-  <a href="breduce-details.html#284" class="tactic">assert bfctx (bfree n1 :: L) (path n1 n2 :: K).</a>
-    <a href="breduce-details.html#285" class="tactic">apply path_exists to H6 H5.</a>
-    <a href="breduce-details.html#286" class="tactic">assert {K |- path (abs R) (bnd P)}.</a>
-    <a href="breduce-details.html#287" class="tactic">apply H4 to H8.</a> 
-    <a href="breduce-details.html#288" class="tactic">case H9.</a> 
-      <a href="breduce-details.html#289" class="tactic">search.</a>
-      <a href="breduce-details.html#290" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
-      <a href="breduce-details.html#291" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#292" class="tactic">case H10.</a> <a href="breduce-details.html#293" class="tactic">case H13.</a>
-  <a href="breduce-details.html#294" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#295" class="tactic">case H5.</a> <a href="breduce-details.html#296" class="tactic">case H7.</a></div>
- 
-<a href="breduce-details.html#297" class="command">Theorem bfree_sames :
+<div class="proof"><a href="breduce-details.html#283" class="tactic">intros.</a> <a href="breduce-details.html#284" class="tactic">case H2.</a>
+  <a href="breduce-details.html#285" class="tactic">assert bfctx (bfree n1 :: L) (path n1 n2 :: K).</a>
+    <a href="breduce-details.html#286" class="tactic">apply path_exists to H6 H5.</a>
+    <a href="breduce-details.html#287" class="tactic">assert {K |- path (abs R) (bnd P)}.</a>
+    <a href="breduce-details.html#288" class="tactic">apply H4 to H8.</a>
+    <a href="breduce-details.html#289" class="tactic">case H9.</a>
+      <a href="breduce-details.html#290" class="tactic">search.</a>
+      <a href="breduce-details.html#291" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
+      <a href="breduce-details.html#292" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#293" class="tactic">case H10.</a> <a href="breduce-details.html#294" class="tactic">case H13.</a>
+  <a href="breduce-details.html#295" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#296" class="tactic">case H5.</a> <a href="breduce-details.html#297" class="tactic">case H7.</a></div>
+
+<a href="breduce-details.html#298" class="command">Theorem bfree_sames :
   forall L K M N,
   bfctx L K ->
   {L |- bfree M} -> {L |- bfree N} ->
   (forall p, {K |- path M p} -> {K |- path N p}) ->
   M = N.</a>
-<div class="proof"><a href="breduce-details.html#298" class="tactic">induction on 2.</a>
-<a href="breduce-details.html#299" class="tactic">intros.</a> <a href="breduce-details.html#300" class="tactic">case H2 (keep).</a>
+<div class="proof"><a href="breduce-details.html#299" class="tactic">induction on 2.</a>
+<a href="breduce-details.html#300" class="tactic">intros.</a> <a href="breduce-details.html#301" class="tactic">case H2 (keep).</a>
 
-  <span class="comment">% M = (abs M1) </span>
-  <a href="breduce-details.html#301" class="tactic">apply path_abs to H1 H2 H3 H4.</a> <a href="breduce-details.html#302" class="tactic">case H3.</a>
-    
-    <a href="breduce-details.html#303" class="tactic">assert forall p, {K, path n1 n2 |- path (M1 n1) p} ->
+  <span class="comment">% M = (abs M1)</span>
+  <a href="breduce-details.html#302" class="tactic">apply path_abs to H1 H2 H3 H4.</a> <a href="breduce-details.html#303" class="tactic">case H3.</a>
+
+    <a href="breduce-details.html#304" class="tactic">assert forall p, {K, path n1 n2 |- path (M1 n1) p} ->
                      {K, path n1 n2 |- path (YR n1) p}.</a>
-      <a href="breduce-details.html#304" class="tactic">intros.</a>
-      <a href="breduce-details.html#305" class="tactic">assert {K |- path (abs M1) (bnd p)}.</a>
-      <a href="breduce-details.html#306" class="tactic">apply H4 to H8.</a> 
-      <a href="breduce-details.html#307" class="tactic">case H9.</a>
-        <a href="breduce-details.html#308" class="tactic">search.</a>
-        <a href="breduce-details.html#309" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#310" class="tactic">case H13.</a> <a href="breduce-details.html#311" class="tactic">case H10.</a>
-    
-      <a href="breduce-details.html#312" class="tactic">assert bfctx (bfree n1 :: L) (path n1 n2 :: K).</a>
-        <a href="breduce-details.html#313" class="tactic">apply IH to H8 H5 H6 H7.</a> <a href="breduce-details.html#314" class="tactic">search.</a>
-      
-    <a href="breduce-details.html#315" class="tactic">apply bfctx_member1 to H1 H7.</a> <a href="breduce-details.html#316" class="tactic">case H8.</a> <a href="breduce-details.html#317" class="tactic">case H6.</a>
-  
+      <a href="breduce-details.html#305" class="tactic">intros.</a>
+      <a href="breduce-details.html#306" class="tactic">assert {K |- path (abs M1) (bnd p)}.</a>
+      <a href="breduce-details.html#307" class="tactic">apply H4 to H8.</a>
+      <a href="breduce-details.html#308" class="tactic">case H9.</a>
+        <a href="breduce-details.html#309" class="tactic">search.</a>
+        <a href="breduce-details.html#310" class="tactic">apply bfctx_member2 to H1 H11.</a> <a href="breduce-details.html#311" class="tactic">case H13.</a> <a href="breduce-details.html#312" class="tactic">case H10.</a>
+
+      <a href="breduce-details.html#313" class="tactic">assert bfctx (bfree n1 :: L) (path n1 n2 :: K).</a>
+        <a href="breduce-details.html#314" class="tactic">apply IH to H8 H5 H6 H7.</a> <a href="breduce-details.html#315" class="tactic">search.</a>
+
+    <a href="breduce-details.html#316" class="tactic">apply bfctx_member1 to H1 H7.</a> <a href="breduce-details.html#317" class="tactic">case H8.</a> <a href="breduce-details.html#318" class="tactic">case H6.</a>
+
   <span class="comment">% M = (app M1 N1)</span>
-  <a href="breduce-details.html#318" class="tactic">apply path_app to H1 H2 H3 H4.</a> <a href="breduce-details.html#319" class="tactic">case H3.</a>
-    
-    <span class="comment">% Prove M1 = YM </span>
-    <a href="breduce-details.html#320" class="tactic">assert forall p, {K |- path M1 p} -> {K |- path YM p}.</a>
-      <a href="breduce-details.html#321" class="tactic">intros.</a>
-      <a href="breduce-details.html#322" class="tactic">assert {K |- path (app M1 N1) (left p)}.</a>
-      <a href="breduce-details.html#323" class="tactic">apply H4 to H10.</a>
-      <a href="breduce-details.html#324" class="tactic">case H11.</a>
-        <a href="breduce-details.html#325" class="tactic">search.</a>
-        <a href="breduce-details.html#326" class="tactic">apply bfctx_member2 to H1 H13.</a> <a href="breduce-details.html#327" class="tactic">case H15.</a> <a href="breduce-details.html#328" class="tactic">case H12.</a>
-    <a href="breduce-details.html#329" class="tactic">apply IH to H1 H5 H7 H9.</a>
+  <a href="breduce-details.html#319" class="tactic">apply path_app to H1 H2 H3 H4.</a> <a href="breduce-details.html#320" class="tactic">case H3.</a>
+
+    <span class="comment">% Prove M1 = YM</span>
+    <a href="breduce-details.html#321" class="tactic">assert forall p, {K |- path M1 p} -> {K |- path YM p}.</a>
+      <a href="breduce-details.html#322" class="tactic">intros.</a>
+      <a href="breduce-details.html#323" class="tactic">assert {K |- path (app M1 N1) (left p)}.</a>
+      <a href="breduce-details.html#324" class="tactic">apply H4 to H10.</a>
+      <a href="breduce-details.html#325" class="tactic">case H11.</a>
+        <a href="breduce-details.html#326" class="tactic">search.</a>
+        <a href="breduce-details.html#327" class="tactic">apply bfctx_member2 to H1 H13.</a> <a href="breduce-details.html#328" class="tactic">case H15.</a> <a href="breduce-details.html#329" class="tactic">case H12.</a>
+    <a href="breduce-details.html#330" class="tactic">apply IH to H1 H5 H7 H9.</a>
 
     <span class="comment">% Prove N1 = YN</span>
-    <a href="breduce-details.html#330" class="tactic">assert forall p, {K |- path N1 p} -> {K |- path YN p}.</a>
-      <a href="breduce-details.html#331" class="tactic">intros.</a>
-      <a href="breduce-details.html#332" class="tactic">assert {K |- path (app M1 N1) (right p)}.</a>
-      <a href="breduce-details.html#333" class="tactic">apply H4 to H11.</a>
-      <a href="breduce-details.html#334" class="tactic">case H12.</a>
-        <a href="breduce-details.html#335" class="tactic">search.</a>
-        <a href="breduce-details.html#336" class="tactic">apply bfctx_member2 to H1 H14.</a> <a href="breduce-details.html#337" class="tactic">case H16.</a> <a href="breduce-details.html#338" class="tactic">case H13.</a>
-    <a href="breduce-details.html#339" class="tactic">apply IH to H1 H6 H8 H10.</a>
+    <a href="breduce-details.html#331" class="tactic">assert forall p, {K |- path N1 p} -> {K |- path YN p}.</a>
+      <a href="breduce-details.html#332" class="tactic">intros.</a>
+      <a href="breduce-details.html#333" class="tactic">assert {K |- path (app M1 N1) (right p)}.</a>
+      <a href="breduce-details.html#334" class="tactic">apply H4 to H11.</a>
+      <a href="breduce-details.html#335" class="tactic">case H12.</a>
+        <a href="breduce-details.html#336" class="tactic">search.</a>
+        <a href="breduce-details.html#337" class="tactic">apply bfctx_member2 to H1 H14.</a> <a href="breduce-details.html#338" class="tactic">case H16.</a> <a href="breduce-details.html#339" class="tactic">case H13.</a>
+    <a href="breduce-details.html#340" class="tactic">apply IH to H1 H6 H8 H10.</a>
 
     <span class="comment">% Finish this case</span>
-    <a href="breduce-details.html#340" class="tactic">search.</a>
+    <a href="breduce-details.html#341" class="tactic">search.</a>
 
-    <a href="breduce-details.html#341" class="tactic">apply bfctx_member1 to H1 H8.</a> <a href="breduce-details.html#342" class="tactic">case H9.</a> <a href="breduce-details.html#343" class="tactic">case H7.</a>
+    <a href="breduce-details.html#342" class="tactic">apply bfctx_member1 to H1 H8.</a> <a href="breduce-details.html#343" class="tactic">case H9.</a> <a href="breduce-details.html#344" class="tactic">case H7.</a>
 
   <span class="comment">% M is a variable</span>
-  <a href="breduce-details.html#344" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#345" class="tactic">case H5.</a>
-  <a href="breduce-details.html#346" class="tactic">assert {K |- path M F1}.</a>
-  <a href="breduce-details.html#347" class="tactic">apply H4 to H10.</a> <a href="breduce-details.html#348" class="tactic">case H9.</a>
-  <a href="breduce-details.html#349" class="tactic">case H11.</a>
-    <a href="breduce-details.html#350" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
-    <a href="breduce-details.html#351" class="tactic">apply bfctx_member2 to H1 H13.</a>
-      <a href="breduce-details.html#352" class="tactic">case H12.</a> <a href="breduce-details.html#353" class="tactic">apply member_path_unique to H1 H8 H13.</a> <a href="breduce-details.html#354" class="tactic">search.</a></div>
-<a href="breduce-details.html#355" class="command">Define brctx : olist -> olist -> prop by
+  <a href="breduce-details.html#345" class="tactic">apply bfctx_member1 to H1 H6.</a> <a href="breduce-details.html#346" class="tactic">case H5.</a>
+  <a href="breduce-details.html#347" class="tactic">assert {K |- path M F1}.</a>
+  <a href="breduce-details.html#348" class="tactic">apply H4 to H10.</a> <a href="breduce-details.html#349" class="tactic">case H9.</a>
+  <a href="breduce-details.html#350" class="tactic">case H11.</a>
+    <a href="breduce-details.html#351" class="tactic">apply bfree_beta_absurd to H1 H3.</a>
+    <a href="breduce-details.html#352" class="tactic">apply bfctx_member2 to H1 H13.</a>
+      <a href="breduce-details.html#353" class="tactic">case H12.</a> <a href="breduce-details.html#354" class="tactic">apply member_path_unique to H1 H8 H13.</a> <a href="breduce-details.html#355" class="tactic">search.</a></div>
+<a href="breduce-details.html#356" class="command">Define brctx : olist -> olist -> prop by
   brctx nil nil
 ; nabla x,
     brctx (bred x x :: L) (bfree x :: K) :=
       brctx L K
 ; nabla x,
-    brctx ((pi u\ bred N u => bred x u) :: L) K :=
+    brctx ((pi u\ bred x u <= bred N u) :: L) K :=
       brctx L K.</a>
 
-<a href="breduce-details.html#356" class="command">Theorem brctx_mem_1 :
+<a href="breduce-details.html#357" class="command">Theorem brctx_mem_1 :
    forall L K E, brctx L K -> member E L ->
    (   (exists x, E = bred x x /\ name x)
-    \/ (exists x N, E = (pi u\ bred N u => bred x u) /\ fresh x N)).</a>
-<div class="proof"><a href="breduce-details.html#357" class="tactic">induction on 1.</a> <a href="breduce-details.html#358" class="tactic">intros.</a> <a href="breduce-details.html#359" class="tactic">case H1 (keep).</a>
-  <a href="breduce-details.html#360" class="tactic">case H2.</a>
-  <a href="breduce-details.html#361" class="tactic">case H2.</a> <a href="breduce-details.html#362" class="tactic">search.</a>
-    <a href="breduce-details.html#363" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#364" class="tactic">case H5.</a>
-      <a href="breduce-details.html#365" class="tactic">search.</a> <a href="breduce-details.html#366" class="tactic">search.</a>
-  <a href="breduce-details.html#367" class="tactic">case H2.</a> <a href="breduce-details.html#368" class="tactic">search.</a>
-    <a href="breduce-details.html#369" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#370" class="tactic">case H5.</a>
-      <a href="breduce-details.html#371" class="tactic">search.</a> <a href="breduce-details.html#372" class="tactic">search.</a></div>
-<a href="breduce-details.html#373" class="command">Theorem brctx_sync :
+    \/ (exists x N, E = (pi u\ bred x u <= bred N u) /\ fresh x N)).</a>
+<div class="proof"><a href="breduce-details.html#358" class="tactic">induction on 1.</a> <a href="breduce-details.html#359" class="tactic">intros.</a> <a href="breduce-details.html#360" class="tactic">case H1 (keep).</a>
+  <a href="breduce-details.html#361" class="tactic">case H2.</a>
+  <a href="breduce-details.html#362" class="tactic">case H2.</a> <a href="breduce-details.html#363" class="tactic">search.</a>
+    <a href="breduce-details.html#364" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#365" class="tactic">case H5.</a>
+      <a href="breduce-details.html#366" class="tactic">search.</a> <a href="breduce-details.html#367" class="tactic">search.</a>
+  <a href="breduce-details.html#368" class="tactic">case H2.</a> <a href="breduce-details.html#369" class="tactic">search.</a>
+    <a href="breduce-details.html#370" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#371" class="tactic">case H5.</a>
+      <a href="breduce-details.html#372" class="tactic">search.</a> <a href="breduce-details.html#373" class="tactic">search.</a></div>
+<a href="breduce-details.html#374" class="command">Theorem brctx_sync :
    forall L K, nabla x, brctx (L x) (K x) ->
    member (bred x x) (L x) ->
    member (bfree x) (K x).</a>
-<div class="proof"><a href="breduce-details.html#374" class="tactic">induction on 1.</a> <a href="breduce-details.html#375" class="tactic">intros.</a> <a href="breduce-details.html#376" class="tactic">case H1.</a>
-  <a href="breduce-details.html#377" class="tactic">case H2.</a>
-  <a href="breduce-details.html#378" class="tactic">case H2.</a> <a href="breduce-details.html#379" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#380" class="tactic">search.</a>
-  <a href="breduce-details.html#381" class="tactic">case H2.</a> <a href="breduce-details.html#382" class="tactic">search.</a> <a href="breduce-details.html#383" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#384" class="tactic">search.</a>
-  <a href="breduce-details.html#385" class="tactic">case H2.</a> <a href="breduce-details.html#386" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#387" class="tactic">search.</a>
-  <a href="breduce-details.html#388" class="tactic">case H2.</a> <a href="breduce-details.html#389" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#390" class="tactic">search.</a></div> 
-<a href="breduce-details.html#391" class="command">Theorem bred_makes_bfree :
+<div class="proof"><a href="breduce-details.html#375" class="tactic">induction on 1.</a> <a href="breduce-details.html#376" class="tactic">intros.</a> <a href="breduce-details.html#377" class="tactic">case H1.</a>
+  <a href="breduce-details.html#378" class="tactic">case H2.</a>
+  <a href="breduce-details.html#379" class="tactic">case H2.</a> <a href="breduce-details.html#380" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#381" class="tactic">search.</a>
+  <a href="breduce-details.html#382" class="tactic">case H2.</a> <a href="breduce-details.html#383" class="tactic">search.</a> <a href="breduce-details.html#384" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#385" class="tactic">search.</a>
+  <a href="breduce-details.html#386" class="tactic">case H2.</a> <a href="breduce-details.html#387" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#388" class="tactic">search.</a>
+  <a href="breduce-details.html#389" class="tactic">case H2.</a> <a href="breduce-details.html#390" class="tactic">apply IH to H3 H4.</a> <a href="breduce-details.html#391" class="tactic">search.</a></div>
+<a href="breduce-details.html#392" class="command">Theorem bred_makes_bfree :
    forall L K M U,
    brctx L K -> {L |- bred M U} -> {K |- bfree U}.</a>
-<div class="proof"><a href="breduce-details.html#392" class="tactic">induction on 2.</a> <a href="breduce-details.html#393" class="tactic">intros.</a> <a href="breduce-details.html#394" class="tactic">case H2 (keep).</a>
-  <a href="breduce-details.html#395" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#396" class="tactic">search.</a>
-  <a href="breduce-details.html#397" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#398" class="tactic">apply IH to _ H4.</a> <a href="breduce-details.html#399" class="tactic">search.</a>
-  <a href="breduce-details.html#400" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#401" class="tactic">search.</a>
-   <a href="breduce-details.html#402" class="tactic">apply brctx_mem_1 to H1 H4.</a> <a href="breduce-details.html#403" class="tactic">case H5.</a>
-     <a href="breduce-details.html#404" class="tactic">case H3.</a> <a href="breduce-details.html#405" class="tactic">case H6.</a>
-      <a href="breduce-details.html#406" class="tactic">apply brctx_sync to H1 H4.</a> <a href="breduce-details.html#407" class="tactic">search.</a>
-     <a href="breduce-details.html#408" class="tactic">case H3.</a> <a href="breduce-details.html#409" class="tactic">case H6.</a> <a href="breduce-details.html#410" class="tactic">apply IH to H1 H7.</a> <a href="breduce-details.html#411" class="tactic">search.</a></div>
-<a href="breduce-details.html#412" class="command">Theorem same_paths_bred_same :
+<div class="proof"><a href="breduce-details.html#393" class="tactic">induction on 2.</a> <a href="breduce-details.html#394" class="tactic">intros.</a> <a href="breduce-details.html#395" class="tactic">case H2 (keep).</a>
+  <a href="breduce-details.html#396" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#397" class="tactic">search.</a>
+  <a href="breduce-details.html#398" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#399" class="tactic">apply IH to _ H4.</a> <a href="breduce-details.html#400" class="tactic">search.</a>
+  <a href="breduce-details.html#401" class="tactic">apply IH to _ H3.</a> <a href="breduce-details.html#402" class="tactic">search.</a>
+   <a href="breduce-details.html#403" class="tactic">apply brctx_mem_1 to H1 H4.</a> <a href="breduce-details.html#404" class="tactic">case H5.</a>
+     <a href="breduce-details.html#405" class="tactic">case H3.</a> <a href="breduce-details.html#406" class="tactic">case H6.</a>
+      <a href="breduce-details.html#407" class="tactic">apply brctx_sync to H1 H4.</a> <a href="breduce-details.html#408" class="tactic">search.</a>
+     <a href="breduce-details.html#409" class="tactic">case H3.</a> <a href="breduce-details.html#410" class="tactic">case H6.</a> <a href="breduce-details.html#411" class="tactic">apply IH to H1 H7.</a> <a href="breduce-details.html#412" class="tactic">search.</a></div>
+<a href="breduce-details.html#413" class="command">Theorem same_paths_bred_same :
   forall M N U V,
   (forall P, {path M P} -> {path N P}) ->
   {bred M U} -> {bred N V} -> U = V.</a>
-<div class="proof"><a href="breduce-details.html#413" class="tactic">intros.</a>
-<a href="breduce-details.html#414" class="tactic">apply bred_makes_bfree to _ H2.</a>
-<a href="breduce-details.html#415" class="tactic">apply bred_makes_bfree to _ H3.</a>
-<a href="breduce-details.html#416" class="tactic">backchain bfree_sames.</a> <a href="breduce-details.html#417" class="tactic">intros.</a>
-  <a href="breduce-details.html#418" class="tactic">apply bred_rtl to _ H2 H6.</a>
-  <a href="breduce-details.html#419" class="tactic">apply H1 to H7.</a>
-  <a href="breduce-details.html#420" class="tactic">apply bred_ltr to _ H3 H8.</a> <a href="breduce-details.html#421" class="tactic">search.</a>
+<div class="proof"><a href="breduce-details.html#414" class="tactic">intros.</a>
+<a href="breduce-details.html#415" class="tactic">apply bred_makes_bfree to _ H2.</a>
+<a href="breduce-details.html#416" class="tactic">apply bred_makes_bfree to _ H3.</a>
+<a href="breduce-details.html#417" class="tactic">backchain bfree_sames.</a> <a href="breduce-details.html#418" class="tactic">intros.</a>
+  <a href="breduce-details.html#419" class="tactic">apply bred_rtl to _ H2 H6.</a>
+  <a href="breduce-details.html#420" class="tactic">apply H1 to H7.</a>
+  <a href="breduce-details.html#421" class="tactic">apply bred_ltr to _ H3 H8.</a> <a href="breduce-details.html#422" class="tactic">search.</a>
 
 
 <span class="comment">% Define btctx : olist -> olist -> prop by</span>
@@ -469,9 +468,9 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">%     btctx (bred x x :: L) (tm x :: K) :=</span>
 <span class="comment">%       btctx L K</span>
 <span class="comment">% ; nabla x,</span>
-<span class="comment">%     btctx ((pi u\ bred N u => bred x u) :: L) (tm x :: K) :=</span>
+<span class="comment">%     btctx ((pi u\ bred x u <= bred N u) :: L) (tm x :: K) :=</span>
 <span class="comment">%       exists U, {L |- bred N U} /\ btctx L K.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem btctx_mem1 : forall L K F,</span>
 <span class="comment">%   btctx L K -> member F K -> exists X, F = tm X /\ name X.</span>
 <span class="comment">% induction on 1. intros. case H1.</span>
@@ -482,28 +481,28 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">%   case H2.</span>
 <span class="comment">%     search.</span>
 <span class="comment">%     apply IH to H4 H5. search.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem btctx_mem2 : forall L K F,</span>
-<span class="comment">%   btctx L K -> member F L -> </span>
+<span class="comment">%   btctx L K -> member F L -></span>
 <span class="comment">%     (exists x, (F = bred x x /\ name x)) \/</span>
-<span class="comment">%     (exists x N, F = (pi u\ bred N u => bred x u) </span>
+<span class="comment">%     (exists x N, F = (pi u\ bred x u <= bred N u)</span>
 <span class="comment">%                   /\ fresh x N /\ exists U, {L |- bred N U}).</span>
 <span class="comment">% induction on 1. intros. case H1.</span>
 <span class="comment">%   case H2.</span>
 <span class="comment">%   case H2. search. apply IH to H3 H4. case H5. search. search.</span>
 <span class="comment">%   case H2. search. apply IH to H4 H5. case H6. search. search.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem btctx_sync : forall L K x,</span>
 <span class="comment">%   btctx L K -></span>
-<span class="comment">%   member (tm x) K -> </span>
-<span class="comment">%   (exists N, member (pi u\ bred N u => bred x u) L </span>
+<span class="comment">%   member (tm x) K -></span>
+<span class="comment">%   (exists N, member (pi u\ bred x u <= bred N u) L</span>
 <span class="comment">%       /\ exists U, {L |- bred N U}) \/</span>
 <span class="comment">%   member (bred x x) L.</span>
 <span class="comment">% induction on 1. intros. case H1.</span>
 <span class="comment">%   case H2.</span>
 <span class="comment">%   case H2. search. apply IH to H3 H4. case H5. search. search.</span>
 <span class="comment">%   case H2. search. apply IH to H4 H5. case H6. search. search.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem btctx_mem_prune : forall L K E, nabla (n:tm),</span>
 <span class="comment">%    btctx L K -></span>
 <span class="comment">%    member (E n) L -> exists F, E = x\ F.</span>
@@ -511,10 +510,10 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">%   case H2.</span>
 <span class="comment">%   case H2. search. apply IH to H3 H4. apply IH to H3 H4. search.</span>
 <span class="comment">%   case H2. search. apply IH to H4 H5. apply IH to H4 H5. search.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% %Theorem btctx_mem_discrim : forall L K N x,</span>
 <span class="comment">% %  btctx L K -></span>
-<span class="comment">% %  member (pi u\ bred N u => bred x u) L -></span>
+<span class="comment">% %  member (pi u\ bred x u <= bred N u) L -></span>
 <span class="comment">% %  member (bred x x) L -></span>
 <span class="comment">% %  false.</span>
 <span class="comment">% %induction on 1. intros. case H1.</span>
@@ -525,13 +524,13 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">% %  case H2.</span>
 <span class="comment">% %    case H3. apply btctx_mem_prune to H4 H5.</span>
 <span class="comment">% %    case H3. apply IH to H4 H5 H6.</span>
-<span class="comment">% </span>
-<span class="comment">% </span>
+<span class="comment">%</span>
+<span class="comment">%</span>
 <span class="comment">% %Theorem bred_subst : forall L K N R U V, nabla n,</span>
 <span class="comment">% %  btctx L K -></span>
-<span class="comment">% %  {L, pi u\bred N u => bred n u |- bred (R n) (U n)} -></span>
+<span class="comment">% %  {L, pi u\bred n u <= bred N u |- bred (R n) (U n)} -></span>
 <span class="comment">% %  {L |- bred N V} -></span>
-<span class="comment">% %  {L, pi u\bred N u => bred n u |- bred (R n) (U V)}.</span>
+<span class="comment">% %  {L, pi u\bred n u <= bred N u |- bred (R n) (U V)}.</span>
 <span class="comment">% %induction on 2. intros. case H2 (keep).</span>
 <span class="comment">% %  apply IH to _ H4 H3. search.</span>
 <span class="comment">% %  apply IH to H1 H4 H3. apply IH to H1 H5 H3. search.</span>
@@ -540,36 +539,36 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">% %  case H5.</span>
 <span class="comment">% %    case H4. apply IH to H1 H6 H3. search.</span>
 <span class="comment">% %    apply btctx_mem2 to H1 H6. case H7.</span>
-<span class="comment">% %      case H4. </span>
-<span class="comment">% %        case H8. search. </span>
+<span class="comment">% %      case H4.</span>
+<span class="comment">% %        case H8. search.</span>
 <span class="comment">% %        apply btctx_mem_prune to H1 H6.</span>
-<span class="comment">% %      case H4. </span>
+<span class="comment">% %      case H4.</span>
 <span class="comment">% %        apply IH to _ H9 H3. search.</span>
 <span class="comment">% %        % or alternatively:</span>
-<span class="comment">% %        %case H8. </span>
+<span class="comment">% %        %case H8.</span>
 <span class="comment">% %        %  apply IH to _ H9 H3. search.</span>
 <span class="comment">% %        %  apply btctx_mem_prune to H1 H6.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem bred_beta_inv : forall L K R N V,</span>
 <span class="comment">%   btctx L K -> {L |- bred (R N) V} -> {L |- bred (beta R N) V}.</span>
 <span class="comment">% skip.</span>
-<span class="comment">% </span>
-<span class="comment">%   </span>
+<span class="comment">%</span>
+<span class="comment">%</span>
 <span class="comment">% Theorem bred_terminate :  forall L K M,</span>
 <span class="comment">%   btctx L K -> {K |- tm M} -> exists U, {L |- bred M U}.</span>
 <span class="comment">% induction on 2. intros. case H2.</span>
 <span class="comment">%   apply IH to _ H3. search.</span>
 <span class="comment">%   apply IH to H1 H3. apply IH to H1 H4. search.</span>
 <span class="comment">%   apply IH to H1 H3.</span>
-<span class="comment">%     assert btctx ((pi u\ bred N u => bred n1 u) :: L) (tm n1 :: K).</span>
+<span class="comment">%     assert btctx ((pi u\ bred n1 u <= bred N u) :: L) (tm n1 :: K).</span>
 <span class="comment">%     apply IH to H6 H4.</span>
 <span class="comment">%     inst H7 with n1 = N. cut H8.</span>
 <span class="comment">%     apply bred_beta_inv to H1 H9 with R = R. search.</span>
 <span class="comment">%   apply btctx_mem1 to H1 H4. case H3.</span>
 <span class="comment">%     apply btctx_sync to H1 H4. case H6. search. search.</span>
-<span class="comment">% </span>
+<span class="comment">%</span>
 <span class="comment">% Theorem same_paths_joinable : forall M N,</span>
-<span class="comment">%   {tm M} -> {tm N} -> </span>
+<span class="comment">%   {tm M} -> {tm N} -></span>
 <span class="comment">%   (forall P, {path M P} -> {path N P}) -></span>
 <span class="comment">%     exists U, {bred M U} /\ {bred N U}.</span>
 <span class="comment">% intros.</span>
@@ -577,7 +576,7 @@ Click on a command or tactic to see a detailed view of its use.
 <span class="comment">%   apply bred_terminate to _ H2.</span>
 <span class="comment">%   apply same_paths_bred_same to H3 H4 H5.</span>
 <span class="comment">%  </span>
-<a href="breduce-details.html#422" class="tactic">search.</a></div>
+<a href="breduce-details.html#423" class="tactic">search.</a></div>
 </pre>
 </div>
 

@@ -19,55 +19,55 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.1-dev
+Welcome to Abella 2.0.4-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Specification "debruijn".</b>
 Reading specification "debruijn"
+
 </pre>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Theorem member_prune : 
 forall E L, nabla x, member (E x) L -> (exists F, E = y\F).</b>
+
 </pre>
 <a name="3"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
+============================
+ forall E L, nabla x, member (E x) L -> (exists F, E = y\F)
 
 member_prune < <b>induction on 1.</b>
 </pre>
 <a name="4"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
-  ============================
-   forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
+IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+============================
+ forall E L, nabla x, member (E x) L @ -> (exists F, E = y\F)
 
 member_prune < <b>intros.</b>
 </pre>
 <a name="5"></a>
-<pre>
+<pre class="code">
 
-  Variables: E, L
-  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
-  H1 : member (E n1) L @
-  ============================
-   exists F, E = y\F
+Variables: E L
+IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+H1 : member (E n1) L @
+============================
+ exists F, E = y\F
 
 member_prune < <b>case H1.</b>
 </pre>
 <a name="6"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: E, L, L3, L2
-  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
-  ============================
-   exists F, z1\L2 = y\F
+Variables: L3 L2
+IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+============================
+ exists F, z1\L2 = y\F
 
 Subgoal 2 is:
  exists F, E = y\F
@@ -75,26 +75,26 @@ Subgoal 2 is:
 member_prune < <b>search.</b>
 </pre>
 <a name="7"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: E, L, L3, L2
-  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
-  H2 : member (E n1) L3 *
-  ============================
-   exists F, E = y\F
+Variables: E L3 L2
+IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+H2 : member (E n1) L3 *
+============================
+ exists F, E = y\F
 
 member_prune < <b>apply IH to H2.</b>
 </pre>
 <a name="8"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: E, L, L3, L2, F
-  IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
-  H2 : member F L3 *
-  ============================
-   exists F1, z1\F = y\F1
+Variables: L3 L2 F
+IH : forall E L, nabla x, member (E x) L * -> (exists F, E = y\F)
+H2 : member F L3 *
+============================
+ exists F1, z1\F = y\F1
 
 member_prune < <b>search.</b>
 Proof completed.
@@ -104,56 +104,57 @@ Proof completed.
 Abella < <b>Define nat : nat -> prop by 
 nat z;
 nat (s X) := nat X.</b>
+
 </pre>
 <a name="10"></a>
 <pre class="code">
 Abella < <b>Define le : nat -> nat -> prop by 
 le X X;
 le X (s Y) := le X Y.</b>
+
 </pre>
 <a name="11"></a>
 <pre class="code">
 Abella < <b>Theorem le_dec : 
 forall X Y, le (s X) Y -> le X Y.</b>
+
 </pre>
 <a name="12"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall X Y, le (s X) Y -> le X Y
+============================
+ forall X Y, le (s X) Y -> le X Y
 
 le_dec < <b>induction on 1.</b>
 </pre>
 <a name="13"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall X Y, le (s X) Y * -> le X Y
-  ============================
-   forall X Y, le (s X) Y @ -> le X Y
+IH : forall X Y, le (s X) Y * -> le X Y
+============================
+ forall X Y, le (s X) Y @ -> le X Y
 
 le_dec < <b>intros.</b>
 </pre>
 <a name="14"></a>
-<pre>
+<pre class="code">
 
-  Variables: X, Y
-  IH : forall X Y, le (s X) Y * -> le X Y
-  H1 : le (s X) Y @
-  ============================
-   le X Y
+Variables: X Y
+IH : forall X Y, le (s X) Y * -> le X Y
+H1 : le (s X) Y @
+============================
+ le X Y
 
 le_dec < <b>case H1.</b>
 </pre>
 <a name="15"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: X, Y
-  IH : forall X Y, le (s X) Y * -> le X Y
-  ============================
-   le X (s X)
+Variables: X
+IH : forall X Y, le (s X) Y * -> le X Y
+============================
+ le X (s X)
 
 Subgoal 2 is:
  le X (s Y1)
@@ -161,27 +162,27 @@ Subgoal 2 is:
 le_dec < <b>search.</b>
 </pre>
 <a name="16"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, Y, Y1
-  IH : forall X Y, le (s X) Y * -> le X Y
-  H2 : le (s X) Y1 *
-  ============================
-   le X (s Y1)
+Variables: X Y1
+IH : forall X Y, le (s X) Y * -> le X Y
+H2 : le (s X) Y1 *
+============================
+ le X (s Y1)
 
 le_dec < <b>apply IH to H2.</b>
 </pre>
 <a name="17"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, Y, Y1
-  IH : forall X Y, le (s X) Y * -> le X Y
-  H2 : le (s X) Y1 *
-  H3 : le X Y1
-  ============================
-   le X (s Y1)
+Variables: X Y1
+IH : forall X Y, le (s X) Y * -> le X Y
+H2 : le (s X) Y1 *
+H3 : le X Y1
+============================
+ le X (s Y1)
 
 le_dec < <b>search.</b>
 Proof completed.
@@ -190,47 +191,45 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem le_absurd : 
 forall X, nat X -> le (s X) X -> false.</b>
+
 </pre>
 <a name="19"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall X, nat X -> le (s X) X -> false
+============================
+ forall X, nat X -> le (s X) X -> false
 
 le_absurd < <b>induction on 1.</b>
 </pre>
 <a name="20"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall X, nat X * -> le (s X) X -> false
-  ============================
-   forall X, nat X @ -> le (s X) X -> false
+IH : forall X, nat X * -> le (s X) X -> false
+============================
+ forall X, nat X @ -> le (s X) X -> false
 
 le_absurd < <b>intros.</b>
 </pre>
 <a name="21"></a>
-<pre>
+<pre class="code">
 
-  Variables: X
-  IH : forall X, nat X * -> le (s X) X -> false
-  H1 : nat X @
-  H2 : le (s X) X
-  ============================
-   false
+Variables: X
+IH : forall X, nat X * -> le (s X) X -> false
+H1 : nat X @
+H2 : le (s X) X
+============================
+ false
 
 le_absurd < <b>case H1.</b>
 </pre>
 <a name="22"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: X
-  IH : forall X, nat X * -> le (s X) X -> false
-  H2 : le (s z) z
-  ============================
-   false
+IH : forall X, nat X * -> le (s X) X -> false
+H2 : le (s z) z
+============================
+ false
 
 Subgoal 2 is:
  false
@@ -238,42 +237,42 @@ Subgoal 2 is:
 le_absurd < <b>case H2.</b>
 </pre>
 <a name="23"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, X1
-  IH : forall X, nat X * -> le (s X) X -> false
-  H2 : le (s (s X1)) (s X1)
-  H3 : nat X1 *
-  ============================
-   false
+Variables: X1
+IH : forall X, nat X * -> le (s X) X -> false
+H2 : le (s (s X1)) (s X1)
+H3 : nat X1 *
+============================
+ false
 
 le_absurd < <b>case H2.</b>
 </pre>
 <a name="24"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, X1
-  IH : forall X, nat X * -> le (s X) X -> false
-  H3 : nat X1 *
-  H4 : le (s (s X1)) X1
-  ============================
-   false
+Variables: X1
+IH : forall X, nat X * -> le (s X) X -> false
+H3 : nat X1 *
+H4 : le (s (s X1)) X1
+============================
+ false
 
 le_absurd < <b>apply le_dec to H4.</b>
 </pre>
 <a name="25"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, X1
-  IH : forall X, nat X * -> le (s X) X -> false
-  H3 : nat X1 *
-  H4 : le (s (s X1)) X1
-  H5 : le (s X1) X1
-  ============================
-   false
+Variables: X1
+IH : forall X, nat X * -> le (s X) X -> false
+H3 : nat X1 *
+H4 : le (s (s X1)) X1
+H5 : le (s X1) X1
+============================
+ false
 
 le_absurd < <b>apply IH to H3 H5.</b>
 Proof completed.
@@ -282,45 +281,44 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_le : 
 forall A B C, {add A B C} -> le B C.</b>
+
 </pre>
 <a name="27"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A B C, {add A B C} -> le B C
+============================
+ forall A B C, {add A B C} -> le B C
 
 add_le < <b>induction on 1.</b>
 </pre>
 <a name="28"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall A B C, {add A B C}* -> le B C
-  ============================
-   forall A B C, {add A B C}@ -> le B C
+IH : forall A B C, {add A B C}* -> le B C
+============================
+ forall A B C, {add A B C}@ -> le B C
 
 add_le < <b>intros.</b>
 </pre>
 <a name="29"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, B, C
-  IH : forall A B C, {add A B C}* -> le B C
-  H1 : {add A B C}@
-  ============================
-   le B C
+Variables: A B C
+IH : forall A B C, {add A B C}* -> le B C
+H1 : {add A B C}@
+============================
+ le B C
 
 add_le < <b>case H1.</b>
 </pre>
 <a name="30"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B, C
-  IH : forall A B C, {add A B C}* -> le B C
-  ============================
-   le C C
+Variables: C
+IH : forall A B C, {add A B C}* -> le B C
+============================
+ le C C
 
 Subgoal 2 is:
  le B (s C1)
@@ -328,27 +326,27 @@ Subgoal 2 is:
 add_le < <b>search.</b>
 </pre>
 <a name="31"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, C, C1, A1
-  IH : forall A B C, {add A B C}* -> le B C
-  H2 : {add A1 B C1}*
-  ============================
-   le B (s C1)
+Variables: B C1 A1
+IH : forall A B C, {add A B C}* -> le B C
+H2 : {add A1 B C1}*
+============================
+ le B (s C1)
 
 add_le < <b>apply IH to H2.</b>
 </pre>
 <a name="32"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B, C, C1, A1
-  IH : forall A B C, {add A B C}* -> le B C
-  H2 : {add A1 B C1}*
-  H3 : le B C1
-  ============================
-   le B (s C1)
+Variables: B C1 A1
+IH : forall A B C, {add A B C}* -> le B C
+H2 : {add A1 B C1}*
+H3 : le B C1
+============================
+ le B (s C1)
 
 add_le < <b>search.</b>
 Proof completed.
@@ -357,36 +355,36 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_absurd : 
 forall A C, nat C -> {add A (s C) C} -> false.</b>
+
 </pre>
 <a name="34"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A C, nat C -> {add A (s C) C} -> false
+============================
+ forall A C, nat C -> {add A (s C) C} -> false
 
 add_absurd < <b>intros.</b>
 </pre>
 <a name="35"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, C
-  H1 : nat C
-  H2 : {add A (s C) C}
-  ============================
-   false
+Variables: A C
+H1 : nat C
+H2 : {add A (s C) C}
+============================
+ false
 
 add_absurd < <b>apply add_le to H2.</b>
 </pre>
 <a name="36"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, C
-  H1 : nat C
-  H2 : {add A (s C) C}
-  H3 : le (s C) C
-  ============================
-   false
+Variables: A C
+H1 : nat C
+H2 : {add A (s C) C}
+H3 : le (s C) C
+============================
+ false
 
 add_absurd < <b>apply le_absurd to H1 H3.</b>
 Proof completed.
@@ -395,35 +393,35 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_zero : 
 forall A C, nat C -> {add A C C} -> A = z.</b>
+
 </pre>
 <a name="38"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A C, nat C -> {add A C C} -> A = z
+============================
+ forall A C, nat C -> {add A C C} -> A = z
 
 add_zero < <b>intros.</b>
 </pre>
 <a name="39"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, C
-  H1 : nat C
-  H2 : {add A C C}
-  ============================
-   A = z
+Variables: A C
+H1 : nat C
+H2 : {add A C C}
+============================
+ A = z
 
 add_zero < <b>case H2.</b>
 </pre>
 <a name="40"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, C
-  H1 : nat C
-  ============================
-   z = z
+Variables: C
+H1 : nat C
+============================
+ z = z
 
 Subgoal 2 is:
  s A1 = z
@@ -431,26 +429,26 @@ Subgoal 2 is:
 add_zero < <b>search.</b>
 </pre>
 <a name="41"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, C, C1, A1
-  H1 : nat (s C1)
-  H3 : {add A1 (s C1) C1}
-  ============================
-   s A1 = z
+Variables: C1 A1
+H1 : nat (s C1)
+H3 : {add A1 (s C1) C1}
+============================
+ s A1 = z
 
 add_zero < <b>case H1.</b>
 </pre>
 <a name="42"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, C, C1, A1
-  H3 : {add A1 (s C1) C1}
-  H4 : nat C1
-  ============================
-   s A1 = z
+Variables: C1 A1
+H3 : {add A1 (s C1) C1}
+H4 : nat C1
+============================
+ s A1 = z
 
 add_zero < <b>apply add_absurd to H4 H3.</b>
 Proof completed.
@@ -459,49 +457,48 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_det1 : 
 forall A1 A2 B C, nat C -> {add A1 B C} -> {add A2 B C} -> A1 = A2.</b>
+
 </pre>
 <a name="44"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A1 A2 B C, nat C -> {add A1 B C} -> {add A2 B C} -> A1 = A2
+============================
+ forall A1 A2 B C, nat C -> {add A1 B C} -> {add A2 B C} -> A1 = A2
 
 add_det1 < <b>induction on 2.</b>
 </pre>
 <a name="45"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  ============================
-   forall A1 A2 B C, nat C -> {add A1 B C}@ -> {add A2 B C} -> A1 = A2
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+============================
+ forall A1 A2 B C, nat C -> {add A1 B C}@ -> {add A2 B C} -> A1 = A2
 
 add_det1 < <b>intros.</b>
 </pre>
 <a name="46"></a>
-<pre>
+<pre class="code">
 
-  Variables: A1, A2, B, C
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat C
-  H2 : {add A1 B C}@
-  H3 : {add A2 B C}
-  ============================
-   A1 = A2
+Variables: A1 A2 B C
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat C
+H2 : {add A1 B C}@
+H3 : {add A2 B C}
+============================
+ A1 = A2
 
 add_det1 < <b>case H2.</b>
 </pre>
 <a name="47"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A1, A2, B, C
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat C
-  H3 : {add A2 C C}
-  ============================
-   z = A2
+Variables: A2 C
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat C
+H3 : {add A2 C C}
+============================
+ z = A2
 
 Subgoal 2 is:
  s A = A2
@@ -509,15 +506,15 @@ Subgoal 2 is:
 add_det1 < <b>apply add_zero to H1 H3.</b>
 </pre>
 <a name="48"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A1, A2, B, C
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat C
-  H3 : {add z C C}
-  ============================
-   z = z
+Variables: C
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat C
+H3 : {add z C C}
+============================
+ z = z
 
 Subgoal 2 is:
  s A = A2
@@ -525,29 +522,29 @@ Subgoal 2 is:
 add_det1 < <b>search.</b>
 </pre>
 <a name="49"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A1, A2, B, C, C1, A
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat (s C1)
-  H3 : {add A2 B (s C1)}
-  H4 : {add A B C1}*
-  ============================
-   s A = A2
+Variables: A2 B C1 A
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat (s C1)
+H3 : {add A2 B (s C1)}
+H4 : {add A B C1}*
+============================
+ s A = A2
 
 add_det1 < <b>case H3.</b>
 </pre>
 <a name="50"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: A1, A2, B, C, C1, A
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat (s C1)
-  H4 : {add A (s C1) C1}*
-  ============================
-   s A = z
+Variables: C1 A
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat (s C1)
+H4 : {add A (s C1) C1}*
+============================
+ s A = z
 
 Subgoal 2.2 is:
  s A = s A3
@@ -555,15 +552,15 @@ Subgoal 2.2 is:
 add_det1 < <b>case H1.</b>
 </pre>
 <a name="51"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: A1, A2, B, C, C1, A
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H4 : {add A (s C1) C1}*
-  H5 : nat C1
-  ============================
-   s A = z
+Variables: C1 A
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H4 : {add A (s C1) C1}*
+H5 : nat C1
+============================
+ s A = z
 
 Subgoal 2.2 is:
  s A = s A3
@@ -571,44 +568,44 @@ Subgoal 2.2 is:
 add_det1 < <b>apply add_absurd to H5 H4.</b>
 </pre>
 <a name="52"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: A1, A2, B, C, C1, A, A3
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H1 : nat (s C1)
-  H4 : {add A B C1}*
-  H5 : {add A3 B C1}
-  ============================
-   s A = s A3
+Variables: B C1 A A3
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H1 : nat (s C1)
+H4 : {add A B C1}*
+H5 : {add A3 B C1}
+============================
+ s A = s A3
 
 add_det1 < <b>case H1.</b>
 </pre>
 <a name="53"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: A1, A2, B, C, C1, A, A3
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H4 : {add A B C1}*
-  H5 : {add A3 B C1}
-  H6 : nat C1
-  ============================
-   s A = s A3
+Variables: B C1 A A3
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H4 : {add A B C1}*
+H5 : {add A3 B C1}
+H6 : nat C1
+============================
+ s A = s A3
 
 add_det1 < <b>apply IH to H6 H4 H5.</b>
 </pre>
 <a name="54"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: A1, A2, B, C, C1, A, A3
-  IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
-  H4 : {add A3 B C1}*
-  H5 : {add A3 B C1}
-  H6 : nat C1
-  ============================
-   s A3 = s A3
+Variables: B C1 A3
+IH : forall A1 A2 B C, nat C -> {add A1 B C}* -> {add A2 B C} -> A1 = A2
+H4 : {add A3 B C1}*
+H5 : {add A3 B C1}
+H6 : nat C1
+============================
+ s A3 = s A3
 
 add_det1 < <b>search.</b>
 Proof completed.
@@ -617,47 +614,46 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_det2 : 
 forall A B1 B2 C, {add A B1 C} -> {add A B2 C} -> B1 = B2.</b>
+
 </pre>
 <a name="56"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall A B1 B2 C, {add A B1 C} -> {add A B2 C} -> B1 = B2
+============================
+ forall A B1 B2 C, {add A B1 C} -> {add A B2 C} -> B1 = B2
 
 add_det2 < <b>induction on 1.</b>
 </pre>
 <a name="57"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  ============================
-   forall A B1 B2 C, {add A B1 C}@ -> {add A B2 C} -> B1 = B2
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+============================
+ forall A B1 B2 C, {add A B1 C}@ -> {add A B2 C} -> B1 = B2
 
 add_det2 < <b>intros.</b>
 </pre>
 <a name="58"></a>
-<pre>
+<pre class="code">
 
-  Variables: A, B1, B2, C
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  H1 : {add A B1 C}@
-  H2 : {add A B2 C}
-  ============================
-   B1 = B2
+Variables: A B1 B2 C
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+H1 : {add A B1 C}@
+H2 : {add A B2 C}
+============================
+ B1 = B2
 
 add_det2 < <b>case H1.</b>
 </pre>
 <a name="59"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B1, B2, C
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  H2 : {add z B2 C}
-  ============================
-   C = B2
+Variables: B2 C
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+H2 : {add z B2 C}
+============================
+ C = B2
 
 Subgoal 2 is:
  B1 = B2
@@ -665,13 +661,13 @@ Subgoal 2 is:
 add_det2 < <b>case H2.</b>
 </pre>
 <a name="60"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: A, B1, B2, C
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  ============================
-   C = C
+Variables: C
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+============================
+ C = C
 
 Subgoal 2 is:
  B1 = B2
@@ -679,41 +675,41 @@ Subgoal 2 is:
 add_det2 < <b>search.</b>
 </pre>
 <a name="61"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B1, B2, C, C1, A1
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  H2 : {add (s A1) B2 (s C1)}
-  H3 : {add A1 B1 C1}*
-  ============================
-   B1 = B2
+Variables: B1 B2 C1 A1
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+H2 : {add (s A1) B2 (s C1)}
+H3 : {add A1 B1 C1}*
+============================
+ B1 = B2
 
 add_det2 < <b>case H2.</b>
 </pre>
 <a name="62"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B1, B2, C, C1, A1
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  H3 : {add A1 B1 C1}*
-  H4 : {add A1 B2 C1}
-  ============================
-   B1 = B2
+Variables: B1 B2 C1 A1
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+H3 : {add A1 B1 C1}*
+H4 : {add A1 B2 C1}
+============================
+ B1 = B2
 
 add_det2 < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="63"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: A, B1, B2, C, C1, A1
-  IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
-  H3 : {add A1 B2 C1}*
-  H4 : {add A1 B2 C1}
-  ============================
-   B2 = B2
+Variables: B2 C1 A1
+IH : forall A B1 B2 C, {add A B1 C}* -> {add A B2 C} -> B1 = B2
+H3 : {add A1 B2 C1}*
+H4 : {add A1 B2 C1}
+============================
+ B2 = B2
 
 add_det2 < <b>search.</b>
 Proof completed.
@@ -723,55 +719,55 @@ Proof completed.
 Abella < <b>Define ctx : olist -> nat -> prop by 
 ctx nil z;
 nabla x, ctx (depth x H :: L) (s H) := ctx L H.</b>
+
 </pre>
 <a name="65"></a>
 <pre class="code">
 Abella < <b>Define name : hterm -> prop by 
 nabla x, name x.</b>
+
 </pre>
 <a name="66"></a>
 <pre class="code">
 Abella < <b>Theorem ctx_nat : 
 forall L H, ctx L H -> nat H.</b>
+
 </pre>
 <a name="67"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H, ctx L H -> nat H
+============================
+ forall L H, ctx L H -> nat H
 
 ctx_nat < <b>induction on 1.</b>
 </pre>
 <a name="68"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L H, ctx L H * -> nat H
-  ============================
-   forall L H, ctx L H @ -> nat H
+IH : forall L H, ctx L H * -> nat H
+============================
+ forall L H, ctx L H @ -> nat H
 
 ctx_nat < <b>intros.</b>
 </pre>
 <a name="69"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H
-  IH : forall L H, ctx L H * -> nat H
-  H1 : ctx L H @
-  ============================
-   nat H
+Variables: L H
+IH : forall L H, ctx L H * -> nat H
+H1 : ctx L H @
+============================
+ nat H
 
 ctx_nat < <b>case H1.</b>
 </pre>
 <a name="70"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, H
-  IH : forall L H, ctx L H * -> nat H
-  ============================
-   nat z
+IH : forall L H, ctx L H * -> nat H
+============================
+ nat z
 
 Subgoal 2 is:
  nat (s H1)
@@ -779,27 +775,27 @@ Subgoal 2 is:
 ctx_nat < <b>search.</b>
 </pre>
 <a name="71"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, H1, L1
-  IH : forall L H, ctx L H * -> nat H
-  H2 : ctx L1 H1 *
-  ============================
-   nat (s H1)
+Variables: H1 L1
+IH : forall L H, ctx L H * -> nat H
+H2 : ctx L1 H1 *
+============================
+ nat (s H1)
 
 ctx_nat < <b>apply IH to H2.</b>
 </pre>
 <a name="72"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, H1, L1
-  IH : forall L H, ctx L H * -> nat H
-  H2 : ctx L1 H1 *
-  H3 : nat H1
-  ============================
-   nat (s H1)
+Variables: H1 L1
+IH : forall L H, ctx L H * -> nat H
+H2 : ctx L1 H1 *
+H3 : nat H1
+============================
+ nat (s H1)
 
 ctx_nat < <b>search.</b>
 Proof completed.
@@ -807,54 +803,53 @@ Proof completed.
 <a name="73"></a>
 <pre class="code">
 Abella < <b>Theorem ctx_world : 
-forall E L H, ctx L H -> member E L -> (exists X HX, E = depth X HX /\
-  name X).</b>
+forall E L H, ctx L H -> member E L ->
+  (exists X HX, E = depth X HX /\ name X).</b>
+
 </pre>
 <a name="74"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall E L H, ctx L H -> member E L -> (exists X HX, E = depth X HX /\
-     name X)
+============================
+ forall E L H, ctx L H -> member E L ->
+   (exists X HX, E = depth X HX /\ name X)
 
 ctx_world < <b>induction on 1.</b>
 </pre>
 <a name="75"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  ============================
-   forall E L H, ctx L H @ -> member E L -> (exists X HX, E = depth X HX /\
-     name X)
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+============================
+ forall E L H, ctx L H @ -> member E L ->
+   (exists X HX, E = depth X HX /\ name X)
 
 ctx_world < <b>intros.</b>
 </pre>
 <a name="76"></a>
-<pre>
+<pre class="code">
 
-  Variables: E, L, H
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H1 : ctx L H @
-  H2 : member E L
-  ============================
-   exists X HX, E = depth X HX /\ name X
+Variables: E L H
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H1 : ctx L H @
+H2 : member E L
+============================
+ exists X HX, E = depth X HX /\ name X
 
 ctx_world < <b>case H1.</b>
 </pre>
 <a name="77"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: E, L, H
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H2 : member E nil
-  ============================
-   exists X HX, E = depth X HX /\ name X
+Variables: E
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H2 : member E nil
+============================
+ exists X HX, E = depth X HX /\ name X
 
 Subgoal 2 is:
  exists X HX, E n1 = depth X HX /\ name X
@@ -862,29 +857,29 @@ Subgoal 2 is:
 ctx_world < <b>case H2.</b>
 </pre>
 <a name="78"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: E, L, H, H1, L1
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H2 : member (E n1) (depth n1 H1 :: L1)
-  H3 : ctx L1 H1 *
-  ============================
-   exists X HX, E n1 = depth X HX /\ name X
+Variables: E H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H2 : member (E n1) (depth n1 H1 :: L1)
+H3 : ctx L1 H1 *
+============================
+ exists X HX, E n1 = depth X HX /\ name X
 
 ctx_world < <b>case H2.</b>
 </pre>
 <a name="79"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: E, L, H, H1, L1
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H3 : ctx L1 H1 *
-  ============================
-   exists X HX, depth n1 H1 = depth X HX /\ name X
+Variables: H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H3 : ctx L1 H1 *
+============================
+ exists X HX, depth n1 H1 = depth X HX /\ name X
 
 Subgoal 2.2 is:
  exists X HX, E n1 = depth X HX /\ name X
@@ -892,45 +887,45 @@ Subgoal 2.2 is:
 ctx_world < <b>search.</b>
 </pre>
 <a name="80"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: E, L, H, H1, L1
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H3 : ctx L1 H1 *
-  H4 : member (E n1) L1
-  ============================
-   exists X HX, E n1 = depth X HX /\ name X
+Variables: E H1 L1
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H3 : ctx L1 H1 *
+H4 : member (E n1) L1
+============================
+ exists X HX, E n1 = depth X HX /\ name X
 
 ctx_world < <b>apply member_prune to H4.</b>
 </pre>
 <a name="81"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: E, L, H, H1, L1, F
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H3 : ctx L1 H1 *
-  H4 : member F L1
-  ============================
-   exists X HX, F = depth X HX /\ name X
+Variables: H1 L1 F
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H3 : ctx L1 H1 *
+H4 : member F L1
+============================
+ exists X HX, F = depth X HX /\ name X
 
 ctx_world < <b>apply IH to H3 H4.</b>
 </pre>
 <a name="82"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: E, L, H, H1, L1, F, X, HX
-  IH : forall E L H, ctx L H * -> member E L -> (exists X HX,
-         E = depth X HX /\ name X)
-  H3 : ctx L1 H1 *
-  H4 : member (depth X HX) L1
-  H5 : name X
-  ============================
-   exists X1 HX1, depth X HX = depth X1 HX1 /\ name X1
+Variables: H1 L1 X HX
+IH : forall E L H, ctx L H * -> member E L ->
+       (exists X HX, E = depth X HX /\ name X)
+H3 : ctx L1 H1 *
+H4 : member (depth X HX) L1
+H5 : name X
+============================
+ exists X1 HX1, depth X HX = depth X1 HX1 /\ name X1
 
 ctx_world < <b>search.</b>
 Proof completed.
@@ -939,61 +934,61 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem depth_name : 
 forall L H X HX, ctx L H -> {L |- depth X HX} -> name X.</b>
+
 </pre>
 <a name="84"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H X HX, ctx L H -> {L |- depth X HX} -> name X
+============================
+ forall L H X HX, ctx L H -> {L |- depth X HX} -> name X
 
 depth_name < <b>intros.</b>
 </pre>
 <a name="85"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, HX
-  H1 : ctx L H
-  H2 : {L |- depth X HX}
-  ============================
-   name X
+Variables: L H X HX
+H1 : ctx L H
+H2 : {L |- depth X HX}
+============================
+ name X
 
 depth_name < <b>case H2.</b>
 </pre>
 <a name="86"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, HX, F
-  H1 : ctx L H
-  H3 : {L, [F] |- depth X HX}
-  H4 : member F L
-  ============================
-   name X
+Variables: L H X HX F
+H1 : ctx L H
+H3 : {L, [F] |- depth X HX}
+H4 : member F L
+============================
+ name X
 
 depth_name < <b>apply ctx_world to H1 H4.</b>
 </pre>
 <a name="87"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, HX, F, X1, HX1
-  H1 : ctx L H
-  H3 : {L, [depth X1 HX1] |- depth X HX}
-  H4 : member (depth X1 HX1) L
-  H5 : name X1
-  ============================
-   name X
+Variables: L H X HX X1 HX1
+H1 : ctx L H
+H3 : {L, [depth X1 HX1] |- depth X HX}
+H4 : member (depth X1 HX1) L
+H5 : name X1
+============================
+ name X
 
 depth_name < <b>case H3.</b>
 </pre>
 <a name="88"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, HX, F, X1, HX1
-  H1 : ctx L H
-  H4 : member (depth X HX) L
-  H5 : name X
-  ============================
-   name X
+Variables: L H X HX
+H1 : ctx L H
+H4 : member (depth X HX) L
+H5 : name X
+============================
+ name X
 
 depth_name < <b>search.</b>
 Proof completed.
@@ -1002,55 +997,60 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem member_depth_det2 : 
 forall L H X H1 H2, ctx L H -> member (depth X H1) L ->
-  member (depth X H2) L -> H1 = H2.</b>
+  member (depth X H2) L -> H1 =
+H2.</b>
+
 </pre>
 <a name="90"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H X H1 H2, ctx L H -> member (depth X H1) L ->
-     member (depth X H2) L -> H1 = H2
+============================
+ forall L H X H1 H2, ctx L H -> member (depth X H1) L ->
+   member (depth X H2) L -> H1 =
+ H2
 
 member_depth_det2 < <b>induction on 2.</b>
 </pre>
 <a name="91"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  ============================
-   forall L H X H1 H2, ctx L H -> member (depth X H1) L @ ->
-     member (depth X H2) L -> H1 = H2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+============================
+ forall L H X H1 H2, ctx L H -> member (depth X H1) L @ ->
+   member (depth X H2) L -> H1 =
+ H2
 
 member_depth_det2 < <b>intros.</b>
 </pre>
 <a name="92"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx L H
-  H2 : member (depth X H1) L @
-  H3 : member (depth X H2) L
-  ============================
-   H1 = H2
+Variables: L H X H1 H2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx L H
+H2 : member (depth X H1) L @
+H3 : member (depth X H2) L
+============================
+ H1 = H2
 
 member_depth_det2 < <b>case H2.</b>
 </pre>
 <a name="93"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, H, X, H1, H2, L1
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (depth X H1 :: L1) H
-  H3 : member (depth X H2) (depth X H1 :: L1)
-  ============================
-   H1 = H2
+Variables: H X H1 H2 L1
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (depth X H1 :: L1) H
+H3 : member (depth X H2) (depth X H1 :: L1)
+============================
+ H1 = H2
 
 Subgoal 2 is:
  H1 = H2
@@ -1058,15 +1058,16 @@ Subgoal 2 is:
 member_depth_det2 < <b>case H3.</b>
 </pre>
 <a name="94"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, H, X, H1, H2, L1
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (depth X H1 :: L1) H
-  ============================
-   H1 = H1
+Variables: H X H1 L1
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (depth X H1 :: L1) H
+============================
+ H1 = H1
 
 Subgoal 1.2 is:
  H1 = H2
@@ -1077,16 +1078,17 @@ Subgoal 2 is:
 member_depth_det2 < <b>search.</b>
 </pre>
 <a name="95"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, H, X, H1, H2, L1
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (depth X H1 :: L1) H
-  H4 : member (depth X H2) L1
-  ============================
-   H1 = H2
+Variables: H X H1 H2 L1
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (depth X H1 :: L1) H
+H4 : member (depth X H2) L1
+============================
+ H1 = H2
 
 Subgoal 2 is:
  H1 = H2
@@ -1094,16 +1096,17 @@ Subgoal 2 is:
 member_depth_det2 < <b>case H1.</b>
 </pre>
 <a name="96"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, H, X, H1, H2, L1, H3, L2
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H4 : member (depth n1 (H2 n1)) L2
-  H5 : ctx L2 H3
-  ============================
-   H3 = H2 n1
+Variables: H2 H3 L2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H4 : member (depth n1 (H2 n1)) L2
+H5 : ctx L2 H3
+============================
+ H3 = H2 n1
 
 Subgoal 2 is:
  H1 = H2
@@ -1111,31 +1114,33 @@ Subgoal 2 is:
 member_depth_det2 < <b>apply member_prune to H4.</b>
 </pre>
 <a name="97"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, X, H1, H2, L1, B
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (B :: L1) H
-  H3 : member (depth X H2) (B :: L1)
-  H4 : member (depth X H1) L1 *
-  ============================
-   H1 = H2
+Variables: H X H1 H2 L1 B
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (B :: L1) H
+H3 : member (depth X H2) (B :: L1)
+H4 : member (depth X H1) L1 *
+============================
+ H1 = H2
 
 member_depth_det2 < <b>case H3.</b>
 </pre>
 <a name="98"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, H, X, H1, H2, L1, B
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (depth X H2 :: L1) H
-  H4 : member (depth X H1) L1 *
-  ============================
-   H1 = H2
+Variables: H X H1 H2 L1
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (depth X H2 :: L1) H
+H4 : member (depth X H1) L1 *
+============================
+ H1 = H2
 
 Subgoal 2.2 is:
  H1 = H2
@@ -1143,16 +1148,17 @@ Subgoal 2.2 is:
 member_depth_det2 < <b>case H1.</b>
 </pre>
 <a name="99"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, H, X, H1, H2, L1, B, H3, L2
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H4 : member (depth n1 (H1 n1)) L2 *
-  H5 : ctx L2 H3
-  ============================
-   H1 n1 = H3
+Variables: H1 H3 L2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H4 : member (depth n1 (H1 n1)) L2 *
+H5 : ctx L2 H3
+============================
+ H1 n1 = H3
 
 Subgoal 2.2 is:
  H1 = H2
@@ -1160,47 +1166,50 @@ Subgoal 2.2 is:
 member_depth_det2 < <b>apply member_prune to H4.</b>
 </pre>
 <a name="100"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X, H1, H2, L1, B
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H1 : ctx (B :: L1) H
-  H4 : member (depth X H1) L1 *
-  H5 : member (depth X H2) L1
-  ============================
-   H1 = H2
+Variables: H X H1 H2 L1 B
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H1 : ctx (B :: L1) H
+H4 : member (depth X H1) L1 *
+H5 : member (depth X H2) L1
+============================
+ H1 = H2
 
 member_depth_det2 < <b>case H1.</b>
 </pre>
 <a name="101"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X, H1, H2, L1, B, H3, L2
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H4 : member (depth (X n1) (H1 n1)) L2 *
-  H5 : member (depth (X n1) (H2 n1)) L2
-  H6 : ctx L2 H3
-  ============================
-   H1 n1 = H2 n1
+Variables: X H1 H2 H3 L2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H4 : member (depth (X n1) (H1 n1)) L2 *
+H5 : member (depth (X n1) (H2 n1)) L2
+H6 : ctx L2 H3
+============================
+ H1 n1 = H2 n1
 
 member_depth_det2 < <b>apply IH to H6 H4 H5.</b>
 </pre>
 <a name="102"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X, H1, H2, L1, B, H3, L2
-  IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
-         member (depth X H2) L -> H1 = H2
-  H4 : member (depth (X n1) (H2 n1)) L2 *
-  H5 : member (depth (X n1) (H2 n1)) L2
-  H6 : ctx L2 H3
-  ============================
-   H2 n1 = H2 n1
+Variables: X H2 H3 L2
+IH : forall L H X H1 H2, ctx L H -> member (depth X H1) L * ->
+       member (depth X H2) L -> H1 =
+     H2
+H4 : member (depth (X n1) (H2 n1)) L2 *
+H5 : member (depth (X n1) (H2 n1)) L2
+H6 : ctx L2 H3
+============================
+ H2 n1 = H2 n1
 
 member_depth_det2 < <b>search.</b>
 Proof completed.
@@ -1208,137 +1217,138 @@ Proof completed.
 <a name="103"></a>
 <pre class="code">
 Abella < <b>Theorem depth_det2 : 
-forall L H X H1 H2, ctx L H -> {L |- depth X H1} -> {L |- depth X H2} ->
-  H1 = H2.</b>
+forall L H X H1 H2, ctx L H -> {L |- depth X H1} -> {L |- depth X H2} -> H1 =
+H2.</b>
+
 </pre>
 <a name="104"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H X H1 H2, ctx L H -> {L |- depth X H1} -> {L |- depth X H2} ->
-     H1 = H2
+============================
+ forall L H X H1 H2, ctx L H -> {L |- depth X H1} -> {L |- depth X H2} ->
+   H1 =
+ H2
 
 depth_det2 < <b>intros.</b>
 </pre>
 <a name="105"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2
-  H1 : ctx L H
-  H2 : {L |- depth X H1}
-  H3 : {L |- depth X H2}
-  ============================
-   H1 = H2
+Variables: L H X H1 H2
+H1 : ctx L H
+H2 : {L |- depth X H1}
+H3 : {L |- depth X H2}
+============================
+ H1 = H2
 
 depth_det2 < <b>case H2.</b>
 </pre>
 <a name="106"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F
-  H1 : ctx L H
-  H3 : {L |- depth X H2}
-  H4 : {L, [F] |- depth X H1}
-  H5 : member F L
-  ============================
-   H1 = H2
+Variables: L H X H1 H2 F
+H1 : ctx L H
+H3 : {L |- depth X H2}
+H4 : {L, [F] |- depth X H1}
+H5 : member F L
+============================
+ H1 = H2
 
 depth_det2 < <b>apply ctx_world to H1 H5.</b>
 </pre>
 <a name="107"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX
-  H1 : ctx L H
-  H3 : {L |- depth X H2}
-  H4 : {L, [depth X1 HX] |- depth X H1}
-  H5 : member (depth X1 HX) L
-  H6 : name X1
-  ============================
-   H1 = H2
+Variables: L H X H1 H2 X1 HX
+H1 : ctx L H
+H3 : {L |- depth X H2}
+H4 : {L, [depth X1 HX] |- depth X H1}
+H5 : member (depth X1 HX) L
+H6 : name X1
+============================
+ H1 = H2
 
 depth_det2 < <b>case H4.</b>
 </pre>
 <a name="108"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX
-  H1 : ctx L H
-  H3 : {L |- depth X H2}
-  H5 : member (depth X H1) L
-  H6 : name X
-  ============================
-   H1 = H2
+Variables: L H X H1 H2
+H1 : ctx L H
+H3 : {L |- depth X H2}
+H5 : member (depth X H1) L
+H6 : name X
+============================
+ H1 = H2
 
 depth_det2 < <b>case H3.</b>
 </pre>
 <a name="109"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX, F1
-  H1 : ctx L H
-  H5 : member (depth X H1) L
-  H6 : name X
-  H7 : {L, [F1] |- depth X H2}
-  H8 : member F1 L
-  ============================
-   H1 = H2
+Variables: L H X H1 H2 F1
+H1 : ctx L H
+H5 : member (depth X H1) L
+H6 : name X
+H7 : {L, [F1] |- depth X H2}
+H8 : member F1 L
+============================
+ H1 = H2
 
 depth_det2 < <b>apply ctx_world to H1 H8.</b>
 </pre>
 <a name="110"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX, F1, X2, HX1
-  H1 : ctx L H
-  H5 : member (depth X H1) L
-  H6 : name X
-  H7 : {L, [depth X2 HX1] |- depth X H2}
-  H8 : member (depth X2 HX1) L
-  H9 : name X2
-  ============================
-   H1 = H2
+Variables: L H X H1 H2 X2 HX1
+H1 : ctx L H
+H5 : member (depth X H1) L
+H6 : name X
+H7 : {L, [depth X2 HX1] |- depth X H2}
+H8 : member (depth X2 HX1) L
+H9 : name X2
+============================
+ H1 = H2
 
 depth_det2 < <b>case H7.</b>
 </pre>
 <a name="111"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX, F1, X2, HX1
-  H1 : ctx L H
-  H5 : member (depth X H1) L
-  H6 : name X
-  H8 : member (depth X H2) L
-  H9 : name X
-  ============================
-   H1 = H2
+Variables: L H X H1 H2
+H1 : ctx L H
+H5 : member (depth X H1) L
+H6 : name X
+H8 : member (depth X H2) L
+H9 : name X
+============================
+ H1 = H2
 
 depth_det2 < <b>case H6.</b>
 </pre>
 <a name="112"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX, F1, X2, HX1
-  H1 : ctx (L n1) (H n1)
-  H5 : member (depth n1 (H1 n1)) (L n1)
-  H8 : member (depth n1 (H2 n1)) (L n1)
-  H9 : name n1
-  ============================
-   H1 n1 = H2 n1
+Variables: L H H1 H2
+H1 : ctx (L n1) (H n1)
+H5 : member (depth n1 (H1 n1)) (L n1)
+H8 : member (depth n1 (H2 n1)) (L n1)
+H9 : name n1
+============================
+ H1 n1 = H2 n1
 
 depth_det2 < <b>apply member_depth_det2 to H1 H5 H8.</b>
 </pre>
 <a name="113"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X, H1, H2, F, X1, HX, F1, X2, HX1
-  H1 : ctx (L n1) (H n1)
-  H5 : member (depth n1 (H2 n1)) (L n1)
-  H8 : member (depth n1 (H2 n1)) (L n1)
-  H9 : name n1
-  ============================
-   H2 n1 = H2 n1
+Variables: L H H2
+H1 : ctx (L n1) (H n1)
+H5 : member (depth n1 (H2 n1)) (L n1)
+H8 : member (depth n1 (H2 n1)) (L n1)
+H9 : name n1
+============================
+ H2 n1 = H2 n1
 
 depth_det2 < <b>search.</b>
 Proof completed.
@@ -1347,52 +1357,51 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem ctx_member_absurd : 
 forall X H1 H2 L, ctx L H1 -> member (depth X H2) L -> le H1 H2 -> false.</b>
+
 </pre>
 <a name="115"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall X H1 H2 L, ctx L H1 -> member (depth X H2) L -> le H1 H2 -> false
+============================
+ forall X H1 H2 L, ctx L H1 -> member (depth X H2) L -> le H1 H2 -> false
 
 ctx_member_absurd < <b>induction on 2.</b>
 </pre>
 <a name="116"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  ============================
-   forall X H1 H2 L, ctx L H1 -> member (depth X H2) L @ -> le H1 H2 -> false
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+============================
+ forall X H1 H2 L, ctx L H1 -> member (depth X H2) L @ -> le H1 H2 -> false
 
 ctx_member_absurd < <b>intros.</b>
 </pre>
 <a name="117"></a>
-<pre>
+<pre class="code">
 
-  Variables: X, H1, H2, L
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H1 : ctx L H1
-  H2 : member (depth X H2) L @
-  H3 : le H1 H2
-  ============================
-   false
+Variables: X H1 H2 L
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H1 : ctx L H1
+H2 : member (depth X H2) L @
+H3 : le H1 H2
+============================
+ false
 
 ctx_member_absurd < <b>case H2.</b>
 </pre>
 <a name="118"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: X, H1, H2, L, L1
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H1 : ctx (depth X H2 :: L1) H1
-  H3 : le H1 H2
-  ============================
-   false
+Variables: X H1 H2 L1
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H1 : ctx (depth X H2 :: L1) H1
+H3 : le H1 H2
+============================
+ false
 
 Subgoal 2 is:
  false
@@ -1400,16 +1409,16 @@ Subgoal 2 is:
 ctx_member_absurd < <b>case H1.</b>
 </pre>
 <a name="119"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: X, H1, H2, L, L1, H, L2
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H3 : le (s H) H
-  H4 : ctx L2 H
-  ============================
-   false
+Variables: H L2
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H3 : le (s H) H
+H4 : ctx L2 H
+============================
+ false
 
 Subgoal 2 is:
  false
@@ -1417,17 +1426,17 @@ Subgoal 2 is:
 ctx_member_absurd < <b>apply ctx_nat to H4.</b>
 </pre>
 <a name="120"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: X, H1, H2, L, L1, H, L2
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H3 : le (s H) H
-  H4 : ctx L2 H
-  H5 : nat H
-  ============================
-   false
+Variables: H L2
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H3 : le (s H) H
+H4 : ctx L2 H
+H5 : nat H
+============================
+ false
 
 Subgoal 2 is:
  false
@@ -1435,63 +1444,63 @@ Subgoal 2 is:
 ctx_member_absurd < <b>apply le_absurd to H5 H3.</b>
 </pre>
 <a name="121"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, H1, H2, L, L1, B
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H1 : ctx (B :: L1) H1
-  H3 : le H1 H2
-  H4 : member (depth X H2) L1 *
-  ============================
-   false
+Variables: X H1 H2 L1 B
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H1 : ctx (B :: L1) H1
+H3 : le H1 H2
+H4 : member (depth X H2) L1 *
+============================
+ false
 
 ctx_member_absurd < <b>case H1.</b>
 </pre>
 <a name="122"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, H1, H2, L, L1, B, H, L2
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H3 : le (s H) (H2 n1)
-  H4 : member (depth (X n1) (H2 n1)) L2 *
-  H5 : ctx L2 H
-  ============================
-   false
+Variables: X H2 H L2
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H3 : le (s H) (H2 n1)
+H4 : member (depth (X n1) (H2 n1)) L2 *
+H5 : ctx L2 H
+============================
+ false
 
 ctx_member_absurd < <b>apply member_prune to H4.</b>
 </pre>
 <a name="123"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, H1, H2, L, L1, B, H, L2, F, F2, F1
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H3 : le (s H) F2
-  H4 : member (depth F1 F2) L2 *
-  H5 : ctx L2 H
-  ============================
-   false
+Variables: H L2 F2 F1
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H3 : le (s H) F2
+H4 : member (depth F1 F2) L2 *
+H5 : ctx L2 H
+============================
+ false
 
 ctx_member_absurd < <b>apply le_dec to H3.</b>
 </pre>
 <a name="124"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: X, H1, H2, L, L1, B, H, L2, F, F2, F1
-  IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
-         false
-  H3 : le (s H) F2
-  H4 : member (depth F1 F2) L2 *
-  H5 : ctx L2 H
-  H6 : le H F2
-  ============================
-   false
+Variables: H L2 F2 F1
+IH : forall X H1 H2 L, ctx L H1 -> member (depth X H2) L * -> le H1 H2 ->
+       false
+H3 : le (s H) F2
+H4 : member (depth F1 F2) L2 *
+H5 : ctx L2 H
+H6 : le H F2
+============================
+ false
 
 ctx_member_absurd < <b>apply IH to H5 H4 H6.</b>
 Proof completed.
@@ -1500,55 +1509,60 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem member_depth_det1 : 
 forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L ->
-  member (depth X2 HX) L -> X1 = X2.</b>
+  member (depth X2 HX) L -> X1 =
+X2.</b>
+
 </pre>
 <a name="126"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L ->
-     member (depth X2 HX) L -> X1 = X2
+============================
+ forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L ->
+   member (depth X2 HX) L -> X1 =
+ X2
 
 member_depth_det1 < <b>induction on 2.</b>
 </pre>
 <a name="127"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  ============================
-   forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L @ ->
-     member (depth X2 HX) L -> X1 = X2
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+============================
+ forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L @ ->
+   member (depth X2 HX) L -> X1 =
+ X2
 
 member_depth_det1 < <b>intros.</b>
 </pre>
 <a name="128"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx L H
-  H2 : member (depth X1 HX) L @
-  H3 : member (depth X2 HX) L
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx L H
+H2 : member (depth X1 HX) L @
+H3 : member (depth X2 HX) L
+============================
+ X1 = X2
 
 member_depth_det1 < <b>case H2.</b>
 </pre>
 <a name="129"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, H, X1, X2, HX, L1
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (depth X1 HX :: L1) H
-  H3 : member (depth X2 HX) (depth X1 HX :: L1)
-  ============================
-   X1 = X2
+Variables: H X1 X2 HX L1
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (depth X1 HX :: L1) H
+H3 : member (depth X2 HX) (depth X1 HX :: L1)
+============================
+ X1 = X2
 
 Subgoal 2 is:
  X1 = X2
@@ -1556,15 +1570,16 @@ Subgoal 2 is:
 member_depth_det1 < <b>case H3.</b>
 </pre>
 <a name="130"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, H, X1, X2, HX, L1
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (depth X1 HX :: L1) H
-  ============================
-   X1 = X1
+Variables: H X1 HX L1
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (depth X1 HX :: L1) H
+============================
+ X1 = X1
 
 Subgoal 1.2 is:
  X1 = X2
@@ -1575,16 +1590,17 @@ Subgoal 2 is:
 member_depth_det1 < <b>search.</b>
 </pre>
 <a name="131"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, H, X1, X2, HX, L1
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (depth X1 HX :: L1) H
-  H4 : member (depth X2 HX) L1
-  ============================
-   X1 = X2
+Variables: H X1 X2 HX L1
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (depth X1 HX :: L1) H
+H4 : member (depth X2 HX) L1
+============================
+ X1 = X2
 
 Subgoal 2 is:
  X1 = X2
@@ -1592,16 +1608,17 @@ Subgoal 2 is:
 member_depth_det1 < <b>case H1.</b>
 </pre>
 <a name="132"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, H, X1, X2, HX, L1, H1, L2
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H4 : member (depth (X2 n1) H1) L2
-  H5 : ctx L2 H1
-  ============================
-   n1 = X2 n1
+Variables: X2 H1 L2
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H4 : member (depth (X2 n1) H1) L2
+H5 : ctx L2 H1
+============================
+ n1 = X2 n1
 
 Subgoal 2 is:
  X1 = X2
@@ -1609,31 +1626,33 @@ Subgoal 2 is:
 member_depth_det1 < <b>apply ctx_member_absurd to H5 H4 _.</b>
 </pre>
 <a name="133"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, X1, X2, HX, L1, B
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (B :: L1) H
-  H3 : member (depth X2 HX) (B :: L1)
-  H4 : member (depth X1 HX) L1 *
-  ============================
-   X1 = X2
+Variables: H X1 X2 HX L1 B
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (B :: L1) H
+H3 : member (depth X2 HX) (B :: L1)
+H4 : member (depth X1 HX) L1 *
+============================
+ X1 = X2
 
 member_depth_det1 < <b>case H3.</b>
 </pre>
 <a name="134"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, H, X1, X2, HX, L1, B
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (depth X2 HX :: L1) H
-  H4 : member (depth X1 HX) L1 *
-  ============================
-   X1 = X2
+Variables: H X1 X2 HX L1
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (depth X2 HX :: L1) H
+H4 : member (depth X1 HX) L1 *
+============================
+ X1 = X2
 
 Subgoal 2.2 is:
  X1 = X2
@@ -1641,16 +1660,17 @@ Subgoal 2.2 is:
 member_depth_det1 < <b>case H1.</b>
 </pre>
 <a name="135"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, H, X1, X2, HX, L1, B, H1, L2
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H4 : member (depth (X1 n1) H1) L2 *
-  H5 : ctx L2 H1
-  ============================
-   X1 n1 = n1
+Variables: X1 H1 L2
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H4 : member (depth (X1 n1) H1) L2 *
+H5 : ctx L2 H1
+============================
+ X1 n1 = n1
 
 Subgoal 2.2 is:
  X1 = X2
@@ -1658,47 +1678,50 @@ Subgoal 2.2 is:
 member_depth_det1 < <b>apply ctx_member_absurd to H5 H4 _.</b>
 </pre>
 <a name="136"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X1, X2, HX, L1, B
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H1 : ctx (B :: L1) H
-  H4 : member (depth X1 HX) L1 *
-  H5 : member (depth X2 HX) L1
-  ============================
-   X1 = X2
+Variables: H X1 X2 HX L1 B
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H1 : ctx (B :: L1) H
+H4 : member (depth X1 HX) L1 *
+H5 : member (depth X2 HX) L1
+============================
+ X1 = X2
 
 member_depth_det1 < <b>case H1.</b>
 </pre>
 <a name="137"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X1, X2, HX, L1, B, H1, L2
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H4 : member (depth (X1 n1) (HX n1)) L2 *
-  H5 : member (depth (X2 n1) (HX n1)) L2
-  H6 : ctx L2 H1
-  ============================
-   X1 n1 = X2 n1
+Variables: X1 X2 HX H1 L2
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H4 : member (depth (X1 n1) (HX n1)) L2 *
+H5 : member (depth (X2 n1) (HX n1)) L2
+H6 : ctx L2 H1
+============================
+ X1 n1 = X2 n1
 
 member_depth_det1 < <b>apply IH to H6 H4 H5.</b>
 </pre>
 <a name="138"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, H, X1, X2, HX, L1, B, H1, L2
-  IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
-         member (depth X2 HX) L -> X1 = X2
-  H4 : member (depth (X2 n1) (HX n1)) L2 *
-  H5 : member (depth (X2 n1) (HX n1)) L2
-  H6 : ctx L2 H1
-  ============================
-   X2 n1 = X2 n1
+Variables: X2 HX H1 L2
+IH : forall L H X1 X2 HX, ctx L H -> member (depth X1 HX) L * ->
+       member (depth X2 HX) L -> X1 =
+     X2
+H4 : member (depth (X2 n1) (HX n1)) L2 *
+H5 : member (depth (X2 n1) (HX n1)) L2
+H6 : ctx L2 H1
+============================
+ X2 n1 = X2 n1
 
 member_depth_det1 < <b>search.</b>
 Proof completed.
@@ -1707,138 +1730,140 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem depth_det1 : 
 forall L H X1 X2 HX, ctx L H -> {L |- depth X1 HX} -> {L |- depth X2 HX} ->
-  X1 = X2.</b>
+  X1 =
+X2.</b>
+
 </pre>
 <a name="140"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H X1 X2 HX, ctx L H -> {L |- depth X1 HX} ->
-     {L |- depth X2 HX} -> X1 = X2
+============================
+ forall L H X1 X2 HX, ctx L H -> {L |- depth X1 HX} -> {L |- depth X2 HX} ->
+   X1 =
+ X2
 
 depth_det1 < <b>intros.</b>
 </pre>
 <a name="141"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX
-  H1 : ctx L H
-  H2 : {L |- depth X1 HX}
-  H3 : {L |- depth X2 HX}
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX
+H1 : ctx L H
+H2 : {L |- depth X1 HX}
+H3 : {L |- depth X2 HX}
+============================
+ X1 = X2
 
 depth_det1 < <b>case H2.</b>
 </pre>
 <a name="142"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F
-  H1 : ctx L H
-  H3 : {L |- depth X2 HX}
-  H4 : {L, [F] |- depth X1 HX}
-  H5 : member F L
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX F
+H1 : ctx L H
+H3 : {L |- depth X2 HX}
+H4 : {L, [F] |- depth X1 HX}
+H5 : member F L
+============================
+ X1 = X2
 
 depth_det1 < <b>case H3.</b>
 </pre>
 <a name="143"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1
-  H1 : ctx L H
-  H4 : {L, [F] |- depth X1 HX}
-  H5 : member F L
-  H6 : {L, [F1] |- depth X2 HX}
-  H7 : member F1 L
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX F F1
+H1 : ctx L H
+H4 : {L, [F] |- depth X1 HX}
+H5 : member F L
+H6 : {L, [F1] |- depth X2 HX}
+H7 : member F1 L
+============================
+ X1 = X2
 
 depth_det1 < <b>apply ctx_world to H1 H5.</b>
 </pre>
 <a name="144"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1
-  H1 : ctx L H
-  H4 : {L, [depth X HX1] |- depth X1 HX}
-  H5 : member (depth X HX1) L
-  H6 : {L, [F1] |- depth X2 HX}
-  H7 : member F1 L
-  H8 : name X
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX F1 X HX1
+H1 : ctx L H
+H4 : {L, [depth X HX1] |- depth X1 HX}
+H5 : member (depth X HX1) L
+H6 : {L, [F1] |- depth X2 HX}
+H7 : member F1 L
+H8 : name X
+============================
+ X1 = X2
 
 depth_det1 < <b>case H4.</b>
 </pre>
 <a name="145"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1
-  H1 : ctx L H
-  H5 : member (depth X1 HX) L
-  H6 : {L, [F1] |- depth X2 HX}
-  H7 : member F1 L
-  H8 : name X1
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX F1
+H1 : ctx L H
+H5 : member (depth X1 HX) L
+H6 : {L, [F1] |- depth X2 HX}
+H7 : member F1 L
+H8 : name X1
+============================
+ X1 = X2
 
 depth_det1 < <b>apply ctx_world to H1 H7.</b>
 </pre>
 <a name="146"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1, X3, HX2
-  H1 : ctx L H
-  H5 : member (depth X1 HX) L
-  H6 : {L, [depth X3 HX2] |- depth X2 HX}
-  H7 : member (depth X3 HX2) L
-  H8 : name X1
-  H9 : name X3
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX X3 HX2
+H1 : ctx L H
+H5 : member (depth X1 HX) L
+H6 : {L, [depth X3 HX2] |- depth X2 HX}
+H7 : member (depth X3 HX2) L
+H8 : name X1
+H9 : name X3
+============================
+ X1 = X2
 
 depth_det1 < <b>case H6.</b>
 </pre>
 <a name="147"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1, X3, HX2
-  H1 : ctx L H
-  H5 : member (depth X1 HX) L
-  H7 : member (depth X2 HX) L
-  H8 : name X1
-  H9 : name X2
-  ============================
-   X1 = X2
+Variables: L H X1 X2 HX
+H1 : ctx L H
+H5 : member (depth X1 HX) L
+H7 : member (depth X2 HX) L
+H8 : name X1
+H9 : name X2
+============================
+ X1 = X2
 
 depth_det1 < <b>case H8.</b>
 </pre>
 <a name="148"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1, X3, HX2
-  H1 : ctx (L n1) (H n1)
-  H5 : member (depth n1 (HX n1)) (L n1)
-  H7 : member (depth (X2 n1) (HX n1)) (L n1)
-  H9 : name (X2 n1)
-  ============================
-   n1 = X2 n1
+Variables: L H X2 HX
+H1 : ctx (L n1) (H n1)
+H5 : member (depth n1 (HX n1)) (L n1)
+H7 : member (depth (X2 n1) (HX n1)) (L n1)
+H9 : name (X2 n1)
+============================
+ n1 = X2 n1
 
 depth_det1 < <b>apply member_depth_det1 to H1 H5 H7.</b>
 </pre>
 <a name="149"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, X1, X2, HX, F, F1, X, HX1, X3, HX2
-  H1 : ctx (L n1) (H n1)
-  H5 : member (depth n1 (HX n1)) (L n1)
-  H7 : member (depth n1 (HX n1)) (L n1)
-  H9 : name n1
-  ============================
-   n1 = n1
+Variables: L H HX
+H1 : ctx (L n1) (H n1)
+H5 : member (depth n1 (HX n1)) (L n1)
+H7 : member (depth n1 (HX n1)) (L n1)
+H9 : name n1
+============================
+ n1 = n1
 
 depth_det1 < <b>search.</b>
 Proof completed.
@@ -1847,47 +1872,46 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem add_ignores_ctx : 
 forall L H A B C, ctx L H -> {L |- add A B C} -> {add A B C}.</b>
+
 </pre>
 <a name="151"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L H A B C, ctx L H -> {L |- add A B C} -> {add A B C}
+============================
+ forall L H A B C, ctx L H -> {L |- add A B C} -> {add A B C}
 
 add_ignores_ctx < <b>induction on 2.</b>
 </pre>
 <a name="152"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  ============================
-   forall L H A B C, ctx L H -> {L |- add A B C}@ -> {add A B C}
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+============================
+ forall L H A B C, ctx L H -> {L |- add A B C}@ -> {add A B C}
 
 add_ignores_ctx < <b>intros.</b>
 </pre>
 <a name="153"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, H, A, B, C
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  H2 : {L |- add A B C}@
-  ============================
-   {add A B C}
+Variables: L H A B C
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+H2 : {L |- add A B C}@
+============================
+ {add A B C}
 
 add_ignores_ctx < <b>case H2.</b>
 </pre>
 <a name="154"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, H, A, B, C
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  ============================
-   {add z C C}
+Variables: L H C
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+============================
+ {add z C C}
 
 Subgoal 2 is:
  {add (s A1) B (s C1)}
@@ -1898,15 +1922,15 @@ Subgoal 3 is:
 add_ignores_ctx < <b>search.</b>
 </pre>
 <a name="155"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, A, B, C, C1, A1
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  H3 : {L |- add A1 B C1}*
-  ============================
-   {add (s A1) B (s C1)}
+Variables: L H B C1 A1
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+H3 : {L |- add A1 B C1}*
+============================
+ {add (s A1) B (s C1)}
 
 Subgoal 3 is:
  {add A B C}
@@ -1914,16 +1938,16 @@ Subgoal 3 is:
 add_ignores_ctx < <b>apply IH to H1 H3.</b>
 </pre>
 <a name="156"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, H, A, B, C, C1, A1
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  H3 : {L |- add A1 B C1}*
-  H4 : {add A1 B C1}
-  ============================
-   {add (s A1) B (s C1)}
+Variables: L H B C1 A1
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+H3 : {L |- add A1 B C1}*
+H4 : {add A1 B C1}
+============================
+ {add (s A1) B (s C1)}
 
 Subgoal 3 is:
  {add A B C}
@@ -1931,31 +1955,31 @@ Subgoal 3 is:
 add_ignores_ctx < <b>search.</b>
 </pre>
 <a name="157"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, H, A, B, C, F
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  H3 : {L, [F] |- add A B C}*
-  H4 : member F L
-  ============================
-   {add A B C}
+Variables: L H A B C F
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+H3 : {L, [F] |- add A B C}*
+H4 : member F L
+============================
+ {add A B C}
 
 add_ignores_ctx < <b>apply ctx_world to H1 H4.</b>
 </pre>
 <a name="158"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, H, A, B, C, F, X, HX
-  IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
-  H1 : ctx L H
-  H3 : {L, [depth X HX] |- add A B C}*
-  H4 : member (depth X HX) L
-  H5 : name X
-  ============================
-   {add A B C}
+Variables: L H A B C X HX
+IH : forall L H A B C, ctx L H -> {L |- add A B C}* -> {add A B C}
+H1 : ctx L H
+H3 : {L, [depth X HX] |- add A B C}*
+H4 : member (depth X HX) L
+H5 : name X
+============================
+ {add A B C}
 
 add_ignores_ctx < <b>case H3.</b>
 Proof completed.
@@ -1964,57 +1988,62 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem ho2db_det3 : 
 forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1} -> {L |- ho2db M H D2} ->
-  D1 = D2.</b>
+  D1 =
+D2.</b>
+
 </pre>
 <a name="160"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1} ->
-     {L |- ho2db M H D2} -> D1 = D2
+============================
+ forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1} -> {L |- ho2db M H D2} ->
+   D1 =
+ D2
 
 ho2db_det3 < <b>induction on 2.</b>
 </pre>
 <a name="161"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  ============================
-   forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}@ ->
-     {L |- ho2db M H D2} -> D1 = D2
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+============================
+ forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}@ ->
+   {L |- ho2db M H D2} -> D1 =
+ D2
 
 ho2db_det3 < <b>intros.</b>
 </pre>
 <a name="162"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, M, D1, D2, H
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H2 : {L |- ho2db M H D1}@
-  H3 : {L |- ho2db M H D2}
-  ============================
-   D1 = D2
+Variables: L M D1 D2 H
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H2 : {L |- ho2db M H D1}@
+H3 : {L |- ho2db M H D2}
+============================
+ D1 = D2
 
 ho2db_det3 < <b>case H2.</b>
 </pre>
 <a name="163"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H3 : {L |- ho2db (app M1 N) H D2}
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  ============================
-   dapp DM DN = D2
+Variables: L D2 H DN N DM M1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H3 : {L |- ho2db (app M1 N) H D2}
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+============================
+ dapp DM DN = D2
 
 Subgoal 2 is:
  dlam DR = D2
@@ -2028,19 +2057,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H3.</b>
 </pre>
 <a name="164"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- ho2db M1 H DM1}
-  H7 : {L |- ho2db N H DN1}
-  ============================
-   dapp DM DN = dapp DM1 DN1
+Variables: L H DN N DM M1 DN1 DM1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- ho2db M1 H DM1}
+H7 : {L |- ho2db N H DN1}
+============================
+ dapp DM DN = dapp DM1 DN1
 
 Subgoal 1.2 is:
  dapp DM DN = dvar DX
@@ -2060,19 +2090,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply IH to H1 H4 H6.</b>
 </pre>
 <a name="165"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM1}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- ho2db M1 H DM1}
-  H7 : {L |- ho2db N H DN1}
-  ============================
-   dapp DM1 DN = dapp DM1 DN1
+Variables: L H DN N M1 DN1 DM1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM1}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- ho2db M1 H DM1}
+H7 : {L |- ho2db N H DN1}
+============================
+ dapp DM1 DN = dapp DM1 DN1
 
 Subgoal 1.2 is:
  dapp DM DN = dvar DX
@@ -2092,19 +2123,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply IH to H1 H5 H7.</b>
 </pre>
 <a name="166"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, DN1, DM1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM1}*
-  H5 : {L |- ho2db N H DN1}*
-  H6 : {L |- ho2db M1 H DM1}
-  H7 : {L |- ho2db N H DN1}
-  ============================
-   dapp DM1 DN1 = dapp DM1 DN1
+Variables: L H N M1 DN1 DM1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM1}*
+H5 : {L |- ho2db N H DN1}*
+H6 : {L |- ho2db M1 H DM1}
+H7 : {L |- ho2db N H DN1}
+============================
+ dapp DM1 DN1 = dapp DM1 DN1
 
 Subgoal 1.2 is:
  dapp DM DN = dvar DX
@@ -2124,19 +2156,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>search.</b>
 </pre>
 <a name="167"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, DX, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- depth (app M1 N) HX}
-  H7 : {L |- add HX DX H}
-  ============================
-   dapp DM DN = dvar DX
+Variables: L H DN N DM M1 DX HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- depth (app M1 N) HX}
+H7 : {L |- add HX DX H}
+============================
+ dapp DM DN = dvar DX
 
 Subgoal 1.3 is:
  dapp DM DN = D2
@@ -2153,20 +2186,21 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply depth_name to H1 H6.</b>
 </pre>
 <a name="168"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, DX, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- depth (app M1 N) HX}
-  H7 : {L |- add HX DX H}
-  H8 : name (app M1 N)
-  ============================
-   dapp DM DN = dvar DX
+Variables: L H DN N DM M1 DX HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- depth (app M1 N) HX}
+H7 : {L |- add HX DX H}
+H8 : name (app M1 N)
+============================
+ dapp DM DN = dvar DX
 
 Subgoal 1.3 is:
  dapp DM DN = D2
@@ -2183,19 +2217,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H8.</b>
 </pre>
 <a name="169"></a>
-<pre>
+<pre class="code">
 Subgoal 1.3:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, F
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L, [F] |- ho2db (app M1 N) H D2}
-  H7 : member F L
-  ============================
-   dapp DM DN = D2
+Variables: L D2 H DN N DM M1 F
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L, [F] |- ho2db (app M1 N) H D2}
+H7 : member F L
+============================
+ dapp DM DN = D2
 
 Subgoal 2 is:
  dlam DR = D2
@@ -2209,20 +2244,21 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply ctx_world to H1 H7.</b>
 </pre>
 <a name="170"></a>
-<pre>
+<pre class="code">
 Subgoal 1.3:
 
-  Variables: L, M, D1, D2, H, DN, N, DM, M1, F, X, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- ho2db M1 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L, [depth X HX] |- ho2db (app M1 N) H D2}
-  H7 : member (depth X HX) L
-  H8 : name X
-  ============================
-   dapp DM DN = D2
+Variables: L D2 H DN N DM M1 X HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- ho2db M1 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L, [depth X HX] |- ho2db (app M1 N) H D2}
+H7 : member (depth X HX) L
+H8 : name X
+============================
+ dapp DM DN = D2
 
 Subgoal 2 is:
  dlam DR = D2
@@ -2236,17 +2272,18 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H6.</b>
 </pre>
 <a name="171"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, M, D1, D2, H, DR, R
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H3 : {L |- ho2db (lam R) H D2}
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  ============================
-   dlam DR = D2
+Variables: L D2 H DR R
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H3 : {L |- ho2db (lam R) H D2}
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+============================
+ dlam DR = D2
 
 Subgoal 3 is:
  dvar DX = D2
@@ -2257,17 +2294,18 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H3.</b>
 </pre>
 <a name="172"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M, D1, D2, H, DR, R, DR1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
-  ============================
-   dlam DR = dlam DR1
+Variables: L H DR R DR1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
+============================
+ dlam DR = dlam DR1
 
 Subgoal 2.2 is:
  dlam DR = dvar DX
@@ -2284,18 +2322,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply ctx_nat to H1.</b>
 </pre>
 <a name="173"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M, D1, D2, H, DR, R, DR1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
-  H6 : nat H
-  ============================
-   dlam DR = dlam DR1
+Variables: L H DR R DR1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
+H6 : nat H
+============================
+ dlam DR = dlam DR1
 
 Subgoal 2.2 is:
  dlam DR = dvar DX
@@ -2312,18 +2351,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply IH to _ H4 H5.</b>
 </pre>
 <a name="174"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M, D1, D2, H, DR, R, DR1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}*
-  H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
-  H6 : nat H
-  ============================
-   dlam DR1 = dlam DR1
+Variables: L H R DR1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}*
+H5 : {L, depth n1 H |- ho2db (R n1) (s H) DR1}
+H6 : nat H
+============================
+ dlam DR1 = dlam DR1
 
 Subgoal 2.2 is:
  dlam DR = dvar DX
@@ -2340,18 +2380,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>search.</b>
 </pre>
 <a name="175"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, M, D1, D2, H, DR, R, DX, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L |- depth (lam R) HX}
-  H6 : {L |- add HX DX H}
-  ============================
-   dlam DR = dvar DX
+Variables: L H DR R DX HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L |- depth (lam R) HX}
+H6 : {L |- add HX DX H}
+============================
+ dlam DR = dvar DX
 
 Subgoal 2.3 is:
  dlam DR = D2
@@ -2365,19 +2406,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply depth_name to H1 H5.</b>
 </pre>
 <a name="176"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, M, D1, D2, H, DR, R, DX, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L |- depth (lam R) HX}
-  H6 : {L |- add HX DX H}
-  H7 : name (lam R)
-  ============================
-   dlam DR = dvar DX
+Variables: L H DR R DX HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L |- depth (lam R) HX}
+H6 : {L |- add HX DX H}
+H7 : name (lam R)
+============================
+ dlam DR = dvar DX
 
 Subgoal 2.3 is:
  dlam DR = D2
@@ -2391,18 +2433,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H7.</b>
 </pre>
 <a name="177"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: L, M, D1, D2, H, DR, R, F
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, [F] |- ho2db (lam R) H D2}
-  H6 : member F L
-  ============================
-   dlam DR = D2
+Variables: L D2 H DR R F
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, [F] |- ho2db (lam R) H D2}
+H6 : member F L
+============================
+ dlam DR = D2
 
 Subgoal 3 is:
  dvar DX = D2
@@ -2413,19 +2456,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply ctx_world to H1 H6.</b>
 </pre>
 <a name="178"></a>
-<pre>
+<pre class="code">
 Subgoal 2.3:
 
-  Variables: L, M, D1, D2, H, DR, R, F, X, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, [depth X HX] |- ho2db (lam R) H D2}
-  H6 : member (depth X HX) L
-  H7 : name X
-  ============================
-   dlam DR = D2
+Variables: L D2 H DR R X HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, [depth X HX] |- ho2db (lam R) H D2}
+H6 : member (depth X HX) L
+H7 : name X
+============================
+ dlam DR = D2
 
 Subgoal 3 is:
  dvar DX = D2
@@ -2436,18 +2480,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H5.</b>
 </pre>
 <a name="179"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, M, D1, D2, H, DX, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H3 : {L |- ho2db M H D2}
-  H4 : {L |- depth M HX}*
-  H5 : {L |- add HX DX H}*
-  ============================
-   dvar DX = D2
+Variables: L M D2 H DX HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H3 : {L |- ho2db M H D2}
+H4 : {L |- depth M HX}*
+H5 : {L |- add HX DX H}*
+============================
+ dvar DX = D2
 
 Subgoal 4 is:
  D1 = D2
@@ -2455,19 +2500,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H3.</b>
 </pre>
 <a name="180"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M, D1, D2, H, DX, HX, DN, N, DM, M1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth (app M1 N) HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- ho2db M1 H DM}
-  H7 : {L |- ho2db N H DN}
-  ============================
-   dvar DX = dapp DM DN
+Variables: L H DX HX DN N DM M1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth (app M1 N) HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- ho2db M1 H DM}
+H7 : {L |- ho2db N H DN}
+============================
+ dvar DX = dapp DM DN
 
 Subgoal 3.2 is:
  dvar DX = dlam DR
@@ -2484,20 +2530,21 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply depth_name to H1 H4.</b>
 </pre>
 <a name="181"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M, D1, D2, H, DX, HX, DN, N, DM, M1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth (app M1 N) HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- ho2db M1 H DM}
-  H7 : {L |- ho2db N H DN}
-  H8 : name (app M1 N)
-  ============================
-   dvar DX = dapp DM DN
+Variables: L H DX HX DN N DM M1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth (app M1 N) HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- ho2db M1 H DM}
+H7 : {L |- ho2db N H DN}
+H8 : name (app M1 N)
+============================
+ dvar DX = dapp DM DN
 
 Subgoal 3.2 is:
  dvar DX = dlam DR
@@ -2514,18 +2561,19 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H8.</b>
 </pre>
 <a name="182"></a>
-<pre>
+<pre class="code">
 Subgoal 3.2:
 
-  Variables: L, M, D1, D2, H, DX, HX, DR, R
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth (lam R) HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, depth n1 H |- ho2db (R n1) (s H) DR}
-  ============================
-   dvar DX = dlam DR
+Variables: L H DX HX DR R
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth (lam R) HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, depth n1 H |- ho2db (R n1) (s H) DR}
+============================
+ dvar DX = dlam DR
 
 Subgoal 3.3 is:
  dvar DX = dvar DX1
@@ -2539,19 +2587,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply depth_name to H1 H4.</b>
 </pre>
 <a name="183"></a>
-<pre>
+<pre class="code">
 Subgoal 3.2:
 
-  Variables: L, M, D1, D2, H, DX, HX, DR, R
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth (lam R) HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, depth n1 H |- ho2db (R n1) (s H) DR}
-  H7 : name (lam R)
-  ============================
-   dvar DX = dlam DR
+Variables: L H DX HX DR R
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth (lam R) HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, depth n1 H |- ho2db (R n1) (s H) DR}
+H7 : name (lam R)
+============================
+ dvar DX = dlam DR
 
 Subgoal 3.3 is:
  dvar DX = dvar DX1
@@ -2565,19 +2614,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H7.</b>
 </pre>
 <a name="184"></a>
-<pre>
+<pre class="code">
 Subgoal 3.3:
 
-  Variables: L, M, D1, D2, H, DX, HX, DX1, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- depth M HX1}
-  H7 : {L |- add HX1 DX1 H}
-  ============================
-   dvar DX = dvar DX1
+Variables: L M H DX HX DX1 HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- depth M HX1}
+H7 : {L |- add HX1 DX1 H}
+============================
+ dvar DX = dvar DX1
 
 Subgoal 3.4 is:
  dvar DX = D2
@@ -2588,19 +2638,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply depth_det2 to H1 H4 H6.</b>
 </pre>
 <a name="185"></a>
-<pre>
+<pre class="code">
 Subgoal 3.3:
 
-  Variables: L, M, D1, D2, H, DX, HX, DX1, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX1}*
-  H5 : {L |- add HX1 DX H}*
-  H6 : {L |- depth M HX1}
-  H7 : {L |- add HX1 DX1 H}
-  ============================
-   dvar DX = dvar DX1
+Variables: L M H DX DX1 HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX1}*
+H5 : {L |- add HX1 DX H}*
+H6 : {L |- depth M HX1}
+H7 : {L |- add HX1 DX1 H}
+============================
+ dvar DX = dvar DX1
 
 Subgoal 3.4 is:
  dvar DX = D2
@@ -2611,20 +2662,21 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply add_ignores_ctx to H1 H5.</b>
 </pre>
 <a name="186"></a>
-<pre>
+<pre class="code">
 Subgoal 3.3:
 
-  Variables: L, M, D1, D2, H, DX, HX, DX1, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX1}*
-  H5 : {L |- add HX1 DX H}*
-  H6 : {L |- depth M HX1}
-  H7 : {L |- add HX1 DX1 H}
-  H8 : {add HX1 DX H}
-  ============================
-   dvar DX = dvar DX1
+Variables: L M H DX DX1 HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX1}*
+H5 : {L |- add HX1 DX H}*
+H6 : {L |- depth M HX1}
+H7 : {L |- add HX1 DX1 H}
+H8 : {add HX1 DX H}
+============================
+ dvar DX = dvar DX1
 
 Subgoal 3.4 is:
  dvar DX = D2
@@ -2635,21 +2687,22 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply add_ignores_ctx to H1 H7.</b>
 </pre>
 <a name="187"></a>
-<pre>
+<pre class="code">
 Subgoal 3.3:
 
-  Variables: L, M, D1, D2, H, DX, HX, DX1, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX1}*
-  H5 : {L |- add HX1 DX H}*
-  H6 : {L |- depth M HX1}
-  H7 : {L |- add HX1 DX1 H}
-  H8 : {add HX1 DX H}
-  H9 : {add HX1 DX1 H}
-  ============================
-   dvar DX = dvar DX1
+Variables: L M H DX DX1 HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX1}*
+H5 : {L |- add HX1 DX H}*
+H6 : {L |- depth M HX1}
+H7 : {L |- add HX1 DX1 H}
+H8 : {add HX1 DX H}
+H9 : {add HX1 DX1 H}
+============================
+ dvar DX = dvar DX1
 
 Subgoal 3.4 is:
  dvar DX = D2
@@ -2660,21 +2713,22 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply add_det2 to H8 H9.</b>
 </pre>
 <a name="188"></a>
-<pre>
+<pre class="code">
 Subgoal 3.3:
 
-  Variables: L, M, D1, D2, H, DX, HX, DX1, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX1}*
-  H5 : {L |- add HX1 DX1 H}*
-  H6 : {L |- depth M HX1}
-  H7 : {L |- add HX1 DX1 H}
-  H8 : {add HX1 DX1 H}
-  H9 : {add HX1 DX1 H}
-  ============================
-   dvar DX1 = dvar DX1
+Variables: L M H DX1 HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX1}*
+H5 : {L |- add HX1 DX1 H}*
+H6 : {L |- depth M HX1}
+H7 : {L |- add HX1 DX1 H}
+H8 : {add HX1 DX1 H}
+H9 : {add HX1 DX1 H}
+============================
+ dvar DX1 = dvar DX1
 
 Subgoal 3.4 is:
  dvar DX = D2
@@ -2685,19 +2739,20 @@ Subgoal 4 is:
 ho2db_det3 < <b>search.</b>
 </pre>
 <a name="189"></a>
-<pre>
+<pre class="code">
 Subgoal 3.4:
 
-  Variables: L, M, D1, D2, H, DX, HX, F
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, [F] |- ho2db M H D2}
-  H7 : member F L
-  ============================
-   dvar DX = D2
+Variables: L M D2 H DX HX F
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, [F] |- ho2db M H D2}
+H7 : member F L
+============================
+ dvar DX = D2
 
 Subgoal 4 is:
  D1 = D2
@@ -2705,20 +2760,21 @@ Subgoal 4 is:
 ho2db_det3 < <b>apply ctx_world to H1 H7.</b>
 </pre>
 <a name="190"></a>
-<pre>
+<pre class="code">
 Subgoal 3.4:
 
-  Variables: L, M, D1, D2, H, DX, HX, F, X, HX1
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H4 : {L |- depth M HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, [depth X HX1] |- ho2db M H D2}
-  H7 : member (depth X HX1) L
-  H8 : name X
-  ============================
-   dvar DX = D2
+Variables: L M D2 H DX HX X HX1
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H4 : {L |- depth M HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, [depth X HX1] |- ho2db M H D2}
+H7 : member (depth X HX1) L
+H8 : name X
+============================
+ dvar DX = D2
 
 Subgoal 4 is:
  D1 = D2
@@ -2726,35 +2782,37 @@ Subgoal 4 is:
 ho2db_det3 < <b>case H6.</b>
 </pre>
 <a name="191"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L, M, D1, D2, H, F
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H3 : {L |- ho2db M H D2}
-  H4 : {L, [F] |- ho2db M H D1}*
-  H5 : member F L
-  ============================
-   D1 = D2
+Variables: L M D1 D2 H F
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H3 : {L |- ho2db M H D2}
+H4 : {L, [F] |- ho2db M H D1}*
+H5 : member F L
+============================
+ D1 = D2
 
 ho2db_det3 < <b>apply ctx_world to H1 H5.</b>
 </pre>
 <a name="192"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L, M, D1, D2, H, F, X, HX
-  IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
-         {L |- ho2db M H D2} -> D1 = D2
-  H1 : ctx L H
-  H3 : {L |- ho2db M H D2}
-  H4 : {L, [depth X HX] |- ho2db M H D1}*
-  H5 : member (depth X HX) L
-  H6 : name X
-  ============================
-   D1 = D2
+Variables: L M D1 D2 H X HX
+IH : forall L M D1 D2 H, ctx L H -> {L |- ho2db M H D1}* ->
+       {L |- ho2db M H D2} -> D1 =
+     D2
+H1 : ctx L H
+H3 : {L |- ho2db M H D2}
+H4 : {L, [depth X HX] |- ho2db M H D1}*
+H5 : member (depth X HX) L
+H6 : name X
+============================
+ D1 = D2
 
 ho2db_det3 < <b>case H4.</b>
 Proof completed.
@@ -2763,35 +2821,35 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem ho2db_det3_simple : 
 forall M D1 D2, {ho2db M z D1} -> {ho2db M z D2} -> D1 = D2.</b>
+
 </pre>
 <a name="194"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall M D1 D2, {ho2db M z D1} -> {ho2db M z D2} -> D1 = D2
+============================
+ forall M D1 D2, {ho2db M z D1} -> {ho2db M z D2} -> D1 = D2
 
 ho2db_det3_simple < <b>intros.</b>
 </pre>
 <a name="195"></a>
-<pre>
+<pre class="code">
 
-  Variables: M, D1, D2
-  H1 : {ho2db M z D1}
-  H2 : {ho2db M z D2}
-  ============================
-   D1 = D2
+Variables: M D1 D2
+H1 : {ho2db M z D1}
+H2 : {ho2db M z D2}
+============================
+ D1 = D2
 
 ho2db_det3_simple < <b>apply ho2db_det3 to _ H1 H2.</b>
 </pre>
 <a name="196"></a>
-<pre>
+<pre class="code">
 
-  Variables: M, D1, D2
-  H1 : {ho2db M z D2}
-  H2 : {ho2db M z D2}
-  ============================
-   D2 = D2
+Variables: M D2
+H1 : {ho2db M z D2}
+H2 : {ho2db M z D2}
+============================
+ D2 = D2
 
 ho2db_det3_simple < <b>search.</b>
 Proof completed.
@@ -2800,57 +2858,62 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem ho2db_det1 : 
 forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D} -> {L |- ho2db M2 H D} ->
-  M1 = M2.</b>
+  M1 =
+M2.</b>
+
 </pre>
 <a name="198"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D} ->
-     {L |- ho2db M2 H D} -> M1 = M2
+============================
+ forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D} -> {L |- ho2db M2 H D} ->
+   M1 =
+ M2
 
 ho2db_det1 < <b>induction on 2.</b>
 </pre>
 <a name="199"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  ============================
-   forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}@ ->
-     {L |- ho2db M2 H D} -> M1 = M2
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+============================
+ forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}@ ->
+   {L |- ho2db M2 H D} -> M1 =
+ M2
 
 ho2db_det1 < <b>intros.</b>
 </pre>
 <a name="200"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, M1, M2, D, H
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H2 : {L |- ho2db M1 H D}@
-  H3 : {L |- ho2db M2 H D}
-  ============================
-   M1 = M2
+Variables: L M1 M2 D H
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H2 : {L |- ho2db M1 H D}@
+H3 : {L |- ho2db M2 H D}
+============================
+ M1 = M2
 
 ho2db_det1 < <b>case H2.</b>
 </pre>
 <a name="201"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H3 : {L |- ho2db M2 H (dapp DM DN)}
-  H4 : {L |- ho2db M H DM}*
-  H5 : {L |- ho2db N H DN}*
-  ============================
-   app M N = M2
+Variables: L M2 H DN N DM M
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H3 : {L |- ho2db M2 H (dapp DM DN)}
+H4 : {L |- ho2db M H DM}*
+H5 : {L |- ho2db N H DN}*
+============================
+ app M N = M2
 
 Subgoal 2 is:
  lam R = M2
@@ -2864,19 +2927,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H3.</b>
 </pre>
 <a name="202"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- ho2db M H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- ho2db M3 H DM}
-  H7 : {L |- ho2db N1 H DN}
-  ============================
-   app M N = app M3 N1
+Variables: L H DN N DM M N1 M3
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- ho2db M H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- ho2db M3 H DM}
+H7 : {L |- ho2db N1 H DN}
+============================
+ app M N = app M3 N1
 
 Subgoal 1.2 is:
  app M N = M2
@@ -2893,19 +2957,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply IH to H1 H4 H6.</b>
 </pre>
 <a name="203"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- ho2db M3 H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L |- ho2db M3 H DM}
-  H7 : {L |- ho2db N1 H DN}
-  ============================
-   app M3 N = app M3 N1
+Variables: L H DN N DM N1 M3
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- ho2db M3 H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L |- ho2db M3 H DM}
+H7 : {L |- ho2db N1 H DN}
+============================
+ app M3 N = app M3 N1
 
 Subgoal 1.2 is:
  app M N = M2
@@ -2922,19 +2987,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply IH to H1 H5 H7.</b>
 </pre>
 <a name="204"></a>
-<pre>
+<pre class="code">
 Subgoal 1.1:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M, N1, M3
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- ho2db M3 H DM}*
-  H5 : {L |- ho2db N1 H DN}*
-  H6 : {L |- ho2db M3 H DM}
-  H7 : {L |- ho2db N1 H DN}
-  ============================
-   app M3 N1 = app M3 N1
+Variables: L H DN DM N1 M3
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- ho2db M3 H DM}*
+H5 : {L |- ho2db N1 H DN}*
+H6 : {L |- ho2db M3 H DM}
+H7 : {L |- ho2db N1 H DN}
+============================
+ app M3 N1 = app M3 N1
 
 Subgoal 1.2 is:
  app M N = M2
@@ -2951,19 +3017,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>search.</b>
 </pre>
 <a name="205"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M, F
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- ho2db M H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L, [F] |- ho2db M2 H (dapp DM DN)}
-  H7 : member F L
-  ============================
-   app M N = M2
+Variables: L M2 H DN N DM M F
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- ho2db M H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L, [F] |- ho2db M2 H (dapp DM DN)}
+H7 : member F L
+============================
+ app M N = M2
 
 Subgoal 2 is:
  lam R = M2
@@ -2977,20 +3044,21 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply ctx_world to H1 H7.</b>
 </pre>
 <a name="206"></a>
-<pre>
+<pre class="code">
 Subgoal 1.2:
 
-  Variables: L, M1, M2, D, H, DN, N, DM, M, F, X, HX
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- ho2db M H DM}*
-  H5 : {L |- ho2db N H DN}*
-  H6 : {L, [depth X HX] |- ho2db M2 H (dapp DM DN)}
-  H7 : member (depth X HX) L
-  H8 : name X
-  ============================
-   app M N = M2
+Variables: L M2 H DN N DM M X HX
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- ho2db M H DM}*
+H5 : {L |- ho2db N H DN}*
+H6 : {L, [depth X HX] |- ho2db M2 H (dapp DM DN)}
+H7 : member (depth X HX) L
+H8 : name X
+============================
+ app M N = M2
 
 Subgoal 2 is:
  lam R = M2
@@ -3004,17 +3072,18 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H6.</b>
 </pre>
 <a name="207"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, M1, M2, D, H, DR, R
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H3 : {L |- ho2db M2 H (dlam DR)}
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  ============================
-   lam R = M2
+Variables: L M2 H DR R
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H3 : {L |- ho2db M2 H (dlam DR)}
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+============================
+ lam R = M2
 
 Subgoal 3 is:
  M1 = M2
@@ -3025,17 +3094,18 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H3.</b>
 </pre>
 <a name="208"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M1, M2, D, H, DR, R, R1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
-  ============================
-   lam R = lam R1
+Variables: L H DR R R1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
+============================
+ lam R = lam R1
 
 Subgoal 2.2 is:
  lam R = M2
@@ -3049,18 +3119,19 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply ctx_nat to H1.</b>
 </pre>
 <a name="209"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M1, M2, D, H, DR, R, R1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
-  H6 : nat H
-  ============================
-   lam R = lam R1
+Variables: L H DR R R1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
+H6 : nat H
+============================
+ lam R = lam R1
 
 Subgoal 2.2 is:
  lam R = M2
@@ -3074,18 +3145,19 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply IH to _ H4 H5.</b>
 </pre>
 <a name="210"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: L, M1, M2, D, H, DR, R, R1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}*
-  H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
-  H6 : nat H
-  ============================
-   lam (z1\R1 z1) = lam R1
+Variables: L H DR R1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}*
+H5 : {L, depth n1 H |- ho2db (R1 n1) (s H) DR}
+H6 : nat H
+============================
+ lam (z1\R1 z1) = lam R1
 
 Subgoal 2.2 is:
  lam R = M2
@@ -3099,18 +3171,19 @@ Subgoal 4 is:
 ho2db_det1 < <b>search.</b>
 </pre>
 <a name="211"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, M1, M2, D, H, DR, R, F
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, [F] |- ho2db M2 H (dlam DR)}
-  H6 : member F L
-  ============================
-   lam R = M2
+Variables: L M2 H DR R F
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, [F] |- ho2db M2 H (dlam DR)}
+H6 : member F L
+============================
+ lam R = M2
 
 Subgoal 3 is:
  M1 = M2
@@ -3121,19 +3194,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply ctx_world to H1 H6.</b>
 </pre>
 <a name="212"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: L, M1, M2, D, H, DR, R, F, X, HX
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
-  H5 : {L, [depth X HX] |- ho2db M2 H (dlam DR)}
-  H6 : member (depth X HX) L
-  H7 : name X
-  ============================
-   lam R = M2
+Variables: L M2 H DR R X HX
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L, depth n1 H |- ho2db (R n1) (s H) DR}*
+H5 : {L, [depth X HX] |- ho2db M2 H (dlam DR)}
+H6 : member (depth X HX) L
+H7 : name X
+============================
+ lam R = M2
 
 Subgoal 3 is:
  M1 = M2
@@ -3144,18 +3218,19 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H5.</b>
 </pre>
 <a name="213"></a>
-<pre>
+<pre class="code">
 Subgoal 3:
 
-  Variables: L, M1, M2, D, H, DX, HX
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H3 : {L |- ho2db M2 H (dvar DX)}
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H3 : {L |- ho2db M2 H (dvar DX)}
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+============================
+ M1 = M2
 
 Subgoal 4 is:
  M1 = M2
@@ -3163,19 +3238,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H3.</b>
 </pre>
 <a name="214"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+============================
+ M1 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3186,20 +3262,21 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply add_ignores_ctx to H1 H5.</b>
 </pre>
 <a name="215"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  H8 : {add HX DX H}
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+H8 : {add HX DX H}
+============================
+ M1 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3210,21 +3287,22 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply add_ignores_ctx to H1 H7.</b>
 </pre>
 <a name="216"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  H8 : {add HX DX H}
-  H9 : {add HX1 DX H}
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+H8 : {add HX DX H}
+H9 : {add HX1 DX H}
+============================
+ M1 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3235,22 +3313,23 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply ctx_nat to H1.</b>
 </pre>
 <a name="217"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  H8 : {add HX DX H}
-  H9 : {add HX1 DX H}
-  H10 : nat H
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+H8 : {add HX DX H}
+H9 : {add HX1 DX H}
+H10 : nat H
+============================
+ M1 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3261,22 +3340,23 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply add_det1 to H10 H8 H9.</b>
 </pre>
 <a name="218"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX1}*
-  H5 : {L |- add HX1 DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  H8 : {add HX1 DX H}
-  H9 : {add HX1 DX H}
-  H10 : nat H
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX1}*
+H5 : {L |- add HX1 DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+H8 : {add HX1 DX H}
+H9 : {add HX1 DX H}
+H10 : nat H
+============================
+ M1 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3287,22 +3367,23 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply depth_det1 to H1 H4 H6.</b>
 </pre>
 <a name="219"></a>
-<pre>
+<pre class="code">
 Subgoal 3.1:
 
-  Variables: L, M1, M2, D, H, DX, HX, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M2 HX1}*
-  H5 : {L |- add HX1 DX H}*
-  H6 : {L |- depth M2 HX1}
-  H7 : {L |- add HX1 DX H}
-  H8 : {add HX1 DX H}
-  H9 : {add HX1 DX H}
-  H10 : nat H
-  ============================
-   M2 = M2
+Variables: L M2 H DX HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M2 HX1}*
+H5 : {L |- add HX1 DX H}*
+H6 : {L |- depth M2 HX1}
+H7 : {L |- add HX1 DX H}
+H8 : {add HX1 DX H}
+H9 : {add HX1 DX H}
+H10 : nat H
+============================
+ M2 = M2
 
 Subgoal 3.2 is:
  M1 = M2
@@ -3313,19 +3394,20 @@ Subgoal 4 is:
 ho2db_det1 < <b>search.</b>
 </pre>
 <a name="220"></a>
-<pre>
+<pre class="code">
 Subgoal 3.2:
 
-  Variables: L, M1, M2, D, H, DX, HX, F
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, [F] |- ho2db M2 H (dvar DX)}
-  H7 : member F L
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX F
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, [F] |- ho2db M2 H (dvar DX)}
+H7 : member F L
+============================
+ M1 = M2
 
 Subgoal 4 is:
  M1 = M2
@@ -3333,20 +3415,21 @@ Subgoal 4 is:
 ho2db_det1 < <b>apply ctx_world to H1 H7.</b>
 </pre>
 <a name="221"></a>
-<pre>
+<pre class="code">
 Subgoal 3.2:
 
-  Variables: L, M1, M2, D, H, DX, HX, F, X, HX1
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H4 : {L |- depth M1 HX}*
-  H5 : {L |- add HX DX H}*
-  H6 : {L, [depth X HX1] |- ho2db M2 H (dvar DX)}
-  H7 : member (depth X HX1) L
-  H8 : name X
-  ============================
-   M1 = M2
+Variables: L M1 M2 H DX HX X HX1
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H4 : {L |- depth M1 HX}*
+H5 : {L |- add HX DX H}*
+H6 : {L, [depth X HX1] |- ho2db M2 H (dvar DX)}
+H7 : member (depth X HX1) L
+H8 : name X
+============================
+ M1 = M2
 
 Subgoal 4 is:
  M1 = M2
@@ -3354,35 +3437,37 @@ Subgoal 4 is:
 ho2db_det1 < <b>case H6.</b>
 </pre>
 <a name="222"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L, M1, M2, D, H, F
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H3 : {L |- ho2db M2 H D}
-  H4 : {L, [F] |- ho2db M1 H D}*
-  H5 : member F L
-  ============================
-   M1 = M2
+Variables: L M1 M2 D H F
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H3 : {L |- ho2db M2 H D}
+H4 : {L, [F] |- ho2db M1 H D}*
+H5 : member F L
+============================
+ M1 = M2
 
 ho2db_det1 < <b>apply ctx_world to H1 H5.</b>
 </pre>
 <a name="223"></a>
-<pre>
+<pre class="code">
 Subgoal 4:
 
-  Variables: L, M1, M2, D, H, F, X, HX
-  IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
-         {L |- ho2db M2 H D} -> M1 = M2
-  H1 : ctx L H
-  H3 : {L |- ho2db M2 H D}
-  H4 : {L, [depth X HX] |- ho2db M1 H D}*
-  H5 : member (depth X HX) L
-  H6 : name X
-  ============================
-   M1 = M2
+Variables: L M1 M2 D H X HX
+IH : forall L M1 M2 D H, ctx L H -> {L |- ho2db M1 H D}* ->
+       {L |- ho2db M2 H D} -> M1 =
+     M2
+H1 : ctx L H
+H3 : {L |- ho2db M2 H D}
+H4 : {L, [depth X HX] |- ho2db M1 H D}*
+H5 : member (depth X HX) L
+H6 : name X
+============================
+ M1 = M2
 
 ho2db_det1 < <b>case H4.</b>
 Proof completed.
@@ -3391,42 +3476,42 @@ Proof completed.
 <pre class="code">
 Abella < <b>Theorem ho2db_det1_simple : 
 forall M1 M2 D, {ho2db M1 z D} -> {ho2db M2 z D} -> M1 = M2.</b>
+
 </pre>
 <a name="225"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall M1 M2 D, {ho2db M1 z D} -> {ho2db M2 z D} -> M1 = M2
+============================
+ forall M1 M2 D, {ho2db M1 z D} -> {ho2db M2 z D} -> M1 = M2
 
 ho2db_det1_simple < <b>intros.</b>
 </pre>
 <a name="226"></a>
-<pre>
+<pre class="code">
 
-  Variables: M1, M2, D
-  H1 : {ho2db M1 z D}
-  H2 : {ho2db M2 z D}
-  ============================
-   M1 = M2
+Variables: M1 M2 D
+H1 : {ho2db M1 z D}
+H2 : {ho2db M2 z D}
+============================
+ M1 = M2
 
 ho2db_det1_simple < <b>apply ho2db_det1 to _ H1 H2.</b>
 </pre>
 <a name="227"></a>
-<pre>
+<pre class="code">
 
-  Variables: M1, M2, D
-  H1 : {ho2db M2 z D}
-  H2 : {ho2db M2 z D}
-  ============================
-   M2 = M2
+Variables: M2 D
+H1 : {ho2db M2 z D}
+H2 : {ho2db M2 z D}
+============================
+ M2 = M2
 
 ho2db_det1_simple < <b>search.</b>
 Proof completed.
 </pre>
 <a name="228"></a>
 <pre class="code">
-Abella < Goodbye.
+Abella < 
 </pre>
 </div>
 

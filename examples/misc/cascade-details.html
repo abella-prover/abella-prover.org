@@ -19,78 +19,82 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.1-dev
+Welcome to Abella 2.0.4-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind tm type.</b>
+
 </pre>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Type app tm -> tm -> tm.</b>
+
 </pre>
 <a name="3"></a>
 <pre class="code">
 Abella < <b>Type abs (tm -> tm) -> tm.</b>
+
 </pre>
 <a name="4"></a>
 <pre class="code">
 Abella < <b>Type pair tm -> tm -> o.</b>
+
 </pre>
 <a name="5"></a>
 <pre class="code">
 Abella < <b>Define subst : olist -> tm -> tm -> prop by 
 subst nil T T;
 nabla x, subst (pair x K :: L) (T x) S := subst L (T K) S.</b>
+
 </pre>
 <a name="6"></a>
 <pre class="code">
 Abella < <b>Theorem subst_app : 
-forall L T R S, subst L (app T R) S -> (exists U V, S = app U V /\
-  subst L T U /\ subst L R V).</b>
+forall L T R S, subst L (app T R) S ->
+  (exists U V, S = app U V /\ subst L T U /\ subst L R V).</b>
+
 </pre>
 <a name="7"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L T R S, subst L (app T R) S -> (exists U V, S = app U V /\
-     subst L T U /\ subst L R V)
+============================
+ forall L T R S, subst L (app T R) S ->
+   (exists U V, S = app U V /\ subst L T U /\ subst L R V)
 
 subst_app < <b>induction on 1.</b>
 </pre>
 <a name="8"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L T R S, subst L (app T R) S * -> (exists U V, S = app U V /\
-         subst L T U /\ subst L R V)
-  ============================
-   forall L T R S, subst L (app T R) S @ -> (exists U V, S = app U V /\
-     subst L T U /\ subst L R V)
+IH : forall L T R S, subst L (app T R) S * ->
+       (exists U V, S = app U V /\ subst L T U /\ subst L R V)
+============================
+ forall L T R S, subst L (app T R) S @ ->
+   (exists U V, S = app U V /\ subst L T U /\ subst L R V)
 
 subst_app < <b>intros.</b>
 </pre>
 <a name="9"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, T, R, S
-  IH : forall L T R S, subst L (app T R) S * -> (exists U V, S = app U V /\
-         subst L T U /\ subst L R V)
-  H1 : subst L (app T R) S @
-  ============================
-   exists U V, S = app U V /\ subst L T U /\ subst L R V
+Variables: L T R S
+IH : forall L T R S, subst L (app T R) S * ->
+       (exists U V, S = app U V /\ subst L T U /\ subst L R V)
+H1 : subst L (app T R) S @
+============================
+ exists U V, S = app U V /\ subst L T U /\ subst L R V
 
 subst_app < <b>case H1.</b>
 </pre>
 <a name="10"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, T, R, S
-  IH : forall L T R S, subst L (app T R) S * -> (exists U V, S = app U V /\
-         subst L T U /\ subst L R V)
-  ============================
-   exists U V, app T R = app U V /\ subst nil T U /\ subst nil R V
+Variables: T R
+IH : forall L T R S, subst L (app T R) S * ->
+       (exists U V, S = app U V /\ subst L T U /\ subst L R V)
+============================
+ exists U V, app T R = app U V /\ subst nil T U /\ subst nil R V
 
 Subgoal 2 is:
  exists U V, S1 = app U V /\ subst (pair n1 K :: L1) (T n1) U /\
@@ -99,32 +103,32 @@ Subgoal 2 is:
 subst_app < <b>search.</b>
 </pre>
 <a name="11"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, T, R, S, S1, L1, K
-  IH : forall L T R S, subst L (app T R) S * -> (exists U V, S = app U V /\
-         subst L T U /\ subst L R V)
-  H2 : subst L1 (app (T K) (R K)) S1 *
-  ============================
-   exists U V, S1 = app U V /\ subst (pair n1 K :: L1) (T n1) U /\
-     subst (pair n1 K :: L1) (R n1) V
+Variables: T R S1 L1 K
+IH : forall L T R S, subst L (app T R) S * ->
+       (exists U V, S = app U V /\ subst L T U /\ subst L R V)
+H2 : subst L1 (app (T K) (R K)) S1 *
+============================
+ exists U V, S1 = app U V /\ subst (pair n1 K :: L1) (T n1) U /\
+   subst (pair n1 K :: L1) (R n1) V
 
 subst_app < <b>apply IH to H2.</b>
 </pre>
 <a name="12"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, T, R, S, S1, L1, K, U, V
-  IH : forall L T R S, subst L (app T R) S * -> (exists U V, S = app U V /\
-         subst L T U /\ subst L R V)
-  H2 : subst L1 (app (T K) (R K)) (app U V) *
-  H3 : subst L1 (T K) U
-  H4 : subst L1 (R K) V
-  ============================
-   exists U1 V1, app U V = app U1 V1 /\ subst (pair n1 K :: L1) (T n1) U1 /\
-     subst (pair n1 K :: L1) (R n1) V1
+Variables: T R L1 K U V
+IH : forall L T R S, subst L (app T R) S * ->
+       (exists U V, S = app U V /\ subst L T U /\ subst L R V)
+H2 : subst L1 (app (T K) (R K)) (app U V) *
+H3 : subst L1 (T K) U
+H4 : subst L1 (R K) V
+============================
+ exists U1 V1, app U V = app U1 V1 /\ subst (pair n1 K :: L1) (T n1) U1 /\
+   subst (pair n1 K :: L1) (R n1) V1
 
 subst_app < <b>search.</b>
 Proof completed.
@@ -132,52 +136,51 @@ Proof completed.
 <a name="13"></a>
 <pre class="code">
 Abella < <b>Theorem subst_abs : 
-forall L T R, subst L (abs T) R -> (exists S, R = abs S /\ (nabla z,
-  subst L (T z) (S z))).</b>
+forall L T R, subst L (abs T) R ->
+  (exists S, R = abs S /\ (nabla z, subst L (T z) (S z))).</b>
+
 </pre>
 <a name="14"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall L T R, subst L (abs T) R -> (exists S, R = abs S /\ (nabla z,
-     subst L (T z) (S z)))
+============================
+ forall L T R, subst L (abs T) R ->
+   (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
 
 subst_abs < <b>induction on 1.</b>
 </pre>
 <a name="15"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall L T R, subst L (abs T) R * -> (exists S, R = abs S /\ (nabla z,
-         subst L (T z) (S z)))
-  ============================
-   forall L T R, subst L (abs T) R @ -> (exists S, R = abs S /\ (nabla z,
-     subst L (T z) (S z)))
+IH : forall L T R, subst L (abs T) R * ->
+       (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
+============================
+ forall L T R, subst L (abs T) R @ ->
+   (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
 
 subst_abs < <b>intros.</b>
 </pre>
 <a name="16"></a>
-<pre>
+<pre class="code">
 
-  Variables: L, T, R
-  IH : forall L T R, subst L (abs T) R * -> (exists S, R = abs S /\ (nabla z,
-         subst L (T z) (S z)))
-  H1 : subst L (abs T) R @
-  ============================
-   exists S, R = abs S /\ (nabla z, subst L (T z) (S z))
+Variables: L T R
+IH : forall L T R, subst L (abs T) R * ->
+       (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
+H1 : subst L (abs T) R @
+============================
+ exists S, R = abs S /\ (nabla z, subst L (T z) (S z))
 
 subst_abs < <b>case H1.</b>
 </pre>
 <a name="17"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: L, T, R
-  IH : forall L T R, subst L (abs T) R * -> (exists S, R = abs S /\ (nabla z,
-         subst L (T z) (S z)))
-  ============================
-   exists S, abs T = abs S /\ (nabla z, subst nil (T z) (S z))
+Variables: T
+IH : forall L T R, subst L (abs T) R * ->
+       (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
+============================
+ exists S, abs T = abs S /\ (nabla z, subst nil (T z) (S z))
 
 Subgoal 2 is:
  exists S1, S = abs S1 /\ (nabla z, subst (pair n1 K :: L1) (T n1 z) (S1 z))
@@ -185,38 +188,37 @@ Subgoal 2 is:
 subst_abs < <b>search.</b>
 </pre>
 <a name="18"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, T, R, S, L1, K
-  IH : forall L T R, subst L (abs T) R * -> (exists S, R = abs S /\ (nabla z,
-         subst L (T z) (S z)))
-  H2 : subst L1 (abs (T K)) S *
-  ============================
-   exists S1, S = abs S1 /\ (nabla z,
-     subst (pair n1 K :: L1) (T n1 z) (S1 z))
+Variables: T S L1 K
+IH : forall L T R, subst L (abs T) R * ->
+       (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
+H2 : subst L1 (abs (T K)) S *
+============================
+ exists S1, S = abs S1 /\ (nabla z, subst (pair n1 K :: L1) (T n1 z) (S1 z))
 
 subst_abs < <b>apply IH to H2.</b>
 </pre>
 <a name="19"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: L, T, R, S, L1, K, S1
-  IH : forall L T R, subst L (abs T) R * -> (exists S, R = abs S /\ (nabla z,
-         subst L (T z) (S z)))
-  H2 : subst L1 (abs (T K)) (abs S1) *
-  H3 : subst L1 (T K n1) (S1 n1)
-  ============================
-   exists S2, abs S1 = abs S2 /\ (nabla z,
-     subst (pair n1 K :: L1) (T n1 z) (S2 z))
+Variables: T L1 K S1
+IH : forall L T R, subst L (abs T) R * ->
+       (exists S, R = abs S /\ (nabla z, subst L (T z) (S z)))
+H2 : subst L1 (abs (T K)) (abs S1) *
+H3 : subst L1 (T K n1) (S1 n1)
+============================
+ exists S2, abs S1 = abs S2 /\
+   (nabla z, subst (pair n1 K :: L1) (T n1 z) (S2 z))
 
 subst_abs < <b>search.</b>
 Proof completed.
 </pre>
 <a name="20"></a>
 <pre class="code">
-Abella < Goodbye.
+Abella < 
 </pre>
 </div>
 

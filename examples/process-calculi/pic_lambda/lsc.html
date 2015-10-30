@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="processes_terms.sig">[View processes_terms.sig]</a>
+<a class="view" href="processes_terms.mod">[View processes_terms.mod]</a>
+<pre class="command">
+sig processes_terms.
+
+kind pt type.
+
+<span class="comment">%lsc terms</span>
+type abs (pt -> pt) -> pt.
+type app pt -> pt -> pt.
+type subex (pt -> pt) -> pt -> pt.
+
+<span class="comment">%pi-calculus terms</span>
+type null       pt.
+type nu 	(pt -> pt) -> pt.
+type par	pt -> pt -> pt.
+type out	pt -> pt -> pt.
+type out2	pt -> pt -> pt -> pt.
+type in		pt -> (pt -> pt) -> pt.
+type in2 	pt -> (pt -> pt -> pt) -> pt.
+</pre>
+<pre class="command">
+module processes_terms.
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="lsc.thm">[View lsc.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="lsc-details.html#1" class="command">Specification "processes_terms".</a>
+
+<span class="comment">% Definition of terms</span>
+
+<span class="comment">/*Define is_term :  pt -> prop by
+   nabla x, is_term x
+;  is_term (app U V) := is_term U /\ is_term V
+;  is_term (abs U) := nabla x, is_term (U x)
+;  is_term (subex U V) := (nabla x, is_term (U x)) /\ is_term V.*/</span>
+
+<span class="comment">%Definition of the reduction</span>
+
+<a href="lsc-details.html#2" class="command">Define
+   red_db_ker  : pt -> pt -> pt -> prop
+,  red_db      : pt -> pt -> prop
+,  red_ls_ker  : pt -> (pt -> pt) -> (pt -> pt) -> prop
+,  red_ls      : pt -> pt -> prop  by
+
+;  red_db_ker (abs U) V (subex U V)
+;  red_db_ker (subex U V) W (subex U1 V) := nabla x, red_db_ker (U x) W (U1 x)
+
+;  red_db (app U V) W := red_db_ker U V W
+
+;  red_ls_ker W (x\x) (x\W)
+;  red_ls_ker W (x\app (U1 x) (V x)) (x\app (U2 x) (V x)) := red_ls_ker W U1 U2
+;  red_ls_ker W (x\subex (U1 x) (V x)) (x\subex (U2 x) (V x))
+      := nabla y, red_ls_ker W (x\U1 x y) (x\U2 x y)
+
+;  red_ls (subex U W) (subex V W) := red_ls_ker W U V.</a>
+
+<span class="comment">%Definition of evaluation context closure</span>
+
+<a href="lsc-details.html#3" class="command">Define evc_cl : (pt -> pt -> prop) -> pt -> pt -> prop by
+   evc_cl R U V := R U V;
+   evc_cl R (app U W) (app V W) := evc_cl R U V;
+   evc_cl R (subex U W) (subex V W) := 
+      nabla x, evc_cl R (U x) (V x).</a>
+</pre>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Specification "processes_terms". - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.4-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Specification "processes_terms".</b>
+Reading specification "processes_terms"
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Define trans : pt -> (pt -> pt) -> prop by 
+nabla x, trans x (out x);
+trans (app U V) (a\nu (b\nu (x\par (P b) (par (out2 b x a) (in x Q))))) := trans U P /\ trans V Q;
+trans (abs U) (a\in2 a P) := nabla x, trans (U x) (P x);
+trans (subex U V) (a\nu (x\par (P x a) (in x Q))) := (nabla y, trans (U y) (P y)) /\ trans V Q.</b>
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Theorem trans_fonc : 
+forall U P Q, trans U P -> trans U Q -> P = Q.</b>
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+
+============================
+ forall U P Q, trans U P -> trans U Q -> P = Q
+
+trans_fonc < <b>induction on 1.</b>
+</pre>
+<a name="5"></a>
+<pre class="code">
+
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+============================
+ forall U P Q, trans U P @ -> trans U Q -> P = Q
+
+trans_fonc < <b>intros.</b>
+</pre>
+<a name="6"></a>
+<pre class="code">
+
+Variables: U P Q
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H1 : trans U P @
+H2 : trans U Q
+============================
+ P = Q
+
+trans_fonc < <b>case H1.</b>
+</pre>
+<a name="7"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Q
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H2 : trans n1 (Q n1)
+============================
+ out n1 = Q n1
+
+Subgoal 2 is:
+ a\nu (b\nu (x\par (P1 b) (par (out2 b x a) (in x Q1)))) = Q
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>case H2.</b>
+</pre>
+<a name="8"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+============================
+ out n1 = out n1
+
+Subgoal 2 is:
+ a\nu (b\nu (x\par (P1 b) (par (out2 b x a) (in x Q1)))) = Q
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Q Q1 P1 V U1
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H2 : trans (app U1 V) Q
+H3 : trans U1 P1 *
+H4 : trans V Q1 *
+============================
+ a\nu (b\nu (x\par (P1 b) (par (out2 b x a) (in x Q1)))) = Q
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>case H2.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Q1 P1 V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans U1 P1 *
+H4 : trans V Q1 *
+H5 : trans U1 P2
+H6 : trans V Q2
+============================
+ a\nu (b\nu (x\par (P1 b) (par (out2 b x a) (in x Q1)))) =
+ a\nu (b\nu (x\par (P2 b) (par (out2 b x a) (in x Q2))))
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="11"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Q1 V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans U1 P2 *
+H4 : trans V Q1 *
+H5 : trans U1 P2
+H6 : trans V Q2
+============================
+ a\nu (b\nu (x\par (P2 b) (par (out2 b x a) (in x Q1)))) =
+ a\nu (b\nu (x\par (P2 b) (par (out2 b x a) (in x Q2))))
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="12"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans U1 P2 *
+H4 : trans V Q2 *
+H5 : trans U1 P2
+H6 : trans V Q2
+============================
+ a\nu (b\nu (x\par (P2 b) (par (out2 b x a) (in x Q2)))) =
+ a\nu (b\nu (x\par (P2 b) (par (out2 b x a) (in x Q2))))
+
+Subgoal 3 is:
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>search.</b>
+</pre>
+<a name="13"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Q P1 U1
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H2 : trans (abs U1) Q
+H3 : trans (U1 n1) (P1 n1) *
+============================
+ a\in2 a P1 = Q
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>case H2.</b>
+</pre>
+<a name="14"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: P1 U1 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans (U1 n1) (P1 n1) *
+H4 : trans (U1 n1) (P2 n1)
+============================
+ a\in2 a P1 = a\in2 a P2
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: U1 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans (U1 n1) (P2 n1) *
+H4 : trans (U1 n1) (P2 n1)
+============================
+ a\in2 a (z1\P2 z1) = a\in2 a P2
+
+Subgoal 4 is:
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>search.</b>
+</pre>
+<a name="16"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: Q Q1 P1 V U1
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H2 : trans (subex U1 V) Q
+H3 : trans (U1 n1) (P1 n1) *
+H4 : trans V Q1 *
+============================
+ a\nu (x\par (P1 x a) (in x Q1)) = Q
+
+trans_fonc < <b>case H2.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: Q1 P1 V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans (U1 n1) (P1 n1) *
+H4 : trans V Q1 *
+H5 : trans (U1 n1) (P2 n1)
+H6 : trans V Q2
+============================
+ a\nu (x\par (P1 x a) (in x Q1)) = a\nu (x\par (P2 x a) (in x Q2))
+
+trans_fonc < <b>apply IH to H3 H5.</b>
+</pre>
+<a name="18"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: Q1 V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans (U1 n1) (P2 n1) *
+H4 : trans V Q1 *
+H5 : trans (U1 n1) (P2 n1)
+H6 : trans V Q2
+============================
+ a\nu (x\par (P2 x a) (in x Q1)) = a\nu (x\par (P2 x a) (in x Q2))
+
+trans_fonc < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="19"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: V U1 Q2 P2
+IH : forall U P Q, trans U P * -> trans U Q -> P = Q
+H3 : trans (U1 n1) (P2 n1) *
+H4 : trans V Q2 *
+H5 : trans (U1 n1) (P2 n1)
+H6 : trans V Q2
+============================
+ a\nu (x\par (P2 x a) (in x Q2)) = a\nu (x\par (P2 x a) (in x Q2))
+
+trans_fonc < <b>search.</b>
+Proof completed.
+</pre>
+<a name="20"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>

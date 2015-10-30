@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Bisimilarity-up-to for the synchronous pi-calculus</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1>Bisimilarity-up-to for the synchronous pi-calculus</h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="pic_core.thm">[View pic_core.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<span class="comment">%%%</span>
+<span class="comment">%%%</span>
+<span class="comment">%%% For more details, please see the paper:</span>
+<span class="comment">%%%</span>
+<span class="comment">%%%   "A lightweight formalization of the meta-theory of</span>
+<span class="comment">%%%   bisimulation-up-to" by K. Chaudhuri, M. Cimini, and</span>
+<span class="comment">%%%   D. Miller, 2014</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% Processes</span>
+
+<a href="pic_core-details.html#1" class="command">Kind name,proc type.</a>
+
+<span class="comment">%% action prefixes</span>
+<a href="pic_core-details.html#2" class="command">Type taup         proc -> proc.</a>
+<a href="pic_core-details.html#3" class="command">Type inp          name -> (name -> proc) -> proc.</a>
+<a href="pic_core-details.html#4" class="command">Type oup          name -> name -> proc -> proc.</a>
+
+<span class="comment">%% name restriction</span>
+<a href="pic_core-details.html#5" class="command">Type nu           (name -> proc) -> proc.</a>
+
+<span class="comment">%% replication</span>
+<a href="pic_core-details.html#6" class="command">Type repl         proc -> proc.</a>
+
+<span class="comment">%% core process algebra</span>
+<a href="pic_core-details.html#7" class="command">Type plus, par    proc -> proc -> proc.</a>
+<a href="pic_core-details.html#8" class="command">Type null         proc.</a>
+
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% Labels of the LTS</span>
+
+<a href="pic_core-details.html#9" class="command">Kind label type.</a>
+
+<a href="pic_core-details.html#10" class="command">Type tau          label.</a>
+<a href="pic_core-details.html#11" class="command">Type up, dn       name -> name -> label.</a>
+
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% The steps of the LTS</span>
+
+<span class="comment">% The steps are defined by a mutually inductive definition of a relation</span>
+<span class="comment">% one for closed steps and oneb for bound steps, i.e., steps that contain</span>
+<span class="comment">% a name that is restricted (nu) or bound (inp) in an outer scope.</span>
+
+<a href="pic_core-details.html#12" class="command">Define
+   one  : proc -> label -> proc -> prop,
+   oneb : proc -> (name -> label) -> (name -> proc) -> prop
+by
+   /* internal steps */
+;  one (taup P) tau P
+
+   /* closed output */
+;  one (oup X Y P) (up X Y) P
+
+   /* core process algebra */
+;  one (plus P Q) L R := one P L R
+;  one (plus P Q) L R := one Q L R
+;  one (par P Q) L (par R Q) := one P L R
+;  one (par P Q) L (par P R) := one Q L R
+;  one (repl P) L (par (repl P) R) := one P L R
+;  one (nu P) L (nu Q) := nabla x, one (P x) L (Q x)
+
+   /* closed communication */
+;  one (par P Q) tau (par PP QQ) :=
+      /* case of P getting input */
+      (exists X Y R, oneb P (dn X) R /\ one Q (up X Y) QQ /\ PP = R Y)
+      /* case of Q getting input */
+   \/ (exists X Y R, one P (up X Y) PP /\ oneb Q (dn X) R /\ QQ = R Y)
+
+   /* internal closed communication in a replicated process */
+;  one (repl P) tau (par (repl P) (par PP QQ)) :=
+      exists X Y R,
+         one P (up X Y) PP
+      /\ oneb P (dn X) R /\ QQ = R Y
+
+   /* bound communication */
+;  one (par P Q) tau (nu y\ par (PP y) (QQ y)) :=
+      /* case of P getting input */
+      (exists X, oneb P (dn X) PP /\ oneb Q (up X) QQ)
+      /* case of Q getting input */
+   \/ (exists X, oneb P (up X) PP /\ oneb Q (dn X) QQ)
+
+   /* internal bound communication in a replicated process */
+;  one (repl P) tau (par (repl P) (nu y\ par (PP y) (QQ y))) :=
+      exists X, oneb P (up X) PP /\ oneb P (dn X) QQ
+
+   /* bound output */
+;  oneb (nu P) (up X) R := nabla y, one (P y) (up X y) (R y)
+
+   /* bound input */
+;  oneb (inp X P) (dn X) P
+
+   /* core process algebra for bound labels */
+;  oneb (plus P Q) L R := oneb P L R
+;  oneb (plus P Q) L R := oneb Q L R
+;  oneb (par P Q) L (x\ par (R x) Q) := oneb P L R
+;  oneb (par P Q) L (x\ par P (R x)) := oneb Q L R
+;  oneb (repl P) L (x\ par (repl P) (R x)) := oneb P L R
+;  oneb (nu P) L (y\ nu x\ R x y) := nabla x, oneb (P x) L (R x).</a>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% Bisimilarity-up-to</span>
+
+<a href="pic_core-details.html#13" class="command">CoDefine bisim_up_to : (proc -> proc -> proc -> proc -> prop) ->
+                       proc -> proc -> prop by
+  bisim_up_to Tech P Q :=
+     (forall L P1, one P L P1 ->
+        exists Q1, one Q L Q1 /\
+          exists P2 Q2, Tech P1 P2 Q1 Q2 /\
+            bisim_up_to Tech P2 Q2)
+  /\ (forall X P1, oneb P (dn X) P1 ->
+        exists Q1, oneb Q (dn X) Q1 /\
+          exists P2 Q2, forall N,
+            Tech (P1 N) (P2 N) (Q1 N) (Q2 N) /\
+            bisim_up_to Tech (P2 N) (Q2 N))
+  /\ (forall X P1, oneb P (up X) P1 ->
+        exists Q1, oneb Q (up X) Q1 /\
+          exists P2 Q2, nabla x,
+            Tech (P1 x) (P2 x) (Q1 x) (Q2 x) /\
+            bisim_up_to Tech (P2 x) (Q2 x))
+  /\ (forall L Q1, one Q L Q1 ->
+        exists P1, one P L P1 /\
+          exists P2 Q2, Tech P1 P2 Q1 Q2 /\
+            bisim_up_to Tech P2 Q2)
+  /\ (forall X Q1, oneb Q (dn X) Q1 ->
+        exists P1, oneb P (dn X) P1 /\
+          exists P2 Q2, forall N,
+            Tech (P1 N) (P2 N) (Q1 N) (Q2 N) /\
+            bisim_up_to Tech (P2 N) (Q2 N))
+  /\ (forall X Q1, oneb Q (up X) Q1 ->
+        exists P1, oneb P (up X) P1 /\
+          exists P2 Q2, nabla x,
+            Tech (P1 x) (P2 x) (Q1 x) (Q2 x) /\
+            bisim_up_to Tech (P2 x) (Q2 x)).</a>
+
+<a href="pic_core-details.html#14" class="command">Define refl_t : proc -> proc -> proc -> proc -> prop by
+  refl_t P P Q Q.</a>
+
+<a href="pic_core-details.html#15" class="command">Define is_sound : (proc -> proc -> proc -> proc -> prop) -> prop by
+  is_sound Tech :=
+    forall P Q, bisim_up_to Tech P Q -> bisim_up_to refl_t P Q.</a>
+
+<a href="pic_core-details.html#16" class="command">Theorem bisim_reflexive : forall P, bisim_up_to refl_t P P.</a>
+<div class="proof"><a href="pic_core-details.html#17" class="tactic">coinduction.</a> <a href="pic_core-details.html#18" class="tactic">intros.</a> <a href="pic_core-details.html#19" class="tactic">unfold.</a>
+  <a href="pic_core-details.html#20" class="tactic">intros.</a> <a href="pic_core-details.html#21" class="tactic">witness P1.</a> <a href="pic_core-details.html#22" class="tactic">split.</a> <a href="pic_core-details.html#23" class="tactic">search.</a>
+    <a href="pic_core-details.html#24" class="tactic">witness P1.</a> <a href="pic_core-details.html#25" class="tactic">witness P1.</a> <a href="pic_core-details.html#26" class="tactic">split.</a> <a href="pic_core-details.html#27" class="tactic">search.</a>
+      <a href="pic_core-details.html#28" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#29" class="tactic">intros.</a> <a href="pic_core-details.html#30" class="tactic">witness P1.</a> <a href="pic_core-details.html#31" class="tactic">split.</a> <a href="pic_core-details.html#32" class="tactic">search.</a>
+    <a href="pic_core-details.html#33" class="tactic">witness P1.</a> <a href="pic_core-details.html#34" class="tactic">witness P1.</a> <a href="pic_core-details.html#35" class="tactic">intros.</a> <a href="pic_core-details.html#36" class="tactic">split.</a> <a href="pic_core-details.html#37" class="tactic">search.</a>
+      <a href="pic_core-details.html#38" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#39" class="tactic">intros.</a> <a href="pic_core-details.html#40" class="tactic">witness P1.</a> <a href="pic_core-details.html#41" class="tactic">split.</a> <a href="pic_core-details.html#42" class="tactic">search.</a>
+    <a href="pic_core-details.html#43" class="tactic">witness P1.</a> <a href="pic_core-details.html#44" class="tactic">witness P1.</a> <a href="pic_core-details.html#45" class="tactic">intros.</a> <a href="pic_core-details.html#46" class="tactic">split.</a> <a href="pic_core-details.html#47" class="tactic">search.</a>
+      <a href="pic_core-details.html#48" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#49" class="tactic">intros.</a> <a href="pic_core-details.html#50" class="tactic">witness Q1.</a> <a href="pic_core-details.html#51" class="tactic">split.</a> <a href="pic_core-details.html#52" class="tactic">search.</a>
+    <a href="pic_core-details.html#53" class="tactic">witness Q1.</a> <a href="pic_core-details.html#54" class="tactic">witness Q1.</a> <a href="pic_core-details.html#55" class="tactic">intros.</a> <a href="pic_core-details.html#56" class="tactic">split.</a> <a href="pic_core-details.html#57" class="tactic">search.</a>
+      <a href="pic_core-details.html#58" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#59" class="tactic">intros.</a> <a href="pic_core-details.html#60" class="tactic">witness Q1.</a> <a href="pic_core-details.html#61" class="tactic">split.</a> <a href="pic_core-details.html#62" class="tactic">search.</a>
+    <a href="pic_core-details.html#63" class="tactic">witness Q1.</a> <a href="pic_core-details.html#64" class="tactic">witness Q1.</a> <a href="pic_core-details.html#65" class="tactic">intros.</a> <a href="pic_core-details.html#66" class="tactic">split.</a> <a href="pic_core-details.html#67" class="tactic">search.</a>
+      <a href="pic_core-details.html#68" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#69" class="tactic">intros.</a> <a href="pic_core-details.html#70" class="tactic">witness Q1.</a> <a href="pic_core-details.html#71" class="tactic">split.</a> <a href="pic_core-details.html#72" class="tactic">search.</a>
+    <a href="pic_core-details.html#73" class="tactic">witness Q1.</a> <a href="pic_core-details.html#74" class="tactic">witness Q1.</a> <a href="pic_core-details.html#75" class="tactic">intros.</a> <a href="pic_core-details.html#76" class="tactic">split.</a> <a href="pic_core-details.html#77" class="tactic">search.</a>
+      <a href="pic_core-details.html#78" class="tactic">backchain CH.</a></div>
+<a href="pic_core-details.html#79" class="command">Theorem bisim_eq_1L : forall P1 P2 Q,
+  bisim_up_to refl_t P1 Q -> P1 = P2 -> bisim_up_to refl_t P2 Q.</a>
+<div class="proof"><a href="pic_core-details.html#80" class="tactic">intros.</a> <a href="pic_core-details.html#81" class="tactic">case H2.</a> <a href="pic_core-details.html#82" class="tactic">search.</a></div><a href="pic_core-details.html#83" class="command">Theorem bisim_eq_1R : forall P1 P2 Q,
+  bisim_up_to refl_t P2 Q -> P1 = P2 -> bisim_up_to refl_t P1 Q.</a>
+<div class="proof"><a href="pic_core-details.html#84" class="tactic">intros.</a> <a href="pic_core-details.html#85" class="tactic">case H2.</a> <a href="pic_core-details.html#86" class="tactic">search.</a></div><a href="pic_core-details.html#87" class="command">Theorem bisim_eq_2L : forall P Q1 Q2,
+  bisim_up_to refl_t P Q1 -> Q1 = Q2 -> bisim_up_to refl_t P Q2.</a>
+<div class="proof"><a href="pic_core-details.html#88" class="tactic">intros.</a> <a href="pic_core-details.html#89" class="tactic">case H2.</a> <a href="pic_core-details.html#90" class="tactic">search.</a></div><a href="pic_core-details.html#91" class="command">Theorem bisim_eq_2R : forall P Q1 Q2,
+  bisim_up_to refl_t P Q2 -> Q1 = Q2 -> bisim_up_to refl_t P Q1.</a>
+<div class="proof"><a href="pic_core-details.html#92" class="tactic">intros.</a> <a href="pic_core-details.html#93" class="tactic">case H2.</a> <a href="pic_core-details.html#94" class="tactic">search.</a></div>
+<a href="pic_core-details.html#95" class="command">Theorem bisim_symmetric : forall P Q,
+  bisim_up_to refl_t P Q ->
+  bisim_up_to refl_t Q P.</a>
+<div class="proof"><a href="pic_core-details.html#96" class="tactic">coinduction.</a> <a href="pic_core-details.html#97" class="tactic">intros.</a> <a href="pic_core-details.html#98" class="tactic">Bis1 : case H1.</a> <a href="pic_core-details.html#99" class="tactic">unfold.</a>
+  <a href="pic_core-details.html#100" class="tactic">clear Bis1 Bis2 Bis3 Bis5 Bis6.</a>
+  <a href="pic_core-details.html#101" class="tactic">intros.</a> <a href="pic_core-details.html#102" class="tactic">apply *Bis4 to *H2.</a> <a href="pic_core-details.html#103" class="tactic">witness P2.</a> <a href="pic_core-details.html#104" class="tactic">split.</a> <a href="pic_core-details.html#105" class="tactic">search.</a>
+    <a href="pic_core-details.html#106" class="tactic">witness P1.</a> <a href="pic_core-details.html#107" class="tactic">witness P2.</a> <a href="pic_core-details.html#108" class="tactic">case H4.</a> <a href="pic_core-details.html#109" class="tactic">split.</a> <a href="pic_core-details.html#110" class="tactic">search.</a>
+      <a href="pic_core-details.html#111" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#112" class="tactic">clear Bis1 Bis2 Bis3 Bis4 Bis6.</a>
+  <a href="pic_core-details.html#113" class="tactic">intros.</a> <a href="pic_core-details.html#114" class="tactic">apply Bis5 to H2.</a> <a href="pic_core-details.html#115" class="tactic">witness P2.</a> <a href="pic_core-details.html#116" class="tactic">split.</a> <a href="pic_core-details.html#117" class="tactic">search.</a>
+    <a href="pic_core-details.html#118" class="tactic">witness P1.</a> <a href="pic_core-details.html#119" class="tactic">witness P2.</a> <a href="pic_core-details.html#120" class="tactic">intros.</a> <a href="pic_core-details.html#121" class="tactic">apply *H4 with N = N.</a> <a href="pic_core-details.html#122" class="tactic">case H5.</a>
+    <a href="pic_core-details.html#123" class="tactic">split.</a> <a href="pic_core-details.html#124" class="tactic">search.</a> <a href="pic_core-details.html#125" class="tactic">backchain CH.</a>
+      <a href="pic_core-details.html#126" class="tactic">apply bisim_eq_1R to *H6 *H8.</a> <a href="pic_core-details.html#127" class="tactic">apply bisim_eq_2R to *H9 *H7.</a> <a href="pic_core-details.html#128" class="tactic">search.</a>
+  <a href="pic_core-details.html#129" class="tactic">clear Bis1 Bis2 Bis3 Bis4 Bis5.</a>
+  <a href="pic_core-details.html#130" class="tactic">intros.</a> <a href="pic_core-details.html#131" class="tactic">apply Bis6 to H2.</a> <a href="pic_core-details.html#132" class="tactic">witness P2.</a> <a href="pic_core-details.html#133" class="tactic">split.</a> <a href="pic_core-details.html#134" class="tactic">search.</a>
+    <a href="pic_core-details.html#135" class="tactic">witness P1.</a> <a href="pic_core-details.html#136" class="tactic">witness P2.</a> <a href="pic_core-details.html#137" class="tactic">intros.</a> <a href="pic_core-details.html#138" class="tactic">case H4.</a>
+    <a href="pic_core-details.html#139" class="tactic">split.</a> <a href="pic_core-details.html#140" class="tactic">search.</a> <a href="pic_core-details.html#141" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#142" class="tactic">clear Bis2 Bis3 Bis4 Bis5 Bis6.</a>
+  <a href="pic_core-details.html#143" class="tactic">intros.</a> <a href="pic_core-details.html#144" class="tactic">apply Bis1 to H2.</a> <a href="pic_core-details.html#145" class="tactic">witness Q2.</a> <a href="pic_core-details.html#146" class="tactic">split.</a> <a href="pic_core-details.html#147" class="tactic">search.</a>
+    <a href="pic_core-details.html#148" class="tactic">witness Q2.</a> <a href="pic_core-details.html#149" class="tactic">witness Q1.</a> <a href="pic_core-details.html#150" class="tactic">case H4.</a> <a href="pic_core-details.html#151" class="tactic">split.</a> <a href="pic_core-details.html#152" class="tactic">search.</a>
+      <a href="pic_core-details.html#153" class="tactic">backchain CH.</a>
+  <a href="pic_core-details.html#154" class="tactic">clear Bis1 Bis3 Bis4 Bis5 Bis6.</a>
+  <a href="pic_core-details.html#155" class="tactic">intros.</a> <a href="pic_core-details.html#156" class="tactic">apply Bis2 to H2.</a> <a href="pic_core-details.html#157" class="tactic">witness Q2.</a> <a href="pic_core-details.html#158" class="tactic">split.</a> <a href="pic_core-details.html#159" class="tactic">search.</a>
+    <a href="pic_core-details.html#160" class="tactic">witness Q2.</a> <a href="pic_core-details.html#161" class="tactic">witness Q1.</a> <a href="pic_core-details.html#162" class="tactic">intros.</a> <a href="pic_core-details.html#163" class="tactic">apply *H4 with N = N.</a> <a href="pic_core-details.html#164" class="tactic">case H5.</a>
+    <a href="pic_core-details.html#165" class="tactic">split.</a> <a href="pic_core-details.html#166" class="tactic">search.</a> <a href="pic_core-details.html#167" class="tactic">backchain CH.</a>
+      <a href="pic_core-details.html#168" class="tactic">apply bisim_eq_1R to *H6 *H8.</a> <a href="pic_core-details.html#169" class="tactic">apply bisim_eq_2R to *H9 *H7.</a> <a href="pic_core-details.html#170" class="tactic">search.</a>
+  <a href="pic_core-details.html#171" class="tactic">clear Bis1 Bis2 BIs4 Bis5 Bis6.</a>
+  <a href="pic_core-details.html#172" class="tactic">intros.</a> <a href="pic_core-details.html#173" class="tactic">apply Bis3 to H2.</a> <a href="pic_core-details.html#174" class="tactic">witness Q2.</a> <a href="pic_core-details.html#175" class="tactic">split.</a> <a href="pic_core-details.html#176" class="tactic">search.</a>
+    <a href="pic_core-details.html#177" class="tactic">witness Q2.</a> <a href="pic_core-details.html#178" class="tactic">witness Q1.</a> <a href="pic_core-details.html#179" class="tactic">intros.</a> <a href="pic_core-details.html#180" class="tactic">case H4.</a>
+    <a href="pic_core-details.html#181" class="tactic">split.</a> <a href="pic_core-details.html#182" class="tactic">search.</a> <a href="pic_core-details.html#183" class="tactic">backchain CH.</a></div>
+<a href="pic_core-details.html#184" class="command">Theorem bisim_transitive : forall P Q R,
+  bisim_up_to refl_t P Q -> bisim_up_to refl_t Q R -> bisim_up_to refl_t P R.</a>
+<div class="proof"><a href="pic_core-details.html#185" class="tactic">coinduction.</a> <a href="pic_core-details.html#186" class="tactic">intros.</a> <a href="pic_core-details.html#187" class="tactic">Left1 : case H1.</a> <a href="pic_core-details.html#188" class="tactic">Right1 : case H2.</a> <a href="pic_core-details.html#189" class="tactic">unfold.</a>
+  <a href="pic_core-details.html#190" class="tactic">intros.</a> <a href="pic_core-details.html#191" class="tactic">apply Left1 to *H3.</a> <a href="pic_core-details.html#192" class="tactic">apply Right1 to *H4.</a>
+  <a href="pic_core-details.html#193" class="tactic">witness Q1.</a> <a href="pic_core-details.html#194" class="tactic">split.</a> <a href="pic_core-details.html#195" class="tactic">search.</a>
+    <a href="pic_core-details.html#196" class="tactic">witness P1.</a> <a href="pic_core-details.html#197" class="tactic">witness Q1.</a> <a href="pic_core-details.html#198" class="tactic">split.</a> <a href="pic_core-details.html#199" class="tactic">search.</a>
+      <a href="pic_core-details.html#200" class="tactic">case H5.</a> <a href="pic_core-details.html#201" class="tactic">case H8.</a> <a href="pic_core-details.html#202" class="tactic">backchain CH.</a>
+
+  <a href="pic_core-details.html#203" class="tactic">intros.</a> <a href="pic_core-details.html#204" class="tactic">apply Left2 to *H3.</a> <a href="pic_core-details.html#205" class="tactic">apply Right2 to *H4.</a>
+  <a href="pic_core-details.html#206" class="tactic">witness Q1.</a> <a href="pic_core-details.html#207" class="tactic">split.</a> <a href="pic_core-details.html#208" class="tactic">search.</a>
+    <a href="pic_core-details.html#209" class="tactic">witness P1.</a> <a href="pic_core-details.html#210" class="tactic">witness Q1.</a> <a href="pic_core-details.html#211" class="tactic">intros.</a> <a href="pic_core-details.html#212" class="tactic">split.</a> <a href="pic_core-details.html#213" class="tactic">search.</a>
+      <a href="pic_core-details.html#214" class="tactic">apply *H5 with N = N.</a> <a href="pic_core-details.html#215" class="tactic">apply *H7 with N = N.</a>
+      <a href="pic_core-details.html#216" class="tactic">case H8.</a> <a href="pic_core-details.html#217" class="tactic">case H10.</a>
+      <a href="pic_core-details.html#218" class="tactic">apply bisim_eq_1R to *H9 *H13.</a>
+      <a href="pic_core-details.html#219" class="tactic">apply bisim_eq_2R to *H16 *H12.</a>
+      <a href="pic_core-details.html#220" class="tactic">apply *bisim_eq_2L to *H17 *H15.</a>
+      <a href="pic_core-details.html#221" class="tactic">apply bisim_eq_2R to *H11 *H14.</a>
+      <a href="pic_core-details.html#222" class="tactic">backchain CH.</a>
+
+   <a href="pic_core-details.html#223" class="tactic">intros.</a> <a href="pic_core-details.html#224" class="tactic">apply Left3 to *H3.</a> <a href="pic_core-details.html#225" class="tactic">apply Right3 to *H4.</a>
+   <a href="pic_core-details.html#226" class="tactic">witness Q1.</a> <a href="pic_core-details.html#227" class="tactic">split.</a> <a href="pic_core-details.html#228" class="tactic">search.</a>
+     <a href="pic_core-details.html#229" class="tactic">witness P1.</a> <a href="pic_core-details.html#230" class="tactic">witness Q1.</a> <a href="pic_core-details.html#231" class="tactic">intros.</a> <a href="pic_core-details.html#232" class="tactic">split.</a> <a href="pic_core-details.html#233" class="tactic">search.</a>
+       <a href="pic_core-details.html#234" class="tactic">case H5.</a> <a href="pic_core-details.html#235" class="tactic">case H8.</a> <a href="pic_core-details.html#236" class="tactic">backchain CH.</a>
+
+   <a href="pic_core-details.html#237" class="tactic">intros.</a> <a href="pic_core-details.html#238" class="tactic">apply Right4 to *H3.</a> <a href="pic_core-details.html#239" class="tactic">apply Left4 to *H4.</a>
+   <a href="pic_core-details.html#240" class="tactic">witness P1.</a> <a href="pic_core-details.html#241" class="tactic">split.</a> <a href="pic_core-details.html#242" class="tactic">search.</a>
+     <a href="pic_core-details.html#243" class="tactic">witness P1.</a> <a href="pic_core-details.html#244" class="tactic">witness Q1.</a> <a href="pic_core-details.html#245" class="tactic">split.</a> <a href="pic_core-details.html#246" class="tactic">search.</a>
+       <a href="pic_core-details.html#247" class="tactic">case H5.</a> <a href="pic_core-details.html#248" class="tactic">case H8.</a> <a href="pic_core-details.html#249" class="tactic">backchain CH.</a>
+
+   <a href="pic_core-details.html#250" class="tactic">intros.</a> <a href="pic_core-details.html#251" class="tactic">apply Right5 to *H3.</a> <a href="pic_core-details.html#252" class="tactic">apply Left5 to *H4.</a>
+   <a href="pic_core-details.html#253" class="tactic">witness P1.</a> <a href="pic_core-details.html#254" class="tactic">split.</a> <a href="pic_core-details.html#255" class="tactic">search.</a>
+     <a href="pic_core-details.html#256" class="tactic">witness P1.</a> <a href="pic_core-details.html#257" class="tactic">witness Q1.</a> <a href="pic_core-details.html#258" class="tactic">intros.</a> <a href="pic_core-details.html#259" class="tactic">split.</a> <a href="pic_core-details.html#260" class="tactic">search.</a>
+       <a href="pic_core-details.html#261" class="tactic">apply *H5 with N = N.</a> <a href="pic_core-details.html#262" class="tactic">apply *H7 with N = N.</a>
+       <a href="pic_core-details.html#263" class="tactic">case H8.</a> <a href="pic_core-details.html#264" class="tactic">case H10.</a>
+       <a href="pic_core-details.html#265" class="tactic">apply bisim_eq_1R to *H9 *H13.</a>
+       <a href="pic_core-details.html#266" class="tactic">apply bisim_eq_2R to *H16 *H12.</a>
+       <a href="pic_core-details.html#267" class="tactic">apply bisim_eq_1R to *H11 *H15.</a>
+       <a href="pic_core-details.html#268" class="tactic">apply bisim_eq_2R to *H18 *H14.</a>
+       <a href="pic_core-details.html#269" class="tactic">backchain CH.</a>
+
+   <a href="pic_core-details.html#270" class="tactic">intros.</a> <a href="pic_core-details.html#271" class="tactic">apply Right6 to *H3.</a> <a href="pic_core-details.html#272" class="tactic">apply Left6 to *H4.</a>
+   <a href="pic_core-details.html#273" class="tactic">witness P1.</a> <a href="pic_core-details.html#274" class="tactic">split.</a> <a href="pic_core-details.html#275" class="tactic">search.</a>
+     <a href="pic_core-details.html#276" class="tactic">witness P1.</a> <a href="pic_core-details.html#277" class="tactic">witness Q1.</a> <a href="pic_core-details.html#278" class="tactic">intros.</a> <a href="pic_core-details.html#279" class="tactic">split.</a> <a href="pic_core-details.html#280" class="tactic">search.</a>
+       <a href="pic_core-details.html#281" class="tactic">case H5.</a> <a href="pic_core-details.html#282" class="tactic">case H8.</a> <a href="pic_core-details.html#283" class="tactic">backchain CH.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

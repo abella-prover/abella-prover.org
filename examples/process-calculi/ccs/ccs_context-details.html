@@ -1,0 +1,3920 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Kind name,action,proc type. - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.4-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Kind name, action, proc type.</b>
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Import "ccs_core".</b>
+Importing from ccs_core
+Warning: Definition can be used to defeat stratification
+ (higher-order argument "Tech" occurs to the left of ->)
+Warning: Definition can be used to defeat stratification
+ (higher-order argument "Rel" occurs to the left of ->)
+Warning: Definition can be used to defeat stratification
+ (higher-order argument "Rel" occurs to the left of ->)
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Import "ccs_ctx".</b>
+Importing from ccs_ctx
+Warning: Definition can be used to defeat stratification
+ (higher-order argument "Rel" occurs to the left of ->)
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Define context_t : proc -> proc -> proc -> proc -> prop by 
+context_t P1 P2 Q1 Q2 := exists C, at C P2 P1 /\ at C Q2 Q1.</b>
+
+</pre>
+<a name="5"></a>
+<pre class="code">
+Abella < <b>Theorem concat_ctx2 : 
+forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 -> at C1 Q1 Q2 ->
+  at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3).</b>
+
+</pre>
+<a name="6"></a>
+<pre class="code">
+
+============================
+ forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 -> at C1 Q1 Q2 ->
+   at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+
+concat_ctx2 < <b>induction on 2.</b>
+</pre>
+<a name="7"></a>
+<pre class="code">
+
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+============================
+ forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 @ ->
+   at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+
+concat_ctx2 < <b>intros.</b>
+</pre>
+<a name="8"></a>
+<pre class="code">
+
+Variables: C1 C2 P1 P2 P3 Q1 Q2 Q3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H2 : at C2 P2 P3 @
+H3 : at C1 Q1 Q2
+H4 : at C2 Q2 Q3
+============================
+ exists C3, at C3 P1 P3 /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H2.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: C1 P1 P3 Q1 Q2 Q3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P3
+H3 : at C1 Q1 Q2
+H4 : at hole Q2 Q3
+============================
+ exists C3, at C3 P1 P3 /\ at C3 Q1 Q3
+
+Subgoal 2 is:
+ exists C3, at C3 P1 (plus Q R) /\ at C3 Q1 Q3
+
+Subgoal 3 is:
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: C1 P1 P3 Q1 Q3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P3
+H3 : at C1 Q1 Q3
+============================
+ exists C3, at C3 P1 P3 /\ at C3 Q1 Q3
+
+Subgoal 2 is:
+ exists C3, at C3 P1 (plus Q R) /\ at C3 Q1 Q3
+
+Subgoal 3 is:
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>search.</b>
+</pre>
+<a name="11"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: C1 P1 P2 Q1 Q2 Q3 R Q C
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H4 : at (plus_l C R) Q2 Q3
+H5 : at C P2 Q *
+============================
+ exists C3, at C3 P1 (plus Q R) /\ at C3 Q1 Q3
+
+Subgoal 3 is:
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="12"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: C1 P1 P2 Q1 Q2 R Q C Q4
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+============================
+ exists C3, at C3 P1 (plus Q R) /\ at C3 Q1 (plus Q4 R)
+
+Subgoal 3 is:
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>apply IH to H1 H5 H3 H6.</b>
+</pre>
+<a name="13"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: C1 P1 P2 Q1 Q2 R Q C Q4 C3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+H7 : at C3 P1 Q
+H8 : at C3 Q1 Q4
+============================
+ exists C3, at C3 P1 (plus Q R) /\ at C3 Q1 (plus Q4 R)
+
+Subgoal 3 is:
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>search.</b>
+</pre>
+<a name="14"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: C1 P1 P2 Q1 Q2 Q3 Q R C
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H4 : at (plus_r R C) Q2 Q3
+H5 : at C P2 Q *
+============================
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 Q3
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: C1 P1 P2 Q1 Q2 Q R C Q4
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+============================
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 (plus R Q4)
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>apply IH to H1 H5 H3 H6.</b>
+</pre>
+<a name="16"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: C1 P1 P2 Q1 Q2 Q R C Q4 C3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+H7 : at C3 P1 Q
+H8 : at C3 Q1 Q4
+============================
+ exists C3, at C3 P1 (plus R Q) /\ at C3 Q1 (plus R Q4)
+
+Subgoal 4 is:
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>search.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: C1 P1 P2 Q1 Q2 Q3 R Q C
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H4 : at (par_l C R) Q2 Q3
+H5 : at C P2 Q *
+============================
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 Q3
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="18"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: C1 P1 P2 Q1 Q2 R Q C Q4
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+============================
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 (par Q4 R)
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>apply IH to H1 H5 H3 H6.</b>
+</pre>
+<a name="19"></a>
+<pre class="code">
+Subgoal 4:
+
+Variables: C1 P1 P2 Q1 Q2 R Q C Q4 C3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+H7 : at C3 P1 Q
+H8 : at C3 Q1 Q4
+============================
+ exists C3, at C3 P1 (par Q R) /\ at C3 Q1 (par Q4 R)
+
+Subgoal 5 is:
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>search.</b>
+</pre>
+<a name="20"></a>
+<pre class="code">
+Subgoal 5:
+
+Variables: C1 P1 P2 Q1 Q2 Q3 Q R C
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H4 : at (par_r R C) Q2 Q3
+H5 : at C P2 Q *
+============================
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 Q3
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="21"></a>
+<pre class="code">
+Subgoal 5:
+
+Variables: C1 P1 P2 Q1 Q2 Q R C Q4
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+============================
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 (par R Q4)
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>apply IH to H1 H5 H3 H6.</b>
+</pre>
+<a name="22"></a>
+<pre class="code">
+Subgoal 5:
+
+Variables: C1 P1 P2 Q1 Q2 Q R C Q4 C3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+H7 : at C3 P1 Q
+H8 : at C3 Q1 Q4
+============================
+ exists C3, at C3 P1 (par R Q) /\ at C3 Q1 (par R Q4)
+
+Subgoal 6 is:
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>search.</b>
+</pre>
+<a name="23"></a>
+<pre class="code">
+Subgoal 6:
+
+Variables: C1 P1 P2 Q1 Q2 Q3 Q A C
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H4 : at (act_d A C) Q2 Q3
+H5 : at C P2 Q *
+============================
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 Q3
+
+concat_ctx2 < <b>case H4.</b>
+</pre>
+<a name="24"></a>
+<pre class="code">
+Subgoal 6:
+
+Variables: C1 P1 P2 Q1 Q2 Q A C Q4
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+============================
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 (act A Q4)
+
+concat_ctx2 < <b>apply IH to H1 H5 H3 H6.</b>
+</pre>
+<a name="25"></a>
+<pre class="code">
+Subgoal 6:
+
+Variables: C1 P1 P2 Q1 Q2 Q A C Q4 C3
+IH : forall C1 C2 P1 P2 P3 Q1 Q2 Q3, at C1 P1 P2 -> at C2 P2 P3 * ->
+       at C1 Q1 Q2 -> at C2 Q2 Q3 -> (exists C3, at C3 P1 P3 /\ at C3 Q1 Q3)
+H1 : at C1 P1 P2
+H3 : at C1 Q1 Q2
+H5 : at C P2 Q *
+H6 : at C Q2 Q4
+H7 : at C3 P1 Q
+H8 : at C3 Q1 Q4
+============================
+ exists C3, at C3 P1 (act A Q) /\ at C3 Q1 (act A Q4)
+
+concat_ctx2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="26"></a>
+<pre class="code">
+Abella < <b>Theorem context_reflexive : 
+forall P, bisim_up_to context_t P P.</b>
+
+</pre>
+<a name="27"></a>
+<pre class="code">
+
+============================
+ forall P, bisim_up_to context_t P P
+
+context_reflexive < <b>coinduction.</b>
+</pre>
+<a name="28"></a>
+<pre class="code">
+
+CH : forall P, bisim_up_to context_t P P +
+============================
+ forall P, bisim_up_to context_t P P #
+
+context_reflexive < <b>intros.</b>
+</pre>
+<a name="29"></a>
+<pre class="code">
+
+Variables: P
+CH : forall P, bisim_up_to context_t P P +
+============================
+ bisim_up_to context_t P P #
+
+context_reflexive < <b>unfold.</b>
+</pre>
+<a name="30"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P
+CH : forall P, bisim_up_to context_t P P +
+============================
+ forall A P1, one P A P1 ->
+   (exists Q1, one P A Q1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>intros.</b>
+</pre>
+<a name="31"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ exists Q1, one P A Q1 /\
+   (exists P2 Q2, context_t P1 P2 Q1 Q2 /\ bisim_up_to context_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>witness P1.</b>
+</pre>
+<a name="32"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ one P A P1 /\
+   (exists P2 Q2, context_t P1 P2 P1 Q2 /\ bisim_up_to context_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>split.</b>
+</pre>
+<a name="33"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ one P A P1
+
+Subgoal 1.2 is:
+ exists P2 Q2, context_t P1 P2 P1 Q2 /\ bisim_up_to context_t P2 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>search.</b>
+</pre>
+<a name="34"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ exists P2 Q2, context_t P1 P2 P1 Q2 /\ bisim_up_to context_t P2 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>witness P1.</b>
+</pre>
+<a name="35"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ exists Q2, context_t P1 P1 P1 Q2 /\ bisim_up_to context_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>witness P1.</b>
+</pre>
+<a name="36"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ context_t P1 P1 P1 P1 /\ bisim_up_to context_t P1 P1 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>split.</b>
+</pre>
+<a name="37"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ context_t P1 P1 P1 P1
+
+Subgoal 1.2.2 is:
+ bisim_up_to context_t P1 P1 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>search.</b>
+</pre>
+<a name="38"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P A P1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A P1
+============================
+ bisim_up_to context_t P1 P1 +
+
+Subgoal 2 is:
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>backchain CH.</b>
+</pre>
+<a name="39"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P
+CH : forall P, bisim_up_to context_t P P +
+============================
+ forall A Q1, one P A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, context_t P1 P2 Q1 Q2 /\
+             bisim_up_to context_t P2 Q2 +))
+
+context_reflexive < <b>intros.</b>
+</pre>
+<a name="40"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ exists P1, one P A P1 /\
+   (exists P2 Q2, context_t P1 P2 Q1 Q2 /\ bisim_up_to context_t P2 Q2 +)
+
+context_reflexive < <b>witness Q1.</b>
+</pre>
+<a name="41"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ one P A Q1 /\
+   (exists P2 Q2, context_t Q1 P2 Q1 Q2 /\ bisim_up_to context_t P2 Q2 +)
+
+context_reflexive < <b>split.</b>
+</pre>
+<a name="42"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ one P A Q1
+
+Subgoal 2.2 is:
+ exists P2 Q2, context_t Q1 P2 Q1 Q2 /\ bisim_up_to context_t P2 Q2 +
+
+context_reflexive < <b>search.</b>
+</pre>
+<a name="43"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ exists P2 Q2, context_t Q1 P2 Q1 Q2 /\ bisim_up_to context_t P2 Q2 +
+
+context_reflexive < <b>witness Q1.</b>
+</pre>
+<a name="44"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ exists Q2, context_t Q1 Q1 Q1 Q2 /\ bisim_up_to context_t Q1 Q2 +
+
+context_reflexive < <b>witness Q1.</b>
+</pre>
+<a name="45"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ context_t Q1 Q1 Q1 Q1 /\ bisim_up_to context_t Q1 Q1 +
+
+context_reflexive < <b>split.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ context_t Q1 Q1 Q1 Q1
+
+Subgoal 2.2.2 is:
+ bisim_up_to context_t Q1 Q1 +
+
+context_reflexive < <b>search.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P A Q1
+CH : forall P, bisim_up_to context_t P P +
+H1 : one P A Q1
+============================
+ bisim_up_to context_t Q1 Q1 +
+
+context_reflexive < <b>backchain CH.</b>
+Proof completed.
+</pre>
+<a name="48"></a>
+<pre class="code">
+Abella < <b>Theorem context_substitutive : 
+substitutive_rel (bisim_up_to context_t).</b>
+
+</pre>
+<a name="49"></a>
+<pre class="code">
+
+============================
+ substitutive_rel (bisim_up_to context_t)
+
+context_substitutive < <b>unfold.</b>
+</pre>
+<a name="50"></a>
+<pre class="code">
+
+============================
+ forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+   bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+
+context_substitutive < <b>coinduction.</b>
+</pre>
+<a name="51"></a>
+<pre class="code">
+
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+============================
+ forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+   bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 #
+
+context_substitutive < <b>intros.</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+
+Variables: P1 P2 C Q1 Q2
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+============================
+ bisim_up_to context_t Q1 Q2 #
+
+context_substitutive < <b>unfold.</b>
+</pre>
+<a name="53"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P1 P2 C Q1 Q2
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+============================
+ forall A P1, one Q1 A P1 ->
+   (exists Q3, one Q2 A Q3 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>intros.</b>
+</pre>
+<a name="54"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply ctx_faithful to H1 H4.</b>
+</pre>
+<a name="55"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H5 : (exists CC, at CC P1 P3 /\
+          (forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR))) \/
+       (exists CC PBP B, one P1 B PBP /\ at CC PBP P3 /\
+            (forall Q QBQ, one Q B QBQ ->
+                 (forall Q0, at C Q Q0 ->
+                      (exists RR, one Q0 A RR /\ at CC QBQ RR)))) \/
+       (forall Q Q0, at C Q Q0 -> one Q0 A P3)
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>case H5.</b>
+</pre>
+<a name="56"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply H7 to H2.</b>
+</pre>
+<a name="57"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness RR.</b>
+</pre>
+<a name="58"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ one Q2 A RR /\
+   (exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="59"></a>
+<pre class="code">
+Subgoal 1.1.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ one Q2 A RR
+
+Subgoal 1.1.2 is:
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="60"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P1.</b>
+</pre>
+<a name="61"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ exists Q4, context_t P3 P1 RR Q4 /\ bisim_up_to context_t P1 Q4 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P2.</b>
+</pre>
+<a name="62"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ context_t P3 P1 RR P2 /\ bisim_up_to context_t P1 P2 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="63"></a>
+<pre class="code">
+Subgoal 1.1.2.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ context_t P3 P1 RR P2
+
+Subgoal 1.1.2.2 is:
+ bisim_up_to context_t P1 P2 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="64"></a>
+<pre class="code">
+Subgoal 1.1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : at CC P1 P3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q2 A RR
+H9 : at CC P2 RR
+============================
+ bisim_up_to context_t P1 P2 +
+
+Subgoal 1.2 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="65"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>case H3.</b>
+</pre>
+<a name="66"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply H9 to H6.</b>
+</pre>
+<a name="67"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply H8 to H11.</b>
+</pre>
+<a name="68"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply H14 to H2.</b>
+</pre>
+<a name="69"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness RR.</b>
+</pre>
+<a name="70"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+============================
+ one Q2 A RR /\
+   (exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="71"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+============================
+ one Q2 A RR
+
+Subgoal 1.2.2 is:
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="72"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H12 : context_t PBP P4 Q3 Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+============================
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>case H12.</b>
+</pre>
+<a name="73"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+============================
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply concat_ctx2 to H17 H7 H18 H16.</b>
+</pre>
+<a name="74"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+H19 : at C3 P4 P3
+H20 : at C3 Q4 RR
+============================
+ exists P2 Q4, context_t P3 P2 RR Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P4.</b>
+</pre>
+<a name="75"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+H19 : at C3 P4 P3
+H20 : at C3 Q4 RR
+============================
+ exists Q4, context_t P3 P4 RR Q4 /\ bisim_up_to context_t P4 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness Q4.</b>
+</pre>
+<a name="76"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+H19 : at C3 P4 P3
+H20 : at C3 Q4 RR
+============================
+ context_t P3 P4 RR Q4 /\ bisim_up_to context_t P4 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="77"></a>
+<pre class="code">
+Subgoal 1.2.2.1:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+H19 : at C3 P4 P3
+H20 : at C3 Q4 RR
+============================
+ context_t P3 P4 RR Q4
+
+Subgoal 1.2.2.2 is:
+ bisim_up_to context_t P4 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="78"></a>
+<pre class="code">
+Subgoal 1.2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3 CC PBP B Q3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q1 A P3
+H6 : one P1 B PBP
+H7 : at CC PBP P3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P2 B Q3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P2 Q0 -> (exists RR, one Q0 A RR /\ at CC Q3 RR)
+H15 : one Q2 A RR
+H16 : at CC Q3 RR
+H17 : at C1 P4 PBP
+H18 : at C1 Q4 Q3
+H19 : at C3 P4 P3
+H20 : at C3 Q4 RR
+============================
+ bisim_up_to context_t P4 Q4 +
+
+Subgoal 1.3 is:
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="79"></a>
+<pre class="code">
+Subgoal 1.3:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>apply H6 to H2.</b>
+</pre>
+<a name="80"></a>
+<pre class="code">
+Subgoal 1.3:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ exists Q3, one Q2 A Q3 /\
+   (exists P2 Q4, context_t P3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P3.</b>
+</pre>
+<a name="81"></a>
+<pre class="code">
+Subgoal 1.3:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ one Q2 A P3 /\
+   (exists P2 Q4, context_t P3 P2 P3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="82"></a>
+<pre class="code">
+Subgoal 1.3.1:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ one Q2 A P3
+
+Subgoal 1.3.2 is:
+ exists P2 Q4, context_t P3 P2 P3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="83"></a>
+<pre class="code">
+Subgoal 1.3.2:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ exists P2 Q4, context_t P3 P2 P3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P3.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+Subgoal 1.3.2:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ exists Q4, context_t P3 P3 P3 Q4 /\ bisim_up_to context_t P3 Q4 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>witness P3.</b>
+</pre>
+<a name="85"></a>
+<pre class="code">
+Subgoal 1.3.2:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ context_t P3 P3 P3 P3 /\ bisim_up_to context_t P3 P3 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="86"></a>
+<pre class="code">
+Subgoal 1.3.2.1:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ context_t P3 P3 P3 P3
+
+Subgoal 1.3.2.2 is:
+ bisim_up_to context_t P3 P3 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="87"></a>
+<pre class="code">
+Subgoal 1.3.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ bisim_up_to context_t P3 P3 +
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="88"></a>
+<pre class="code">
+Subgoal 1.3.2.2:
+
+Variables: P1 P2 C Q1 Q2 A P3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q1 A P3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A P3
+H7 : one Q2 A P3
+============================
+ bisim_up_to context_t P3 P3
+
+Subgoal 2 is:
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>backchain context_reflexive.</b>
+</pre>
+<a name="89"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P1 P2 C Q1 Q2
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+============================
+ forall A Q3, one Q2 A Q3 ->
+   (exists P1, one Q1 A P1 /\
+        (exists P2 Q4, context_t P1 P2 Q3 Q4 /\
+             bisim_up_to context_t P2 Q4 +))
+
+context_substitutive < <b>intros.</b>
+</pre>
+<a name="90"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply ctx_faithful to H2 H4.</b>
+</pre>
+<a name="91"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H5 : (exists CC, at CC P2 Q3 /\
+          (forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR))) \/
+       (exists CC PBP B, one P2 B PBP /\ at CC PBP Q3 /\
+            (forall Q QBQ, one Q B QBQ ->
+                 (forall Q0, at C Q Q0 ->
+                      (exists RR, one Q0 A RR /\ at CC QBQ RR)))) \/
+       (forall Q Q0, at C Q Q0 -> one Q0 A Q3)
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>case H5.</b>
+</pre>
+<a name="92"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply H7 to H1.</b>
+</pre>
+<a name="93"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness RR.</b>
+</pre>
+<a name="94"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ one Q1 A RR /\
+   (exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="95"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ one Q1 A RR
+
+Subgoal 2.1.2 is:
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="96"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness P1.</b>
+</pre>
+<a name="97"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ exists Q4, context_t RR P1 Q3 Q4 /\ bisim_up_to context_t P1 Q4 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness P2.</b>
+</pre>
+<a name="98"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ context_t RR P1 Q3 P2 /\ bisim_up_to context_t P1 P2 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="99"></a>
+<pre class="code">
+Subgoal 2.1.2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ context_t RR P1 Q3 P2
+
+Subgoal 2.1.2.2 is:
+ bisim_up_to context_t P1 P2 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="100"></a>
+<pre class="code">
+Subgoal 2.1.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : at CC P2 Q3
+H7 : forall Q Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC Q RR)
+H8 : one Q1 A RR
+H9 : at CC P1 RR
+============================
+ bisim_up_to context_t P1 P2 +
+
+Subgoal 2.2 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="101"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>case H3.</b>
+</pre>
+<a name="102"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply H10 to H6.</b>
+</pre>
+<a name="103"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply H8 to H11.</b>
+</pre>
+<a name="104"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply H14 to H1.</b>
+</pre>
+<a name="105"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness RR.</b>
+</pre>
+<a name="106"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+============================
+ one Q1 A RR /\
+   (exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="107"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+============================
+ one Q1 A RR
+
+Subgoal 2.2.2 is:
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="108"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H12 : context_t P3 P4 PBP Q4
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+============================
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>case H12.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+============================
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply concat_ctx2 to H17 H16 H18 H7.</b>
+</pre>
+<a name="110"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+H19 : at C3 P4 RR
+H20 : at C3 Q4 Q3
+============================
+ exists P2 Q4, context_t RR P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness P4.</b>
+</pre>
+<a name="111"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+H19 : at C3 P4 RR
+H20 : at C3 Q4 Q3
+============================
+ exists Q4, context_t RR P4 Q3 Q4 /\ bisim_up_to context_t P4 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness Q4.</b>
+</pre>
+<a name="112"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+H19 : at C3 P4 RR
+H20 : at C3 Q4 Q3
+============================
+ context_t RR P4 Q3 Q4 /\ bisim_up_to context_t P4 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="113"></a>
+<pre class="code">
+Subgoal 2.2.2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+H19 : at C3 P4 RR
+H20 : at C3 Q4 Q3
+============================
+ context_t RR P4 Q3 Q4
+
+Subgoal 2.2.2.2 is:
+ bisim_up_to context_t P4 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="114"></a>
+<pre class="code">
+Subgoal 2.2.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3 CC PBP B P3 P4 Q4 RR C1 C3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H4 : one Q2 A Q3
+H6 : one P2 B PBP
+H7 : at CC PBP Q3
+H8 : forall Q QBQ, one Q B QBQ ->
+       (forall Q0, at C Q Q0 -> (exists RR, one Q0 A RR /\ at CC QBQ RR))
+H9 : forall A P3, one P1 A P3 ->
+       (exists Q1, one P2 A Q1 /\
+            (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                 bisim_up_to context_t P4 Q2))
+H10 : forall A Q1, one P2 A Q1 ->
+        (exists P3, one P1 A P3 /\
+             (exists P4 Q2, context_t P3 P4 Q1 Q2 /\
+                  bisim_up_to context_t P4 Q2))
+H11 : one P1 B P3
+H13 : bisim_up_to context_t P4 Q4
+H14 : forall Q0, at C P1 Q0 -> (exists RR, one Q0 A RR /\ at CC P3 RR)
+H15 : one Q1 A RR
+H16 : at CC P3 RR
+H17 : at C1 P4 P3
+H18 : at C1 Q4 PBP
+H19 : at C3 P4 RR
+H20 : at C3 Q4 Q3
+============================
+ bisim_up_to context_t P4 Q4 +
+
+Subgoal 2.3 is:
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="115"></a>
+<pre class="code">
+Subgoal 2.3:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>apply H6 to H1.</b>
+</pre>
+<a name="116"></a>
+<pre class="code">
+Subgoal 2.3:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ exists P1, one Q1 A P1 /\
+   (exists P2 Q4, context_t P1 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>witness Q3.</b>
+</pre>
+<a name="117"></a>
+<pre class="code">
+Subgoal 2.3:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ one Q1 A Q3 /\
+   (exists P2 Q4, context_t Q3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +)
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="118"></a>
+<pre class="code">
+Subgoal 2.3.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ one Q1 A Q3
+
+Subgoal 2.3.2 is:
+ exists P2 Q4, context_t Q3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="119"></a>
+<pre class="code">
+Subgoal 2.3.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ exists P2 Q4, context_t Q3 P2 Q3 Q4 /\ bisim_up_to context_t P2 Q4 +
+
+context_substitutive < <b>witness Q3.</b>
+</pre>
+<a name="120"></a>
+<pre class="code">
+Subgoal 2.3.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ exists Q4, context_t Q3 Q3 Q3 Q4 /\ bisim_up_to context_t Q3 Q4 +
+
+context_substitutive < <b>witness Q3.</b>
+</pre>
+<a name="121"></a>
+<pre class="code">
+Subgoal 2.3.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ context_t Q3 Q3 Q3 Q3 /\ bisim_up_to context_t Q3 Q3 +
+
+context_substitutive < <b>split.</b>
+</pre>
+<a name="122"></a>
+<pre class="code">
+Subgoal 2.3.2.1:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ context_t Q3 Q3 Q3 Q3
+
+Subgoal 2.3.2.2 is:
+ bisim_up_to context_t Q3 Q3 +
+
+context_substitutive < <b>search.</b>
+</pre>
+<a name="123"></a>
+<pre class="code">
+Subgoal 2.3.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ bisim_up_to context_t Q3 Q3 +
+
+context_substitutive < <b>backchain CH.</b>
+</pre>
+<a name="124"></a>
+<pre class="code">
+Subgoal 2.3.2.2:
+
+Variables: P1 P2 C Q1 Q2 A Q3
+CH : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2 +
+H1 : at C P1 Q1
+H2 : at C P2 Q2
+H3 : bisim_up_to context_t P1 P2
+H4 : one Q2 A Q3
+H6 : forall Q Q0, at C Q Q0 -> one Q0 A Q3
+H7 : one Q1 A Q3
+============================
+ bisim_up_to context_t Q3 Q3
+
+context_substitutive < <b>backchain context_reflexive.</b>
+Proof completed.
+</pre>
+<a name="125"></a>
+<pre class="code">
+Abella < <b>Theorem context_sound : 
+is_sound context_t.</b>
+
+</pre>
+<a name="126"></a>
+<pre class="code">
+
+============================
+ is_sound context_t
+
+context_sound < <b>apply context_substitutive.</b>
+</pre>
+<a name="127"></a>
+<pre class="code">
+
+H1 : substitutive_rel (bisim_up_to context_t)
+============================
+ is_sound context_t
+
+context_sound < <b>case H1.</b>
+</pre>
+<a name="128"></a>
+<pre class="code">
+
+H2 : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+       bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+============================
+ is_sound context_t
+
+context_sound < <b>rename H2 to cs_lemma.</b>
+</pre>
+<a name="129"></a>
+<pre class="code">
+
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+============================
+ is_sound context_t
+
+context_sound < <b>unfold.</b>
+</pre>
+<a name="130"></a>
+<pre class="code">
+
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+============================
+ forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q
+
+context_sound < <b>coinduction.</b>
+</pre>
+<a name="131"></a>
+<pre class="code">
+
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+============================
+ forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q #
+
+context_sound < <b>intros.</b>
+</pre>
+<a name="132"></a>
+<pre class="code">
+
+Variables: P Q
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H3 : bisim_up_to context_t P Q
+============================
+ bisim_up_to refl_t P Q #
+
+context_sound < <b>case H3.</b>
+</pre>
+<a name="133"></a>
+<pre class="code">
+
+Variables: P Q
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+============================
+ bisim_up_to refl_t P Q #
+
+context_sound < <b>unfold.</b>
+</pre>
+<a name="134"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P Q
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+============================
+ forall A P1, one P A P1 ->
+   (exists Q1, one Q A Q1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>intros.</b>
+</pre>
+<a name="135"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P Q A P1
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+============================
+ exists Q1, one Q A Q1 /\
+   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>apply H4 to H6.</b>
+</pre>
+<a name="136"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists Q1, one Q A Q1 /\
+   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>witness Q2.</b>
+</pre>
+<a name="137"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ one Q A Q2 /\
+   (exists P2 Q1, refl_t P1 P2 Q2 Q1 /\ bisim_up_to refl_t P2 Q1 +)
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>split.</b>
+</pre>
+<a name="138"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ one Q A Q2
+
+Subgoal 1.2 is:
+ exists P2 Q1, refl_t P1 P2 Q2 Q1 /\ bisim_up_to refl_t P2 Q1 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>search.</b>
+</pre>
+<a name="139"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists P2 Q1, refl_t P1 P2 Q2 Q1 /\ bisim_up_to refl_t P2 Q1 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>witness P1.</b>
+</pre>
+<a name="140"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists Q1, refl_t P1 P1 Q2 Q1 /\ bisim_up_to refl_t P1 Q1 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>witness Q2.</b>
+</pre>
+<a name="141"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ refl_t P1 P1 Q2 Q2 /\ bisim_up_to refl_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>split.</b>
+</pre>
+<a name="142"></a>
+<pre class="code">
+Subgoal 1.2.1:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ refl_t P1 P1 Q2 Q2
+
+Subgoal 1.2.2 is:
+ bisim_up_to refl_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>search.</b>
+</pre>
+<a name="143"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P Q A P1 Q2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H8 : context_t P1 P3 Q2 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ bisim_up_to refl_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>case H8.</b>
+</pre>
+<a name="144"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P Q A P1 Q2 P3 Q3 C
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H9 : bisim_up_to context_t P3 Q3
+H10 : at C P3 P1
+H11 : at C Q3 Q2
+============================
+ bisim_up_to refl_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>apply cs_lemma to H10 H11 H9.</b>
+</pre>
+<a name="145"></a>
+<pre class="code">
+Subgoal 1.2.2:
+
+Variables: P Q A P1 Q2 P3 Q3 C
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one P A P1
+H7 : one Q A Q2
+H9 : bisim_up_to context_t P3 Q3
+H10 : at C P3 P1
+H11 : at C Q3 Q2
+H12 : bisim_up_to context_t P1 Q2
+============================
+ bisim_up_to refl_t P1 Q2 +
+
+Subgoal 2 is:
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>backchain CH.</b>
+</pre>
+<a name="146"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P Q
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+============================
+ forall A Q1, one Q A Q1 ->
+   (exists P1, one P A P1 /\
+        (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
+
+context_sound < <b>intros.</b>
+</pre>
+<a name="147"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P Q A Q1
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+============================
+ exists P1, one P A P1 /\
+   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
+
+context_sound < <b>apply H5 to H6.</b>
+</pre>
+<a name="148"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists P1, one P A P1 /\
+   (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +)
+
+context_sound < <b>witness P2.</b>
+</pre>
+<a name="149"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ one P A P2 /\
+   (exists P1 Q2, refl_t P2 P1 Q1 Q2 /\ bisim_up_to refl_t P1 Q2 +)
+
+context_sound < <b>split.</b>
+</pre>
+<a name="150"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ one P A P2
+
+Subgoal 2.2 is:
+ exists P1 Q2, refl_t P2 P1 Q1 Q2 /\ bisim_up_to refl_t P1 Q2 +
+
+context_sound < <b>search.</b>
+</pre>
+<a name="151"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists P1 Q2, refl_t P2 P1 Q1 Q2 /\ bisim_up_to refl_t P1 Q2 +
+
+context_sound < <b>witness P2.</b>
+</pre>
+<a name="152"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ exists Q2, refl_t P2 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +
+
+context_sound < <b>witness Q1.</b>
+</pre>
+<a name="153"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ refl_t P2 P2 Q1 Q1 /\ bisim_up_to refl_t P2 Q1 +
+
+context_sound < <b>split.</b>
+</pre>
+<a name="154"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ refl_t P2 P2 Q1 Q1
+
+Subgoal 2.2.2 is:
+ bisim_up_to refl_t P2 Q1 +
+
+context_sound < <b>search.</b>
+</pre>
+<a name="155"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P Q A Q1 P2 P3 Q3
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H8 : context_t P2 P3 Q1 Q3
+H9 : bisim_up_to context_t P3 Q3
+============================
+ bisim_up_to refl_t P2 Q1 +
+
+context_sound < <b>case H8.</b>
+</pre>
+<a name="156"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P Q A Q1 P2 P3 Q3 C
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H9 : bisim_up_to context_t P3 Q3
+H10 : at C P3 P2
+H11 : at C Q3 Q1
+============================
+ bisim_up_to refl_t P2 Q1 +
+
+context_sound < <b>apply cs_lemma to H10 H11 H9.</b>
+</pre>
+<a name="157"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: P Q A Q1 P2 P3 Q3 C
+cs_lemma : forall P1 P2 C Q1 Q2, at C P1 Q1 -> at C P2 Q2 ->
+             bisim_up_to context_t P1 P2 -> bisim_up_to context_t Q1 Q2
+CH : forall P Q, bisim_up_to context_t P Q -> bisim_up_to refl_t P Q +
+H4 : forall A P2, one P A P2 ->
+       (exists Q2, one Q A Q2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H5 : forall A Q2, one Q A Q2 ->
+       (exists P2, one P A P2 /\
+            (exists P3 Q3, context_t P2 P3 Q2 Q3 /\
+                 bisim_up_to context_t P3 Q3))
+H6 : one Q A Q1
+H7 : one P A P2
+H9 : bisim_up_to context_t P3 Q3
+H10 : at C P3 P2
+H11 : at C Q3 Q1
+H12 : bisim_up_to context_t P2 Q1
+============================
+ bisim_up_to refl_t P2 Q1 +
+
+context_sound < <b>backchain CH.</b>
+Proof completed.
+</pre>
+<a name="158"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>

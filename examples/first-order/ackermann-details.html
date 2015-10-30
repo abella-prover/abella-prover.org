@@ -19,24 +19,28 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.1-dev
+Welcome to Abella 2.0.4-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind nat type.</b>
+
 </pre>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Type z nat.</b>
+
 </pre>
 <a name="3"></a>
 <pre class="code">
 Abella < <b>Type s nat -> nat.</b>
+
 </pre>
 <a name="4"></a>
 <pre class="code">
 Abella < <b>Define nat : nat -> prop by 
 nat z;
 nat (s X) := nat X.</b>
+
 </pre>
 <a name="5"></a>
 <pre class="code">
@@ -44,66 +48,65 @@ Abella < <b>Define ack : nat -> nat -> nat -> prop by
 ack z N (s N);
 ack (s M) z R := ack M (s z) R;
 ack (s M) (s N) R := exists R', ack (s M) N R' /\ ack M R' R.</b>
+
 </pre>
 <a name="6"></a>
 <pre class="code">
 Abella < <b>Theorem ack_total : 
 forall M N, nat M -> nat N -> (exists R, nat R /\ ack M N R).</b>
+
 </pre>
 <a name="7"></a>
-<pre>
+<pre class="code">
 
-
-  ============================
-   forall M N, nat M -> nat N -> (exists R, nat R /\ ack M N R)
+============================
+ forall M N, nat M -> nat N -> (exists R, nat R /\ ack M N R)
 
 ack_total < <b>induction on 1.</b>
 </pre>
 <a name="8"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  ============================
-   forall M N, nat M @ -> nat N -> (exists R, nat R /\ ack M N R)
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+============================
+ forall M N, nat M @ -> nat N -> (exists R, nat R /\ ack M N R)
 
 ack_total < <b>induction on 2.</b>
 </pre>
 <a name="9"></a>
-<pre>
+<pre class="code">
 
-
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  ============================
-   forall M N, nat M @ -> nat N @@ -> (exists R, nat R /\ ack M N R)
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+============================
+ forall M N, nat M @ -> nat N @@ -> (exists R, nat R /\ ack M N R)
 
 ack_total < <b>intros.</b>
 </pre>
 <a name="10"></a>
-<pre>
+<pre class="code">
 
-  Variables: M, N
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat M @
-  H2 : nat N @@
-  ============================
-   exists R, nat R /\ ack M N R
+Variables: M N
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat M @
+H2 : nat N @@
+============================
+ exists R, nat R /\ ack M N R
 
 ack_total < <b>case H1 (keep).</b>
 </pre>
 <a name="11"></a>
-<pre>
+<pre class="code">
 Subgoal 1:
 
-  Variables: M, N
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat z @
-  H2 : nat N @@
-  ============================
-   exists R, nat R /\ ack z N R
+Variables: N
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat z @
+H2 : nat N @@
+============================
+ exists R, nat R /\ ack z N R
 
 Subgoal 2 is:
  exists R, nat R /\ ack (s X) N R
@@ -111,31 +114,31 @@ Subgoal 2 is:
 ack_total < <b>search.</b>
 </pre>
 <a name="12"></a>
-<pre>
+<pre class="code">
 Subgoal 2:
 
-  Variables: M, N, X
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H2 : nat N @@
-  H3 : nat X *
-  ============================
-   exists R, nat R /\ ack (s X) N R
+Variables: N X
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H2 : nat N @@
+H3 : nat X *
+============================
+ exists R, nat R /\ ack (s X) N R
 
 ack_total < <b>case H2.</b>
 </pre>
 <a name="13"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: M, N, X
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H3 : nat X *
-  ============================
-   exists R, nat R /\ ack (s X) z R
+Variables: X
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H3 : nat X *
+============================
+ exists R, nat R /\ ack (s X) z R
 
 Subgoal 2.2 is:
  exists R, nat R /\ ack (s X) (s X1) R
@@ -143,18 +146,18 @@ Subgoal 2.2 is:
 ack_total < <b>apply IH to H3 _ with N = s z.</b>
 </pre>
 <a name="14"></a>
-<pre>
+<pre class="code">
 Subgoal 2.1:
 
-  Variables: M, N, X, R
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H3 : nat X *
-  H4 : nat R
-  H5 : ack X (s z) R
-  ============================
-   exists R, nat R /\ ack (s X) z R
+Variables: X R
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H3 : nat X *
+H4 : nat R
+H5 : ack X (s z) R
+============================
+ exists R, nat R /\ ack (s X) z R
 
 Subgoal 2.2 is:
  exists R, nat R /\ ack (s X) (s X1) R
@@ -162,60 +165,60 @@ Subgoal 2.2 is:
 ack_total < <b>search.</b>
 </pre>
 <a name="15"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: M, N, X, X1
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H3 : nat X *
-  H4 : nat X1 **
-  ============================
-   exists R, nat R /\ ack (s X) (s X1) R
+Variables: X X1
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H3 : nat X *
+H4 : nat X1 **
+============================
+ exists R, nat R /\ ack (s X) (s X1) R
 
 ack_total < <b>apply IH1 to H1 H4.</b>
 </pre>
 <a name="16"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: M, N, X, X1, R
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H3 : nat X *
-  H4 : nat X1 **
-  H5 : nat R
-  H6 : ack (s X) X1 R
-  ============================
-   exists R, nat R /\ ack (s X) (s X1) R
+Variables: X X1 R
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H3 : nat X *
+H4 : nat X1 **
+H5 : nat R
+H6 : ack (s X) X1 R
+============================
+ exists R, nat R /\ ack (s X) (s X1) R
 
 ack_total < <b>apply IH to H3 H5.</b>
 </pre>
 <a name="17"></a>
-<pre>
+<pre class="code">
 Subgoal 2.2:
 
-  Variables: M, N, X, X1, R, R1
-  IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
-  IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
-  H1 : nat (s X) @
-  H3 : nat X *
-  H4 : nat X1 **
-  H5 : nat R
-  H6 : ack (s X) X1 R
-  H7 : nat R1
-  H8 : ack X R R1
-  ============================
-   exists R, nat R /\ ack (s X) (s X1) R
+Variables: X X1 R R1
+IH : forall M N, nat M * -> nat N -> (exists R, nat R /\ ack M N R)
+IH1 : forall M N, nat M @ -> nat N ** -> (exists R, nat R /\ ack M N R)
+H1 : nat (s X) @
+H3 : nat X *
+H4 : nat X1 **
+H5 : nat R
+H6 : ack (s X) X1 R
+H7 : nat R1
+H8 : ack X R R1
+============================
+ exists R, nat R /\ ack (s X) (s X1) R
 
 ack_total < <b>search.</b>
 Proof completed.
 </pre>
 <a name="18"></a>
 <pre class="code">
-Abella < Goodbye.
+Abella < 
 </pre>
 </div>
 
