@@ -1469,63 +1469,84 @@ development <code>Base</code>:
 
 <div class="section">
 <a name="emacs"></a>
-<h1>Emacs Support</h1>
+<h1>Emacs Support (ProofGeneral)</h1>
 <p>
-The distribution of Abella includes Emacs modes for mod and thm files.
-You can load these by putting the following into your .emacs file.
+Currently there is a
+<a href="https://github.com/abella-prover/PG">fork of ProofGeneral</a>
+which supports Abella.  To get it working, you need to make sure that
+you have no other versions of ProofGeneral installed (conflicts may
+occur and the commands will not work properly for Abella files) and
+checkout the <code>abella</code> branch of this repository.
 
 <pre>
-(load "/path/to/abella/emacs/lprolog.el")
-(load "/path/to/abella/emacs/abella.el")
+git clone https://github.com/abella-prover/PG
+cd PG
+git checkout abella
 </pre>
 
-Where <code>/path/to/abella</code> is replaced with the actual
-location you have installed Abella.
-</p>
+It is advised to run <code>git pull</code> every now and then to keep it updated.
+
+Then edit your .emacs file and add the following:
+
+<pre>
+(defconst proof-site-file
+  (expand-file-name "path/to/PG/generic/proof-site.el"))
+(defconst lprolog-file
+  (expand-file-name "path/to/abella/emacs/lprolog.el"))
+
+(defmacro delete-mappings (alist key)
+  `(while (assoc ,key ,alist)
+     (setq ,alist (delq (assoc ,key ,alist) ,alist))))
+
+(when (file-exists-p proof-site-file)
+  (delete-mappings auto-mode-alist "\\.thm\\'")
+  (setq proof-splash-enable nil)
+  (setq proof-three-window-enable nil)
+  (setq proof-three-window-mode-policy 'horizontal)
+  (setq proof-output-tooltips nil)
+  (load-file proof-site-file))
+
+(when (file-exists-p lprolog-file)
+  (autoload 'lprolog-mode lprolog-file "Major mode for Lambda Prolog" t)
+  (delete-mappings auto-mode-alist "\\.mod\\'")
+  (add-to-list 'auto-mode-alist '("\\.mod\\'" . lprolog-mode))
+  (add-to-list 'auto-mode-alist '("\\.sig\\'" . lprolog-mode)))
+</pre>
+
+The paths on the second and fourth lines should be modified accordingly.
 
 <div class="section">
 <h2>Proof navigation</h2>
 <p>
-The mode for editing thm files provides some basic proof navigation
-support. To use this, type <code>M-x shell</code> and run Abella in
-that shell. At this point it is recommended to do <code>C-x 2</code>
-which splits the emacs buffer into two separate buffers. You can
-toggle between them with <code>C-x C-o</code>. My preference is to put
-the thm file in the top buffer and the shell in the bottom buffer. Now
-back in the thm file there are three proof navigation commands.
+Once everything is set up, you can open emacs and load a <code>thm</code>
+file. Note that ProofGeneral will not work on emacs in the terminal (i.e.,
+do not execute emacs with the <code>-nw</code> option). If you can see
+the toolbar, you will notice that the ProofGeneral toolbar will appear.
+
+When a command is executed, you will see the result in a new buffer on
+the right side of the screen.
+
+Some basic commands for proof navigation are:
 
 <ul>
 
 <li>
-<code>C-c C-n</code> will send the <em>next</em> proof step
-to the <code>*shell*</code> buffer.
+<code>C-c C-RET</code> will execute the proof script until the cursor.
 </li>
 
 <li>
-<code>C-c
-C-p</code> will go back to the <em>previous</em> proof step.
-This command is designed only for within proofs since top-level
-commands cannot currently be un-done.
+<code>C-c C-n</code> will execute the next proof step.
 </li>
 
-<li><code>C-c C-e</code> will <em>execute</em> the previously written
-proof step. This is useful while writing proofs.
+<li>
+<code>C-c C-u</code> will undo the last proof step.
 </li>
+
 </ul>
 
-Since this may be confusing, I've created a <a
-href="screencasts/emacs.html">screencast</a> which demonstrates how I
-use these proof navigation commands.
-</p>
+For more information on ProofGeneral, please check 
+<a href="http://proofgeneral.inf.ed.ac.uk/userman">the user manual</a>.
 
-<p>
-Note that the two emacs buffers are not actually linked in any way.
-Thus, for example, if you want to execute many Abella commands at once
-you can just copy them from the file buffer and paste them into the
-shell buffer. It is only important that when you use the
-<code>C-c</code> commands that the cursor position in the file buffer
-is consistent with the current state of Abella in the shell buffer.
-</p>
 </div>
 
 </div>
