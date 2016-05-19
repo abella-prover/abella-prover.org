@@ -13,7 +13,7 @@
 
 <div id="logo-small">
 <a href="index.html">
-<img src="images/logo-small.png"/>
+<img src="images/logo-small.png" alt="Abella logo"/>
 </a>
 </div>
 
@@ -90,7 +90,7 @@ Names for objects such as theorems, variables, and constants can be
 any character string which begins with a letter or one of the
 symbols <code>-/^><=`'?$~</code>, followed by any other letters,
 symbols from the previous list, digits, or symbols
-from <code>_*@+#~!&</code>.
+from <code>_*@+#~!&amp;</code>.
 </p>
 
 <div class="section">
@@ -391,6 +391,7 @@ See <a href="#subordination">subordination</a> for more information.
 <h1>Tactics</h1>
 <p>
 There are three categories of tactics.
+</p>
 
 <ul>
 
@@ -402,7 +403,6 @@ There are three categories of tactics.
 tactics</a></li>
 
 </ul>
-</p>
 
 <div class="section">
 <a name="general-tactics"></a>
@@ -849,6 +849,7 @@ terms and formulas in these logics must be well-typed.
 <h2>Built-in types</h2>
 <p>
 Abella has the following built-in types:
+</p>
 <ul>
 <li><code>o</code> - the type of formulas in the specification
   logic</li>
@@ -856,7 +857,7 @@ Abella has the following built-in types:
   formulas</li>
 <li><code>prop</code> - the type of formulas in the reasoning
   logic</li>
-</p>
+</ul>
 </div>
 
 <div class="section">
@@ -866,6 +867,7 @@ When Abella reads in a specification it expects to find a signature
 file which describes the types and constants used in the
 specification. For example, consider the following signature for a
 specification called "eval":
+</p>
 
 <pre>
 sig eval.
@@ -882,6 +884,7 @@ type    of                     tm -> ty -> o.
 type    eval, step, nstep      tm -> tm -> o.
 </pre>
 
+<p>
 This signature introduces two types called <code>tm</code>
 and <code>ty</code>. It also introduces the
 constructors <code>app</code>, <code>abs</code>, <code>i</code>,
@@ -894,9 +897,8 @@ specified).
 </p>
 
 <p>
-<br/>
 <i>Restrictions</i>
-<br>
+<br />
 Types in the specification logic are not allowed to mention
 <code>olist</code> or <code>prop</code>. Specification logic
 quantification over type <code>o</code> is not allowed. Polymorphism
@@ -915,6 +917,7 @@ variable <code>x</code> has type <code>t</code>.
 All specification logic types and constants are implicitly mapped to
 corresponding (and identically named) types and constants in the
 reasoning logic. Additional types and constants as shown below.
+</p>
 
 <pre>
 Kind    nat    type.
@@ -923,20 +926,21 @@ Type    z      nat.
 Type    s      nat -> nat.
 </pre>
 
+<p>
 The types for defined predicates are specified when such predicates
 are defined. For example,
+</p>
 
 <pre>
 Define lt : nat -> nat -> prop by
   lt z (s N);
   lt (s M) (s N) := lt M N.
 </pre>
-</p>
+
 
 <p>
-<br/>
 <i>Restrictions</i>
-<br>
+<br />
 Quantification over type <code>prop</code> is not allowed.
 Polymorphism is not allowed in Abella. Thus all types must be fully
 inferred. In order to achieve this, it may be necessary to introduce
@@ -1046,6 +1050,7 @@ able to add more predicates and definitions.
 In addition to the treatment of the specification logic via <code>{_
     |- _}</code>, Abella assumes the following predefined constants
 and definitions.
+</p>
 <pre>
 Type   nil     olist.
 Type   ::      o -> olist -> olist.
@@ -1054,6 +1059,7 @@ Define member : o -> olist -> prop by
   member A (A :: L);
   member A (B :: L) := member A L.
 </pre>
+<p>
 Note that <code>::</code> is treated as infix.
 </p>
 </div>
@@ -1067,6 +1073,7 @@ and <code>@</code> (equal). They are used to track the size of
 inductive arguments rather than using explicit numeric values. For
 example, suppose we apply <code>induction on 1.</code> when trying to
 prove the following subject reduction theorem,
+</p>
 
 <pre>
 
@@ -1074,7 +1081,7 @@ prove the following subject reduction theorem,
   forall E V T, {eval E V} -> {of E T} -> {of V T}
 </pre>
 
-We will get the following proof state.
+<p>We will get the following proof state.</p>
 
 <pre>
   IH : forall E V T, {eval E V}* -> {of E T} -> {of V T}
@@ -1082,6 +1089,7 @@ We will get the following proof state.
    forall E V T, {eval E V}@ -> {of E T} -> {of V T}
 </pre>
 
+<p>
 Here we have an inductive hypothesis where the inductive argument is
 flagged with <code>*</code>. This means that we can only apply that
 hypothesis to an argument which also has the <code>*</code>.
@@ -1100,6 +1108,7 @@ eligible for use with the inductive hypothesis.
 Abella supports nested induction through repeated calls to the
 <code>induction</code> tactic. For example, suppose we have a goal
 such as
+</p>
 
 <blockquote>
 <code>
@@ -1107,8 +1116,10 @@ outer -> inner -> result.
 </code>
 </blockquote>
 
+<p>
 If we apply <code>induction on 1</code> followed by <code>induction
 on 2</code> we get the following proof state.
+</p>
 
 <pre>
   IH : outer * -> inner -> result
@@ -1117,6 +1128,7 @@ on 2</code> we get the following proof state.
    outer @ -> inner @@ -> result
 </pre>
 
+<p>
 The outer inductive hypothesis <code>IH</code> can be used like normal.
 It ignores the flags <code>@@</code> and <code>**</code>. The inner
 inductive hypothesis <code>IH'</code> checks two things when applied:
@@ -1159,15 +1171,18 @@ best understood through an example.
 <p>
 Suppose we want to reason about a labeled transition system. As a
 simple example, we will take the following system.
+</p>
 
 <blockquote>
-<img src="images/ltrans.png" />
+<img src="images/ltrans.png" alt="labeled transition system" />
 </blockquote>
 
+<p>
 We assume that the rules of this system are encoded in a predicate
 <code>step P A Q</code> which holds if we can move from
 state <code>P</code> to state <code>Q</code> via the
 label <code>A</code>. The exact definition is therefore,
+</p>
 
 <pre>
 Define step p0 a p0.
@@ -1175,20 +1190,24 @@ Define step q0 a q0.
 Define step q0 b q1.
 </pre>
 
+<p>
 Suppose we want to show that the state <code>q0</code> can simulate,
 or always act like, the state <code>p0</code>. We formalize this
 notion in the following co-inductive definition of <code>sim P
 Q</code>, which holds when <code>P</code> is simulated
 by <code>Q</code>.
+</p>
 
 <pre>
 CoDefine sim P Q :=
   forall A P', step P A P' -> exists Q', step Q A Q' /\ sim P' Q'.
 </pre>
 
+<p>
 Now when we are conducting a proof of <code>sim p0 q0</code> we will
 begin by applying the <code>coinduction</code> tactic which results in
 the following proof state.
+</p>
 
 <pre>
   CH : sim p0 q0 +
@@ -1196,12 +1215,14 @@ the following proof state.
    sim p0 q0 #
 </pre>
 
+<p>
 The restriction <code>+</code> on <code>CH</code> means that it cannot
 match any goal unless that goal also has the <code>+</code>
 restriction. The <code>#</code> on the goal indicates that when this
 goal is unfolded, the recursive calls will be tagged
 with <code>+</code>. The next step in the proof is to apply
 the <code>unfold</code> tactic which results in the following.
+</p>
 
 <pre>
   CH : sim p0 q0 +
@@ -1209,6 +1230,7 @@ the <code>unfold</code> tactic which results in the following.
    forall A P', step p0 A P' -> exists Q', step q0 A Q' /\ sim P' Q' +
 </pre>
 
+<p>
 Notice that the recursive call <code>sim P' Q'</code> is tagged
 with <code>+</code> thus it will be able to match with <code>CH</code>
 when the <code>search</code> tactic is eventually used. Before we can
@@ -1217,6 +1239,7 @@ the <code>intros</code> tactic and then consider all possible cases
 for <code>step p0 A P'</code>. The only case is when <code>A</code>
 is <code>a</code> and <code>P'</code> is <code>p0</code>, which
 results in the following state.
+</p>
 
 <pre>
   Variables: A, P'
@@ -1225,15 +1248,18 @@ results in the following state.
    exists Q', step q0 a Q' /\ sim p0 Q' +
 </pre>
 
+<p>
 The proof is then finished by the <code>search</code> tactic which
 will pick <code>Q'</code> as <code>q0</code> and deduce
 <code>step q0 a q0</code> and <code>sim p0 q0</code>, by matching the
 latter with <code>CH</code>.
+</p>
 
 <div class="section">
 <h2>Duality with inductive restrictions</h2>
 <p>
 There is a duality between inductive and co-inductive restrictions:
+</p>
 <ul>
 <li>An
 inductively restricted hypothesis can match with one of the hypotheses
@@ -1249,7 +1275,6 @@ hypothesis (which arises from <code>apply</code> with a co-inductive
 hypothesis) can only match a corresponding goal and is otherwise inert.
 </li>
 </ul>
-</p>
 </div>
 </div>
 
@@ -1259,6 +1284,7 @@ hypothesis) can only match a corresponding goal and is otherwise inert.
 <p>
 To use a lemma, prove it as a theorem and then refer to it by name in
 another proof using the <code>apply</code> tactic. For example,
+</p>
 <pre>
 Theorem my_lemma : ...
 ...
@@ -1268,17 +1294,17 @@ Theorem my_theorem : ...
 apply my_lemma to H3 H5.
 ...
 </pre>
-</p>
 </div>
 
 
 <div class="section">
 <a name="mutual-induction"></a>
 <h1>Mutual Induction</h1>
-<p>
 
+<p>
 Abella supports mutual induction on specification judgments. We will
 illustrate this ability using the following specification.
+</p>
 
 <pre>
 nat z.
@@ -1289,12 +1315,14 @@ even (s X) :- odd X.
 odd (s X) :- even X.
 </pre>
 
+<p>
 Suppose we want to show that everything recognized
 by <code>even</code> is also recognized by <code>nat</code>, and
 similarly for <code>odd</code>. Although, in this case, these results
 could be established independently, we will use mutual induction. In
 order to do this, we state a single theorem which is the conjunction
 of the mutually recursive theorems we want to prove.
+</p>
 
 <pre>
 Theorem even_odd_nat :
@@ -1302,11 +1330,13 @@ Theorem even_odd_nat :
   (forall X, {odd X} -> {nat X}).
 </pre>
 
+<p>
 We can now call the <code>induction</code> tactic and pass it an
 induction argument for each of the mutually recursive theorems. In
 this case we have two such theorems and we want to induct on the first
 argument in each. Thus we call <code>induction on 1 1.</code> which
 results in the following.
+</p>
 
 <pre>
   IH : forall X, {even X}* -> {nat X}
@@ -1315,11 +1345,13 @@ results in the following.
    (forall X, {even X}@ -> {nat X}) /\ (forall X, {odd X}@ -> {nat X})
 </pre>
 
+<p>
 We now have an inductive hypothesis for each of the mutually recursive
 theorems, and these inductive hypotheses share the same inductive
 restriction. At this point we can call <code>split</code> and proceed
 to handle each of the two sub-theorems individually. The complete
 proof script is as follows.
+</p>
 
 <pre>
 induction on 1 1. split.
@@ -1330,50 +1362,56 @@ induction on 1 1. split.
     apply IH to H2. search.
 </pre>
 
+<p>
 Finally we may find it useful to state our theorems independently so
 they are easier to apply as lemmas. Thus we may state
+</p>
 
 <pre>
 Theorem even_nat : forall X, {even X} -> {nat X}.
 </pre>
 
+<p>
 And we can prove this by using <code>apply</code> with the mutual
 induction version. We apply it to no arguments, which has the effect
 of just introducing the lemma as a hypothesis. Thus the full proof is
 as follows.
+</p>
 
 <pre>
 apply even_odd_nat. search.
 </pre>
 
+<p>
 Alternatively, we can use the <a href="#split">Split</a> command to
 directly split the theorem.
+</p>
 
 <pre>
 Split even_odd_nat as even_nat, odd_nat.
 </pre>
 
+<p>
 This automatically creates and proves the following
 theorems:
+</p>
 
 <pre>
 Theorem even_nat : forall X, {even X} -> {nat X}.
 Theorem odd_nat : forall X, {odd X} -> {nat X}.
 </pre>
-
-</p>
 </div>
 
 <div class="section">
 <a name="unknowns"></a>
 <h1>Apply with Unknowns</h1>
 <p>
-
 The <code>apply</code> tactic allows you to leave some arguments
 unspecified by replacing them with an underscore. For example,
 in <a href="examples/lambda-calculus/type-uniq/type-uniq.html">this
 type uniqueness development</a> we at one point have roughly the proof
 state,
+</p>
 
 <pre>
   Variables: L, E, T1, T2, U, R, T, U'
@@ -1386,6 +1424,7 @@ state,
    arrow T U = arrow T U'
 </pre>
 
+<p>
 Now we would like to apply <code>IH</code> to <code>H4</code> and
 <code>H5</code>, but for this we would need a hypothesis which says
 <code>ctx (of n1 T :: L)</code>. We could assert this hypothesis and
@@ -1438,33 +1477,39 @@ It is possible to compile Abella theorem files so that they may be
 imported by other theorem files. This allows some degree of modularity
 and prevents possibly expensive re-checking of theorems in a large
 development.
+</p>
 
+<p>
 Theorem files can be compiled using the -c command line flag as
 follows.
+</p>
 <pre>
 % abella foo.thm -c foo.thc -o foo.out
 </pre>
+<p>
 This compiles the definitions and theorems in foo.thm into the file
 foo.thc, while redirecting the normal Abella output foo.out. This thc
 file can now be included in another theorem file
 using <code>Import</code> command as follows.
+</p>
 <pre>
 Import "foo".
 </pre>
 
+<p>
 <b>Restrictions:</b>
+<br />
 In order for development <code>Ext</code> to import
 development <code>Base</code>:
+</p>
 <ul>
 <li><code>Ext</code>'s specification must be a superset of <code>Base</code>'s
   specification and
 </li>
 <li>If a predicate (ie. a constant whose target type
   is <code>o</code>) is declared in <code>Base</code>, its clauses
-  cannot be extended in <code>Ext</code>'s specification.
+  cannot be extended in <code>Ext</code>'s specification.</li>
 </ul>
-</p>
-
 </div>
 
 <div class="section">
@@ -1477,6 +1522,7 @@ which supports Abella.  To get it working, you need to make sure that
 you have no other versions of ProofGeneral installed (conflicts may
 occur and the commands will not work properly for Abella files) and
 checkout the <code>abella</code> branch of this repository.
+</p>
 
 <pre>
 git clone https://github.com/abella-prover/PG
@@ -1484,9 +1530,11 @@ cd PG
 git checkout abella
 </pre>
 
+<p>
 It is advised to run <code>git pull</code> every now and then to keep it updated.
-
-Then edit your .emacs file and add the following:
+Then, edit your <code>~/.emacs</code>
+or <code>~/.emacs.d/init.el</code> file and add the following:
+</p>
 
 <pre>
 (defconst proof-site-file
@@ -1513,39 +1561,48 @@ Then edit your .emacs file and add the following:
   (add-to-list 'auto-mode-alist '("\\.sig\\'" . lprolog-mode)))
 </pre>
 
+<p>
 The paths on the second and fourth lines should be modified accordingly.
+</p>
 
 <div class="section">
 <h2>Proof navigation</h2>
 <p>
-Once everything is set up, you can open emacs and load a <code>thm</code>
-file. Note that ProofGeneral will not work on emacs in the terminal (i.e.,
-do not execute emacs with the <code>-nw</code> option). If you can see
-the toolbar, you will notice that the ProofGeneral toolbar will appear.
+Once everything is set up, you can open Emacs and load a <code>thm</code>
+file. Note that ProofGeneral will not work on Emacs in terminal mode (i.e.,
+do not execute Emacs with the <code>-nw</code> option) because the key
+binding <code>C-RET</code> is not recognized by most terminal emulators.
+</p>
 
+<p>
 When a command is executed, you will see the result in a new buffer on
 the right side of the screen.
+</p>
 
+<p>
 Some basic commands for proof navigation are:
+</p>
 
 <ul>
 
 <li>
-<code>C-c C-RET</code> will execute the proof script until the cursor.
+<code>C-c C-RET</code> Execute the proof script up to point (the cursor).
 </li>
 
 <li>
-<code>C-c C-n</code> will execute the next proof step.
+<code>C-c C-n</code> Execute the next command after the compiled region.
 </li>
 
 <li>
-<code>C-c C-u</code> will undo the last proof step.
+<code>C-c C-u</code> Undo the last command.
 </li>
 
 </ul>
 
-For more information on ProofGeneral, please check 
-<a href="http://proofgeneral.inf.ed.ac.uk/userman">the user manual</a>.
+<p>
+For more information on ProofGeneral, please check
+<a href="http://proofgeneral.inf.ed.ac.uk/userman">its user manual</a>.
+</p>
 
 </div>
 

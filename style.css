@@ -83,10 +83,12 @@ section p,
     margin: 5px 0;
 }
 
+/*
 section p + p,
 .section p + p {
     text-indent: 1.5em;
 }
+*/
 
 p.noindent { text-indent: 0; margin-top: 5px; }
 
