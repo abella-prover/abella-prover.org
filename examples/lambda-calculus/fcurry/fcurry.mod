@@ -1,4 +1,4 @@
-module fcurry. %%% fcyrry.mod
+module fcurry. %%% fcurry.mod
 
 of (app M N) T :- of M (arr U T), of N U.
 of (abs R) (arr T U) :- pi x\ (of x T => of (R x) U).
