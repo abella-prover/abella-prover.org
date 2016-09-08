@@ -2,6 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>Abella: Changelog</title>
 <link href="style.css" rel="stylesheet" type="text/css" />
 <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
@@ -21,6 +22,155 @@
 <h1 id="main">Changelog</h1>
 </div>
 
+
+<div class="section">
+<h2>Version 2.0.4</h2>
+
+<p>Possibly breaking changes</p>
+<ul>
+<li>The <code>search</code> tactic has the same error handling behavior in interactive and non-interactive modes, functioning like a failed tactic in both cases if no subgoals were closed.</li>
+<li>The character <code>&amp;</code> can no longer appear inside the names of identifiers.</li>
+</ul>
+
+<p>Additions</p>
+<ul>
+<li><p>Added support for specification-level conjunction, written using <code>&amp;</code>.</p></li>
+<li><p>Added a new tactic form:</p>
+<pre><code>search with &lt;witness&gt;.</code></pre>
+<p>This tactic runs the search command with a given search witness. To see these witnesses, run any of the other search forms with:</p>
+<pre><code>Set witnesses on.</code></pre>
+<p>The witness string that is printed can then be used to replay the exact same search. There is no backtracking involved with witness strings. Hence, the replay will tend to be a lot faster.</p>
+<p>Witnesses have the following grammar:</p>
+<pre><code>witness ::= true | =
+          | left witness | right witness
+          | split(witness,witness)
+          | apply hyp
+          | intros[id1, ..., idn] witness
+          | exists[id1=term1, ..., idn=termn] witness
+          | unfold(id,n,witness1,...,witnessn)
+          | (witness)
+          | *</code></pre>
+<p>The last witness form stands for a place-holder so you can give partial witnesses to search. In fact, the default search tactic is identical to:</p>
+<pre><code>search with *.</code></pre>
+<p>Please use this feature sparingly, and only when building proofs. After you are done with the proof, delete the &quot;with&quot; statements. These witnesses will NOT be portable across different versions of Abella, as they are very particular to the &quot;search&quot; tactic implementation.</p></li>
+<li><p>Added a new tactic form for <code>backchain</code> and `assert:</p>
+<pre><code>backchain &lt;num&gt; &lt;hyp_or_lemma&gt;.
+assert &lt;num&gt; &lt;formula&gt;.</code></pre>
+<p>where the <code>&lt;num&gt;</code>, which is optional, can give a depth bound to the search that is automatically attempted on generated goals. Give it a depth of 0 if you want to prevent searching. The default value is the value of the search_depth flag.</p></li>
+<li>Added a new command line flag <code>-f</code> that takes a comma-separated list of key=value pairs and initializes the flags based on them. For flags that can be set to <code>on</code>/<code>off</code>, you can just use the key and it means to set them to <code>on</code>. For example, <code>-f subgoals=off,witnesses</code> sets <code>subgoals</code> to <code>off</code> and <code>witnesses</code> to <code>on</code>.</li>
+</ul>
+
+<p>Tweaks to existing functionality</p>
+<ul>
+<li>Import declarations automatically compile if needed. An explicit Makefile is very rarely needed any more.</li>
+<li>The <code>exists</code> and <code>witness</code> tactics now take a comma-separated list of existential witnesses. Each witness can also be of the form <code>&lt;id&gt; = &lt;term&gt;</code> which selects a particular existential variable to instantiate. Without the <code>&lt;id&gt; =</code> part it always instantiates the first variables.</li>
+<li>The <code>induction</code> tactic can now traverse an arbitrary sequence of <code>forall</code>, <code>nabla</code>, and <code>-&gt;</code> connectives when finding the induction argument.</li>
+<li>The <code>search</code> tactic now does a small amount of asynchronous reasoning for newly created hypotheses (e.g., reducing pattern equations).</li>
+</ul>
+
+<p>Experimental changes (may be changed or removed in the future)</p>
+<ul>
+<li><p>Added support for (first-order) polymorphic definitions. Definitions such as the following are now accepted.</p>
+<pre><code>Define fresh : A -&gt; B -&gt; prop by
+  nabla x, fresh x M.</code></pre>
+<p>In every use of the definition, the type arguments are implicitly instantiated. The type-checking <em>for</em> such definitions is identical to taking all the unbound variable names and quantifying them on the outside. In other words, for the above definition, the behavior of type-checking is the same as if there were:</p>
+<pre><code>    Kind A,B  type
+    Define fresh : A -&gt; B -&gt; prop by
+      nabla x, fresh x M.</code></pre>
+<p>Once such a definition is type-checked, the defined symbols are added to the signature as new polymorphic constants, in a vein similar to the <code>pi</code> constant. Whenever it is used, the type arguments are implicitly instantiated based on the types of the arguments.</p></li>
+<li><p>Added support for (first-order) polymorphic theorems. A theorem such as the following is now accepted.</p>
+<pre><code>Theorem prune_arg[A] : forall E L, nabla (x:A), member (E x) L -&gt;
+   exists F, E = x\ F.</code></pre>
+<p>The <code>A</code> here is a type parameter, which must be distinct from the other basic types in scope. To use such a theorem, you <em>must</em> supply enough arguments. An example:</p>
+<pre><code>    Theorem bar : forall E G, nabla (x:tm) (y:ty),
+       member (E x y) G -&gt; exists F, E = x\ y\ F.
+    intros.
+    apply prune_arg[tm] to H1.
+    apply prune_arg[ty] to H1.
+    search.</code></pre></li>
+<li><p>Added limited support for predicate instantiation during import. The form</p>
+<pre><code>Import &quot;thmfile&quot; with id1 := defid1, ..., idn := defidn.</code></pre>
+<p>performs an import as usual, but any undefined predicates id in &quot;thmfile&quot; are instantiated with defined predicates defid. An undefined predicate is declared as usual with:</p>
+<pre><code>    Type id  T1 -&gt; T2 -&gt; ... -&gt; Tn -&gt; prop.</code></pre>
+<p>It remains illegal to import a thm with undefined predicates without giving the predicate instantiations.</p></li>
+<li><p>Added a new &quot;extrusive&quot; tactic form <code>clear -&gt;</code> that can be used to do the opposite of the <code>intros</code> tactic, i.e., <code>intros H1 ... Hn</code> is opposite to <code>clear -&gt; Hn ... H1</code>. Variables can also be extruded in this form and they universally close the goal with respect to the variable if the variable is not free in any hypothesis.</p></li>
+<li><p>Extended the <code>subgoals</code> flag to take a <em>subgoal specification string</em> argument that can be used to fine tune the subgoals to display. As an example, the invocation:</p>
+<pre><code>Set subgoals &quot;0[0];1[2];2[3];3;4[10]&quot;.</code></pre>
+<p>instructs Abella to show 0 additinoal subgoals at depth 0, max 2 additional subgoals at 1, max 3 additional subgoals at depth 2, all subgoals at depth 3, and max 10 subgoals at depth 4. The depths need not be given in order, and any omitted depths display the default number of subgoals. The default flags <code>on</code>, <code>off</code>, and an <em>unquoted</em> number have the following meanings:</p>
+<ul>
+<li><code>on</code> : the same as <code>&quot;0[∞];1[∞];…&quot;</code></li>
+<li><code>off</code> : the same as <code>&quot;0[0];1[0];…&quot;</code></li>
+<li><code>n</code> : the same as <code>&quot;0[0];̣…;n-1[0];n[∞];n+1[0];…&quot;</code></li></ul>
+</ul>
+
+<p>Bugfixes</p>
+<ul>
+<li>Annotation mode (-a) output is no longer printed in other modes</li>
+<li>Import statements can now be undone as well from ProofGeneral</li>
+<li>Importing .thcs made with a different Abella binary will now print an error message instead of causing a segmentation fault (#39)</li>
+<li>Importing from different directories now works correctly</li>
+<li>Multiple occurrences of a single variable in a binding list is now correctly rejected. (#56)</li>
+<li>Better error messages. (#64)</li>
+</ul>
+
+<p>New examples</p>
+<ul>
+<li>Bisimulations relating the π-calculus and the λ-calculus (contributed by Horace Blanc and Beniamino Accattoli)</li>
+<li>Type-preservation of Curry-style System F (contributed by Ahn Ki Yung)</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Version 2.0.3</h2>
+
+<p>Potentially breaking changes</p>
+<ul>
+<li>Removed <code>~</code> and <code>!=</code> notations (undocumented introduction in 2.0.2). A general notation support may be considered for Abella in the future. Meanwhile, we prefer simplicity and predictability.</li>
+</ul>
+
+<p>Additions</p>
+<ul>
+<li>The unfold tactic has an optional argument, &quot;(all)&quot;, that produces a disjunction of all solutions to the matching problem of the conclusion of a subgoal and its relevant (co)definition. The disjuncts are produced in the same order as the clauses, but if a single clause has multiple ways to match the head then the disjuncts for that clause are in some unspecified order (that depends on the details of the unification algorithm).</li>
+<li><p>The following tactic forms have been added:</p>
+<pre><code>apply *H to ...
+apply ... to ... *H ...
+backchain *H
+cut *H ...
+cut ... with *H
+inst *H with ...
+monotone *H with ...</code></pre>
+<p>In each case, if H names a hypothesis, then the tactic consumes the hypothesis (like the clear tactic). Note that if hypothesis hints are given, then these hints are used <em>after</em> consuming the hypotheses. Thus, if one writes:</p>
+<pre><code>  foo : apply lem to *foo bar baz.</code></pre>
+<p>then the hypothesis named foo is effectively <em>replaced</em> with a new hypothesis named foo that is the result of applying the lem to the old foo and the other arguments.</p></li>
+<li>Optional semi-colon allowed before the first clause in a definition or co-definition block.</li>
+<li>Variable renaming can overwrite old variables that have already been instantiated.</li>
+<li>The <code>clear</code> tactic can also remove instantiated variables.</li>
+<li>The settable option &quot;types&quot; displays the types of variables in subgoals</li>
+</ul>
+
+<p>Internal changes</p>
+<ul>
+<li>The parser has stronger checks to enforce the lexical convention that all identifiers matching n[0-9]+ are nominal constants.</li>
+<li>Most user-visible error messages have been made a bit more precise and informative.</li>
+</ul>
+
+<p>Bugfixes</p>
+<ul>
+<li>Abella now builds on versions of OCaml between 3.12.1 and 4.01.0 (inclusive) again.</li>
+<li>Unfolding named clauses now raises clauses over the support of the goal and existentially closes over residual logic variables (soundness bug introduced in 2.0.2) (#33)</li>
+<li>Unfolding named clauses whose heads do not unify with goal now causes failure instead of success. (soundness bug introduced in 2.0.2)</li>
+<li>Web-page generating scripts properly handle proof syntax changes since version 1.3.5.</li>
+<li>The toplevel now prints tactics using the same syntax as in proof scripts.</li>
+<li>The apply tactic can now apply lemmas that do not have a forall prefix.</li>
+<li>In the Query command, fresh logic variables are allocated to be independent of existing capitalized identifiers in the query. This prevents the generated solutions from appearing to be non-idempotent.</li>
+</ul>
+
+<p>New examples</p>
+<ul>
+<li>The process calculus examples have been re-organized. There are now two medium sized new developments of the meta-theory of bisimulation-up-to techniques for CCS and the pi-calculus.</li>
+</ul>
+
+</div>
 
 <div class="section">
 <h2>Version 2.0.2</h2>
