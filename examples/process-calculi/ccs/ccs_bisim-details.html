@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.4-dev
+Welcome to Abella 2.0.5-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind name, action, proc type.</b>
@@ -28,7 +28,7 @@ Abella < <b>Kind name, action, proc type.</b>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Import "ccs_core".</b>
-Importing from ccs_core
+Importing from /home/kaustuv/work/abella/examples/process-calculi/ccs/./ccs_core
 Warning: Definition can be used to defeat stratification
  (higher-order argument "Tech" occurs to the left of ->)
 Warning: Definition can be used to defeat stratification
@@ -1063,7 +1063,7 @@ Subgoal 2 is:
    (exists P1, one P A P1 /\
         (exists P2 Q2, refl_t P1 P2 Q1 Q2 /\ bisim_up_to refl_t P2 Q2 +))
 
-bisim_sound_fst < <b>backchain CH.</b>
+bisim_sound_fst < <b>backchain 1 CH.</b>
 </pre>
 <a name="50"></a>
 <pre class="code">
@@ -1701,7 +1701,7 @@ Link4 : bisim_up_to refl_t Q2 Q3
 ============================
  bisim_up_to refl_t P6 Q3 +
 
-bisim_sound_fst < <b>backchain CH.</b>
+bisim_sound_fst < <b>backchain 1 CH.</b>
 Proof completed.
 </pre>
 <a name="77"></a>

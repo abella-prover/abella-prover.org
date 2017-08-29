@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.4-dev
+Welcome to Abella 2.0.5-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Specification "pic".</b>
@@ -1289,7 +1289,7 @@ H7 : {one (out n1 a null) A (P2 n1)}
 ============================
  exists Q1, {one (bang (taup (out x a null))) A Q1} /\
    inv
-     (par (nu (x\par (P2 x) (in x (y\out x y null))))
+     (par (nu (x1\par (P2 x1) (in x1 (y\out x y null))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
 
@@ -1438,7 +1438,7 @@ IH : forall P Q, inv P Q * -> simInv P Q
 ============================
  exists Q1, {one (bang (taup (out x a null))) tau Q1} /\
    inv
-     (par (nu (x\par null (out x a null)))
+     (par (nu (x1\par null (out x a null)))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
 
@@ -1455,7 +1455,7 @@ IH : forall P Q, inv P Q * -> simInv P Q
  {one (bang (taup (out x a null))) tau
     (par (out x a null) (bang (taup (out x a null))))} /\
    inv
-     (par (nu (x\par null (out x a null)))
+     (par (nu (x1\par null (out x a null)))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      (par (out x a null) (bang (taup (out x a null))))
 
@@ -1553,7 +1553,8 @@ H10 : {one (out n1 a null) (up X Y) (P2 n1)}
 ============================
  exists Q1, {one (bang (taup (out x a null))) tau Q1} /\
    inv
-     (par (par (nu (x\par (P2 x) (in x (y\out x y null)))) (nu (x\Q3 x Y)))
+     (par
+        (par (nu (x1\par (P2 x1) (in x1 (y\out x y null)))) (nu (x\Q3 x Y)))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
 
@@ -1573,8 +1574,8 @@ H11 : {oneb (out n1 a null) (dn X) (M1 n1)}
  exists Q1, {one (bang (taup (out x a null))) tau Q1} /\
    inv
      (par
-        (par (nu (x\par (P2 x) (in x (y\out x y null))))
-           (nu (x\par (M1 x Y) (in x (y\out x y null)))))
+        (par (nu (x1\par (P2 x1) (in x1 (y\out x y null))))
+           (nu (x1\par (M1 x1 Y) (in x1 (y\out x y null)))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
 
@@ -1594,7 +1595,7 @@ H11 : {oneb (in n1 (y\out x y null)) (dn X) (N n1)}
  exists Q1, {one (bang (taup (out x a null))) tau Q1} /\
    inv
      (par
-        (par (nu (x\par (P2 x) (in x (y\out x y null))))
+        (par (nu (x1\par (P2 x1) (in x1 (y\out x y null))))
            (nu (x\par (out x a null) (N x Y))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
@@ -1635,7 +1636,7 @@ H11 : {oneb (out n1 a null) (dn X) (M1 n1)}
    inv
      (par
         (par (nu (x\par (out x a null) (Q4 x)))
-           (nu (x\par (M1 x Y) (in x (y\out x y null)))))
+           (nu (x1\par (M1 x1 Y) (in x1 (y\out x y null)))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q1
 
@@ -1734,7 +1735,7 @@ H9 : {oneb (out n1 a null) (up X) (M1 n1)}
    inv
      (par
         (nu
-           (z\par (nu (x\par (M1 x z) (in x (y\out x y null))))
+           (z\par (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))
                 (nu (x\Q2 x z))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q3
@@ -1756,8 +1757,8 @@ H10 : {oneb (out n1 a null) (dn X) (M2 n1)}
    inv
      (par
         (nu
-           (z\par (nu (x\par (M1 x z) (in x (y\out x y null))))
-                (nu (x\par (M2 x z) (in x (y\out x y null))))))
+           (z\par (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))
+                (nu (x1\par (M2 x1 z) (in x1 (y\out x y null))))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q3
 
@@ -1778,7 +1779,7 @@ H10 : {oneb (in n1 (y\out x y null)) (dn X) (N1 n1)}
    inv
      (par
         (nu
-           (z\par (nu (x\par (M1 x z) (in x (y\out x y null))))
+           (z\par (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))
                 (nu (x\par (out x a null) (N1 x z)))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q3
@@ -1820,7 +1821,7 @@ H10 : {oneb (out n1 a null) (dn X) (M1 n1)}
      (par
         (nu
            (z\par (nu (x\par (out x a null) (N1 x z)))
-                (nu (x\par (M1 x z) (in x (y\out x y null))))))
+                (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q3
 
@@ -1921,7 +1922,7 @@ H10 : {oneb (out n1 a null) (dn X) (M1 n1)}
      (par
         (nu
            (z\par (par (P2 z) (in z (y\out x y null)))
-                (nu (x\par (M1 x z) (in x (y\out x y null))))))
+                (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q2
 
@@ -1984,7 +1985,7 @@ H10 : {oneb (out n1 a null) (dn X) (M1 n1)}
      (par
         (nu
            (z\par (par (out z a null) (Q2 z))
-                (nu (x\par (M1 x z) (in x (y\out x y null))))))
+                (nu (x1\par (M1 x1 z) (in x1 (y\out x y null))))))
         (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
      Q3
 
@@ -2091,7 +2092,7 @@ H7 : {oneb (out n1 a null) (dn X) (M2 n1)}
 ============================
  exists N, {oneb (bang (taup (out x a null))) (dn X) N} /\
    (forall w, inv
-                (par (nu (x\par (M2 x w) (in x (y\out x y null))))
+                (par (nu (x1\par (M2 x1 w) (in x1 (y\out x y null))))
                    (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
                 (N w))
 
@@ -2194,7 +2195,7 @@ H7 : {oneb (out n1 a null) (up X) (M2 n1)}
 ============================
  exists N, {oneb (bang (taup (out x a null))) (up X) N} /\
    (nabla w, inv
-               (par (nu (x\par (M2 x w) (in x (y\out x y null))))
+               (par (nu (x1\par (M2 x1 w) (in x1 (y\out x y null))))
                   (bang (nu (z\par (out z a null) (in z (y\out x y null))))))
                (N w))
 
@@ -4362,7 +4363,7 @@ H3 : simInv M N
 H7 : {one null A (P3 n1)}
 ============================
  exists Q2, {one (par (out x a null) N) A Q2} /\
-   inv (par (nu (x\par (P3 x) (out x a null))) M) Q2
+   inv (par (nu (x1\par (P3 x1) (out x a null))) M) Q2
 
 13 other subgoals.
 
@@ -4623,7 +4624,7 @@ H6 : {oneb M (up X) N1}
 H8 : {oneb null (dn X) (M2 n1)}
 ============================
  exists Q2, {one (par (out x a null) N) tau Q2} /\
-   inv (nu (y\par (nu (x\par (M2 x y) (out x a null))) (N1 y))) Q2
+   inv (nu (y\par (nu (x1\par (M2 x1 y) (out x a null))) (N1 y))) Q2
 
 7 other subgoals.
 
@@ -4695,7 +4696,7 @@ H6 : {oneb M (dn X) N1}
 H8 : {oneb null (up X) (M2 n1)}
 ============================
  exists Q2, {one (par (out x a null) N) tau Q2} /\
-   inv (nu (y\par (nu (x\par (M2 x y) (out x a null))) (N1 y))) Q2
+   inv (nu (y\par (nu (x1\par (M2 x1 y) (out x a null))) (N1 y))) Q2
 
 7 other subgoals.
 
@@ -4818,7 +4819,7 @@ IH : forall P Q, inv P Q * -> simInv P Q
 H2 : inv M N *
 H3 : simInv M N
 H6 : {one M (up X Y) T}
-H7 : {eq R (nu (x\par (M2 x Y) (out x a null)))}
+H7 : {eq R (nu (x1\par (M2 x1 Y) (out x a null)))}
 H9 : {oneb null (dn X) (M2 n1)}
 ============================
  exists Q1, {one (par (out x a null) N) tau Q1} /\ inv (par R T) Q1
@@ -4895,7 +4896,7 @@ H7 : {eq T (M1 Y)}
 H9 : {one null (up X Y) (P2 n1)}
 ============================
  exists Q2, {one (par (out x a null) N) tau Q2} /\
-   inv (par (nu (x\par (P2 x) (out x a null))) T) Q2
+   inv (par (nu (x1\par (P2 x1) (out x a null))) T) Q2
 
 4 other subgoals.
 
@@ -5168,7 +5169,7 @@ H3 : simInv M N
 H7 : {oneb null (dn X) (M3 n1)}
 ============================
  exists N1, {oneb (par (out x a null) N) (dn X) N1} /\
-   (forall w, inv (par (nu (x\par (M3 x w) (out x a null))) M) (N1 w))
+   (forall w, inv (par (nu (x1\par (M3 x1 w) (out x a null))) M) (N1 w))
 
 4 other subgoals.
 
@@ -5447,7 +5448,7 @@ H3 : simInv M N
 H7 : {oneb null (up X) (M3 n1)}
 ============================
  exists N1, {oneb (par (out x a null) N) (up X) N1} /\
-   (nabla w, inv (par (nu (x\par (M3 x w) (out x a null))) M) (N1 w))
+   (nabla w, inv (par (nu (x1\par (M3 x1 w) (out x a null))) M) (N1 w))
 
 4 other subgoals.
 

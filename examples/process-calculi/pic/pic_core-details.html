@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.4-dev
+Welcome to Abella 2.0.5-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind name, proc type.</b>
@@ -4682,7 +4682,7 @@ Bis6 : forall X Q2, oneb Q (up X) Q2 ->
         (exists P2 Q2, nabla x, refl_t (P1 x) (P2 x) (Q1 x) (Q2 x) /\
              bisim_up_to refl_t (P2 x) (Q2 x) +))
 
-bisim_symmetric < <b>clear Bis1 Bis2 BIs4 Bis5 Bis6.</b>
+bisim_symmetric < <b>clear Bis1 Bis2 Bis4 Bis5 Bis6.</b>
 </pre>
 <a name="172"></a>
 <pre class="code">
@@ -4694,9 +4694,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 ============================
  forall X Q1, oneb P (up X) Q1 ->
    (exists P1, oneb Q (up X) P1 /\
@@ -4715,9 +4712,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 ============================
  exists P1, oneb Q (up X) P1 /\
@@ -4736,9 +4730,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4760,9 +4751,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4784,9 +4772,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4810,9 +4795,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4833,9 +4815,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4856,9 +4835,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4879,9 +4855,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) Q1
 H3 : oneb Q (up X) Q2
 H4 : refl_t (Q1 n1) (P3 n1) (Q2 n1) (Q3 n1)
@@ -4902,9 +4875,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) (z1\P3 z1)
 H3 : oneb Q (up X) (z1\Q3 z1)
 H5 : bisim_up_to refl_t (P3 n1) (Q3 n1)
@@ -4924,9 +4894,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) (z1\P3 z1)
 H3 : oneb Q (up X) (z1\Q3 z1)
 H5 : bisim_up_to refl_t (P3 n1) (Q3 n1)
@@ -4948,9 +4915,6 @@ Bis3 : forall X P2, oneb P (up X) P2 ->
          (exists Q2, oneb Q (up X) Q2 /\
               (exists P3 Q3, nabla x, refl_t (P2 x) (P3 x) (Q2 x) (Q3 x) /\
                    bisim_up_to refl_t (P3 x) (Q3 x)))
-Bis4 : forall L Q2, one Q L Q2 ->
-         (exists P2, one P L P2 /\
-              (exists P3 Q3, refl_t P2 P3 Q2 Q3 /\ bisim_up_to refl_t P3 Q3))
 H2 : oneb P (up X) (z1\P3 z1)
 H3 : oneb Q (up X) (z1\Q3 z1)
 H5 : bisim_up_to refl_t (P3 n1) (Q3 n1)

@@ -224,10 +224,10 @@ Click on a command or tactic to see a detailed view of its use.
 
     <span class="comment">% Arrow case</span>
     <a href="stlc-strong-norm-details.html#105" class="tactic">case H1.</a>
-    <a href="stlc-strong-norm-details.html#106" class="tactic">assert (neutral c).</a>
+    <a href="stlc-strong-norm-details.html#106" class="tactic">assert 0 (neutral c).</a>
       <a href="stlc-strong-norm-details.html#107" class="tactic">unfold.</a> <a href="stlc-strong-norm-details.html#108" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#109" class="tactic">case H7.</a>
     <a href="stlc-strong-norm-details.html#110" class="tactic">assert {of c A1}.</a>
-    <a href="stlc-strong-norm-details.html#111" class="tactic">assert (forall P, {step c P} -> reduce P A1).</a>
+    <a href="stlc-strong-norm-details.html#111" class="tactic">assert 0 (forall P, {step c P} -> reduce P A1).</a>
       <a href="stlc-strong-norm-details.html#112" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#113" class="tactic">case H9.</a>
     <a href="stlc-strong-norm-details.html#114" class="tactic">apply IH to H5.</a>
     <a href="stlc-strong-norm-details.html#115" class="tactic">apply H11 to H7 H8 H9.</a>
@@ -262,7 +262,7 @@ Click on a command or tactic to see a detailed view of its use.
                   <a href="stlc-strong-norm-details.html#146" class="tactic">apply H14 to H16.</a> <a href="stlc-strong-norm-details.html#147" class="tactic">apply reduce_step to H13 H16.</a>
                     <a href="stlc-strong-norm-details.html#148" class="tactic">apply IH1 to H17 H18.</a> <a href="stlc-strong-norm-details.html#149" class="tactic">search.</a>
                   <a href="stlc-strong-norm-details.html#150" class="tactic">case H3.</a> <a href="stlc-strong-norm-details.html#151" class="tactic">apply H16 to _.</a>
-              <a href="stlc-strong-norm-details.html#152" class="tactic">assert neutral (app M U1).</a>
+              <a href="stlc-strong-norm-details.html#152" class="tactic">assert 0 neutral (app M U1).</a>
                 <a href="stlc-strong-norm-details.html#153" class="tactic">unfold.</a> <a href="stlc-strong-norm-details.html#154" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#155" class="tactic">case H16.</a>
               <a href="stlc-strong-norm-details.html#156" class="tactic">assert {of (app M U1) B}.</a>
                 <a href="stlc-strong-norm-details.html#157" class="tactic">apply reduce_of to H13.</a> <a href="stlc-strong-norm-details.html#158" class="tactic">search.</a>
@@ -292,7 +292,7 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="stlc-strong-norm-details.html#194" class="command">Theorem reduce_const : forall C,
   {ty C} -> reduce c C.</a>
 <div class="proof"><a href="stlc-strong-norm-details.html#195" class="tactic">intros.</a>
-  <a href="stlc-strong-norm-details.html#196" class="tactic">assert (neutral c).</a>
+  <a href="stlc-strong-norm-details.html#196" class="tactic">assert 0 (neutral c).</a>
     <a href="stlc-strong-norm-details.html#197" class="tactic">unfold.</a> <a href="stlc-strong-norm-details.html#198" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#199" class="tactic">case H2.</a>
   <a href="stlc-strong-norm-details.html#200" class="tactic">assert (forall P, {step c P} -> reduce P C).</a>
     <a href="stlc-strong-norm-details.html#201" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#202" class="tactic">case H3.</a>
@@ -324,7 +324,7 @@ Click on a command or tactic to see a detailed view of its use.
       <span class="comment">% Case 3: (app (abs A M) U) -> (M U)</span>
       <a href="stlc-strong-norm-details.html#230" class="tactic">apply H4 to H3.</a> <a href="stlc-strong-norm-details.html#231" class="tactic">search.</a>
 
-  <a href="stlc-strong-norm-details.html#232" class="tactic">assert neutral (app (abs A M) U).</a>
+  <a href="stlc-strong-norm-details.html#232" class="tactic">assert 0 neutral (app (abs A M) U).</a>
     <a href="stlc-strong-norm-details.html#233" class="tactic">unfold.</a> <a href="stlc-strong-norm-details.html#234" class="tactic">intros.</a> <a href="stlc-strong-norm-details.html#235" class="tactic">case H7.</a>
 
   <a href="stlc-strong-norm-details.html#236" class="tactic">assert {of (app (abs A M) U) B}.</a>

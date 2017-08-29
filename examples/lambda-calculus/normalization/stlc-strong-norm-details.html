@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.4-dev
+Welcome to Abella 2.0.5-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Specification "stlc-strong-norm".</b>
@@ -1433,7 +1433,7 @@ Subgoal 2 is:
  forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
    reduce M A
 
-cr1_cr3 < <b>assert neutral c.</b>
+cr1_cr3 < <b>assert 0 neutral c.</b>
 </pre>
 <a name="107"></a>
 <pre class="code">
@@ -1551,7 +1551,7 @@ Subgoal 2 is:
  forall M, neutral M -> {of M A} -> (forall P, {step M P} -> reduce P A) ->
    reduce M A
 
-cr1_cr3 < <b>assert forall P, {step c P} -> reduce P A1.</b>
+cr1_cr3 < <b>assert 0 forall P, {step c P} -> reduce P A1.</b>
 </pre>
 <a name="112"></a>
 <pre class="code">
@@ -2720,7 +2720,7 @@ H15 : forall P, {step (app M U1) P} -> reduce P B
 Subgoal 2.2.2 is:
  reduce (app M U) B
 
-cr1_cr3 < <b>assert neutral (app M U1).</b>
+cr1_cr3 < <b>assert 0 neutral (app M U1).</b>
 </pre>
 <a name="153"></a>
 <pre class="code">
@@ -3525,7 +3525,7 @@ H1 : {ty C}
 ============================
  reduce c C
 
-reduce_const < <b>assert neutral c.</b>
+reduce_const < <b>assert 0 neutral c.</b>
 </pre>
 <a name="197"></a>
 <pre class="code">
@@ -4430,7 +4430,7 @@ H6 : forall P, {step (app (abs A M) U) P} -> reduce P B
 ============================
  reduce (app (abs A M) U) B
 
-abs_step_reduce_lemma < <b>assert neutral (app (abs A M) U).</b>
+abs_step_reduce_lemma < <b>assert 0 neutral (app (abs A M) U).</b>
 </pre>
 <a name="233"></a>
 <pre class="code">

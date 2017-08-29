@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.4-dev
+Welcome to Abella 2.0.5-dev
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind name, label, proc type.</b>
@@ -28,7 +28,7 @@ Abella < <b>Kind name, label, proc type.</b>
 <a name="2"></a>
 <pre class="code">
 Abella < <b>Import "pic_core".</b>
-Importing from pic_core
+Importing from /home/kaustuv/work/abella/examples/process-calculi/pic/./pic_core
 Warning: Definition can be used to defeat stratification
  (higher-order argument "Tech" occurs to the left of ->)
 
@@ -10802,7 +10802,7 @@ H5 : one (P1 n1) (up X n1) (P2 n1)
  exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.3.2 is:
- exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x\R x x)) (Q2 x))
+ exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x1\R x1 x)) (Q2 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -10843,7 +10843,7 @@ H7 : inv (P2 n1) (Q2 n1)
  exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.3.2 is:
- exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x\R x x)) (Q2 x))
+ exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x1\R x1 x)) (Q2 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -10884,7 +10884,7 @@ H7 : inv (P2 n1) (Q2 n1)
  oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.3.2 is:
- exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x\R x x)) (Q2 x))
+ exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x1\R x1 x)) (Q2 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -10920,7 +10920,7 @@ Inv6 : forall X Q2, oneb (Q1 n1) (up X) Q2 ->
          (exists P2, oneb (P1 n1) (up X) P2 /\ (nabla x, inv (P2 x) (Q2 x)))
 H5 : oneb (P1 n1) (up X) (R n1)
 ============================
- exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x\R x x)) (Q2 x))
+ exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x1\R x1 x)) (Q2 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -10958,7 +10958,7 @@ H5 : oneb (P1 n1) (up X) (R n1)
 H6 : oneb (Q1 n1) (up X) (Q2 n1)
 H7 : inv (R n1 n2) (Q2 n1 n2)
 ============================
- exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x\R x x)) (Q2 x))
+ exists Q2, oneb (nu Q1) (up X) Q2 /\ (nabla x, inv (nu (x1\R x1 x)) (Q2 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -10997,7 +10997,7 @@ H6 : oneb (Q1 n1) (up X) (Q2 n1)
 H7 : inv (R n1 n2) (Q2 n1 n2)
 ============================
  oneb (nu Q1) (up X) (y\nu (x\Q2 x y)) /\
-   (nabla x, inv (nu (x\R x x)) (nu (x\Q2 x x)))
+   (nabla x, inv (nu (x1\R x1 x)) (nu (x1\Q2 x1 x)))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -11038,7 +11038,7 @@ H7 : inv (R n1 n2) (Q2 n1 n2)
  oneb (nu Q1) (up X) (y\nu (x\Q2 x y))
 
 Subgoal 3.3.2.2 is:
- nabla x, inv (nu (x\R x x)) (nu (x\Q2 x x))
+ nabla x, inv (nu (x1\R x1 x)) (nu (x1\Q2 x1 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -11076,7 +11076,7 @@ H5 : oneb (P1 n1) (up X) (R n1)
 H6 : oneb (Q1 n1) (up X) (Q2 n1)
 H7 : inv (R n1 n2) (Q2 n1 n2)
 ============================
- nabla x, inv (nu (x\R x x)) (nu (x\Q2 x x))
+ nabla x, inv (nu (x1\R x1 x)) (nu (x1\Q2 x1 x))
 
 Subgoal 3.4 is:
  forall L Q2, one (nu Q1) L Q2 -> (exists P2, one (nu P1) L P2 /\ inv P2 Q2)
@@ -11576,7 +11576,7 @@ H5 : one (Q1 n1) (up X n1) (Q2 n1)
  exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.6.2 is:
- exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x\R x x)))
+ exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>apply Inv4 to H5.</b>
 </pre>
@@ -11606,7 +11606,7 @@ H7 : inv (P2 n1) (Q2 n1)
  exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.6.2 is:
- exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x\R x x)))
+ exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>witness P2.</b>
 </pre>
@@ -11636,7 +11636,7 @@ H7 : inv (P2 n1) (Q2 n1)
  oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (Q2 x))
 
 Subgoal 3.6.2 is:
- exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x\R x x)))
+ exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>search.</b>
 </pre>
@@ -11661,7 +11661,7 @@ Inv6 : forall X Q2, oneb (Q1 n1) (up X) Q2 ->
          (exists P2, oneb (P1 n1) (up X) P2 /\ (nabla x, inv (P2 x) (Q2 x)))
 H5 : oneb (Q1 n1) (up X) (R n1)
 ============================
- exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x\R x x)))
+ exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>apply Inv6 to H5.</b>
 </pre>
@@ -11688,7 +11688,7 @@ H5 : oneb (Q1 n1) (up X) (R n1)
 H6 : oneb (P1 n1) (up X) (P2 n1)
 H7 : inv (P2 n1 n2) (R n1 n2)
 ============================
- exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x\R x x)))
+ exists P2, oneb (nu P1) (up X) P2 /\ (nabla x, inv (P2 x) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>witness y\nu (x\P2 x y).</b>
 </pre>
@@ -11716,7 +11716,7 @@ H6 : oneb (P1 n1) (up X) (P2 n1)
 H7 : inv (P2 n1 n2) (R n1 n2)
 ============================
  oneb (nu P1) (up X) (y\nu (x\P2 x y)) /\
-   (nabla x, inv (nu (x\P2 x x)) (nu (x\R x x)))
+   (nabla x, inv (nu (x1\P2 x1 x)) (nu (x1\R x1 x)))
 
 inv_bisim_inv < <b>search.</b>
 Proof completed.
