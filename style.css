@@ -95,6 +95,7 @@ p.noindent { text-indent: 0; margin-top: 5px; }
 pre {
     text-align: justify;
     margin: 20px 0 20px 20px;
+    overflow-x: auto;
     padding: 5px;
     background-color: khaki;
     border: 1px dashed maroon;
