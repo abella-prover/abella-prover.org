@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+<div class="section" id="specification">
+<h1>Executable Specification</h1>
+
+<a class="view" href="pclf.sig">[View pclf.sig]</a>
+<a class="view" href="pclf.mod">[View pclf.mod]</a>
+<pre class="command">
+sig pclf.
+
+kind ty type.
+
+type top  ty.
+type nat  ty.
+type arr  ty -> ty -> ty.
+type list ty -> ty.
+
+kind tm type.
+
+type zero  tm.
+type succ  tm -> tm.
+type app   tm -> tm -> tm.
+type lam   (tm -> tm) -> tm.
+type fix   (tm -> tm) -> tm.
+type unit  tm.
+type nill  tm.
+type cons  tm -> tm -> tm.
+type lcase tm -> tm -> (tm -> tm -> tm) -> tm.
+type ncase tm -> tm -> (tm -> tm) -> tm.
+
+type ty    ty -> o.
+
+type of    tm -> ty -> o.
+
+type cp    tm -> tm -> o.
+
+type eval  tm -> tm -> o.
+type value tm -> o.
+</pre>
+<pre class="command">
+module pclf.
+
+ty top.
+ty nat.
+ty (list T) :- ty T.
+ty (arr S T) :- ty S, ty T.
+
+of zero nat.
+of (succ M) nat :- of M nat.
+of (app M N) T :- ty S, of M (arr S T), of N S.
+of (lam R) (arr S T) :- pi x\ of x S => of (R x) T.
+of (fix R) T :- pi x\ of x T => of (R x) T.
+of unit top.
+of nill (list T).
+of (cons M N) (list T) :- of M T, of N (list T).
+of (lcase M N R) T :- ty S, of M (list S), of N T,
+  pi h\ of h S => pi k\ of k (list S) => of (R h k) T.
+of (ncase M N R) T :- of M nat, of N T,
+  pi x\ of x nat => of (R x) T.
+
+cp zero zero.
+cp (succ M) (succ SM) :-
+  cp M SM.
+cp (app M N) (app SM SN) :-
+  cp M SM, cp N SN.
+cp (lam R) (lam SR) :-
+  pi x\ cp x x => cp (R x) (SR x).
+cp (fix R) (fix SR) :-
+  pi x\ cp x x => cp (R x) (SR x).
+cp unit unit.
+cp nill nill.
+cp (cons M N) (cons SM SN) :-
+  cp M SM, cp N SN.
+cp (lcase M N R) (lcase SM SN SR) :-
+  cp M SM, cp N SN,
+  pi h\ cp h h => pi k\ cp k k => cp (R h k) (SR h k).
+cp (ncase M N R) (ncase SM SN SR) :-
+  cp M SM, cp N SN,
+  pi x\ cp x x => cp (R x) (SR x).
+
+eval V V :- value V.
+eval (fix R) V :-
+  eval (R (fix R)) V.
+eval (app M N) V :-
+  eval M (lam R), eval (R N) V.
+eval (lcase M N R) V :-
+  eval M nill, eval N V.
+eval (lcase M N R) V :-
+  eval M (cons H K), eval (R H K) V.
+eval (ncase M N R) V :-
+  eval M zero, eval N V.
+eval (ncase M N R) V :-
+  eval M (succ K), eval (R K) V.
+
+value zero.
+value (succ M).
+value nill.
+value (cons M N).
+value (lam R).
+</pre>
+
+</div>
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="subst.thm">[View subst.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="subst-details.html#1" class="command">Specification "pclf".</a>
+
+<a href="subst-details.html#2" class="command">Close ty, tm.</a>
+
+<a href="subst-details.html#3" class="command">Define ctx : olist -> prop by
+; ctx nil
+; nabla x, ctx (of x T :: G) := ctx G
+.</a>
+
+<a href="subst-details.html#4" class="command">Define fresh : A -> B -> prop by
+  nabla x, fresh x X.</a>
+
+<a href="subst-details.html#5" class="command">Define name : A -> prop by
+  nabla x, name x.</a>
+
+<a href="subst-details.html#6" class="command">Theorem member_prune : forall G E, nabla (x : tm), member (E x) G ->
+  exists F, E = x\ F.</a>
+<div class="proof"><a href="subst-details.html#7" class="tactic">induction on 1.</a> <a href="subst-details.html#8" class="tactic">intros.</a> <a href="subst-details.html#9" class="tactic">case H1.</a>
+  <a href="subst-details.html#10" class="tactic">search.</a>
+  <a href="subst-details.html#11" class="tactic">apply IH to H2.</a> <a href="subst-details.html#12" class="tactic">search.</a></div>
+<a href="subst-details.html#13" class="command">Theorem ctx_mem : forall G E, ctx G -> member E G ->
+  exists X T, E = of X T /\ fresh X T.</a>
+<div class="proof"><a href="subst-details.html#14" class="tactic">induction on 1.</a> <a href="subst-details.html#15" class="tactic">intros.</a> <a href="subst-details.html#16" class="tactic">case H1.</a>
+  <a href="subst-details.html#17" class="tactic">case H2.</a>
+  <a href="subst-details.html#18" class="tactic">case H2.</a> <a href="subst-details.html#19" class="tactic">search.</a>
+    <a href="subst-details.html#20" class="tactic">apply IH to *H3 *H4.</a> <a href="subst-details.html#21" class="tactic">search.</a></div>
+<a href="subst-details.html#22" class="command">Theorem ctx_uniq : forall G X T1 T2,
+  ctx G -> member (of X T1) G -> member (of X T2) G -> T1 = T2.</a>
+<div class="proof"><a href="subst-details.html#23" class="tactic">induction on 2.</a> <a href="subst-details.html#24" class="tactic">intros.</a> <a href="subst-details.html#25" class="tactic">case H2.</a>
+  <a href="subst-details.html#26" class="tactic">case H3.</a> <a href="subst-details.html#27" class="tactic">search.</a>
+    <a href="subst-details.html#28" class="tactic">case H1.</a> <a href="subst-details.html#29" class="tactic">apply member_prune to H4.</a>
+  <a href="subst-details.html#30" class="tactic">case H3.</a> <a href="subst-details.html#31" class="tactic">case H1.</a> <a href="subst-details.html#32" class="tactic">apply member_prune to H4.</a>
+    <a href="subst-details.html#33" class="tactic">case H1.</a> <a href="subst-details.html#34" class="tactic">apply IH to H6 H4 H5.</a> <a href="subst-details.html#35" class="tactic">search.</a></div>
+<a href="subst-details.html#36" class="command">Theorem ty_closed : forall G T, ctx G -> {G |- ty T} -> {ty T}.</a>
+<div class="proof"><a href="subst-details.html#37" class="tactic">induction on 2.</a> <a href="subst-details.html#38" class="tactic">intros.</a> <a href="subst-details.html#39" class="tactic">case H2.</a>
+  <a href="subst-details.html#40" class="tactic">search.</a> <a href="subst-details.html#41" class="tactic">search.</a> <a href="subst-details.html#42" class="tactic">apply IH to H1 H3.</a> <a href="subst-details.html#43" class="tactic">search.</a>
+  <a href="subst-details.html#44" class="tactic">apply IH to H1 H3.</a> <a href="subst-details.html#45" class="tactic">apply IH to H1 H4.</a> <a href="subst-details.html#46" class="tactic">search.</a>
+  <a href="subst-details.html#47" class="tactic">apply ctx_mem to H1 H4.</a> <a href="subst-details.html#48" class="tactic">case H3.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% substitutions</span>
+
+<span class="comment">%% ofsub G SS D -- SS maps terms well-typed in D to terms well-typed in G</span>
+<a href="subst-details.html#49" class="command">Define ofsub : olist -> olist -> olist -> prop by
+; ofsub G nil nil := ctx G
+; nabla x, ofsub (G x) (cp x (M x) :: SS x) (of x T :: D) :=
+    nabla x, {G x |- of (M x) T} /\ ofsub (G x) (SS x) D
+.</a>
+
+<a href="subst-details.html#50" class="command">Theorem ofsub_ctx : forall G SS D,
+  ofsub G SS D -> ctx G /\ ctx D.</a>
+<div class="proof"><a href="subst-details.html#51" class="tactic">induction on 1.</a> <a href="subst-details.html#52" class="tactic">intros.</a> <a href="subst-details.html#53" class="tactic">case H1.</a>
+  <a href="subst-details.html#54" class="tactic">search.</a>
+  <a href="subst-details.html#55" class="tactic">apply IH to H3.</a> <a href="subst-details.html#56" class="tactic">search.</a></div>
+<a href="subst-details.html#57" class="command">Theorem ofsub_weak1 : forall G SS D T, nabla x,
+  ofsub G SS D -> ofsub (of x T :: G) SS D.</a>
+<div class="proof"><a href="subst-details.html#58" class="tactic">induction on 1.</a> <a href="subst-details.html#59" class="tactic">intros.</a> <a href="subst-details.html#60" class="tactic">case H1.</a>
+  <a href="subst-details.html#61" class="tactic">search.</a>
+  <a href="subst-details.html#62" class="tactic">apply IH to *H3 with T = T.</a> <a href="subst-details.html#63" class="tactic">search.</a></div>
+<span class="comment">%% inversion on elements of the substitution</span>
+<a href="subst-details.html#64" class="command">Theorem ofsub_mem_sub : forall G SS D E,
+  ofsub G SS D -> member E SS ->
+  exists X M T, E = cp X M /\ member (of X T) D /\ name X /\ {G |- of M T}.</a>
+<div class="proof"><a href="subst-details.html#65" class="tactic">induction on 1.</a> <a href="subst-details.html#66" class="tactic">intros.</a> <a href="subst-details.html#67" class="tactic">case H1.</a>
+  <a href="subst-details.html#68" class="tactic">case H2.</a>
+  <a href="subst-details.html#69" class="tactic">case H2.</a> <a href="subst-details.html#70" class="tactic">search.</a>
+    <a href="subst-details.html#71" class="tactic">apply IH to *H4 *H5.</a> <a href="subst-details.html#72" class="tactic">search.</a></div>
+<span class="comment">%% inversion on the elements of the source typing context</span>
+<a href="subst-details.html#73" class="command">Theorem ofsub_mem_src : forall G SS D E,
+  ofsub G SS D -> member E D ->
+  exists X M T, E = of X T /\ member (cp X M) SS /\ name X /\ {G |- of M T}.</a>
+<div class="proof"><a href="subst-details.html#74" class="tactic">induction on 1.</a> <a href="subst-details.html#75" class="tactic">intros.</a> <a href="subst-details.html#76" class="tactic">case H1.</a>
+  <a href="subst-details.html#77" class="tactic">case H2.</a>
+  <a href="subst-details.html#78" class="tactic">case H2.</a> <a href="subst-details.html#79" class="tactic">search.</a>
+    <a href="subst-details.html#80" class="tactic">apply IH to *H4 *H5.</a> <a href="subst-details.html#81" class="tactic">search.</a></div>
+<a href="subst-details.html#82" class="command">Theorem ofsub_sub_prune : forall G SS D, nabla (x : tm),
+  ofsub (G x) SS (D x) ->
+  exists DD, D = x\ DD.</a>
+<div class="proof"><a href="subst-details.html#83" class="tactic">induction on 1.</a> <a href="subst-details.html#84" class="tactic">intros.</a> <a href="subst-details.html#85" class="tactic">case H1.</a>
+  <a href="subst-details.html#86" class="tactic">search.</a>
+  <a href="subst-details.html#87" class="tactic">apply IH to H3.</a> <a href="subst-details.html#88" class="tactic">search.</a></div>
+<a href="subst-details.html#89" class="command">Theorem subst :
+  forall G SS D M T,
+  ofsub G SS D -> {D |- of M T} ->
+  exists SM, {SS |- cp M SM} /\ {G |- of SM T}.</a>
+<div class="proof"><a href="subst-details.html#90" class="tactic">induction on 2.</a> <a href="subst-details.html#91" class="tactic">intros.</a> <a href="subst-details.html#92" class="tactic">case H2.</a>
+  <a href="subst-details.html#93" class="tactic">search.</a>
+
+  <a href="subst-details.html#94" class="tactic">apply IH to H1 *H3.</a> <a href="subst-details.html#95" class="tactic">search.</a>
+
+  <a href="subst-details.html#96" class="tactic">apply IH to H1 *H4.</a> <a href="subst-details.html#97" class="tactic">apply IH to H1 *H5.</a>
+   <a href="subst-details.html#98" class="tactic">apply ofsub_ctx to H1.</a> <a href="subst-details.html#99" class="tactic">apply ty_closed to _ H3.</a>
+   <a href="subst-details.html#100" class="tactic">search.</a>
+
+  <a href="subst-details.html#101" class="tactic">apply ofsub_weak1 to *H1 with T = S, x = n1.</a>
+  <a href="subst-details.html#102" class="tactic">apply IH to _ *H3 with G = of n1 S :: G.</a>
+  <a href="subst-details.html#103" class="tactic">search.</a>
+
+  <a href="subst-details.html#104" class="tactic">apply ofsub_weak1 to *H1 with T = T, x = n1.</a>
+  <a href="subst-details.html#105" class="tactic">apply IH to _ *H3 with G = of n1 T :: G.</a>
+  <a href="subst-details.html#106" class="tactic">search.</a>
+
+  <a href="subst-details.html#107" class="tactic">search.</a>
+
+  <a href="subst-details.html#108" class="tactic">search.</a>
+
+  <a href="subst-details.html#109" class="tactic">apply IH to H1 *H3.</a> <a href="subst-details.html#110" class="tactic">apply IH to H1 *H4.</a> <a href="subst-details.html#111" class="tactic">search.</a>
+
+  <a href="subst-details.html#112" class="tactic">apply IH to H1 *H4.</a> <a href="subst-details.html#113" class="tactic">apply IH to H1 *H5.</a>
+  <a href="subst-details.html#114" class="tactic">apply ofsub_weak1 to *H1 with T = S, x = n1.</a>
+  <a href="subst-details.html#115" class="tactic">apply ofsub_weak1 to *H11 with T = list S, x = n2.</a>
+  <a href="subst-details.html#116" class="tactic">apply IH to _ *H6 with G = of n2 (list S) :: of n1 S :: G,
+                        SS = cp n2 n2 :: cp n1 n1 :: SS.</a>
+  <a href="subst-details.html#117" class="tactic">apply ofsub_ctx to H12.</a> <a href="subst-details.html#118" class="tactic">clear H15.</a> <a href="subst-details.html#119" class="tactic">apply ty_closed to *H16 *H3.</a>
+  <a href="subst-details.html#120" class="tactic">search.</a>
+
+  <a href="subst-details.html#121" class="tactic">apply IH to H1 *H3.</a> <a href="subst-details.html#122" class="tactic">apply IH to H1 *H4.</a>
+  <a href="subst-details.html#123" class="tactic">apply ofsub_weak1 to *H1 with T = nat, x = n1.</a>
+  <a href="subst-details.html#124" class="tactic">apply IH to _ *H5 with G = of n1 nat :: G,
+                        SS = cp n1 n1 :: SS.</a>
+  <a href="subst-details.html#125" class="tactic">search.</a>
+
+  <a href="subst-details.html#126" class="tactic">apply ofsub_mem_src to H1 H4.</a> <a href="subst-details.html#127" class="tactic">case H3.</a> <a href="subst-details.html#128" class="tactic">search.</a></div>
+<span class="comment">%% each variable is mapped to exactly one term in a substitution</span>
+<a href="subst-details.html#129" class="command">Theorem ofsub_det : forall G SS D X M1 M2,
+   ofsub G SS D -> member (cp X M1) SS -> member (cp X M2) SS -> M1 = M2.</a>
+<div class="proof"><a href="subst-details.html#130" class="tactic">induction on 1.</a> <a href="subst-details.html#131" class="tactic">intros.</a> <a href="subst-details.html#132" class="tactic">case H1.</a>
+  <a href="subst-details.html#133" class="tactic">case H2.</a>
+  <a href="subst-details.html#134" class="tactic">case H2.</a>
+    <a href="subst-details.html#135" class="tactic">case H3.</a> <a href="subst-details.html#136" class="tactic">search.</a> <a href="subst-details.html#137" class="tactic">apply ofsub_mem_sub to H5 H6.</a> <a href="subst-details.html#138" class="tactic">apply member_prune to H7.</a>
+    <a href="subst-details.html#139" class="tactic">case H3.</a> <a href="subst-details.html#140" class="tactic">apply ofsub_mem_sub to H5 H6.</a> <a href="subst-details.html#141" class="tactic">apply member_prune to H7.</a>
+      <a href="subst-details.html#142" class="tactic">apply IH to *H5 *H6 *H7.</a> <a href="subst-details.html#143" class="tactic">search.</a></div>
+<span class="comment">%% the cp operation on well-formed substitutions is deterministic</span>
+<a href="subst-details.html#144" class="command">Theorem cp_det : forall G SS D M N1 N2,
+   ofsub G SS D -> {SS |- cp M N1} -> {SS |- cp M N2} -> N1 = N2.</a>
+<div class="proof"><a href="subst-details.html#145" class="tactic">induction on 2.</a> <a href="subst-details.html#146" class="tactic">intros.</a> <a href="subst-details.html#147" class="tactic">case H2.</a>
+  <a href="subst-details.html#148" class="tactic">case H3.</a> <a href="subst-details.html#149" class="tactic">search.</a>
+    <a href="subst-details.html#150" class="tactic">apply ofsub_mem_sub to *H1 *H5.</a> <a href="subst-details.html#151" class="tactic">case H4.</a> <a href="subst-details.html#152" class="tactic">case H7.</a>
+  <a href="subst-details.html#153" class="tactic">case H3.</a> <a href="subst-details.html#154" class="tactic">apply IH to H1 *H4 *H5.</a> <a href="subst-details.html#155" class="tactic">search.</a>
+    <a href="subst-details.html#156" class="tactic">apply ofsub_mem_sub to *H1 *H6.</a> <a href="subst-details.html#157" class="tactic">case H5.</a> <a href="subst-details.html#158" class="tactic">case H8.</a>
+  <a href="subst-details.html#159" class="tactic">case H3.</a> <a href="subst-details.html#160" class="tactic">apply IH to H1 *H4 *H6.</a> <a href="subst-details.html#161" class="tactic">apply IH to *H1 *H5 *H7.</a> <a href="subst-details.html#162" class="tactic">search.</a>
+    <a href="subst-details.html#163" class="tactic">apply ofsub_mem_sub to *H1 *H7.</a> <a href="subst-details.html#164" class="tactic">case H9.</a> <a href="subst-details.html#165" class="tactic">case H6.</a>
+  <a href="subst-details.html#166" class="tactic">case H3.</a>
+    <a href="subst-details.html#167" class="tactic">apply ofsub_weak1 to *H1 with T = top.</a>
+    <a href="subst-details.html#168" class="tactic">apply IH to _ *H4 *H5 with G = of n1 top :: G.</a> <a href="subst-details.html#169" class="tactic">search.</a>
+    <a href="subst-details.html#170" class="tactic">apply ofsub_mem_sub to *H1 *H6.</a> <a href="subst-details.html#171" class="tactic">case H8.</a> <a href="subst-details.html#172" class="tactic">case H5.</a>
+  <a href="subst-details.html#173" class="tactic">case H3.</a>
+    <a href="subst-details.html#174" class="tactic">apply ofsub_weak1 to *H1 with T = top.</a>
+    <a href="subst-details.html#175" class="tactic">apply IH to _ *H4 *H5 with G = of n1 top :: G.</a> <a href="subst-details.html#176" class="tactic">search.</a>
+    <a href="subst-details.html#177" class="tactic">apply ofsub_mem_sub to *H1 *H6.</a> <a href="subst-details.html#178" class="tactic">case H8.</a> <a href="subst-details.html#179" class="tactic">case H5.</a>
+  <a href="subst-details.html#180" class="tactic">case H3.</a> <a href="subst-details.html#181" class="tactic">search.</a>
+    <a href="subst-details.html#182" class="tactic">apply ofsub_mem_sub to *H1 *H5.</a> <a href="subst-details.html#183" class="tactic">case H7.</a> <a href="subst-details.html#184" class="tactic">case H4.</a>
+  <a href="subst-details.html#185" class="tactic">case H3.</a> <a href="subst-details.html#186" class="tactic">search.</a>
+    <a href="subst-details.html#187" class="tactic">apply ofsub_mem_sub to *H1 *H5.</a> <a href="subst-details.html#188" class="tactic">case H7.</a> <a href="subst-details.html#189" class="tactic">case H4.</a>
+  <a href="subst-details.html#190" class="tactic">case H3.</a> <a href="subst-details.html#191" class="tactic">apply IH to H1 *H4 *H6.</a> <a href="subst-details.html#192" class="tactic">apply IH to *H1 *H5 *H7.</a> <a href="subst-details.html#193" class="tactic">search.</a>
+    <a href="subst-details.html#194" class="tactic">apply ofsub_mem_sub to *H1 *H7.</a> <a href="subst-details.html#195" class="tactic">case H9.</a> <a href="subst-details.html#196" class="tactic">case H6.</a>
+  <a href="subst-details.html#197" class="tactic">case H3.</a> <a href="subst-details.html#198" class="tactic">apply IH to H1 *H4 *H7.</a> <a href="subst-details.html#199" class="tactic">apply IH to H1 *H5 *H8.</a>
+    <a href="subst-details.html#200" class="tactic">apply ofsub_weak1 to *H1 with T = top, x = n1.</a>
+    <a href="subst-details.html#201" class="tactic">apply ofsub_weak1 to *H10 with T = list top, x = n2.</a>
+    <a href="subst-details.html#202" class="tactic">apply IH to _ *H6 *H9 with G = of n2 (list top) :: of n1 top :: G.</a> <a href="subst-details.html#203" class="tactic">search.</a>
+    <a href="subst-details.html#204" class="tactic">apply ofsub_mem_sub to *H1 *H8.</a> <a href="subst-details.html#205" class="tactic">case H10.</a> <a href="subst-details.html#206" class="tactic">case H7.</a>
+  <a href="subst-details.html#207" class="tactic">case H3.</a> <a href="subst-details.html#208" class="tactic">apply IH to H1 *H4 *H7.</a> <a href="subst-details.html#209" class="tactic">apply IH to H1 *H5 *H8.</a>
+    <a href="subst-details.html#210" class="tactic">apply ofsub_weak1 to *H1 with T = top, x = n1.</a>
+    <a href="subst-details.html#211" class="tactic">apply IH to _ *H6 *H9 with G = of n1 top :: G.</a> <a href="subst-details.html#212" class="tactic">search.</a>
+    <a href="subst-details.html#213" class="tactic">apply ofsub_mem_sub to *H1 *H8.</a> <a href="subst-details.html#214" class="tactic">case H10.</a> <a href="subst-details.html#215" class="tactic">case H7.</a>
+  <a href="subst-details.html#216" class="tactic">apply ofsub_mem_sub to H1 H5.</a> <a href="subst-details.html#217" class="tactic">case H4.</a> <a href="subst-details.html#218" class="tactic">case H7.</a>
+   <a href="subst-details.html#219" class="tactic">case H3.</a> <a href="subst-details.html#220" class="tactic">apply ofsub_mem_sub to H1 H10.</a> <a href="subst-details.html#221" class="tactic">case H9.</a>
+   <a href="subst-details.html#222" class="tactic">apply ofsub_det to H1 H5 H10.</a> <a href="subst-details.html#223" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% composition</span>
+
+<a href="subst-details.html#224" class="command">Define comp : olist -> olist -> olist -> prop by
+; comp SS nil nil
+; nabla x, comp (SS x) (cp x (M x) :: TT x) (cp x (N x) :: UU x) :=
+    nabla x, {SS x |- cp (M x) (N x)} /\ comp (SS x) (TT x) (UU x)
+.</a>
+
+<a href="subst-details.html#225" class="command">Theorem comp_weak : forall SS TT UU M, nabla x,
+  comp SS TT UU -> comp (cp x (M x) :: SS) TT UU.</a>
+<div class="proof"><a href="subst-details.html#226" class="tactic">induction on 1.</a> <a href="subst-details.html#227" class="tactic">intros.</a> <a href="subst-details.html#228" class="tactic">case H1.</a>
+  <a href="subst-details.html#229" class="tactic">search.</a>
+  <a href="subst-details.html#230" class="tactic">permute (n1 n2) H3.</a> <a href="subst-details.html#231" class="tactic">apply IH to *H3 with M = M n2, x = n1.</a> <a href="subst-details.html#232" class="tactic">search.</a></div>
+<a href="subst-details.html#233" class="command">Theorem compose_var_lemma : forall G SS D TT W UU M N, nabla x,
+  ofsub (G x) (SS x) (D x) -> ofsub (D x) (TT x) (W x) ->
+  comp (SS x) (TT x) (UU x) ->
+  member (cp x (M x)) (TT x) -> {SS x |- cp (M x) (N x)} ->
+  {UU x |- cp x (N x)}.</a>
+<div class="proof"><a href="subst-details.html#234" class="tactic">induction on 3.</a> <a href="subst-details.html#235" class="tactic">intros.</a> <a href="subst-details.html#236" class="tactic">case H3.</a>
+  <a href="subst-details.html#237" class="tactic">case H4.</a>
+  <a href="subst-details.html#238" class="tactic">case H2.</a> <a href="subst-details.html#239" class="tactic">case H4.</a> <a href="subst-details.html#240" class="tactic">apply IH to H1 H9 H7 H10 H5.</a> <a href="subst-details.html#241" class="tactic">search.</a>
+  <a href="subst-details.html#242" class="tactic">case H2.</a> <a href="subst-details.html#243" class="tactic">case H4.</a>
+    <a href="subst-details.html#244" class="tactic">apply cp_det to H1 H5 H6.</a> <a href="subst-details.html#245" class="tactic">search.</a>
+    <a href="subst-details.html#246" class="tactic">apply ofsub_mem_sub to H9 H10.</a> <a href="subst-details.html#247" class="tactic">apply member_prune to H11.</a></div>
+<a href="subst-details.html#248" class="command">Theorem compose_map : forall G SS D TT W UU M N K T,
+  ofsub G SS D -> ofsub D TT W -> comp SS TT UU ->
+  {W |- of M T} -> {TT |- cp M N} -> {SS |- cp N K} -> {UU |- cp M K}.</a>
+<div class="proof"><a href="subst-details.html#249" class="tactic">induction on 4.</a> <a href="subst-details.html#250" class="tactic">intros.</a> <a href="subst-details.html#251" class="tactic">case H4.</a>
+  <a href="subst-details.html#252" class="tactic">case H5.</a> <a href="subst-details.html#253" class="tactic">case H6.</a>
+    <a href="subst-details.html#254" class="tactic">search.</a>
+    <a href="subst-details.html#255" class="tactic">apply ofsub_mem_sub to H1 H8.</a> <a href="subst-details.html#256" class="tactic">case H7.</a> <a href="subst-details.html#257" class="tactic">case H10.</a>
+    <a href="subst-details.html#258" class="tactic">apply ofsub_mem_sub to H2 H8.</a> <a href="subst-details.html#259" class="tactic">case H7.</a> <a href="subst-details.html#260" class="tactic">case H10.</a>
+  <a href="subst-details.html#261" class="tactic">case H5.</a> <a href="subst-details.html#262" class="tactic">case H6.</a>
+    <a href="subst-details.html#263" class="tactic">apply IH to H1 H2 H3 *H7 *H8 *H9.</a> <a href="subst-details.html#264" class="tactic">search.</a>
+    <a href="subst-details.html#265" class="tactic">apply ofsub_mem_sub to H1 H10.</a> <a href="subst-details.html#266" class="tactic">case H9.</a> <a href="subst-details.html#267" class="tactic">case H12.</a>
+    <a href="subst-details.html#268" class="tactic">apply ofsub_mem_sub to H2 H9.</a> <a href="subst-details.html#269" class="tactic">case H8.</a> <a href="subst-details.html#270" class="tactic">case H11.</a>
+  <a href="subst-details.html#271" class="tactic">case H5.</a> <a href="subst-details.html#272" class="tactic">case H6.</a>
+    <a href="subst-details.html#273" class="tactic">apply IH to H1 H2 H3 *H8 *H10 *H12.</a> <a href="subst-details.html#274" class="tactic">apply IH to H1 H2 H3 *H9 *H11 *H13.</a> <a href="subst-details.html#275" class="tactic">search.</a>
+    <a href="subst-details.html#276" class="tactic">apply ofsub_mem_sub to H1 H13.</a> <a href="subst-details.html#277" class="tactic">case H12.</a> <a href="subst-details.html#278" class="tactic">case H15.</a>
+    <a href="subst-details.html#279" class="tactic">apply ofsub_mem_sub to H2 H11.</a> <a href="subst-details.html#280" class="tactic">case H10.</a> <a href="subst-details.html#281" class="tactic">case H13.</a>
+  <a href="subst-details.html#282" class="tactic">case H5.</a> <a href="subst-details.html#283" class="tactic">case H6.</a>
+    <a href="subst-details.html#284" class="tactic">apply ofsub_weak1 to *H1 with T = S, x = n1.</a>
+    <a href="subst-details.html#285" class="tactic">apply ofsub_weak1 to *H2 with T = S, x = n1.</a>
+    <a href="subst-details.html#286" class="tactic">apply comp_weak to *H3 with x = n1, M = x\ x.</a>
+    <a href="subst-details.html#287" class="tactic">apply IH to _ _ _ H7 H8 H9 with G = of n1 S :: G, D = of n1 S :: D.</a> <a href="subst-details.html#288" class="tactic">search.</a>
+    <a href="subst-details.html#289" class="tactic">apply ofsub_mem_sub to H1 H10.</a> <a href="subst-details.html#290" class="tactic">case H9.</a> <a href="subst-details.html#291" class="tactic">case H12.</a>
+    <a href="subst-details.html#292" class="tactic">apply ofsub_mem_sub to H2 H9.</a> <a href="subst-details.html#293" class="tactic">case H8.</a> <a href="subst-details.html#294" class="tactic">case H11.</a>
+  <a href="subst-details.html#295" class="tactic">case H5.</a> <a href="subst-details.html#296" class="tactic">case H6.</a>
+    <a href="subst-details.html#297" class="tactic">apply ofsub_weak1 to *H1 with T = T, x = n1.</a>
+    <a href="subst-details.html#298" class="tactic">apply ofsub_weak1 to *H2 with T = T, x = n1.</a>
+    <a href="subst-details.html#299" class="tactic">apply comp_weak to *H3 with x = n1, M = x\ x.</a>
+    <a href="subst-details.html#300" class="tactic">apply IH to _ _ _ H7 H8 H9 with G = of n1 T :: G, D = of n1 T :: D.</a> <a href="subst-details.html#301" class="tactic">search.</a>
+    <a href="subst-details.html#302" class="tactic">apply ofsub_mem_sub to H1 H10.</a> <a href="subst-details.html#303" class="tactic">case H9.</a> <a href="subst-details.html#304" class="tactic">case H12.</a>
+    <a href="subst-details.html#305" class="tactic">apply ofsub_mem_sub to H2 H9.</a> <a href="subst-details.html#306" class="tactic">case H8.</a> <a href="subst-details.html#307" class="tactic">case H11.</a>
+  <a href="subst-details.html#308" class="tactic">case H5.</a> <a href="subst-details.html#309" class="tactic">case H6.</a> <a href="subst-details.html#310" class="tactic">search.</a>
+    <a href="subst-details.html#311" class="tactic">apply ofsub_mem_sub to H1 H8.</a> <a href="subst-details.html#312" class="tactic">case H7.</a> <a href="subst-details.html#313" class="tactic">case H10.</a>
+    <a href="subst-details.html#314" class="tactic">apply ofsub_mem_sub to H2 H8.</a> <a href="subst-details.html#315" class="tactic">case H7.</a> <a href="subst-details.html#316" class="tactic">case H10.</a>
+  <a href="subst-details.html#317" class="tactic">case H5.</a> <a href="subst-details.html#318" class="tactic">case H6.</a> <a href="subst-details.html#319" class="tactic">search.</a>
+    <a href="subst-details.html#320" class="tactic">apply ofsub_mem_sub to H1 H8.</a> <a href="subst-details.html#321" class="tactic">case H7.</a> <a href="subst-details.html#322" class="tactic">case H10.</a>
+    <a href="subst-details.html#323" class="tactic">apply ofsub_mem_sub to H2 H8.</a> <a href="subst-details.html#324" class="tactic">case H7.</a> <a href="subst-details.html#325" class="tactic">case H10.</a>
+  <a href="subst-details.html#326" class="tactic">case H5.</a> <a href="subst-details.html#327" class="tactic">case H6.</a>
+    <a href="subst-details.html#328" class="tactic">apply IH to H1 H2 H3 *H7 *H9 *H11.</a> <a href="subst-details.html#329" class="tactic">apply IH to H1 H2 H3 *H8 *H10 *H12.</a> <a href="subst-details.html#330" class="tactic">search.</a>
+    <a href="subst-details.html#331" class="tactic">apply ofsub_mem_sub to H1 H12.</a> <a href="subst-details.html#332" class="tactic">case H11.</a> <a href="subst-details.html#333" class="tactic">case H14.</a>
+    <a href="subst-details.html#334" class="tactic">apply ofsub_mem_sub to H2 H10.</a> <a href="subst-details.html#335" class="tactic">case H9.</a> <a href="subst-details.html#336" class="tactic">case H12.</a>
+  <a href="subst-details.html#337" class="tactic">case H5.</a> <a href="subst-details.html#338" class="tactic">case H6.</a>
+    <a href="subst-details.html#339" class="tactic">apply IH to H1 H2 H3 *H8 *H11 *H14.</a> <a href="subst-details.html#340" class="tactic">apply IH to H1 H2 H3 *H9 *H12 *H15.</a>
+    <a href="subst-details.html#341" class="tactic">apply ofsub_weak1 to *H2 with T = S, x = n1.</a>
+     <a href="subst-details.html#342" class="tactic">apply ofsub_weak1 to *H19 with T = list S, x = n2.</a>
+    <a href="subst-details.html#343" class="tactic">apply ofsub_weak1 to *H1 with T = S, x = n1.</a>
+     <a href="subst-details.html#344" class="tactic">apply ofsub_weak1 to *H21 with T = list S, x = n2.</a>
+    <a href="subst-details.html#345" class="tactic">apply comp_weak to *H3 with x = n1, M = x\ x.</a>
+     <a href="subst-details.html#346" class="tactic">apply comp_weak to *H23 with x = n2, M = x\ x.</a>
+    <a href="subst-details.html#347" class="tactic">apply IH to _ _ _ *H10 *H13 *H16
+     with G = of n2 (list S) :: of n1 S :: G,
+          D = of n2 (list S) :: of n1 S :: D.</a> <a href="subst-details.html#348" class="tactic">search.</a>
+    <a href="subst-details.html#349" class="tactic">apply ofsub_mem_sub to H1 H15.</a> <a href="subst-details.html#350" class="tactic">case H14.</a> <a href="subst-details.html#351" class="tactic">case H17.</a>
+    <a href="subst-details.html#352" class="tactic">apply ofsub_mem_sub to H2 H12.</a> <a href="subst-details.html#353" class="tactic">case H11.</a> <a href="subst-details.html#354" class="tactic">case H14.</a>
+  <a href="subst-details.html#355" class="tactic">case H5.</a> <a href="subst-details.html#356" class="tactic">case H6.</a>
+    <a href="subst-details.html#357" class="tactic">apply IH to H1 H2 H3 *H7 *H10 *H13.</a> <a href="subst-details.html#358" class="tactic">apply IH to H1 H2 H3 *H8 *H11 *H14.</a>
+    <a href="subst-details.html#359" class="tactic">apply ofsub_weak1 to *H2 with T = nat, x = n1.</a>
+    <a href="subst-details.html#360" class="tactic">apply ofsub_weak1 to *H1 with T = nat, x = n1.</a>
+    <a href="subst-details.html#361" class="tactic">apply comp_weak to *H3 with x = n1, M = x\ x.</a>
+    <a href="subst-details.html#362" class="tactic">apply IH to _ _ _ *H9 *H12 *H15
+     with G = of n1 nat :: G, D = of n1 nat :: D.</a> <a href="subst-details.html#363" class="tactic">search.</a>
+    <a href="subst-details.html#364" class="tactic">apply ofsub_mem_sub to H1 H14.</a> <a href="subst-details.html#365" class="tactic">case H13.</a> <a href="subst-details.html#366" class="tactic">case H16.</a>
+    <a href="subst-details.html#367" class="tactic">apply ofsub_mem_sub to H2 H11.</a> <a href="subst-details.html#368" class="tactic">case H10.</a> <a href="subst-details.html#369" class="tactic">case H13.</a>
+  <a href="subst-details.html#370" class="tactic">apply ofsub_mem_src to H2 H8.</a> <a href="subst-details.html#371" class="tactic">case H7.</a> <a href="subst-details.html#372" class="tactic">case H10.</a>
+   <a href="subst-details.html#373" class="tactic">case H5.</a> <a href="subst-details.html#374" class="tactic">apply ofsub_mem_sub to H2 H13.</a> <a href="subst-details.html#375" class="tactic">case H12.</a> <a href="subst-details.html#376" class="tactic">clear H15.</a>
+   <a href="subst-details.html#377" class="tactic">apply ofsub_det to _ H9 H13.</a> <a href="subst-details.html#378" class="tactic">clear H13.</a>
+   <a href="subst-details.html#379" class="tactic">apply ofsub_ctx to H2.</a> <a href="subst-details.html#380" class="tactic">clear H17.</a> <a href="subst-details.html#381" class="tactic">apply ctx_uniq to *H18 *H14 *H8.</a> <a href="subst-details.html#382" class="tactic">clear H16.</a>
+   <a href="subst-details.html#383" class="tactic">apply compose_var_lemma to H1 H2 H3 H9 H6.</a> <a href="subst-details.html#384" class="tactic">search.</a></div>
+<a href="subst-details.html#385" class="command">Theorem compose_exists : forall G SS D TT W,
+  ofsub G SS D -> ofsub D TT W -> exists UU, comp SS TT UU /\ ofsub G UU W.</a>
+<div class="proof"><a href="subst-details.html#386" class="tactic">induction on 2.</a> <a href="subst-details.html#387" class="tactic">intros.</a> <a href="subst-details.html#388" class="tactic">case H2.</a>
+  <a href="subst-details.html#389" class="tactic">witness nil.</a> <a href="subst-details.html#390" class="tactic">apply ofsub_ctx to H1.</a> <a href="subst-details.html#391" class="tactic">search.</a>
+  <a href="subst-details.html#392" class="tactic">apply IH to H1 H4.</a> <a href="subst-details.html#393" class="tactic">apply subst to H1 H3.</a> <a href="subst-details.html#394" class="tactic">search.</a></div>
+<a href="subst-details.html#395" class="command">Theorem compose : forall G SS D TT W M N K T,
+  ofsub G SS D -> ofsub D TT W ->
+  {W |- of M T} -> {TT |- cp M N} -> {SS |- cp N K} ->
+  exists UU, ofsub G UU W /\ {UU |- cp M K}.</a>
+<div class="proof"><a href="subst-details.html#396" class="tactic">intros.</a>
+<a href="subst-details.html#397" class="tactic">apply compose_exists to H1 H2.</a>
+<a href="subst-details.html#398" class="tactic">apply compose_map to H1 H2 H6 H3 H4 H5.</a>
+<a href="subst-details.html#399" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%% strengthening</span>
+
+
+<a href="subst-details.html#400" class="command">Theorem ofsub_strength : forall G SS D DD,
+  ctx D -> ctx DD ->
+  (forall E, member E D -> member E DD) ->
+  ofsub G SS DD ->
+  exists TT, ofsub G TT D /\
+    forall E, member E SS -> member E TT \/ exists X M, E = cp X M /\ fresh X D.</a>
+<div class="proof"><a href="subst-details.html#401" class="tactic">induction on 1.</a> <a href="subst-details.html#402" class="tactic">intros.</a> <a href="subst-details.html#403" class="tactic">case H1.</a>
+  <a href="subst-details.html#404" class="tactic">witness nil.</a> <a href="subst-details.html#405" class="tactic">apply ofsub_ctx to H4.</a> <a href="subst-details.html#406" class="tactic">split.</a> <a href="subst-details.html#407" class="tactic">search.</a> <a href="subst-details.html#408" class="tactic">intros.</a>
+    <a href="subst-details.html#409" class="tactic">apply ofsub_mem_sub to H4 H7.</a> <a href="subst-details.html#410" class="tactic">case H9.</a> <a href="subst-details.html#411" class="tactic">search.</a>
+  <a href="subst-details.html#412" class="tactic">assert forall E, member E G1 -> member E (DD n1).</a> <a href="subst-details.html#413" class="tactic">intros.</a>
+    <a href="subst-details.html#414" class="tactic">assert member (E n1) (of n1 T :: G1).</a> <a href="subst-details.html#415" class="tactic">apply *H3 to *H7.</a> <a href="subst-details.html#416" class="tactic">search.</a>
+   <a href="subst-details.html#417" class="tactic">apply IH to H5 H2 H6 H4.</a>
+   <a href="subst-details.html#418" class="tactic">apply H3 to _ with E = of n1 T.</a> <a href="subst-details.html#419" class="tactic">apply subst to H4 _ with M = n1, T = T.</a>
+   <a href="subst-details.html#420" class="tactic">witness cp n1 (SM n1) :: TT n1.</a> <a href="subst-details.html#421" class="tactic">split.</a> <a href="subst-details.html#422" class="tactic">search.</a> <a href="subst-details.html#423" class="tactic">intros.</a>
+   <a href="subst-details.html#424" class="tactic">apply *H8 to H12.</a> <a href="subst-details.html#425" class="tactic">case H13.</a> <a href="subst-details.html#426" class="tactic">search.</a> <a href="subst-details.html#427" class="tactic">case H14.</a> <a href="subst-details.html#428" class="tactic">search.</a>
+   <a href="subst-details.html#429" class="tactic">case H10.</a> <a href="subst-details.html#430" class="tactic">apply ofsub_mem_sub to H4 H16.</a> <a href="subst-details.html#431" class="tactic">case H15.</a>
+   <a href="subst-details.html#432" class="tactic">apply ofsub_det to H4 H12 H16.</a> <a href="subst-details.html#433" class="tactic">search.</a></div>
+<a href="subst-details.html#434" class="command">Theorem cp_strength : forall G SS D M N T TT,
+  ofsub G SS D -> {D |- of M T} ->
+  (forall E, member E TT -> member E SS \/ exists X M, E = cp X M /\ fresh X D) ->
+  {TT |- cp M N} ->
+  {SS |- cp M N}.</a>
+<div class="proof"><a href="subst-details.html#435" class="tactic">induction on 4.</a> <a href="subst-details.html#436" class="tactic">intros.</a> <a href="subst-details.html#437" class="tactic">case H4.</a>
+  <a href="subst-details.html#438" class="tactic">search.</a>
+  <a href="subst-details.html#439" class="tactic">case H2.</a> <a href="subst-details.html#440" class="tactic">apply IH to H1 H6 H3 H5.</a> <a href="subst-details.html#441" class="tactic">search.</a>
+    <a href="subst-details.html#442" class="tactic">apply ofsub_mem_src to H1 H7.</a> <a href="subst-details.html#443" class="tactic">case H6.</a> <a href="subst-details.html#444" class="tactic">case H9.</a>
+  <a href="subst-details.html#445" class="tactic">case H2.</a> <a href="subst-details.html#446" class="tactic">apply IH to H1 H8 H3 H5.</a> <a href="subst-details.html#447" class="tactic">apply IH to H1 H9 H3 H6.</a> <a href="subst-details.html#448" class="tactic">search.</a>
+    <a href="subst-details.html#449" class="tactic">apply ofsub_mem_src to H1 H8.</a> <a href="subst-details.html#450" class="tactic">case H7.</a> <a href="subst-details.html#451" class="tactic">case H10.</a>
+  <a href="subst-details.html#452" class="tactic">case H2.</a>
+    <a href="subst-details.html#453" class="tactic">apply IH to _ *H6 _ *H5
+     with G = of n1 S :: G, D = of n1 S :: D,
+          SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</a>
+       <a href="subst-details.html#454" class="tactic">intros.</a> <a href="subst-details.html#455" class="tactic">case H7.</a> <a href="subst-details.html#456" class="tactic">search.</a> <a href="subst-details.html#457" class="tactic">apply *H3 to H8.</a> <a href="subst-details.html#458" class="tactic">case H9.</a>
+         <a href="subst-details.html#459" class="tactic">search.</a>
+         <a href="subst-details.html#460" class="tactic">case H10.</a> <a href="subst-details.html#461" class="tactic">search.</a>
+         <a href="subst-details.html#462" class="tactic">apply member_prune to H8.</a>
+       <a href="subst-details.html#463" class="tactic">apply ofsub_weak1 to H1 with T = S.</a> <a href="subst-details.html#464" class="tactic">search.</a>
+    <a href="subst-details.html#465" class="tactic">search.</a>
+    <a href="subst-details.html#466" class="tactic">apply ofsub_mem_src to H1 H7.</a> <a href="subst-details.html#467" class="tactic">case H6.</a> <a href="subst-details.html#468" class="tactic">case H9.</a>
+  <a href="subst-details.html#469" class="tactic">case H2.</a>
+    <a href="subst-details.html#470" class="tactic">apply IH to _ *H6 _ *H5
+     with G = of n1 T :: G, D = of n1 T :: D,
+          SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</a>
+       <a href="subst-details.html#471" class="tactic">intros.</a> <a href="subst-details.html#472" class="tactic">case H7.</a> <a href="subst-details.html#473" class="tactic">search.</a> <a href="subst-details.html#474" class="tactic">apply *H3 to H8.</a> <a href="subst-details.html#475" class="tactic">case H9.</a>
+         <a href="subst-details.html#476" class="tactic">search.</a>
+         <a href="subst-details.html#477" class="tactic">case H10.</a> <a href="subst-details.html#478" class="tactic">search.</a>
+         <a href="subst-details.html#479" class="tactic">apply member_prune to H8.</a>
+       <a href="subst-details.html#480" class="tactic">apply ofsub_weak1 to H1 with T = T.</a> <a href="subst-details.html#481" class="tactic">search.</a>
+    <a href="subst-details.html#482" class="tactic">search.</a>
+    <a href="subst-details.html#483" class="tactic">apply ofsub_mem_src to H1 H7.</a> <a href="subst-details.html#484" class="tactic">case H6.</a> <a href="subst-details.html#485" class="tactic">case H9.</a>
+  <a href="subst-details.html#486" class="tactic">search.</a>
+  <a href="subst-details.html#487" class="tactic">search.</a>
+  <a href="subst-details.html#488" class="tactic">case H2.</a> <a href="subst-details.html#489" class="tactic">apply IH to H1 H7 H3 H5.</a> <a href="subst-details.html#490" class="tactic">apply IH to H1 H8 H3 H6.</a> <a href="subst-details.html#491" class="tactic">search.</a>
+    <a href="subst-details.html#492" class="tactic">apply ofsub_mem_src to H1 H8.</a> <a href="subst-details.html#493" class="tactic">case H7.</a> <a href="subst-details.html#494" class="tactic">case H10.</a>
+  <a href="subst-details.html#495" class="tactic">case H2.</a>
+    <a href="subst-details.html#496" class="tactic">apply IH to H1 *H9 H3 *H5.</a> <a href="subst-details.html#497" class="tactic">apply IH to H1 *H10 H3 *H6.</a>
+    <a href="subst-details.html#498" class="tactic">apply IH to _ *H11 _ *H7
+     with G = of n2 (list S) :: of n1 S :: G,
+          D = of n2 (list S) :: of n1 S :: D,
+          SS = cp n2 n2 :: cp n1 n1 :: SS,
+          TT = cp n2 n2 :: cp n1 n1 :: TT.</a>
+       <a href="subst-details.html#499" class="tactic">intros.</a> <a href="subst-details.html#500" class="tactic">case H14.</a> <a href="subst-details.html#501" class="tactic">search.</a> <a href="subst-details.html#502" class="tactic">case H15.</a> <a href="subst-details.html#503" class="tactic">search.</a>
+         <a href="subst-details.html#504" class="tactic">apply *H3 to H16.</a> <a href="subst-details.html#505" class="tactic">case H17.</a> <a href="subst-details.html#506" class="tactic">search.</a>
+         <a href="subst-details.html#507" class="tactic">case H18.</a> <a href="subst-details.html#508" class="tactic">search.</a> <a href="subst-details.html#509" class="tactic">apply member_prune to H16.</a>
+         <a href="subst-details.html#510" class="tactic">apply member_prune to H16.</a> <a href="subst-details.html#511" class="tactic">apply member_prune to H16.</a>
+       <a href="subst-details.html#512" class="tactic">apply ofsub_weak1 to *H1 with T = S.</a> <a href="subst-details.html#513" class="tactic">apply ofsub_weak1 to *H14 with T = list S.</a>
+         <a href="subst-details.html#514" class="tactic">search.</a>
+    <a href="subst-details.html#515" class="tactic">search.</a>
+    <a href="subst-details.html#516" class="tactic">apply ofsub_mem_src to H1 H9.</a> <a href="subst-details.html#517" class="tactic">case H8.</a> <a href="subst-details.html#518" class="tactic">case H11.</a>
+  <a href="subst-details.html#519" class="tactic">case H2.</a>
+    <a href="subst-details.html#520" class="tactic">apply IH to H1 *H8 H3 *H5.</a> <a href="subst-details.html#521" class="tactic">apply IH to H1 *H9 H3 *H6.</a>
+    <a href="subst-details.html#522" class="tactic">apply IH to _ *H10 _ *H7
+     with G = of n1 nat :: G, D = of n1 nat :: D,
+          SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</a>
+       <a href="subst-details.html#523" class="tactic">intros.</a> <a href="subst-details.html#524" class="tactic">case H13.</a> <a href="subst-details.html#525" class="tactic">search.</a> <a href="subst-details.html#526" class="tactic">apply *H3 to H14.</a> <a href="subst-details.html#527" class="tactic">case H15.</a>
+         <a href="subst-details.html#528" class="tactic">search.</a> <a href="subst-details.html#529" class="tactic">case H16.</a> <a href="subst-details.html#530" class="tactic">search.</a> <a href="subst-details.html#531" class="tactic">apply member_prune to H14.</a>
+       <a href="subst-details.html#532" class="tactic">apply ofsub_weak1 to H1 with T = nat.</a> <a href="subst-details.html#533" class="tactic">search.</a>
+    <a href="subst-details.html#534" class="tactic">search.</a>
+    <a href="subst-details.html#535" class="tactic">apply ofsub_mem_src to H1 H9.</a> <a href="subst-details.html#536" class="tactic">case H8.</a> <a href="subst-details.html#537" class="tactic">case H11.</a>
+      <a href="subst-details.html#538" class="tactic">apply *H3 to H6.</a> <a href="subst-details.html#539" class="tactic">case H7.</a> <a href="subst-details.html#540" class="tactic">apply ofsub_mem_sub to H1 H8.</a> <a href="subst-details.html#541" class="tactic">case H5.</a> <a href="subst-details.html#542" class="tactic">search.</a>
+      <a href="subst-details.html#543" class="tactic">case H5.</a> <a href="subst-details.html#544" class="tactic">case H8.</a> <a href="subst-details.html#545" class="tactic">apply ofsub_sub_prune to H1.</a> <a href="subst-details.html#546" class="tactic">case H2.</a>
+        <a href="subst-details.html#547" class="tactic">apply ofsub_mem_src to H1 H10.</a> <a href="subst-details.html#548" class="tactic">case H9.</a> <a href="subst-details.html#549" class="tactic">apply member_prune to H10.</a></div>
+</pre>
+</div>
+
+</body>
+</html>
