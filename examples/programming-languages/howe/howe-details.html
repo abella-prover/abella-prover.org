@@ -12934,7 +12934,7 @@ H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n2 n1) T
 Subgoal 11.2 is:
  howe G SM TN T
 
-howe_substitutive < <b>assert exists SM5, y\x\SM4 x y = x\y\SM5 x y.</b>
+howe_substitutive < <b>apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR, SM = lcase SM2 SM3 (k\h\SM4 h k).</b>
 </pre>
 <a name="386"></a>
 <pre class="code">
@@ -12975,102 +12975,7 @@ H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n2 n1) T
-H38 : exists SM5, y\x\SM4 x y = x\y\SM5 x y
-============================
- howe G (lcase SM1 SN SR) TN T
-
-Subgoal 11.2 is:
- howe G SM TN T
-
-howe_substitutive < <b>case H38.</b>
-</pre>
-<a name="387"></a>
-<pre class="code">
-Subgoal 11.1:
-
-Variables: G SS TT D N T TN S MM HH RR R H M1 SR SN SM1 SM2 SM3 SM5
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty T}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H7 : {TT |- cp N TN}
-H8 : {ty S}
-H9 : howe D M1 MM (list S) *
-H10 : howe D H HH T *
-H11 : howe (of n2 (list S) :: of n1 S :: D) (R n1 n2) (RR n1 n2) T *
-H12 : osim D (lcase MM HH RR) N T
-H13 : {SS |- cp M1 SM1}
-H14 : {SS |- cp H SN}
-H15 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SR n1 n2)}
-H16 : ctx G
-H17 : ctx D
-H19 : {D |- of M1 (list S)}
-H20 : {D |- of MM (list S)}
-H22 : {D |- of H T}
-H23 : {D |- of HH T}
-H25 : {D, of n1 S, of n2 (list S) |- of (R n1 n2) T}
-H26 : {D, of n1 S, of n2 (list S) |- of (RR n1 n2) T}
-H28 : ofsub (of n2 (list S) :: of n1 S :: G) TT D
-H29 : {TT |- cp MM SM2}
-H30 : {G |- of SM2 (list S)}
-H31 : {TT |- cp HH SM3}
-H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM5 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM5 n1 n2) T}
-H35 : howe G SM1 SM2 (list S)
-H36 : howe G SN SM3 T
-H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM5 n1 n2) T
-============================
- howe G (lcase SM1 SN SR) TN T
-
-Subgoal 11.2 is:
- howe G SM TN T
-
-howe_substitutive < <b>apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR, SM = lcase SM2 SM3 SM5.</b>
-</pre>
-<a name="388"></a>
-<pre class="code">
-Subgoal 11.1:
-
-Variables: G SS TT D N T TN S MM HH RR R H M1 SR SN SM1 SM2 SM3 SM5
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty T}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H7 : {TT |- cp N TN}
-H8 : {ty S}
-H9 : howe D M1 MM (list S) *
-H10 : howe D H HH T *
-H11 : howe (of n2 (list S) :: of n1 S :: D) (R n1 n2) (RR n1 n2) T *
-H12 : osim D (lcase MM HH RR) N T
-H13 : {SS |- cp M1 SM1}
-H14 : {SS |- cp H SN}
-H15 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SR n1 n2)}
-H16 : ctx G
-H17 : ctx D
-H19 : {D |- of M1 (list S)}
-H20 : {D |- of MM (list S)}
-H22 : {D |- of H T}
-H23 : {D |- of HH T}
-H25 : {D, of n1 S, of n2 (list S) |- of (R n1 n2) T}
-H26 : {D, of n1 S, of n2 (list S) |- of (RR n1 n2) T}
-H28 : ofsub (of n2 (list S) :: of n1 S :: G) TT D
-H29 : {TT |- cp MM SM2}
-H30 : {G |- of SM2 (list S)}
-H31 : {TT |- cp HH SM3}
-H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM5 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM5 n1 n2) T}
-H35 : howe G SM1 SM2 (list S)
-H36 : howe G SN SM3 T
-H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM5 n1 n2) T
-H39 : osim G (lcase SM2 SM3 SM5) TN T
+H38 : osim G (lcase SM2 SM3 (k\h\SM4 h k)) TN T
 ============================
  howe G (lcase SM1 SN SR) TN T
 
@@ -13079,7 +12984,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="389"></a>
+<a name="387"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13104,7 +13009,7 @@ H14 : member F SS
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H14.</b>
 </pre>
-<a name="390"></a>
+<a name="388"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13132,7 +13037,7 @@ H17 : {G |- of M2 T1}
 
 howe_substitutive < <b>case H13.</b>
 </pre>
-<a name="391"></a>
+<a name="389"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13160,7 +13065,7 @@ H17 : {G |- of SM T1}
 howe_substitutive < <b>case H16.</b>
 Proof completed.
 </pre>
-<a name="392"></a>
+<a name="390"></a>
 <pre class="code">
 Abella < 
 </pre>
