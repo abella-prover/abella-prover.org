@@ -634,7 +634,7 @@ IH : forall T L K, ctxs L K -> {L |- term T}* -> {K |- normal T} \/
        {non_normal T}
 H1 : ctxs L K
 H3 : {L, term n1 |- term (R n1)}*
-H4 : {K, neutral n1 |- normal (R n1)} \/ {non_normal (R n1)}
+H4 : {neutral n1 :: K |- normal (R n1)} \/ {non_normal (R n1)}
 ============================
  {K |- normal (abs R)} \/ {non_normal (abs R)}
 
@@ -760,7 +760,7 @@ total < <b>apply total_ext to _ H1.</b>
 
 Variables: T
 H1 : {term T}
-H2 : {normal T} \/ {non_normal T}
+H2 : {nil |- normal T} \/ {non_normal T}
 ============================
  {normal T} \/ {non_normal T}
 
