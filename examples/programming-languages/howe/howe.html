@@ -368,115 +368,115 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="howe-details.html#247" class="tactic">apply howe_substitutive_var to H1 H3 H4 H5 H8 H10 H7 H9.</a>
   <a href="howe-details.html#248" class="tactic">search.</a>
   <span class="comment">% top</span>
-  <a href="howe-details.html#249" class="tactic">assert SM = unit.</a> <a href="howe-details.html#250" class="tactic">case H6.</a> <a href="howe-details.html#251" class="tactic">search.</a>
+  <a href="howe-details.html#249" class="tactic">case H6.</a>
+    <a href="howe-details.html#250" class="tactic">apply osim_cus to H8 H4 _ H7.</a>
+    <a href="howe-details.html#251" class="tactic">search.</a>
     <a href="howe-details.html#252" class="tactic">apply ofsub_mem_sub to H3 H10.</a> <a href="howe-details.html#253" class="tactic">case H9.</a> <a href="howe-details.html#254" class="tactic">case H12.</a>
-    <a href="howe-details.html#255" class="tactic">case H9.</a>
-   <a href="howe-details.html#256" class="tactic">apply osim_cus to H8 H4 _ H7 with SM = unit.</a> <a href="howe-details.html#257" class="tactic">search.</a>
   <span class="comment">% zero</span>
-  <a href="howe-details.html#258" class="tactic">assert SM = zero.</a> <a href="howe-details.html#259" class="tactic">case H6.</a> <a href="howe-details.html#260" class="tactic">search.</a>
-    <a href="howe-details.html#261" class="tactic">apply ofsub_mem_sub to H3 H10.</a> <a href="howe-details.html#262" class="tactic">case H9.</a> <a href="howe-details.html#263" class="tactic">case H12.</a>
-    <a href="howe-details.html#264" class="tactic">case H9.</a>
-   <a href="howe-details.html#265" class="tactic">apply osim_cus to H8 H4 _ H7 with SM = zero.</a> <a href="howe-details.html#266" class="tactic">search.</a>
+  <a href="howe-details.html#255" class="tactic">case H6.</a>
+    <a href="howe-details.html#256" class="tactic">apply osim_cus to H8 H4 _ H7.</a>
+    <a href="howe-details.html#257" class="tactic">search.</a>
+    <a href="howe-details.html#258" class="tactic">apply ofsub_mem_sub to H3 H10.</a> <a href="howe-details.html#259" class="tactic">case H9.</a> <a href="howe-details.html#260" class="tactic">case H12.</a>
   <span class="comment">% succ</span>
-  <a href="howe-details.html#267" class="tactic">case H6.</a>
-    <a href="howe-details.html#268" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#269" class="tactic">apply subst to H4 H13.</a>
-    <a href="howe-details.html#270" class="tactic">apply IH to H1 H8 H3 H4 H5 H10 H14.</a>
-    <a href="howe-details.html#271" class="tactic">apply osim_cus to H9 H4 _ H7 with M = succ MM, SM = succ SM2.</a>
-    <a href="howe-details.html#272" class="tactic">search.</a>
-    <a href="howe-details.html#273" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#274" class="tactic">case H10.</a> <a href="howe-details.html#275" class="tactic">case H13.</a>
+  <a href="howe-details.html#261" class="tactic">case H6.</a>
+    <a href="howe-details.html#262" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#263" class="tactic">apply subst to H4 H13.</a>
+    <a href="howe-details.html#264" class="tactic">apply IH to H1 H8 H3 H4 H5 H10 H14.</a>
+    <a href="howe-details.html#265" class="tactic">apply osim_cus to H9 H4 _ H7 with M = succ MM.</a>
+    <a href="howe-details.html#266" class="tactic">search.</a>
+    <a href="howe-details.html#267" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#268" class="tactic">case H10.</a> <a href="howe-details.html#269" class="tactic">case H13.</a>
   <span class="comment">% ncase</span>
-  <a href="howe-details.html#276" class="tactic">case H6.</a>
-    <a href="howe-details.html#277" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#278" class="tactic">apply subst to H4 H17.</a>
-    <a href="howe-details.html#279" class="tactic">apply IH to _ H8 H3 H4 H5 H12 H18.</a>
-    <a href="howe-details.html#280" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#281" class="tactic">apply subst to H4 H23.</a>
-    <a href="howe-details.html#282" class="tactic">apply IH to H1 H9 H3 H4 H5 H13 H24.</a>
-    <a href="howe-details.html#283" class="tactic">apply ofsub_ctx to H3.</a>
-    <a href="howe-details.html#284" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = nat.</a>
-    <a href="howe-details.html#285" class="tactic">apply ofsub_weak1 to *H3 with T = nat.</a>
-    <a href="howe-details.html#286" class="tactic">apply ofsub_weak1 to H4 with T = nat.</a>
-    <a href="howe-details.html#287" class="tactic">apply howe_ty to H10.</a>
-    <a href="howe-details.html#288" class="tactic">apply subst to _ H34 with G = of n1 nat :: G, SS = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#289" class="tactic">apply IH to H1 H10 _ _ H29 H14 H35
+  <a href="howe-details.html#270" class="tactic">case H6.</a>
+    <a href="howe-details.html#271" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#272" class="tactic">apply subst to H4 H17.</a>
+    <a href="howe-details.html#273" class="tactic">apply IH to _ H8 H3 H4 H5 H12 H18.</a>
+    <a href="howe-details.html#274" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#275" class="tactic">apply subst to H4 H23.</a>
+    <a href="howe-details.html#276" class="tactic">apply IH to H1 H9 H3 H4 H5 H13 H24.</a>
+    <a href="howe-details.html#277" class="tactic">apply ofsub_ctx to H3.</a>
+    <a href="howe-details.html#278" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = nat.</a>
+    <a href="howe-details.html#279" class="tactic">apply ofsub_weak1 to *H3 with T = nat.</a>
+    <a href="howe-details.html#280" class="tactic">apply ofsub_weak1 to H4 with T = nat.</a>
+    <a href="howe-details.html#281" class="tactic">apply howe_ty to H10.</a>
+    <a href="howe-details.html#282" class="tactic">apply subst to _ H34 with G = of n1 nat :: G, SS = cp n1 n1 :: TT.</a>
+    <a href="howe-details.html#283" class="tactic">apply IH to H1 H10 _ _ H29 H14 H35
      with G = of n1 nat :: G, D = of n1 nat :: D,
           SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#290" class="tactic">apply osim_cus to H11 H4 _ H7 with M = ncase MM HH RR, SM = ncase SM2 SM3 SM4.</a>
-    <a href="howe-details.html#291" class="tactic">search.</a>
-    <a href="howe-details.html#292" class="tactic">apply ofsub_mem_sub to H3 H13.</a> <a href="howe-details.html#293" class="tactic">case H12.</a> <a href="howe-details.html#294" class="tactic">case H15.</a>
+    <a href="howe-details.html#284" class="tactic">apply osim_cus to H11 H4 _ H7 with M = ncase MM HH RR.</a>
+    <a href="howe-details.html#285" class="tactic">search.</a>
+    <a href="howe-details.html#286" class="tactic">apply ofsub_mem_sub to H3 H13.</a> <a href="howe-details.html#287" class="tactic">case H12.</a> <a href="howe-details.html#288" class="tactic">case H15.</a>
   <span class="comment">% lam</span>
-  <a href="howe-details.html#295" class="tactic">case H6.</a>
-    <a href="howe-details.html#296" class="tactic">case H1.</a>
-    <a href="howe-details.html#297" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = S.</a>
-    <a href="howe-details.html#298" class="tactic">apply ofsub_weak1 to *H3 with T = S, x = n1.</a>
-    <a href="howe-details.html#299" class="tactic">apply ofsub_weak1 to H4 with T = S, x = n1.</a>
-    <a href="howe-details.html#300" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#301" class="tactic">case H16.</a> <a href="howe-details.html#302" class="tactic">apply ofsub_ctx to H14.</a> <a href="howe-details.html#303" class="tactic">case H20.</a> <a href="howe-details.html#304" class="tactic">clear H21.</a>
-    <a href="howe-details.html#305" class="tactic">apply subst to _ H18 with G = of n1 S :: G, SS = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#306" class="tactic">apply IH to H12 H8 _ _ H13 H10 H23
+  <a href="howe-details.html#289" class="tactic">case H6.</a>
+    <a href="howe-details.html#290" class="tactic">case H1.</a>
+    <a href="howe-details.html#291" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = S.</a>
+    <a href="howe-details.html#292" class="tactic">apply ofsub_weak1 to *H3 with T = S, x = n1.</a>
+    <a href="howe-details.html#293" class="tactic">apply ofsub_weak1 to H4 with T = S, x = n1.</a>
+    <a href="howe-details.html#294" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#295" class="tactic">case H16.</a> <a href="howe-details.html#296" class="tactic">apply ofsub_ctx to H14.</a> <a href="howe-details.html#297" class="tactic">case H20.</a> <a href="howe-details.html#298" class="tactic">clear H21.</a>
+    <a href="howe-details.html#299" class="tactic">apply subst to _ H18 with G = of n1 S :: G, SS = cp n1 n1 :: TT.</a>
+    <a href="howe-details.html#300" class="tactic">apply IH to H12 H8 _ _ H13 H10 H23
      with G = of n1 S :: G,
           D = of n1 S :: D,
           SS = cp n1 n1 :: SS,
           TT = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#307" class="tactic">apply osim_cus to H9 H4 _ H7 with M = lam RR, SM = lam SM1.</a>
-    <a href="howe-details.html#308" class="tactic">search.</a>
-    <a href="howe-details.html#309" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#310" class="tactic">case H10.</a> <a href="howe-details.html#311" class="tactic">case H13.</a>
+    <a href="howe-details.html#301" class="tactic">apply osim_cus to H9 H4 _ H7 with M = lam RR.</a>
+    <a href="howe-details.html#302" class="tactic">search.</a>
+    <a href="howe-details.html#303" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#304" class="tactic">case H10.</a> <a href="howe-details.html#305" class="tactic">case H13.</a>
   <span class="comment">% fix</span>
-  <a href="howe-details.html#312" class="tactic">case H6.</a>
-    <a href="howe-details.html#313" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = T.</a>
-    <a href="howe-details.html#314" class="tactic">apply ofsub_weak1 to *H3 with T = T, x = n1.</a>
-    <a href="howe-details.html#315" class="tactic">apply ofsub_weak1 to H4 with T = T, x = n1.</a>
-    <a href="howe-details.html#316" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#317" class="tactic">case H14.</a> <a href="howe-details.html#318" class="tactic">apply ofsub_ctx to H12.</a> <a href="howe-details.html#319" class="tactic">case H18.</a> <a href="howe-details.html#320" class="tactic">clear H19.</a>
-    <a href="howe-details.html#321" class="tactic">apply subst to _ H16 with G = of n1 T :: G, SS = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#322" class="tactic">apply IH to H1 H8 _ _ H11 H10 H21
+  <a href="howe-details.html#306" class="tactic">case H6.</a>
+    <a href="howe-details.html#307" class="tactic">apply howesub_frame to _ H3 H4 H5 with T = T.</a>
+    <a href="howe-details.html#308" class="tactic">apply ofsub_weak1 to *H3 with T = T, x = n1.</a>
+    <a href="howe-details.html#309" class="tactic">apply ofsub_weak1 to H4 with T = T, x = n1.</a>
+    <a href="howe-details.html#310" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#311" class="tactic">case H14.</a> <a href="howe-details.html#312" class="tactic">apply ofsub_ctx to H12.</a> <a href="howe-details.html#313" class="tactic">case H18.</a> <a href="howe-details.html#314" class="tactic">clear H19.</a>
+    <a href="howe-details.html#315" class="tactic">apply subst to _ H16 with G = of n1 T :: G, SS = cp n1 n1 :: TT.</a>
+    <a href="howe-details.html#316" class="tactic">apply IH to H1 H8 _ _ H11 H10 H21
      with G = of n1 T :: G, D = of n1 T :: D,
           SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#323" class="tactic">apply osim_cus to H9 H4 _ H7 with M = fix RR, SM = fix SM1.</a>
-    <a href="howe-details.html#324" class="tactic">search.</a>
-    <a href="howe-details.html#325" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#326" class="tactic">case H10.</a> <a href="howe-details.html#327" class="tactic">case H13.</a>
+    <a href="howe-details.html#317" class="tactic">apply osim_cus to H9 H4 _ H7 with M = fix RR.</a>
+    <a href="howe-details.html#318" class="tactic">search.</a>
+    <a href="howe-details.html#319" class="tactic">apply ofsub_mem_sub to H3 H11.</a> <a href="howe-details.html#320" class="tactic">case H10.</a> <a href="howe-details.html#321" class="tactic">case H13.</a>
   <span class="comment">% app</span>
-  <a href="howe-details.html#328" class="tactic">case H6.</a>
-    <a href="howe-details.html#329" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#330" class="tactic">apply subst to H4 H16.</a>
-    <a href="howe-details.html#331" class="tactic">apply IH to _ H9 H3 H4 H5 H12 H17.</a>
-    <a href="howe-details.html#332" class="tactic">apply howe_ty to H10.</a> <a href="howe-details.html#333" class="tactic">apply subst to H4 H22.</a>
-    <a href="howe-details.html#334" class="tactic">apply IH to _ H10 H3 H4 H5 H13 H23.</a>
-    <a href="howe-details.html#335" class="tactic">apply osim_cus to H11 H4 _ H7 with M = app FF MM, SM = app SM2 SM3.</a>
-    <a href="howe-details.html#336" class="tactic">search.</a>
-    <a href="howe-details.html#337" class="tactic">apply ofsub_mem_sub to H3 H13.</a> <a href="howe-details.html#338" class="tactic">case H12.</a> <a href="howe-details.html#339" class="tactic">case H15.</a>
+  <a href="howe-details.html#322" class="tactic">case H6.</a>
+    <a href="howe-details.html#323" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#324" class="tactic">apply subst to H4 H16.</a>
+    <a href="howe-details.html#325" class="tactic">apply IH to _ H9 H3 H4 H5 H12 H17.</a>
+    <a href="howe-details.html#326" class="tactic">apply howe_ty to H10.</a> <a href="howe-details.html#327" class="tactic">apply subst to H4 H22.</a>
+    <a href="howe-details.html#328" class="tactic">apply IH to _ H10 H3 H4 H5 H13 H23.</a>
+    <a href="howe-details.html#329" class="tactic">apply osim_cus to H11 H4 _ H7 with M = app FF MM.</a>
+    <a href="howe-details.html#330" class="tactic">search.</a>
+    <a href="howe-details.html#331" class="tactic">apply ofsub_mem_sub to H3 H13.</a> <a href="howe-details.html#332" class="tactic">case H12.</a> <a href="howe-details.html#333" class="tactic">case H15.</a>
   <span class="comment">% nill</span>
-  <a href="howe-details.html#340" class="tactic">assert SM = nill.</a> <a href="howe-details.html#341" class="tactic">case H6.</a> <a href="howe-details.html#342" class="tactic">search.</a>
-    <a href="howe-details.html#343" class="tactic">apply ofsub_mem_sub to H3 H10.</a> <a href="howe-details.html#344" class="tactic">case H9.</a> <a href="howe-details.html#345" class="tactic">case H12.</a>
-    <a href="howe-details.html#346" class="tactic">case H9.</a>
-   <a href="howe-details.html#347" class="tactic">apply osim_cus to H8 H4 _ H7 with SM = nill.</a> <a href="howe-details.html#348" class="tactic">search.</a>
+  <a href="howe-details.html#334" class="tactic">assert SM = nill.</a> <a href="howe-details.html#335" class="tactic">case H6.</a> <a href="howe-details.html#336" class="tactic">search.</a>
+    <a href="howe-details.html#337" class="tactic">apply ofsub_mem_sub to H3 H10.</a> <a href="howe-details.html#338" class="tactic">case H9.</a> <a href="howe-details.html#339" class="tactic">case H12.</a>
+    <a href="howe-details.html#340" class="tactic">case H9.</a>
+   <a href="howe-details.html#341" class="tactic">apply osim_cus to H8 H4 _ H7 with SM = nill.</a> <a href="howe-details.html#342" class="tactic">search.</a>
   <span class="comment">% cons</span>
-  <a href="howe-details.html#349" class="tactic">case H6.</a>
-    <a href="howe-details.html#350" class="tactic">case H1.</a>
-    <a href="howe-details.html#351" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#352" class="tactic">apply subst to H4 H16.</a>
-    <a href="howe-details.html#353" class="tactic">apply IH to _ H8 H3 H4 H5 H11 H17.</a>
-    <a href="howe-details.html#354" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#355" class="tactic">apply subst to H4 H22.</a>
-    <a href="howe-details.html#356" class="tactic">apply IH to _ H9 H3 H4 H5 H12 H23.</a>
-    <a href="howe-details.html#357" class="tactic">apply osim_cus to H10 H4 _ H7 with M = cons HH KK, SM = cons SM2 SM3.</a>
-    <a href="howe-details.html#358" class="tactic">search.</a>
-    <a href="howe-details.html#359" class="tactic">apply ofsub_mem_sub to H3 H12.</a> <a href="howe-details.html#360" class="tactic">case H11.</a> <a href="howe-details.html#361" class="tactic">case H14.</a>
+  <a href="howe-details.html#343" class="tactic">case H6.</a>
+    <a href="howe-details.html#344" class="tactic">case H1.</a>
+    <a href="howe-details.html#345" class="tactic">apply howe_ty to H8.</a> <a href="howe-details.html#346" class="tactic">apply subst to H4 H16.</a>
+    <a href="howe-details.html#347" class="tactic">apply IH to _ H8 H3 H4 H5 H11 H17.</a>
+    <a href="howe-details.html#348" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#349" class="tactic">apply subst to H4 H22.</a>
+    <a href="howe-details.html#350" class="tactic">apply IH to _ H9 H3 H4 H5 H12 H23.</a>
+    <a href="howe-details.html#351" class="tactic">apply osim_cus to H10 H4 _ H7 with M = cons HH KK.</a>
+    <a href="howe-details.html#352" class="tactic">search.</a>
+    <a href="howe-details.html#353" class="tactic">apply ofsub_mem_sub to H3 H12.</a> <a href="howe-details.html#354" class="tactic">case H11.</a> <a href="howe-details.html#355" class="tactic">case H14.</a>
   <span class="comment">% lcase</span>
-  <a href="howe-details.html#362" class="tactic">case H6.</a>
-    <a href="howe-details.html#363" class="tactic">apply ofsub_ctx to H3.</a>
-    <a href="howe-details.html#364" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#365" class="tactic">apply howe_ty to H10.</a> <a href="howe-details.html#366" class="tactic">apply howe_ty to H11.</a>
-    <a href="howe-details.html#367" class="tactic">clear H18 H21 H24.</a>
-    <a href="howe-details.html#368" class="tactic">apply ofsub_weak1 to H4 with T = S.</a> <a href="howe-details.html#369" class="tactic">apply ofsub_weak1 to *H27 with T = list S.</a>
-    <a href="howe-details.html#370" class="tactic">apply subst to H4 H20.</a> <a href="howe-details.html#371" class="tactic">apply subst to H4 H23.</a>
-    <a href="howe-details.html#372" class="tactic">apply subst to _ H26 with G = of n2 (list S) :: of n1 S :: G,
+  <a href="howe-details.html#356" class="tactic">case H6.</a>
+    <a href="howe-details.html#357" class="tactic">apply ofsub_ctx to H3.</a>
+    <a href="howe-details.html#358" class="tactic">apply howe_ty to H9.</a> <a href="howe-details.html#359" class="tactic">apply howe_ty to H10.</a> <a href="howe-details.html#360" class="tactic">apply howe_ty to H11.</a>
+    <a href="howe-details.html#361" class="tactic">clear H18 H21 H24.</a>
+    <a href="howe-details.html#362" class="tactic">apply ofsub_weak1 to H4 with T = S.</a> <a href="howe-details.html#363" class="tactic">apply ofsub_weak1 to *H27 with T = list S.</a>
+    <a href="howe-details.html#364" class="tactic">apply subst to H4 H20.</a> <a href="howe-details.html#365" class="tactic">apply subst to H4 H23.</a>
+    <a href="howe-details.html#366" class="tactic">apply subst to _ H26 with G = of n2 (list S) :: of n1 S :: G,
                               SS = cp n2 n2 :: cp n1 n1 :: TT.</a>
-    <a href="howe-details.html#373" class="tactic">apply IH to _ H9 H3 H4 H5 H13 H29.</a>
-    <a href="howe-details.html#374" class="tactic">apply IH to _ H10 H3 H4 H5 H14 H31.</a>
-    <a href="howe-details.html#375" class="tactic">apply IH to _ H11 _ _ _ H15 H33
+    <a href="howe-details.html#367" class="tactic">apply IH to _ H9 H3 H4 H5 H13 H29.</a>
+    <a href="howe-details.html#368" class="tactic">apply IH to _ H10 H3 H4 H5 H14 H31.</a>
+    <a href="howe-details.html#369" class="tactic">apply IH to _ H11 _ _ _ H15 H33
      with G = of n2 (list S) :: of n1 S :: G, D = of n2 (list S) :: of n1 S :: D,
           SS = cp n2 n2 :: cp n1 n1 :: SS, TT = cp n2 n2 :: cp n1 n1 :: TT.</a>
-      <a href="howe-details.html#376" class="tactic">backchain howesub_frame.</a>
-      <a href="howe-details.html#377" class="tactic">apply ofsub_weak1 to H3 with T = S.</a> <a href="howe-details.html#378" class="tactic">search.</a>
-      <a href="howe-details.html#379" class="tactic">apply ofsub_weak1 to H4 with T = S.</a> <a href="howe-details.html#380" class="tactic">search.</a>
-      <a href="howe-details.html#381" class="tactic">backchain howesub_frame.</a>
-      <a href="howe-details.html#382" class="tactic">apply ofsub_weak1 to H3 with T = S.</a> <a href="howe-details.html#383" class="tactic">apply ofsub_weak1 to H37 with T = list S.</a> <a href="howe-details.html#384" class="tactic">search.</a>
-    <a href="howe-details.html#385" class="tactic">apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR, SM = lcase SM2 SM3 SM4.</a>
-    <a href="howe-details.html#386" class="tactic">search.</a>
-    <a href="howe-details.html#387" class="tactic">apply ofsub_mem_sub to H3 H14.</a> <a href="howe-details.html#388" class="tactic">case H13.</a> <a href="howe-details.html#389" class="tactic">case H16.</a></div>
+      <a href="howe-details.html#370" class="tactic">backchain howesub_frame.</a>
+      <a href="howe-details.html#371" class="tactic">apply ofsub_weak1 to H3 with T = S.</a> <a href="howe-details.html#372" class="tactic">search.</a>
+      <a href="howe-details.html#373" class="tactic">apply ofsub_weak1 to H4 with T = S.</a> <a href="howe-details.html#374" class="tactic">search.</a>
+      <a href="howe-details.html#375" class="tactic">backchain howesub_frame.</a>
+      <a href="howe-details.html#376" class="tactic">apply ofsub_weak1 to H3 with T = S.</a> <a href="howe-details.html#377" class="tactic">apply ofsub_weak1 to H37 with T = list S.</a> <a href="howe-details.html#378" class="tactic">search.</a>
+    <a href="howe-details.html#379" class="tactic">apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR.</a>
+    <a href="howe-details.html#380" class="tactic">search.</a>
+    <a href="howe-details.html#381" class="tactic">apply ofsub_mem_sub to H3 H14.</a> <a href="howe-details.html#382" class="tactic">case H13.</a> <a href="howe-details.html#383" class="tactic">case H16.</a></div>
 </pre>
 </div>
 

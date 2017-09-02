@@ -8120,7 +8120,7 @@ H3 : {bred N V}
 H4 : {bfree U}
 H5 : {bfree V}
 ============================
- forall p, {nil |- path U p} -> {nil |- path V p}
+ forall p, {path U p} -> {path V p}
 
 same_paths_bred_same < <b>intros.</b>
 </pre>
@@ -8135,7 +8135,7 @@ H4 : {bfree U}
 H5 : {bfree V}
 H6 : {path U p}
 ============================
- {nil |- path V p}
+ {path V p}
 
 same_paths_bred_same < <b>apply bred_rtl to _ H2 H6.</b>
 </pre>

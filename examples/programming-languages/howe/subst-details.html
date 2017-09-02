@@ -2007,8 +2007,8 @@ H8 : {G |- of SM (list S)}
 H9 : {SS |- cp N SM1}
 H10 : {G |- of SM1 T}
 H12 : ofsub (of n2 (list S) :: of n1 S :: G) SS D
-H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n1 n2)}
-H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n1 n2) T}
+H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n2 n1)}
+H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n2 n1) T}
 ============================
  exists SM, {SS |- cp (lcase M1 N R) SM} /\ {G |- of SM T}
 
@@ -2033,8 +2033,8 @@ H8 : {G |- of SM (list S)}
 H9 : {SS |- cp N SM1}
 H10 : {G |- of SM1 T}
 H12 : ofsub (of n2 (list S) :: of n1 S :: G) SS D
-H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n1 n2)}
-H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n1 n2) T}
+H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n2 n1)}
+H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n2 n1) T}
 H15 : ctx (of n2 (list S) :: of n1 S :: G)
 H16 : ctx D
 ============================
@@ -2061,8 +2061,8 @@ H8 : {G |- of SM (list S)}
 H9 : {SS |- cp N SM1}
 H10 : {G |- of SM1 T}
 H12 : ofsub (of n2 (list S) :: of n1 S :: G) SS D
-H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n1 n2)}
-H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n1 n2) T}
+H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n2 n1)}
+H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n2 n1) T}
 H16 : ctx D
 ============================
  exists SM, {SS |- cp (lcase M1 N R) SM} /\ {G |- of SM T}
@@ -2087,8 +2087,8 @@ H8 : {G |- of SM (list S)}
 H9 : {SS |- cp N SM1}
 H10 : {G |- of SM1 T}
 H12 : ofsub (of n2 (list S) :: of n1 S :: G) SS D
-H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n1 n2)}
-H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n1 n2) T}
+H13 : {SS, cp n1 n1, cp n2 n2 |- cp (R n1 n2) (SM2 n2 n1)}
+H14 : {G, of n1 S, of n2 (list S) |- of (SM2 n2 n1) T}
 H17 : {ty S}
 ============================
  exists SM, {SS |- cp (lcase M1 N R) SM} /\ {G |- of SM T}

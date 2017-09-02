@@ -7025,13 +7025,13 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>assert SM = unit.</b>
+howe_substitutive < <b>case H6.</b>
 </pre>
 <a name="250"></a>
 <pre class="code">
 Subgoal 2.1:
 
-Variables: G SS TT D N SM TN
+Variables: G SS TT D N TN
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
        ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
        {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
@@ -7039,13 +7039,12 @@ H1 : {ty top}
 H3 : ofsub G SS D
 H4 : ofsub G TT D
 H5 : howesub G SS TT D
-H6 : {SS |- cp unit SM}
 H7 : {TT |- cp N TN}
 H8 : osim D unit N top
 ============================
- SM = unit
+ howe G unit TN top
 
-Subgoal 2 is:
+Subgoal 2.2 is:
  howe G SM TN top
 
 Subgoal 3 is:
@@ -7075,11 +7074,11 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>case H6.</b>
+howe_substitutive < <b>apply osim_cus to H8 H4 _ H7.</b>
 </pre>
 <a name="251"></a>
 <pre class="code">
-Subgoal 2.1.1:
+Subgoal 2.1:
 
 Variables: G SS TT D N TN
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7091,13 +7090,11 @@ H4 : ofsub G TT D
 H5 : howesub G SS TT D
 H7 : {TT |- cp N TN}
 H8 : osim D unit N top
+H9 : osim G unit TN top
 ============================
- unit = unit
+ howe G unit TN top
 
-Subgoal 2.1.2 is:
- SM = unit
-
-Subgoal 2 is:
+Subgoal 2.2 is:
  howe G SM TN top
 
 Subgoal 3 is:
@@ -7131,7 +7128,7 @@ howe_substitutive < <b>search.</b>
 </pre>
 <a name="252"></a>
 <pre class="code">
-Subgoal 2.1.2:
+Subgoal 2.2:
 
 Variables: G SS TT D N SM TN F
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7146,9 +7143,6 @@ H8 : osim D unit N top
 H9 : {SS, [F] |- cp unit SM}
 H10 : member F SS
 ============================
- SM = unit
-
-Subgoal 2 is:
  howe G SM TN top
 
 Subgoal 3 is:
@@ -7182,7 +7176,7 @@ howe_substitutive < <b>apply ofsub_mem_sub to H3 H10.</b>
 </pre>
 <a name="253"></a>
 <pre class="code">
-Subgoal 2.1.2:
+Subgoal 2.2:
 
 Variables: G SS TT D N SM TN X M1 T1
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7200,9 +7194,6 @@ H11 : member (of X T1) D
 H12 : name X
 H13 : {G |- of M1 T1}
 ============================
- SM = unit
-
-Subgoal 2 is:
  howe G SM TN top
 
 Subgoal 3 is:
@@ -7236,7 +7227,7 @@ howe_substitutive < <b>case H9.</b>
 </pre>
 <a name="254"></a>
 <pre class="code">
-Subgoal 2.1.2:
+Subgoal 2.2:
 
 Variables: G SS TT D N SM TN T1
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7253,9 +7244,6 @@ H11 : member (of unit T1) D
 H12 : name unit
 H13 : {G |- of SM T1}
 ============================
- SM = unit
-
-Subgoal 2 is:
  howe G SM TN top
 
 Subgoal 3 is:
@@ -7289,24 +7277,20 @@ howe_substitutive < <b>case H12.</b>
 </pre>
 <a name="255"></a>
 <pre class="code">
-Subgoal 2:
+Subgoal 3:
 
 Variables: G SS TT D N SM TN
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
        ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
        {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty top}
+H1 : {ty nat}
 H3 : ofsub G SS D
 H4 : ofsub G TT D
 H5 : howesub G SS TT D
-H6 : {SS |- cp unit SM}
+H6 : {SS |- cp zero SM}
 H7 : {TT |- cp N TN}
-H8 : osim D unit N top
-H9 : SM = unit
+H8 : osim D zero N nat
 ============================
- howe G SM TN top
-
-Subgoal 3 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7333,27 +7317,26 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>case H9.</b>
+howe_substitutive < <b>case H6.</b>
 </pre>
 <a name="256"></a>
 <pre class="code">
-Subgoal 2:
+Subgoal 3.1:
 
 Variables: G SS TT D N TN
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
        ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
        {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty top}
+H1 : {ty nat}
 H3 : ofsub G SS D
 H4 : ofsub G TT D
 H5 : howesub G SS TT D
-H6 : {SS |- cp unit unit}
 H7 : {TT |- cp N TN}
-H8 : osim D unit N top
+H8 : osim D zero N nat
 ============================
- howe G unit TN top
+ howe G zero TN nat
 
-Subgoal 3 is:
+Subgoal 3.2 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7380,28 +7363,27 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H8 H4 _ H7 with SM = unit.</b>
+howe_substitutive < <b>apply osim_cus to H8 H4 _ H7.</b>
 </pre>
 <a name="257"></a>
 <pre class="code">
-Subgoal 2:
+Subgoal 3.1:
 
 Variables: G SS TT D N TN
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
        ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
        {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty top}
+H1 : {ty nat}
 H3 : ofsub G SS D
 H4 : ofsub G TT D
 H5 : howesub G SS TT D
-H6 : {SS |- cp unit unit}
 H7 : {TT |- cp N TN}
-H8 : osim D unit N top
-H10 : osim G unit TN top
+H8 : osim D zero N nat
+H9 : osim G zero TN nat
 ============================
- howe G unit TN top
+ howe G zero TN nat
 
-Subgoal 3 is:
+Subgoal 3.2 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7432,147 +7414,7 @@ howe_substitutive < <b>search.</b>
 </pre>
 <a name="258"></a>
 <pre class="code">
-Subgoal 3:
-
-Variables: G SS TT D N SM TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H6 : {SS |- cp zero SM}
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-============================
- howe G SM TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>assert SM = zero.</b>
-</pre>
-<a name="259"></a>
-<pre class="code">
-Subgoal 3.1:
-
-Variables: G SS TT D N SM TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H6 : {SS |- cp zero SM}
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-============================
- SM = zero
-
-Subgoal 3 is:
- howe G SM TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>case H6.</b>
-</pre>
-<a name="260"></a>
-<pre class="code">
-Subgoal 3.1.1:
-
-Variables: G SS TT D N TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-============================
- zero = zero
-
-Subgoal 3.1.2 is:
- SM = zero
-
-Subgoal 3 is:
- howe G SM TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>search.</b>
-</pre>
-<a name="261"></a>
-<pre class="code">
-Subgoal 3.1.2:
+Subgoal 3.2:
 
 Variables: G SS TT D N SM TN F
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7587,9 +7429,6 @@ H8 : osim D zero N nat
 H9 : {SS, [F] |- cp zero SM}
 H10 : member F SS
 ============================
- SM = zero
-
-Subgoal 3 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7618,9 +7457,9 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H10.</b>
 </pre>
-<a name="262"></a>
+<a name="259"></a>
 <pre class="code">
-Subgoal 3.1.2:
+Subgoal 3.2:
 
 Variables: G SS TT D N SM TN X M1 T1
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7638,9 +7477,6 @@ H11 : member (of X T1) D
 H12 : name X
 H13 : {G |- of M1 T1}
 ============================
- SM = zero
-
-Subgoal 3 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7669,9 +7505,9 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H9.</b>
 </pre>
-<a name="263"></a>
+<a name="260"></a>
 <pre class="code">
-Subgoal 3.1.2:
+Subgoal 3.2:
 
 Variables: G SS TT D N SM TN T1
 IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
@@ -7688,9 +7524,6 @@ H11 : member (of zero T1) D
 H12 : name zero
 H13 : {G |- of SM T1}
 ============================
- SM = zero
-
-Subgoal 3 is:
  howe G SM TN nat
 
 Subgoal 4 is:
@@ -7719,141 +7552,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H12.</b>
 </pre>
-<a name="264"></a>
-<pre class="code">
-Subgoal 3:
-
-Variables: G SS TT D N SM TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H6 : {SS |- cp zero SM}
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-H9 : SM = zero
-============================
- howe G SM TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>case H9.</b>
-</pre>
-<a name="265"></a>
-<pre class="code">
-Subgoal 3:
-
-Variables: G SS TT D N TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H6 : {SS |- cp zero zero}
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-============================
- howe G zero TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>apply osim_cus to H8 H4 _ H7 with SM = zero.</b>
-</pre>
-<a name="266"></a>
-<pre class="code">
-Subgoal 3:
-
-Variables: G SS TT D N TN
-IH : forall G SS TT D M N T SM TN, {ty T} -> howe D M N T * ->
-       ofsub G SS D -> ofsub G TT D -> howesub G SS TT D ->
-       {SS |- cp M SM} -> {TT |- cp N TN} -> howe G SM TN T
-H1 : {ty nat}
-H3 : ofsub G SS D
-H4 : ofsub G TT D
-H5 : howesub G SS TT D
-H6 : {SS |- cp zero zero}
-H7 : {TT |- cp N TN}
-H8 : osim D zero N nat
-H10 : osim G zero TN nat
-============================
- howe G zero TN nat
-
-Subgoal 4 is:
- howe G SM TN nat
-
-Subgoal 5 is:
- howe G SM TN T
-
-Subgoal 6 is:
- howe G SM TN (arr S T1)
-
-Subgoal 7 is:
- howe G SM TN T
-
-Subgoal 8 is:
- howe G SM TN T
-
-Subgoal 9 is:
- howe G SM TN (list T1)
-
-Subgoal 10 is:
- howe G SM TN (list T1)
-
-Subgoal 11 is:
- howe G SM TN T
-
-howe_substitutive < <b>search.</b>
-</pre>
-<a name="267"></a>
+<a name="261"></a>
 <pre class="code">
 Subgoal 4:
 
@@ -7895,7 +7594,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="268"></a>
+<a name="262"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -7940,7 +7639,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H8.</b>
 </pre>
-<a name="269"></a>
+<a name="263"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -7988,7 +7687,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H13.</b>
 </pre>
-<a name="270"></a>
+<a name="264"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -8038,7 +7737,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to H1 H8 H3 H4 H5 H10 H14.</b>
 </pre>
-<a name="271"></a>
+<a name="265"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -8087,9 +7786,9 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = succ MM, SM = succ SM2.</b>
+howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = succ MM.</b>
 </pre>
-<a name="272"></a>
+<a name="266"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -8141,7 +7840,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="273"></a>
+<a name="267"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -8184,7 +7883,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H11.</b>
 </pre>
-<a name="274"></a>
+<a name="268"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -8230,7 +7929,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H10.</b>
 </pre>
-<a name="275"></a>
+<a name="269"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -8275,7 +7974,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H13.</b>
 </pre>
-<a name="276"></a>
+<a name="270"></a>
 <pre class="code">
 Subgoal 5:
 
@@ -8316,7 +8015,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="277"></a>
+<a name="271"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8362,7 +8061,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H8.</b>
 </pre>
-<a name="278"></a>
+<a name="272"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8411,7 +8110,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H17.</b>
 </pre>
-<a name="279"></a>
+<a name="273"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8462,7 +8161,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to _ H8 H3 H4 H5 H12 H18.</b>
 </pre>
-<a name="280"></a>
+<a name="274"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8514,7 +8213,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H9.</b>
 </pre>
-<a name="281"></a>
+<a name="275"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8569,7 +8268,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H23.</b>
 </pre>
-<a name="282"></a>
+<a name="276"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8626,7 +8325,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to H1 H9 H3 H4 H5 H13 H24.</b>
 </pre>
-<a name="283"></a>
+<a name="277"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8684,7 +8383,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_ctx to H3.</b>
 </pre>
-<a name="284"></a>
+<a name="278"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8744,7 +8443,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howesub_frame to _ H3 H4 H5 with T = nat.</b>
 </pre>
-<a name="285"></a>
+<a name="279"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8806,7 +8505,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to *H3 with T = nat.</b>
 </pre>
-<a name="286"></a>
+<a name="280"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8868,7 +8567,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H4 with T = nat.</b>
 </pre>
-<a name="287"></a>
+<a name="281"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8931,7 +8630,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H10.</b>
 </pre>
-<a name="288"></a>
+<a name="282"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -8997,7 +8696,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to _ H34 with G = of n1 nat :: G, SS = cp n1 n1 :: TT.</b>
 </pre>
-<a name="289"></a>
+<a name="283"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -9065,7 +8764,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to H1 H10 _ _ H29 H14 H35 with G = of n1 nat :: G, D = of n1 nat :: D, SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</b>
 </pre>
-<a name="290"></a>
+<a name="284"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -9132,9 +8831,9 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H11 H4 _ H7 with M = ncase MM HH RR, SM = ncase SM2 SM3 SM4.</b>
+howe_substitutive < <b>apply osim_cus to H11 H4 _ H7 with M = ncase MM HH RR.</b>
 </pre>
-<a name="291"></a>
+<a name="285"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -9177,7 +8876,7 @@ H34 : {D, of n1 nat |- of (RR n1) T}
 H35 : {TT, cp n1 n1 |- cp (RR n1) (SM4 n1)}
 H36 : {G, of n1 nat |- of (SM4 n1) T}
 H37 : howe (of n1 nat :: G) (SR n1) (SM4 n1) T
-H38 : osim G (ncase SM2 SM3 SM4) TN T
+H38 : osim G (ncase SM2 SM3 (z1\SM4 z1)) TN T
 ============================
  howe G (ncase SM1 SN SR) TN T
 
@@ -9204,7 +8903,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="292"></a>
+<a name="286"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -9246,7 +8945,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H13.</b>
 </pre>
-<a name="293"></a>
+<a name="287"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -9291,7 +8990,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H12.</b>
 </pre>
-<a name="294"></a>
+<a name="288"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -9335,7 +9034,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H15.</b>
 </pre>
-<a name="295"></a>
+<a name="289"></a>
 <pre class="code">
 Subgoal 6:
 
@@ -9371,7 +9070,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="296"></a>
+<a name="290"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9410,7 +9109,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H1.</b>
 </pre>
-<a name="297"></a>
+<a name="291"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9450,7 +9149,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howesub_frame to _ H3 H4 H5 with T = S.</b>
 </pre>
-<a name="298"></a>
+<a name="292"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9491,7 +9190,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to *H3 with T = S, x = n1.</b>
 </pre>
-<a name="299"></a>
+<a name="293"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9532,7 +9231,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H4 with T = S, x = n1.</b>
 </pre>
-<a name="300"></a>
+<a name="294"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9574,7 +9273,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H8.</b>
 </pre>
-<a name="301"></a>
+<a name="295"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9619,7 +9318,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H16.</b>
 </pre>
-<a name="302"></a>
+<a name="296"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9664,7 +9363,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_ctx to H14.</b>
 </pre>
-<a name="303"></a>
+<a name="297"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9711,7 +9410,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H20.</b>
 </pre>
-<a name="304"></a>
+<a name="298"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9758,7 +9457,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>clear H21.</b>
 </pre>
-<a name="305"></a>
+<a name="299"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9804,7 +9503,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to _ H18 with G = of n1 S :: G, SS = cp n1 n1 :: TT.</b>
 </pre>
-<a name="306"></a>
+<a name="300"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9852,7 +9551,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to H12 H8 _ _ H13 H10 H23 with G = of n1 S :: G, D = of n1 S :: D, SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</b>
 </pre>
-<a name="307"></a>
+<a name="301"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9899,9 +9598,9 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = lam RR, SM = lam SM1.</b>
+howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = lam RR.</b>
 </pre>
-<a name="308"></a>
+<a name="302"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -9927,7 +9626,7 @@ H22 : ctx G
 H23 : {TT, cp n1 n1 |- cp (RR n1) (SM1 n1)}
 H24 : {G, of n1 S |- of (SM1 n1) T1}
 H25 : howe (of n1 S :: G) (SR n1) (SM1 n1) T1
-H26 : osim G (lam SM1) TN (arr S T1)
+H26 : osim G (lam (z1\SM1 z1)) TN (arr S T1)
 ============================
  howe G (lam SR) TN (arr S T1)
 
@@ -9951,7 +9650,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="309"></a>
+<a name="303"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -9988,7 +9687,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H11.</b>
 </pre>
-<a name="310"></a>
+<a name="304"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -10028,7 +9727,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H10.</b>
 </pre>
-<a name="311"></a>
+<a name="305"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -10067,7 +9766,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H13.</b>
 </pre>
-<a name="312"></a>
+<a name="306"></a>
 <pre class="code">
 Subgoal 7:
 
@@ -10100,7 +9799,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="313"></a>
+<a name="307"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10136,7 +9835,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howesub_frame to _ H3 H4 H5 with T = T.</b>
 </pre>
-<a name="314"></a>
+<a name="308"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10173,7 +9872,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to *H3 with T = T, x = n1.</b>
 </pre>
-<a name="315"></a>
+<a name="309"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10210,7 +9909,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H4 with T = T, x = n1.</b>
 </pre>
-<a name="316"></a>
+<a name="310"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10248,7 +9947,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H8.</b>
 </pre>
-<a name="317"></a>
+<a name="311"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10289,7 +9988,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H14.</b>
 </pre>
-<a name="318"></a>
+<a name="312"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10330,7 +10029,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_ctx to H12.</b>
 </pre>
-<a name="319"></a>
+<a name="313"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10373,7 +10072,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H18.</b>
 </pre>
-<a name="320"></a>
+<a name="314"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10416,7 +10115,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>clear H19.</b>
 </pre>
-<a name="321"></a>
+<a name="315"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10458,7 +10157,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to _ H16 with G = of n1 T :: G, SS = cp n1 n1 :: TT.</b>
 </pre>
-<a name="322"></a>
+<a name="316"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10502,7 +10201,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to H1 H8 _ _ H11 H10 H21 with G = of n1 T :: G, D = of n1 T :: D, SS = cp n1 n1 :: SS, TT = cp n1 n1 :: TT.</b>
 </pre>
-<a name="323"></a>
+<a name="317"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10545,9 +10244,9 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = fix RR, SM = fix SM1.</b>
+howe_substitutive < <b>apply osim_cus to H9 H4 _ H7 with M = fix RR.</b>
 </pre>
-<a name="324"></a>
+<a name="318"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -10572,7 +10271,7 @@ H20 : ctx G
 H21 : {TT, cp n1 n1 |- cp (RR n1) (SM1 n1)}
 H22 : {G, of n1 T |- of (SM1 n1) T}
 H23 : howe (of n1 T :: G) (SR n1) (SM1 n1) T
-H24 : osim G (fix SM1) TN T
+H24 : osim G (fix (z1\SM1 z1)) TN T
 ============================
  howe G (fix SR) TN T
 
@@ -10593,7 +10292,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="325"></a>
+<a name="319"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -10627,7 +10326,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H11.</b>
 </pre>
-<a name="326"></a>
+<a name="320"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -10664,7 +10363,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H10.</b>
 </pre>
-<a name="327"></a>
+<a name="321"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -10700,7 +10399,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H13.</b>
 </pre>
-<a name="328"></a>
+<a name="322"></a>
 <pre class="code">
 Subgoal 8:
 
@@ -10732,7 +10431,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="329"></a>
+<a name="323"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10768,7 +10467,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H9.</b>
 </pre>
-<a name="330"></a>
+<a name="324"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10807,7 +10506,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H16.</b>
 </pre>
-<a name="331"></a>
+<a name="325"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10848,7 +10547,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to _ H9 H3 H4 H5 H12 H17.</b>
 </pre>
-<a name="332"></a>
+<a name="326"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10890,7 +10589,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H10.</b>
 </pre>
-<a name="333"></a>
+<a name="327"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10935,7 +10634,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H22.</b>
 </pre>
-<a name="334"></a>
+<a name="328"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -10982,7 +10681,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to _ H10 H3 H4 H5 H13 H23.</b>
 </pre>
-<a name="335"></a>
+<a name="329"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -11028,9 +10727,9 @@ Subgoal 10 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H11 H4 _ H7 with M = app FF MM, SM = app SM2 SM3.</b>
+howe_substitutive < <b>apply osim_cus to H11 H4 _ H7 with M = app FF MM.</b>
 </pre>
-<a name="336"></a>
+<a name="330"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -11079,7 +10778,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="337"></a>
+<a name="331"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -11112,7 +10811,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H13.</b>
 </pre>
-<a name="338"></a>
+<a name="332"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -11148,7 +10847,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H12.</b>
 </pre>
-<a name="339"></a>
+<a name="333"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -11183,7 +10882,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H15.</b>
 </pre>
-<a name="340"></a>
+<a name="334"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -11209,7 +10908,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>assert SM = nill.</b>
 </pre>
-<a name="341"></a>
+<a name="335"></a>
 <pre class="code">
 Subgoal 9.1:
 
@@ -11238,7 +10937,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="342"></a>
+<a name="336"></a>
 <pre class="code">
 Subgoal 9.1.1:
 
@@ -11269,7 +10968,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="343"></a>
+<a name="337"></a>
 <pre class="code">
 Subgoal 9.1.2:
 
@@ -11299,7 +10998,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H10.</b>
 </pre>
-<a name="344"></a>
+<a name="338"></a>
 <pre class="code">
 Subgoal 9.1.2:
 
@@ -11332,7 +11031,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H9.</b>
 </pre>
-<a name="345"></a>
+<a name="339"></a>
 <pre class="code">
 Subgoal 9.1.2:
 
@@ -11364,7 +11063,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H12.</b>
 </pre>
-<a name="346"></a>
+<a name="340"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -11391,7 +11090,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H9.</b>
 </pre>
-<a name="347"></a>
+<a name="341"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -11417,7 +11116,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply osim_cus to H8 H4 _ H7 with SM = nill.</b>
 </pre>
-<a name="348"></a>
+<a name="342"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -11444,7 +11143,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="349"></a>
+<a name="343"></a>
 <pre class="code">
 Subgoal 10:
 
@@ -11469,7 +11168,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="350"></a>
+<a name="344"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11498,7 +11197,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H1.</b>
 </pre>
-<a name="351"></a>
+<a name="345"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11527,7 +11226,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H8.</b>
 </pre>
-<a name="352"></a>
+<a name="346"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11559,7 +11258,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H16.</b>
 </pre>
-<a name="353"></a>
+<a name="347"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11593,7 +11292,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to _ H8 H3 H4 H5 H11 H17.</b>
 </pre>
-<a name="354"></a>
+<a name="348"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11628,7 +11327,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply howe_ty to H9.</b>
 </pre>
-<a name="355"></a>
+<a name="349"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11666,7 +11365,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply subst to H4 H22.</b>
 </pre>
-<a name="356"></a>
+<a name="350"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11706,7 +11405,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply IH to _ H9 H3 H4 H5 H12 H23.</b>
 </pre>
-<a name="357"></a>
+<a name="351"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11745,9 +11444,9 @@ Subgoal 10.2 is:
 Subgoal 11 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H10 H4 _ H7 with M = cons HH KK, SM = cons SM2 SM3.</b>
+howe_substitutive < <b>apply osim_cus to H10 H4 _ H7 with M = cons HH KK.</b>
 </pre>
-<a name="358"></a>
+<a name="352"></a>
 <pre class="code">
 Subgoal 10.1:
 
@@ -11789,7 +11488,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="359"></a>
+<a name="353"></a>
 <pre class="code">
 Subgoal 10.2:
 
@@ -11815,7 +11514,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H12.</b>
 </pre>
-<a name="360"></a>
+<a name="354"></a>
 <pre class="code">
 Subgoal 10.2:
 
@@ -11844,7 +11543,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H11.</b>
 </pre>
-<a name="361"></a>
+<a name="355"></a>
 <pre class="code">
 Subgoal 10.2:
 
@@ -11872,7 +11571,7 @@ Subgoal 11 is:
 
 howe_substitutive < <b>case H14.</b>
 </pre>
-<a name="362"></a>
+<a name="356"></a>
 <pre class="code">
 Subgoal 11:
 
@@ -11896,7 +11595,7 @@ H12 : osim D (lcase MM HH RR) N T
 
 howe_substitutive < <b>case H6.</b>
 </pre>
-<a name="363"></a>
+<a name="357"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -11925,7 +11624,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_ctx to H3.</b>
 </pre>
-<a name="364"></a>
+<a name="358"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -11956,7 +11655,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply howe_ty to H9.</b>
 </pre>
-<a name="365"></a>
+<a name="359"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -11990,7 +11689,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply howe_ty to H10.</b>
 </pre>
-<a name="366"></a>
+<a name="360"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12027,7 +11726,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply howe_ty to H11.</b>
 </pre>
-<a name="367"></a>
+<a name="361"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12067,7 +11766,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>clear H18 H21 H24.</b>
 </pre>
-<a name="368"></a>
+<a name="362"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12104,7 +11803,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H4 with T = S.</b>
 </pre>
-<a name="369"></a>
+<a name="363"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12142,7 +11841,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to *H27 with T = list S.</b>
 </pre>
-<a name="370"></a>
+<a name="364"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12180,7 +11879,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply subst to H4 H20.</b>
 </pre>
-<a name="371"></a>
+<a name="365"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12220,7 +11919,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply subst to H4 H23.</b>
 </pre>
-<a name="372"></a>
+<a name="366"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12262,7 +11961,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply subst to _ H26 with G = of n2 (list S) :: of n1 S :: G, SS = cp n2 n2 :: cp n1 n1 :: TT.</b>
 </pre>
-<a name="373"></a>
+<a name="367"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12296,8 +11995,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 ============================
  howe G (lcase SM1 SN SR) TN T
 
@@ -12306,7 +12005,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply IH to _ H9 H3 H4 H5 H13 H29.</b>
 </pre>
-<a name="374"></a>
+<a name="368"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12340,8 +12039,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 ============================
  howe G (lcase SM1 SN SR) TN T
@@ -12351,7 +12050,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply IH to _ H10 H3 H4 H5 H14 H31.</b>
 </pre>
-<a name="375"></a>
+<a name="369"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12385,8 +12084,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12397,7 +12096,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply IH to _ H11 _ _ _ H15 H33 with G = of n2 (list S) :: of n1 S :: G, D = of n2 (list S) :: of n1 S :: D, SS = cp n2 n2 :: cp n1 n1 :: SS, TT = cp n2 n2 :: cp n1 n1 :: TT.</b>
 </pre>
-<a name="376"></a>
+<a name="370"></a>
 <pre class="code">
 Subgoal 11.1.1:
 
@@ -12431,8 +12130,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12451,7 +12150,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>backchain howesub_frame.</b>
 </pre>
-<a name="377"></a>
+<a name="371"></a>
 <pre class="code">
 Subgoal 11.1.1.1:
 
@@ -12485,8 +12184,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12510,7 +12209,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H3 with T = S.</b>
 </pre>
-<a name="378"></a>
+<a name="372"></a>
 <pre class="code">
 Subgoal 11.1.1.1:
 
@@ -12544,8 +12243,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 H37 : ofsub (of n1 S :: G) SS D
@@ -12570,7 +12269,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="379"></a>
+<a name="373"></a>
 <pre class="code">
 Subgoal 11.1.1.2:
 
@@ -12604,8 +12303,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12626,7 +12325,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H4 with T = S.</b>
 </pre>
-<a name="380"></a>
+<a name="374"></a>
 <pre class="code">
 Subgoal 11.1.1.2:
 
@@ -12660,8 +12359,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 H37 : ofsub (of n1 S :: G) TT D
@@ -12683,7 +12382,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="381"></a>
+<a name="375"></a>
 <pre class="code">
 Subgoal 11.1.1.3:
 
@@ -12717,8 +12416,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12736,7 +12435,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>backchain howesub_frame.</b>
 </pre>
-<a name="382"></a>
+<a name="376"></a>
 <pre class="code">
 Subgoal 11.1.2:
 
@@ -12770,8 +12469,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 ============================
@@ -12786,7 +12485,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H3 with T = S.</b>
 </pre>
-<a name="383"></a>
+<a name="377"></a>
 <pre class="code">
 Subgoal 11.1.2:
 
@@ -12820,8 +12519,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 H37 : ofsub (of n1 S :: G) SS D
@@ -12837,7 +12536,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>apply ofsub_weak1 to H37 with T = list S.</b>
 </pre>
-<a name="384"></a>
+<a name="378"></a>
 <pre class="code">
 Subgoal 11.1.2:
 
@@ -12871,8 +12570,8 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
 H37 : ofsub (of n1 S :: G) SS D
@@ -12889,7 +12588,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="385"></a>
+<a name="379"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12923,20 +12622,20 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
-H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n1 n2) T
+H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n2 n1) T
 ============================
  howe G (lcase SM1 SN SR) TN T
 
 Subgoal 11.2 is:
  howe G SM TN T
 
-howe_substitutive < <b>apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR, SM = lcase SM2 SM3 SM4.</b>
+howe_substitutive < <b>apply osim_cus to H12 H4 _ H7 with M = lcase MM HH RR.</b>
 </pre>
-<a name="386"></a>
+<a name="380"></a>
 <pre class="code">
 Subgoal 11.1:
 
@@ -12970,12 +12669,12 @@ H29 : {TT |- cp MM SM2}
 H30 : {G |- of SM2 (list S)}
 H31 : {TT |- cp HH SM3}
 H32 : {G |- of SM3 T}
-H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n1 n2)}
-H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n1 n2) T}
+H33 : {TT, cp n1 n1, cp n2 n2 |- cp (RR n1 n2) (SM4 n2 n1)}
+H34 : {G, of n1 S, of n2 (list S) |- of (SM4 n2 n1) T}
 H35 : howe G SM1 SM2 (list S)
 H36 : howe G SN SM3 T
-H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n1 n2) T
-H38 : osim G (lcase SM2 SM3 SM4) TN T
+H37 : howe (of n2 (list S) :: of n1 S :: G) (SR n1 n2) (SM4 n2 n1) T
+H38 : osim G (lcase SM2 SM3 (z1\z2\SM4 z2 z1)) TN T
 ============================
  howe G (lcase SM1 SN SR) TN T
 
@@ -12984,7 +12683,7 @@ Subgoal 11.2 is:
 
 howe_substitutive < <b>search.</b>
 </pre>
-<a name="387"></a>
+<a name="381"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13009,7 +12708,7 @@ H14 : member F SS
 
 howe_substitutive < <b>apply ofsub_mem_sub to H3 H14.</b>
 </pre>
-<a name="388"></a>
+<a name="382"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13037,7 +12736,7 @@ H17 : {G |- of M2 T1}
 
 howe_substitutive < <b>case H13.</b>
 </pre>
-<a name="389"></a>
+<a name="383"></a>
 <pre class="code">
 Subgoal 11.2:
 
@@ -13065,7 +12764,7 @@ H17 : {G |- of SM T1}
 howe_substitutive < <b>case H16.</b>
 Proof completed.
 </pre>
-<a name="390"></a>
+<a name="384"></a>
 <pre class="code">
 Abella < 
 </pre>
