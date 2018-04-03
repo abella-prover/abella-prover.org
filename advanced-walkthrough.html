@@ -381,7 +381,7 @@ the following command:
 Now we can now state and prove the uniqueness property for contexts.
 
 <pre>
-Theorem member_uniq : forall L E T1 T2,
+Theorem ctx_uniq : forall L E T1 T2,
   ctx L -> member (of E T1) L -> member (of E T2) L -> T1 = T2.
 </pre>
 
@@ -477,7 +477,7 @@ raising is performed.
 Effecting an unfolding in the manner described in the current
 situation yields the following as the new proof state.
 <pre>
-member_uniq < <b>case H1.</b>
+ctx_uniq < <b>case H1.</b>
 Subgoal 1.2:
 
   Variables: L, E, T1, T2, L1, L2
@@ -496,7 +496,7 @@ We can complete this subgoal by applying our lemma about occurrences
 of nominal constants.
 
 <pre>
-member_uniq < <b>apply member_nominal_absurd to H4.</b>
+ctx_uniq < <b>apply member_nominal_absurd to H4.</b>
 </pre>
 
 This completes the subgoal and leaves just the following subgoal left
@@ -540,7 +540,7 @@ state below ends up having no effect on the proof itself. The rest of
 the proof is, in fact, as follows.
 
 <pre>
-member_uniq < <b>case H1.</b>
+ctx_uniq < <b>case H1.</b>
 Subgoal 2.2:
 
   Variables: L, E, T1, T2, L1, B, L2, T
@@ -552,7 +552,7 @@ Subgoal 2.2:
   ============================
    T1 = T2
 
-member_uniq < <b>apply IH to H6 H4 H5.</b>
+ctx_uniq < <b>apply IH to H6 H4 H5.</b>
 </pre>
 <pre>
 Subgoal 2.2:
@@ -566,7 +566,7 @@ Subgoal 2.2:
   ============================
    T2 = T2
 
-member_uniq < <b>search.</b>
+ctx_uniq < <b>search.</b>
 Proof completed.
 </pre>
 
