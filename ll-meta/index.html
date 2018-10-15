@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Linear Logic Meta-Theory</title>
+<style type="text/css">
+.navlist
+{
+    padding: 0em 1em;
+    margin: 0.5em 1em 1.5em 1em;
+}
+
+.navlist li
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px dotted gray;
+}
+
+.navlist ul
+{
+    padding: 0em 1em;
+    margin: 0;
+}
+
+.navlist ul li
+{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+section p + p,
+.section p + p {
+    margin-top: 1em !important;
+    text-indent: 0 !important;
+}
+
+</style>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<center>
+<h1 id="main">
+  Formalized Meta-Theory of Linear Logic
+</h1>
+</center>
+<br/>
+<br/>
+
+<p>
+  This web-page documents the ongoing formalization of the meta-theory
+  of several linear logic variants. Specifically, we are interested in
+  the following meta-theorems.
+</p>
+
+<ul>
+  <li><strong>Cut-admissibility</strong>: this shows that the calculus
+    is consistent, i.e., that it only proves theorems.</li>
+  <li><strong>Identity reduction</strong>: this shows that the
+    calculus is syntactically complete, meaning every provable theorem
+    can be proved using this calculus.</li>
+  <li><strong>Context monotonicity</strong>: this shows that the
+    unrestricted hypotheses may be freely weakened or contracted.</li>
+  <li><strong>Context permutability</strong>: this shows that the
+    unrestricted and linear hypotheses may be freely permuted, often
+    done explicitly using an "exchange" rule.</li>
+</ul>
+
+<p>For more details on the formalization, please see the following
+sequence of papers.</p>
+
+<blockquote><ul>
+    <li>LSFS/ENTCS version</li>
+    <li>TCS version</li>
+</ul></blockquote>
+
+<p>
+  The links below are to the HTML versions of the various
+  developments. The actual Abella sources are also linked, but the
+  development can be browsed without running Abella yourself.
+</p>
+
+<br/>
+
+<h2>Propositional linear logic variants / unfocused sequent calculi</h2>
+
+<ul class="navlist">
+<li>
+  <strong><a href="one-sided/mll.html">One-sided sequent calculus for MLL</a></strong>
+  <blockquote>
+    This is the logic that contains only the multiplicative
+    connectives and uses a one-sided sequent calculus with dual atoms
+    in the initial rule.
+  </blockquote>
+</li>
+<li>
+  <strong><a href="one-sided/mall.html">One-sided sequent calculus for MALL</a></strong>
+  <blockquote>
+    -- description here --
+  </blockquote>
+</li>
+<li>
+  <strong><a href="one-sided/mell.html">One-sided sequent calculus for MELL</a></strong>
+  <blockquote>
+    -- description here --
+  </blockquote>
+</li>
+</ul>
+
+<h2>First-order linear logic variants / unfocused sequent calculi</h2>
+
+<ul>
+<li>
+  <strong><a href="one-sided/two-level/mallq.html">One-sided sequent calculus for first-order MALL</a></strong>
+  <blockquote>
+    -- description here --
+  </blockquote>
+</li>
+</ul>
+
+<h2>Focused sequent calculi</h2>
+
+<ul>
+<li>
+  <strong><a href="one-sided/two-level/mallf.html">One-sided sequent calculus for focused MALL</a></strong>
+  <blockquote>
+    -- description here --
+  </blockquote>
+</li>
+</ul>
+
+</div> <!-- .section -->
+
+<div class="section">
+  <hr />
+  Last updated: Mon Oct 15 14:53:22 CEST 2018
+</div>
+
+</body>
+</html>

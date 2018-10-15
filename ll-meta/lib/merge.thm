@@ -1,0 +1,389 @@
+Type is_o  o -> prop.
+
+Import "perm" with is_o := is_o.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% merge J K L : J union K equals L.
+Define merge : olist -> olist -> olist -> prop by
+; merge nil nil nil
+; merge J K L :=
+    exists A JJ LL,
+      adj JJ A J /\ adj LL A L /\ merge JJ K LL
+; merge J K L :=
+    exists A KK LL,
+      adj KK A K /\ adj LL A L /\ merge J KK LL
+.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_1_is_list : forall J K L, merge J K L -> is_list J.
+induction on 1. intros. case H1.
+  search.
+  backchain adj_3_is_list.
+  backchain IH.
+
+Theorem merge_2_is_list : forall J K L, merge J K L -> is_list K.
+induction on 1. intros. case H1.
+  search.
+  backchain IH.
+  backchain adj_3_is_list.
+
+Theorem merge_3_is_list : forall J K L, merge J K L -> is_list L.
+intros. case H1.
+  search.
+  backchain adj_3_is_list.
+  backchain adj_3_is_list.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem perm_merge_1 : forall J K L JJ,
+  merge J K L ->
+  perm J JJ ->
+  merge JJ K L.
+induction on 1. intros. case H1.
+  case H2. search. case H3.
+  apply adj_perm to H2 H3.
+   apply perm_invert to H2 H3 H6.
+   apply IH to H5 H7. search.
+  apply IH to H5 H2. search.
+
+Theorem perm_merge_2 : forall J K L KK,
+  merge J K L ->
+  perm K KK ->
+  merge J KK L.
+induction on 1. intros. case H1.
+  case H2. search. case H3.
+  apply IH to H5 H2. search.
+  apply adj_perm to H2 H3.
+   apply perm_invert to H2 H3 H6.
+   apply IH to H5 H7. search.
+
+Theorem perm_merge_3 : forall J K L LL,
+  merge J K L ->
+  perm L LL ->
+  merge J K LL.
+induction on 1. intros. case H1.
+  case H2. search. case H3.
+  apply adj_perm_result to H2 H4.
+   apply IH to H5 H7. search.
+  apply adj_perm_result to H2 H4.
+   apply IH to H5 H7. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_sym : forall J K L,
+  merge J K L ->
+  merge K J L.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H4. search.
+  apply IH to H4. search.
+
+Theorem merge_nil_perm : forall K L,
+  merge nil K L -> perm K L.
+induction on 1. intros. case H1.
+  search.
+  case H2.
+  apply IH to H4. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_adj_1 : forall A JJ J K LL,
+  merge JJ K LL -> adj JJ A J -> exists L, adj LL A L /\ merge J K L.
+intros.
+apply adj_2_is_o to H2. apply merge_3_is_list to H1.
+apply adj_exists to *H3 *H4.
+search.
+
+Theorem merge_unadj_1 : forall J K L JJ A,
+  merge J K L -> adj JJ A J -> exists LL, adj LL A L /\ merge JJ K LL.
+induction on 1. intros. case H1.
+  case H2.
+  apply adj_same_result_diff to H2 H3. case H6.
+    apply perm_sym to *H7. apply perm_merge_1 to *H5 *H8. search.
+    apply IH to *H5 H7. apply adj_swap to H8 H4. apply adj_swap to H7 H3.
+     assert merge U1 K U. apply adj_same_result to H13 H2.
+     apply perm_merge_1 to *H14 *H15. search.
+  apply IH to H5 H2. apply adj_swap to H6 H4. assert merge JJ K U. search.
+
+Theorem merge_adj_2 : forall A J KK K LL,
+  merge J KK LL -> adj KK A K -> exists L, adj LL A L /\ merge J K L.
+intros.
+apply adj_2_is_o to H2. apply merge_3_is_list to H1.
+apply adj_exists to *H3 *H4.
+search.
+
+Theorem merge_unadj_2 : forall J K L KK A,
+  merge J K L -> adj KK A K -> exists LL, adj LL A L /\ merge J KK LL.
+intros. apply merge_sym to *H1. apply merge_unadj_1 to *H3 *H2.
+ apply merge_sym to *H5. search.
+
+Theorem merge_unadj_3 : forall J K L LL A,
+  merge J K L -> adj LL A L ->
+  (exists JJ, adj JJ A J /\ merge JJ K LL)
+  \/ (exists KK, adj KK A K /\ merge J KK LL).
+induction on 1. intros. case H1.
+  case H2.
+
+  apply adj_same_result_diff to H4 H2. case H6.
+    apply perm_merge_3 to *H5 *H7. search.
+    apply adj_swap to H7 H2. apply adj_same_result to H9 H4.
+     apply adj_perm to H10 H8. apply IH to H5 H11. case H12.
+       apply adj_swap to H13 H3.
+        assert merge U1 K LL.
+          apply adj_swap to H11 H4.
+          apply adj_same_result to H18 H2.
+          backchain perm_merge_3.
+        search.
+       apply adj_swap to H11 H4.
+        assert merge J KK2 U1.
+        apply adj_same_result to H16 H2. apply perm_merge_3 to *H17 *H18.
+        search.
+
+  apply adj_same_result_diff to H4 H2. case H6.
+    apply perm_merge_3 to *H5 *H7. search.
+    apply adj_swap to H7 H2. apply adj_same_result to H9 H4.
+     apply adj_perm to H10 H8. apply IH to H5 H11. case H12.
+       apply adj_swap to H11 H4.
+        assert merge JJ K U1.
+        apply adj_same_result to H16 H2. apply perm_merge_3 to *H17 *H18.
+        search.
+       apply adj_swap to H13 H3.
+        assert merge J U1 LL.
+          apply adj_swap to H11 H4.
+          apply adj_same_result to H18 H2.
+          backchain perm_merge_3.
+        search.
+
+%% some simple consequences
+
+Theorem merge_invert_1 : forall A JJ J K LL L,
+  merge J K L ->
+  adj JJ A J ->
+  adj LL A L ->
+  merge JJ K LL.
+intros. apply merge_unadj_1 to H1 H2.
+apply adj_same_result to *H4 *H3.
+backchain perm_merge_3.
+
+Theorem merge_invert_2 : forall A J KK K LL L,
+  merge J K L ->
+  adj KK A K ->
+  adj LL A L ->
+  merge J KK LL.
+intros. apply merge_sym to *H1.
+apply merge_invert_1 to *H4 *H2 *H3.
+backchain merge_sym.
+
+Theorem merge_move_12 : forall A JJ J KK K L,
+  adj JJ A J ->
+  adj KK A K ->
+  merge J KK L ->
+  merge JJ K L.
+intros. apply merge_unadj_1 to H3 H1. search.
+
+Theorem merge_move_21 : forall A JJ J KK K L,
+  adj JJ A J ->
+  adj KK A K ->
+  merge JJ K L ->
+  merge J KK L.
+intros. apply merge_unadj_2 to H3 H2. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem add_to_merge_right : forall A J K KK L,
+  adj KK A K ->
+  merge J KK L ->
+  exists M, merge J K M /\ adj L A M.
+intros.
+  apply adj_2_is_o to H1.
+  apply merge_3_is_list to H2.
+  apply adj_exists to H3 H4. search.
+
+Theorem add_to_merge_left : forall A J JJ K L,
+  adj JJ A J ->
+  merge JJ K L ->
+  exists M, merge J K M /\ adj L A M.
+intros.
+  apply adj_2_is_o to H1.
+  apply merge_3_is_list to H2.
+  apply adj_exists to H3 H4. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_nil_equal : forall L,
+  is_list L -> merge nil L L.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H3. search.
+
+Theorem merge_exists : forall J K,
+  is_list J -> is_list K ->
+  exists L, merge J K L.
+induction on 1. intros. case H1.
+  apply merge_nil_equal to H2. search.
+  apply IH to H4 H2. assert (adj L A (A :: L)).
+    apply add_to_merge_left to H6 H5. search.
+
+Theorem merge_head_lemma : forall L A,
+  is_o A -> is_list L -> merge L (A :: nil) (A :: L).
+induction on 2. intros. case H2 (keep).
+  assert (is_list (A :: nil)). apply merge_nil_equal to H3. search.
+  assert (adj L1 A1 (A1 :: L1)).
+   apply IH to H1 H4.
+   apply add_to_merge_left to H5 H6.
+   search.
+
+% Note: the contrary is not true, since adj is order-sensitive
+Theorem adj_implies_merge : forall L J A,
+  adj L A J -> merge L (A :: nil) J.
+induction on 1. intros. case H1.
+  apply merge_head_lemma to H2 H3. search.
+  apply IH to H3.
+   apply adj_1_is_list to H3.
+   assert (adj K B (B :: K)).
+   apply add_to_merge_left to H6 H4.
+   apply adj_3_is_list to H3. search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Associativity
+
+Theorem merge_assoc : forall J K L JK KL JKL1 JKL2,
+  merge J K JK -> merge K L KL ->
+  merge J KL JKL1 -> merge JK L JKL2 ->
+  perm JKL1 JKL2.
+induction on 1. intros. case H1.
+  apply merge_nil_perm to *H2. apply merge_nil_perm to *H3. apply merge_nil_perm to *H4.
+   backchain perm_trans with K = L. backchain perm_sym. backchain perm_trans.
+
+  apply merge_unadj_1 to *H4 H6.
+   apply merge_unadj_1 to *H3 H5.
+   apply IH to *H7 *H2 *H11 *H9.
+   search.
+
+  apply merge_unadj_1 to *H2 H5.
+   apply merge_unadj_1 to *H4 H6.
+   apply merge_unadj_2 to *H3 H8.
+   apply IH to *H7 *H9 *H13 *H11.
+   search.
+
+Theorem change_merge_order : forall J K L JK KL JKL,
+  merge JK L JKL -> merge J K JK -> merge K L KL ->
+  merge J KL JKL.
+intros.
+  apply merge_1_is_list to H2. apply merge_3_is_list to H3.
+  apply merge_exists to H4 H5.
+  apply merge_assoc to H2 H3 H6 H1.
+  apply perm_merge_3 to H6 H7.
+  search.
+
+Theorem change_merge_order2 : forall J K JK L KL JKL,
+  merge J K JK -> merge K L KL -> merge J KL JKL ->
+  merge JK L JKL.
+intros.
+  apply merge_3_is_list to H1. apply merge_2_is_list to H2.
+  apply merge_exists to *H4 *H5.
+  apply merge_assoc to *H1 *H2 *H3 H6. apply perm_sym to *H7.
+  backchain perm_merge_3.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_perm_det : forall J K L1 L2,
+  merge J K L1 ->
+  merge J K L2 ->
+  perm L1 L2.
+induction on 1. intros. case H1.
+  backchain merge_nil_perm.
+  apply merge_unadj_1 to H2 H3.
+   apply IH to H5 H7.
+   search.
+  apply merge_unadj_2 to H2 H3.
+   apply IH to H5 H7.
+   search.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Theorem merge_preserves_perm_lem : forall L LL J K,
+  is_list J ->
+  merge L J K ->
+  merge LL J K ->
+  perm L LL.
+induction on 1. intros. case H1.
+  apply merge_sym to H2. apply merge_nil_perm to *H4.
+   apply merge_sym to H3. apply merge_nil_perm to *H6.
+   apply perm_sym to *H7. backchain perm_trans.
+
+  apply merge_unadj_2 to H2 _. apply merge_unadj_2 to H3 _.
+   apply adj_same_result to H8 H6.
+   apply perm_merge_3 to *H9 *H10.
+   apply IH to *H5 *H7 *H11. search.
+
+Theorem merge_preserves_perm : forall L LL J K,
+  merge L J K ->
+  merge LL J K ->
+  perm L LL.
+intros. apply merge_2_is_list to H1.
+backchain merge_preserves_perm_lem.
+
+% This needs a better name...
+Theorem merge_sub : forall J K L JK JL JKL,
+  merge J K JK ->
+  merge JK L JKL ->
+  merge JL K JKL ->
+  merge J L JL.
+intros.
+  apply merge_1_is_list to H1. apply merge_2_is_list to H2.
+  apply merge_exists to H4 H5.
+  apply merge_sym to H1.
+  apply merge_2_is_list to H1. apply merge_3_is_list to H6.
+  apply merge_exists to H8 H9.
+  apply merge_assoc to H7 H6 H10 H2.
+  apply merge_sym to H10.
+  apply perm_merge_3 to H12 H11.
+  apply merge_preserves_perm to H13 H3.
+  apply perm_merge_3 to H6 H14.
+  search.
+
+Theorem merge_to_adj : forall J L A,
+  merge J (A :: nil) L ->
+  exists JJ, perm J JJ /\ adj JJ A L.
+induction on 1. intros. case H1.
+  apply IH to H4. apply adj_swap to H6 H3. search.
+  apply adj_det to H2. apply merge_sym to H4.
+   apply merge_nil_perm to H5. search.
+
+Theorem merge_same_result_diff : forall J A K B L,
+  merge J (A :: nil) L ->
+  merge K (B :: nil) L ->
+  (A = B /\ perm J K) \/
+  exists KK, merge KK (A :: nil) K.
+intros.
+  apply merge_to_adj to H1.
+  apply merge_to_adj to H2.
+  apply adj_same_result_diff to H4 H6.
+  case H7.
+    apply perm_trans to H3 H8. apply perm_sym to H5.
+     apply perm_trans to H9 H10. search.
+    apply adj_implies_merge to H8. apply perm_sym to H5.
+     apply perm_merge_3 to H9 H10. search.
+
+Theorem merge_split : forall J K L LL A,
+  merge LL (A :: nil) L ->
+  merge J K L ->
+  (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
+  (exists KK, merge KK (A :: nil) K /\ merge J KK LL).
+skip.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% subsets via merge
+
+Define subset : olist -> olist -> prop by
+  subset J L := exists K, merge J K L.
+
+Theorem subset_1_is_list : forall J K, subset J K -> is_list J.
+intros. case H1. backchain merge_1_is_list.
+
+Theorem subset_2_is_list : forall J K, subset J K -> is_list K.
+intros. case H1. backchain merge_3_is_list.

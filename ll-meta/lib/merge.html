@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="merge.thm">[View merge.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="merge-details.html#1" class="command">Type is_o  o -> prop.</a>
+
+<a href="merge-details.html#2" class="command">Import "perm" with is_o := is_o.</a> <a class="import-link" href="perm.html">[View perm]</a>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">% merge J K L : J union K equals L.</span>
+<a href="merge-details.html#3" class="command">Define merge : olist -> olist -> olist -> prop by
+; merge nil nil nil
+; merge J K L :=
+    exists A JJ LL,
+      adj JJ A J /\ adj LL A L /\ merge JJ K LL
+; merge J K L :=
+    exists A KK LL,
+      adj KK A K /\ adj LL A L /\ merge J KK LL
+.</a>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#4" class="command">Theorem merge_1_is_list : forall J K L, merge J K L -> is_list J.</a>
+<div class="proof"><a href="merge-details.html#5" class="tactic">induction on 1.</a> <a href="merge-details.html#6" class="tactic">intros.</a> <a href="merge-details.html#7" class="tactic">case H1.</a>
+  <a href="merge-details.html#8" class="tactic">search.</a>
+  <a href="merge-details.html#9" class="tactic">backchain adj_3_is_list.</a>
+  <a href="merge-details.html#10" class="tactic">backchain IH.</a></div>
+<a href="merge-details.html#11" class="command">Theorem merge_2_is_list : forall J K L, merge J K L -> is_list K.</a>
+<div class="proof"><a href="merge-details.html#12" class="tactic">induction on 1.</a> <a href="merge-details.html#13" class="tactic">intros.</a> <a href="merge-details.html#14" class="tactic">case H1.</a>
+  <a href="merge-details.html#15" class="tactic">search.</a>
+  <a href="merge-details.html#16" class="tactic">backchain IH.</a>
+  <a href="merge-details.html#17" class="tactic">backchain adj_3_is_list.</a></div>
+<a href="merge-details.html#18" class="command">Theorem merge_3_is_list : forall J K L, merge J K L -> is_list L.</a>
+<div class="proof"><a href="merge-details.html#19" class="tactic">intros.</a> <a href="merge-details.html#20" class="tactic">case H1.</a>
+  <a href="merge-details.html#21" class="tactic">search.</a>
+  <a href="merge-details.html#22" class="tactic">backchain adj_3_is_list.</a>
+  <a href="merge-details.html#23" class="tactic">backchain adj_3_is_list.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#24" class="command">Theorem perm_merge_1 : forall J K L JJ,
+  merge J K L ->
+  perm J JJ ->
+  merge JJ K L.</a>
+<div class="proof"><a href="merge-details.html#25" class="tactic">induction on 1.</a> <a href="merge-details.html#26" class="tactic">intros.</a> <a href="merge-details.html#27" class="tactic">case H1.</a>
+  <a href="merge-details.html#28" class="tactic">case H2.</a> <a href="merge-details.html#29" class="tactic">search.</a> <a href="merge-details.html#30" class="tactic">case H3.</a>
+  <a href="merge-details.html#31" class="tactic">apply adj_perm to H2 H3.</a>
+   <a href="merge-details.html#32" class="tactic">apply perm_invert to H2 H3 H6.</a>
+   <a href="merge-details.html#33" class="tactic">apply IH to H5 H7.</a> <a href="merge-details.html#34" class="tactic">search.</a>
+  <a href="merge-details.html#35" class="tactic">apply IH to H5 H2.</a> <a href="merge-details.html#36" class="tactic">search.</a></div>
+<a href="merge-details.html#37" class="command">Theorem perm_merge_2 : forall J K L KK,
+  merge J K L ->
+  perm K KK ->
+  merge J KK L.</a>
+<div class="proof"><a href="merge-details.html#38" class="tactic">induction on 1.</a> <a href="merge-details.html#39" class="tactic">intros.</a> <a href="merge-details.html#40" class="tactic">case H1.</a>
+  <a href="merge-details.html#41" class="tactic">case H2.</a> <a href="merge-details.html#42" class="tactic">search.</a> <a href="merge-details.html#43" class="tactic">case H3.</a>
+  <a href="merge-details.html#44" class="tactic">apply IH to H5 H2.</a> <a href="merge-details.html#45" class="tactic">search.</a>
+  <a href="merge-details.html#46" class="tactic">apply adj_perm to H2 H3.</a>
+   <a href="merge-details.html#47" class="tactic">apply perm_invert to H2 H3 H6.</a>
+   <a href="merge-details.html#48" class="tactic">apply IH to H5 H7.</a> <a href="merge-details.html#49" class="tactic">search.</a></div>
+<a href="merge-details.html#50" class="command">Theorem perm_merge_3 : forall J K L LL,
+  merge J K L ->
+  perm L LL ->
+  merge J K LL.</a>
+<div class="proof"><a href="merge-details.html#51" class="tactic">induction on 1.</a> <a href="merge-details.html#52" class="tactic">intros.</a> <a href="merge-details.html#53" class="tactic">case H1.</a>
+  <a href="merge-details.html#54" class="tactic">case H2.</a> <a href="merge-details.html#55" class="tactic">search.</a> <a href="merge-details.html#56" class="tactic">case H3.</a>
+  <a href="merge-details.html#57" class="tactic">apply adj_perm_result to H2 H4.</a>
+   <a href="merge-details.html#58" class="tactic">apply IH to H5 H7.</a> <a href="merge-details.html#59" class="tactic">search.</a>
+  <a href="merge-details.html#60" class="tactic">apply adj_perm_result to H2 H4.</a>
+   <a href="merge-details.html#61" class="tactic">apply IH to H5 H7.</a> <a href="merge-details.html#62" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#63" class="command">Theorem merge_sym : forall J K L,
+  merge J K L ->
+  merge K J L.</a>
+<div class="proof"><a href="merge-details.html#64" class="tactic">induction on 1.</a> <a href="merge-details.html#65" class="tactic">intros.</a> <a href="merge-details.html#66" class="tactic">case H1.</a>
+  <a href="merge-details.html#67" class="tactic">search.</a>
+  <a href="merge-details.html#68" class="tactic">apply IH to H4.</a> <a href="merge-details.html#69" class="tactic">search.</a>
+  <a href="merge-details.html#70" class="tactic">apply IH to H4.</a> <a href="merge-details.html#71" class="tactic">search.</a></div>
+<a href="merge-details.html#72" class="command">Theorem merge_nil_perm : forall K L,
+  merge nil K L -> perm K L.</a>
+<div class="proof"><a href="merge-details.html#73" class="tactic">induction on 1.</a> <a href="merge-details.html#74" class="tactic">intros.</a> <a href="merge-details.html#75" class="tactic">case H1.</a>
+  <a href="merge-details.html#76" class="tactic">search.</a>
+  <a href="merge-details.html#77" class="tactic">case H2.</a>
+  <a href="merge-details.html#78" class="tactic">apply IH to H4.</a> <a href="merge-details.html#79" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#80" class="command">Theorem merge_adj_1 : forall A JJ J K LL,
+  merge JJ K LL -> adj JJ A J -> exists L, adj LL A L /\ merge J K L.</a>
+<div class="proof"><a href="merge-details.html#81" class="tactic">intros.</a>
+<a href="merge-details.html#82" class="tactic">apply adj_2_is_o to H2.</a> <a href="merge-details.html#83" class="tactic">apply merge_3_is_list to H1.</a>
+<a href="merge-details.html#84" class="tactic">apply adj_exists to *H3 *H4.</a>
+<a href="merge-details.html#85" class="tactic">search.</a></div>
+<a href="merge-details.html#86" class="command">Theorem merge_unadj_1 : forall J K L JJ A,
+  merge J K L -> adj JJ A J -> exists LL, adj LL A L /\ merge JJ K LL.</a>
+<div class="proof"><a href="merge-details.html#87" class="tactic">induction on 1.</a> <a href="merge-details.html#88" class="tactic">intros.</a> <a href="merge-details.html#89" class="tactic">case H1.</a>
+  <a href="merge-details.html#90" class="tactic">case H2.</a>
+  <a href="merge-details.html#91" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="merge-details.html#92" class="tactic">case H6.</a>
+    <a href="merge-details.html#93" class="tactic">apply perm_sym to *H7.</a> <a href="merge-details.html#94" class="tactic">apply perm_merge_1 to *H5 *H8.</a> <a href="merge-details.html#95" class="tactic">search.</a>
+    <a href="merge-details.html#96" class="tactic">apply IH to *H5 H7.</a> <a href="merge-details.html#97" class="tactic">apply adj_swap to H8 H4.</a> <a href="merge-details.html#98" class="tactic">apply adj_swap to H7 H3.</a>
+     <a href="merge-details.html#99" class="tactic">assert merge U1 K U.</a> <a href="merge-details.html#100" class="tactic">apply adj_same_result to H13 H2.</a>
+     <a href="merge-details.html#101" class="tactic">apply perm_merge_1 to *H14 *H15.</a> <a href="merge-details.html#102" class="tactic">search.</a>
+  <a href="merge-details.html#103" class="tactic">apply IH to H5 H2.</a> <a href="merge-details.html#104" class="tactic">apply adj_swap to H6 H4.</a> <a href="merge-details.html#105" class="tactic">assert merge JJ K U.</a> <a href="merge-details.html#106" class="tactic">search.</a></div>
+<a href="merge-details.html#107" class="command">Theorem merge_adj_2 : forall A J KK K LL,
+  merge J KK LL -> adj KK A K -> exists L, adj LL A L /\ merge J K L.</a>
+<div class="proof"><a href="merge-details.html#108" class="tactic">intros.</a>
+<a href="merge-details.html#109" class="tactic">apply adj_2_is_o to H2.</a> <a href="merge-details.html#110" class="tactic">apply merge_3_is_list to H1.</a>
+<a href="merge-details.html#111" class="tactic">apply adj_exists to *H3 *H4.</a>
+<a href="merge-details.html#112" class="tactic">search.</a></div>
+<a href="merge-details.html#113" class="command">Theorem merge_unadj_2 : forall J K L KK A,
+  merge J K L -> adj KK A K -> exists LL, adj LL A L /\ merge J KK LL.</a>
+<div class="proof"><a href="merge-details.html#114" class="tactic">intros.</a> <a href="merge-details.html#115" class="tactic">apply merge_sym to *H1.</a> <a href="merge-details.html#116" class="tactic">apply merge_unadj_1 to *H3 *H2.</a>
+ <a href="merge-details.html#117" class="tactic">apply merge_sym to *H5.</a> <a href="merge-details.html#118" class="tactic">search.</a></div>
+<a href="merge-details.html#119" class="command">Theorem merge_unadj_3 : forall J K L LL A,
+  merge J K L -> adj LL A L ->
+  (exists JJ, adj JJ A J /\ merge JJ K LL)
+  \/ (exists KK, adj KK A K /\ merge J KK LL).</a>
+<div class="proof"><a href="merge-details.html#120" class="tactic">induction on 1.</a> <a href="merge-details.html#121" class="tactic">intros.</a> <a href="merge-details.html#122" class="tactic">case H1.</a>
+  <a href="merge-details.html#123" class="tactic">case H2.</a>
+
+  <a href="merge-details.html#124" class="tactic">apply adj_same_result_diff to H4 H2.</a> <a href="merge-details.html#125" class="tactic">case H6.</a>
+    <a href="merge-details.html#126" class="tactic">apply perm_merge_3 to *H5 *H7.</a> <a href="merge-details.html#127" class="tactic">search.</a>
+    <a href="merge-details.html#128" class="tactic">apply adj_swap to H7 H2.</a> <a href="merge-details.html#129" class="tactic">apply adj_same_result to H9 H4.</a>
+     <a href="merge-details.html#130" class="tactic">apply adj_perm to H10 H8.</a> <a href="merge-details.html#131" class="tactic">apply IH to H5 H11.</a> <a href="merge-details.html#132" class="tactic">case H12.</a>
+       <a href="merge-details.html#133" class="tactic">apply adj_swap to H13 H3.</a>
+        <a href="merge-details.html#134" class="tactic">assert merge U1 K LL.</a>
+          <a href="merge-details.html#135" class="tactic">apply adj_swap to H11 H4.</a>
+          <a href="merge-details.html#136" class="tactic">apply adj_same_result to H18 H2.</a>
+          <a href="merge-details.html#137" class="tactic">backchain perm_merge_3.</a>
+        <a href="merge-details.html#138" class="tactic">search.</a>
+       <a href="merge-details.html#139" class="tactic">apply adj_swap to H11 H4.</a>
+        <a href="merge-details.html#140" class="tactic">assert merge J KK2 U1.</a>
+        <a href="merge-details.html#141" class="tactic">apply adj_same_result to H16 H2.</a> <a href="merge-details.html#142" class="tactic">apply perm_merge_3 to *H17 *H18.</a>
+        <a href="merge-details.html#143" class="tactic">search.</a>
+
+  <a href="merge-details.html#144" class="tactic">apply adj_same_result_diff to H4 H2.</a> <a href="merge-details.html#145" class="tactic">case H6.</a>
+    <a href="merge-details.html#146" class="tactic">apply perm_merge_3 to *H5 *H7.</a> <a href="merge-details.html#147" class="tactic">search.</a>
+    <a href="merge-details.html#148" class="tactic">apply adj_swap to H7 H2.</a> <a href="merge-details.html#149" class="tactic">apply adj_same_result to H9 H4.</a>
+     <a href="merge-details.html#150" class="tactic">apply adj_perm to H10 H8.</a> <a href="merge-details.html#151" class="tactic">apply IH to H5 H11.</a> <a href="merge-details.html#152" class="tactic">case H12.</a>
+       <a href="merge-details.html#153" class="tactic">apply adj_swap to H11 H4.</a>
+        <a href="merge-details.html#154" class="tactic">assert merge JJ K U1.</a>
+        <a href="merge-details.html#155" class="tactic">apply adj_same_result to H16 H2.</a> <a href="merge-details.html#156" class="tactic">apply perm_merge_3 to *H17 *H18.</a>
+        <a href="merge-details.html#157" class="tactic">search.</a>
+       <a href="merge-details.html#158" class="tactic">apply adj_swap to H13 H3.</a>
+        <a href="merge-details.html#159" class="tactic">assert merge J U1 LL.</a>
+          <a href="merge-details.html#160" class="tactic">apply adj_swap to H11 H4.</a>
+          <a href="merge-details.html#161" class="tactic">apply adj_same_result to H18 H2.</a>
+          <a href="merge-details.html#162" class="tactic">backchain perm_merge_3.</a>
+        <a href="merge-details.html#163" class="tactic">search.</a></div>
+<span class="comment">%% some simple consequences</span>
+
+<a href="merge-details.html#164" class="command">Theorem merge_invert_1 : forall A JJ J K LL L,
+  merge J K L ->
+  adj JJ A J ->
+  adj LL A L ->
+  merge JJ K LL.</a>
+<div class="proof"><a href="merge-details.html#165" class="tactic">intros.</a> <a href="merge-details.html#166" class="tactic">apply merge_unadj_1 to H1 H2.</a>
+<a href="merge-details.html#167" class="tactic">apply adj_same_result to *H4 *H3.</a>
+<a href="merge-details.html#168" class="tactic">backchain perm_merge_3.</a></div>
+<a href="merge-details.html#169" class="command">Theorem merge_invert_2 : forall A J KK K LL L,
+  merge J K L ->
+  adj KK A K ->
+  adj LL A L ->
+  merge J KK LL.</a>
+<div class="proof"><a href="merge-details.html#170" class="tactic">intros.</a> <a href="merge-details.html#171" class="tactic">apply merge_sym to *H1.</a>
+<a href="merge-details.html#172" class="tactic">apply merge_invert_1 to *H4 *H2 *H3.</a>
+<a href="merge-details.html#173" class="tactic">backchain merge_sym.</a></div>
+<a href="merge-details.html#174" class="command">Theorem merge_move_12 : forall A JJ J KK K L,
+  adj JJ A J ->
+  adj KK A K ->
+  merge J KK L ->
+  merge JJ K L.</a>
+<div class="proof"><a href="merge-details.html#175" class="tactic">intros.</a> <a href="merge-details.html#176" class="tactic">apply merge_unadj_1 to H3 H1.</a> <a href="merge-details.html#177" class="tactic">search.</a></div>
+<a href="merge-details.html#178" class="command">Theorem merge_move_21 : forall A JJ J KK K L,
+  adj JJ A J ->
+  adj KK A K ->
+  merge JJ K L ->
+  merge J KK L.</a>
+<div class="proof"><a href="merge-details.html#179" class="tactic">intros.</a> <a href="merge-details.html#180" class="tactic">apply merge_unadj_2 to H3 H2.</a> <a href="merge-details.html#181" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#182" class="command">Theorem add_to_merge_right : forall A J K KK L,
+  adj KK A K ->
+  merge J KK L ->
+  exists M, merge J K M /\ adj L A M.</a>
+<div class="proof"><a href="merge-details.html#183" class="tactic">intros.</a>
+  <a href="merge-details.html#184" class="tactic">apply adj_2_is_o to H1.</a>
+  <a href="merge-details.html#185" class="tactic">apply merge_3_is_list to H2.</a>
+  <a href="merge-details.html#186" class="tactic">apply adj_exists to H3 H4.</a> <a href="merge-details.html#187" class="tactic">search.</a></div>
+<a href="merge-details.html#188" class="command">Theorem add_to_merge_left : forall A J JJ K L,
+  adj JJ A J ->
+  merge JJ K L ->
+  exists M, merge J K M /\ adj L A M.</a>
+<div class="proof"><a href="merge-details.html#189" class="tactic">intros.</a>
+  <a href="merge-details.html#190" class="tactic">apply adj_2_is_o to H1.</a>
+  <a href="merge-details.html#191" class="tactic">apply merge_3_is_list to H2.</a>
+  <a href="merge-details.html#192" class="tactic">apply adj_exists to H3 H4.</a> <a href="merge-details.html#193" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#194" class="command">Theorem merge_nil_equal : forall L,
+  is_list L -> merge nil L L.</a>
+<div class="proof"><a href="merge-details.html#195" class="tactic">induction on 1.</a> <a href="merge-details.html#196" class="tactic">intros.</a> <a href="merge-details.html#197" class="tactic">case H1.</a>
+  <a href="merge-details.html#198" class="tactic">search.</a>
+  <a href="merge-details.html#199" class="tactic">apply IH to H3.</a> <a href="merge-details.html#200" class="tactic">search.</a></div>
+<a href="merge-details.html#201" class="command">Theorem merge_exists : forall J K,
+  is_list J -> is_list K ->
+  exists L, merge J K L.</a>
+<div class="proof"><a href="merge-details.html#202" class="tactic">induction on 1.</a> <a href="merge-details.html#203" class="tactic">intros.</a> <a href="merge-details.html#204" class="tactic">case H1.</a>
+  <a href="merge-details.html#205" class="tactic">apply merge_nil_equal to H2.</a> <a href="merge-details.html#206" class="tactic">search.</a>
+  <a href="merge-details.html#207" class="tactic">apply IH to H4 H2.</a> <a href="merge-details.html#208" class="tactic">assert (adj L A (A :: L)).</a>
+    <a href="merge-details.html#209" class="tactic">apply add_to_merge_left to H6 H5.</a> <a href="merge-details.html#210" class="tactic">search.</a></div>
+<a href="merge-details.html#211" class="command">Theorem merge_head_lemma : forall L A,
+  is_o A -> is_list L -> merge L (A :: nil) (A :: L).</a>
+<div class="proof"><a href="merge-details.html#212" class="tactic">induction on 2.</a> <a href="merge-details.html#213" class="tactic">intros.</a> <a href="merge-details.html#214" class="tactic">case H2 (keep).</a>
+  <a href="merge-details.html#215" class="tactic">assert (is_list (A :: nil)).</a> <a href="merge-details.html#216" class="tactic">apply merge_nil_equal to H3.</a> <a href="merge-details.html#217" class="tactic">search.</a>
+  <a href="merge-details.html#218" class="tactic">assert (adj L1 A1 (A1 :: L1)).</a>
+   <a href="merge-details.html#219" class="tactic">apply IH to H1 H4.</a>
+   <a href="merge-details.html#220" class="tactic">apply add_to_merge_left to H5 H6.</a>
+   <a href="merge-details.html#221" class="tactic">search.</a></div>
+<span class="comment">% Note: the contrary is not true, since adj is order-sensitive</span>
+<a href="merge-details.html#222" class="command">Theorem adj_implies_merge : forall L J A,
+  adj L A J -> merge L (A :: nil) J.</a>
+<div class="proof"><a href="merge-details.html#223" class="tactic">induction on 1.</a> <a href="merge-details.html#224" class="tactic">intros.</a> <a href="merge-details.html#225" class="tactic">case H1.</a>
+  <a href="merge-details.html#226" class="tactic">apply merge_head_lemma to H2 H3.</a> <a href="merge-details.html#227" class="tactic">search.</a>
+  <a href="merge-details.html#228" class="tactic">apply IH to H3.</a>
+   <a href="merge-details.html#229" class="tactic">apply adj_1_is_list to H3.</a>
+   <a href="merge-details.html#230" class="tactic">assert (adj K B (B :: K)).</a>
+   <a href="merge-details.html#231" class="tactic">apply add_to_merge_left to H6 H4.</a>
+   <a href="merge-details.html#232" class="tactic">apply adj_3_is_list to H3.</a> <a href="merge-details.html#233" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%% Associativity</span>
+
+<a href="merge-details.html#234" class="command">Theorem merge_assoc : forall J K L JK KL JKL1 JKL2,
+  merge J K JK -> merge K L KL ->
+  merge J KL JKL1 -> merge JK L JKL2 ->
+  perm JKL1 JKL2.</a>
+<div class="proof"><a href="merge-details.html#235" class="tactic">induction on 1.</a> <a href="merge-details.html#236" class="tactic">intros.</a> <a href="merge-details.html#237" class="tactic">case H1.</a>
+  <a href="merge-details.html#238" class="tactic">apply merge_nil_perm to *H2.</a> <a href="merge-details.html#239" class="tactic">apply merge_nil_perm to *H3.</a> <a href="merge-details.html#240" class="tactic">apply merge_nil_perm to *H4.</a>
+   <a href="merge-details.html#241" class="tactic">backchain perm_trans with K = L.</a> <a href="merge-details.html#242" class="tactic">backchain perm_sym.</a> <a href="merge-details.html#243" class="tactic">backchain perm_trans.</a>
+
+  <a href="merge-details.html#244" class="tactic">apply merge_unadj_1 to *H4 H6.</a>
+   <a href="merge-details.html#245" class="tactic">apply merge_unadj_1 to *H3 H5.</a>
+   <a href="merge-details.html#246" class="tactic">apply IH to *H7 *H2 *H11 *H9.</a>
+   <a href="merge-details.html#247" class="tactic">search.</a>
+
+  <a href="merge-details.html#248" class="tactic">apply merge_unadj_1 to *H2 H5.</a>
+   <a href="merge-details.html#249" class="tactic">apply merge_unadj_1 to *H4 H6.</a>
+   <a href="merge-details.html#250" class="tactic">apply merge_unadj_2 to *H3 H8.</a>
+   <a href="merge-details.html#251" class="tactic">apply IH to *H7 *H9 *H13 *H11.</a>
+   <a href="merge-details.html#252" class="tactic">search.</a></div>
+<a href="merge-details.html#253" class="command">Theorem change_merge_order : forall J K L JK KL JKL,
+  merge JK L JKL -> merge J K JK -> merge K L KL ->
+  merge J KL JKL.</a>
+<div class="proof"><a href="merge-details.html#254" class="tactic">intros.</a>
+  <a href="merge-details.html#255" class="tactic">apply merge_1_is_list to H2.</a> <a href="merge-details.html#256" class="tactic">apply merge_3_is_list to H3.</a>
+  <a href="merge-details.html#257" class="tactic">apply merge_exists to H4 H5.</a>
+  <a href="merge-details.html#258" class="tactic">apply merge_assoc to H2 H3 H6 H1.</a>
+  <a href="merge-details.html#259" class="tactic">apply perm_merge_3 to H6 H7.</a>
+  <a href="merge-details.html#260" class="tactic">search.</a></div>
+<a href="merge-details.html#261" class="command">Theorem change_merge_order2 : forall J K JK L KL JKL,
+  merge J K JK -> merge K L KL -> merge J KL JKL ->
+  merge JK L JKL.</a>
+<div class="proof"><a href="merge-details.html#262" class="tactic">intros.</a>
+  <a href="merge-details.html#263" class="tactic">apply merge_3_is_list to H1.</a> <a href="merge-details.html#264" class="tactic">apply merge_2_is_list to H2.</a>
+  <a href="merge-details.html#265" class="tactic">apply merge_exists to *H4 *H5.</a>
+  <a href="merge-details.html#266" class="tactic">apply merge_assoc to *H1 *H2 *H3 H6.</a> <a href="merge-details.html#267" class="tactic">apply perm_sym to *H7.</a>
+  <a href="merge-details.html#268" class="tactic">backchain perm_merge_3.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#269" class="command">Theorem merge_perm_det : forall J K L1 L2,
+  merge J K L1 ->
+  merge J K L2 ->
+  perm L1 L2.</a>
+<div class="proof"><a href="merge-details.html#270" class="tactic">induction on 1.</a> <a href="merge-details.html#271" class="tactic">intros.</a> <a href="merge-details.html#272" class="tactic">case H1.</a>
+  <a href="merge-details.html#273" class="tactic">backchain merge_nil_perm.</a>
+  <a href="merge-details.html#274" class="tactic">apply merge_unadj_1 to H2 H3.</a>
+   <a href="merge-details.html#275" class="tactic">apply IH to H5 H7.</a>
+   <a href="merge-details.html#276" class="tactic">search.</a>
+  <a href="merge-details.html#277" class="tactic">apply merge_unadj_2 to H2 H3.</a>
+   <a href="merge-details.html#278" class="tactic">apply IH to H5 H7.</a>
+   <a href="merge-details.html#279" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<a href="merge-details.html#280" class="command">Theorem merge_preserves_perm_lem : forall L LL J K,
+  is_list J ->
+  merge L J K ->
+  merge LL J K ->
+  perm L LL.</a>
+<div class="proof"><a href="merge-details.html#281" class="tactic">induction on 1.</a> <a href="merge-details.html#282" class="tactic">intros.</a> <a href="merge-details.html#283" class="tactic">case H1.</a>
+  <a href="merge-details.html#284" class="tactic">apply merge_sym to H2.</a> <a href="merge-details.html#285" class="tactic">apply merge_nil_perm to *H4.</a>
+   <a href="merge-details.html#286" class="tactic">apply merge_sym to H3.</a> <a href="merge-details.html#287" class="tactic">apply merge_nil_perm to *H6.</a>
+   <a href="merge-details.html#288" class="tactic">apply perm_sym to *H7.</a> <a href="merge-details.html#289" class="tactic">backchain perm_trans.</a>
+
+  <a href="merge-details.html#290" class="tactic">apply merge_unadj_2 to H2 _.</a> <a href="merge-details.html#291" class="tactic">apply merge_unadj_2 to H3 _.</a>
+   <a href="merge-details.html#292" class="tactic">apply adj_same_result to H8 H6.</a>
+   <a href="merge-details.html#293" class="tactic">apply perm_merge_3 to *H9 *H10.</a>
+   <a href="merge-details.html#294" class="tactic">apply IH to *H5 *H7 *H11.</a> <a href="merge-details.html#295" class="tactic">search.</a></div>
+<a href="merge-details.html#296" class="command">Theorem merge_preserves_perm : forall L LL J K,
+  merge L J K ->
+  merge LL J K ->
+  perm L LL.</a>
+<div class="proof"><a href="merge-details.html#297" class="tactic">intros.</a> <a href="merge-details.html#298" class="tactic">apply merge_2_is_list to H1.</a>
+<a href="merge-details.html#299" class="tactic">backchain merge_preserves_perm_lem.</a></div>
+<span class="comment">% This needs a better name...</span>
+<a href="merge-details.html#300" class="command">Theorem merge_sub : forall J K L JK JL JKL,
+  merge J K JK ->
+  merge JK L JKL ->
+  merge JL K JKL ->
+  merge J L JL.</a>
+<div class="proof"><a href="merge-details.html#301" class="tactic">intros.</a>
+  <a href="merge-details.html#302" class="tactic">apply merge_1_is_list to H1.</a> <a href="merge-details.html#303" class="tactic">apply merge_2_is_list to H2.</a>
+  <a href="merge-details.html#304" class="tactic">apply merge_exists to H4 H5.</a>
+  <a href="merge-details.html#305" class="tactic">apply merge_sym to H1.</a>
+  <a href="merge-details.html#306" class="tactic">apply merge_2_is_list to H1.</a> <a href="merge-details.html#307" class="tactic">apply merge_3_is_list to H6.</a>
+  <a href="merge-details.html#308" class="tactic">apply merge_exists to H8 H9.</a>
+  <a href="merge-details.html#309" class="tactic">apply merge_assoc to H7 H6 H10 H2.</a>
+  <a href="merge-details.html#310" class="tactic">apply merge_sym to H10.</a>
+  <a href="merge-details.html#311" class="tactic">apply perm_merge_3 to H12 H11.</a>
+  <a href="merge-details.html#312" class="tactic">apply merge_preserves_perm to H13 H3.</a>
+  <a href="merge-details.html#313" class="tactic">apply perm_merge_3 to H6 H14.</a>
+  <a href="merge-details.html#314" class="tactic">search.</a></div>
+<a href="merge-details.html#315" class="command">Theorem merge_to_adj : forall J L A,
+  merge J (A :: nil) L ->
+  exists JJ, perm J JJ /\ adj JJ A L.</a>
+<div class="proof"><a href="merge-details.html#316" class="tactic">induction on 1.</a> <a href="merge-details.html#317" class="tactic">intros.</a> <a href="merge-details.html#318" class="tactic">case H1.</a>
+  <a href="merge-details.html#319" class="tactic">apply IH to H4.</a> <a href="merge-details.html#320" class="tactic">apply adj_swap to H6 H3.</a> <a href="merge-details.html#321" class="tactic">search.</a>
+  <a href="merge-details.html#322" class="tactic">apply adj_det to H2.</a> <a href="merge-details.html#323" class="tactic">apply merge_sym to H4.</a>
+   <a href="merge-details.html#324" class="tactic">apply merge_nil_perm to H5.</a> <a href="merge-details.html#325" class="tactic">search.</a></div>
+<a href="merge-details.html#326" class="command">Theorem merge_same_result_diff : forall J A K B L,
+  merge J (A :: nil) L ->
+  merge K (B :: nil) L ->
+  (A = B /\ perm J K) \/
+  exists KK, merge KK (A :: nil) K.</a>
+<div class="proof"><a href="merge-details.html#327" class="tactic">intros.</a>
+  <a href="merge-details.html#328" class="tactic">apply merge_to_adj to H1.</a>
+  <a href="merge-details.html#329" class="tactic">apply merge_to_adj to H2.</a>
+  <a href="merge-details.html#330" class="tactic">apply adj_same_result_diff to H4 H6.</a>
+  <a href="merge-details.html#331" class="tactic">case H7.</a>
+    <a href="merge-details.html#332" class="tactic">apply perm_trans to H3 H8.</a> <a href="merge-details.html#333" class="tactic">apply perm_sym to H5.</a>
+     <a href="merge-details.html#334" class="tactic">apply perm_trans to H9 H10.</a> <a href="merge-details.html#335" class="tactic">search.</a>
+    <a href="merge-details.html#336" class="tactic">apply adj_implies_merge to H8.</a> <a href="merge-details.html#337" class="tactic">apply perm_sym to H5.</a>
+     <a href="merge-details.html#338" class="tactic">apply perm_merge_3 to H9 H10.</a> <a href="merge-details.html#339" class="tactic">search.</a></div>
+<a href="merge-details.html#340" class="command">Theorem merge_split : forall J K L LL A,
+  merge LL (A :: nil) L ->
+  merge J K L ->
+  (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
+  (exists KK, merge KK (A :: nil) K /\ merge J KK LL).</a>
+<div class="proof"><a href="merge-details.html#341" class="tactic">skip.</a></div>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%% subsets via merge</span>
+
+<a href="merge-details.html#342" class="command">Define subset : olist -> olist -> prop by
+  subset J L := exists K, merge J K L.</a>
+
+<a href="merge-details.html#343" class="command">Theorem subset_1_is_list : forall J K, subset J K -> is_list J.</a>
+<div class="proof"><a href="merge-details.html#344" class="tactic">intros.</a> <a href="merge-details.html#345" class="tactic">case H1.</a> <a href="merge-details.html#346" class="tactic">backchain merge_1_is_list.</a></div>
+<a href="merge-details.html#347" class="command">Theorem subset_2_is_list : forall J K, subset J K -> is_list K.</a>
+<div class="proof"><a href="merge-details.html#348" class="tactic">intros.</a> <a href="merge-details.html#349" class="tactic">case H1.</a> <a href="merge-details.html#350" class="tactic">backchain merge_3_is_list.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

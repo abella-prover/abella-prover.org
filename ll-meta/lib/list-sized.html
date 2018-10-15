@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="list-sized.thm">[View list-sized.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="list-sized-details.html#1" class="command">Kind nat type.</a>
+<a href="list-sized-details.html#2" class="command">Import "nat".</a> <a class="import-link" href="nat.html">[View nat]</a>
+
+<a href="list-sized-details.html#3" class="command">Type is_o  o -> prop.</a>
+
+<a href="list-sized-details.html#4" class="command">Define $is_list : nat -> olist -> prop by
+; $is_list (s X) nil := is_nat X
+; $is_list (s X) (A :: L) := is_o A /\ $is_list X L
+.</a>
+
+<a href="list-sized-details.html#5" class="command">Define is_list : olist -> prop by
+; is_list L := exists X, is_nat X /\ $is_list X L.</a>
+
+<a href="list-sized-details.html#6" class="command">Define $adj : nat -> olist -> o -> olist -> prop by
+; $adj (s X) L A (A :: L) := is_nat X /\ is_o A /\ is_list L
+; $adj (s X)  (B :: K) A (B :: L) := is_o B /\ $adj X K A L
+.</a>
+
+<a href="list-sized-details.html#7" class="command">Define adj : olist -> o -> olist -> prop by
+; adj K A L := exists X, is_nat X /\ $adj X K A L.</a>
+
+<a href="list-sized-details.html#8" class="command">Define $perm : nat -> olist -> olist -> prop by
+; $perm (s X) nil nil := is_nat X
+; $perm (s X) K L :=
+    exists A KK LL, adj KK A K /\ adj LL A L /\ $perm X KK LL.</a>
+
+<a href="list-sized-details.html#9" class="command">Define perm : olist -> olist -> prop by
+; perm K L := exists X, is_nat X /\ $perm X K L.</a>
+
+<a href="list-sized-details.html#10" class="command">Theorem $adj_is : forall K A L,
+  adj K A L ->
+  exists X, is_nat X /\ $is_list X K /\ is_o A /\ $is_list (s X) L.</a>
+<div class="proof"><a href="list-sized-details.html#11" class="tactic">intros Ht1.</a> <a href="list-sized-details.html#12" class="tactic">Ht1 : case Ht1.</a> <a href="list-sized-details.html#13" class="tactic">clear -> Ht2 Ht1 L A K X.</a>
+<a href="list-sized-details.html#14" class="tactic">induction on 2.</a> <a href="list-sized-details.html#15" class="tactic">intros.</a> <a href="list-sized-details.html#16" class="tactic">case H2.</a>
+  <a href="list-sized-details.html#17" class="tactic">case H5.</a> <a href="list-sized-details.html#18" class="tactic">search.</a>
+  <a href="list-sized-details.html#19" class="tactic">case H1.</a> <a href="list-sized-details.html#20" class="tactic">apply IH to *H5 *H4.</a> <a href="list-sized-details.html#21" class="tactic">search.</a></div>
+<a href="list-sized-details.html#22" class="command">Theorem adj_is : forall K A L,
+  adj K A L ->
+  is_list K /\ is_o A /\ is_list L.</a>
+<div class="proof"><a href="list-sized-details.html#23" class="tactic">intros.</a> <a href="list-sized-details.html#24" class="tactic">apply $adj_is to H1.</a> <a href="list-sized-details.html#25" class="tactic">search.</a></div>
+<a href="list-sized-details.html#26" class="command">Theorem $adj_transport : forall X K A L,
+  adj K A L ->
+  $is_list X K -> $is_list (s X) L.</a>
+<div class="proof"><a href="list-sized-details.html#27" class="tactic">intros Ht1 Ht2.</a> <a href="list-sized-details.html#28" class="tactic">Ht1 : case Ht1.</a> <a href="list-sized-details.html#29" class="tactic">rename X1 to Y.</a> <a href="list-sized-details.html#30" class="tactic">clear -> Ht2 Ht3 Ht1 L A K Y X.</a>
+<a href="list-sized-details.html#31" class="tactic">induction on 2.</a> <a href="list-sized-details.html#32" class="tactic">intros.</a> <a href="list-sized-details.html#33" class="tactic">case H2.</a>
+  <a href="list-sized-details.html#34" class="tactic">search.</a>
+  <a href="list-sized-details.html#35" class="tactic">case H1.</a> <a href="list-sized-details.html#36" class="tactic">case H3.</a>
+   <a href="list-sized-details.html#37" class="tactic">apply IH to *H6 *H5 *H8.</a> <a href="list-sized-details.html#38" class="tactic">search.</a></div>
+<a href="list-sized-details.html#39" class="command">Theorem $adj_rtransport : forall X K A L,
+  adj K A L ->
+  $is_list X L -> exists Z, X = s Z /\ $is_list Z K.</a>
+<div class="proof"><a href="list-sized-details.html#40" class="tactic">intros Ht1 Ht2.</a> <a href="list-sized-details.html#41" class="tactic">Ht1 : case Ht1.</a> <a href="list-sized-details.html#42" class="tactic">rename X1 to Y.</a> <a href="list-sized-details.html#43" class="tactic">clear -> Ht2 Ht3 Ht1 L A K Y X.</a>
+<a href="list-sized-details.html#44" class="tactic">induction on 2.</a> <a href="list-sized-details.html#45" class="tactic">intros.</a> <a href="list-sized-details.html#46" class="tactic">case H2.</a>
+  <a href="list-sized-details.html#47" class="tactic">case H3.</a> <a href="list-sized-details.html#48" class="tactic">search.</a>
+  <a href="list-sized-details.html#49" class="tactic">case H3.</a> <a href="list-sized-details.html#50" class="tactic">case H1.</a> <a href="list-sized-details.html#51" class="tactic">apply IH to *H8 *H5 *H7.</a> <a href="list-sized-details.html#52" class="tactic">search.</a></div>
+<a href="list-sized-details.html#53" class="command">Theorem $perm_is : forall K L,
+  perm K L ->
+  exists X, is_nat X /\ $is_list X K /\ $is_list X L.</a>
+<div class="proof"><a href="list-sized-details.html#54" class="tactic">intros Ht1.</a> <a href="list-sized-details.html#55" class="tactic">Ht1 : case Ht1.</a> <a href="list-sized-details.html#56" class="tactic">clear -> Ht2 Ht1 L K X.</a>
+<a href="list-sized-details.html#57" class="tactic">induction on 2.</a> <a href="list-sized-details.html#58" class="tactic">intros.</a> <a href="list-sized-details.html#59" class="tactic">case H2.</a>
+  <a href="list-sized-details.html#60" class="tactic">search.</a>
+  <a href="list-sized-details.html#61" class="tactic">case H1.</a> <a href="list-sized-details.html#62" class="tactic">apply IH to *H6 *H5.</a>
+   <a href="list-sized-details.html#63" class="tactic">apply $adj_transport to *H3 *H8.</a>
+   <a href="list-sized-details.html#64" class="tactic">apply $adj_transport to *H4 *H9.</a>
+   <a href="list-sized-details.html#65" class="tactic">search.</a></div>
+<a href="list-sized-details.html#66" class="command">Theorem perm_is : forall K L,
+  perm K L ->
+  is_list K /\ is_list L.</a>
+<div class="proof"><a href="list-sized-details.html#67" class="tactic">intros.</a> <a href="list-sized-details.html#68" class="tactic">apply $perm_is to *H1.</a> <a href="list-sized-details.html#69" class="tactic">search.</a></div>
+<a href="list-sized-details.html#70" class="command">Theorem perm_preserv : forall K L X,
+  perm K L -> $is_list X K -> $is_list X L.</a>
+<div class="proof"><a href="list-sized-details.html#71" class="tactic">intros Ht1 Ht2.</a> <a href="list-sized-details.html#72" class="tactic">Ht1 : case Ht1.</a> <a href="list-sized-details.html#73" class="tactic">rename X1 to Y.</a> <a href="list-sized-details.html#74" class="tactic">clear -> Ht2 Ht3 Ht1 L K Y X.</a>
+<a href="list-sized-details.html#75" class="tactic">induction on 2.</a> <a href="list-sized-details.html#76" class="tactic">intros.</a> <a href="list-sized-details.html#77" class="tactic">case H2.</a>
+  <a href="list-sized-details.html#78" class="tactic">search.</a>
+  <a href="list-sized-details.html#79" class="tactic">case H1.</a>
+   <a href="list-sized-details.html#80" class="tactic">apply $adj_rtransport to *H4 *H3.</a>
+   <a href="list-sized-details.html#81" class="tactic">apply IH to *H7 *H6 *H8.</a>
+   <a href="list-sized-details.html#82" class="tactic">backchain $adj_transport.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

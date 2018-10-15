@@ -1,0 +1,2303 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Kind nat type. - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.5-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Kind nat Type.</b>
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Type z nat.</b>
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Type s nat -> nat.</b>
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Define is_nat : nat -> prop by 
+is_nat z;
+is_nat (s X) := is_nat X.</b>
+
+</pre>
+<a name="5"></a>
+<pre class="code">
+Abella < <b>Close nat.</b>
+
+</pre>
+<a name="6"></a>
+<pre class="code">
+Abella < <b>Define plus : nat -> nat -> nat -> prop by 
+plus z X X := is_nat X;
+plus (s X) Y (s Z) := plus X Y Z.</b>
+
+</pre>
+<a name="7"></a>
+<pre class="code">
+Abella < <b>Define leq : nat -> nat -> prop by 
+leq z X := is_nat X;
+leq (s X) (s Y) := leq X Y.</b>
+
+</pre>
+<a name="8"></a>
+<pre class="code">
+Abella < <b>Theorem plus_1_is_nat : 
+forall X Y Z, plus X Y Z -> is_nat X.</b>
+
+</pre>
+<a name="9"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> is_nat X
+
+plus_1_is_nat < <b>induction on 1.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> is_nat X
+============================
+ forall X Y Z, plus X Y Z @ -> is_nat X
+
+plus_1_is_nat < <b>intros.</b>
+</pre>
+<a name="11"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> is_nat X
+H1 : plus X Y Z @
+============================
+ is_nat X
+
+plus_1_is_nat < <b>case H1.</b>
+</pre>
+<a name="12"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> is_nat X
+H2 : is_nat Z
+============================
+ is_nat z
+
+Subgoal 2 is:
+ is_nat (s X1)
+
+plus_1_is_nat < <b>search.</b>
+</pre>
+<a name="13"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat X
+H2 : plus X1 Y Z1 *
+============================
+ is_nat (s X1)
+
+plus_1_is_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="14"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat X
+H2 : plus X1 Y Z1 *
+H3 : is_nat X1
+============================
+ is_nat (s X1)
+
+plus_1_is_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="15"></a>
+<pre class="code">
+Abella < <b>Theorem plus_2_is_nat : 
+forall X Y Z, plus X Y Z -> is_nat Y.</b>
+
+</pre>
+<a name="16"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> is_nat Y
+
+plus_2_is_nat < <b>induction on 1.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> is_nat Y
+============================
+ forall X Y Z, plus X Y Z @ -> is_nat Y
+
+plus_2_is_nat < <b>intros.</b>
+</pre>
+<a name="18"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> is_nat Y
+H1 : plus X Y Z @
+============================
+ is_nat Y
+
+plus_2_is_nat < <b>case H1.</b>
+</pre>
+<a name="19"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> is_nat Y
+H2 : is_nat Z
+============================
+ is_nat Z
+
+Subgoal 2 is:
+ is_nat Y
+
+plus_2_is_nat < <b>search.</b>
+</pre>
+<a name="20"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat Y
+H2 : plus X1 Y Z1 *
+============================
+ is_nat Y
+
+plus_2_is_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="21"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat Y
+H2 : plus X1 Y Z1 *
+H3 : is_nat Y
+============================
+ is_nat Y
+
+plus_2_is_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="22"></a>
+<pre class="code">
+Abella < <b>Theorem plus_3_is_nat : 
+forall X Y Z, plus X Y Z -> is_nat Z.</b>
+
+</pre>
+<a name="23"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> is_nat Z
+
+plus_3_is_nat < <b>induction on 1.</b>
+</pre>
+<a name="24"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> is_nat Z
+============================
+ forall X Y Z, plus X Y Z @ -> is_nat Z
+
+plus_3_is_nat < <b>intros.</b>
+</pre>
+<a name="25"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> is_nat Z
+H1 : plus X Y Z @
+============================
+ is_nat Z
+
+plus_3_is_nat < <b>case H1.</b>
+</pre>
+<a name="26"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> is_nat Z
+H2 : is_nat Z
+============================
+ is_nat Z
+
+Subgoal 2 is:
+ is_nat (s Z1)
+
+plus_3_is_nat < <b>search.</b>
+</pre>
+<a name="27"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat Z
+H2 : plus X1 Y Z1 *
+============================
+ is_nat (s Z1)
+
+plus_3_is_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="28"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> is_nat Z
+H2 : plus X1 Y Z1 *
+H3 : is_nat Z1
+============================
+ is_nat (s Z1)
+
+plus_3_is_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="29"></a>
+<pre class="code">
+Abella < <b>Theorem leq_1_is_nat : 
+forall X Y, leq X Y -> is_nat X.</b>
+
+</pre>
+<a name="30"></a>
+<pre class="code">
+
+============================
+ forall X Y, leq X Y -> is_nat X
+
+leq_1_is_nat < <b>induction on 1.</b>
+</pre>
+<a name="31"></a>
+<pre class="code">
+
+IH : forall X Y, leq X Y * -> is_nat X
+============================
+ forall X Y, leq X Y @ -> is_nat X
+
+leq_1_is_nat < <b>intros.</b>
+</pre>
+<a name="32"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, leq X Y * -> is_nat X
+H1 : leq X Y @
+============================
+ is_nat X
+
+leq_1_is_nat < <b>case H1.</b>
+</pre>
+<a name="33"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y
+IH : forall X Y, leq X Y * -> is_nat X
+H2 : is_nat Y
+============================
+ is_nat z
+
+Subgoal 2 is:
+ is_nat (s X1)
+
+leq_1_is_nat < <b>search.</b>
+</pre>
+<a name="34"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> is_nat X
+H2 : leq X1 Y1 *
+============================
+ is_nat (s X1)
+
+leq_1_is_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="35"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> is_nat X
+H2 : leq X1 Y1 *
+H3 : is_nat X1
+============================
+ is_nat (s X1)
+
+leq_1_is_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="36"></a>
+<pre class="code">
+Abella < <b>Theorem leq_2_is_nat : 
+forall X Y, leq X Y -> is_nat Y.</b>
+
+</pre>
+<a name="37"></a>
+<pre class="code">
+
+============================
+ forall X Y, leq X Y -> is_nat Y
+
+leq_2_is_nat < <b>induction on 1.</b>
+</pre>
+<a name="38"></a>
+<pre class="code">
+
+IH : forall X Y, leq X Y * -> is_nat Y
+============================
+ forall X Y, leq X Y @ -> is_nat Y
+
+leq_2_is_nat < <b>intros.</b>
+</pre>
+<a name="39"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, leq X Y * -> is_nat Y
+H1 : leq X Y @
+============================
+ is_nat Y
+
+leq_2_is_nat < <b>case H1.</b>
+</pre>
+<a name="40"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y
+IH : forall X Y, leq X Y * -> is_nat Y
+H2 : is_nat Y
+============================
+ is_nat Y
+
+Subgoal 2 is:
+ is_nat (s Y1)
+
+leq_2_is_nat < <b>search.</b>
+</pre>
+<a name="41"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> is_nat Y
+H2 : leq X1 Y1 *
+============================
+ is_nat (s Y1)
+
+leq_2_is_nat < <b>apply IH to H2.</b>
+</pre>
+<a name="42"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> is_nat Y
+H2 : leq X1 Y1 *
+H3 : is_nat Y1
+============================
+ is_nat (s Y1)
+
+leq_2_is_nat < <b>search.</b>
+Proof completed.
+</pre>
+<a name="43"></a>
+<pre class="code">
+Abella < <b>Theorem plus_z : 
+forall X, is_nat X -> plus X z X.</b>
+
+</pre>
+<a name="44"></a>
+<pre class="code">
+
+============================
+ forall X, is_nat X -> plus X z X
+
+plus_z < <b>induction on 1.</b>
+</pre>
+<a name="45"></a>
+<pre class="code">
+
+IH : forall X, is_nat X * -> plus X z X
+============================
+ forall X, is_nat X @ -> plus X z X
+
+plus_z < <b>intros.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+
+Variables: X
+IH : forall X, is_nat X * -> plus X z X
+H1 : is_nat X @
+============================
+ plus X z X
+
+plus_z < <b>case H1.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X, is_nat X * -> plus X z X
+============================
+ plus z z z
+
+Subgoal 2 is:
+ plus (s X1) z (s X1)
+
+plus_z < <b>search.</b>
+</pre>
+<a name="48"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> plus X z X
+H2 : is_nat X1 *
+============================
+ plus (s X1) z (s X1)
+
+plus_z < <b>apply IH to H2.</b>
+</pre>
+<a name="49"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> plus X z X
+H2 : is_nat X1 *
+H3 : plus X1 z X1
+============================
+ plus (s X1) z (s X1)
+
+plus_z < <b>search.</b>
+Proof completed.
+</pre>
+<a name="50"></a>
+<pre class="code">
+Abella < <b>Theorem plus_z_char : 
+forall X Y, plus Y X Y -> X = z.</b>
+
+</pre>
+<a name="51"></a>
+<pre class="code">
+
+============================
+ forall X Y, plus Y X Y -> X = z
+
+plus_z_char < <b>induction on 1.</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+
+IH : forall X Y, plus Y X Y * -> X = z
+============================
+ forall X Y, plus Y X Y @ -> X = z
+
+plus_z_char < <b>intros.</b>
+</pre>
+<a name="53"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, plus Y X Y * -> X = z
+H1 : plus Y X Y @
+============================
+ X = z
+
+plus_z_char < <b>case H1.</b>
+</pre>
+<a name="54"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X Y, plus Y X Y * -> X = z
+H2 : is_nat z
+============================
+ z = z
+
+Subgoal 2 is:
+ X = z
+
+plus_z_char < <b>search.</b>
+</pre>
+<a name="55"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X X1
+IH : forall X Y, plus Y X Y * -> X = z
+H2 : plus X1 X X1 *
+============================
+ X = z
+
+plus_z_char < <b>apply IH to H2.</b>
+</pre>
+<a name="56"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X Y, plus Y X Y * -> X = z
+H2 : plus X1 z X1 *
+============================
+ z = z
+
+plus_z_char < <b>search.</b>
+Proof completed.
+</pre>
+<a name="57"></a>
+<pre class="code">
+Abella < <b>Theorem plus_s : 
+forall X Y Z, plus X Y Z -> plus X (s Y) (s Z).</b>
+
+</pre>
+<a name="58"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> plus X (s Y) (s Z)
+
+plus_s < <b>induction on 1.</b>
+</pre>
+<a name="59"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> plus X (s Y) (s Z)
+============================
+ forall X Y Z, plus X Y Z @ -> plus X (s Y) (s Z)
+
+plus_s < <b>intros.</b>
+</pre>
+<a name="60"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> plus X (s Y) (s Z)
+H1 : plus X Y Z @
+============================
+ plus X (s Y) (s Z)
+
+plus_s < <b>case H1.</b>
+</pre>
+<a name="61"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> plus X (s Y) (s Z)
+H2 : is_nat Z
+============================
+ plus z (s Z) (s Z)
+
+Subgoal 2 is:
+ plus (s X1) (s Y) (s (s Z1))
+
+plus_s < <b>search.</b>
+</pre>
+<a name="62"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> plus X (s Y) (s Z)
+H2 : plus X1 Y Z1 *
+============================
+ plus (s X1) (s Y) (s (s Z1))
+
+plus_s < <b>apply IH to H2.</b>
+</pre>
+<a name="63"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> plus X (s Y) (s Z)
+H2 : plus X1 Y Z1 *
+H3 : plus X1 (s Y) (s Z1)
+============================
+ plus (s X1) (s Y) (s (s Z1))
+
+plus_s < <b>search.</b>
+Proof completed.
+</pre>
+<a name="64"></a>
+<pre class="code">
+Abella < <b>Theorem plus_comm : 
+forall X Y Z, plus X Y Z -> plus Y X Z.</b>
+
+</pre>
+<a name="65"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> plus Y X Z
+
+plus_comm < <b>induction on 1.</b>
+</pre>
+<a name="66"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> plus Y X Z
+============================
+ forall X Y Z, plus X Y Z @ -> plus Y X Z
+
+plus_comm < <b>intros.</b>
+</pre>
+<a name="67"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> plus Y X Z
+H1 : plus X Y Z @
+============================
+ plus Y X Z
+
+plus_comm < <b>case H1.</b>
+</pre>
+<a name="68"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> plus Y X Z
+H2 : is_nat Z
+============================
+ plus Z z Z
+
+Subgoal 2 is:
+ plus Y (s X1) (s Z1)
+
+plus_comm < <b>backchain plus_z.</b>
+</pre>
+<a name="69"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> plus Y X Z
+H2 : plus X1 Y Z1 *
+============================
+ plus Y (s X1) (s Z1)
+
+plus_comm < <b>apply IH to H2.</b>
+</pre>
+<a name="70"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> plus Y X Z
+H2 : plus X1 Y Z1 *
+H3 : plus Y X1 Z1
+============================
+ plus Y (s X1) (s Z1)
+
+plus_comm < <b>backchain plus_s.</b>
+Proof completed.
+</pre>
+<a name="71"></a>
+<pre class="code">
+Abella < <b>Theorem leq_refl : 
+forall X, is_nat X -> leq X X.</b>
+
+</pre>
+<a name="72"></a>
+<pre class="code">
+
+============================
+ forall X, is_nat X -> leq X X
+
+leq_refl < <b>induction on 1.</b>
+</pre>
+<a name="73"></a>
+<pre class="code">
+
+IH : forall X, is_nat X * -> leq X X
+============================
+ forall X, is_nat X @ -> leq X X
+
+leq_refl < <b>intros.</b>
+</pre>
+<a name="74"></a>
+<pre class="code">
+
+Variables: X
+IH : forall X, is_nat X * -> leq X X
+H1 : is_nat X @
+============================
+ leq X X
+
+leq_refl < <b>case H1.</b>
+</pre>
+<a name="75"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X, is_nat X * -> leq X X
+============================
+ leq z z
+
+Subgoal 2 is:
+ leq (s X1) (s X1)
+
+leq_refl < <b>search.</b>
+</pre>
+<a name="76"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq X X
+H2 : is_nat X1 *
+============================
+ leq (s X1) (s X1)
+
+leq_refl < <b>apply IH to H2.</b>
+</pre>
+<a name="77"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq X X
+H2 : is_nat X1 *
+H3 : leq X1 X1
+============================
+ leq (s X1) (s X1)
+
+leq_refl < <b>search.</b>
+Proof completed.
+</pre>
+<a name="78"></a>
+<pre class="code">
+Abella < <b>Theorem leq_trans : 
+forall X Y Z, leq X Y -> leq Y Z -> leq X Z.</b>
+
+</pre>
+<a name="79"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, leq X Y -> leq Y Z -> leq X Z
+
+leq_trans < <b>induction on 1.</b>
+</pre>
+<a name="80"></a>
+<pre class="code">
+
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+============================
+ forall X Y Z, leq X Y @ -> leq Y Z -> leq X Z
+
+leq_trans < <b>intros.</b>
+</pre>
+<a name="81"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H1 : leq X Y @
+H2 : leq Y Z
+============================
+ leq X Z
+
+leq_trans < <b>case H1.</b>
+</pre>
+<a name="82"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y Z
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H2 : leq Y Z
+H3 : is_nat Y
+============================
+ leq z Z
+
+Subgoal 2 is:
+ leq (s X1) Z
+
+leq_trans < <b>apply leq_2_is_nat to H2.</b>
+</pre>
+<a name="83"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y Z
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H2 : leq Y Z
+H3 : is_nat Y
+H4 : is_nat Z
+============================
+ leq z Z
+
+Subgoal 2 is:
+ leq (s X1) Z
+
+leq_trans < <b>search.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Z Y1 X1
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H2 : leq (s Y1) Z
+H3 : leq X1 Y1 *
+============================
+ leq (s X1) Z
+
+leq_trans < <b>case H2.</b>
+</pre>
+<a name="85"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1 Y2
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H3 : leq X1 Y1 *
+H4 : leq Y1 Y2
+============================
+ leq (s X1) (s Y2)
+
+leq_trans < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="86"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1 Y2
+IH : forall X Y Z, leq X Y * -> leq Y Z -> leq X Z
+H3 : leq X1 Y1 *
+H4 : leq Y1 Y2
+H5 : leq X1 Y2
+============================
+ leq (s X1) (s Y2)
+
+leq_trans < <b>search.</b>
+Proof completed.
+</pre>
+<a name="87"></a>
+<pre class="code">
+Abella < <b>Theorem leq_s : 
+forall X, is_nat X -> leq X (s X).</b>
+
+</pre>
+<a name="88"></a>
+<pre class="code">
+
+============================
+ forall X, is_nat X -> leq X (s X)
+
+leq_s < <b>induction on 1.</b>
+</pre>
+<a name="89"></a>
+<pre class="code">
+
+IH : forall X, is_nat X * -> leq X (s X)
+============================
+ forall X, is_nat X @ -> leq X (s X)
+
+leq_s < <b>intros.</b>
+</pre>
+<a name="90"></a>
+<pre class="code">
+
+Variables: X
+IH : forall X, is_nat X * -> leq X (s X)
+H1 : is_nat X @
+============================
+ leq X (s X)
+
+leq_s < <b>case H1.</b>
+</pre>
+<a name="91"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X, is_nat X * -> leq X (s X)
+============================
+ leq z (s z)
+
+Subgoal 2 is:
+ leq (s X1) (s (s X1))
+
+leq_s < <b>search.</b>
+</pre>
+<a name="92"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq X (s X)
+H2 : is_nat X1 *
+============================
+ leq (s X1) (s (s X1))
+
+leq_s < <b>apply IH to H2.</b>
+</pre>
+<a name="93"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq X (s X)
+H2 : is_nat X1 *
+H3 : leq X1 (s X1)
+============================
+ leq (s X1) (s (s X1))
+
+leq_s < <b>search.</b>
+Proof completed.
+</pre>
+<a name="94"></a>
+<pre class="code">
+Abella < <b>Theorem leq_antisym : 
+forall X Y, leq X Y -> leq Y X -> X = Y.</b>
+
+</pre>
+<a name="95"></a>
+<pre class="code">
+
+============================
+ forall X Y, leq X Y -> leq Y X -> X = Y
+
+leq_antisym < <b>induction on 1.</b>
+</pre>
+<a name="96"></a>
+<pre class="code">
+
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+============================
+ forall X Y, leq X Y @ -> leq Y X -> X = Y
+
+leq_antisym < <b>intros.</b>
+</pre>
+<a name="97"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H1 : leq X Y @
+H2 : leq Y X
+============================
+ X = Y
+
+leq_antisym < <b>case H1.</b>
+</pre>
+<a name="98"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H2 : leq Y z
+H3 : is_nat Y
+============================
+ z = Y
+
+Subgoal 2 is:
+ s X1 = s Y1
+
+leq_antisym < <b>case H2.</b>
+</pre>
+<a name="99"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H3 : is_nat z
+H4 : is_nat z
+============================
+ z = z
+
+Subgoal 2 is:
+ s X1 = s Y1
+
+leq_antisym < <b>search.</b>
+</pre>
+<a name="100"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H2 : leq (s Y1) (s X1)
+H3 : leq X1 Y1 *
+============================
+ s X1 = s Y1
+
+leq_antisym < <b>case H2.</b>
+</pre>
+<a name="101"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1 X1
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H3 : leq X1 Y1 *
+H4 : leq Y1 X1
+============================
+ s X1 = s Y1
+
+leq_antisym < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="102"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y1
+IH : forall X Y, leq X Y * -> leq Y X -> X = Y
+H3 : leq Y1 Y1 *
+H4 : leq Y1 Y1
+============================
+ s Y1 = s Y1
+
+leq_antisym < <b>search.</b>
+Proof completed.
+</pre>
+<a name="103"></a>
+<pre class="code">
+Abella < <b>Theorem leq_total : 
+forall X Y, is_nat X -> is_nat Y -> leq X Y \/ leq Y X.</b>
+
+</pre>
+<a name="104"></a>
+<pre class="code">
+
+============================
+ forall X Y, is_nat X -> is_nat Y -> leq X Y \/ leq Y X
+
+leq_total < <b>induction on 1.</b>
+</pre>
+<a name="105"></a>
+<pre class="code">
+
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+============================
+ forall X Y, is_nat X @ -> is_nat Y -> leq X Y \/ leq Y X
+
+leq_total < <b>intros.</b>
+</pre>
+<a name="106"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H1 : is_nat X @
+H2 : is_nat Y
+============================
+ leq X Y \/ leq Y X
+
+leq_total < <b>case H1.</b>
+</pre>
+<a name="107"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H2 : is_nat Y
+============================
+ leq z Y \/ leq Y z
+
+Subgoal 2 is:
+ leq (s X1) Y \/ leq Y (s X1)
+
+leq_total < <b>search.</b>
+</pre>
+<a name="108"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y X1
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H2 : is_nat Y
+H3 : is_nat X1 *
+============================
+ leq (s X1) Y \/ leq Y (s X1)
+
+leq_total < <b>case H2.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: X1
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H3 : is_nat X1 *
+============================
+ leq (s X1) z \/ leq z (s X1)
+
+Subgoal 2.2 is:
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+leq_total < <b>search.</b>
+</pre>
+<a name="110"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: X1 X2
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H3 : is_nat X1 *
+H4 : is_nat X2
+============================
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+leq_total < <b>apply IH to *H3 *H4.</b>
+</pre>
+<a name="111"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: X1 X2
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H5 : leq X1 X2 \/ leq X2 X1
+============================
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+leq_total < <b>case H5.</b>
+</pre>
+<a name="112"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: X1 X2
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H6 : leq X1 X2
+============================
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+Subgoal 2.2.2 is:
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+leq_total < <b>search.</b>
+</pre>
+<a name="113"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: X1 X2
+IH : forall X Y, is_nat X * -> is_nat Y -> leq X Y \/ leq Y X
+H6 : leq X2 X1
+============================
+ leq (s X1) (s X2) \/ leq (s X2) (s X1)
+
+leq_total < <b>search.</b>
+Proof completed.
+</pre>
+<a name="114"></a>
+<pre class="code">
+Abella < <b>Theorem one_nleq_zero_lem : 
+forall X, is_nat X -> leq (s X) X -> false.</b>
+
+</pre>
+<a name="115"></a>
+<pre class="code">
+
+============================
+ forall X, is_nat X -> leq (s X) X -> false
+
+one_nleq_zero_lem < <b>induction on 1.</b>
+</pre>
+<a name="116"></a>
+<pre class="code">
+
+IH : forall X, is_nat X * -> leq (s X) X -> false
+============================
+ forall X, is_nat X @ -> leq (s X) X -> false
+
+one_nleq_zero_lem < <b>intros.</b>
+</pre>
+<a name="117"></a>
+<pre class="code">
+
+Variables: X
+IH : forall X, is_nat X * -> leq (s X) X -> false
+H1 : is_nat X @
+H2 : leq (s X) X
+============================
+ false
+
+one_nleq_zero_lem < <b>case H1.</b>
+</pre>
+<a name="118"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall X, is_nat X * -> leq (s X) X -> false
+H2 : leq (s z) z
+============================
+ false
+
+Subgoal 2 is:
+ false
+
+one_nleq_zero_lem < <b>case H2.</b>
+</pre>
+<a name="119"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq (s X) X -> false
+H2 : leq (s (s X1)) (s X1)
+H3 : is_nat X1 *
+============================
+ false
+
+one_nleq_zero_lem < <b>case H2.</b>
+</pre>
+<a name="120"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X1
+IH : forall X, is_nat X * -> leq (s X) X -> false
+H3 : is_nat X1 *
+H4 : leq (s X1) X1
+============================
+ false
+
+one_nleq_zero_lem < <b>backchain IH.</b>
+Proof completed.
+</pre>
+<a name="121"></a>
+<pre class="code">
+Abella < <b>Theorem one_nleq_zero : 
+forall X, leq (s X) X -> false.</b>
+
+</pre>
+<a name="122"></a>
+<pre class="code">
+
+============================
+ forall X, leq (s X) X -> false
+
+one_nleq_zero < <b>intros.</b>
+</pre>
+<a name="123"></a>
+<pre class="code">
+
+Variables: X
+H1 : leq (s X) X
+============================
+ false
+
+one_nleq_zero < <b>apply leq_2_is_nat to H1.</b>
+</pre>
+<a name="124"></a>
+<pre class="code">
+
+Variables: X
+H1 : leq (s X) X
+H2 : is_nat X
+============================
+ false
+
+one_nleq_zero < <b>backchain one_nleq_zero_lem.</b>
+Proof completed.
+</pre>
+<a name="125"></a>
+<pre class="code">
+Abella < <b>Theorem plus_leq : 
+forall X Y Z, plus X Y Z -> leq X Z /\ leq Y Z.</b>
+
+</pre>
+<a name="126"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, plus X Y Z -> leq X Z /\ leq Y Z
+
+plus_leq < <b>induction on 1.</b>
+</pre>
+<a name="127"></a>
+<pre class="code">
+
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+============================
+ forall X Y Z, plus X Y Z @ -> leq X Z /\ leq Y Z
+
+plus_leq < <b>intros.</b>
+</pre>
+<a name="128"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H1 : plus X Y Z @
+============================
+ leq X Z /\ leq Y Z
+
+plus_leq < <b>case H1.</b>
+</pre>
+<a name="129"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+============================
+ leq z Z /\ leq Z Z
+
+Subgoal 2 is:
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>apply leq_refl to H2.</b>
+</pre>
+<a name="130"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+H3 : leq Z Z
+============================
+ leq z Z /\ leq Z Z
+
+Subgoal 2 is:
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>search.</b>
+</pre>
+<a name="131"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : plus X1 Y Z1 *
+============================
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>apply IH to H2.</b>
+</pre>
+<a name="132"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : plus X1 Y Z1 *
+H3 : leq X1 Z1
+H4 : leq Y Z1
+============================
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>apply leq_2_is_nat to H4.</b>
+</pre>
+<a name="133"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : plus X1 Y Z1 *
+H3 : leq X1 Z1
+H4 : leq Y Z1
+H5 : is_nat Z1
+============================
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>apply leq_s to *H5.</b>
+</pre>
+<a name="134"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : plus X1 Y Z1 *
+H3 : leq X1 Z1
+H4 : leq Y Z1
+H6 : leq Z1 (s Z1)
+============================
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>apply leq_trans to H4 *H6.</b>
+</pre>
+<a name="135"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z1 X1
+IH : forall X Y Z, plus X Y Z * -> leq X Z /\ leq Y Z
+H2 : plus X1 Y Z1 *
+H3 : leq X1 Z1
+H4 : leq Y Z1
+H7 : leq Y (s Z1)
+============================
+ leq (s X1) (s Z1) /\ leq Y (s Z1)
+
+plus_leq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="136"></a>
+<pre class="code">
+Abella < <b>Theorem plus_det_1 : 
+forall X1 X2 Y Z, plus X1 Y Z -> plus X2 Y Z -> X1 = X2.</b>
+
+</pre>
+<a name="137"></a>
+<pre class="code">
+
+============================
+ forall X1 X2 Y Z, plus X1 Y Z -> plus X2 Y Z -> X1 = X2
+
+plus_det_1 < <b>induction on 1.</b>
+</pre>
+<a name="138"></a>
+<pre class="code">
+
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+============================
+ forall X1 X2 Y Z, plus X1 Y Z @ -> plus X2 Y Z -> X1 = X2
+
+plus_det_1 < <b>intros.</b>
+</pre>
+<a name="139"></a>
+<pre class="code">
+
+Variables: X1 X2 Y Z
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H1 : plus X1 Y Z @
+H2 : plus X2 Y Z
+============================
+ X1 = X2
+
+plus_det_1 < <b>case H1.</b>
+</pre>
+<a name="140"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: X2 Z
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H2 : plus X2 Z Z
+H3 : is_nat Z
+============================
+ z = X2
+
+Subgoal 2 is:
+ s X = X2
+
+plus_det_1 < <b>apply plus_comm to *H2.</b>
+</pre>
+<a name="141"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: X2 Z
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H3 : is_nat Z
+H4 : plus Z X2 Z
+============================
+ z = X2
+
+Subgoal 2 is:
+ s X = X2
+
+plus_det_1 < <b>apply plus_z_char to *H4.</b>
+</pre>
+<a name="142"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H3 : is_nat Z
+============================
+ z = z
+
+Subgoal 2 is:
+ s X = X2
+
+plus_det_1 < <b>search.</b>
+</pre>
+<a name="143"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: X2 Y Z1 X
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H2 : plus X2 Y (s Z1)
+H3 : plus X Y Z1 *
+============================
+ s X = X2
+
+plus_det_1 < <b>case H2.</b>
+</pre>
+<a name="144"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: Z1 X
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H3 : plus X (s Z1) Z1 *
+H4 : is_nat (s Z1)
+============================
+ s X = z
+
+Subgoal 2.2 is:
+ s X = s X3
+
+plus_det_1 < <b>apply plus_leq to *H3.</b>
+</pre>
+<a name="145"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: Z1 X
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H4 : is_nat (s Z1)
+H5 : leq X Z1
+H6 : leq (s Z1) Z1
+============================
+ s X = z
+
+Subgoal 2.2 is:
+ s X = s X3
+
+plus_det_1 < <b>apply one_nleq_zero to H6.</b>
+</pre>
+<a name="146"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: Y Z1 X X3
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H3 : plus X Y Z1 *
+H4 : plus X3 Y Z1
+============================
+ s X = s X3
+
+plus_det_1 < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="147"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: Y Z1 X3
+IH : forall X1 X2 Y Z, plus X1 Y Z * -> plus X2 Y Z -> X1 = X2
+H3 : plus X3 Y Z1 *
+H4 : plus X3 Y Z1
+============================
+ s X3 = s X3
+
+plus_det_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="148"></a>
+<pre class="code">
+Abella < <b>Theorem plus_det_2 : 
+forall X Y1 Y2 Z, plus X Y1 Z -> plus X Y2 Z -> Y1 = Y2.</b>
+
+</pre>
+<a name="149"></a>
+<pre class="code">
+
+============================
+ forall X Y1 Y2 Z, plus X Y1 Z -> plus X Y2 Z -> Y1 = Y2
+
+plus_det_2 < <b>intros.</b>
+</pre>
+<a name="150"></a>
+<pre class="code">
+
+Variables: X Y1 Y2 Z
+H1 : plus X Y1 Z
+H2 : plus X Y2 Z
+============================
+ Y1 = Y2
+
+plus_det_2 < <b>apply plus_comm to *H1.</b>
+</pre>
+<a name="151"></a>
+<pre class="code">
+
+Variables: X Y1 Y2 Z
+H2 : plus X Y2 Z
+H3 : plus Y1 X Z
+============================
+ Y1 = Y2
+
+plus_det_2 < <b>apply plus_comm to *H2.</b>
+</pre>
+<a name="152"></a>
+<pre class="code">
+
+Variables: X Y1 Y2 Z
+H3 : plus Y1 X Z
+H4 : plus Y2 X Z
+============================
+ Y1 = Y2
+
+plus_det_2 < <b>backchain plus_det_1.</b>
+Proof completed.
+</pre>
+<a name="153"></a>
+<pre class="code">
+Abella < <b>Theorem plus_det_3 : 
+forall X Y Z1 Z2, plus X Y Z1 -> plus X Y Z2 -> Z1 = Z2.</b>
+
+</pre>
+<a name="154"></a>
+<pre class="code">
+
+============================
+ forall X Y Z1 Z2, plus X Y Z1 -> plus X Y Z2 -> Z1 = Z2
+
+plus_det_3 < <b>induction on 1.</b>
+</pre>
+<a name="155"></a>
+<pre class="code">
+
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+============================
+ forall X Y Z1 Z2, plus X Y Z1 @ -> plus X Y Z2 -> Z1 = Z2
+
+plus_det_3 < <b>intros.</b>
+</pre>
+<a name="156"></a>
+<pre class="code">
+
+Variables: X Y Z1 Z2
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H1 : plus X Y Z1 @
+H2 : plus X Y Z2
+============================
+ Z1 = Z2
+
+plus_det_3 < <b>case H1.</b>
+</pre>
+<a name="157"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z1 Z2
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H2 : plus z Z1 Z2
+H3 : is_nat Z1
+============================
+ Z1 = Z2
+
+Subgoal 2 is:
+ s Z = Z2
+
+plus_det_3 < <b>case H2.</b>
+</pre>
+<a name="158"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z2
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H3 : is_nat Z2
+H4 : is_nat Z2
+============================
+ Z2 = Z2
+
+Subgoal 2 is:
+ s Z = Z2
+
+plus_det_3 < <b>search.</b>
+</pre>
+<a name="159"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z2 Z X1
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H2 : plus (s X1) Y Z2
+H3 : plus X1 Y Z *
+============================
+ s Z = Z2
+
+plus_det_3 < <b>case H2.</b>
+</pre>
+<a name="160"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y Z X1 Z3
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H3 : plus X1 Y Z *
+H4 : plus X1 Y Z3
+============================
+ s Z = s Z3
+
+plus_det_3 < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="161"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y X1 Z3
+IH : forall X Y Z1 Z2, plus X Y Z1 * -> plus X Y Z2 -> Z1 = Z2
+H3 : plus X1 Y Z3 *
+H4 : plus X1 Y Z3
+============================
+ s Z3 = s Z3
+
+plus_det_3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="162"></a>
+<pre class="code">
+Abella < <b>Define max : nat -> nat -> nat -> prop by 
+max z X X := is_nat X;
+max X z X := is_nat X;
+max (s X) (s Y) (s Z) := max X Y Z.</b>
+
+</pre>
+<a name="163"></a>
+<pre class="code">
+Abella < <b>Theorem max_1_is : 
+forall X Y Z, max X Y Z -> is_nat X /\ is_nat Y /\ is_nat Z.</b>
+
+</pre>
+<a name="164"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, max X Y Z -> is_nat X /\ is_nat Y /\ is_nat Z
+
+max_1_is < <b>induction on 1.</b>
+</pre>
+<a name="165"></a>
+<pre class="code">
+
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+============================
+ forall X Y Z, max X Y Z @ -> is_nat X /\ is_nat Y /\ is_nat Z
+
+max_1_is < <b>intros.</b>
+</pre>
+<a name="166"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+H1 : max X Y Z @
+============================
+ is_nat X /\ is_nat Y /\ is_nat Z
+
+max_1_is < <b>case H1.</b>
+</pre>
+<a name="167"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+H2 : is_nat Z
+============================
+ is_nat z /\ is_nat Z /\ is_nat Z
+
+Subgoal 2 is:
+ is_nat Z /\ is_nat z /\ is_nat Z
+
+Subgoal 3 is:
+ is_nat (s X1) /\ is_nat (s Y1) /\ is_nat (s Z1)
+
+max_1_is < <b>search.</b>
+</pre>
+<a name="168"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+H2 : is_nat Z
+============================
+ is_nat Z /\ is_nat z /\ is_nat Z
+
+Subgoal 3 is:
+ is_nat (s X1) /\ is_nat (s Y1) /\ is_nat (s Z1)
+
+max_1_is < <b>search.</b>
+</pre>
+<a name="169"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+H2 : max X1 Y1 Z1 *
+============================
+ is_nat (s X1) /\ is_nat (s Y1) /\ is_nat (s Z1)
+
+max_1_is < <b>apply IH to H2.</b>
+</pre>
+<a name="170"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> is_nat X /\ is_nat Y /\ is_nat Z
+H2 : max X1 Y1 Z1 *
+H3 : is_nat X1
+H4 : is_nat Y1
+H5 : is_nat Z1
+============================
+ is_nat (s X1) /\ is_nat (s Y1) /\ is_nat (s Z1)
+
+max_1_is < <b>search.</b>
+Proof completed.
+</pre>
+<a name="171"></a>
+<pre class="code">
+Abella < <b>Theorem max_exists : 
+forall X Y, is_nat X -> is_nat Y -> (exists Z, max X Y Z).</b>
+
+</pre>
+<a name="172"></a>
+<pre class="code">
+
+============================
+ forall X Y, is_nat X -> is_nat Y -> (exists Z, max X Y Z)
+
+max_exists < <b>induction on 1.</b>
+</pre>
+<a name="173"></a>
+<pre class="code">
+
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+============================
+ forall X Y, is_nat X @ -> is_nat Y -> (exists Z, max X Y Z)
+
+max_exists < <b>intros.</b>
+</pre>
+<a name="174"></a>
+<pre class="code">
+
+Variables: X Y
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H1 : is_nat X @
+H2 : is_nat Y
+============================
+ exists Z, max X Y Z
+
+max_exists < <b>case H1.</b>
+</pre>
+<a name="175"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Y
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H2 : is_nat Y
+============================
+ exists Z, max z Y Z
+
+Subgoal 2 is:
+ exists Z, max (s X1) Y Z
+
+max_exists < <b>search.</b>
+</pre>
+<a name="176"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Y X1
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H2 : is_nat Y
+H3 : is_nat X1 *
+============================
+ exists Z, max (s X1) Y Z
+
+max_exists < <b>case H2.</b>
+</pre>
+<a name="177"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: X1
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H3 : is_nat X1 *
+============================
+ exists Z, max (s X1) z Z
+
+Subgoal 2.2 is:
+ exists Z, max (s X1) (s X2) Z
+
+max_exists < <b>search.</b>
+</pre>
+<a name="178"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: X1 X2
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H3 : is_nat X1 *
+H4 : is_nat X2
+============================
+ exists Z, max (s X1) (s X2) Z
+
+max_exists < <b>apply IH to H3 H4.</b>
+</pre>
+<a name="179"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: X1 X2 Z
+IH : forall X Y, is_nat X * -> is_nat Y -> (exists Z, max X Y Z)
+H3 : is_nat X1 *
+H4 : is_nat X2
+H5 : max X1 X2 Z
+============================
+ exists Z, max (s X1) (s X2) Z
+
+max_exists < <b>search.</b>
+Proof completed.
+</pre>
+<a name="180"></a>
+<pre class="code">
+Abella < <b>Theorem max_eq : 
+forall X Y Z, max X Y Z -> Z = X \/ Z = Y.</b>
+
+</pre>
+<a name="181"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, max X Y Z -> Z = X \/ Z = Y
+
+max_eq < <b>induction on 1.</b>
+</pre>
+<a name="182"></a>
+<pre class="code">
+
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+============================
+ forall X Y Z, max X Y Z @ -> Z = X \/ Z = Y
+
+max_eq < <b>intros.</b>
+</pre>
+<a name="183"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H1 : max X Y Z @
+============================
+ Z = X \/ Z = Y
+
+max_eq < <b>case H1.</b>
+</pre>
+<a name="184"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : is_nat Z
+============================
+ Z = z \/ Z = Z
+
+Subgoal 2 is:
+ Z = Z \/ Z = z
+
+Subgoal 3 is:
+ s Z1 = s X1 \/ s Z1 = s Y1
+
+max_eq < <b>search.</b>
+</pre>
+<a name="185"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : is_nat Z
+============================
+ Z = Z \/ Z = z
+
+Subgoal 3 is:
+ s Z1 = s X1 \/ s Z1 = s Y1
+
+max_eq < <b>search.</b>
+</pre>
+<a name="186"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : max X1 Y1 Z1 *
+============================
+ s Z1 = s X1 \/ s Z1 = s Y1
+
+max_eq < <b>apply IH to H2.</b>
+</pre>
+<a name="187"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : max X1 Y1 Z1 *
+H3 : Z1 = X1 \/ Z1 = Y1
+============================
+ s Z1 = s X1 \/ s Z1 = s Y1
+
+max_eq < <b>case H3.</b>
+</pre>
+<a name="188"></a>
+<pre class="code">
+Subgoal 3.1:
+
+Variables: Y1 X1
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : max X1 Y1 X1 *
+============================
+ s X1 = s X1 \/ s X1 = s Y1
+
+Subgoal 3.2 is:
+ s Y1 = s X1 \/ s Y1 = s Y1
+
+max_eq < <b>search.</b>
+</pre>
+<a name="189"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: Y1 X1
+IH : forall X Y Z, max X Y Z * -> Z = X \/ Z = Y
+H2 : max X1 Y1 Y1 *
+============================
+ s Y1 = s X1 \/ s Y1 = s Y1
+
+max_eq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="190"></a>
+<pre class="code">
+Abella < <b>Theorem max_leq : 
+forall X Y Z, max X Y Z -> leq X Z /\ leq Y Z.</b>
+
+</pre>
+<a name="191"></a>
+<pre class="code">
+
+============================
+ forall X Y Z, max X Y Z -> leq X Z /\ leq Y Z
+
+max_leq < <b>induction on 1.</b>
+</pre>
+<a name="192"></a>
+<pre class="code">
+
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+============================
+ forall X Y Z, max X Y Z @ -> leq X Z /\ leq Y Z
+
+max_leq < <b>intros.</b>
+</pre>
+<a name="193"></a>
+<pre class="code">
+
+Variables: X Y Z
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H1 : max X Y Z @
+============================
+ leq X Z /\ leq Y Z
+
+max_leq < <b>case H1.</b>
+</pre>
+<a name="194"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+============================
+ leq z Z /\ leq Z Z
+
+Subgoal 2 is:
+ leq Z Z /\ leq z Z
+
+Subgoal 3 is:
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>apply leq_refl to H2.</b>
+</pre>
+<a name="195"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+H3 : leq Z Z
+============================
+ leq z Z /\ leq Z Z
+
+Subgoal 2 is:
+ leq Z Z /\ leq z Z
+
+Subgoal 3 is:
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>search.</b>
+</pre>
+<a name="196"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+============================
+ leq Z Z /\ leq z Z
+
+Subgoal 3 is:
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>apply leq_refl to H2.</b>
+</pre>
+<a name="197"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: Z
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : is_nat Z
+H3 : leq Z Z
+============================
+ leq Z Z /\ leq z Z
+
+Subgoal 3 is:
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>search.</b>
+</pre>
+<a name="198"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : max X1 Y1 Z1 *
+============================
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>apply IH to H2.</b>
+</pre>
+<a name="199"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: Z1 Y1 X1
+IH : forall X Y Z, max X Y Z * -> leq X Z /\ leq Y Z
+H2 : max X1 Y1 Z1 *
+H3 : leq X1 Z1
+H4 : leq Y1 Z1
+============================
+ leq (s X1) (s Z1) /\ leq (s Y1) (s Z1)
+
+max_leq < <b>search.</b>
+Proof completed.
+</pre>
+<a name="200"></a>
+<pre class="code">
+Abella < <b>Theorem lequate : 
+forall X Y, is_nat X -> is_nat Y -> (exists Z, leq X Z /\ leq Y Z).</b>
+
+</pre>
+<a name="201"></a>
+<pre class="code">
+
+============================
+ forall X Y, is_nat X -> is_nat Y -> (exists Z, leq X Z /\ leq Y Z)
+
+lequate < <b>intros.</b>
+</pre>
+<a name="202"></a>
+<pre class="code">
+
+Variables: X Y
+H1 : is_nat X
+H2 : is_nat Y
+============================
+ exists Z, leq X Z /\ leq Y Z
+
+lequate < <b>apply max_exists to H1 H2.</b>
+</pre>
+<a name="203"></a>
+<pre class="code">
+
+Variables: X Y Z
+H1 : is_nat X
+H2 : is_nat Y
+H3 : max X Y Z
+============================
+ exists Z, leq X Z /\ leq Y Z
+
+lequate < <b>apply max_leq to H3.</b>
+</pre>
+<a name="204"></a>
+<pre class="code">
+
+Variables: X Y Z
+H1 : is_nat X
+H2 : is_nat Y
+H3 : max X Y Z
+H4 : leq X Z
+H5 : leq Y Z
+============================
+ exists Z, leq X Z /\ leq Y Z
+
+lequate < <b>search.</b>
+Proof completed.
+</pre>
+<a name="205"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>

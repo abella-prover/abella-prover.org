@@ -1,0 +1,84 @@
+Kind nat type.
+Import "nat".
+
+Type is_o  o -> prop.
+
+Define $is_list : nat -> olist -> prop by
+; $is_list (s X) nil := is_nat X
+; $is_list (s X) (A :: L) := is_o A /\ $is_list X L
+.
+
+Define is_list : olist -> prop by
+; is_list L := exists X, is_nat X /\ $is_list X L.
+
+Define $adj : nat -> olist -> o -> olist -> prop by
+; $adj (s X) L A (A :: L) := is_nat X /\ is_o A /\ is_list L
+; $adj (s X)  (B :: K) A (B :: L) := is_o B /\ $adj X K A L
+.
+
+Define adj : olist -> o -> olist -> prop by
+; adj K A L := exists X, is_nat X /\ $adj X K A L.
+
+Define $perm : nat -> olist -> olist -> prop by
+; $perm (s X) nil nil := is_nat X
+; $perm (s X) K L :=
+    exists A KK LL, adj KK A K /\ adj LL A L /\ $perm X KK LL.
+
+Define perm : olist -> olist -> prop by
+; perm K L := exists X, is_nat X /\ $perm X K L.
+
+Theorem $adj_is : forall K A L,
+  adj K A L ->
+  exists X, is_nat X /\ $is_list X K /\ is_o A /\ $is_list (s X) L.
+intros Ht1. Ht1 : case Ht1. clear -> Ht2 Ht1 L A K X.
+induction on 2. intros. case H2.
+  case H5. search.
+  case H1. apply IH to *H5 *H4. search.
+
+Theorem adj_is : forall K A L,
+  adj K A L ->
+  is_list K /\ is_o A /\ is_list L.
+intros. apply $adj_is to H1. search.
+
+Theorem $adj_transport : forall X K A L,
+  adj K A L ->
+  $is_list X K -> $is_list (s X) L.
+intros Ht1 Ht2. Ht1 : case Ht1. rename X1 to Y. clear -> Ht2 Ht3 Ht1 L A K Y X.
+induction on 2. intros. case H2.
+  search.
+  case H1. case H3.
+   apply IH to *H6 *H5 *H8. search.
+
+Theorem $adj_rtransport : forall X K A L,
+  adj K A L ->
+  $is_list X L -> exists Z, X = s Z /\ $is_list Z K.
+intros Ht1 Ht2. Ht1 : case Ht1. rename X1 to Y. clear -> Ht2 Ht3 Ht1 L A K Y X.
+induction on 2. intros. case H2.
+  case H3. search.
+  case H3. case H1. apply IH to *H8 *H5 *H7. search.
+
+Theorem $perm_is : forall K L,
+  perm K L ->
+  exists X, is_nat X /\ $is_list X K /\ $is_list X L.
+intros Ht1. Ht1 : case Ht1. clear -> Ht2 Ht1 L K X.
+induction on 2. intros. case H2.
+  search.
+  case H1. apply IH to *H6 *H5.
+   apply $adj_transport to *H3 *H8.
+   apply $adj_transport to *H4 *H9.
+   search.
+
+Theorem perm_is : forall K L,
+  perm K L ->
+  is_list K /\ is_list L.
+intros. apply $perm_is to *H1. search.
+
+Theorem perm_preserv : forall K L X,
+  perm K L -> $is_list X K -> $is_list X L.
+intros Ht1 Ht2. Ht1 : case Ht1. rename X1 to Y. clear -> Ht2 Ht3 Ht1 L K Y X.
+induction on 2. intros. case H2.
+  search.
+  case H1.
+   apply $adj_rtransport to *H4 *H3.
+   apply IH to *H7 *H6 *H8.
+   backchain $adj_transport.

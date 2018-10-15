@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="perm.thm">[View perm.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="perm-details.html#1" class="command">Type is_o  o -> prop.</a>
+
+<a href="perm-details.html#2" class="command">Import "list" with is_o := is_o.</a> <a class="import-link" href="list.html">[View list]</a>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">% adj J A K : K is J with A inserted somewhere</span>
+<a href="perm-details.html#3" class="command">Define adj : olist -> o -> olist -> prop by
+; adj L A (A :: L) := is_o A /\ is_list L
+; adj (B :: K) A (B :: L) := is_o B /\ adj K A L
+.</a>
+
+<a href="perm-details.html#4" class="command">Theorem adj_1_is_list : forall K A L, adj K A L -> is_list K.</a>
+<div class="proof"><a href="perm-details.html#5" class="tactic">induction on 1.</a> <a href="perm-details.html#6" class="tactic">intros.</a> <a href="perm-details.html#7" class="tactic">case H1.</a>
+  <a href="perm-details.html#8" class="tactic">search.</a>
+  <a href="perm-details.html#9" class="tactic">apply IH to H3.</a> <a href="perm-details.html#10" class="tactic">search.</a></div>
+<a href="perm-details.html#11" class="command">Theorem adj_2_is_o : forall K A L, adj K A L -> is_o A.</a>
+<div class="proof"><a href="perm-details.html#12" class="tactic">induction on 1.</a> <a href="perm-details.html#13" class="tactic">intros.</a> <a href="perm-details.html#14" class="tactic">case H1.</a>
+  <a href="perm-details.html#15" class="tactic">search.</a>
+  <a href="perm-details.html#16" class="tactic">apply IH to H3.</a> <a href="perm-details.html#17" class="tactic">search.</a></div>
+<a href="perm-details.html#18" class="command">Theorem adj_3_is_list : forall K A L, adj K A L -> is_list L.</a>
+<div class="proof"><a href="perm-details.html#19" class="tactic">induction on 1.</a> <a href="perm-details.html#20" class="tactic">intros.</a> <a href="perm-details.html#21" class="tactic">case H1.</a>
+  <a href="perm-details.html#22" class="tactic">search.</a>
+  <a href="perm-details.html#23" class="tactic">apply IH to H3.</a> <a href="perm-details.html#24" class="tactic">search.</a></div>
+<a href="perm-details.html#25" class="command">Theorem adj_exists : forall A L,
+  is_o A -> is_list L ->
+  exists M, adj L A M.</a>
+<div class="proof"><a href="perm-details.html#26" class="tactic">intros.</a> <a href="perm-details.html#27" class="tactic">search.</a></div>
+<a href="perm-details.html#28" class="command">Theorem adj_swap : forall A J K B L,
+  adj J A K -> adj K B L ->
+  exists U, adj J B U /\ adj U A L.</a>
+<div class="proof"><a href="perm-details.html#29" class="tactic">induction on 2.</a> <a href="perm-details.html#30" class="tactic">intros.</a> <a href="perm-details.html#31" class="tactic">case H2.</a>
+  <a href="perm-details.html#32" class="tactic">case H1.</a>
+    <a href="perm-details.html#33" class="tactic">search.</a>
+    <a href="perm-details.html#34" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#35" class="tactic">search.</a>
+  <a href="perm-details.html#36" class="tactic">case H1.</a>
+    <a href="perm-details.html#37" class="tactic">apply adj_3_is_list to H4.</a> <a href="perm-details.html#38" class="tactic">search.</a>
+    <a href="perm-details.html#39" class="tactic">apply IH to H6 H4.</a> <a href="perm-details.html#40" class="tactic">search.</a></div>
+<a href="perm-details.html#41" class="command">Theorem adj_same : forall A L B, adj L A (B :: L) -> A = B.</a>
+<div class="proof"><a href="perm-details.html#42" class="tactic">induction on 1.</a> <a href="perm-details.html#43" class="tactic">intros.</a> <a href="perm-details.html#44" class="tactic">case H1.</a>
+  <a href="perm-details.html#45" class="tactic">search.</a>
+  <a href="perm-details.html#46" class="tactic">apply IH to H3.</a> <a href="perm-details.html#47" class="tactic">search.</a></div>
+<a href="perm-details.html#48" class="command">Theorem adj_append_1 : forall J A K L KL,
+  adj J A K ->
+  append K L KL ->
+  exists JL, append J L JL /\ adj JL A KL.</a>
+<div class="proof"><a href="perm-details.html#49" class="tactic">induction on 1.</a> <a href="perm-details.html#50" class="tactic">intros.</a> <a href="perm-details.html#51" class="tactic">case H1.</a>
+  <a href="perm-details.html#52" class="tactic">case H2.</a> <a href="perm-details.html#53" class="tactic">apply append_2_is_list to H6.</a> <a href="perm-details.html#54" class="tactic">apply append_3_is_list to H6.</a> <a href="perm-details.html#55" class="tactic">search.</a>
+  <a href="perm-details.html#56" class="tactic">case H2.</a> <a href="perm-details.html#57" class="tactic">apply IH to H4 H6.</a> <a href="perm-details.html#58" class="tactic">search.</a></div>
+<a href="perm-details.html#59" class="command">Theorem adj_1_append : forall J A K L JL,
+  adj J A K ->
+  append J L JL ->
+  exists KL, append K L KL /\ adj JL A KL.</a>
+<div class="proof"><a href="perm-details.html#60" class="tactic">induction on 1.</a> <a href="perm-details.html#61" class="tactic">intros.</a> <a href="perm-details.html#62" class="tactic">case H1.</a>
+  <a href="perm-details.html#63" class="tactic">apply append_2_is_list to H2.</a> <a href="perm-details.html#64" class="tactic">apply append_3_is_list to H2.</a> <a href="perm-details.html#65" class="tactic">search.</a>
+  <a href="perm-details.html#66" class="tactic">case H2.</a> <a href="perm-details.html#67" class="tactic">apply IH to H4 H6.</a> <a href="perm-details.html#68" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">% perm J K : J and K have the same elements</span>
+<a href="perm-details.html#69" class="command">Define perm : olist -> olist -> prop by
+; perm nil nil
+; perm K L :=
+    exists A KK LL, adj KK A K /\ adj LL A L /\ perm KK LL.</a>
+
+<a href="perm-details.html#70" class="command">Theorem perm_1_is_list : forall K L, perm K L -> is_list K.</a>
+<div class="proof"><a href="perm-details.html#71" class="tactic">intros.</a> <a href="perm-details.html#72" class="tactic">case H1.</a>
+  <a href="perm-details.html#73" class="tactic">search.</a>
+  <a href="perm-details.html#74" class="tactic">backchain adj_3_is_list.</a></div>
+<a href="perm-details.html#75" class="command">Theorem perm_2_is_list : forall K L, perm K L -> is_list L.</a>
+<div class="proof"><a href="perm-details.html#76" class="tactic">intros.</a> <a href="perm-details.html#77" class="tactic">case H1.</a>
+  <a href="perm-details.html#78" class="tactic">search.</a>
+  <a href="perm-details.html#79" class="tactic">backchain adj_3_is_list.</a></div>
+<a href="perm-details.html#80" class="command">Theorem perm_refl : forall L, is_list L -> perm L L.</a>
+<div class="proof"><a href="perm-details.html#81" class="tactic">induction on 1.</a> <a href="perm-details.html#82" class="tactic">intros.</a> <a href="perm-details.html#83" class="tactic">case H1.</a>
+  <a href="perm-details.html#84" class="tactic">search.</a>
+  <a href="perm-details.html#85" class="tactic">apply IH to H3.</a> <a href="perm-details.html#86" class="tactic">search.</a></div>
+<a href="perm-details.html#87" class="command">Theorem perm_sym : forall K L, perm K L -> perm L K.</a>
+<div class="proof"><a href="perm-details.html#88" class="tactic">induction on 1.</a> <a href="perm-details.html#89" class="tactic">intros.</a> <a href="perm-details.html#90" class="tactic">case H1.</a>
+  <a href="perm-details.html#91" class="tactic">search.</a>
+  <a href="perm-details.html#92" class="tactic">apply IH to H4.</a> <a href="perm-details.html#93" class="tactic">search.</a></div>
+<a href="perm-details.html#94" class="command">Theorem perm_cons_1 : forall A K L,
+  perm (A :: K) L ->
+  exists J, adj J A L /\ perm K J.</a>
+<div class="proof"><a href="perm-details.html#95" class="tactic">induction on 1.</a> <a href="perm-details.html#96" class="tactic">intros.</a> <a href="perm-details.html#97" class="tactic">case H1.</a>
+  <a href="perm-details.html#98" class="tactic">case H2.</a>
+    <a href="perm-details.html#99" class="tactic">search.</a>
+    <a href="perm-details.html#100" class="tactic">apply IH to H4.</a> <a href="perm-details.html#101" class="tactic">apply adj_swap to H7 H3.</a>
+     <a href="perm-details.html#102" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#103" class="tactic">apply adj_1_is_list to H7.</a>
+     <a href="perm-details.html#104" class="tactic">search.</a></div>
+<a href="perm-details.html#105" class="command">Theorem perm_cons_2 : forall A K L,
+  perm K (A :: L) ->
+  exists J, adj J A K /\ perm J L.</a>
+<div class="proof"><a href="perm-details.html#106" class="tactic">intros.</a> <a href="perm-details.html#107" class="tactic">apply perm_sym to *H1.</a> <a href="perm-details.html#108" class="tactic">apply perm_cons_1 to *H2.</a>
+<a href="perm-details.html#109" class="tactic">apply perm_sym to *H4.</a> <a href="perm-details.html#110" class="tactic">search.</a></div>
+<a href="perm-details.html#111" class="command">Theorem adj_preserves_perm : forall A JJ J KK K,
+  adj JJ A J ->
+  adj KK A K ->
+  perm JJ KK ->
+  perm J K.</a>
+<div class="proof"><a href="perm-details.html#112" class="tactic">intros.</a> <a href="perm-details.html#113" class="tactic">search.</a></div>
+<a href="perm-details.html#114" class="command">Theorem perm_trans_lem : forall J K L, is_list K -> perm J K -> perm K L -> perm J L.</a>
+<div class="proof"><a href="perm-details.html#115" class="tactic">induction on 1.</a> <a href="perm-details.html#116" class="tactic">intros.</a> <a href="perm-details.html#117" class="tactic">case H1.</a>
+  <a href="perm-details.html#118" class="tactic">case H2.</a> <a href="perm-details.html#119" class="tactic">case H3.</a> <a href="perm-details.html#120" class="tactic">search.</a>
+    <a href="perm-details.html#121" class="tactic">case H4.</a> <a href="perm-details.html#122" class="tactic">case H5.</a>
+
+  <a href="perm-details.html#123" class="tactic">case H2.</a> <a href="perm-details.html#124" class="tactic">case H3.</a>
+    <a href="perm-details.html#125" class="tactic">case H7.</a> <a href="perm-details.html#126" class="tactic">case H9.</a>
+      <a href="perm-details.html#127" class="tactic">apply IH to *H5 *H8 *H11.</a>
+       <a href="perm-details.html#128" class="tactic">search.</a>
+
+      <a href="perm-details.html#129" class="tactic">apply perm_cons_1 to *H11.</a>
+      <a href="perm-details.html#130" class="tactic">apply adj_swap to *H16 *H10.</a>
+      <a href="perm-details.html#131" class="tactic">apply adj_preserves_perm to *H15 *H18 *H17.</a>
+      <a href="perm-details.html#132" class="tactic">apply IH to *H5 *H8 *H20.</a>
+      <a href="perm-details.html#133" class="tactic">backchain adj_preserves_perm.</a>
+
+    <a href="perm-details.html#134" class="tactic">apply perm_cons_2 to *H8.</a>
+    <a href="perm-details.html#135" class="tactic">apply adj_swap to *H14 *H6.</a>
+    <a href="perm-details.html#136" class="tactic">apply adj_preserves_perm to *H16 *H13 *H15.</a>
+    <a href="perm-details.html#137" class="tactic">apply adj_preserves_perm to *H9 *H10 *H11.</a>
+    <a href="perm-details.html#138" class="tactic">apply perm_cons_1 to *H19.</a>
+    <a href="perm-details.html#139" class="tactic">apply IH to *H5 *H18 *H21.</a>
+    <a href="perm-details.html#140" class="tactic">backchain adj_preserves_perm.</a></div>
+<a href="perm-details.html#141" class="command">Theorem perm_trans : forall J K L, perm J K -> perm K L -> perm J L.</a>
+<div class="proof"><a href="perm-details.html#142" class="tactic">intros.</a>
+<a href="perm-details.html#143" class="tactic">apply perm_2_is_list to H1.</a>
+<a href="perm-details.html#144" class="tactic">backchain perm_trans_lem.</a></div>
+<a href="perm-details.html#145" class="command">Theorem adj_same_source : forall J A K L,
+  adj J A K -> adj J A L ->
+  perm K L.</a>
+<div class="proof"><a href="perm-details.html#146" class="tactic">intros.</a> <a href="perm-details.html#147" class="tactic">apply adj_1_is_list to H1.</a> <a href="perm-details.html#148" class="tactic">apply perm_refl to H3.</a> <a href="perm-details.html#149" class="tactic">search.</a></div>
+<a href="perm-details.html#150" class="command">Theorem adj_same_result : forall J K A L,
+  adj J A L ->
+  adj K A L ->
+  perm J K.</a>
+<div class="proof"><a href="perm-details.html#151" class="tactic">induction on 1.</a> <a href="perm-details.html#152" class="tactic">intros.</a> <a href="perm-details.html#153" class="tactic">case H1.</a>
+  <a href="perm-details.html#154" class="tactic">case H2.</a>
+    <a href="perm-details.html#155" class="tactic">backchain perm_refl.</a>
+    <a href="perm-details.html#156" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#157" class="tactic">apply perm_refl to H7.</a> <a href="perm-details.html#158" class="tactic">search.</a>
+  <a href="perm-details.html#159" class="tactic">case H2.</a>
+    <a href="perm-details.html#160" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#161" class="tactic">apply perm_refl to H7.</a> <a href="perm-details.html#162" class="tactic">search.</a>
+    <a href="perm-details.html#163" class="tactic">apply IH to H4 H6.</a> <a href="perm-details.html#164" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#165" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#166" class="tactic">search.</a></div>
+<a href="perm-details.html#167" class="command">Theorem adj_same_result_diff : forall J A K B L,
+  adj J A L ->
+  adj K B L ->
+  (A = B /\ perm J K) \/
+  exists KK, adj KK A K.</a>
+<div class="proof"><a href="perm-details.html#168" class="tactic">induction on 1.</a> <a href="perm-details.html#169" class="tactic">intros.</a> <a href="perm-details.html#170" class="tactic">case H1.</a>
+  <a href="perm-details.html#171" class="tactic">case H2.</a>
+    <a href="perm-details.html#172" class="tactic">apply perm_refl to H4.</a> <a href="perm-details.html#173" class="tactic">search.</a><a href="perm-details.html#174" class="tactic">
+    right. </a><a href="perm-details.html#175" class="tactic">witness K1.</a> <a href="perm-details.html#176" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#177" class="tactic">search.</a>
+  <a href="perm-details.html#178" class="tactic">case H2.</a><a href="perm-details.html#179" class="tactic">
+    right. </a><a href="perm-details.html#180" class="tactic">search.</a>
+    <a href="perm-details.html#181" class="tactic">apply IH to H4 H6.</a> <a href="perm-details.html#182" class="tactic">case H7.</a>
+      <a href="perm-details.html#183" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#184" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#185" class="tactic">search.</a>
+      <a href="perm-details.html#186" class="tactic">search.</a></div>
+<a href="perm-details.html#187" class="command">Theorem adj_same_result_diff_both : forall J A K B L,
+  adj J A L ->
+  adj K B L ->
+  (A = B /\ perm J K) \/
+  exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK.</a>
+<div class="proof"><a href="perm-details.html#188" class="tactic">induction on 1.</a> <a href="perm-details.html#189" class="tactic">intros.</a> <a href="perm-details.html#190" class="tactic">case H1.</a>
+  <a href="perm-details.html#191" class="tactic">case H2.</a>
+    <a href="perm-details.html#192" class="tactic">apply perm_refl to H4.</a> <a href="perm-details.html#193" class="tactic">search.</a><a href="perm-details.html#194" class="tactic">
+    right. </a><a href="perm-details.html#195" class="tactic">witness K1, K1.</a> <a href="perm-details.html#196" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#197" class="tactic">apply perm_refl to H7.</a> <a href="perm-details.html#198" class="tactic">search.</a>
+  <a href="perm-details.html#199" class="tactic">case H2.</a><a href="perm-details.html#200" class="tactic">
+    right. </a><a href="perm-details.html#201" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#202" class="tactic">apply perm_refl to H7.</a> <a href="perm-details.html#203" class="tactic">search.</a>
+    <a href="perm-details.html#204" class="tactic">apply IH to H4 H6.</a> <a href="perm-details.html#205" class="tactic">case H7.</a>
+      <a href="perm-details.html#206" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#207" class="tactic">apply adj_1_is_list to H6.</a> <a href="perm-details.html#208" class="tactic">search.</a>
+      <a href="perm-details.html#209" class="tactic">apply perm_1_is_list to H10.</a> <a href="perm-details.html#210" class="tactic">apply perm_2_is_list to H10.</a> <a href="perm-details.html#211" class="tactic">search.</a></div>
+<a href="perm-details.html#212" class="command">Theorem perm_invert : forall A J K JJ KK,
+  perm J K ->
+  adj JJ A J ->
+  adj KK A K ->
+  perm JJ KK.</a>
+<div class="proof"><a href="perm-details.html#213" class="tactic">induction on 1.</a> <a href="perm-details.html#214" class="tactic">intros.</a> <a href="perm-details.html#215" class="tactic">case H1.</a>
+  <a href="perm-details.html#216" class="tactic">case H2.</a>
+  <a href="perm-details.html#217" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="perm-details.html#218" class="tactic">case H7.</a>
+    <a href="perm-details.html#219" class="tactic">apply adj_same_result_diff to H3 H5.</a> <a href="perm-details.html#220" class="tactic">case H9.</a>
+      <a href="perm-details.html#221" class="tactic">apply perm_trans to *H8 *H6.</a> <a href="perm-details.html#222" class="tactic">apply perm_sym to *H10.</a> <a href="perm-details.html#223" class="tactic">backchain perm_trans.</a>
+      <a href="perm-details.html#224" class="tactic">apply adj_same_result to H3 H5.</a> <a href="perm-details.html#225" class="tactic">apply perm_trans to *H8 *H6.</a> <a href="perm-details.html#226" class="tactic">apply perm_sym to *H11.</a> <a href="perm-details.html#227" class="tactic">backchain perm_trans.</a>
+    <a href="perm-details.html#228" class="tactic">apply adj_same_result_diff to H3 H5.</a> <a href="perm-details.html#229" class="tactic">case H9.</a>
+      <a href="perm-details.html#230" class="tactic">apply perm_sym to *H10.</a> <a href="perm-details.html#231" class="tactic">apply perm_trans to *H6 *H11.</a>
+       <a href="perm-details.html#232" class="tactic">apply adj_same_result to H2 H4.</a> <a href="perm-details.html#233" class="tactic">backchain perm_trans.</a>
+      <a href="perm-details.html#234" class="tactic">apply IH to H6 H8 H10.</a>
+       <a href="perm-details.html#235" class="tactic">apply adj_swap to *H10 *H5.</a> <a href="perm-details.html#236" class="tactic">apply adj_swap to *H8 *H4.</a>
+       <a href="perm-details.html#237" class="tactic">apply adj_same_result to *H2 *H15.</a> <a href="perm-details.html#238" class="tactic">apply adj_same_result to *H13 *H3.</a>
+       <a href="perm-details.html#239" class="tactic">apply adj_preserves_perm to *H14 *H12 *H11.</a>
+       <a href="perm-details.html#240" class="tactic">apply perm_trans to *H16 *H18.</a> <a href="perm-details.html#241" class="tactic">backchain perm_trans.</a></div>
+<a href="perm-details.html#242" class="command">Theorem adj_perm_result : forall J K A JJ,
+  perm J K ->
+  adj JJ A J ->
+  exists KK, adj KK A K /\ perm JJ KK.</a>
+<div class="proof"><a href="perm-details.html#243" class="tactic">induction on 1.</a> <a href="perm-details.html#244" class="tactic">intros.</a> <a href="perm-details.html#245" class="tactic">case H1.</a>
+  <a href="perm-details.html#246" class="tactic">case H2.</a>
+  <a href="perm-details.html#247" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="perm-details.html#248" class="tactic">case H6.</a>
+    <a href="perm-details.html#249" class="tactic">apply perm_trans to H7 H5.</a> <a href="perm-details.html#250" class="tactic">search.</a>
+    <a href="perm-details.html#251" class="tactic">apply IH to H5 H7.</a> <a href="perm-details.html#252" class="tactic">apply adj_swap to H7 H3.</a>
+     <a href="perm-details.html#253" class="tactic">apply adj_swap to H8 H4.</a> <a href="perm-details.html#254" class="tactic">witness U1.</a> <a href="perm-details.html#255" class="tactic">split.</a> <a href="perm-details.html#256" class="tactic">search.</a>
+     <a href="perm-details.html#257" class="tactic">apply adj_same_result to H2 H11.</a>
+     <a href="perm-details.html#258" class="tactic">apply adj_preserves_perm to H10 H12 H9.</a>
+     <a href="perm-details.html#259" class="tactic">backchain perm_trans.</a></div>
+<a href="perm-details.html#260" class="command">Theorem adj_perm_source : forall J K A L,
+  perm J K ->
+  adj J A L ->
+  exists LL, adj K A LL /\ perm L LL.</a>
+<div class="proof"><a href="perm-details.html#261" class="tactic">intros.</a>
+<a href="perm-details.html#262" class="tactic">apply adj_2_is_o to H2.</a>
+<a href="perm-details.html#263" class="tactic">apply perm_2_is_list to H1.</a>
+<a href="perm-details.html#264" class="tactic">apply adj_exists to H3 H4.</a>
+<a href="perm-details.html#265" class="tactic">search.</a></div>
+<a href="perm-details.html#266" class="command">Theorem adj_nil_1 : forall A L, 
+  adj nil A L -> L = A :: nil.</a>
+<div class="proof"><a href="perm-details.html#267" class="tactic">intros.</a> <a href="perm-details.html#268" class="tactic">case H1.</a> <a href="perm-details.html#269" class="tactic">search.</a></div>
+<a href="perm-details.html#270" class="command">Theorem perm_nil_1 : forall L, 
+  perm nil L -> L = nil.</a>
+<div class="proof"><a href="perm-details.html#271" class="tactic">intros.</a> <a href="perm-details.html#272" class="tactic">case H1.</a> <a href="perm-details.html#273" class="tactic">search.</a> <a href="perm-details.html#274" class="tactic">case H2.</a></div>
+<a href="perm-details.html#275" class="command">Theorem adj_det : forall A B L,
+  adj L A (B :: nil) -> A = B /\ L = nil.</a>
+<div class="proof"><a href="perm-details.html#276" class="tactic">intros.</a> <a href="perm-details.html#277" class="tactic">case H1.</a>
+  <a href="perm-details.html#278" class="tactic">search.</a>
+  <a href="perm-details.html#279" class="tactic">case H3.</a></div>
+<a href="perm-details.html#280" class="command">Theorem perm_singleton : forall A L,
+  perm (A :: nil) L -> L = (A :: nil).</a>
+<div class="proof"><a href="perm-details.html#281" class="tactic">intros.</a> <a href="perm-details.html#282" class="tactic">case H1.</a> 
+  <a href="perm-details.html#283" class="tactic">apply adj_det to H2.</a>
+  <a href="perm-details.html#284" class="tactic">apply perm_nil_1 to H4.</a>
+  <a href="perm-details.html#285" class="tactic">apply adj_nil_1 to H3.</a>
+  <a href="perm-details.html#286" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%% append and perm</span>
+
+<a href="perm-details.html#287" class="command">Theorem append_perm : forall J K L JJ KK,
+  append J K L ->
+  perm J JJ ->
+  perm K KK ->
+  exists LL, append JJ KK LL /\ perm L LL.</a>
+<div class="proof"><a href="perm-details.html#288" class="tactic">induction on 1.</a> <a href="perm-details.html#289" class="tactic">intros.</a> <a href="perm-details.html#290" class="tactic">case H1.</a>
+  <a href="perm-details.html#291" class="tactic">case H2.</a>
+    <a href="perm-details.html#292" class="tactic">apply perm_2_is_list to H3.</a> <a href="perm-details.html#293" class="tactic">search.</a>
+    <a href="perm-details.html#294" class="tactic">case H5.</a>
+  <a href="perm-details.html#295" class="tactic">apply perm_cons_1 to *H2.</a> <a href="perm-details.html#296" class="tactic">apply IH to H5 H7 H3.</a>
+   <a href="perm-details.html#297" class="tactic">apply adj_1_append to H6 H8.</a>
+   <a href="perm-details.html#298" class="tactic">apply adj_3_is_list to H11.</a>
+   <a href="perm-details.html#299" class="tactic">apply perm_1_is_list to H9.</a> <a href="perm-details.html#300" class="tactic">search.</a></div>
+<a href="perm-details.html#301" class="command">Theorem adj_perm : forall J K JJ A,
+  perm J K ->
+  adj JJ A J ->
+  exists KK, adj KK A K.</a>
+<div class="proof"><a href="perm-details.html#302" class="tactic">induction on 2.</a> <a href="perm-details.html#303" class="tactic">intros.</a> <a href="perm-details.html#304" class="tactic">case H2.</a>
+  <a href="perm-details.html#305" class="tactic">apply perm_cons_1 to *H1.</a> <a href="perm-details.html#306" class="tactic">search.</a>
+  <a href="perm-details.html#307" class="tactic">apply perm_cons_1 to *H1.</a>
+   <a href="perm-details.html#308" class="tactic">apply IH to H6 H4.</a>
+   <a href="perm-details.html#309" class="tactic">apply adj_swap to H7 H5.</a> <a href="perm-details.html#310" class="tactic">search.</a></div>
+<a href="perm-details.html#311" class="command">Theorem adj_perm_full : forall J K JJ A,
+  perm J K ->
+  adj JJ A J ->
+  exists KK, adj KK A K /\ perm JJ KK.</a>
+<div class="proof"><a href="perm-details.html#312" class="tactic">induction on 2.</a> <a href="perm-details.html#313" class="tactic">intros.</a> <a href="perm-details.html#314" class="tactic">case H2.</a>
+  <a href="perm-details.html#315" class="tactic">apply perm_cons_1 to *H1.</a> <a href="perm-details.html#316" class="tactic">search.</a>
+  <a href="perm-details.html#317" class="tactic">apply perm_cons_1 to *H1.</a>
+    <a href="perm-details.html#318" class="tactic">apply IH to H6 H4.</a>
+    <a href="perm-details.html#319" class="tactic">apply adj_swap to H7 H5.</a>
+    <a href="perm-details.html#320" class="tactic">apply adj_1_is_list to H4.</a> <a href="perm-details.html#321" class="tactic">search.</a></div>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%% set theoretic semantics of adj and perm</span>
+
+<a href="perm-details.html#322" class="command">Theorem adj_member : forall J A L,
+  adj J A L -> member A L.</a>
+<div class="proof"><a href="perm-details.html#323" class="tactic">induction on 1.</a> <a href="perm-details.html#324" class="tactic">intros.</a> <a href="perm-details.html#325" class="tactic">case H1.</a>
+  <a href="perm-details.html#326" class="tactic">search.</a>
+  <a href="perm-details.html#327" class="tactic">apply IH to H3.</a> <a href="perm-details.html#328" class="tactic">search.</a></div>
+<a href="perm-details.html#329" class="command">Theorem member_adj : forall A L,
+  is_list L -> member A L -> exists J, adj J A L.</a>
+<div class="proof"><a href="perm-details.html#330" class="tactic">induction on 2.</a> <a href="perm-details.html#331" class="tactic">intros.</a> <a href="perm-details.html#332" class="tactic">case H2.</a>
+  <a href="perm-details.html#333" class="tactic">case H1.</a> <a href="perm-details.html#334" class="tactic">search.</a>
+  <a href="perm-details.html#335" class="tactic">case H1.</a> <a href="perm-details.html#336" class="tactic">apply IH to *H5 *H3.</a> <a href="perm-details.html#337" class="tactic">search.</a></div>
+<a href="perm-details.html#338" class="command">Theorem member_adj_rel : forall JJ A J B,
+  adj JJ A J -> member B J ->
+  A = B \/ member B JJ.</a>
+<div class="proof"><a href="perm-details.html#339" class="tactic">induction on 1.</a> <a href="perm-details.html#340" class="tactic">intros.</a> <a href="perm-details.html#341" class="tactic">case H1.</a>
+  <a href="perm-details.html#342" class="tactic">case H2.</a> <a href="perm-details.html#343" class="tactic">search.</a> <a href="perm-details.html#344" class="tactic">search.</a>
+  <a href="perm-details.html#345" class="tactic">case H2.</a> <a href="perm-details.html#346" class="tactic">search.</a> <a href="perm-details.html#347" class="tactic">apply IH to *H4 H5.</a> <a href="perm-details.html#348" class="tactic">case H6.</a> <a href="perm-details.html#349" class="tactic">search.</a> <a href="perm-details.html#350" class="tactic">search.</a></div>
+<a href="perm-details.html#351" class="command">Theorem adj_preserves_member_lem : forall A J B L,
+  is_list J -> member A J -> adj J B L -> member A L.</a>
+<div class="proof"><a href="perm-details.html#352" class="tactic">induction on 2.</a> <a href="perm-details.html#353" class="tactic">intros.</a> <a href="perm-details.html#354" class="tactic">case H2.</a>
+  <a href="perm-details.html#355" class="tactic">case H3.</a> <a href="perm-details.html#356" class="tactic">search.</a> <a href="perm-details.html#357" class="tactic">search.</a>
+  <a href="perm-details.html#358" class="tactic">case H3.</a> <a href="perm-details.html#359" class="tactic">search.</a>
+    <a href="perm-details.html#360" class="tactic">case H1.</a> <a href="perm-details.html#361" class="tactic">apply IH to H8 H4 H6.</a> <a href="perm-details.html#362" class="tactic">search.</a></div>
+<a href="perm-details.html#363" class="command">Theorem adj_preserves_member : forall A J B L,
+  member A J -> adj J B L -> member A L.</a>
+<div class="proof"><a href="perm-details.html#364" class="tactic">intros.</a> <a href="perm-details.html#365" class="tactic">apply adj_1_is_list to H2.</a> <a href="perm-details.html#366" class="tactic">backchain adj_preserves_member_lem.</a></div>
+<a href="perm-details.html#367" class="command">Theorem perm_preserves_member : forall A K L,
+  perm K L ->
+  member A K -> member A L.</a>
+<div class="proof"><a href="perm-details.html#368" class="tactic">induction on 2.</a> <a href="perm-details.html#369" class="tactic">intros.</a> <a href="perm-details.html#370" class="tactic">case H2.</a>
+  <a href="perm-details.html#371" class="tactic">apply perm_cons_1 to *H1.</a> <a href="perm-details.html#372" class="tactic">backchain adj_member.</a>
+  <a href="perm-details.html#373" class="tactic">apply perm_cons_1 to *H1.</a>
+   <a href="perm-details.html#374" class="tactic">apply IH to *H5 *H3.</a>
+   <a href="perm-details.html#375" class="tactic">backchain adj_preserves_member.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

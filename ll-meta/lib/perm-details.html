@@ -1,0 +1,5464 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Type is_o  o -> prop. - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.5-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Type is_o o -> prop.</b>
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Import "list" with is_o := is_o.</b>
+Importing from /home/kaustuv/work/abella/examples/linear/lib/./list
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define adj : (list o) -> o -> (list o) -> prop by 
+adj L A (A :: L) := is_o A /\ is_list L;
+adj (B :: K) A (B :: L) := is_o B /\ adj K A L.</b>
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Theorem adj_1_is_list : 
+forall K A L, adj K A L -> is_list K.</b>
+
+</pre>
+<a name="5"></a>
+<pre class="code">
+
+============================
+ forall K A L, adj K A L -> is_list K
+
+adj_1_is_list < <b>induction on 1.</b>
+</pre>
+<a name="6"></a>
+<pre class="code">
+
+IH : forall K A L, adj K A L * -> is_list K
+============================
+ forall K A L, adj K A L @ -> is_list K
+
+adj_1_is_list < <b>intros.</b>
+</pre>
+<a name="7"></a>
+<pre class="code">
+
+Variables: K A L
+IH : forall K A L, adj K A L * -> is_list K
+H1 : adj K A L @
+============================
+ is_list K
+
+adj_1_is_list < <b>case H1.</b>
+</pre>
+<a name="8"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K A
+IH : forall K A L, adj K A L * -> is_list K
+H2 : is_o A
+H3 : is_list K
+============================
+ is_list K
+
+Subgoal 2 is:
+ is_list (B :: K1)
+
+adj_1_is_list < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_list K
+H2 : is_o B
+H3 : adj K1 A L1 *
+============================
+ is_list (B :: K1)
+
+adj_1_is_list < <b>apply IH to H3.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_list K
+H2 : is_o B
+H3 : adj K1 A L1 *
+H4 : is_list K1
+============================
+ is_list (B :: K1)
+
+adj_1_is_list < <b>search.</b>
+Proof completed.
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Theorem adj_2_is_o : 
+forall K A L, adj K A L -> is_o A.</b>
+
+</pre>
+<a name="12"></a>
+<pre class="code">
+
+============================
+ forall K A L, adj K A L -> is_o A
+
+adj_2_is_o < <b>induction on 1.</b>
+</pre>
+<a name="13"></a>
+<pre class="code">
+
+IH : forall K A L, adj K A L * -> is_o A
+============================
+ forall K A L, adj K A L @ -> is_o A
+
+adj_2_is_o < <b>intros.</b>
+</pre>
+<a name="14"></a>
+<pre class="code">
+
+Variables: K A L
+IH : forall K A L, adj K A L * -> is_o A
+H1 : adj K A L @
+============================
+ is_o A
+
+adj_2_is_o < <b>case H1.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K A
+IH : forall K A L, adj K A L * -> is_o A
+H2 : is_o A
+H3 : is_list K
+============================
+ is_o A
+
+Subgoal 2 is:
+ is_o A
+
+adj_2_is_o < <b>search.</b>
+</pre>
+<a name="16"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_o A
+H2 : is_o B
+H3 : adj K1 A L1 *
+============================
+ is_o A
+
+adj_2_is_o < <b>apply IH to H3.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_o A
+H2 : is_o B
+H3 : adj K1 A L1 *
+H4 : is_o A
+============================
+ is_o A
+
+adj_2_is_o < <b>search.</b>
+Proof completed.
+</pre>
+<a name="18"></a>
+<pre class="code">
+Abella < <b>Theorem adj_3_is_list : 
+forall K A L, adj K A L -> is_list L.</b>
+
+</pre>
+<a name="19"></a>
+<pre class="code">
+
+============================
+ forall K A L, adj K A L -> is_list L
+
+adj_3_is_list < <b>induction on 1.</b>
+</pre>
+<a name="20"></a>
+<pre class="code">
+
+IH : forall K A L, adj K A L * -> is_list L
+============================
+ forall K A L, adj K A L @ -> is_list L
+
+adj_3_is_list < <b>intros.</b>
+</pre>
+<a name="21"></a>
+<pre class="code">
+
+Variables: K A L
+IH : forall K A L, adj K A L * -> is_list L
+H1 : adj K A L @
+============================
+ is_list L
+
+adj_3_is_list < <b>case H1.</b>
+</pre>
+<a name="22"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K A
+IH : forall K A L, adj K A L * -> is_list L
+H2 : is_o A
+H3 : is_list K
+============================
+ is_list (A :: K)
+
+Subgoal 2 is:
+ is_list (B :: L1)
+
+adj_3_is_list < <b>search.</b>
+</pre>
+<a name="23"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_list L
+H2 : is_o B
+H3 : adj K1 A L1 *
+============================
+ is_list (B :: L1)
+
+adj_3_is_list < <b>apply IH to H3.</b>
+</pre>
+<a name="24"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K1
+IH : forall K A L, adj K A L * -> is_list L
+H2 : is_o B
+H3 : adj K1 A L1 *
+H4 : is_list L1
+============================
+ is_list (B :: L1)
+
+adj_3_is_list < <b>search.</b>
+Proof completed.
+</pre>
+<a name="25"></a>
+<pre class="code">
+Abella < <b>Theorem adj_exists : 
+forall A L, is_o A -> is_list L -> (exists M, adj L A M).</b>
+
+</pre>
+<a name="26"></a>
+<pre class="code">
+
+============================
+ forall A L, is_o A -> is_list L -> (exists M, adj L A M)
+
+adj_exists < <b>intros.</b>
+</pre>
+<a name="27"></a>
+<pre class="code">
+
+Variables: A L
+H1 : is_o A
+H2 : is_list L
+============================
+ exists M, adj L A M
+
+adj_exists < <b>search.</b>
+Proof completed.
+</pre>
+<a name="28"></a>
+<pre class="code">
+Abella < <b>Theorem adj_swap : 
+forall A J K B L, adj J A K -> adj K B L ->
+  (exists U, adj J B U /\ adj U A L).</b>
+
+</pre>
+<a name="29"></a>
+<pre class="code">
+
+============================
+ forall A J K B L, adj J A K -> adj K B L ->
+   (exists U, adj J B U /\ adj U A L)
+
+adj_swap < <b>induction on 2.</b>
+</pre>
+<a name="30"></a>
+<pre class="code">
+
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+============================
+ forall A J K B L, adj J A K -> adj K B L @ ->
+   (exists U, adj J B U /\ adj U A L)
+
+adj_swap < <b>intros.</b>
+</pre>
+<a name="31"></a>
+<pre class="code">
+
+Variables: A J K B L
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H1 : adj J A K
+H2 : adj K B L @
+============================
+ exists U, adj J B U /\ adj U A L
+
+adj_swap < <b>case H2.</b>
+</pre>
+<a name="32"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A J K B
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H1 : adj J A K
+H3 : is_o B
+H4 : is_list K
+============================
+ exists U, adj J B U /\ adj U A (B :: K)
+
+Subgoal 2 is:
+ exists U, adj J B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>case H1.</b>
+</pre>
+<a name="33"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: A J B
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B
+H4 : is_list (A :: J)
+H5 : is_o A
+H6 : is_list J
+============================
+ exists U, adj J B U /\ adj U A (B :: A :: J)
+
+Subgoal 1.2 is:
+ exists U, adj (B1 :: K1) B U /\ adj U A (B :: B1 :: L1)
+
+Subgoal 2 is:
+ exists U, adj J B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>search.</b>
+</pre>
+<a name="34"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: A B L1 B1 K1
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B
+H4 : is_list (B1 :: L1)
+H5 : is_o B1
+H6 : adj K1 A L1
+============================
+ exists U, adj (B1 :: K1) B U /\ adj U A (B :: B1 :: L1)
+
+Subgoal 2 is:
+ exists U, adj J B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="35"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: A B L1 B1 K1
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B
+H4 : is_list (B1 :: L1)
+H5 : is_o B1
+H6 : adj K1 A L1
+H7 : is_list K1
+============================
+ exists U, adj (B1 :: K1) B U /\ adj U A (B :: B1 :: L1)
+
+Subgoal 2 is:
+ exists U, adj J B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>search.</b>
+</pre>
+<a name="36"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A J B L1 B1 K1
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H1 : adj J A (B1 :: K1)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+============================
+ exists U, adj J B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>case H1.</b>
+</pre>
+<a name="37"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: B L1 B1 K1
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : is_list K1
+============================
+ exists U, adj K1 B U /\ adj U B1 (B1 :: L1)
+
+Subgoal 2.2 is:
+ exists U, adj (B1 :: K2) B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>apply adj_3_is_list to H4.</b>
+</pre>
+<a name="38"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: B L1 B1 K1
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : is_list K1
+H7 : is_list L1
+============================
+ exists U, adj K1 B U /\ adj U B1 (B1 :: L1)
+
+Subgoal 2.2 is:
+ exists U, adj (B1 :: K2) B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>search.</b>
+</pre>
+<a name="39"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 A K1
+============================
+ exists U, adj (B1 :: K2) B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>apply IH to H6 H4.</b>
+</pre>
+<a name="40"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2 U
+IH : forall A J K B L, adj J A K -> adj K B L * ->
+       (exists U, adj J B U /\ adj U A L)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 A K1
+H7 : adj K2 B U
+H8 : adj U A L1
+============================
+ exists U, adj (B1 :: K2) B U /\ adj U A (B1 :: L1)
+
+adj_swap < <b>search.</b>
+Proof completed.
+</pre>
+<a name="41"></a>
+<pre class="code">
+Abella < <b>Theorem adj_same : 
+forall A L B, adj L A (B :: L) -> A = B.</b>
+
+</pre>
+<a name="42"></a>
+<pre class="code">
+
+============================
+ forall A L B, adj L A (B :: L) -> A = B
+
+adj_same < <b>induction on 1.</b>
+</pre>
+<a name="43"></a>
+<pre class="code">
+
+IH : forall A L B, adj L A (B :: L) * -> A = B
+============================
+ forall A L B, adj L A (B :: L) @ -> A = B
+
+adj_same < <b>intros.</b>
+</pre>
+<a name="44"></a>
+<pre class="code">
+
+Variables: A L B
+IH : forall A L B, adj L A (B :: L) * -> A = B
+H1 : adj L A (B :: L) @
+============================
+ A = B
+
+adj_same < <b>case H1.</b>
+</pre>
+<a name="45"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L B
+IH : forall A L B, adj L A (B :: L) * -> A = B
+H2 : is_o B
+H3 : is_list L
+============================
+ B = B
+
+Subgoal 2 is:
+ A = B
+
+adj_same < <b>search.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A B K
+IH : forall A L B, adj L A (B :: L) * -> A = B
+H2 : is_o B
+H3 : adj K A (B :: K) *
+============================
+ A = B
+
+adj_same < <b>apply IH to H3.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: B K
+IH : forall A L B, adj L A (B :: L) * -> A = B
+H2 : is_o B
+H3 : adj K B (B :: K) *
+============================
+ B = B
+
+adj_same < <b>search.</b>
+Proof completed.
+</pre>
+<a name="48"></a>
+<pre class="code">
+Abella < <b>Theorem adj_append_1 : 
+forall J A K L KL, adj J A K -> append K L KL ->
+  (exists JL, append J L JL /\ adj JL A KL).</b>
+
+</pre>
+<a name="49"></a>
+<pre class="code">
+
+============================
+ forall J A K L KL, adj J A K -> append K L KL ->
+   (exists JL, append J L JL /\ adj JL A KL)
+
+adj_append_1 < <b>induction on 1.</b>
+</pre>
+<a name="50"></a>
+<pre class="code">
+
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+============================
+ forall J A K L KL, adj J A K @ -> append K L KL ->
+   (exists JL, append J L JL /\ adj JL A KL)
+
+adj_append_1 < <b>intros.</b>
+</pre>
+<a name="51"></a>
+<pre class="code">
+
+Variables: J A K L KL
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H1 : adj J A K @
+H2 : append K L KL
+============================
+ exists JL, append J L JL /\ adj JL A KL
+
+adj_append_1 < <b>case H1.</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L KL
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H2 : append (A :: J) L KL
+H3 : is_o A
+H4 : is_list J
+============================
+ exists JL, append J L JL /\ adj JL A KL
+
+Subgoal 2 is:
+ exists JL, append (B :: K1) L JL /\ adj JL A KL
+
+adj_append_1 < <b>case H2.</b>
+</pre>
+<a name="53"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L L1
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : append J L L1
+============================
+ exists JL, append J L JL /\ adj JL A (A :: L1)
+
+Subgoal 2 is:
+ exists JL, append (B :: K1) L JL /\ adj JL A KL
+
+adj_append_1 < <b>apply append_2_is_list to H6.</b>
+</pre>
+<a name="54"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L L1
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : append J L L1
+H7 : is_list L
+============================
+ exists JL, append J L JL /\ adj JL A (A :: L1)
+
+Subgoal 2 is:
+ exists JL, append (B :: K1) L JL /\ adj JL A KL
+
+adj_append_1 < <b>apply append_3_is_list to H6.</b>
+</pre>
+<a name="55"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L L1
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : append J L L1
+H7 : is_list L
+H8 : is_list L1
+============================
+ exists JL, append J L JL /\ adj JL A (A :: L1)
+
+Subgoal 2 is:
+ exists JL, append (B :: K1) L JL /\ adj JL A KL
+
+adj_append_1 < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L KL L1 B K1
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H2 : append (B :: L1) L KL
+H3 : is_o B
+H4 : adj K1 A L1 *
+============================
+ exists JL, append (B :: K1) L JL /\ adj JL A KL
+
+adj_append_1 < <b>case H2.</b>
+</pre>
+<a name="57"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B K1 L2
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : append L1 L L2
+============================
+ exists JL, append (B :: K1) L JL /\ adj JL A (B :: L2)
+
+adj_append_1 < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="58"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B K1 L2 JL
+IH : forall J A K L KL, adj J A K * -> append K L KL ->
+       (exists JL, append J L JL /\ adj JL A KL)
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : append L1 L L2
+H7 : append K1 L JL
+H8 : adj JL A L2
+============================
+ exists JL, append (B :: K1) L JL /\ adj JL A (B :: L2)
+
+adj_append_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="59"></a>
+<pre class="code">
+Abella < <b>Theorem adj_1_append : 
+forall J A K L JL, adj J A K -> append J L JL ->
+  (exists KL, append K L KL /\ adj JL A KL).</b>
+
+</pre>
+<a name="60"></a>
+<pre class="code">
+
+============================
+ forall J A K L JL, adj J A K -> append J L JL ->
+   (exists KL, append K L KL /\ adj JL A KL)
+
+adj_1_append < <b>induction on 1.</b>
+</pre>
+<a name="61"></a>
+<pre class="code">
+
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+============================
+ forall J A K L JL, adj J A K @ -> append J L JL ->
+   (exists KL, append K L KL /\ adj JL A KL)
+
+adj_1_append < <b>intros.</b>
+</pre>
+<a name="62"></a>
+<pre class="code">
+
+Variables: J A K L JL
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H1 : adj J A K @
+H2 : append J L JL
+============================
+ exists KL, append K L KL /\ adj JL A KL
+
+adj_1_append < <b>case H1.</b>
+</pre>
+<a name="63"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L JL
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H2 : append J L JL
+H3 : is_o A
+H4 : is_list J
+============================
+ exists KL, append (A :: J) L KL /\ adj JL A KL
+
+Subgoal 2 is:
+ exists KL, append (B :: L1) L KL /\ adj JL A KL
+
+adj_1_append < <b>apply append_2_is_list to H2.</b>
+</pre>
+<a name="64"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L JL
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H2 : append J L JL
+H3 : is_o A
+H4 : is_list J
+H5 : is_list L
+============================
+ exists KL, append (A :: J) L KL /\ adj JL A KL
+
+Subgoal 2 is:
+ exists KL, append (B :: L1) L KL /\ adj JL A KL
+
+adj_1_append < <b>apply append_3_is_list to H2.</b>
+</pre>
+<a name="65"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A L JL
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H2 : append J L JL
+H3 : is_o A
+H4 : is_list J
+H5 : is_list L
+H6 : is_list JL
+============================
+ exists KL, append (A :: J) L KL /\ adj JL A KL
+
+Subgoal 2 is:
+ exists KL, append (B :: L1) L KL /\ adj JL A KL
+
+adj_1_append < <b>search.</b>
+</pre>
+<a name="66"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L JL L1 B K1
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H2 : append (B :: K1) L JL
+H3 : is_o B
+H4 : adj K1 A L1 *
+============================
+ exists KL, append (B :: L1) L KL /\ adj JL A KL
+
+adj_1_append < <b>case H2.</b>
+</pre>
+<a name="67"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B K1 L2
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : append K1 L L2
+============================
+ exists KL, append (B :: L1) L KL /\ adj (B :: L2) A KL
+
+adj_1_append < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="68"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B K1 L2 KL
+IH : forall J A K L JL, adj J A K * -> append J L JL ->
+       (exists KL, append K L KL /\ adj JL A KL)
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : append K1 L L2
+H7 : append L1 L KL
+H8 : adj L2 A KL
+============================
+ exists KL, append (B :: L1) L KL /\ adj (B :: L2) A KL
+
+adj_1_append < <b>search.</b>
+Proof completed.
+</pre>
+<a name="69"></a>
+<pre class="code">
+Abella < <b>Define perm : (list o) -> (list o) -> prop by 
+perm nil nil;
+perm K L := exists A KK LL, adj KK A K /\ adj LL A L /\ perm KK LL.</b>
+
+</pre>
+<a name="70"></a>
+<pre class="code">
+Abella < <b>Theorem perm_1_is_list : 
+forall K L, perm K L -> is_list K.</b>
+
+</pre>
+<a name="71"></a>
+<pre class="code">
+
+============================
+ forall K L, perm K L -> is_list K
+
+perm_1_is_list < <b>intros.</b>
+</pre>
+<a name="72"></a>
+<pre class="code">
+
+Variables: K L
+H1 : perm K L
+============================
+ is_list K
+
+perm_1_is_list < <b>case H1.</b>
+</pre>
+<a name="73"></a>
+<pre class="code">
+Subgoal 1:
+
+============================
+ is_list nil
+
+Subgoal 2 is:
+ is_list K
+
+perm_1_is_list < <b>search.</b>
+</pre>
+<a name="74"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A KK LL
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : perm KK LL
+============================
+ is_list K
+
+perm_1_is_list < <b>backchain adj_3_is_list.</b>
+Proof completed.
+</pre>
+<a name="75"></a>
+<pre class="code">
+Abella < <b>Theorem perm_2_is_list : 
+forall K L, perm K L -> is_list L.</b>
+
+</pre>
+<a name="76"></a>
+<pre class="code">
+
+============================
+ forall K L, perm K L -> is_list L
+
+perm_2_is_list < <b>intros.</b>
+</pre>
+<a name="77"></a>
+<pre class="code">
+
+Variables: K L
+H1 : perm K L
+============================
+ is_list L
+
+perm_2_is_list < <b>case H1.</b>
+</pre>
+<a name="78"></a>
+<pre class="code">
+Subgoal 1:
+
+============================
+ is_list nil
+
+Subgoal 2 is:
+ is_list L
+
+perm_2_is_list < <b>search.</b>
+</pre>
+<a name="79"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A KK LL
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : perm KK LL
+============================
+ is_list L
+
+perm_2_is_list < <b>backchain adj_3_is_list.</b>
+Proof completed.
+</pre>
+<a name="80"></a>
+<pre class="code">
+Abella < <b>Theorem perm_refl : 
+forall L, is_list L -> perm L L.</b>
+
+</pre>
+<a name="81"></a>
+<pre class="code">
+
+============================
+ forall L, is_list L -> perm L L
+
+perm_refl < <b>induction on 1.</b>
+</pre>
+<a name="82"></a>
+<pre class="code">
+
+IH : forall L, is_list L * -> perm L L
+============================
+ forall L, is_list L @ -> perm L L
+
+perm_refl < <b>intros.</b>
+</pre>
+<a name="83"></a>
+<pre class="code">
+
+Variables: L
+IH : forall L, is_list L * -> perm L L
+H1 : is_list L @
+============================
+ perm L L
+
+perm_refl < <b>case H1.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall L, is_list L * -> perm L L
+============================
+ perm nil nil
+
+Subgoal 2 is:
+ perm (A :: L1) (A :: L1)
+
+perm_refl < <b>search.</b>
+</pre>
+<a name="85"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L1 A
+IH : forall L, is_list L * -> perm L L
+H2 : is_o A
+H3 : is_list L1 *
+============================
+ perm (A :: L1) (A :: L1)
+
+perm_refl < <b>apply IH to H3.</b>
+</pre>
+<a name="86"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L1 A
+IH : forall L, is_list L * -> perm L L
+H2 : is_o A
+H3 : is_list L1 *
+H4 : perm L1 L1
+============================
+ perm (A :: L1) (A :: L1)
+
+perm_refl < <b>search.</b>
+Proof completed.
+</pre>
+<a name="87"></a>
+<pre class="code">
+Abella < <b>Theorem perm_sym : 
+forall K L, perm K L -> perm L K.</b>
+
+</pre>
+<a name="88"></a>
+<pre class="code">
+
+============================
+ forall K L, perm K L -> perm L K
+
+perm_sym < <b>induction on 1.</b>
+</pre>
+<a name="89"></a>
+<pre class="code">
+
+IH : forall K L, perm K L * -> perm L K
+============================
+ forall K L, perm K L @ -> perm L K
+
+perm_sym < <b>intros.</b>
+</pre>
+<a name="90"></a>
+<pre class="code">
+
+Variables: K L
+IH : forall K L, perm K L * -> perm L K
+H1 : perm K L @
+============================
+ perm L K
+
+perm_sym < <b>case H1.</b>
+</pre>
+<a name="91"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall K L, perm K L * -> perm L K
+============================
+ perm nil nil
+
+Subgoal 2 is:
+ perm L K
+
+perm_sym < <b>search.</b>
+</pre>
+<a name="92"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A KK LL
+IH : forall K L, perm K L * -> perm L K
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : perm KK LL *
+============================
+ perm L K
+
+perm_sym < <b>apply IH to H4.</b>
+</pre>
+<a name="93"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A KK LL
+IH : forall K L, perm K L * -> perm L K
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : perm KK LL *
+H5 : perm LL KK
+============================
+ perm L K
+
+perm_sym < <b>search.</b>
+Proof completed.
+</pre>
+<a name="94"></a>
+<pre class="code">
+Abella < <b>Theorem perm_cons_1 : 
+forall A K L, perm (A :: K) L -> (exists J, adj J A L /\ perm K J).</b>
+
+</pre>
+<a name="95"></a>
+<pre class="code">
+
+============================
+ forall A K L, perm (A :: K) L -> (exists J, adj J A L /\ perm K J)
+
+perm_cons_1 < <b>induction on 1.</b>
+</pre>
+<a name="96"></a>
+<pre class="code">
+
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+============================
+ forall A K L, perm (A :: K) L @ -> (exists J, adj J A L /\ perm K J)
+
+perm_cons_1 < <b>intros.</b>
+</pre>
+<a name="97"></a>
+<pre class="code">
+
+Variables: A K L
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H1 : perm (A :: K) L @
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>case H1.</b>
+</pre>
+<a name="98"></a>
+<pre class="code">
+
+Variables: A K L A1 KK LL
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H2 : adj KK A1 (A :: K)
+H3 : adj LL A1 L
+H4 : perm KK LL *
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>case H2.</b>
+</pre>
+<a name="99"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A K L LL
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A L
+H4 : perm K LL *
+H5 : is_o A
+H6 : is_list K
+============================
+ exists J, adj J A L /\ perm K J
+
+Subgoal 2 is:
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>search.</b>
+</pre>
+<a name="100"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K L A1 LL K1
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A1 L
+H4 : perm (A :: K1) LL *
+H5 : is_o A
+H6 : adj K1 A1 K
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>apply IH to H4.</b>
+</pre>
+<a name="101"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K L A1 LL K1 J
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A1 L
+H4 : perm (A :: K1) LL *
+H5 : is_o A
+H6 : adj K1 A1 K
+H7 : adj J A LL
+H8 : perm K1 J
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>apply adj_swap to H7 H3.</b>
+</pre>
+<a name="102"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K L A1 LL K1 J U
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A1 L
+H4 : perm (A :: K1) LL *
+H5 : is_o A
+H6 : adj K1 A1 K
+H7 : adj J A LL
+H8 : perm K1 J
+H9 : adj J A1 U
+H10 : adj U A L
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="103"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K L A1 LL K1 J U
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A1 L
+H4 : perm (A :: K1) LL *
+H5 : is_o A
+H6 : adj K1 A1 K
+H7 : adj J A LL
+H8 : perm K1 J
+H9 : adj J A1 U
+H10 : adj U A L
+H11 : is_list K1
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>apply adj_1_is_list to H7.</b>
+</pre>
+<a name="104"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K L A1 LL K1 J U
+IH : forall A K L, perm (A :: K) L * -> (exists J, adj J A L /\ perm K J)
+H3 : adj LL A1 L
+H4 : perm (A :: K1) LL *
+H5 : is_o A
+H6 : adj K1 A1 K
+H7 : adj J A LL
+H8 : perm K1 J
+H9 : adj J A1 U
+H10 : adj U A L
+H11 : is_list K1
+H12 : is_list J
+============================
+ exists J, adj J A L /\ perm K J
+
+perm_cons_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="105"></a>
+<pre class="code">
+Abella < <b>Theorem perm_cons_2 : 
+forall A K L, perm K (A :: L) -> (exists J, adj J A K /\ perm J L).</b>
+
+</pre>
+<a name="106"></a>
+<pre class="code">
+
+============================
+ forall A K L, perm K (A :: L) -> (exists J, adj J A K /\ perm J L)
+
+perm_cons_2 < <b>intros.</b>
+</pre>
+<a name="107"></a>
+<pre class="code">
+
+Variables: A K L
+H1 : perm K (A :: L)
+============================
+ exists J, adj J A K /\ perm J L
+
+perm_cons_2 < <b>apply perm_sym to *H1.</b>
+</pre>
+<a name="108"></a>
+<pre class="code">
+
+Variables: A K L
+H2 : perm (A :: L) K
+============================
+ exists J, adj J A K /\ perm J L
+
+perm_cons_2 < <b>apply perm_cons_1 to *H2.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+
+Variables: A K L J
+H3 : adj J A K
+H4 : perm L J
+============================
+ exists J, adj J A K /\ perm J L
+
+perm_cons_2 < <b>apply perm_sym to *H4.</b>
+</pre>
+<a name="110"></a>
+<pre class="code">
+
+Variables: A K L J
+H3 : adj J A K
+H5 : perm J L
+============================
+ exists J, adj J A K /\ perm J L
+
+perm_cons_2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="111"></a>
+<pre class="code">
+Abella < <b>Theorem adj_preserves_perm : 
+forall A JJ J KK K, adj JJ A J -> adj KK A K -> perm JJ KK -> perm J K.</b>
+
+</pre>
+<a name="112"></a>
+<pre class="code">
+
+============================
+ forall A JJ J KK K, adj JJ A J -> adj KK A K -> perm JJ KK -> perm J K
+
+adj_preserves_perm < <b>intros.</b>
+</pre>
+<a name="113"></a>
+<pre class="code">
+
+Variables: A JJ J KK K
+H1 : adj JJ A J
+H2 : adj KK A K
+H3 : perm JJ KK
+============================
+ perm J K
+
+adj_preserves_perm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="114"></a>
+<pre class="code">
+Abella < <b>Theorem perm_trans_lem : 
+forall J K L, is_list K -> perm J K -> perm K L -> perm J L.</b>
+
+</pre>
+<a name="115"></a>
+<pre class="code">
+
+============================
+ forall J K L, is_list K -> perm J K -> perm K L -> perm J L
+
+perm_trans_lem < <b>induction on 1.</b>
+</pre>
+<a name="116"></a>
+<pre class="code">
+
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+============================
+ forall J K L, is_list K @ -> perm J K -> perm K L -> perm J L
+
+perm_trans_lem < <b>intros.</b>
+</pre>
+<a name="117"></a>
+<pre class="code">
+
+Variables: J K L
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H1 : is_list K @
+H2 : perm J K
+H3 : perm K L
+============================
+ perm J L
+
+perm_trans_lem < <b>case H1.</b>
+</pre>
+<a name="118"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J L
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H2 : perm J nil
+H3 : perm nil L
+============================
+ perm J L
+
+Subgoal 2 is:
+ perm J L
+
+perm_trans_lem < <b>case H2.</b>
+</pre>
+<a name="119"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: L
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H3 : perm nil L
+============================
+ perm nil L
+
+Subgoal 1.2 is:
+ perm J L
+
+Subgoal 2 is:
+ perm J L
+
+perm_trans_lem < <b>case H3.</b>
+</pre>
+<a name="120"></a>
+<pre class="code">
+Subgoal 1.1.1:
+
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+============================
+ perm nil nil
+
+Subgoal 1.1.2 is:
+ perm nil L
+
+Subgoal 1.2 is:
+ perm J L
+
+Subgoal 2 is:
+ perm J L
+
+perm_trans_lem < <b>search.</b>
+</pre>
+<a name="121"></a>
+<pre class="code">
+Subgoal 1.1.2:
+
+Variables: L A KK LL
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : adj KK A nil
+H5 : adj LL A L
+H6 : perm KK LL
+============================
+ perm nil L
+
+Subgoal 1.2 is:
+ perm J L
+
+Subgoal 2 is:
+ perm J L
+
+perm_trans_lem < <b>case H4.</b>
+</pre>
+<a name="122"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J L A KK LL
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H3 : perm nil L
+H4 : adj KK A J
+H5 : adj LL A nil
+H6 : perm KK LL
+============================
+ perm J L
+
+Subgoal 2 is:
+ perm J L
+
+perm_trans_lem < <b>case H5.</b>
+</pre>
+<a name="123"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L L1 A
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H2 : perm J (A :: L1)
+H3 : perm (A :: L1) L
+H4 : is_o A
+H5 : is_list L1 *
+============================
+ perm J L
+
+perm_trans_lem < <b>case H2.</b>
+</pre>
+<a name="124"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L L1 A A1 KK LL
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H3 : perm (A :: L1) L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A1 J
+H7 : adj LL A1 (A :: L1)
+H8 : perm KK LL
+============================
+ perm J L
+
+perm_trans_lem < <b>case H3.</b>
+</pre>
+<a name="125"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L L1 A A1 KK LL A2 KK1 LL1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A1 J
+H7 : adj LL A1 (A :: L1)
+H8 : perm KK LL
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+============================
+ perm J L
+
+perm_trans_lem < <b>case H7.</b>
+</pre>
+<a name="126"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J L L1 A KK A2 KK1 LL1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+H12 : is_o A
+H13 : is_list L1
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>case H9.</b>
+</pre>
+<a name="127"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: J L L1 A KK LL1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H10 : adj LL1 A L
+H11 : perm L1 LL1
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H15 : is_list L1
+============================
+ perm J L
+
+Subgoal 2.1.2 is:
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>apply IH to *H5 *H8 *H11.</b>
+</pre>
+<a name="128"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: J L L1 A KK LL1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H6 : adj KK A J
+H10 : adj LL1 A L
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H15 : is_list L1
+H16 : perm KK LL1
+============================
+ perm J L
+
+Subgoal 2.1.2 is:
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>search.</b>
+</pre>
+<a name="129"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J L L1 A KK A2 LL1 K1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H10 : adj LL1 A2 L
+H11 : perm (A :: K1) LL1
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H15 : adj K1 A2 L1
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>apply perm_cons_1 to *H11.</b>
+</pre>
+<a name="130"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J L L1 A KK A2 LL1 K1 J1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H10 : adj LL1 A2 L
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H15 : adj K1 A2 L1
+H16 : adj J1 A LL1
+H17 : perm K1 J1
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>apply adj_swap to *H16 *H10.</b>
+</pre>
+<a name="131"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J L L1 A KK A2 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H15 : adj K1 A2 L1
+H17 : perm K1 J1
+H18 : adj J1 A2 U
+H19 : adj U A L
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>apply adj_preserves_perm to *H15 *H18 *H17.</b>
+</pre>
+<a name="132"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J L L1 A KK A2 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A J
+H8 : perm KK L1
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H19 : adj U A L
+H20 : perm L1 U
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>apply IH to *H5 *H8 *H20.</b>
+</pre>
+<a name="133"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J L L1 A KK A2 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H6 : adj KK A J
+H12 : is_o A
+H13 : is_list L1
+H14 : is_o A
+H19 : adj U A L
+H21 : perm KK U
+============================
+ perm J L
+
+Subgoal 2.2 is:
+ perm J L
+
+perm_trans_lem < <b>backchain adj_preserves_perm.</b>
+</pre>
+<a name="134"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A1 J
+H8 : perm KK (A :: K1)
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+H12 : is_o A
+H13 : adj K1 A1 L1
+============================
+ perm J L
+
+perm_trans_lem < <b>apply perm_cons_2 to *H8.</b>
+</pre>
+<a name="135"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj KK A1 J
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+H12 : is_o A
+H13 : adj K1 A1 L1
+H14 : adj J1 A KK
+H15 : perm J1 K1
+============================
+ perm J L
+
+perm_trans_lem < <b>apply adj_swap to *H14 *H6.</b>
+</pre>
+<a name="136"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+H12 : is_o A
+H13 : adj K1 A1 L1
+H15 : perm J1 K1
+H16 : adj J1 A1 U
+H17 : adj U A J
+============================
+ perm J L
+
+perm_trans_lem < <b>apply adj_preserves_perm to *H16 *H13 *H15.</b>
+</pre>
+<a name="137"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H9 : adj KK1 A2 (A :: L1)
+H10 : adj LL1 A2 L
+H11 : perm KK1 LL1
+H12 : is_o A
+H17 : adj U A J
+H18 : perm U L1
+============================
+ perm J L
+
+perm_trans_lem < <b>apply adj_preserves_perm to *H9 *H10 *H11.</b>
+</pre>
+<a name="138"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1 U
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H12 : is_o A
+H17 : adj U A J
+H18 : perm U L1
+H19 : perm (A :: L1) L
+============================
+ perm J L
+
+perm_trans_lem < <b>apply perm_cons_1 to *H19.</b>
+</pre>
+<a name="139"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1 U J2
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H5 : is_list L1 *
+H12 : is_o A
+H17 : adj U A J
+H18 : perm U L1
+H20 : adj J2 A L
+H21 : perm L1 J2
+============================
+ perm J L
+
+perm_trans_lem < <b>apply IH to *H5 *H18 *H21.</b>
+</pre>
+<a name="140"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J L L1 A A1 KK A2 KK1 LL1 K1 J1 U J2
+IH : forall J K L, is_list K * -> perm J K -> perm K L -> perm J L
+H4 : is_o A
+H12 : is_o A
+H17 : adj U A J
+H20 : adj J2 A L
+H22 : perm U J2
+============================
+ perm J L
+
+perm_trans_lem < <b>backchain adj_preserves_perm.</b>
+Proof completed.
+</pre>
+<a name="141"></a>
+<pre class="code">
+Abella < <b>Theorem perm_trans : 
+forall J K L, perm J K -> perm K L -> perm J L.</b>
+
+</pre>
+<a name="142"></a>
+<pre class="code">
+
+============================
+ forall J K L, perm J K -> perm K L -> perm J L
+
+perm_trans < <b>intros.</b>
+</pre>
+<a name="143"></a>
+<pre class="code">
+
+Variables: J K L
+H1 : perm J K
+H2 : perm K L
+============================
+ perm J L
+
+perm_trans < <b>apply perm_2_is_list to H1.</b>
+</pre>
+<a name="144"></a>
+<pre class="code">
+
+Variables: J K L
+H1 : perm J K
+H2 : perm K L
+H3 : is_list K
+============================
+ perm J L
+
+perm_trans < <b>backchain perm_trans_lem.</b>
+Proof completed.
+</pre>
+<a name="145"></a>
+<pre class="code">
+Abella < <b>Theorem adj_same_source : 
+forall J A K L, adj J A K -> adj J A L -> perm K L.</b>
+
+</pre>
+<a name="146"></a>
+<pre class="code">
+
+============================
+ forall J A K L, adj J A K -> adj J A L -> perm K L
+
+adj_same_source < <b>intros.</b>
+</pre>
+<a name="147"></a>
+<pre class="code">
+
+Variables: J A K L
+H1 : adj J A K
+H2 : adj J A L
+============================
+ perm K L
+
+adj_same_source < <b>apply adj_1_is_list to H1.</b>
+</pre>
+<a name="148"></a>
+<pre class="code">
+
+Variables: J A K L
+H1 : adj J A K
+H2 : adj J A L
+H3 : is_list J
+============================
+ perm K L
+
+adj_same_source < <b>apply perm_refl to H3.</b>
+</pre>
+<a name="149"></a>
+<pre class="code">
+
+Variables: J A K L
+H1 : adj J A K
+H2 : adj J A L
+H3 : is_list J
+H4 : perm J J
+============================
+ perm K L
+
+adj_same_source < <b>search.</b>
+Proof completed.
+</pre>
+<a name="150"></a>
+<pre class="code">
+Abella < <b>Theorem adj_same_result : 
+forall J K A L, adj J A L -> adj K A L -> perm J K.</b>
+
+</pre>
+<a name="151"></a>
+<pre class="code">
+
+============================
+ forall J K A L, adj J A L -> adj K A L -> perm J K
+
+adj_same_result < <b>induction on 1.</b>
+</pre>
+<a name="152"></a>
+<pre class="code">
+
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+============================
+ forall J K A L, adj J A L @ -> adj K A L -> perm J K
+
+adj_same_result < <b>intros.</b>
+</pre>
+<a name="153"></a>
+<pre class="code">
+
+Variables: J K A L
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H1 : adj J A L @
+H2 : adj K A L
+============================
+ perm J K
+
+adj_same_result < <b>case H1.</b>
+</pre>
+<a name="154"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J K A
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H2 : adj K A (A :: J)
+H3 : is_o A
+H4 : is_list J
+============================
+ perm J K
+
+Subgoal 2 is:
+ perm (B :: K1) K
+
+adj_same_result < <b>case H2.</b>
+</pre>
+<a name="155"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: J A
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : is_list J
+============================
+ perm J J
+
+Subgoal 1.2 is:
+ perm J (A :: K1)
+
+Subgoal 2 is:
+ perm (B :: K1) K
+
+adj_same_result < <b>backchain perm_refl.</b>
+</pre>
+<a name="156"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 A J
+============================
+ perm J (A :: K1)
+
+Subgoal 2 is:
+ perm (B :: K1) K
+
+adj_same_result < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="157"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 A J
+H7 : is_list K1
+============================
+ perm J (A :: K1)
+
+Subgoal 2 is:
+ perm (B :: K1) K
+
+adj_same_result < <b>apply perm_refl to H7.</b>
+</pre>
+<a name="158"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 A J
+H7 : is_list K1
+H8 : perm K1 K1
+============================
+ perm J (A :: K1)
+
+Subgoal 2 is:
+ perm (B :: K1) K
+
+adj_same_result < <b>search.</b>
+</pre>
+<a name="159"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L1 B K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H2 : adj K A (B :: L1)
+H3 : is_o B
+H4 : adj K1 A L1 *
+============================
+ perm (B :: K1) K
+
+adj_same_result < <b>case H2.</b>
+</pre>
+<a name="160"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 B K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 B L1 *
+H5 : is_o B
+H6 : is_list L1
+============================
+ perm (B :: K1) L1
+
+Subgoal 2.2 is:
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="161"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 B K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 B L1 *
+H5 : is_o B
+H6 : is_list L1
+H7 : is_list K1
+============================
+ perm (B :: K1) L1
+
+Subgoal 2.2 is:
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>apply perm_refl to H7.</b>
+</pre>
+<a name="162"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: L1 B K1
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 B L1 *
+H5 : is_o B
+H6 : is_list L1
+H7 : is_list K1
+H8 : perm K1 K1
+============================
+ perm (B :: K1) L1
+
+Subgoal 2.2 is:
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>search.</b>
+</pre>
+<a name="163"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 B K1 K2
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : adj K2 A L1
+============================
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="164"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 B K1 K2
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : adj K2 A L1
+H7 : perm K1 K2
+============================
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="165"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 B K1 K2
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : adj K2 A L1
+H7 : perm K1 K2
+H8 : is_list K1
+============================
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="166"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A L1 B K1 K2
+IH : forall J K A L, adj J A L * -> adj K A L -> perm J K
+H3 : is_o B
+H4 : adj K1 A L1 *
+H5 : is_o B
+H6 : adj K2 A L1
+H7 : perm K1 K2
+H8 : is_list K1
+H9 : is_list K2
+============================
+ perm (B :: K1) (B :: K2)
+
+adj_same_result < <b>search.</b>
+Proof completed.
+</pre>
+<a name="167"></a>
+<pre class="code">
+Abella < <b>Theorem adj_same_result_diff : 
+forall J A K B L, adj J A L -> adj K B L -> A = B /\ perm J K \/
+  (exists KK, adj KK A K).</b>
+
+</pre>
+<a name="168"></a>
+<pre class="code">
+
+============================
+ forall J A K B L, adj J A L -> adj K B L -> A = B /\ perm J K \/
+   (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>induction on 1.</b>
+</pre>
+<a name="169"></a>
+<pre class="code">
+
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+============================
+ forall J A K B L, adj J A L @ -> adj K B L -> A = B /\ perm J K \/
+   (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>intros.</b>
+</pre>
+<a name="170"></a>
+<pre class="code">
+
+Variables: J A K B L
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H1 : adj J A L @
+H2 : adj K B L
+============================
+ A = B /\ perm J K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>case H1.</b>
+</pre>
+<a name="171"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A K B
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H2 : adj K B (A :: J)
+H3 : is_o A
+H4 : is_list J
+============================
+ A = B /\ perm J K \/ (exists KK, adj KK A K)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>case H2.</b>
+</pre>
+<a name="172"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: J A
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : is_list J
+============================
+ A = A /\ perm J J \/ (exists KK, adj KK A J)
+
+Subgoal 1.2 is:
+ A = B /\ perm J (A :: K1) \/ (exists KK, adj KK A (A :: K1))
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>apply perm_refl to H4.</b>
+</pre>
+<a name="173"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: J A
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : is_list J
+H7 : perm J J
+============================
+ A = A /\ perm J J \/ (exists KK, adj KK A J)
+
+Subgoal 1.2 is:
+ A = B /\ perm J (A :: K1) \/ (exists KK, adj KK A (A :: K1))
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>search.</b>
+</pre>
+<a name="174"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ A = B /\ perm J (A :: K1) \/ (exists KK, adj KK A (A :: K1))
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>right.</b>
+</pre>
+<a name="175"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ exists KK, adj KK A (A :: K1)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>witness K1.</b>
+</pre>
+<a name="176"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ adj K1 A (A :: K1)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="177"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+H7 : is_list K1
+============================
+ adj K1 A (A :: K1)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>search.</b>
+</pre>
+<a name="178"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K B L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H2 : adj K B (B1 :: L1)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+============================
+ A = B /\ perm (B1 :: K1) K \/ (exists KK, adj KK A K)
+
+adj_same_result_diff < <b>case H2.</b>
+</pre>
+<a name="179"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+============================
+ A = B1 /\ perm (B1 :: K1) L1 \/ (exists KK, adj KK A L1)
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>right.</b>
+</pre>
+<a name="180"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+============================
+ exists KK, adj KK A L1
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>search.</b>
+</pre>
+<a name="181"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="182"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H7 : A = B /\ perm K1 K2 \/ (exists KK, adj KK A K2)
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>case H7.</b>
+</pre>
+<a name="183"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK B (B1 :: K2))
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="184"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+H9 : is_list K1
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK B (B1 :: K2))
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="185"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+H9 : is_list K1
+H10 : is_list K2
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK B (B1 :: K2))
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>search.</b>
+</pre>
+<a name="186"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A B L1 B1 K1 K2 KK
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists KK, adj KK A K)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : adj KK A K2
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/ (exists KK, adj KK A (B1 :: K2))
+
+adj_same_result_diff < <b>search.</b>
+Proof completed.
+</pre>
+<a name="187"></a>
+<pre class="code">
+Abella < <b>Theorem adj_same_result_diff_both : 
+forall J A K B L, adj J A L -> adj K B L -> A = B /\ perm J K \/
+  (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK).</b>
+
+</pre>
+<a name="188"></a>
+<pre class="code">
+
+============================
+ forall J A K B L, adj J A L -> adj K B L -> A = B /\ perm J K \/
+   (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>induction on 1.</b>
+</pre>
+<a name="189"></a>
+<pre class="code">
+
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+============================
+ forall J A K B L, adj J A L @ -> adj K B L -> A = B /\ perm J K \/
+   (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>intros.</b>
+</pre>
+<a name="190"></a>
+<pre class="code">
+
+Variables: J A K B L
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H1 : adj J A L @
+H2 : adj K B L
+============================
+ A = B /\ perm J K \/ (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>case H1.</b>
+</pre>
+<a name="191"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A K B
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H2 : adj K B (A :: J)
+H3 : is_o A
+H4 : is_list J
+============================
+ A = B /\ perm J K \/ (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>case H2.</b>
+</pre>
+<a name="192"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: J A
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : is_list J
+============================
+ A = A /\ perm J J \/ (exists JJ KK, adj JJ A J /\ adj KK A J /\ perm JJ KK)
+
+Subgoal 1.2 is:
+ A = B /\ perm J (A :: K1) \/
+   (exists JJ KK, adj JJ B J /\ adj KK A (A :: K1) /\ perm JJ KK)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply perm_refl to H4.</b>
+</pre>
+<a name="193"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: J A
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : is_list J
+H7 : perm J J
+============================
+ A = A /\ perm J J \/ (exists JJ KK, adj JJ A J /\ adj KK A J /\ perm JJ KK)
+
+Subgoal 1.2 is:
+ A = B /\ perm J (A :: K1) \/
+   (exists JJ KK, adj JJ B J /\ adj KK A (A :: K1) /\ perm JJ KK)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>search.</b>
+</pre>
+<a name="194"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ A = B /\ perm J (A :: K1) \/
+   (exists JJ KK, adj JJ B J /\ adj KK A (A :: K1) /\ perm JJ KK)
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>right.</b>
+</pre>
+<a name="195"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ exists JJ KK, adj JJ B J /\ adj KK A (A :: K1) /\ perm JJ KK
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>witness K1, K1.</b>
+</pre>
+<a name="196"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+============================
+ adj K1 B J /\ adj K1 A (A :: K1) /\ perm K1 K1
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="197"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+H7 : is_list K1
+============================
+ adj K1 B J /\ adj K1 A (A :: K1) /\ perm K1 K1
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply perm_refl to H7.</b>
+</pre>
+<a name="198"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: J A B K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list J
+H5 : is_o A
+H6 : adj K1 B J
+H7 : is_list K1
+H8 : perm K1 K1
+============================
+ adj K1 B J /\ adj K1 A (A :: K1) /\ perm K1 K1
+
+Subgoal 2 is:
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>search.</b>
+</pre>
+<a name="199"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A K B L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H2 : adj K B (B1 :: L1)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+============================
+ A = B /\ perm (B1 :: K1) K \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A K /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>case H2.</b>
+</pre>
+<a name="200"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+============================
+ A = B1 /\ perm (B1 :: K1) L1 \/
+   (exists JJ KK, adj JJ B1 (B1 :: K1) /\ adj KK A L1 /\ perm JJ KK)
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>right.</b>
+</pre>
+<a name="201"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+============================
+ exists JJ KK, adj JJ B1 (B1 :: K1) /\ adj KK A L1 /\ perm JJ KK
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="202"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+H7 : is_list K1
+============================
+ exists JJ KK, adj JJ B1 (B1 :: K1) /\ adj KK A L1 /\ perm JJ KK
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply perm_refl to H7.</b>
+</pre>
+<a name="203"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L1 B1 K1
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : is_list L1
+H7 : is_list K1
+H8 : perm K1 K1
+============================
+ exists JJ KK, adj JJ B1 (B1 :: K1) /\ adj KK A L1 /\ perm JJ KK
+
+Subgoal 2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>search.</b>
+</pre>
+<a name="204"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply IH to H4 H6.</b>
+</pre>
+<a name="205"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H7 : A = B /\ perm K1 K2 \/
+       (exists JJ KK, adj JJ B K1 /\ adj KK A K2 /\ perm JJ KK)
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>case H7.</b>
+</pre>
+<a name="206"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK B (B1 :: K2) /\ perm JJ KK)
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="207"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+H9 : is_list K1
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK B (B1 :: K2) /\ perm JJ KK)
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply adj_1_is_list to H6.</b>
+</pre>
+<a name="208"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L1 B1 K1 K2
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 B L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : perm K1 K2
+H9 : is_list K1
+H10 : is_list K2
+============================
+ B = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK B (B1 :: K2) /\ perm JJ KK)
+
+Subgoal 2.2.2 is:
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>search.</b>
+</pre>
+<a name="209"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A B L1 B1 K1 K2 JJ KK
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : adj JJ B K1
+H9 : adj KK A K2
+H10 : perm JJ KK
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply perm_1_is_list to H10.</b>
+</pre>
+<a name="210"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A B L1 B1 K1 K2 JJ KK
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : adj JJ B K1
+H9 : adj KK A K2
+H10 : perm JJ KK
+H11 : is_list JJ
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>apply perm_2_is_list to H10.</b>
+</pre>
+<a name="211"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A B L1 B1 K1 K2 JJ KK
+IH : forall J A K B L, adj J A L * -> adj K B L -> A = B /\ perm J K \/
+       (exists JJ KK, adj JJ B J /\ adj KK A K /\ perm JJ KK)
+H3 : is_o B1
+H4 : adj K1 A L1 *
+H5 : is_o B1
+H6 : adj K2 B L1
+H8 : adj JJ B K1
+H9 : adj KK A K2
+H10 : perm JJ KK
+H11 : is_list JJ
+H12 : is_list KK
+============================
+ A = B /\ perm (B1 :: K1) (B1 :: K2) \/
+   (exists JJ KK, adj JJ B (B1 :: K1) /\ adj KK A (B1 :: K2) /\ perm JJ KK)
+
+adj_same_result_diff_both < <b>search.</b>
+Proof completed.
+</pre>
+<a name="212"></a>
+<pre class="code">
+Abella < <b>Theorem perm_invert : 
+forall A J K JJ KK, perm J K -> adj JJ A J -> adj KK A K -> perm JJ KK.</b>
+
+</pre>
+<a name="213"></a>
+<pre class="code">
+
+============================
+ forall A J K JJ KK, perm J K -> adj JJ A J -> adj KK A K -> perm JJ KK
+
+perm_invert < <b>induction on 1.</b>
+</pre>
+<a name="214"></a>
+<pre class="code">
+
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+============================
+ forall A J K JJ KK, perm J K @ -> adj JJ A J -> adj KK A K -> perm JJ KK
+
+perm_invert < <b>intros.</b>
+</pre>
+<a name="215"></a>
+<pre class="code">
+
+Variables: A J K JJ KK
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H1 : perm J K @
+H2 : adj JJ A J
+H3 : adj KK A K
+============================
+ perm JJ KK
+
+perm_invert < <b>case H1.</b>
+</pre>
+<a name="216"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A JJ KK
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A nil
+H3 : adj KK A nil
+============================
+ perm JJ KK
+
+Subgoal 2 is:
+ perm JJ KK
+
+perm_invert < <b>case H2.</b>
+</pre>
+<a name="217"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result_diff to H2 H4.</b>
+</pre>
+<a name="218"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H7 : A = A1 /\ perm JJ KK1 \/ (exists KK, adj KK A KK1)
+============================
+ perm JJ KK
+
+perm_invert < <b>case H7.</b>
+</pre>
+<a name="219"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : perm JJ KK1
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result_diff to H3 H5.</b>
+</pre>
+<a name="220"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : perm JJ KK1
+H9 : A1 = A1 /\ perm KK LL \/ (exists KK1, adj KK1 A1 LL)
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>case H9.</b>
+</pre>
+<a name="221"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : perm JJ KK1
+H10 : perm KK LL
+============================
+ perm JJ KK
+
+Subgoal 2.1.2 is:
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_trans to *H8 *H6.</b>
+</pre>
+<a name="222"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H10 : perm KK LL
+H11 : perm JJ LL
+============================
+ perm JJ KK
+
+Subgoal 2.1.2 is:
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_sym to *H10.</b>
+</pre>
+<a name="223"></a>
+<pre class="code">
+Subgoal 2.1.1:
+
+Variables: J K JJ KK A1 KK1 LL
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H11 : perm JJ LL
+H12 : perm LL KK
+============================
+ perm JJ KK
+
+Subgoal 2.1.2 is:
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>backchain perm_trans.</b>
+</pre>
+<a name="224"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : perm JJ KK1
+H10 : adj KK2 A1 LL
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result to H3 H5.</b>
+</pre>
+<a name="225"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : perm JJ KK1
+H10 : adj KK2 A1 LL
+H11 : perm KK LL
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_trans to *H8 *H6.</b>
+</pre>
+<a name="226"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H10 : adj KK2 A1 LL
+H11 : perm KK LL
+H12 : perm JJ LL
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_sym to *H11.</b>
+</pre>
+<a name="227"></a>
+<pre class="code">
+Subgoal 2.1.2:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H10 : adj KK2 A1 LL
+H12 : perm JJ LL
+H13 : perm LL KK
+============================
+ perm JJ KK
+
+Subgoal 2.2 is:
+ perm JJ KK
+
+perm_invert < <b>backchain perm_trans.</b>
+</pre>
+<a name="228"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A KK1
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result_diff to H3 H5.</b>
+</pre>
+<a name="229"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A KK1
+H9 : A = A1 /\ perm KK LL \/ (exists KK1, adj KK1 A LL)
+============================
+ perm JJ KK
+
+perm_invert < <b>case H9.</b>
+</pre>
+<a name="230"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A1 KK1
+H10 : perm KK LL
+============================
+ perm JJ KK
+
+Subgoal 2.2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_sym to *H10.</b>
+</pre>
+<a name="231"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A1 KK1
+H11 : perm LL KK
+============================
+ perm JJ KK
+
+Subgoal 2.2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply perm_trans to *H6 *H11.</b>
+</pre>
+<a name="232"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H8 : adj KK2 A1 KK1
+H12 : perm KK1 KK
+============================
+ perm JJ KK
+
+Subgoal 2.2.2 is:
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result to H2 H4.</b>
+</pre>
+<a name="233"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K JJ KK A1 KK1 LL KK2
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A1 J
+H3 : adj KK A1 K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H8 : adj KK2 A1 KK1
+H12 : perm KK1 KK
+H13 : perm JJ KK1
+============================
+ perm JJ KK
+
+Subgoal 2.2.2 is:
+ perm JJ KK
+
+perm_invert < <b>backchain perm_trans.</b>
+</pre>
+<a name="234"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A KK1
+H10 : adj KK3 A LL
+============================
+ perm JJ KK
+
+perm_invert < <b>apply IH to H6 H8 H10.</b>
+</pre>
+<a name="235"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H5 : adj LL A1 K
+H6 : perm KK1 LL *
+H8 : adj KK2 A KK1
+H10 : adj KK3 A LL
+H11 : perm KK2 KK3
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_swap to *H10 *H5.</b>
+</pre>
+<a name="236"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H4 : adj KK1 A1 J
+H6 : perm KK1 LL *
+H8 : adj KK2 A KK1
+H11 : perm KK2 KK3
+H12 : adj KK3 A1 U
+H13 : adj U A K
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_swap to *H8 *H4.</b>
+</pre>
+<a name="237"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U U1
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H2 : adj JJ A J
+H3 : adj KK A K
+H6 : perm KK1 LL *
+H11 : perm KK2 KK3
+H12 : adj KK3 A1 U
+H13 : adj U A K
+H14 : adj KK2 A1 U1
+H15 : adj U1 A J
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result to *H2 *H15.</b>
+</pre>
+<a name="238"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U U1
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H3 : adj KK A K
+H6 : perm KK1 LL *
+H11 : perm KK2 KK3
+H12 : adj KK3 A1 U
+H13 : adj U A K
+H14 : adj KK2 A1 U1
+H16 : perm JJ U1
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_same_result to *H13 *H3.</b>
+</pre>
+<a name="239"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U U1
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H6 : perm KK1 LL *
+H11 : perm KK2 KK3
+H12 : adj KK3 A1 U
+H14 : adj KK2 A1 U1
+H16 : perm JJ U1
+H17 : perm U KK
+============================
+ perm JJ KK
+
+perm_invert < <b>apply adj_preserves_perm to *H14 *H12 *H11.</b>
+</pre>
+<a name="240"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U U1
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H6 : perm KK1 LL *
+H16 : perm JJ U1
+H17 : perm U KK
+H18 : perm U1 U
+============================
+ perm JJ KK
+
+perm_invert < <b>apply perm_trans to *H16 *H18.</b>
+</pre>
+<a name="241"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A J K JJ KK A1 KK1 LL KK2 KK3 U U1
+IH : forall A J K JJ KK, perm J K * -> adj JJ A J -> adj KK A K -> perm JJ KK
+H6 : perm KK1 LL *
+H17 : perm U KK
+H19 : perm JJ U
+============================
+ perm JJ KK
+
+perm_invert < <b>backchain perm_trans.</b>
+Proof completed.
+</pre>
+<a name="242"></a>
+<pre class="code">
+Abella < <b>Theorem adj_perm_result : 
+forall J K A JJ, perm J K -> adj JJ A J ->
+  (exists KK, adj KK A K /\ perm JJ KK).</b>
+
+</pre>
+<a name="243"></a>
+<pre class="code">
+
+============================
+ forall J K A JJ, perm J K -> adj JJ A J ->
+   (exists KK, adj KK A K /\ perm JJ KK)
+
+adj_perm_result < <b>induction on 1.</b>
+</pre>
+<a name="244"></a>
+<pre class="code">
+
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+============================
+ forall J K A JJ, perm J K @ -> adj JJ A J ->
+   (exists KK, adj KK A K /\ perm JJ KK)
+
+adj_perm_result < <b>intros.</b>
+</pre>
+<a name="245"></a>
+<pre class="code">
+
+Variables: J K A JJ
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H1 : perm J K @
+H2 : adj JJ A J
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>case H1.</b>
+</pre>
+<a name="246"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A JJ
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A nil
+============================
+ exists KK, adj KK A nil /\ perm JJ KK
+
+Subgoal 2 is:
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>case H2.</b>
+</pre>
+<a name="247"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K A JJ A1 KK LL
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>apply adj_same_result_diff to H2 H3.</b>
+</pre>
+<a name="248"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K A JJ A1 KK LL
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H6 : A = A1 /\ perm JJ KK \/ (exists KK1, adj KK1 A KK)
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>case H6.</b>
+</pre>
+<a name="249"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K JJ A1 KK LL
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A1 J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : perm JJ KK
+============================
+ exists KK, adj KK A1 K /\ perm JJ KK
+
+Subgoal 2.2 is:
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>apply perm_trans to H7 H5.</b>
+</pre>
+<a name="250"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K JJ A1 KK LL
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A1 J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : perm JJ KK
+H8 : perm JJ LL
+============================
+ exists KK, adj KK A1 K /\ perm JJ KK
+
+Subgoal 2.2 is:
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>search.</b>
+</pre>
+<a name="251"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K A JJ A1 KK LL KK1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="252"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>apply adj_swap to H7 H3.</b>
+</pre>
+<a name="253"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>apply adj_swap to H8 H4.</b>
+</pre>
+<a name="254"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_result < <b>witness U1.</b>
+</pre>
+<a name="255"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+============================
+ adj U1 A K /\ perm JJ U1
+
+adj_perm_result < <b>split.</b>
+</pre>
+<a name="256"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+============================
+ adj U1 A K
+
+Subgoal 2.2.2 is:
+ perm JJ U1
+
+adj_perm_result < <b>search.</b>
+</pre>
+<a name="257"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+============================
+ perm JJ U1
+
+adj_perm_result < <b>apply adj_same_result to H2 H11.</b>
+</pre>
+<a name="258"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+H14 : perm JJ U
+============================
+ perm JJ U1
+
+adj_perm_result < <b>apply adj_preserves_perm to H10 H12 H9.</b>
+</pre>
+<a name="259"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K A JJ A1 KK LL KK1 KK2 U U1
+IH : forall J K A JJ, perm J K * -> adj JJ A J ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H2 : adj JJ A J
+H3 : adj KK A1 J
+H4 : adj LL A1 K
+H5 : perm KK LL *
+H7 : adj KK1 A KK
+H8 : adj KK2 A LL
+H9 : perm KK1 KK2
+H10 : adj KK1 A1 U
+H11 : adj U A J
+H12 : adj KK2 A1 U1
+H13 : adj U1 A K
+H14 : perm JJ U
+H15 : perm U U1
+============================
+ perm JJ U1
+
+adj_perm_result < <b>backchain perm_trans.</b>
+Proof completed.
+</pre>
+<a name="260"></a>
+<pre class="code">
+Abella < <b>Theorem adj_perm_source : 
+forall J K A L, perm J K -> adj J A L -> (exists LL, adj K A LL /\ perm L LL).</b>
+
+</pre>
+<a name="261"></a>
+<pre class="code">
+
+============================
+ forall J K A L, perm J K -> adj J A L ->
+   (exists LL, adj K A LL /\ perm L LL)
+
+adj_perm_source < <b>intros.</b>
+</pre>
+<a name="262"></a>
+<pre class="code">
+
+Variables: J K A L
+H1 : perm J K
+H2 : adj J A L
+============================
+ exists LL, adj K A LL /\ perm L LL
+
+adj_perm_source < <b>apply adj_2_is_o to H2.</b>
+</pre>
+<a name="263"></a>
+<pre class="code">
+
+Variables: J K A L
+H1 : perm J K
+H2 : adj J A L
+H3 : is_o A
+============================
+ exists LL, adj K A LL /\ perm L LL
+
+adj_perm_source < <b>apply perm_2_is_list to H1.</b>
+</pre>
+<a name="264"></a>
+<pre class="code">
+
+Variables: J K A L
+H1 : perm J K
+H2 : adj J A L
+H3 : is_o A
+H4 : is_list K
+============================
+ exists LL, adj K A LL /\ perm L LL
+
+adj_perm_source < <b>apply adj_exists to H3 H4.</b>
+</pre>
+<a name="265"></a>
+<pre class="code">
+
+Variables: J K A L M
+H1 : perm J K
+H2 : adj J A L
+H3 : is_o A
+H4 : is_list K
+H5 : adj K A M
+============================
+ exists LL, adj K A LL /\ perm L LL
+
+adj_perm_source < <b>search.</b>
+Proof completed.
+</pre>
+<a name="266"></a>
+<pre class="code">
+Abella < <b>Theorem adj_nil_1 : 
+forall A L, adj nil A L -> L = A :: nil.</b>
+
+</pre>
+<a name="267"></a>
+<pre class="code">
+
+============================
+ forall A L, adj nil A L -> L = A :: nil
+
+adj_nil_1 < <b>intros.</b>
+</pre>
+<a name="268"></a>
+<pre class="code">
+
+Variables: A L
+H1 : adj nil A L
+============================
+ L = A :: nil
+
+adj_nil_1 < <b>case H1.</b>
+</pre>
+<a name="269"></a>
+<pre class="code">
+
+Variables: A
+H2 : is_o A
+H3 : is_list nil
+============================
+ A :: nil = A :: nil
+
+adj_nil_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="270"></a>
+<pre class="code">
+Abella < <b>Theorem perm_nil_1 : 
+forall L, perm nil L -> L = nil.</b>
+
+</pre>
+<a name="271"></a>
+<pre class="code">
+
+============================
+ forall L, perm nil L -> L = nil
+
+perm_nil_1 < <b>intros.</b>
+</pre>
+<a name="272"></a>
+<pre class="code">
+
+Variables: L
+H1 : perm nil L
+============================
+ L = nil
+
+perm_nil_1 < <b>case H1.</b>
+</pre>
+<a name="273"></a>
+<pre class="code">
+Subgoal 1:
+
+============================
+ nil = nil
+
+Subgoal 2 is:
+ L = nil
+
+perm_nil_1 < <b>search.</b>
+</pre>
+<a name="274"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L A KK LL
+H2 : adj KK A nil
+H3 : adj LL A L
+H4 : perm KK LL
+============================
+ L = nil
+
+perm_nil_1 < <b>case H2.</b>
+Proof completed.
+</pre>
+<a name="275"></a>
+<pre class="code">
+Abella < <b>Theorem adj_det : 
+forall A B L, adj L A (B :: nil) -> A = B /\ L = nil.</b>
+
+</pre>
+<a name="276"></a>
+<pre class="code">
+
+============================
+ forall A B L, adj L A (B :: nil) -> A = B /\ L = nil
+
+adj_det < <b>intros.</b>
+</pre>
+<a name="277"></a>
+<pre class="code">
+
+Variables: A B L
+H1 : adj L A (B :: nil)
+============================
+ A = B /\ L = nil
+
+adj_det < <b>case H1.</b>
+</pre>
+<a name="278"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: B
+H2 : is_o B
+H3 : is_list nil
+============================
+ B = B /\ nil = nil
+
+Subgoal 2 is:
+ A = B /\ B :: K = nil
+
+adj_det < <b>search.</b>
+</pre>
+<a name="279"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A B K
+H2 : is_o B
+H3 : adj K A nil
+============================
+ A = B /\ B :: K = nil
+
+adj_det < <b>case H3.</b>
+Proof completed.
+</pre>
+<a name="280"></a>
+<pre class="code">
+Abella < <b>Theorem perm_singleton : 
+forall A L, perm (A :: nil) L -> L = A :: nil.</b>
+
+</pre>
+<a name="281"></a>
+<pre class="code">
+
+============================
+ forall A L, perm (A :: nil) L -> L = A :: nil
+
+perm_singleton < <b>intros.</b>
+</pre>
+<a name="282"></a>
+<pre class="code">
+
+Variables: A L
+H1 : perm (A :: nil) L
+============================
+ L = A :: nil
+
+perm_singleton < <b>case H1.</b>
+</pre>
+<a name="283"></a>
+<pre class="code">
+
+Variables: A L A1 KK LL
+H2 : adj KK A1 (A :: nil)
+H3 : adj LL A1 L
+H4 : perm KK LL
+============================
+ L = A :: nil
+
+perm_singleton < <b>apply adj_det to H2.</b>
+</pre>
+<a name="284"></a>
+<pre class="code">
+
+Variables: A L LL
+H2 : adj nil A (A :: nil)
+H3 : adj LL A L
+H4 : perm nil LL
+============================
+ L = A :: nil
+
+perm_singleton < <b>apply perm_nil_1 to H4.</b>
+</pre>
+<a name="285"></a>
+<pre class="code">
+
+Variables: A L
+H2 : adj nil A (A :: nil)
+H3 : adj nil A L
+H4 : perm nil nil
+============================
+ L = A :: nil
+
+perm_singleton < <b>apply adj_nil_1 to H3.</b>
+</pre>
+<a name="286"></a>
+<pre class="code">
+
+Variables: A
+H2 : adj nil A (A :: nil)
+H3 : adj nil A (A :: nil)
+H4 : perm nil nil
+============================
+ A :: nil = A :: nil
+
+perm_singleton < <b>search.</b>
+Proof completed.
+</pre>
+<a name="287"></a>
+<pre class="code">
+Abella < <b>Theorem append_perm : 
+forall J K L JJ KK, append J K L -> perm J JJ -> perm K KK ->
+  (exists LL, append JJ KK LL /\ perm L LL).</b>
+
+</pre>
+<a name="288"></a>
+<pre class="code">
+
+============================
+ forall J K L JJ KK, append J K L -> perm J JJ -> perm K KK ->
+   (exists LL, append JJ KK LL /\ perm L LL)
+
+append_perm < <b>induction on 1.</b>
+</pre>
+<a name="289"></a>
+<pre class="code">
+
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+============================
+ forall J K L JJ KK, append J K L @ -> perm J JJ -> perm K KK ->
+   (exists LL, append JJ KK LL /\ perm L LL)
+
+append_perm < <b>intros.</b>
+</pre>
+<a name="290"></a>
+<pre class="code">
+
+Variables: J K L JJ KK
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H1 : append J K L @
+H2 : perm J JJ
+H3 : perm K KK
+============================
+ exists LL, append JJ KK LL /\ perm L LL
+
+append_perm < <b>case H1.</b>
+</pre>
+<a name="291"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L JJ KK
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H2 : perm nil JJ
+H3 : perm L KK
+H4 : is_list L
+============================
+ exists LL, append JJ KK LL /\ perm L LL
+
+Subgoal 2 is:
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>case H2.</b>
+</pre>
+<a name="292"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: L KK
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm L KK
+H4 : is_list L
+============================
+ exists LL, append nil KK LL /\ perm L LL
+
+Subgoal 1.2 is:
+ exists LL, append JJ KK LL /\ perm L LL
+
+Subgoal 2 is:
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply perm_2_is_list to H3.</b>
+</pre>
+<a name="293"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: L KK
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm L KK
+H4 : is_list L
+H5 : is_list KK
+============================
+ exists LL, append nil KK LL /\ perm L LL
+
+Subgoal 1.2 is:
+ exists LL, append JJ KK LL /\ perm L LL
+
+Subgoal 2 is:
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>search.</b>
+</pre>
+<a name="294"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: L JJ KK A KK1 LL
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm L KK
+H4 : is_list L
+H5 : adj KK1 A nil
+H6 : adj LL A JJ
+H7 : perm KK1 LL
+============================
+ exists LL, append JJ KK LL /\ perm L LL
+
+Subgoal 2 is:
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>case H5.</b>
+</pre>
+<a name="295"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H2 : perm (A :: J1) JJ
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply perm_cons_1 to *H2.</b>
+</pre>
+<a name="296"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1 J2
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+H6 : adj J2 A JJ
+H7 : perm J1 J2
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply IH to H5 H7 H3.</b>
+</pre>
+<a name="297"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1 J2 LL
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+H6 : adj J2 A JJ
+H7 : perm J1 J2
+H8 : append J2 KK LL
+H9 : perm L1 LL
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply adj_1_append to H6 H8.</b>
+</pre>
+<a name="298"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1 J2 LL KL
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+H6 : adj J2 A JJ
+H7 : perm J1 J2
+H8 : append J2 KK LL
+H9 : perm L1 LL
+H10 : append JJ KK KL
+H11 : adj LL A KL
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply adj_3_is_list to H11.</b>
+</pre>
+<a name="299"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1 J2 LL KL
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+H6 : adj J2 A JJ
+H7 : perm J1 J2
+H8 : append J2 KK LL
+H9 : perm L1 LL
+H10 : append JJ KK KL
+H11 : adj LL A KL
+H12 : is_list KL
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>apply perm_1_is_list to H9.</b>
+</pre>
+<a name="300"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K JJ KK L1 A J1 J2 LL KL
+IH : forall J K L JJ KK, append J K L * -> perm J JJ -> perm K KK ->
+       (exists LL, append JJ KK LL /\ perm L LL)
+H3 : perm K KK
+H4 : is_o A
+H5 : append J1 K L1 *
+H6 : adj J2 A JJ
+H7 : perm J1 J2
+H8 : append J2 KK LL
+H9 : perm L1 LL
+H10 : append JJ KK KL
+H11 : adj LL A KL
+H12 : is_list KL
+H13 : is_list L1
+============================
+ exists LL, append JJ KK LL /\ perm (A :: L1) LL
+
+append_perm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="301"></a>
+<pre class="code">
+Abella < <b>Theorem adj_perm : 
+forall J K JJ A, perm J K -> adj JJ A J -> (exists KK, adj KK A K).</b>
+
+</pre>
+<a name="302"></a>
+<pre class="code">
+
+============================
+ forall J K JJ A, perm J K -> adj JJ A J -> (exists KK, adj KK A K)
+
+adj_perm < <b>induction on 2.</b>
+</pre>
+<a name="303"></a>
+<pre class="code">
+
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+============================
+ forall J K JJ A, perm J K -> adj JJ A J @ -> (exists KK, adj KK A K)
+
+adj_perm < <b>intros.</b>
+</pre>
+<a name="304"></a>
+<pre class="code">
+
+Variables: J K JJ A
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H1 : perm J K
+H2 : adj JJ A J @
+============================
+ exists KK, adj KK A K
+
+adj_perm < <b>case H2.</b>
+</pre>
+<a name="305"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K JJ A
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H1 : perm (A :: JJ) K
+H3 : is_o A
+H4 : is_list JJ
+============================
+ exists KK, adj KK A K
+
+Subgoal 2 is:
+ exists KK, adj KK A K
+
+adj_perm < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="306"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K JJ A J1
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H3 : is_o A
+H4 : is_list JJ
+H5 : adj J1 A K
+H6 : perm JJ J1
+============================
+ exists KK, adj KK A K
+
+Subgoal 2 is:
+ exists KK, adj KK A K
+
+adj_perm < <b>search.</b>
+</pre>
+<a name="307"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H1 : perm (B :: L) K
+H3 : is_o B
+H4 : adj K1 A L *
+============================
+ exists KK, adj KK A K
+
+adj_perm < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="308"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+============================
+ exists KK, adj KK A K
+
+adj_perm < <b>apply IH to H6 H4.</b>
+</pre>
+<a name="309"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1 KK
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+H7 : adj KK A J1
+============================
+ exists KK, adj KK A K
+
+adj_perm < <b>apply adj_swap to H7 H5.</b>
+</pre>
+<a name="310"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1 KK U
+IH : forall J K JJ A, perm J K -> adj JJ A J * -> (exists KK, adj KK A K)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+H7 : adj KK A J1
+H8 : adj KK B U
+H9 : adj U A K
+============================
+ exists KK, adj KK A K
+
+adj_perm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="311"></a>
+<pre class="code">
+Abella < <b>Theorem adj_perm_full : 
+forall J K JJ A, perm J K -> adj JJ A J ->
+  (exists KK, adj KK A K /\ perm JJ KK).</b>
+
+</pre>
+<a name="312"></a>
+<pre class="code">
+
+============================
+ forall J K JJ A, perm J K -> adj JJ A J ->
+   (exists KK, adj KK A K /\ perm JJ KK)
+
+adj_perm_full < <b>induction on 2.</b>
+</pre>
+<a name="313"></a>
+<pre class="code">
+
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+============================
+ forall J K JJ A, perm J K -> adj JJ A J @ ->
+   (exists KK, adj KK A K /\ perm JJ KK)
+
+adj_perm_full < <b>intros.</b>
+</pre>
+<a name="314"></a>
+<pre class="code">
+
+Variables: J K JJ A
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H1 : perm J K
+H2 : adj JJ A J @
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+adj_perm_full < <b>case H2.</b>
+</pre>
+<a name="315"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K JJ A
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H1 : perm (A :: JJ) K
+H3 : is_o A
+H4 : is_list JJ
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+Subgoal 2 is:
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="316"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K JJ A J1
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H3 : is_o A
+H4 : is_list JJ
+H5 : adj J1 A K
+H6 : perm JJ J1
+============================
+ exists KK, adj KK A K /\ perm JJ KK
+
+Subgoal 2 is:
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>search.</b>
+</pre>
+<a name="317"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H1 : perm (B :: L) K
+H3 : is_o B
+H4 : adj K1 A L *
+============================
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="318"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+============================
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>apply IH to H6 H4.</b>
+</pre>
+<a name="319"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1 KK
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+H7 : adj KK A J1
+H8 : perm K1 KK
+============================
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>apply adj_swap to H7 H5.</b>
+</pre>
+<a name="320"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1 KK U
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+H7 : adj KK A J1
+H8 : perm K1 KK
+H9 : adj KK B U
+H10 : adj U A K
+============================
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>apply adj_1_is_list to H4.</b>
+</pre>
+<a name="321"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K A L B K1 J1 KK U
+IH : forall J K JJ A, perm J K -> adj JJ A J * ->
+       (exists KK, adj KK A K /\ perm JJ KK)
+H3 : is_o B
+H4 : adj K1 A L *
+H5 : adj J1 B K
+H6 : perm L J1
+H7 : adj KK A J1
+H8 : perm K1 KK
+H9 : adj KK B U
+H10 : adj U A K
+H11 : is_list K1
+============================
+ exists KK, adj KK A K /\ perm (B :: K1) KK
+
+adj_perm_full < <b>search.</b>
+Proof completed.
+</pre>
+<a name="322"></a>
+<pre class="code">
+Abella < <b>Theorem adj_member : 
+forall J A L, adj J A L -> member A L.</b>
+
+</pre>
+<a name="323"></a>
+<pre class="code">
+
+============================
+ forall J A L, adj J A L -> member A L
+
+adj_member < <b>induction on 1.</b>
+</pre>
+<a name="324"></a>
+<pre class="code">
+
+IH : forall J A L, adj J A L * -> member A L
+============================
+ forall J A L, adj J A L @ -> member A L
+
+adj_member < <b>intros.</b>
+</pre>
+<a name="325"></a>
+<pre class="code">
+
+Variables: J A L
+IH : forall J A L, adj J A L * -> member A L
+H1 : adj J A L @
+============================
+ member A L
+
+adj_member < <b>case H1.</b>
+</pre>
+<a name="326"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J A
+IH : forall J A L, adj J A L * -> member A L
+H2 : is_o A
+H3 : is_list J
+============================
+ member A (A :: J)
+
+Subgoal 2 is:
+ member A (B :: L1)
+
+adj_member < <b>search.</b>
+</pre>
+<a name="327"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall J A L, adj J A L * -> member A L
+H2 : is_o B
+H3 : adj K A L1 *
+============================
+ member A (B :: L1)
+
+adj_member < <b>apply IH to H3.</b>
+</pre>
+<a name="328"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall J A L, adj J A L * -> member A L
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : member A L1
+============================
+ member A (B :: L1)
+
+adj_member < <b>search.</b>
+Proof completed.
+</pre>
+<a name="329"></a>
+<pre class="code">
+Abella < <b>Theorem member_adj : 
+forall A L, is_list L -> member A L -> (exists J, adj J A L).</b>
+
+</pre>
+<a name="330"></a>
+<pre class="code">
+
+============================
+ forall A L, is_list L -> member A L -> (exists J, adj J A L)
+
+member_adj < <b>induction on 2.</b>
+</pre>
+<a name="331"></a>
+<pre class="code">
+
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+============================
+ forall A L, is_list L -> member A L @ -> (exists J, adj J A L)
+
+member_adj < <b>intros.</b>
+</pre>
+<a name="332"></a>
+<pre class="code">
+
+Variables: A L
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H1 : is_list L
+H2 : member A L @
+============================
+ exists J, adj J A L
+
+member_adj < <b>case H2.</b>
+</pre>
+<a name="333"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A L1
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H1 : is_list (A :: L1)
+============================
+ exists J, adj J A (A :: L1)
+
+Subgoal 2 is:
+ exists J, adj J A (B :: L1)
+
+member_adj < <b>case H1.</b>
+</pre>
+<a name="334"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A L1
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H3 : is_o A
+H4 : is_list L1
+============================
+ exists J, adj J A (A :: L1)
+
+Subgoal 2 is:
+ exists J, adj J A (B :: L1)
+
+member_adj < <b>search.</b>
+</pre>
+<a name="335"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H1 : is_list (B :: L1)
+H3 : member A L1 *
+============================
+ exists J, adj J A (B :: L1)
+
+member_adj < <b>case H1.</b>
+</pre>
+<a name="336"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H3 : member A L1 *
+H4 : is_o B
+H5 : is_list L1
+============================
+ exists J, adj J A (B :: L1)
+
+member_adj < <b>apply IH to *H5 *H3.</b>
+</pre>
+<a name="337"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B J
+IH : forall A L, is_list L -> member A L * -> (exists J, adj J A L)
+H4 : is_o B
+H6 : adj J A L1
+============================
+ exists J, adj J A (B :: L1)
+
+member_adj < <b>search.</b>
+Proof completed.
+</pre>
+<a name="338"></a>
+<pre class="code">
+Abella < <b>Theorem member_adj_rel : 
+forall JJ A J B, adj JJ A J -> member B J -> A = B \/ member B JJ.</b>
+
+</pre>
+<a name="339"></a>
+<pre class="code">
+
+============================
+ forall JJ A J B, adj JJ A J -> member B J -> A = B \/ member B JJ
+
+member_adj_rel < <b>induction on 1.</b>
+</pre>
+<a name="340"></a>
+<pre class="code">
+
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+============================
+ forall JJ A J B, adj JJ A J @ -> member B J -> A = B \/ member B JJ
+
+member_adj_rel < <b>intros.</b>
+</pre>
+<a name="341"></a>
+<pre class="code">
+
+Variables: JJ A J B
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H1 : adj JJ A J @
+H2 : member B J
+============================
+ A = B \/ member B JJ
+
+member_adj_rel < <b>case H1.</b>
+</pre>
+<a name="342"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: JJ A B
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H2 : member B (A :: JJ)
+H3 : is_o A
+H4 : is_list JJ
+============================
+ A = B \/ member B JJ
+
+Subgoal 2 is:
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>case H2.</b>
+</pre>
+<a name="343"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: JJ A
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o A
+H4 : is_list JJ
+============================
+ A = A \/ member A JJ
+
+Subgoal 1.2 is:
+ A = B \/ member B JJ
+
+Subgoal 2 is:
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>search.</b>
+</pre>
+<a name="344"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: JJ A B
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o A
+H4 : is_list JJ
+H5 : member B JJ
+============================
+ A = B \/ member B JJ
+
+Subgoal 2 is:
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>search.</b>
+</pre>
+<a name="345"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A B L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H2 : member B (B1 :: L)
+H3 : is_o B1
+H4 : adj K A L *
+============================
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>case H2.</b>
+</pre>
+<a name="346"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o B1
+H4 : adj K A L *
+============================
+ A = B1 \/ member B1 (B1 :: K)
+
+Subgoal 2.2 is:
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>search.</b>
+</pre>
+<a name="347"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o B1
+H4 : adj K A L *
+H5 : member B L
+============================
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>apply IH to *H4 H5.</b>
+</pre>
+<a name="348"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o B1
+H5 : member B L
+H6 : A = B \/ member B K
+============================
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>case H6.</b>
+</pre>
+<a name="349"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: B L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o B1
+H5 : member B L
+============================
+ B = B \/ member B (B1 :: K)
+
+Subgoal 2.2.2 is:
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>search.</b>
+</pre>
+<a name="350"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: A B L B1 K
+IH : forall JJ A J B, adj JJ A J * -> member B J -> A = B \/ member B JJ
+H3 : is_o B1
+H5 : member B L
+H7 : member B K
+============================
+ A = B \/ member B (B1 :: K)
+
+member_adj_rel < <b>search.</b>
+Proof completed.
+</pre>
+<a name="351"></a>
+<pre class="code">
+Abella < <b>Theorem adj_preserves_member_lem : 
+forall A J B L, is_list J -> member A J -> adj J B L -> member A L.</b>
+
+</pre>
+<a name="352"></a>
+<pre class="code">
+
+============================
+ forall A J B L, is_list J -> member A J -> adj J B L -> member A L
+
+adj_preserves_member_lem < <b>induction on 2.</b>
+</pre>
+<a name="353"></a>
+<pre class="code">
+
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+============================
+ forall A J B L, is_list J -> member A J @ -> adj J B L -> member A L
+
+adj_preserves_member_lem < <b>intros.</b>
+</pre>
+<a name="354"></a>
+<pre class="code">
+
+Variables: A J B L
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list J
+H2 : member A J @
+H3 : adj J B L
+============================
+ member A L
+
+adj_preserves_member_lem < <b>case H2.</b>
+</pre>
+<a name="355"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A B L L1
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (A :: L1)
+H3 : adj (A :: L1) B L
+============================
+ member A L
+
+Subgoal 2 is:
+ member A L
+
+adj_preserves_member_lem < <b>case H3.</b>
+</pre>
+<a name="356"></a>
+<pre class="code">
+Subgoal 1.1:
+
+Variables: A B L1
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (A :: L1)
+H4 : is_o B
+H5 : is_list (A :: L1)
+============================
+ member A (B :: A :: L1)
+
+Subgoal 1.2 is:
+ member A (A :: L2)
+
+Subgoal 2 is:
+ member A L
+
+adj_preserves_member_lem < <b>search.</b>
+</pre>
+<a name="357"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: A B L1 L2
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (A :: L1)
+H4 : is_o A
+H5 : adj L1 B L2
+============================
+ member A (A :: L2)
+
+Subgoal 2 is:
+ member A L
+
+adj_preserves_member_lem < <b>search.</b>
+</pre>
+<a name="358"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A B L L1 B1
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (B1 :: L1)
+H3 : adj (B1 :: L1) B L
+H4 : member A L1 *
+============================
+ member A L
+
+adj_preserves_member_lem < <b>case H3.</b>
+</pre>
+<a name="359"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: A B L1 B1
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (B1 :: L1)
+H4 : member A L1 *
+H5 : is_o B
+H6 : is_list (B1 :: L1)
+============================
+ member A (B :: B1 :: L1)
+
+Subgoal 2.2 is:
+ member A (B1 :: L2)
+
+adj_preserves_member_lem < <b>search.</b>
+</pre>
+<a name="360"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 L2
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H1 : is_list (B1 :: L1)
+H4 : member A L1 *
+H5 : is_o B1
+H6 : adj L1 B L2
+============================
+ member A (B1 :: L2)
+
+adj_preserves_member_lem < <b>case H1.</b>
+</pre>
+<a name="361"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 L2
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H4 : member A L1 *
+H5 : is_o B1
+H6 : adj L1 B L2
+H7 : is_o B1
+H8 : is_list L1
+============================
+ member A (B1 :: L2)
+
+adj_preserves_member_lem < <b>apply IH to H8 H4 H6.</b>
+</pre>
+<a name="362"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: A B L1 B1 L2
+IH : forall A J B L, is_list J -> member A J * -> adj J B L -> member A L
+H4 : member A L1 *
+H5 : is_o B1
+H6 : adj L1 B L2
+H7 : is_o B1
+H8 : is_list L1
+H9 : member A L2
+============================
+ member A (B1 :: L2)
+
+adj_preserves_member_lem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="363"></a>
+<pre class="code">
+Abella < <b>Theorem adj_preserves_member : 
+forall A J B L, member A J -> adj J B L -> member A L.</b>
+
+</pre>
+<a name="364"></a>
+<pre class="code">
+
+============================
+ forall A J B L, member A J -> adj J B L -> member A L
+
+adj_preserves_member < <b>intros.</b>
+</pre>
+<a name="365"></a>
+<pre class="code">
+
+Variables: A J B L
+H1 : member A J
+H2 : adj J B L
+============================
+ member A L
+
+adj_preserves_member < <b>apply adj_1_is_list to H2.</b>
+</pre>
+<a name="366"></a>
+<pre class="code">
+
+Variables: A J B L
+H1 : member A J
+H2 : adj J B L
+H3 : is_list J
+============================
+ member A L
+
+adj_preserves_member < <b>backchain adj_preserves_member_lem.</b>
+Proof completed.
+</pre>
+<a name="367"></a>
+<pre class="code">
+Abella < <b>Theorem perm_preserves_member : 
+forall A K L, perm K L -> member A K -> member A L.</b>
+
+</pre>
+<a name="368"></a>
+<pre class="code">
+
+============================
+ forall A K L, perm K L -> member A K -> member A L
+
+perm_preserves_member < <b>induction on 2.</b>
+</pre>
+<a name="369"></a>
+<pre class="code">
+
+IH : forall A K L, perm K L -> member A K * -> member A L
+============================
+ forall A K L, perm K L -> member A K @ -> member A L
+
+perm_preserves_member < <b>intros.</b>
+</pre>
+<a name="370"></a>
+<pre class="code">
+
+Variables: A K L
+IH : forall A K L, perm K L -> member A K * -> member A L
+H1 : perm K L
+H2 : member A K @
+============================
+ member A L
+
+perm_preserves_member < <b>case H2.</b>
+</pre>
+<a name="371"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A L L1
+IH : forall A K L, perm K L -> member A K * -> member A L
+H1 : perm (A :: L1) L
+============================
+ member A L
+
+Subgoal 2 is:
+ member A L
+
+perm_preserves_member < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="372"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A L L1 J
+IH : forall A K L, perm K L -> member A K * -> member A L
+H3 : adj J A L
+H4 : perm L1 J
+============================
+ member A L
+
+Subgoal 2 is:
+ member A L
+
+perm_preserves_member < <b>backchain adj_member.</b>
+</pre>
+<a name="373"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B
+IH : forall A K L, perm K L -> member A K * -> member A L
+H1 : perm (B :: L1) L
+H3 : member A L1 *
+============================
+ member A L
+
+perm_preserves_member < <b>apply perm_cons_1 to *H1.</b>
+</pre>
+<a name="374"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B J
+IH : forall A K L, perm K L -> member A K * -> member A L
+H3 : member A L1 *
+H4 : adj J B L
+H5 : perm L1 J
+============================
+ member A L
+
+perm_preserves_member < <b>apply IH to *H5 *H3.</b>
+</pre>
+<a name="375"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L L1 B J
+IH : forall A K L, perm K L -> member A K * -> member A L
+H4 : adj J B L
+H6 : member A J
+============================
+ member A L
+
+perm_preserves_member < <b>backchain adj_preserves_member.</b>
+Proof completed.
+</pre>
+<a name="376"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>

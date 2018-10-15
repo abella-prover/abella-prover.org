@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: </title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+<script src="http://abella-prover.org/jquery.js"></script>
+<script type="text/javascript">
+$(function() {
+  $('.proof').hide();
+
+  $('<span> </span><a class="fold-link" href="#">[Show Proof]</a>')
+    .insertAfter($('.proof').prev())
+    .toggle(function() {
+      $(this).next().show('fast');
+      $(this).text('[Hide Proof]');
+    }, function() {
+      $(this).next().hide('slow');
+      $(this).text('[Show Proof]');
+    });
+
+  $('<span> </span><a class="fold-link" href="#">[Show All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:hidden').prev().click();
+      return false;
+  });
+
+  $('<span> </span><a class="fold-link" href="#">[Hide All Proofs]</a>')
+    .insertBefore($('#reasoning #menubar'))
+    .click(function() {
+      $('.proof:visible').prev().click();
+      return false;
+  });
+});
+</script>
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+<h1></h1>
+
+</div>
+
+
+
+<div class="section" id="reasoning">
+<h1>Reasoning</h1>
+<a class="view" href="nat.thm">[View nat.thm]</a>
+<span id="menubar" />
+<p class="body">
+Click on a command or tactic to see a detailed view of its use.
+</p>
+<pre>
+<a href="nat-details.html#1" class="command">Kind nat type.</a>
+
+<a href="nat-details.html#2" class="command">Type z nat.</a>
+<a href="nat-details.html#3" class="command">Type s nat -> nat.</a>
+
+<a href="nat-details.html#4" class="command">Define is_nat : nat -> prop by
+; is_nat z
+; is_nat (s X) := is_nat X.</a>
+
+<a href="nat-details.html#5" class="command">Close nat.</a>
+
+<a href="nat-details.html#6" class="command">Define plus : nat -> nat -> nat -> prop by
+; plus z X X := is_nat X
+; plus (s X) Y (s Z) := plus X Y Z
+.</a>
+
+<a href="nat-details.html#7" class="command">Define leq : nat -> nat -> prop by
+; leq z X := is_nat X
+; leq (s X) (s Y) := leq X Y
+.</a>
+
+<a href="nat-details.html#8" class="command">Theorem plus_1_is_nat : forall X Y Z,
+  plus X Y Z -> is_nat X.</a>
+<div class="proof"><a href="nat-details.html#9" class="tactic">induction on 1.</a> <a href="nat-details.html#10" class="tactic">intros.</a> <a href="nat-details.html#11" class="tactic">case H1.</a>
+  <a href="nat-details.html#12" class="tactic">search.</a>
+  <a href="nat-details.html#13" class="tactic">apply IH to H2.</a> <a href="nat-details.html#14" class="tactic">search.</a></div>
+<a href="nat-details.html#15" class="command">Theorem plus_2_is_nat : forall X Y Z,
+  plus X Y Z -> is_nat Y.</a>
+<div class="proof"><a href="nat-details.html#16" class="tactic">induction on 1.</a> <a href="nat-details.html#17" class="tactic">intros.</a> <a href="nat-details.html#18" class="tactic">case H1.</a>
+  <a href="nat-details.html#19" class="tactic">search.</a>
+  <a href="nat-details.html#20" class="tactic">apply IH to H2.</a> <a href="nat-details.html#21" class="tactic">search.</a></div>
+<a href="nat-details.html#22" class="command">Theorem plus_3_is_nat : forall X Y Z,
+  plus X Y Z -> is_nat Z.</a>
+<div class="proof"><a href="nat-details.html#23" class="tactic">induction on 1.</a> <a href="nat-details.html#24" class="tactic">intros.</a> <a href="nat-details.html#25" class="tactic">case H1.</a>
+  <a href="nat-details.html#26" class="tactic">search.</a>
+  <a href="nat-details.html#27" class="tactic">apply IH to H2.</a> <a href="nat-details.html#28" class="tactic">search.</a></div>
+<a href="nat-details.html#29" class="command">Theorem leq_1_is_nat : forall X Y,
+  leq X Y -> is_nat X.</a>
+<div class="proof"><a href="nat-details.html#30" class="tactic">induction on 1.</a> <a href="nat-details.html#31" class="tactic">intros.</a> <a href="nat-details.html#32" class="tactic">case H1.</a>
+  <a href="nat-details.html#33" class="tactic">search.</a>
+  <a href="nat-details.html#34" class="tactic">apply IH to H2.</a> <a href="nat-details.html#35" class="tactic">search.</a></div>
+<a href="nat-details.html#36" class="command">Theorem leq_2_is_nat : forall X Y,
+  leq X Y -> is_nat Y.</a>
+<div class="proof"><a href="nat-details.html#37" class="tactic">induction on 1.</a> <a href="nat-details.html#38" class="tactic">intros.</a> <a href="nat-details.html#39" class="tactic">case H1.</a>
+  <a href="nat-details.html#40" class="tactic">search.</a>
+  <a href="nat-details.html#41" class="tactic">apply IH to H2.</a> <a href="nat-details.html#42" class="tactic">search.</a></div>
+<a href="nat-details.html#43" class="command">Theorem plus_z : forall X,
+  is_nat X -> plus X z X.</a>
+<div class="proof"><a href="nat-details.html#44" class="tactic">induction on 1.</a> <a href="nat-details.html#45" class="tactic">intros.</a> <a href="nat-details.html#46" class="tactic">case H1.</a>
+  <a href="nat-details.html#47" class="tactic">search.</a>
+  <a href="nat-details.html#48" class="tactic">apply IH to H2.</a> <a href="nat-details.html#49" class="tactic">search.</a></div>
+<a href="nat-details.html#50" class="command">Theorem plus_z_char : forall X Y,
+  plus Y X Y -> X = z.</a>
+<div class="proof"><a href="nat-details.html#51" class="tactic">induction on 1.</a> <a href="nat-details.html#52" class="tactic">intros.</a> <a href="nat-details.html#53" class="tactic">case H1.</a>
+  <a href="nat-details.html#54" class="tactic">search.</a>
+  <a href="nat-details.html#55" class="tactic">apply IH to H2.</a> <a href="nat-details.html#56" class="tactic">search.</a></div>
+<a href="nat-details.html#57" class="command">Theorem plus_s : forall X Y Z,
+  plus X Y Z -> plus X (s Y) (s Z).</a>
+<div class="proof"><a href="nat-details.html#58" class="tactic">induction on 1.</a> <a href="nat-details.html#59" class="tactic">intros.</a> <a href="nat-details.html#60" class="tactic">case H1.</a>
+  <a href="nat-details.html#61" class="tactic">search.</a>
+  <a href="nat-details.html#62" class="tactic">apply IH to H2.</a> <a href="nat-details.html#63" class="tactic">search.</a></div>
+<a href="nat-details.html#64" class="command">Theorem plus_comm : forall X Y Z,
+  plus X Y Z -> plus Y X Z.</a>
+<div class="proof"><a href="nat-details.html#65" class="tactic">induction on 1.</a> <a href="nat-details.html#66" class="tactic">intros.</a> <a href="nat-details.html#67" class="tactic">case H1.</a>
+  <a href="nat-details.html#68" class="tactic">backchain plus_z.</a>
+  <a href="nat-details.html#69" class="tactic">apply IH to H2.</a> <a href="nat-details.html#70" class="tactic">backchain plus_s.</a></div>
+<a href="nat-details.html#71" class="command">Theorem leq_refl : forall X,
+  is_nat X -> leq X X.</a>
+<div class="proof"><a href="nat-details.html#72" class="tactic">induction on 1.</a> <a href="nat-details.html#73" class="tactic">intros.</a> <a href="nat-details.html#74" class="tactic">case H1.</a>
+  <a href="nat-details.html#75" class="tactic">search.</a>
+  <a href="nat-details.html#76" class="tactic">apply IH to H2.</a> <a href="nat-details.html#77" class="tactic">search.</a></div>
+<a href="nat-details.html#78" class="command">Theorem leq_trans : forall X Y Z,
+  leq X Y -> leq Y Z -> leq X Z.</a>
+<div class="proof"><a href="nat-details.html#79" class="tactic">induction on 1.</a> <a href="nat-details.html#80" class="tactic">intros.</a> <a href="nat-details.html#81" class="tactic">case H1.</a>
+  <a href="nat-details.html#82" class="tactic">apply leq_2_is_nat to H2.</a> <a href="nat-details.html#83" class="tactic">search.</a>
+  <a href="nat-details.html#84" class="tactic">case H2.</a> <a href="nat-details.html#85" class="tactic">apply IH to H3 H4.</a> <a href="nat-details.html#86" class="tactic">search.</a></div>
+<a href="nat-details.html#87" class="command">Theorem leq_s : forall X,
+  is_nat X -> leq X (s X).</a>
+<div class="proof"><a href="nat-details.html#88" class="tactic">induction on 1.</a> <a href="nat-details.html#89" class="tactic">intros.</a> <a href="nat-details.html#90" class="tactic">case H1.</a>
+  <a href="nat-details.html#91" class="tactic">search.</a>
+  <a href="nat-details.html#92" class="tactic">apply IH to H2.</a> <a href="nat-details.html#93" class="tactic">search.</a></div>
+<a href="nat-details.html#94" class="command">Theorem leq_antisym : forall X Y,
+  leq X Y -> leq Y X -> X = Y.</a>
+<div class="proof"><a href="nat-details.html#95" class="tactic">induction on 1.</a> <a href="nat-details.html#96" class="tactic">intros.</a> <a href="nat-details.html#97" class="tactic">case H1.</a>
+  <a href="nat-details.html#98" class="tactic">case H2.</a> <a href="nat-details.html#99" class="tactic">search.</a>
+  <a href="nat-details.html#100" class="tactic">case H2.</a> <a href="nat-details.html#101" class="tactic">apply IH to H3 H4.</a> <a href="nat-details.html#102" class="tactic">search.</a></div>
+<a href="nat-details.html#103" class="command">Theorem leq_total : forall X Y,
+  is_nat X -> is_nat Y -> leq X Y \/ leq Y X.</a>
+<div class="proof"><a href="nat-details.html#104" class="tactic">induction on 1.</a> <a href="nat-details.html#105" class="tactic">intros.</a> <a href="nat-details.html#106" class="tactic">case H1.</a>
+  <a href="nat-details.html#107" class="tactic">search.</a>
+  <a href="nat-details.html#108" class="tactic">case H2.</a>
+    <a href="nat-details.html#109" class="tactic">search.</a>
+    <a href="nat-details.html#110" class="tactic">apply IH to *H3 *H4.</a> <a href="nat-details.html#111" class="tactic">case H5.</a>
+      <a href="nat-details.html#112" class="tactic">search.</a> <a href="nat-details.html#113" class="tactic">search.</a></div>
+<a href="nat-details.html#114" class="command">Theorem one_nleq_zero_lem : forall X,
+  is_nat X -> leq (s X) X -> false.</a>
+<div class="proof"><a href="nat-details.html#115" class="tactic">induction on 1.</a> <a href="nat-details.html#116" class="tactic">intros.</a> <a href="nat-details.html#117" class="tactic">case H1.</a>
+  <a href="nat-details.html#118" class="tactic">case H2.</a>
+  <a href="nat-details.html#119" class="tactic">case H2.</a> <a href="nat-details.html#120" class="tactic">backchain IH.</a></div>
+<a href="nat-details.html#121" class="command">Theorem one_nleq_zero : forall X,
+  leq (s X) X -> false.</a>
+<div class="proof"><a href="nat-details.html#122" class="tactic">intros.</a> <a href="nat-details.html#123" class="tactic">apply leq_2_is_nat to H1.</a>
+<a href="nat-details.html#124" class="tactic">backchain one_nleq_zero_lem.</a></div>
+<a href="nat-details.html#125" class="command">Theorem plus_leq : forall X Y Z,
+  plus X Y Z -> leq X Z /\ leq Y Z.</a>
+<div class="proof"><a href="nat-details.html#126" class="tactic">induction on 1.</a> <a href="nat-details.html#127" class="tactic">intros.</a> <a href="nat-details.html#128" class="tactic">case H1.</a>
+  <a href="nat-details.html#129" class="tactic">apply leq_refl to H2.</a> <a href="nat-details.html#130" class="tactic">search.</a>
+  <a href="nat-details.html#131" class="tactic">apply IH to H2.</a>
+   <a href="nat-details.html#132" class="tactic">apply leq_2_is_nat to H4.</a> <a href="nat-details.html#133" class="tactic">apply leq_s to *H5.</a>
+   <a href="nat-details.html#134" class="tactic">apply leq_trans to H4 *H6.</a>
+   <a href="nat-details.html#135" class="tactic">search.</a></div>
+<a href="nat-details.html#136" class="command">Theorem plus_det_1 : forall X1 X2 Y Z,
+  plus X1 Y Z -> plus X2 Y Z -> X1 = X2.</a>
+<div class="proof"><a href="nat-details.html#137" class="tactic">induction on 1.</a> <a href="nat-details.html#138" class="tactic">intros.</a> <a href="nat-details.html#139" class="tactic">case H1.</a>
+  <a href="nat-details.html#140" class="tactic">apply plus_comm to *H2.</a> <a href="nat-details.html#141" class="tactic">apply plus_z_char to *H4.</a> <a href="nat-details.html#142" class="tactic">search.</a>
+  <a href="nat-details.html#143" class="tactic">case H2.</a>
+    <a href="nat-details.html#144" class="tactic">apply plus_leq to *H3.</a> <a href="nat-details.html#145" class="tactic">apply one_nleq_zero to H6.</a>
+    <a href="nat-details.html#146" class="tactic">apply IH to H3 H4.</a> <a href="nat-details.html#147" class="tactic">search.</a></div>
+<a href="nat-details.html#148" class="command">Theorem plus_det_2 : forall X Y1 Y2 Z,
+  plus X Y1 Z -> plus X Y2 Z -> Y1 = Y2.</a>
+<div class="proof"><a href="nat-details.html#149" class="tactic">intros.</a>
+<a href="nat-details.html#150" class="tactic">apply plus_comm to *H1.</a> <a href="nat-details.html#151" class="tactic">apply plus_comm to *H2.</a>
+<a href="nat-details.html#152" class="tactic">backchain plus_det_1.</a></div>
+<a href="nat-details.html#153" class="command">Theorem plus_det_3 : forall X Y Z1 Z2,
+  plus X Y Z1 -> plus X Y Z2 -> Z1 = Z2.</a>
+<div class="proof"><a href="nat-details.html#154" class="tactic">induction on 1.</a> <a href="nat-details.html#155" class="tactic">intros.</a> <a href="nat-details.html#156" class="tactic">case H1.</a>
+  <a href="nat-details.html#157" class="tactic">case H2.</a> <a href="nat-details.html#158" class="tactic">search.</a>
+  <a href="nat-details.html#159" class="tactic">case H2.</a> <a href="nat-details.html#160" class="tactic">apply IH to H3 H4.</a> <a href="nat-details.html#161" class="tactic">search.</a></div>
+<a href="nat-details.html#162" class="command">Define max : nat -> nat -> nat -> prop by
+; max z X X := is_nat X
+; max X z X := is_nat X
+; max (s X) (s Y) (s Z) := max X Y Z
+.</a>
+
+<a href="nat-details.html#163" class="command">Theorem max_1_is : forall X Y Z,
+  max X Y Z -> is_nat X /\ is_nat Y /\ is_nat Z.</a>
+<div class="proof"><a href="nat-details.html#164" class="tactic">induction on 1.</a> <a href="nat-details.html#165" class="tactic">intros.</a> <a href="nat-details.html#166" class="tactic">case H1.</a>
+  <a href="nat-details.html#167" class="tactic">search.</a>
+  <a href="nat-details.html#168" class="tactic">search.</a>
+  <a href="nat-details.html#169" class="tactic">apply IH to H2.</a> <a href="nat-details.html#170" class="tactic">search.</a></div>
+<a href="nat-details.html#171" class="command">Theorem max_exists : forall X Y,
+  is_nat X -> is_nat Y ->
+  exists Z, max X Y Z.</a>
+<div class="proof"><a href="nat-details.html#172" class="tactic">induction on 1.</a> <a href="nat-details.html#173" class="tactic">intros.</a> <a href="nat-details.html#174" class="tactic">case H1.</a>
+  <a href="nat-details.html#175" class="tactic">search.</a>
+  <a href="nat-details.html#176" class="tactic">case H2.</a>
+    <a href="nat-details.html#177" class="tactic">search.</a>
+    <a href="nat-details.html#178" class="tactic">apply IH to H3 H4.</a> <a href="nat-details.html#179" class="tactic">search.</a></div>
+<a href="nat-details.html#180" class="command">Theorem max_eq : forall X Y Z,
+  max X Y Z -> Z = X \/ Z = Y.</a>
+<div class="proof"><a href="nat-details.html#181" class="tactic">induction on 1.</a> <a href="nat-details.html#182" class="tactic">intros.</a> <a href="nat-details.html#183" class="tactic">case H1.</a>
+  <a href="nat-details.html#184" class="tactic">search.</a>
+  <a href="nat-details.html#185" class="tactic">search.</a>
+  <a href="nat-details.html#186" class="tactic">apply IH to H2.</a> <a href="nat-details.html#187" class="tactic">case H3.</a>
+    <a href="nat-details.html#188" class="tactic">search.</a>
+    <a href="nat-details.html#189" class="tactic">search.</a></div>
+<a href="nat-details.html#190" class="command">Theorem max_leq : forall X Y Z,
+  max X Y Z -> leq X Z /\ leq Y Z.</a>
+<div class="proof"><a href="nat-details.html#191" class="tactic">induction on 1.</a> <a href="nat-details.html#192" class="tactic">intros.</a> <a href="nat-details.html#193" class="tactic">case H1.</a>
+  <a href="nat-details.html#194" class="tactic">apply leq_refl to H2.</a> <a href="nat-details.html#195" class="tactic">search.</a>
+  <a href="nat-details.html#196" class="tactic">apply leq_refl to H2.</a> <a href="nat-details.html#197" class="tactic">search.</a>
+  <a href="nat-details.html#198" class="tactic">apply IH to H2.</a> <a href="nat-details.html#199" class="tactic">search.</a></div>
+<a href="nat-details.html#200" class="command">Theorem lequate : forall X Y,
+  is_nat X -> is_nat Y ->
+  exists Z, leq X Z /\ leq Y Z.</a>
+<div class="proof"><a href="nat-details.html#201" class="tactic">intros.</a> <a href="nat-details.html#202" class="tactic">apply max_exists to H1 H2.</a>
+<a href="nat-details.html#203" class="tactic">apply max_leq to H3.</a> <a href="nat-details.html#204" class="tactic">search.</a></div>
+</pre>
+</div>
+
+</body>
+</html>

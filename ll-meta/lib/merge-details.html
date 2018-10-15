@@ -1,0 +1,5479 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Abella: Type is_o  o -> prop. - Details</title>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+Welcome to Abella 2.0.5-dev
+<a name="1"></a>
+<pre class="code">
+Abella < <b>Type is_o o -> prop.</b>
+
+</pre>
+<a name="2"></a>
+<pre class="code">
+Abella < <b>Import "perm" with is_o := is_o.</b>
+Importing from /home/kaustuv/work/abella/examples/linear/lib/./perm
+
+</pre>
+<a name="3"></a>
+<pre class="code">
+Abella < <b>Define merge : (list o) -> (list o) -> (list o) -> prop by 
+merge nil nil nil;
+merge J K L := exists A JJ LL, adj JJ A J /\ adj LL A L /\ merge JJ K LL;
+merge J K L := exists A KK LL, adj KK A K /\ adj LL A L /\ merge J KK LL.</b>
+
+</pre>
+<a name="4"></a>
+<pre class="code">
+Abella < <b>Theorem merge_1_is_list : 
+forall J K L, merge J K L -> is_list J.</b>
+
+</pre>
+<a name="5"></a>
+<pre class="code">
+
+============================
+ forall J K L, merge J K L -> is_list J
+
+merge_1_is_list < <b>induction on 1.</b>
+</pre>
+<a name="6"></a>
+<pre class="code">
+
+IH : forall J K L, merge J K L * -> is_list J
+============================
+ forall J K L, merge J K L @ -> is_list J
+
+merge_1_is_list < <b>intros.</b>
+</pre>
+<a name="7"></a>
+<pre class="code">
+
+Variables: J K L
+IH : forall J K L, merge J K L * -> is_list J
+H1 : merge J K L @
+============================
+ is_list J
+
+merge_1_is_list < <b>case H1.</b>
+</pre>
+<a name="8"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall J K L, merge J K L * -> is_list J
+============================
+ is_list nil
+
+Subgoal 2 is:
+ is_list J
+
+Subgoal 3 is:
+ is_list J
+
+merge_1_is_list < <b>search.</b>
+</pre>
+<a name="9"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L A JJ LL
+IH : forall J K L, merge J K L * -> is_list J
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : merge JJ K LL *
+============================
+ is_list J
+
+Subgoal 3 is:
+ is_list J
+
+merge_1_is_list < <b>backchain adj_3_is_list.</b>
+</pre>
+<a name="10"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L A KK LL
+IH : forall J K L, merge J K L * -> is_list J
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge J KK LL *
+============================
+ is_list J
+
+merge_1_is_list < <b>backchain IH.</b>
+Proof completed.
+</pre>
+<a name="11"></a>
+<pre class="code">
+Abella < <b>Theorem merge_2_is_list : 
+forall J K L, merge J K L -> is_list K.</b>
+
+</pre>
+<a name="12"></a>
+<pre class="code">
+
+============================
+ forall J K L, merge J K L -> is_list K
+
+merge_2_is_list < <b>induction on 1.</b>
+</pre>
+<a name="13"></a>
+<pre class="code">
+
+IH : forall J K L, merge J K L * -> is_list K
+============================
+ forall J K L, merge J K L @ -> is_list K
+
+merge_2_is_list < <b>intros.</b>
+</pre>
+<a name="14"></a>
+<pre class="code">
+
+Variables: J K L
+IH : forall J K L, merge J K L * -> is_list K
+H1 : merge J K L @
+============================
+ is_list K
+
+merge_2_is_list < <b>case H1.</b>
+</pre>
+<a name="15"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall J K L, merge J K L * -> is_list K
+============================
+ is_list nil
+
+Subgoal 2 is:
+ is_list K
+
+Subgoal 3 is:
+ is_list K
+
+merge_2_is_list < <b>search.</b>
+</pre>
+<a name="16"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L A JJ LL
+IH : forall J K L, merge J K L * -> is_list K
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : merge JJ K LL *
+============================
+ is_list K
+
+Subgoal 3 is:
+ is_list K
+
+merge_2_is_list < <b>backchain IH.</b>
+</pre>
+<a name="17"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L A KK LL
+IH : forall J K L, merge J K L * -> is_list K
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge J KK LL *
+============================
+ is_list K
+
+merge_2_is_list < <b>backchain adj_3_is_list.</b>
+Proof completed.
+</pre>
+<a name="18"></a>
+<pre class="code">
+Abella < <b>Theorem merge_3_is_list : 
+forall J K L, merge J K L -> is_list L.</b>
+
+</pre>
+<a name="19"></a>
+<pre class="code">
+
+============================
+ forall J K L, merge J K L -> is_list L
+
+merge_3_is_list < <b>intros.</b>
+</pre>
+<a name="20"></a>
+<pre class="code">
+
+Variables: J K L
+H1 : merge J K L
+============================
+ is_list L
+
+merge_3_is_list < <b>case H1.</b>
+</pre>
+<a name="21"></a>
+<pre class="code">
+Subgoal 1:
+
+============================
+ is_list nil
+
+Subgoal 2 is:
+ is_list L
+
+Subgoal 3 is:
+ is_list L
+
+merge_3_is_list < <b>search.</b>
+</pre>
+<a name="22"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L A JJ LL
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : merge JJ K LL
+============================
+ is_list L
+
+Subgoal 3 is:
+ is_list L
+
+merge_3_is_list < <b>backchain adj_3_is_list.</b>
+</pre>
+<a name="23"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L A KK LL
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge J KK LL
+============================
+ is_list L
+
+merge_3_is_list < <b>backchain adj_3_is_list.</b>
+Proof completed.
+</pre>
+<a name="24"></a>
+<pre class="code">
+Abella < <b>Theorem perm_merge_1 : 
+forall J K L JJ, merge J K L -> perm J JJ -> merge JJ K L.</b>
+
+</pre>
+<a name="25"></a>
+<pre class="code">
+
+============================
+ forall J K L JJ, merge J K L -> perm J JJ -> merge JJ K L
+
+perm_merge_1 < <b>induction on 1.</b>
+</pre>
+<a name="26"></a>
+<pre class="code">
+
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+============================
+ forall J K L JJ, merge J K L @ -> perm J JJ -> merge JJ K L
+
+perm_merge_1 < <b>intros.</b>
+</pre>
+<a name="27"></a>
+<pre class="code">
+
+Variables: J K L JJ
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H1 : merge J K L @
+H2 : perm J JJ
+============================
+ merge JJ K L
+
+perm_merge_1 < <b>case H1.</b>
+</pre>
+<a name="28"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: JJ
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm nil JJ
+============================
+ merge JJ nil nil
+
+Subgoal 2 is:
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>case H2.</b>
+</pre>
+<a name="29"></a>
+<pre class="code">
+Subgoal 1.1:
+
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+============================
+ merge nil nil nil
+
+Subgoal 1.2 is:
+ merge JJ nil nil
+
+Subgoal 2 is:
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>search.</b>
+</pre>
+<a name="30"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: JJ A KK LL
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H3 : adj KK A nil
+H4 : adj LL A JJ
+H5 : perm KK LL
+============================
+ merge JJ nil nil
+
+Subgoal 2 is:
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>case H3.</b>
+</pre>
+<a name="31"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A JJ1 LL
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj JJ1 A J
+H4 : adj LL A L
+H5 : merge JJ1 K LL *
+============================
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>apply adj_perm to H2 H3.</b>
+</pre>
+<a name="32"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A JJ1 LL KK
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj JJ1 A J
+H4 : adj LL A L
+H5 : merge JJ1 K LL *
+H6 : adj KK A JJ
+============================
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>apply perm_invert to H2 H3 H6.</b>
+</pre>
+<a name="33"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A JJ1 LL KK
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj JJ1 A J
+H4 : adj LL A L
+H5 : merge JJ1 K LL *
+H6 : adj KK A JJ
+H7 : perm JJ1 KK
+============================
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="34"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A JJ1 LL KK
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj JJ1 A J
+H4 : adj LL A L
+H5 : merge JJ1 K LL *
+H6 : adj KK A JJ
+H7 : perm JJ1 KK
+H8 : merge KK K LL
+============================
+ merge JJ K L
+
+Subgoal 3 is:
+ merge JJ K L
+
+perm_merge_1 < <b>search.</b>
+</pre>
+<a name="35"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A KK LL
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj KK A K
+H4 : adj LL A L
+H5 : merge J KK LL *
+============================
+ merge JJ K L
+
+perm_merge_1 < <b>apply IH to H5 H2.</b>
+</pre>
+<a name="36"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A KK LL
+IH : forall J K L JJ, merge J K L * -> perm J JJ -> merge JJ K L
+H2 : perm J JJ
+H3 : adj KK A K
+H4 : adj LL A L
+H5 : merge J KK LL *
+H6 : merge JJ KK LL
+============================
+ merge JJ K L
+
+perm_merge_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="37"></a>
+<pre class="code">
+Abella < <b>Theorem perm_merge_2 : 
+forall J K L KK, merge J K L -> perm K KK -> merge J KK L.</b>
+
+</pre>
+<a name="38"></a>
+<pre class="code">
+
+============================
+ forall J K L KK, merge J K L -> perm K KK -> merge J KK L
+
+perm_merge_2 < <b>induction on 1.</b>
+</pre>
+<a name="39"></a>
+<pre class="code">
+
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+============================
+ forall J K L KK, merge J K L @ -> perm K KK -> merge J KK L
+
+perm_merge_2 < <b>intros.</b>
+</pre>
+<a name="40"></a>
+<pre class="code">
+
+Variables: J K L KK
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H1 : merge J K L @
+H2 : perm K KK
+============================
+ merge J KK L
+
+perm_merge_2 < <b>case H1.</b>
+</pre>
+<a name="41"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: KK
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm nil KK
+============================
+ merge nil KK nil
+
+Subgoal 2 is:
+ merge J KK L
+
+Subgoal 3 is:
+ merge J KK L
+
+perm_merge_2 < <b>case H2.</b>
+</pre>
+<a name="42"></a>
+<pre class="code">
+Subgoal 1.1:
+
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+============================
+ merge nil nil nil
+
+Subgoal 1.2 is:
+ merge nil KK nil
+
+Subgoal 2 is:
+ merge J KK L
+
+Subgoal 3 is:
+ merge J KK L
+
+perm_merge_2 < <b>search.</b>
+</pre>
+<a name="43"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: KK A KK1 LL
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H3 : adj KK1 A nil
+H4 : adj LL A KK
+H5 : perm KK1 LL
+============================
+ merge nil KK nil
+
+Subgoal 2 is:
+ merge J KK L
+
+Subgoal 3 is:
+ merge J KK L
+
+perm_merge_2 < <b>case H3.</b>
+</pre>
+<a name="44"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L KK A JJ LL
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj JJ A J
+H4 : adj LL A L
+H5 : merge JJ K LL *
+============================
+ merge J KK L
+
+Subgoal 3 is:
+ merge J KK L
+
+perm_merge_2 < <b>apply IH to H5 H2.</b>
+</pre>
+<a name="45"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L KK A JJ LL
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj JJ A J
+H4 : adj LL A L
+H5 : merge JJ K LL *
+H6 : merge JJ KK LL
+============================
+ merge J KK L
+
+Subgoal 3 is:
+ merge J KK L
+
+perm_merge_2 < <b>search.</b>
+</pre>
+<a name="46"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L KK A KK1 LL
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj KK1 A K
+H4 : adj LL A L
+H5 : merge J KK1 LL *
+============================
+ merge J KK L
+
+perm_merge_2 < <b>apply adj_perm to H2 H3.</b>
+</pre>
+<a name="47"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L KK A KK1 LL KK2
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj KK1 A K
+H4 : adj LL A L
+H5 : merge J KK1 LL *
+H6 : adj KK2 A KK
+============================
+ merge J KK L
+
+perm_merge_2 < <b>apply perm_invert to H2 H3 H6.</b>
+</pre>
+<a name="48"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L KK A KK1 LL KK2
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj KK1 A K
+H4 : adj LL A L
+H5 : merge J KK1 LL *
+H6 : adj KK2 A KK
+H7 : perm KK1 KK2
+============================
+ merge J KK L
+
+perm_merge_2 < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="49"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L KK A KK1 LL KK2
+IH : forall J K L KK, merge J K L * -> perm K KK -> merge J KK L
+H2 : perm K KK
+H3 : adj KK1 A K
+H4 : adj LL A L
+H5 : merge J KK1 LL *
+H6 : adj KK2 A KK
+H7 : perm KK1 KK2
+H8 : merge J KK2 LL
+============================
+ merge J KK L
+
+perm_merge_2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="50"></a>
+<pre class="code">
+Abella < <b>Theorem perm_merge_3 : 
+forall J K L LL, merge J K L -> perm L LL -> merge J K LL.</b>
+
+</pre>
+<a name="51"></a>
+<pre class="code">
+
+============================
+ forall J K L LL, merge J K L -> perm L LL -> merge J K LL
+
+perm_merge_3 < <b>induction on 1.</b>
+</pre>
+<a name="52"></a>
+<pre class="code">
+
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+============================
+ forall J K L LL, merge J K L @ -> perm L LL -> merge J K LL
+
+perm_merge_3 < <b>intros.</b>
+</pre>
+<a name="53"></a>
+<pre class="code">
+
+Variables: J K L LL
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H1 : merge J K L @
+H2 : perm L LL
+============================
+ merge J K LL
+
+perm_merge_3 < <b>case H1.</b>
+</pre>
+<a name="54"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: LL
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm nil LL
+============================
+ merge nil nil LL
+
+Subgoal 2 is:
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>case H2.</b>
+</pre>
+<a name="55"></a>
+<pre class="code">
+Subgoal 1.1:
+
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+============================
+ merge nil nil nil
+
+Subgoal 1.2 is:
+ merge nil nil LL
+
+Subgoal 2 is:
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>search.</b>
+</pre>
+<a name="56"></a>
+<pre class="code">
+Subgoal 1.2:
+
+Variables: LL A KK LL1
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H3 : adj KK A nil
+H4 : adj LL1 A LL
+H5 : perm KK LL1
+============================
+ merge nil nil LL
+
+Subgoal 2 is:
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>case H3.</b>
+</pre>
+<a name="57"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L LL A JJ LL1
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj JJ A J
+H4 : adj LL1 A L
+H5 : merge JJ K LL1 *
+============================
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>apply adj_perm_result to H2 H4.</b>
+</pre>
+<a name="58"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L LL A JJ LL1 KK
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj JJ A J
+H4 : adj LL1 A L
+H5 : merge JJ K LL1 *
+H6 : adj KK A LL
+H7 : perm LL1 KK
+============================
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="59"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L LL A JJ LL1 KK
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj JJ A J
+H4 : adj LL1 A L
+H5 : merge JJ K LL1 *
+H6 : adj KK A LL
+H7 : perm LL1 KK
+H8 : merge JJ K KK
+============================
+ merge J K LL
+
+Subgoal 3 is:
+ merge J K LL
+
+perm_merge_3 < <b>search.</b>
+</pre>
+<a name="60"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L LL A KK LL1
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj KK A K
+H4 : adj LL1 A L
+H5 : merge J KK LL1 *
+============================
+ merge J K LL
+
+perm_merge_3 < <b>apply adj_perm_result to H2 H4.</b>
+</pre>
+<a name="61"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L LL A KK LL1 KK1
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj KK A K
+H4 : adj LL1 A L
+H5 : merge J KK LL1 *
+H6 : adj KK1 A LL
+H7 : perm LL1 KK1
+============================
+ merge J K LL
+
+perm_merge_3 < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="62"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L LL A KK LL1 KK1
+IH : forall J K L LL, merge J K L * -> perm L LL -> merge J K LL
+H2 : perm L LL
+H3 : adj KK A K
+H4 : adj LL1 A L
+H5 : merge J KK LL1 *
+H6 : adj KK1 A LL
+H7 : perm LL1 KK1
+H8 : merge J KK KK1
+============================
+ merge J K LL
+
+perm_merge_3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="63"></a>
+<pre class="code">
+Abella < <b>Theorem merge_sym : 
+forall J K L, merge J K L -> merge K J L.</b>
+
+</pre>
+<a name="64"></a>
+<pre class="code">
+
+============================
+ forall J K L, merge J K L -> merge K J L
+
+merge_sym < <b>induction on 1.</b>
+</pre>
+<a name="65"></a>
+<pre class="code">
+
+IH : forall J K L, merge J K L * -> merge K J L
+============================
+ forall J K L, merge J K L @ -> merge K J L
+
+merge_sym < <b>intros.</b>
+</pre>
+<a name="66"></a>
+<pre class="code">
+
+Variables: J K L
+IH : forall J K L, merge J K L * -> merge K J L
+H1 : merge J K L @
+============================
+ merge K J L
+
+merge_sym < <b>case H1.</b>
+</pre>
+<a name="67"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall J K L, merge J K L * -> merge K J L
+============================
+ merge nil nil nil
+
+Subgoal 2 is:
+ merge K J L
+
+Subgoal 3 is:
+ merge K J L
+
+merge_sym < <b>search.</b>
+</pre>
+<a name="68"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L A JJ LL
+IH : forall J K L, merge J K L * -> merge K J L
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : merge JJ K LL *
+============================
+ merge K J L
+
+Subgoal 3 is:
+ merge K J L
+
+merge_sym < <b>apply IH to H4.</b>
+</pre>
+<a name="69"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L A JJ LL
+IH : forall J K L, merge J K L * -> merge K J L
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : merge JJ K LL *
+H5 : merge K JJ LL
+============================
+ merge K J L
+
+Subgoal 3 is:
+ merge K J L
+
+merge_sym < <b>search.</b>
+</pre>
+<a name="70"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L A KK LL
+IH : forall J K L, merge J K L * -> merge K J L
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge J KK LL *
+============================
+ merge K J L
+
+merge_sym < <b>apply IH to H4.</b>
+</pre>
+<a name="71"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L A KK LL
+IH : forall J K L, merge J K L * -> merge K J L
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge J KK LL *
+H5 : merge KK J LL
+============================
+ merge K J L
+
+merge_sym < <b>search.</b>
+Proof completed.
+</pre>
+<a name="72"></a>
+<pre class="code">
+Abella < <b>Theorem merge_nil_perm : 
+forall K L, merge nil K L -> perm K L.</b>
+
+</pre>
+<a name="73"></a>
+<pre class="code">
+
+============================
+ forall K L, merge nil K L -> perm K L
+
+merge_nil_perm < <b>induction on 1.</b>
+</pre>
+<a name="74"></a>
+<pre class="code">
+
+IH : forall K L, merge nil K L * -> perm K L
+============================
+ forall K L, merge nil K L @ -> perm K L
+
+merge_nil_perm < <b>intros.</b>
+</pre>
+<a name="75"></a>
+<pre class="code">
+
+Variables: K L
+IH : forall K L, merge nil K L * -> perm K L
+H1 : merge nil K L @
+============================
+ perm K L
+
+merge_nil_perm < <b>case H1.</b>
+</pre>
+<a name="76"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall K L, merge nil K L * -> perm K L
+============================
+ perm nil nil
+
+Subgoal 2 is:
+ perm K L
+
+Subgoal 3 is:
+ perm K L
+
+merge_nil_perm < <b>search.</b>
+</pre>
+<a name="77"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A JJ LL
+IH : forall K L, merge nil K L * -> perm K L
+H2 : adj JJ A nil
+H3 : adj LL A L
+H4 : merge JJ K LL *
+============================
+ perm K L
+
+Subgoal 3 is:
+ perm K L
+
+merge_nil_perm < <b>case H2.</b>
+</pre>
+<a name="78"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: K L A KK LL
+IH : forall K L, merge nil K L * -> perm K L
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge nil KK LL *
+============================
+ perm K L
+
+merge_nil_perm < <b>apply IH to H4.</b>
+</pre>
+<a name="79"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: K L A KK LL
+IH : forall K L, merge nil K L * -> perm K L
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge nil KK LL *
+H5 : perm KK LL
+============================
+ perm K L
+
+merge_nil_perm < <b>search.</b>
+Proof completed.
+</pre>
+<a name="80"></a>
+<pre class="code">
+Abella < <b>Theorem merge_adj_1 : 
+forall A JJ J K LL, merge JJ K LL -> adj JJ A J ->
+  (exists L, adj LL A L /\ merge J K L).</b>
+
+</pre>
+<a name="81"></a>
+<pre class="code">
+
+============================
+ forall A JJ J K LL, merge JJ K LL -> adj JJ A J ->
+   (exists L, adj LL A L /\ merge J K L)
+
+merge_adj_1 < <b>intros.</b>
+</pre>
+<a name="82"></a>
+<pre class="code">
+
+Variables: A JJ J K LL
+H1 : merge JJ K LL
+H2 : adj JJ A J
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_1 < <b>apply adj_2_is_o to H2.</b>
+</pre>
+<a name="83"></a>
+<pre class="code">
+
+Variables: A JJ J K LL
+H1 : merge JJ K LL
+H2 : adj JJ A J
+H3 : is_o A
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_1 < <b>apply merge_3_is_list to H1.</b>
+</pre>
+<a name="84"></a>
+<pre class="code">
+
+Variables: A JJ J K LL
+H1 : merge JJ K LL
+H2 : adj JJ A J
+H3 : is_o A
+H4 : is_list LL
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_1 < <b>apply adj_exists to *H3 *H4.</b>
+</pre>
+<a name="85"></a>
+<pre class="code">
+
+Variables: A JJ J K LL M
+H1 : merge JJ K LL
+H2 : adj JJ A J
+H5 : adj LL A M
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="86"></a>
+<pre class="code">
+Abella < <b>Theorem merge_unadj_1 : 
+forall J K L JJ A, merge J K L -> adj JJ A J ->
+  (exists LL, adj LL A L /\ merge JJ K LL).</b>
+
+</pre>
+<a name="87"></a>
+<pre class="code">
+
+============================
+ forall J K L JJ A, merge J K L -> adj JJ A J ->
+   (exists LL, adj LL A L /\ merge JJ K LL)
+
+merge_unadj_1 < <b>induction on 1.</b>
+</pre>
+<a name="88"></a>
+<pre class="code">
+
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+============================
+ forall J K L JJ A, merge J K L @ -> adj JJ A J ->
+   (exists LL, adj LL A L /\ merge JJ K LL)
+
+merge_unadj_1 < <b>intros.</b>
+</pre>
+<a name="89"></a>
+<pre class="code">
+
+Variables: J K L JJ A
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H1 : merge J K L @
+H2 : adj JJ A J
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>case H1.</b>
+</pre>
+<a name="90"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: JJ A
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A nil
+============================
+ exists LL, adj LL A nil /\ merge JJ nil LL
+
+Subgoal 2 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>case H2.</b>
+</pre>
+<a name="91"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A A1 JJ1 LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H5 : merge JJ1 K LL *
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply adj_same_result_diff to H2 H3.</b>
+</pre>
+<a name="92"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JJ A A1 JJ1 LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H5 : merge JJ1 K LL *
+H6 : A = A1 /\ perm JJ JJ1 \/ (exists KK, adj KK A JJ1)
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>case H6.</b>
+</pre>
+<a name="93"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K L JJ A1 JJ1 LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A1 J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H5 : merge JJ1 K LL *
+H7 : perm JJ JJ1
+============================
+ exists LL, adj LL A1 L /\ merge JJ K LL
+
+Subgoal 2.2 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply perm_sym to *H7.</b>
+</pre>
+<a name="94"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K L JJ A1 JJ1 LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A1 J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H5 : merge JJ1 K LL *
+H8 : perm JJ1 JJ
+============================
+ exists LL, adj LL A1 L /\ merge JJ K LL
+
+Subgoal 2.2 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply perm_merge_1 to *H5 *H8.</b>
+</pre>
+<a name="95"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K L JJ A1 JJ1 LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A1 J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H9 : merge JJ K LL
+============================
+ exists LL, adj LL A1 L /\ merge JJ K LL
+
+Subgoal 2.2 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>search.</b>
+</pre>
+<a name="96"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H5 : merge JJ1 K LL *
+H7 : adj KK A JJ1
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply IH to *H5 H7.</b>
+</pre>
+<a name="97"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply adj_swap to H8 H4.</b>
+</pre>
+<a name="98"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1 U
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+H10 : adj LL1 A1 U
+H11 : adj U A L
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply adj_swap to H7 H3.</b>
+</pre>
+<a name="99"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1 U U1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+H10 : adj LL1 A1 U
+H11 : adj U A L
+H12 : adj KK A1 U1
+H13 : adj U1 A J
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>assert merge U1 K U.</b>
+</pre>
+<a name="100"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1 U U1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+H10 : adj LL1 A1 U
+H11 : adj U A L
+H12 : adj KK A1 U1
+H13 : adj U1 A J
+H14 : merge U1 K U
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply adj_same_result to H13 H2.</b>
+</pre>
+<a name="101"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1 U U1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+H10 : adj LL1 A1 U
+H11 : adj U A L
+H12 : adj KK A1 U1
+H13 : adj U1 A J
+H14 : merge U1 K U
+H15 : perm U1 JJ
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply perm_merge_1 to *H14 *H15.</b>
+</pre>
+<a name="102"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L JJ A A1 JJ1 LL KK LL1 U U1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj JJ1 A1 J
+H4 : adj LL A1 L
+H7 : adj KK A JJ1
+H8 : adj LL1 A LL
+H9 : merge KK K LL1
+H10 : adj LL1 A1 U
+H11 : adj U A L
+H12 : adj KK A1 U1
+H13 : adj U1 A J
+H16 : merge JJ K U
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+Subgoal 3 is:
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>search.</b>
+</pre>
+<a name="103"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A A1 KK LL
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj KK A1 K
+H4 : adj LL A1 L
+H5 : merge J KK LL *
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply IH to H5 H2.</b>
+</pre>
+<a name="104"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A A1 KK LL LL1
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj KK A1 K
+H4 : adj LL A1 L
+H5 : merge J KK LL *
+H6 : adj LL1 A LL
+H7 : merge JJ KK LL1
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>apply adj_swap to H6 H4.</b>
+</pre>
+<a name="105"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A A1 KK LL LL1 U
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj KK A1 K
+H4 : adj LL A1 L
+H5 : merge J KK LL *
+H6 : adj LL1 A LL
+H7 : merge JJ KK LL1
+H8 : adj LL1 A1 U
+H9 : adj U A L
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>assert merge JJ K U.</b>
+</pre>
+<a name="106"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JJ A A1 KK LL LL1 U
+IH : forall J K L JJ A, merge J K L * -> adj JJ A J ->
+       (exists LL, adj LL A L /\ merge JJ K LL)
+H2 : adj JJ A J
+H3 : adj KK A1 K
+H4 : adj LL A1 L
+H5 : merge J KK LL *
+H6 : adj LL1 A LL
+H7 : merge JJ KK LL1
+H8 : adj LL1 A1 U
+H9 : adj U A L
+H10 : merge JJ K U
+============================
+ exists LL, adj LL A L /\ merge JJ K LL
+
+merge_unadj_1 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="107"></a>
+<pre class="code">
+Abella < <b>Theorem merge_adj_2 : 
+forall A J KK K LL, merge J KK LL -> adj KK A K ->
+  (exists L, adj LL A L /\ merge J K L).</b>
+
+</pre>
+<a name="108"></a>
+<pre class="code">
+
+============================
+ forall A J KK K LL, merge J KK LL -> adj KK A K ->
+   (exists L, adj LL A L /\ merge J K L)
+
+merge_adj_2 < <b>intros.</b>
+</pre>
+<a name="109"></a>
+<pre class="code">
+
+Variables: A J KK K LL
+H1 : merge J KK LL
+H2 : adj KK A K
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_2 < <b>apply adj_2_is_o to H2.</b>
+</pre>
+<a name="110"></a>
+<pre class="code">
+
+Variables: A J KK K LL
+H1 : merge J KK LL
+H2 : adj KK A K
+H3 : is_o A
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_2 < <b>apply merge_3_is_list to H1.</b>
+</pre>
+<a name="111"></a>
+<pre class="code">
+
+Variables: A J KK K LL
+H1 : merge J KK LL
+H2 : adj KK A K
+H3 : is_o A
+H4 : is_list LL
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_2 < <b>apply adj_exists to *H3 *H4.</b>
+</pre>
+<a name="112"></a>
+<pre class="code">
+
+Variables: A J KK K LL M
+H1 : merge J KK LL
+H2 : adj KK A K
+H5 : adj LL A M
+============================
+ exists L, adj LL A L /\ merge J K L
+
+merge_adj_2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="113"></a>
+<pre class="code">
+Abella < <b>Theorem merge_unadj_2 : 
+forall J K L KK A, merge J K L -> adj KK A K ->
+  (exists LL, adj LL A L /\ merge J KK LL).</b>
+
+</pre>
+<a name="114"></a>
+<pre class="code">
+
+============================
+ forall J K L KK A, merge J K L -> adj KK A K ->
+   (exists LL, adj LL A L /\ merge J KK LL)
+
+merge_unadj_2 < <b>intros.</b>
+</pre>
+<a name="115"></a>
+<pre class="code">
+
+Variables: J K L KK A
+H1 : merge J K L
+H2 : adj KK A K
+============================
+ exists LL, adj LL A L /\ merge J KK LL
+
+merge_unadj_2 < <b>apply merge_sym to *H1.</b>
+</pre>
+<a name="116"></a>
+<pre class="code">
+
+Variables: J K L KK A
+H2 : adj KK A K
+H3 : merge K J L
+============================
+ exists LL, adj LL A L /\ merge J KK LL
+
+merge_unadj_2 < <b>apply merge_unadj_1 to *H3 *H2.</b>
+</pre>
+<a name="117"></a>
+<pre class="code">
+
+Variables: J K L KK A LL
+H4 : adj LL A L
+H5 : merge KK J LL
+============================
+ exists LL, adj LL A L /\ merge J KK LL
+
+merge_unadj_2 < <b>apply merge_sym to *H5.</b>
+</pre>
+<a name="118"></a>
+<pre class="code">
+
+Variables: J K L KK A LL
+H4 : adj LL A L
+H6 : merge J KK LL
+============================
+ exists LL, adj LL A L /\ merge J KK LL
+
+merge_unadj_2 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="119"></a>
+<pre class="code">
+Abella < <b>Theorem merge_unadj_3 : 
+forall J K L LL A, merge J K L -> adj LL A L ->
+  (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+  (exists KK, adj KK A K /\ merge J KK LL).</b>
+
+</pre>
+<a name="120"></a>
+<pre class="code">
+
+============================
+ forall J K L LL A, merge J K L -> adj LL A L ->
+   (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>induction on 1.</b>
+</pre>
+<a name="121"></a>
+<pre class="code">
+
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+============================
+ forall J K L LL A, merge J K L @ -> adj LL A L ->
+   (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>intros.</b>
+</pre>
+<a name="122"></a>
+<pre class="code">
+
+Variables: J K L LL A
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H1 : merge J K L @
+H2 : adj LL A L
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H1.</b>
+</pre>
+<a name="123"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: LL A
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A nil
+============================
+ (exists JJ, adj JJ A nil /\ merge JJ nil LL) \/
+   (exists KK, adj KK A nil /\ merge nil KK LL)
+
+Subgoal 2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H2.</b>
+</pre>
+<a name="124"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L LL A A1 JJ LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result_diff to H4 H2.</b>
+</pre>
+<a name="125"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L LL A A1 JJ LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H6 : A1 = A /\ perm LL1 LL \/ (exists KK, adj KK A1 LL)
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H6.</b>
+</pre>
+<a name="126"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K L LL A JJ LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A J
+H4 : adj LL1 A L
+H5 : merge JJ K LL1 *
+H7 : perm LL1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply perm_merge_3 to *H5 *H7.</b>
+</pre>
+<a name="127"></a>
+<pre class="code">
+Subgoal 2.1:
+
+Variables: J K L LL A JJ LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A J
+H4 : adj LL1 A L
+H8 : merge JJ K LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+</pre>
+<a name="128"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H7 H2.</b>
+</pre>
+<a name="129"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H9 H4.</b>
+</pre>
+<a name="130"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_perm to H10 H8.</b>
+</pre>
+<a name="131"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply IH to H5 H11.</b>
+</pre>
+<a name="132"></a>
+<pre class="code">
+Subgoal 2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H12 : (exists JJ1, adj JJ1 A JJ /\ merge JJ1 K KK1) \/
+        (exists KK, adj KK A K /\ merge JJ KK KK1)
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H12.</b>
+</pre>
+<a name="133"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H13 H3.</b>
+</pre>
+<a name="134"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+H15 : adj JJ1 A1 U1
+H16 : adj U1 A J
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>assert merge U1 K LL.</b>
+</pre>
+<a name="135"></a>
+<pre class="code">
+Subgoal 2.2.1.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+H15 : adj JJ1 A1 U1
+H16 : adj U1 A J
+============================
+ merge U1 K LL
+
+Subgoal 2.2.1 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H11 H4.</b>
+</pre>
+<a name="136"></a>
+<pre class="code">
+Subgoal 2.2.1.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1 U1 U2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+H15 : adj JJ1 A1 U1
+H16 : adj U1 A J
+H17 : adj KK1 A1 U2
+H18 : adj U2 A L
+============================
+ merge U1 K LL
+
+Subgoal 2.2.1 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H18 H2.</b>
+</pre>
+<a name="137"></a>
+<pre class="code">
+Subgoal 2.2.1.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1 U1 U2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+H15 : adj JJ1 A1 U1
+H16 : adj U1 A J
+H17 : adj KK1 A1 U2
+H18 : adj U2 A L
+H19 : perm U2 LL
+============================
+ merge U1 K LL
+
+Subgoal 2.2.1 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>backchain perm_merge_3.</b>
+</pre>
+<a name="138"></a>
+<pre class="code">
+Subgoal 2.2.1:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 JJ1 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj JJ1 A JJ
+H14 : merge JJ1 K KK1
+H15 : adj JJ1 A1 U1
+H16 : adj U1 A J
+H17 : merge U1 K LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 2.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+</pre>
+<a name="139"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 KK2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj KK2 A K
+H14 : merge JJ KK2 KK1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H11 H4.</b>
+</pre>
+<a name="140"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 KK2 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj KK2 A K
+H14 : merge JJ KK2 KK1
+H15 : adj KK1 A1 U1
+H16 : adj U1 A L
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>assert merge J KK2 U1.</b>
+</pre>
+<a name="141"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 KK2 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj KK2 A K
+H14 : merge JJ KK2 KK1
+H15 : adj KK1 A1 U1
+H16 : adj U1 A L
+H17 : merge J KK2 U1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H16 H2.</b>
+</pre>
+<a name="142"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 KK2 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj KK2 A K
+H14 : merge JJ KK2 KK1
+H15 : adj KK1 A1 U1
+H16 : adj U1 A L
+H17 : merge J KK2 U1
+H18 : perm U1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply perm_merge_3 to *H17 *H18.</b>
+</pre>
+<a name="143"></a>
+<pre class="code">
+Subgoal 2.2.2:
+
+Variables: J K L LL A A1 JJ LL1 KK U KK1 KK2 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj JJ A1 J
+H4 : adj LL1 A1 L
+H5 : merge JJ K LL1 *
+H7 : adj KK A1 LL
+H8 : adj KK A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK1 A LL1
+H13 : adj KK2 A K
+H14 : merge JJ KK2 KK1
+H15 : adj KK1 A1 U1
+H16 : adj U1 A L
+H19 : merge J KK2 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+</pre>
+<a name="144"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L LL A A1 KK LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result_diff to H4 H2.</b>
+</pre>
+<a name="145"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L LL A A1 KK LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H6 : A1 = A /\ perm LL1 LL \/ (exists KK, adj KK A1 LL)
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H6.</b>
+</pre>
+<a name="146"></a>
+<pre class="code">
+Subgoal 3.1:
+
+Variables: J K L LL A KK LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A K
+H4 : adj LL1 A L
+H5 : merge J KK LL1 *
+H7 : perm LL1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply perm_merge_3 to *H5 *H7.</b>
+</pre>
+<a name="147"></a>
+<pre class="code">
+Subgoal 3.1:
+
+Variables: J K L LL A KK LL1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A K
+H4 : adj LL1 A L
+H8 : merge J KK LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+</pre>
+<a name="148"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: J K L LL A A1 KK LL1 KK1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H7 H2.</b>
+</pre>
+<a name="149"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H9 H4.</b>
+</pre>
+<a name="150"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_perm to H10 H8.</b>
+</pre>
+<a name="151"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply IH to H5 H11.</b>
+</pre>
+<a name="152"></a>
+<pre class="code">
+Subgoal 3.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H12 : (exists JJ, adj JJ A J /\ merge JJ KK KK2) \/
+        (exists KK1, adj KK1 A KK /\ merge J KK1 KK2)
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>case H12.</b>
+</pre>
+<a name="153"></a>
+<pre class="code">
+Subgoal 3.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 JJ
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj JJ A J
+H14 : merge JJ KK KK2
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H11 H4.</b>
+</pre>
+<a name="154"></a>
+<pre class="code">
+Subgoal 3.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 JJ U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj JJ A J
+H14 : merge JJ KK KK2
+H15 : adj KK2 A1 U1
+H16 : adj U1 A L
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>assert merge JJ K U1.</b>
+</pre>
+<a name="155"></a>
+<pre class="code">
+Subgoal 3.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 JJ U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj JJ A J
+H14 : merge JJ KK KK2
+H15 : adj KK2 A1 U1
+H16 : adj U1 A L
+H17 : merge JJ K U1
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H16 H2.</b>
+</pre>
+<a name="156"></a>
+<pre class="code">
+Subgoal 3.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 JJ U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj JJ A J
+H14 : merge JJ KK KK2
+H15 : adj KK2 A1 U1
+H16 : adj U1 A L
+H17 : merge JJ K U1
+H18 : perm U1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply perm_merge_3 to *H17 *H18.</b>
+</pre>
+<a name="157"></a>
+<pre class="code">
+Subgoal 3.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 JJ U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj JJ A J
+H14 : merge JJ KK KK2
+H15 : adj KK2 A1 U1
+H16 : adj U1 A L
+H19 : merge JJ K LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+</pre>
+<a name="158"></a>
+<pre class="code">
+Subgoal 3.2.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H13 H3.</b>
+</pre>
+<a name="159"></a>
+<pre class="code">
+Subgoal 3.2.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+H15 : adj KK3 A1 U1
+H16 : adj U1 A K
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>assert merge J U1 LL.</b>
+</pre>
+<a name="160"></a>
+<pre class="code">
+Subgoal 3.2.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+H15 : adj KK3 A1 U1
+H16 : adj U1 A K
+============================
+ merge J U1 LL
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_swap to H11 H4.</b>
+</pre>
+<a name="161"></a>
+<pre class="code">
+Subgoal 3.2.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3 U1 U2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+H15 : adj KK3 A1 U1
+H16 : adj U1 A K
+H17 : adj KK2 A1 U2
+H18 : adj U2 A L
+============================
+ merge J U1 LL
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>apply adj_same_result to H18 H2.</b>
+</pre>
+<a name="162"></a>
+<pre class="code">
+Subgoal 3.2.2.1:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3 U1 U2
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+H15 : adj KK3 A1 U1
+H16 : adj U1 A K
+H17 : adj KK2 A1 U2
+H18 : adj U2 A L
+H19 : perm U2 LL
+============================
+ merge J U1 LL
+
+Subgoal 3.2.2 is:
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>backchain perm_merge_3.</b>
+</pre>
+<a name="163"></a>
+<pre class="code">
+Subgoal 3.2.2:
+
+Variables: J K L LL A A1 KK LL1 KK1 U KK2 KK3 U1
+IH : forall J K L LL A, merge J K L * -> adj LL A L ->
+       (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+       (exists KK, adj KK A K /\ merge J KK LL)
+H2 : adj LL A L
+H3 : adj KK A1 K
+H4 : adj LL1 A1 L
+H5 : merge J KK LL1 *
+H7 : adj KK1 A1 LL
+H8 : adj KK1 A U
+H9 : adj U A1 L
+H10 : perm U LL1
+H11 : adj KK2 A LL1
+H13 : adj KK3 A KK
+H14 : merge J KK3 KK2
+H15 : adj KK3 A1 U1
+H16 : adj U1 A K
+H17 : merge J U1 LL
+============================
+ (exists JJ, adj JJ A J /\ merge JJ K LL) \/
+   (exists KK, adj KK A K /\ merge J KK LL)
+
+merge_unadj_3 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="164"></a>
+<pre class="code">
+Abella < <b>Theorem merge_invert_1 : 
+forall A JJ J K LL L, merge J K L -> adj JJ A J -> adj LL A L ->
+  merge JJ K LL.</b>
+
+</pre>
+<a name="165"></a>
+<pre class="code">
+
+============================
+ forall A JJ J K LL L, merge J K L -> adj JJ A J -> adj LL A L ->
+   merge JJ K LL
+
+merge_invert_1 < <b>intros.</b>
+</pre>
+<a name="166"></a>
+<pre class="code">
+
+Variables: A JJ J K LL L
+H1 : merge J K L
+H2 : adj JJ A J
+H3 : adj LL A L
+============================
+ merge JJ K LL
+
+merge_invert_1 < <b>apply merge_unadj_1 to H1 H2.</b>
+</pre>
+<a name="167"></a>
+<pre class="code">
+
+Variables: A JJ J K LL L LL1
+H1 : merge J K L
+H2 : adj JJ A J
+H3 : adj LL A L
+H4 : adj LL1 A L
+H5 : merge JJ K LL1
+============================
+ merge JJ K LL
+
+merge_invert_1 < <b>apply adj_same_result to *H4 *H3.</b>
+</pre>
+<a name="168"></a>
+<pre class="code">
+
+Variables: A JJ J K LL L LL1
+H1 : merge J K L
+H2 : adj JJ A J
+H5 : merge JJ K LL1
+H6 : perm LL1 LL
+============================
+ merge JJ K LL
+
+merge_invert_1 < <b>backchain perm_merge_3.</b>
+Proof completed.
+</pre>
+<a name="169"></a>
+<pre class="code">
+Abella < <b>Theorem merge_invert_2 : 
+forall A J KK K LL L, merge J K L -> adj KK A K -> adj LL A L ->
+  merge J KK LL.</b>
+
+</pre>
+<a name="170"></a>
+<pre class="code">
+
+============================
+ forall A J KK K LL L, merge J K L -> adj KK A K -> adj LL A L ->
+   merge J KK LL
+
+merge_invert_2 < <b>intros.</b>
+</pre>
+<a name="171"></a>
+<pre class="code">
+
+Variables: A J KK K LL L
+H1 : merge J K L
+H2 : adj KK A K
+H3 : adj LL A L
+============================
+ merge J KK LL
+
+merge_invert_2 < <b>apply merge_sym to *H1.</b>
+</pre>
+<a name="172"></a>
+<pre class="code">
+
+Variables: A J KK K LL L
+H2 : adj KK A K
+H3 : adj LL A L
+H4 : merge K J L
+============================
+ merge J KK LL
+
+merge_invert_2 < <b>apply merge_invert_1 to *H4 *H2 *H3.</b>
+</pre>
+<a name="173"></a>
+<pre class="code">
+
+Variables: A J KK K LL L
+H5 : merge KK J LL
+============================
+ merge J KK LL
+
+merge_invert_2 < <b>backchain merge_sym.</b>
+Proof completed.
+</pre>
+<a name="174"></a>
+<pre class="code">
+Abella < <b>Theorem merge_move_12 : 
+forall A JJ J KK K L, adj JJ A J -> adj KK A K -> merge J KK L ->
+  merge JJ K L.</b>
+
+</pre>
+<a name="175"></a>
+<pre class="code">
+
+============================
+ forall A JJ J KK K L, adj JJ A J -> adj KK A K -> merge J KK L ->
+   merge JJ K L
+
+merge_move_12 < <b>intros.</b>
+</pre>
+<a name="176"></a>
+<pre class="code">
+
+Variables: A JJ J KK K L
+H1 : adj JJ A J
+H2 : adj KK A K
+H3 : merge J KK L
+============================
+ merge JJ K L
+
+merge_move_12 < <b>apply merge_unadj_1 to H3 H1.</b>
+</pre>
+<a name="177"></a>
+<pre class="code">
+
+Variables: A JJ J KK K L LL
+H1 : adj JJ A J
+H2 : adj KK A K
+H3 : merge J KK L
+H4 : adj LL A L
+H5 : merge JJ KK LL
+============================
+ merge JJ K L
+
+merge_move_12 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="178"></a>
+<pre class="code">
+Abella < <b>Theorem merge_move_21 : 
+forall A JJ J KK K L, adj JJ A J -> adj KK A K -> merge JJ K L ->
+  merge J KK L.</b>
+
+</pre>
+<a name="179"></a>
+<pre class="code">
+
+============================
+ forall A JJ J KK K L, adj JJ A J -> adj KK A K -> merge JJ K L ->
+   merge J KK L
+
+merge_move_21 < <b>intros.</b>
+</pre>
+<a name="180"></a>
+<pre class="code">
+
+Variables: A JJ J KK K L
+H1 : adj JJ A J
+H2 : adj KK A K
+H3 : merge JJ K L
+============================
+ merge J KK L
+
+merge_move_21 < <b>apply merge_unadj_2 to H3 H2.</b>
+</pre>
+<a name="181"></a>
+<pre class="code">
+
+Variables: A JJ J KK K L LL
+H1 : adj JJ A J
+H2 : adj KK A K
+H3 : merge JJ K L
+H4 : adj LL A L
+H5 : merge JJ KK LL
+============================
+ merge J KK L
+
+merge_move_21 < <b>search.</b>
+Proof completed.
+</pre>
+<a name="182"></a>
+<pre class="code">
+Abella < <b>Theorem add_to_merge_right : 
+forall A J K KK L, adj KK A K -> merge J KK L ->
+  (exists M, merge J K M /\ adj L A M).</b>
+
+</pre>
+<a name="183"></a>
+<pre class="code">
+
+============================
+ forall A J K KK L, adj KK A K -> merge J KK L ->
+   (exists M, merge J K M /\ adj L A M)
+
+add_to_merge_right < <b>intros.</b>
+</pre>
+<a name="184"></a>
+<pre class="code">
+
+Variables: A J K KK L
+H1 : adj KK A K
+H2 : merge J KK L
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_right < <b>apply adj_2_is_o to H1.</b>
+</pre>
+<a name="185"></a>
+<pre class="code">
+
+Variables: A J K KK L
+H1 : adj KK A K
+H2 : merge J KK L
+H3 : is_o A
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_right < <b>apply merge_3_is_list to H2.</b>
+</pre>
+<a name="186"></a>
+<pre class="code">
+
+Variables: A J K KK L
+H1 : adj KK A K
+H2 : merge J KK L
+H3 : is_o A
+H4 : is_list L
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_right < <b>apply adj_exists to H3 H4.</b>
+</pre>
+<a name="187"></a>
+<pre class="code">
+
+Variables: A J K KK L M
+H1 : adj KK A K
+H2 : merge J KK L
+H3 : is_o A
+H4 : is_list L
+H5 : adj L A M
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_right < <b>search.</b>
+Proof completed.
+</pre>
+<a name="188"></a>
+<pre class="code">
+Abella < <b>Theorem add_to_merge_left : 
+forall A J JJ K L, adj JJ A J -> merge JJ K L ->
+  (exists M, merge J K M /\ adj L A M).</b>
+
+</pre>
+<a name="189"></a>
+<pre class="code">
+
+============================
+ forall A J JJ K L, adj JJ A J -> merge JJ K L ->
+   (exists M, merge J K M /\ adj L A M)
+
+add_to_merge_left < <b>intros.</b>
+</pre>
+<a name="190"></a>
+<pre class="code">
+
+Variables: A J JJ K L
+H1 : adj JJ A J
+H2 : merge JJ K L
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_left < <b>apply adj_2_is_o to H1.</b>
+</pre>
+<a name="191"></a>
+<pre class="code">
+
+Variables: A J JJ K L
+H1 : adj JJ A J
+H2 : merge JJ K L
+H3 : is_o A
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_left < <b>apply merge_3_is_list to H2.</b>
+</pre>
+<a name="192"></a>
+<pre class="code">
+
+Variables: A J JJ K L
+H1 : adj JJ A J
+H2 : merge JJ K L
+H3 : is_o A
+H4 : is_list L
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_left < <b>apply adj_exists to H3 H4.</b>
+</pre>
+<a name="193"></a>
+<pre class="code">
+
+Variables: A J JJ K L M
+H1 : adj JJ A J
+H2 : merge JJ K L
+H3 : is_o A
+H4 : is_list L
+H5 : adj L A M
+============================
+ exists M, merge J K M /\ adj L A M
+
+add_to_merge_left < <b>search.</b>
+Proof completed.
+</pre>
+<a name="194"></a>
+<pre class="code">
+Abella < <b>Theorem merge_nil_equal : 
+forall L, is_list L -> merge nil L L.</b>
+
+</pre>
+<a name="195"></a>
+<pre class="code">
+
+============================
+ forall L, is_list L -> merge nil L L
+
+merge_nil_equal < <b>induction on 1.</b>
+</pre>
+<a name="196"></a>
+<pre class="code">
+
+IH : forall L, is_list L * -> merge nil L L
+============================
+ forall L, is_list L @ -> merge nil L L
+
+merge_nil_equal < <b>intros.</b>
+</pre>
+<a name="197"></a>
+<pre class="code">
+
+Variables: L
+IH : forall L, is_list L * -> merge nil L L
+H1 : is_list L @
+============================
+ merge nil L L
+
+merge_nil_equal < <b>case H1.</b>
+</pre>
+<a name="198"></a>
+<pre class="code">
+Subgoal 1:
+
+IH : forall L, is_list L * -> merge nil L L
+============================
+ merge nil nil nil
+
+Subgoal 2 is:
+ merge nil (A :: L1) (A :: L1)
+
+merge_nil_equal < <b>search.</b>
+</pre>
+<a name="199"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L1 A
+IH : forall L, is_list L * -> merge nil L L
+H2 : is_o A
+H3 : is_list L1 *
+============================
+ merge nil (A :: L1) (A :: L1)
+
+merge_nil_equal < <b>apply IH to H3.</b>
+</pre>
+<a name="200"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L1 A
+IH : forall L, is_list L * -> merge nil L L
+H2 : is_o A
+H3 : is_list L1 *
+H4 : merge nil L1 L1
+============================
+ merge nil (A :: L1) (A :: L1)
+
+merge_nil_equal < <b>search.</b>
+Proof completed.
+</pre>
+<a name="201"></a>
+<pre class="code">
+Abella < <b>Theorem merge_exists : 
+forall J K, is_list J -> is_list K -> (exists L, merge J K L).</b>
+
+</pre>
+<a name="202"></a>
+<pre class="code">
+
+============================
+ forall J K, is_list J -> is_list K -> (exists L, merge J K L)
+
+merge_exists < <b>induction on 1.</b>
+</pre>
+<a name="203"></a>
+<pre class="code">
+
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+============================
+ forall J K, is_list J @ -> is_list K -> (exists L, merge J K L)
+
+merge_exists < <b>intros.</b>
+</pre>
+<a name="204"></a>
+<pre class="code">
+
+Variables: J K
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H1 : is_list J @
+H2 : is_list K
+============================
+ exists L, merge J K L
+
+merge_exists < <b>case H1.</b>
+</pre>
+<a name="205"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+============================
+ exists L, merge nil K L
+
+Subgoal 2 is:
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>apply merge_nil_equal to H2.</b>
+</pre>
+<a name="206"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: K
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+H3 : merge nil K K
+============================
+ exists L, merge nil K L
+
+Subgoal 2 is:
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>search.</b>
+</pre>
+<a name="207"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+H3 : is_o A
+H4 : is_list L *
+============================
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>apply IH to H4 H2.</b>
+</pre>
+<a name="208"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A L1
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+H3 : is_o A
+H4 : is_list L *
+H5 : merge L K L1
+============================
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>assert adj L A (A :: L).</b>
+</pre>
+<a name="209"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A L1
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+H3 : is_o A
+H4 : is_list L *
+H5 : merge L K L1
+H6 : adj L A (A :: L)
+============================
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>apply add_to_merge_left to H6 H5.</b>
+</pre>
+<a name="210"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: K L A L1 M
+IH : forall J K, is_list J * -> is_list K -> (exists L, merge J K L)
+H2 : is_list K
+H3 : is_o A
+H4 : is_list L *
+H5 : merge L K L1
+H6 : adj L A (A :: L)
+H7 : merge (A :: L) K M
+H8 : adj L1 A M
+============================
+ exists L1, merge (A :: L) K L1
+
+merge_exists < <b>search.</b>
+Proof completed.
+</pre>
+<a name="211"></a>
+<pre class="code">
+Abella < <b>Theorem merge_head_lemma : 
+forall L A, is_o A -> is_list L -> merge L (A :: nil) (A :: L).</b>
+
+</pre>
+<a name="212"></a>
+<pre class="code">
+
+============================
+ forall L A, is_o A -> is_list L -> merge L (A :: nil) (A :: L)
+
+merge_head_lemma < <b>induction on 2.</b>
+</pre>
+<a name="213"></a>
+<pre class="code">
+
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+============================
+ forall L A, is_o A -> is_list L @ -> merge L (A :: nil) (A :: L)
+
+merge_head_lemma < <b>intros.</b>
+</pre>
+<a name="214"></a>
+<pre class="code">
+
+Variables: L A
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list L @
+============================
+ merge L (A :: nil) (A :: L)
+
+merge_head_lemma < <b>case H2 (keep).</b>
+</pre>
+<a name="215"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list nil @
+============================
+ merge nil (A :: nil) (A :: nil)
+
+Subgoal 2 is:
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>assert is_list (A :: nil).</b>
+</pre>
+<a name="216"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list nil @
+H3 : is_list (A :: nil)
+============================
+ merge nil (A :: nil) (A :: nil)
+
+Subgoal 2 is:
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>apply merge_nil_equal to H3.</b>
+</pre>
+<a name="217"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: A
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list nil @
+H3 : is_list (A :: nil)
+H4 : merge nil (A :: nil) (A :: nil)
+============================
+ merge nil (A :: nil) (A :: nil)
+
+Subgoal 2 is:
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>search.</b>
+</pre>
+<a name="218"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 A1
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list (A1 :: L1) @
+H3 : is_o A1
+H4 : is_list L1 *
+============================
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>assert adj L1 A1 (A1 :: L1).</b>
+</pre>
+<a name="219"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 A1
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list (A1 :: L1) @
+H3 : is_o A1
+H4 : is_list L1 *
+H5 : adj L1 A1 (A1 :: L1)
+============================
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>apply IH to H1 H4.</b>
+</pre>
+<a name="220"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 A1
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list (A1 :: L1) @
+H3 : is_o A1
+H4 : is_list L1 *
+H5 : adj L1 A1 (A1 :: L1)
+H6 : merge L1 (A :: nil) (A :: L1)
+============================
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>apply add_to_merge_left to H5 H6.</b>
+</pre>
+<a name="221"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 A1 M
+IH : forall L A, is_o A -> is_list L * -> merge L (A :: nil) (A :: L)
+H1 : is_o A
+H2 : is_list (A1 :: L1) @
+H3 : is_o A1
+H4 : is_list L1 *
+H5 : adj L1 A1 (A1 :: L1)
+H6 : merge L1 (A :: nil) (A :: L1)
+H7 : merge (A1 :: L1) (A :: nil) M
+H8 : adj (A :: L1) A1 M
+============================
+ merge (A1 :: L1) (A :: nil) (A :: A1 :: L1)
+
+merge_head_lemma < <b>search.</b>
+Proof completed.
+</pre>
+<a name="222"></a>
+<pre class="code">
+Abella < <b>Theorem adj_implies_merge : 
+forall L J A, adj L A J -> merge L (A :: nil) J.</b>
+
+</pre>
+<a name="223"></a>
+<pre class="code">
+
+============================
+ forall L J A, adj L A J -> merge L (A :: nil) J
+
+adj_implies_merge < <b>induction on 1.</b>
+</pre>
+<a name="224"></a>
+<pre class="code">
+
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+============================
+ forall L J A, adj L A J @ -> merge L (A :: nil) J
+
+adj_implies_merge < <b>intros.</b>
+</pre>
+<a name="225"></a>
+<pre class="code">
+
+Variables: L J A
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H1 : adj L A J @
+============================
+ merge L (A :: nil) J
+
+adj_implies_merge < <b>case H1.</b>
+</pre>
+<a name="226"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o A
+H3 : is_list L
+============================
+ merge L (A :: nil) (A :: L)
+
+Subgoal 2 is:
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>apply merge_head_lemma to H2 H3.</b>
+</pre>
+<a name="227"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L A
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o A
+H3 : is_list L
+H4 : merge L (A :: nil) (A :: L)
+============================
+ merge L (A :: nil) (A :: L)
+
+Subgoal 2 is:
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>search.</b>
+</pre>
+<a name="228"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>apply IH to H3.</b>
+</pre>
+<a name="229"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : merge K (A :: nil) L1
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>apply adj_1_is_list to H3.</b>
+</pre>
+<a name="230"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : merge K (A :: nil) L1
+H5 : is_list K
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>assert adj K B (B :: K).</b>
+</pre>
+<a name="231"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : merge K (A :: nil) L1
+H5 : is_list K
+H6 : adj K B (B :: K)
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>apply add_to_merge_left to H6 H4.</b>
+</pre>
+<a name="232"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K M
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : merge K (A :: nil) L1
+H5 : is_list K
+H6 : adj K B (B :: K)
+H7 : merge (B :: K) (A :: nil) M
+H8 : adj L1 B M
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>apply adj_3_is_list to H3.</b>
+</pre>
+<a name="233"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: A L1 B K M
+IH : forall L J A, adj L A J * -> merge L (A :: nil) J
+H2 : is_o B
+H3 : adj K A L1 *
+H4 : merge K (A :: nil) L1
+H5 : is_list K
+H6 : adj K B (B :: K)
+H7 : merge (B :: K) (A :: nil) M
+H8 : adj L1 B M
+H9 : is_list L1
+============================
+ merge (B :: K) (A :: nil) (B :: L1)
+
+adj_implies_merge < <b>search.</b>
+Proof completed.
+</pre>
+<a name="234"></a>
+<pre class="code">
+Abella < <b>Theorem merge_assoc : 
+forall J K L JK KL JKL1 JKL2, merge J K JK -> merge K L KL ->
+  merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2.</b>
+
+</pre>
+<a name="235"></a>
+<pre class="code">
+
+============================
+ forall J K L JK KL JKL1 JKL2, merge J K JK -> merge K L KL ->
+   merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+
+merge_assoc < <b>induction on 1.</b>
+</pre>
+<a name="236"></a>
+<pre class="code">
+
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+============================
+ forall J K L JK KL JKL1 JKL2, merge J K JK @ -> merge K L KL ->
+   merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+
+merge_assoc < <b>intros.</b>
+</pre>
+<a name="237"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H1 : merge J K JK @
+H2 : merge K L KL
+H3 : merge J KL JKL1
+H4 : merge JK L JKL2
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>case H1.</b>
+</pre>
+<a name="238"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H2 : merge nil L KL
+H3 : merge nil KL JKL1
+H4 : merge nil L JKL2
+============================
+ perm JKL1 JKL2
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_nil_perm to *H2.</b>
+</pre>
+<a name="239"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H3 : merge nil KL JKL1
+H4 : merge nil L JKL2
+H5 : perm L KL
+============================
+ perm JKL1 JKL2
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_nil_perm to *H3.</b>
+</pre>
+<a name="240"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H4 : merge nil L JKL2
+H5 : perm L KL
+H6 : perm KL JKL1
+============================
+ perm JKL1 JKL2
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_nil_perm to *H4.</b>
+</pre>
+<a name="241"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : perm L KL
+H6 : perm KL JKL1
+H7 : perm L JKL2
+============================
+ perm JKL1 JKL2
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>backchain perm_trans with K = L.</b>
+</pre>
+<a name="242"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : perm L KL
+H6 : perm KL JKL1
+H7 : perm L JKL2
+============================
+ perm JKL1 L
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>backchain perm_sym.</b>
+</pre>
+<a name="243"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L KL JKL1 JKL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : perm L KL
+H6 : perm KL JKL1
+H7 : perm L JKL2
+============================
+ perm L JKL1
+
+Subgoal 2 is:
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>backchain perm_trans.</b>
+</pre>
+<a name="244"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JK KL JKL1 JKL2 A JJ LL
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H2 : merge K L KL
+H3 : merge J KL JKL1
+H4 : merge JK L JKL2
+H5 : adj JJ A J
+H6 : adj LL A JK
+H7 : merge JJ K LL *
+============================
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_unadj_1 to *H4 H6.</b>
+</pre>
+<a name="245"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JK KL JKL1 JKL2 A JJ LL LL1
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H2 : merge K L KL
+H3 : merge J KL JKL1
+H5 : adj JJ A J
+H6 : adj LL A JK
+H7 : merge JJ K LL *
+H8 : adj LL1 A JKL2
+H9 : merge LL L LL1
+============================
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_unadj_1 to *H3 H5.</b>
+</pre>
+<a name="246"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JK KL JKL1 JKL2 A JJ LL LL1 LL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H2 : merge K L KL
+H5 : adj JJ A J
+H6 : adj LL A JK
+H7 : merge JJ K LL *
+H8 : adj LL1 A JKL2
+H9 : merge LL L LL1
+H10 : adj LL2 A JKL1
+H11 : merge JJ KL LL2
+============================
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply IH to *H7 *H2 *H11 *H9.</b>
+</pre>
+<a name="247"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L JK KL JKL1 JKL2 A JJ LL LL1 LL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : adj JJ A J
+H6 : adj LL A JK
+H8 : adj LL1 A JKL2
+H10 : adj LL2 A JKL1
+H12 : perm LL2 LL1
+============================
+ perm JKL1 JKL2
+
+Subgoal 3 is:
+ perm JKL1 JKL2
+
+merge_assoc < <b>search.</b>
+</pre>
+<a name="248"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JK KL JKL1 JKL2 A KK LL
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H2 : merge K L KL
+H3 : merge J KL JKL1
+H4 : merge JK L JKL2
+H5 : adj KK A K
+H6 : adj LL A JK
+H7 : merge J KK LL *
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_unadj_1 to *H2 H5.</b>
+</pre>
+<a name="249"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JK KL JKL1 JKL2 A KK LL LL1
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H3 : merge J KL JKL1
+H4 : merge JK L JKL2
+H5 : adj KK A K
+H6 : adj LL A JK
+H7 : merge J KK LL *
+H8 : adj LL1 A KL
+H9 : merge KK L LL1
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_unadj_1 to *H4 H6.</b>
+</pre>
+<a name="250"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JK KL JKL1 JKL2 A KK LL LL1 LL2
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H3 : merge J KL JKL1
+H5 : adj KK A K
+H6 : adj LL A JK
+H7 : merge J KK LL *
+H8 : adj LL1 A KL
+H9 : merge KK L LL1
+H10 : adj LL2 A JKL2
+H11 : merge LL L LL2
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply merge_unadj_2 to *H3 H8.</b>
+</pre>
+<a name="251"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JK KL JKL1 JKL2 A KK LL LL1 LL2 LL3
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : adj KK A K
+H6 : adj LL A JK
+H7 : merge J KK LL *
+H8 : adj LL1 A KL
+H9 : merge KK L LL1
+H10 : adj LL2 A JKL2
+H11 : merge LL L LL2
+H12 : adj LL3 A JKL1
+H13 : merge J LL1 LL3
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>apply IH to *H7 *H9 *H13 *H11.</b>
+</pre>
+<a name="252"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L JK KL JKL1 JKL2 A KK LL LL1 LL2 LL3
+IH : forall J K L JK KL JKL1 JKL2, merge J K JK * -> merge K L KL ->
+       merge J KL JKL1 -> merge JK L JKL2 -> perm JKL1 JKL2
+H5 : adj KK A K
+H6 : adj LL A JK
+H8 : adj LL1 A KL
+H10 : adj LL2 A JKL2
+H12 : adj LL3 A JKL1
+H14 : perm LL3 LL2
+============================
+ perm JKL1 JKL2
+
+merge_assoc < <b>search.</b>
+Proof completed.
+</pre>
+<a name="253"></a>
+<pre class="code">
+Abella < <b>Theorem change_merge_order : 
+forall J K L JK KL JKL, merge JK L JKL -> merge J K JK -> merge K L KL ->
+  merge J KL JKL.</b>
+
+</pre>
+<a name="254"></a>
+<pre class="code">
+
+============================
+ forall J K L JK KL JKL, merge JK L JKL -> merge J K JK -> merge K L KL ->
+   merge J KL JKL
+
+change_merge_order < <b>intros.</b>
+</pre>
+<a name="255"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+============================
+ merge J KL JKL
+
+change_merge_order < <b>apply merge_1_is_list to H2.</b>
+</pre>
+<a name="256"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+H4 : is_list J
+============================
+ merge J KL JKL
+
+change_merge_order < <b>apply merge_3_is_list to H3.</b>
+</pre>
+<a name="257"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+H4 : is_list J
+H5 : is_list KL
+============================
+ merge J KL JKL
+
+change_merge_order < <b>apply merge_exists to H4 H5.</b>
+</pre>
+<a name="258"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL L1
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+H4 : is_list J
+H5 : is_list KL
+H6 : merge J KL L1
+============================
+ merge J KL JKL
+
+change_merge_order < <b>apply merge_assoc to H2 H3 H6 H1.</b>
+</pre>
+<a name="259"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL L1
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+H4 : is_list J
+H5 : is_list KL
+H6 : merge J KL L1
+H7 : perm L1 JKL
+============================
+ merge J KL JKL
+
+change_merge_order < <b>apply perm_merge_3 to H6 H7.</b>
+</pre>
+<a name="260"></a>
+<pre class="code">
+
+Variables: J K L JK KL JKL L1
+H1 : merge JK L JKL
+H2 : merge J K JK
+H3 : merge K L KL
+H4 : is_list J
+H5 : is_list KL
+H6 : merge J KL L1
+H7 : perm L1 JKL
+H8 : merge J KL JKL
+============================
+ merge J KL JKL
+
+change_merge_order < <b>search.</b>
+Proof completed.
+</pre>
+<a name="261"></a>
+<pre class="code">
+Abella < <b>Theorem change_merge_order2 : 
+forall J K JK L KL JKL, merge J K JK -> merge K L KL -> merge J KL JKL ->
+  merge JK L JKL.</b>
+
+</pre>
+<a name="262"></a>
+<pre class="code">
+
+============================
+ forall J K JK L KL JKL, merge J K JK -> merge K L KL -> merge J KL JKL ->
+   merge JK L JKL
+
+change_merge_order2 < <b>intros.</b>
+</pre>
+<a name="263"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL
+H1 : merge J K JK
+H2 : merge K L KL
+H3 : merge J KL JKL
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>apply merge_3_is_list to H1.</b>
+</pre>
+<a name="264"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL
+H1 : merge J K JK
+H2 : merge K L KL
+H3 : merge J KL JKL
+H4 : is_list JK
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>apply merge_2_is_list to H2.</b>
+</pre>
+<a name="265"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL
+H1 : merge J K JK
+H2 : merge K L KL
+H3 : merge J KL JKL
+H4 : is_list JK
+H5 : is_list L
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>apply merge_exists to *H4 *H5.</b>
+</pre>
+<a name="266"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL L1
+H1 : merge J K JK
+H2 : merge K L KL
+H3 : merge J KL JKL
+H6 : merge JK L L1
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>apply merge_assoc to *H1 *H2 *H3 H6.</b>
+</pre>
+<a name="267"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL L1
+H6 : merge JK L L1
+H7 : perm JKL L1
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>apply perm_sym to *H7.</b>
+</pre>
+<a name="268"></a>
+<pre class="code">
+
+Variables: J K JK L KL JKL L1
+H6 : merge JK L L1
+H8 : perm L1 JKL
+============================
+ merge JK L JKL
+
+change_merge_order2 < <b>backchain perm_merge_3.</b>
+Proof completed.
+</pre>
+<a name="269"></a>
+<pre class="code">
+Abella < <b>Theorem merge_perm_det : 
+forall J K L1 L2, merge J K L1 -> merge J K L2 -> perm L1 L2.</b>
+
+</pre>
+<a name="270"></a>
+<pre class="code">
+
+============================
+ forall J K L1 L2, merge J K L1 -> merge J K L2 -> perm L1 L2
+
+merge_perm_det < <b>induction on 1.</b>
+</pre>
+<a name="271"></a>
+<pre class="code">
+
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+============================
+ forall J K L1 L2, merge J K L1 @ -> merge J K L2 -> perm L1 L2
+
+merge_perm_det < <b>intros.</b>
+</pre>
+<a name="272"></a>
+<pre class="code">
+
+Variables: J K L1 L2
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H1 : merge J K L1 @
+H2 : merge J K L2
+============================
+ perm L1 L2
+
+merge_perm_det < <b>case H1.</b>
+</pre>
+<a name="273"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L2
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge nil nil L2
+============================
+ perm nil L2
+
+Subgoal 2 is:
+ perm L1 L2
+
+Subgoal 3 is:
+ perm L1 L2
+
+merge_perm_det < <b>backchain merge_nil_perm.</b>
+</pre>
+<a name="274"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L1 L2 A JJ LL
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj JJ A J
+H4 : adj LL A L1
+H5 : merge JJ K LL *
+============================
+ perm L1 L2
+
+Subgoal 3 is:
+ perm L1 L2
+
+merge_perm_det < <b>apply merge_unadj_1 to H2 H3.</b>
+</pre>
+<a name="275"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L1 L2 A JJ LL LL1
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj JJ A J
+H4 : adj LL A L1
+H5 : merge JJ K LL *
+H6 : adj LL1 A L2
+H7 : merge JJ K LL1
+============================
+ perm L1 L2
+
+Subgoal 3 is:
+ perm L1 L2
+
+merge_perm_det < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="276"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J K L1 L2 A JJ LL LL1
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj JJ A J
+H4 : adj LL A L1
+H5 : merge JJ K LL *
+H6 : adj LL1 A L2
+H7 : merge JJ K LL1
+H8 : perm LL LL1
+============================
+ perm L1 L2
+
+Subgoal 3 is:
+ perm L1 L2
+
+merge_perm_det < <b>search.</b>
+</pre>
+<a name="277"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L1 L2 A KK LL
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj KK A K
+H4 : adj LL A L1
+H5 : merge J KK LL *
+============================
+ perm L1 L2
+
+merge_perm_det < <b>apply merge_unadj_2 to H2 H3.</b>
+</pre>
+<a name="278"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L1 L2 A KK LL LL1
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj KK A K
+H4 : adj LL A L1
+H5 : merge J KK LL *
+H6 : adj LL1 A L2
+H7 : merge J KK LL1
+============================
+ perm L1 L2
+
+merge_perm_det < <b>apply IH to H5 H7.</b>
+</pre>
+<a name="279"></a>
+<pre class="code">
+Subgoal 3:
+
+Variables: J K L1 L2 A KK LL LL1
+IH : forall J K L1 L2, merge J K L1 * -> merge J K L2 -> perm L1 L2
+H2 : merge J K L2
+H3 : adj KK A K
+H4 : adj LL A L1
+H5 : merge J KK LL *
+H6 : adj LL1 A L2
+H7 : merge J KK LL1
+H8 : perm LL LL1
+============================
+ perm L1 L2
+
+merge_perm_det < <b>search.</b>
+Proof completed.
+</pre>
+<a name="280"></a>
+<pre class="code">
+Abella < <b>Theorem merge_preserves_perm_lem : 
+forall L LL J K, is_list J -> merge L J K -> merge LL J K -> perm L LL.</b>
+
+</pre>
+<a name="281"></a>
+<pre class="code">
+
+============================
+ forall L LL J K, is_list J -> merge L J K -> merge LL J K -> perm L LL
+
+merge_preserves_perm_lem < <b>induction on 1.</b>
+</pre>
+<a name="282"></a>
+<pre class="code">
+
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+============================
+ forall L LL J K, is_list J @ -> merge L J K -> merge LL J K -> perm L LL
+
+merge_preserves_perm_lem < <b>intros.</b>
+</pre>
+<a name="283"></a>
+<pre class="code">
+
+Variables: L LL J K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H1 : is_list J @
+H2 : merge L J K
+H3 : merge LL J K
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>case H1.</b>
+</pre>
+<a name="284"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_sym to H2.</b>
+</pre>
+<a name="285"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+H4 : merge nil L K
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_nil_perm to *H4.</b>
+</pre>
+<a name="286"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+H5 : perm L K
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_sym to H3.</b>
+</pre>
+<a name="287"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+H5 : perm L K
+H6 : merge nil LL K
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_nil_perm to *H6.</b>
+</pre>
+<a name="288"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+H5 : perm L K
+H7 : perm LL K
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply perm_sym to *H7.</b>
+</pre>
+<a name="289"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: L LL K
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L nil K
+H3 : merge LL nil K
+H5 : perm L K
+H8 : perm K LL
+============================
+ perm L LL
+
+Subgoal 2 is:
+ perm L LL
+
+merge_preserves_perm_lem < <b>backchain perm_trans.</b>
+</pre>
+<a name="290"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H5 : is_list L1 *
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_unadj_2 to H2 _.</b>
+</pre>
+<a name="291"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A LL1
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj LL1 A K
+H7 : merge L L1 LL1
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply merge_unadj_2 to H3 _.</b>
+</pre>
+<a name="292"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A LL1 LL2
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj LL1 A K
+H7 : merge L L1 LL1
+H8 : adj LL2 A K
+H9 : merge LL L1 LL2
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply adj_same_result to H8 H6.</b>
+</pre>
+<a name="293"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A LL1 LL2
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj LL1 A K
+H7 : merge L L1 LL1
+H8 : adj LL2 A K
+H9 : merge LL L1 LL2
+H10 : perm LL2 LL1
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply perm_merge_3 to *H9 *H10.</b>
+</pre>
+<a name="294"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A LL1 LL2
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H5 : is_list L1 *
+H6 : adj LL1 A K
+H7 : merge L L1 LL1
+H8 : adj LL2 A K
+H11 : merge LL L1 LL1
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>apply IH to *H5 *H7 *H11.</b>
+</pre>
+<a name="295"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: L LL K L1 A LL1 LL2
+IH : forall L LL J K, is_list J * -> merge L J K -> merge LL J K -> perm L LL
+H2 : merge L (A :: L1) K
+H3 : merge LL (A :: L1) K
+H4 : is_o A
+H6 : adj LL1 A K
+H8 : adj LL2 A K
+H12 : perm L LL
+============================
+ perm L LL
+
+merge_preserves_perm_lem < <b>search.</b>
+Proof completed.
+</pre>
+<a name="296"></a>
+<pre class="code">
+Abella < <b>Theorem merge_preserves_perm : 
+forall L LL J K, merge L J K -> merge LL J K -> perm L LL.</b>
+
+</pre>
+<a name="297"></a>
+<pre class="code">
+
+============================
+ forall L LL J K, merge L J K -> merge LL J K -> perm L LL
+
+merge_preserves_perm < <b>intros.</b>
+</pre>
+<a name="298"></a>
+<pre class="code">
+
+Variables: L LL J K
+H1 : merge L J K
+H2 : merge LL J K
+============================
+ perm L LL
+
+merge_preserves_perm < <b>apply merge_2_is_list to H1.</b>
+</pre>
+<a name="299"></a>
+<pre class="code">
+
+Variables: L LL J K
+H1 : merge L J K
+H2 : merge LL J K
+H3 : is_list J
+============================
+ perm L LL
+
+merge_preserves_perm < <b>backchain merge_preserves_perm_lem.</b>
+Proof completed.
+</pre>
+<a name="300"></a>
+<pre class="code">
+Abella < <b>Theorem merge_sub : 
+forall J K L JK JL JKL, merge J K JK -> merge JK L JKL -> merge JL K JKL ->
+  merge J L JL.</b>
+
+</pre>
+<a name="301"></a>
+<pre class="code">
+
+============================
+ forall J K L JK JL JKL, merge J K JK -> merge JK L JKL -> merge JL K JKL ->
+   merge J L JL
+
+merge_sub < <b>intros.</b>
+</pre>
+<a name="302"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_1_is_list to H1.</b>
+</pre>
+<a name="303"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_2_is_list to H2.</b>
+</pre>
+<a name="304"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_exists to H4 H5.</b>
+</pre>
+<a name="305"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_sym to H1.</b>
+</pre>
+<a name="306"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_2_is_list to H1.</b>
+</pre>
+<a name="307"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_3_is_list to H6.</b>
+</pre>
+<a name="308"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_exists to H8 H9.</b>
+</pre>
+<a name="309"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_assoc to H7 H6 H10 H2.</b>
+</pre>
+<a name="310"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+H11 : perm L2 JKL
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_sym to H10.</b>
+</pre>
+<a name="311"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+H11 : perm L2 JKL
+H12 : merge L1 K L2
+============================
+ merge J L JL
+
+merge_sub < <b>apply perm_merge_3 to H12 H11.</b>
+</pre>
+<a name="312"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+H11 : perm L2 JKL
+H12 : merge L1 K L2
+H13 : merge L1 K JKL
+============================
+ merge J L JL
+
+merge_sub < <b>apply merge_preserves_perm to H13 H3.</b>
+</pre>
+<a name="313"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+H11 : perm L2 JKL
+H12 : merge L1 K L2
+H13 : merge L1 K JKL
+H14 : perm L1 JL
+============================
+ merge J L JL
+
+merge_sub < <b>apply perm_merge_3 to H6 H14.</b>
+</pre>
+<a name="314"></a>
+<pre class="code">
+
+Variables: J K L JK JL JKL L1 L2
+H1 : merge J K JK
+H2 : merge JK L JKL
+H3 : merge JL K JKL
+H4 : is_list J
+H5 : is_list L
+H6 : merge J L L1
+H7 : merge K J JK
+H8 : is_list K
+H9 : is_list L1
+H10 : merge K L1 L2
+H11 : perm L2 JKL
+H12 : merge L1 K L2
+H13 : merge L1 K JKL
+H14 : perm L1 JL
+H15 : merge J L JL
+============================
+ merge J L JL
+
+merge_sub < <b>search.</b>
+Proof completed.
+</pre>
+<a name="315"></a>
+<pre class="code">
+Abella < <b>Theorem merge_to_adj : 
+forall J L A, merge J (A :: nil) L -> (exists JJ, perm J JJ /\ adj JJ A L).</b>
+
+</pre>
+<a name="316"></a>
+<pre class="code">
+
+============================
+ forall J L A, merge J (A :: nil) L -> (exists JJ, perm J JJ /\ adj JJ A L)
+
+merge_to_adj < <b>induction on 1.</b>
+</pre>
+<a name="317"></a>
+<pre class="code">
+
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+============================
+ forall J L A, merge J (A :: nil) L @ -> (exists JJ, perm J JJ /\ adj JJ A L)
+
+merge_to_adj < <b>intros.</b>
+</pre>
+<a name="318"></a>
+<pre class="code">
+
+Variables: J L A
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H1 : merge J (A :: nil) L @
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>case H1.</b>
+</pre>
+<a name="319"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J L A A1 JJ LL
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj JJ A1 J
+H3 : adj LL A1 L
+H4 : merge JJ (A :: nil) LL *
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+Subgoal 2 is:
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>apply IH to H4.</b>
+</pre>
+<a name="320"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J L A A1 JJ LL JJ1
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj JJ A1 J
+H3 : adj LL A1 L
+H4 : merge JJ (A :: nil) LL *
+H5 : perm JJ JJ1
+H6 : adj JJ1 A LL
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+Subgoal 2 is:
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>apply adj_swap to H6 H3.</b>
+</pre>
+<a name="321"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J L A A1 JJ LL JJ1 U
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj JJ A1 J
+H3 : adj LL A1 L
+H4 : merge JJ (A :: nil) LL *
+H5 : perm JJ JJ1
+H6 : adj JJ1 A LL
+H7 : adj JJ1 A1 U
+H8 : adj U A L
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+Subgoal 2 is:
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>search.</b>
+</pre>
+<a name="322"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L A A1 KK LL
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj KK A1 (A :: nil)
+H3 : adj LL A1 L
+H4 : merge J KK LL *
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>apply adj_det to H2.</b>
+</pre>
+<a name="323"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L A LL
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj nil A (A :: nil)
+H3 : adj LL A L
+H4 : merge J nil LL *
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>apply merge_sym to H4.</b>
+</pre>
+<a name="324"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L A LL
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj nil A (A :: nil)
+H3 : adj LL A L
+H4 : merge J nil LL *
+H5 : merge nil J LL
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>apply merge_nil_perm to H5.</b>
+</pre>
+<a name="325"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J L A LL
+IH : forall J L A, merge J (A :: nil) L * ->
+       (exists JJ, perm J JJ /\ adj JJ A L)
+H2 : adj nil A (A :: nil)
+H3 : adj LL A L
+H4 : merge J nil LL *
+H5 : merge nil J LL
+H6 : perm J LL
+============================
+ exists JJ, perm J JJ /\ adj JJ A L
+
+merge_to_adj < <b>search.</b>
+Proof completed.
+</pre>
+<a name="326"></a>
+<pre class="code">
+Abella < <b>Theorem merge_same_result_diff : 
+forall J A K B L, merge J (A :: nil) L -> merge K (B :: nil) L -> A = B /\
+  perm J K \/ (exists KK, merge KK (A :: nil) K).</b>
+
+</pre>
+<a name="327"></a>
+<pre class="code">
+
+============================
+ forall J A K B L, merge J (A :: nil) L -> merge K (B :: nil) L -> A = B /\
+   perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>intros.</b>
+</pre>
+<a name="328"></a>
+<pre class="code">
+
+Variables: J A K B L
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply merge_to_adj to H1.</b>
+</pre>
+<a name="329"></a>
+<pre class="code">
+
+Variables: J A K B L JJ
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply merge_to_adj to H2.</b>
+</pre>
+<a name="330"></a>
+<pre class="code">
+
+Variables: J A K B L JJ JJ1
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply adj_same_result_diff to H4 H6.</b>
+</pre>
+<a name="331"></a>
+<pre class="code">
+
+Variables: J A K B L JJ JJ1
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H7 : A = B /\ perm JJ JJ1 \/ (exists KK, adj KK A JJ1)
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>case H7.</b>
+</pre>
+<a name="332"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J K B L JJ JJ1
+H1 : merge J (B :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ B L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : perm JJ JJ1
+============================
+ B = B /\ perm J K \/ (exists KK, merge KK (B :: nil) K)
+
+Subgoal 2 is:
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply perm_trans to H3 H8.</b>
+</pre>
+<a name="333"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J K B L JJ JJ1
+H1 : merge J (B :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ B L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : perm JJ JJ1
+H9 : perm J JJ1
+============================
+ B = B /\ perm J K \/ (exists KK, merge KK (B :: nil) K)
+
+Subgoal 2 is:
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply perm_sym to H5.</b>
+</pre>
+<a name="334"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J K B L JJ JJ1
+H1 : merge J (B :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ B L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : perm JJ JJ1
+H9 : perm J JJ1
+H10 : perm JJ1 K
+============================
+ B = B /\ perm J K \/ (exists KK, merge KK (B :: nil) K)
+
+Subgoal 2 is:
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply perm_trans to H9 H10.</b>
+</pre>
+<a name="335"></a>
+<pre class="code">
+Subgoal 1:
+
+Variables: J K B L JJ JJ1
+H1 : merge J (B :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ B L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : perm JJ JJ1
+H9 : perm J JJ1
+H10 : perm JJ1 K
+H11 : perm J K
+============================
+ B = B /\ perm J K \/ (exists KK, merge KK (B :: nil) K)
+
+Subgoal 2 is:
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>search.</b>
+</pre>
+<a name="336"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J A K B L JJ JJ1 KK
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : adj KK A JJ1
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply adj_implies_merge to H8.</b>
+</pre>
+<a name="337"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J A K B L JJ JJ1 KK
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : adj KK A JJ1
+H9 : merge KK (A :: nil) JJ1
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply perm_sym to H5.</b>
+</pre>
+<a name="338"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J A K B L JJ JJ1 KK
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : adj KK A JJ1
+H9 : merge KK (A :: nil) JJ1
+H10 : perm JJ1 K
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>apply perm_merge_3 to H9 H10.</b>
+</pre>
+<a name="339"></a>
+<pre class="code">
+Subgoal 2:
+
+Variables: J A K B L JJ JJ1 KK
+H1 : merge J (A :: nil) L
+H2 : merge K (B :: nil) L
+H3 : perm J JJ
+H4 : adj JJ A L
+H5 : perm K JJ1
+H6 : adj JJ1 B L
+H8 : adj KK A JJ1
+H9 : merge KK (A :: nil) JJ1
+H10 : perm JJ1 K
+H11 : merge KK (A :: nil) K
+============================
+ A = B /\ perm J K \/ (exists KK, merge KK (A :: nil) K)
+
+merge_same_result_diff < <b>search.</b>
+Proof completed.
+</pre>
+<a name="340"></a>
+<pre class="code">
+Abella < <b>Theorem merge_split : 
+forall J K L LL A, merge LL (A :: nil) L -> merge J K L ->
+  (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
+  (exists KK, merge KK (A :: nil) K /\ merge J KK LL).</b>
+
+</pre>
+<a name="341"></a>
+<pre class="code">
+
+============================
+ forall J K L LL A, merge LL (A :: nil) L -> merge J K L ->
+   (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
+   (exists KK, merge KK (A :: nil) K /\ merge J KK LL)
+
+merge_split < <b>skip.</b>
+Proof completed.
+</pre>
+<a name="342"></a>
+<pre class="code">
+Abella < <b>Define subset : (list o) -> (list o) -> prop by 
+subset J L := exists K, merge J K L.</b>
+
+</pre>
+<a name="343"></a>
+<pre class="code">
+Abella < <b>Theorem subset_1_is_list : 
+forall J K, subset J K -> is_list J.</b>
+
+</pre>
+<a name="344"></a>
+<pre class="code">
+
+============================
+ forall J K, subset J K -> is_list J
+
+subset_1_is_list < <b>intros.</b>
+</pre>
+<a name="345"></a>
+<pre class="code">
+
+Variables: J K
+H1 : subset J K
+============================
+ is_list J
+
+subset_1_is_list < <b>case H1.</b>
+</pre>
+<a name="346"></a>
+<pre class="code">
+
+Variables: J K K1
+H2 : merge J K1 K
+============================
+ is_list J
+
+subset_1_is_list < <b>backchain merge_1_is_list.</b>
+Proof completed.
+</pre>
+<a name="347"></a>
+<pre class="code">
+Abella < <b>Theorem subset_2_is_list : 
+forall J K, subset J K -> is_list K.</b>
+
+</pre>
+<a name="348"></a>
+<pre class="code">
+
+============================
+ forall J K, subset J K -> is_list K
+
+subset_2_is_list < <b>intros.</b>
+</pre>
+<a name="349"></a>
+<pre class="code">
+
+Variables: J K
+H1 : subset J K
+============================
+ is_list K
+
+subset_2_is_list < <b>case H1.</b>
+</pre>
+<a name="350"></a>
+<pre class="code">
+
+Variables: J K K1
+H2 : merge J K1 K
+============================
+ is_list K
+
+subset_2_is_list < <b>backchain merge_3_is_list.</b>
+Proof completed.
+</pre>
+<a name="351"></a>
+<pre class="code">
+Abella < 
+</pre>
+</div>
+
+</body>
+</html>
