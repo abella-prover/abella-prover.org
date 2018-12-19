@@ -1,0 +1,658 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>A Tutorial on Schematic Polymorphism in Abella</title>
+<style type="text/css">
+.navlist
+{
+    padding: 0em 1em;
+    margin: 0.5em 1em 1.5em 1em;
+}
+
+.navlist li
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px dotted gray;
+}
+
+.navlist ul
+{
+    padding: 0em 1em;
+    margin: 0;
+}
+
+.navlist ul li
+{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+section p + p,
+.section p + p {
+    margin-top: 1em !important;
+    text-indent: 0 !important;
+}
+
+</style>
+<link href="http://abella-prover.org/style.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="http://abella-prover.org/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://abella-prover.org/images/favicon.ico"
+        type="image/x-icon" />
+</head>
+
+<body>
+
+<div id="logo-small">
+<a href="http://abella-prover.org/index.html">
+<img src="http://abella-prover.org/images/logo-small.png"/>
+</a>
+</div>
+
+<div class="section">
+
+<center>
+<h1 id="main">
+  A Tutorial on Schematic Polymorphism in Abella  
+</h1>
+</center>
+</br>
+</br>
+
+<p>
+The newest release of Abella adds the support
+of <a href="http://dx.doi.org/10.1145/3236950.3236961">schematic
+polymorphism</a> without changing its theoretical underpinnings. The
+key ideas include the following:
+
+<ul>
+  <li> We allow terms, definitions and theorems to be parameterized by
+    type variables. Those are called <em>schematic terms, definitions
+    and theorems</em>, respectively. They represent their monomorphic
+    counterparts under the instantiation of the parameterizing type
+    variables with ground types. In other words, they function as
+    schemata for generating terms, definitions and theorems in the
+    logic of Abella under type instantiation.
+  </li> 
+
+  <li> Given a schematic theorem, we restrict our attention to the
+    construction of <em>schematic proofs</em> for it. Those are proof
+    schemata parameterized by the same type variables parameterizing
+    the theorem. By plugging in ground types for the parameterizing
+    variables they become actual proofs for the instantiated theorem
+    in the logic of Abella. In other words, the schematic proofs are
+    ignorant of type information and their structures are stable under
+    type instantiation.
+  </li>
+
+  <li>
+    We apply the same idea to encode and reason about the
+    specification logic and polymorphic program clauses. As a result,
+    we are now able to prove properties of polymorphic specifications
+    in &lambda;-Prolog, as long as schematic proofs for these
+    properties can be constructed.
+  </li>
+</ul>
+
+We present a tutorial of schematic polymorphism in Abella. We assume
+that the reader is already familiar with the basics of Abella. If not,
+please consult the
+comprehensive <a href="http://jfr.unibo.it/article/view/4650">Abella
+tutorial</a>. In the subsequent sections, we first exhibit how the
+schematic terms, definitions, theorems and proofs work and then
+show how to reason about polymorphic programs written in
+&lambda;-Prolog. In each section, we discuss the limitations of
+schematic polymorphism. All the discussions are driven by small
+examples that are (supposedly) easy to understand. The examples can be
+found <a href="../examples/schm-poly/schm_poly_tst.html">here</a>.
+For more technical details, please
+consult <a href="http://dx.doi.org/10.1145/3236950.3236961">the
+accompanying paper</a> and
+its <a href="http://sparrow.cs.umn.edu/schmpoly/">website</a>.
+</p>
+
+</div>
+
+
+<div class="section">
+
+<h2 id="basics">
+Basics of Schematic Polymorphism
+</h2>
+</br>
+
+
+<h3 id="schm-terms">
+Schematic terms
+</h2>
+</br>
+
+<p>
+We allow type variables and type constructors that may take types as
+arguments in forming type expressions. The type constructor
+declaration now has the following form:
+
+<pre>
+Kind a   type -> ... -> type.
+</pre>
+
+As an example, the type constructor for lists is the following which
+takes the type of list elements as an argument:
+<pre>
+Kind list   type -> type.
+</pre>
+
+The type expression <code>list (list int) -> list bool</code>
+represents the type of functions from lists of lists of integers to
+lists of booleans.
+</p>
+
+<p>
+We define constructors of terms as follows:
+<pre>
+Type c   T
+</pre>
+It declares a <em>schematic constant</em> <code>c</code> whose
+type <code>T</code> is parameterized by the free type
+variables <code>A1,...,An</code> occurring in <code>T</code>. By
+plugging in ground types for <code>A1,...,An</code> in <code>T</code>,
+we get a constant <code>c</code> of the instantiated type. Note that
+when <code>T</code> does not contain any type variable, a normal
+constant <code>c</code> of type <code>T</code> is declared.
+</p>
+
+<p>
+Abella has already built in the declarations of constant schemata for
+lists. We explicitly spell them out as follows (note that the
+list of parameterizing types is omitted):
+
+As an example, the schematic constants for constructing lists are
+defined as follows:
+
+<pre>
+Type nil  list A.
+Type ::   A -> list A -> list A.
+</pre>
+
+In fact, Abella has already built in the declarations
+of <code>list</code>, <code>nil</code> and <code>::</code>. So we do
+not need to explicitly declare them. As usual, <code>::</code> is used
+as an infix operator. As an example, the following term is a list of
+integers 
+
+<pre>
+  1 :: 2 :: 3 :: nil
+</pre>
+
+where the parameterizing type variable <code>A</code> of
+<code>nil</code> and <code>::</code> are inferred (instantiated)
+to <code>int</code>.
+</p>
+
+</br>
+<h3 id="schm-defs">
+Schematic definitions
+</h2>
+</br>
+
+<p>
+Given schematic terms, we construct schematic definitions
+parameterized by type variables, which stand for an infinite
+collection of definitions under the instantiation of the
+parameterizing type variables with ground types.
+
+As an example, the schematic definition for the append relation is as
+follows:
+<pre>
+Define append : list A -> list A -> list A -> prop by
+  append nil L L;
+  append (X :: L1) L2 (X :: L3) := append L1 L2 L3.
+</pre>
+
+The definition is very much like that of the monomorphic append
+relation, except that <code>append</code> is a schematic constant
+parameterized by the type variable <code>A</code> and the whole
+definition is also parameterized by <code>A</code>. By
+instantiating <code>A</code> with ground types, we get the definition
+of append for lists of these types. Note here the types of the
+constants <code>nil</code> and <code>::</code> are automatically
+inferred following the standard type inference rules for polymorphic
+expressions.
+</p>
+
+</br>
+<h3 id="schm-theorems">
+Schematic theorems
+</h3>
+</br>
+
+<p>
+Given schematic definitions, we can state schematic theorems about
+them. For example, the following theorem describes
+that <code>append</code> is deterministic in its third argument.
+
+<pre>
+Theorem append_det[A] : forall (L1: list A) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+</pre>
+
+Note that the list of variables after the name of the theorem contains
+the type variables parameterizing the theorem. To help infer the
+correct type of the formula, we annotate <code>L1</code> with the
+type <code>list A</code>. 
+
+To prove this theorem, we need to show it hold for all the type
+instances for <code>A</code>.
+</p>
+
+
+</br>
+<h3 id="schm-theorems">
+Schematic proofs
+</h3>
+</br>
+
+<p>
+We are only interested in constructing schematic proofs for a
+schematic theorem, which are parameterized by the same type variables
+of the theorem and, given any type instantiation, become actual proofs of
+the instantiated theorem by simply replacing the occurrences of type
+variables in them with the type instances given by the instantiation.
+</p>
+
+<p>
+To construct schematic proofs, Abella ensures that every tactic in its
+successful application only employs the so-called <em>schematic proofs
+rules</em> to build up the proofs; these are proof rules whose shapes
+are stable under type instantiation and that coincide with the proof
+rules in the logic of Abella under ground type instantiation. When
+schematic proof rules are not applicable, the tactics that implement
+them will fail to apply and return an error message; the proof hence
+gets stuck. Most of the proof rules in the logic of Abella are
+immediately schematic by parameterizing them over type variables. The
+only non-trivial case is for the rule of case analysis, which is
+implemented by the <code>case</code> tactic. For this rule to be
+schematic, a type-generic solution to the unification problem incurred
+by case analysis must exist
+(see <a href="http://dx.doi.org/10.1145/3236950.3236961">the paper</a>
+for details). Abella finds type-generic unifiers by treating type
+variables as "black boxes" during case analysis (unification). That
+is, it ensures that if its unification algorithm can find a solution
+without inspecting the structures of types for type variables, then
+the obtained solution is type-generic.
+</p>
+
+<p>
+Continuing the example <code>append_det</code>, we observe that it can
+be proved by following the same proof by induction on the first
+assumption, no matter what type is substituted for <code>A</code>. In
+other words, the parameterizing type <code>A</code> is treated as a
+black box throughout the proof. Therefore, we guess that a schematic
+proof exists for <code>append_det</code>. Indeed, we can type in the
+following proof scripts in Abella to finish the proof
+for <code>append_det</code>:
+
+<pre>
+Theorem append_det[A] : forall (L1: list A) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.  
+</pre>
+The key to this proof is that case analyses do not inspect what
+type <code>A</code> could be when doing unification. We left the
+details of the proof for the readers to explore.
+</p>
+
+<p>
+We can apply the schematic theorems at specific type instances. For
+example, the following special case of <code>append_det</code> at the
+type <code>o</code> is proved by applying <code>append_det</code>.
+
+<pre>
+Theorem oappend_det : forall (L1: list o) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+intros. apply append_det[o] to H1 H2. search.
+</pre>
+
+Here, we explicitly provide the type instances for the parameterizing
+type variables of <code>append_det</code> in the <code>apply</code>
+tactic. The following is another example, which simply restates and
+proves <code>append_det</code>.
+
+<pre>
+Theorem append_det1[A] : forall (L1: list A) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+intros. apply append_det[A] to H1 H2. search.
+</pre>
+
+When applying schematic theorems, we can omit the instances for their
+parameterizing type variables if they can be inferred from the
+context, as illustrated by the following examples.
+
+<pre>
+Theorem append_det2[A] : forall (L1: list A) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+intros. apply append_det[_] to H1 H2. search.
+
+Theorem append_det3[A] : forall (L1: list A) L2 L3 L3',
+  append L1 L2 L3 -> append L1 L2 L3' -> L3 = L3'.
+intros. apply append_det to H1 H2. search.
+</pre>
+
+<p>
+
+
+</br>
+<h3 id="hoas">
+Interplay with higher-order abstract syntax
+</h3>
+</br>
+
+<p>
+We have seen how schematic polymorphism allows us to prove common
+properties of generic data structures. Another significant benefit is
+that it allows us to prove common properties about the structures of
+higher-order syntax and to apply them at arbitrary type instances. For
+example, given the following membership definition of lists:
+
+<pre>
+Define member : A -> list A -> prop by
+  member X (X :: L);
+  member X (Y :: L) := member X L.
+</pre>
+
+we would like to prove that if a list does not depend on a nominal
+constant, then any dependency of its element on this nominal constant
+is vacuous. By exploiting higher-order abstract syntax, this property
+can be stated as the following theorem:
+
+<pre>
+Theorem member_prune[A,B] : forall M (L:list A), nabla (x:B),
+  member (M x) L -> exists M', M = y\M'.  
+</pre>
+
+We note that it has the same proof by induction on the only assumption
+which does not inspect the types for <code>A</code>
+and <code>B</code>. Therefore, it has a schematic proof, as follows:
+<pre>
+Theorem member_prune[A,B] : forall M (L:list A), nabla (x:B),
+  member (M x) L -> exists M', M = y\M'.
+induction on 1. intros. case H1.
+  search.
+  apply IH to H2. search.
+</pre>
+Again, the key for getting a schematic proof is that case analysis
+(unification) treats <code>A</code> and <code>B</code> as black boxes.
+</p>
+
+</p>
+We can apply <code>member_prune</code> at specific types
+for <code>A</code> and <code>B</code>, the following are some
+examples:
+
+<pre>
+Theorem olist_mem_prune : forall M (L:list o), nabla (x:o),
+  member (M x) L -> exists M', M = y\M'.
+intros. apply member_prune[o,o] to H1. search.
+
+Theorem member_prune1[A,B] : forall M (L:list A), nabla (x:B),
+  member (M x) L -> exists M', M = y\M'.
+intros. apply member_prune[A,B] to H1. search.  
+</pre>
+
+Again, we can omit some or all type instances when using
+the <code>apply</code> tactic, as shown in the following examples:
+
+<pre>
+Theorem member_prune2[A,B] : forall M (L:list A), nabla (x:B),
+  member (M x) L -> exists M', M = y\M'.
+intros. apply member_prune[_,B] to H1. search.
+
+Theorem member_prune3[A,B] : forall M (L:list A), nabla (x:i),
+  member (M x) L -> exists M', M = y\M'.
+intros. apply member_prune[_,i] to H1. search.
+
+Theorem member_prune4[A,B] : forall M (L:list A), nabla (x:i),
+  member (M x) L -> exists M', M = y\M'.
+intros. apply member_prune to H1. search.
+</pre>
+
+We can use the <code>backchain</code> tactic to achieve similar effects:
+
+<pre>
+Theorem olist_mem_prune_bc : forall M (L:list o), nabla (x:o),
+  member (M x) L -> exists M', M = y\M'.
+intros. backchain member_prune[o,o].
+
+Theorem member_prune1_bc[A,B] : forall M (L:list A), nabla (x:B),
+  member (M x) L -> exists M', M = y\M'.
+intros. backchain member_prune[A,B].  
+</pre>
+
+</p>
+
+
+</br>
+<h3 id="limits1">
+Limitations of schematic polymorphism
+</h3>
+</br>
+
+<p>
+It is not always possible to construct proofs schematically. For
+example, some schematic theorem may or may not have a proof depending
+on the type instances for its parameterizing type variables. As an
+example, given the following constant <code>p</code> and a schematic
+definition of equality <code>eq</code>:
+
+<pre>
+Type p   A -> o.
+
+Define eq : A -> A -> prop by
+  eq M M.
+</pre>
+
+The following proposition is not provable schematically.
+
+<pre>
+Theorem tst [A,B] : forall (X:A) (Y:B),
+  eq (p X) (p Y) -> false.
+</pre>
+
+This is because its provability depends on whether <code>A</code>
+and <code>B</code> are instantiated to the same type:
+
+<ul>
+<li>
+When <code>A</code> and <code>B</code> are different types, the two
+occurrences of <code>p</code> represent distinct constants. As such,
+the assumption is vacuously false and the proposition is indeed a
+theorem.
+</li>
+<li>
+When <code>A</code> and <code>B</code> are the same type, the two
+occurrences of <code>p</code> represent the same constant. As such,
+the assumption is true if <code>X = Y</code>. In this case, the
+proposition is not provable.
+</li>
+</ul>
+
+If we try to prove this proposition in Abella, we get stuck after
+applying the following tactics:
+<pre>
+intros. case H1.
+</pre>
+
+in the following proof state with an error message:
+
+<pre>
+Error: Unification error during case analysis: 
+the generic type variable A cannot be instantiated
+
+Variables: X Y
+H1 : eq (p X) (p Y)
+============================
+ false
+</pre>
+
+The error message indicates that unification tries to inspect the type
+of <code>A</code> which should be treated as a black box for a
+type-generic unifier to exist. Therefore, case analysis fails to
+apply schematically.
+
+</div>
+
+
+
+<div class="section">
+
+<h2 id="specs">
+Reasoning about Polymorphic Specifications
+</h2>
+</br>
+
+<p>
+Via schematic polymorphism, we are able to encode a subset of the
+logic of &lambda;-Prolog and polymorphic program clauses as a
+fixed-point definition in the logic of Abella. Through this encoding,
+we are able to reason about polymorphic programs written in
+&lambda;-Prolog. This section demonstrates how it is done by walking
+through some examples and discusses the limitations of this
+approach. The technical details can be found in the accompanying
+paper.
+</p>
+
+<p>
+Suppose we have the following &lambda;-Prolog program which simply
+implements the append relation at the specification level.
+
+<pre>
+type app   list A -> list A -> list A -> o.
+
+app nil L L.
+app (X :: L1) L2 (X :: L3) :- app L1 L2 L3.
+</pre>
+
+Here <code>app</code> in every clause has its most general type. Each
+clause represents an infinite collection of clauses obtained by
+instantiating the free type variables in the clause (in this
+case, <code>A</code>).
+
+</p>
+
+<p>
+We are able to prove properties about <code>app</code> just as we can
+for the simply typed version of it, as long as schematic proofs can be
+constructed. For example, the following theorem is easily proved by
+using <code>search</code>.
+
+<pre>
+Theorem app_search[A] : forall (X:A) L,
+  {app (X :: nil) L (X :: L)}.
+search.
+</pre>
+
+Here, the proof is finished by backchaining on the instances of the
+program clauses obtained by instantiating their only free type
+variable with the parameterizing variable <code>A</code>.
+</p>
+
+<p>
+The following is a more complicated example which replays the
+deterministic theorem we discussed before for <code>app</code>:
+
+<pre>
+Theorem app_det[A] : forall (L1: list A) L2 L3 L3',
+  {app L1 L2 L3} -> {app L1 L2 L3'} -> L3 = L3'.
+induction on 1. intros. case H1.
+  case H2. search.
+  case H2. apply IH to H3 H4. search.
+</pre>
+
+The structure of the proof is similar to <code>append_det</code>. We
+note the following important detail: for case analysis against a
+specification level clause to succeed, the free type variables in that
+clause must be completely and uniquely fixed, i.e., instantiated with
+types in which only the type variables parameterizing the theorem
+being proved can occur. This condition implies that
+
+<ul>
+  <li> an unique instance of the program clause is used for case analysis, </li>
+  <li> all the other instances are not unifiable with the assumption, </li>
+  <li> and no new type variables is introduced by case analysis. </li>
+</ul>
+
+These implications ensure that case analysis is schematic with respect
+to the parameterizing type variables. 
+</p>
+
+<p>
+To see an example when the above requirement is not satisfied,
+consider the following &lambda;-Prolog program
+
+<pre>
+kind i     type.
+type cst   A -> i.
+type pred  i -> o.
+
+pred (cst X).
+</pre>
+
+In the clause for <code>pred</code>, <code>cst</code> is used at its
+most general type. Thus, this clause has a free type variable which is
+also the type of <code>X</code>.
+</p>
+
+<p>
+If we try to prove the following theorem using the given proof script:
+
+<pre>
+Theorem ty_not_fdet_left : forall M,
+  {pred M} -> false.
+intros. case H1.
+</pre>
+
+We get stuck at the following proof state with an error message:
+<pre>
+Error: Cannot fully infer the type of the program clause: 
+  pred (cst X) :- 
+
+Variables: M
+H1 : {pred M}
+============================
+ false
+</pre>
+The error message indicates that the type variable in <code>pred (cst
+X)</code> is not fully fixed, because when unifying <code>M</code>
+(which is of type <code>i</code>) with <code>cst X</code> we cannot
+uniquely determine the type of <code>X</code>.
+</p>
+
+<p>
+Backchaining on a program clause has a similar requirement. For
+example, we cannot prove the following theorem by
+using <code>search</code> because from the type of <code>M</code> we
+cannot fix the type of <code>X</code> in <code>pred (cst X)</code>.
+<pre>
+Theorem ty_not_fdet_right : forall M,
+  {pred M}.
+search.
+</pre>
+</p>
+
+</div>
+
+
+
+
+<div class="section">
+  <hr />
+  Last updated: <time>Tue Dec 18 20:29:59 EST 2018</time>
+</div>
+
+</body>
+</html>
