@@ -537,10 +537,11 @@ app nil L L.
 app (X :: L1) L2 (X :: L3) :- app L1 L2 L3.
 </pre>
 
-Here <code>app</code> in every clause has its most general type. Each
-clause represents an infinite collection of clauses obtained by
-instantiating the free type variables in the clause (in this
-case, <code>A</code>).
+Here the occurrences of <code>app</code> in every clause have their
+most general type. Each clause represents an infinite collection of
+clauses obtained by instantiating the free type variables in the
+clause (in this example, there is only one free type variable in each
+clause).
 
 </p>
 
@@ -573,21 +574,35 @@ induction on 1. intros. case H1.
   case H2. apply IH to H3 H4. search.
 </pre>
 
-The structure of the proof is similar to <code>append_det</code>. We
-note the following important detail: for case analysis against a
-specification level clause to succeed, the free type variables in that
-clause must be completely and uniquely fixed, i.e., instantiated with
-types in which only the type variables parameterizing the theorem
-being proved can occur. This condition implies that
+The structure of the proof is similar to <code>append_det</code>.
+Again, the key to this proof is how case analysis works. For case
+analysis of an object-level assumption to succeed, Abella requires
+that, for any program clause,
 
 <ul>
-  <li> an unique instance of the program clause is used for case analysis, </li>
-  <li> all the other instances are not unifiable with the assumption, </li>
-  <li> and no new type variables is introduced by case analysis. </li>
+  <li> either none of its type instances are unifiable with the
+   assumption, </li>
+  <li> or there is a unique instance of it that is unifiable with the
+    assumption in a type-generic way and that is obtained by
+    instantiating its free type variables with type expressions
+    constructed using only the type variables parameterizing the
+    theorem being proved.
+  </li>
 </ul>
 
-These implications ensure that case analysis is schematic with respect
-to the parameterizing type variables. 
+The second condition implies that
+
+<ul>
+  <li> a unique instance of the program clause is used for
+  type-generic case analysis, </li>
+  <li> all the other instances are irrelevant, </li>
+  <li> and no new type variables are introduced by case analysis. </li>
+</ul>
+
+From these implications, we can see that the set of parameterizing
+type variables are fixed and used as black boxes in case analysis. As
+a result, case analysis is schematic with respect to the
+parameterizing type variables.
 </p>
 
 <p>
@@ -602,9 +617,9 @@ type pred  i -> o.
 pred (cst X).
 </pre>
 
-In the clause for <code>pred</code>, <code>cst</code> is used at its
-most general type. Thus, this clause has a free type variable which is
-also the type of <code>X</code>.
+In the clause for <code>cst</code> is used at its most general
+type. Thus, this clause has a free type variable which is also the
+type of <code>X</code>.
 </p>
 
 <p>
@@ -629,7 +644,9 @@ H1 : {pred M}
 The error message indicates that the type variable in <code>pred (cst
 X)</code> is not fully fixed, because when unifying <code>M</code>
 (which is of type <code>i</code>) with <code>cst X</code> we cannot
-uniquely determine the type of <code>X</code>.
+uniquely determine the type of <code>X</code>. As a result, there are
+an infinite number of instances of <code>pred (cst X)</code> unifiable
+with <code>{pred M}</code>, violating the aforementioned requirement.
 </p>
 
 <p>
