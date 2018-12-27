@@ -165,10 +165,6 @@ constant <code>c</code> of type <code>T</code> is declared.
 </p>
 
 <p>
-Abella has already built in the declarations of constant schemata for
-lists. We explicitly spell them out as follows (note that the
-list of parameterizing types is omitted):
-
 As an example, the schematic constants for constructing lists are
 defined as follows:
 
@@ -188,8 +184,8 @@ integers
 </pre>
 
 where the parameterizing type variable <code>A</code> of
-<code>nil</code> and <code>::</code> are inferred (instantiated)
-to <code>int</code>.
+<code>nil</code> and <code>::</code> are inferred as (instantiated to)
+<code>int</code>.
 </p>
 
 </br>
@@ -200,7 +196,7 @@ Schematic definitions
 
 <p>
 Given schematic terms, we construct schematic definitions
-parameterized by type variables, which stand for an infinite
+parameterized by type variables. They stand for an infinite
 collection of definitions under the instantiation of the
 parameterizing type variables with ground types.
 
@@ -214,13 +210,18 @@ Define append : list A -> list A -> list A -> prop by
 
 The definition is very much like that of the monomorphic append
 relation, except that <code>append</code> is a schematic constant
-parameterized by the type variable <code>A</code> and the whole
-definition is also parameterized by <code>A</code>. By
-instantiating <code>A</code> with ground types, we get the definition
-of append for lists of these types. Note here the types of the
-constants <code>nil</code> and <code>::</code> are automatically
-inferred following the standard type inference rules for polymorphic
-expressions.
+whose type is parameterized by the type variable <code>A</code>. The
+whole definition is also parameterized by <code>A</code>. By
+instantiating <code>A</code> with ground types, we get the definitions
+of append for lists of these types. In this
+definition, <code>append</code> must be used at its most general
+type. That is, all the occurrences of <code>append</code> in the
+definition must have the type <code>list A -> list A -> list
+A</code>. Note here the types of the constants <code>nil</code>
+and <code>::</code> are automatically inferred to be <code>list
+A</code> and <code>A -> list A -> list A</code> where A is the
+parameterizing type variable. Once <code>append</code> is defined, it
+can be used at any of its type instances.
 </p>
 
 </br>
@@ -258,9 +259,10 @@ Schematic proofs
 <p>
 We are only interested in constructing schematic proofs for a
 schematic theorem, which are parameterized by the same type variables
-of the theorem and, given any type instantiation, become actual proofs of
-the instantiated theorem by simply replacing the occurrences of type
-variables in them with the type instances given by the instantiation.
+of the theorem and, given any ground type instantiation, become actual
+proofs of the instantiated theorem by simply replacing the occurrences
+of type variables in them with the type instances given by the
+instantiation.
 </p>
 
 <p>
@@ -279,10 +281,10 @@ schematic, a type-generic solution to the unification problem incurred
 by case analysis must exist
 (see <a href="http://dx.doi.org/10.1145/3236950.3236961">the paper</a>
 for details). Abella finds type-generic unifiers by treating type
-variables as "black boxes" during case analysis (unification). That
-is, it ensures that if its unification algorithm can find a solution
-without inspecting the structures of types for type variables, then
-the obtained solution is type-generic.
+variables as "black boxes" during case analysis (unification). It
+ensures that if its unification algorithm finds a solution without
+inspecting the structures of types for type variables, then the
+obtained solution is type-generic.
 </p>
 
 <p>
@@ -499,9 +501,9 @@ H1 : eq (p X) (p Y)
  false
 </pre>
 
-The error message indicates that unification tries to inspect the type
-of <code>A</code> which should be treated as a black box for a
-type-generic unifier to exist. Therefore, case analysis fails to
+The error message indicates that unification tries to inspect the
+structure of <code>A</code> which should be treated as a black box for
+a type-generic unifier to exist. Therefore, case analysis fails to
 apply schematically.
 
 </div>
@@ -668,7 +670,7 @@ search.
 
 <div class="section">
   <hr />
-  Last updated: <time>Tue Dec 18 20:29:59 EST 2018</time>
+  Last updated: <time>Wed Dec 26 19:40:26 EST 2018</time>
 </div>
 
 </body>
