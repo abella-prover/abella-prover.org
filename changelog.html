@@ -24,6 +24,30 @@
 
 
 <div class="section">
+<h2>Changes in 2.0.6 from 2.0.5</h2>
+<p>Additions</p>
+<ul>
+<li><p>The schematic polymorphism branch has been merged. You can read
+more about it here:</p>
+<p><a href="http://abella-prover.org/schm-poly/index.html"><tt>http://abella-prover.org/schm-poly/index.html</tt></a></p>
+<p>Thanks to Yuting Wang and Gopalan Nadathur for developing the
+theory to match the implementation by Yuting.</p></li>
+</ul>
+<p>Tweaks to existing functionality</p>
+<ul>
+<li>Polymorphic definitions and theorems in the style of version 2.0.5 are now recast in the style of schematic polymorphism in 2.0.6. There should be minimal user-visible impact.</li>
+</ul>
+<p>Bugfixes</p>
+<ul>
+<li>Confusing nominal and other constants in eta-contraction #110 (Reported by Yuting Wang)</li>
+
+<li>Permutations of nominal constants in equivariant matching failed to respect types. #107 (Reported by Matija Pretnar)</li>
+<li>Error in renaming of bound variabls in metaterms. #106 (Reported by Yuting Wang)</li>
+<li>Incorrect pretty-printing of <code>(pi x\ p x)</code>. #104 (Reported by Dan DaCosta)</li>
+</ul>
+</div>
+
+<div class="section">
 <h2>Version 2.0.4</h2>
 
 <p>Possibly breaking changes</p>
