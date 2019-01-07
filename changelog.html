@@ -24,14 +24,12 @@
 
 
 <div class="section">
-<h2>Changes in 2.0.6 from 2.0.5</h2>
+<h2>Version 2.0.6</h2>
 <p>Additions</p>
 <ul>
 <li><p>The schematic polymorphism branch has been merged. You can read
-more about it here:</p>
-<p><a href="http://abella-prover.org/schm-poly/index.html"><tt>http://abella-prover.org/schm-poly/index.html</tt></a></p>
-<p>Thanks to Yuting Wang and Gopalan Nadathur for developing the
-theory to match the implementation by Yuting.</p></li>
+more about it <a href="schm-poly/index.html">schematic polymorphism tutorial</a>.</p>
+</li>
 </ul>
 <p>Tweaks to existing functionality</p>
 <ul>
@@ -39,12 +37,67 @@ theory to match the implementation by Yuting.</p></li>
 </ul>
 <p>Bugfixes</p>
 <ul>
-<li>Confusing nominal and other constants in eta-contraction #110 (Reported by Yuting Wang)</li>
-
-<li>Permutations of nominal constants in equivariant matching failed to respect types. #107 (Reported by Matija Pretnar)</li>
-<li>Error in renaming of bound variabls in metaterms. #106 (Reported by Yuting Wang)</li>
-<li>Incorrect pretty-printing of <code>(pi x\ p x)</code>. #104 (Reported by Dan DaCosta)</li>
+<li>Confusing nominal and other constants in eta-contraction<br />
+ #110 (Reported by Yuting Wang)</li>
+<li>Permutations of nominal constants in equivariant matching failed to respect types.<br />
+#107 (Reported by Matija Pretnar)</li>
+<li>Error in renaming of bound variabls in metaterms.<br />
+#106 (Reported by Yuting Wang)</li>
+<li>Incorrect pretty-printing of <code>(pi x\ p x)</code>.<br />
+#104 (Reported by Dan DaCosta)</li>
 </ul>
+</div>
+
+<div class="section">
+<h2>Version 2.0.5</h2>
+<p>Additions</p>
+<ul>
+<li><p>Added support for (first-order) polymorphic definitions. Definitions such as the following are now accepted.</p>
+<pre><code>  Define fresh : A -&gt; B -&gt; prop by
+    nabla x, fresh x M.</code></pre>
+<p>In every use of the definition, the type arguments are implicitly instantiated. The type-checking <em>for</em> such definitions is identical to taking all the unbound variable names and quantifying them on the outside. In other words, for the above definition, the behavior of type
+-checking is the same as if there were:</p>
+<pre><code>  Kind A,B  type
+  Define fresh : A -&gt; B -&gt; prop by
+    nabla x, fresh x M.</code></pre>
+<p>Once such a definition is type-checked, the defined symbols are added to the signature as new polymorphic constants, in a vein similar to the <code>pi</code> constant. Whenever it is used, the type arguments are implicitly instantiated based on the types of the arguments.</p></li>
+
+<li><p>Added support for (first-order) polymorphic theorems. A theorem such as the following is now accepted.</p>
+<pre><code>  Theorem prune[A] : forall E L, nabla (x:A), member (E x) L -&gt;
+     exists F, E = x\ F.</code></pre>
+<p>The <code>A</code> here is a type parameter, which must be distinct from the other basic types in scope. To use such a theorem, you <em>must</em> supply enough arguments. An example:</p>
+<pre><code>  Theorem bar : forall E G, nabla (x:tm) (y:ty),
+     member (E x y) G -&gt; exists F, E = x\ y\ F.
+  intros.
+  apply prune[tm] to H1.
+  apply prune[ty] to H1.
+  search.</code></pre></li>
+</ul>
+<p>Tweaks to existing functionality</p>
+<ul>
+<li><p>The syntax for quantifiers now allows for multiple bound variables of the same type. Example:</p>
+<pre><code>  /* Type p i -&gt; i -&gt; prop. */
+  forall (x y : i) (f g : i -&gt; i), p (f (g y)) (g (f x))</code></pre></li>
+<li><p>The <code>apply</code> tactic now takes an optional numerical argument that defines the search depth for automatic searches performed for omitted arguments. A bound of 0 means that no searches are attempted.</p></li>
+<li><p>The <code>abbrev</code> and <code>unabbrev</code> tactics now both take a list of hypotheses to (un)abbreviate. The display of abbreviations has also been compressed.</p></li>
+<li><p>Error messages in interactive mode are printed to stderr in addition to any other output file specified with <code>-o</code>.</p></li>
+<li><p>The <code>monotone</code> tactic now accepts hypothesis naming hints. (#91)</p></li>
+</ul>
+<p>Bugfixes</p>
+<ul>
+<li>Query was broken since 2.0.4-beta2.<br />
+(#69; reported by Ahn Ki Yung)</li>
+<li>Backchain now correctly takes into account inductive restrictions<br />
+(#70; reported by Ahn Ki Yung)</li>
+<li>Search now correctly raises eigenvariables over support<br />
+(#71; reported by Morten Rhiger)</li>
+<li>Undo/ProofGeneral now handles <code>abbrev</code> and <code>unabbrev</code> correctly.</li>
+<li>Do not normalize object sequents except when they occur shallowly among the assumptions or goal. Deep normalization is unsound.<br />
+(Reported by Dale Miller)</li>
+<li>The <code>apply</code> tactic was invalidly raising guessed instances over nominal constants that already occur in the body of the lemma.<br />
+(#96; reported by Ahn Ki Yung and Alwen Tiu)</li>
+</ul>
+
 </div>
 
 <div class="section">
