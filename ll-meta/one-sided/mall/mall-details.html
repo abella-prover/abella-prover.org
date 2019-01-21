@@ -19,7 +19,7 @@
 </div>
 
 <div class="section">
-Welcome to Abella 2.0.5-dev
+Welcome to Abella 2.0.7-dev.
 <a name="1"></a>
 <pre class="code">
 Abella < <b>Kind atm Type.</b>
@@ -286,8 +286,8 @@ Proof completed.
 </pre>
 <a name="23"></a>
 <pre class="code">
-Abella < <b>Import "../lib/merge" with is_o := is_fm.</b>
-Importing from /home/kaustuv/work/abella/examples/linear/one-sided/./../lib/merge
+Abella < <b>Import "../../lib/merge" with is_o := is_fm.</b>
+Importing from "../../lib/merge".
 
 </pre>
 <a name="24"></a>
@@ -26405,7 +26405,7 @@ Subgoal 8 is:
 Subgoal 9 is:
  mall LL
 
-mall_cut < <b>apply perm_sym to *H14.</b>
+mall_cut < <b>apply perm_merge_1 to *H6 *H14.</b>
 </pre>
 <a name="736"></a>
 <pre class="code">
@@ -26419,7 +26419,6 @@ IH1 : forall A B JJ J KK K LL, dual A B @ -> adj JJ A J -> mall J ** ->
 H2 : adj JJ (tens A1 B1) J
 H4 : adj KK (par AA BB) K
 H5 : mall K
-H6 : merge JJ KK LL
 H7 : adj LL1 (tens A1 B1) J
 H8 : merge JJ1 KK1 LL1
 H9 : adj JJ1 A1 J1
@@ -26437,7 +26436,7 @@ H24 : adj LL3 AA L
 H25 : merge KK1 KK LL3
 H28 : merge JJ1 LL3 L1
 H29 : mall L1
-H30 : perm LL1 JJ
+H30 : merge LL1 KK LL
 ============================
  mall LL
 
@@ -26465,7 +26464,7 @@ Subgoal 8 is:
 Subgoal 9 is:
  mall LL
 
-mall_cut < <b>apply perm_merge_3 to *H8 *H30.</b>
+mall_cut < <b>apply merge_assoc to *H8 *H25 *H28 *H30.</b>
 </pre>
 <a name="737"></a>
 <pre class="code">
@@ -26479,65 +26478,6 @@ IH1 : forall A B JJ J KK K LL, dual A B @ -> adj JJ A J -> mall J ** ->
 H2 : adj JJ (tens A1 B1) J
 H4 : adj KK (par AA BB) K
 H5 : mall K
-H6 : merge JJ KK LL
-H7 : adj LL1 (tens A1 B1) J
-H9 : adj JJ1 A1 J1
-H10 : mall J1 **
-H11 : adj KK1 B1 K1
-H12 : mall K1 **
-H15 : dual A1 AA *
-H16 : dual B1 BB *
-H17 : adj KK AA KK2
-H18 : adj KK2 BB LL2
-H19 : mall LL2
-H22 : merge KK1 KK2 L
-H23 : mall L
-H24 : adj LL3 AA L
-H25 : merge KK1 KK LL3
-H28 : merge JJ1 LL3 L1
-H29 : mall L1
-H31 : merge JJ1 KK1 JJ
-============================
- mall LL
-
-Subgoal 2.2 is:
- mall LL
-
-Subgoal 3 is:
- mall LL
-
-Subgoal 4 is:
- mall LL
-
-Subgoal 5 is:
- mall LL
-
-Subgoal 6 is:
- mall LL
-
-Subgoal 7 is:
- mall LL
-
-Subgoal 8 is:
- mall LL
-
-Subgoal 9 is:
- mall LL
-
-mall_cut < <b>apply merge_assoc to *H31 *H25 *H28 *H6.</b>
-</pre>
-<a name="738"></a>
-<pre class="code">
-Subgoal 2.1:
-
-Variables: JJ J KK K LL A1 B1 LL1 JJ1 KK1 J1 K1 BB AA KK2 LL2 L LL3 L1
-IH : forall A B JJ J KK K LL, dual A B * -> adj JJ A J -> mall J ->
-       adj KK B K -> mall K -> merge JJ KK LL -> mall LL
-IH1 : forall A B JJ J KK K LL, dual A B @ -> adj JJ A J -> mall J ** ->
-        adj KK B K -> mall K -> merge JJ KK LL -> mall LL
-H2 : adj JJ (tens A1 B1) J
-H4 : adj KK (par AA BB) K
-H5 : mall K
 H7 : adj LL1 (tens A1 B1) J
 H9 : adj JJ1 A1 J1
 H10 : mall J1 **
@@ -26552,7 +26492,7 @@ H22 : merge KK1 KK2 L
 H23 : mall L
 H24 : adj LL3 AA L
 H29 : mall L1
-H32 : perm L1 LL
+H31 : perm L1 LL
 ============================
  mall LL
 
@@ -26582,7 +26522,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = L1.</b>
 </pre>
-<a name="739"></a>
+<a name="738"></a>
 <pre class="code">
 Subgoal 2.2:
 
@@ -26629,7 +26569,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_3 to H8 H14.</b>
 </pre>
-<a name="740"></a>
+<a name="739"></a>
 <pre class="code">
 Subgoal 2.2:
 
@@ -26678,7 +26618,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H15.</b>
 </pre>
-<a name="741"></a>
+<a name="740"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -26730,7 +26670,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H16 H9.</b>
 </pre>
-<a name="742"></a>
+<a name="741"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -26784,7 +26724,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply add_to_merge_left to H18 H17.</b>
 </pre>
-<a name="743"></a>
+<a name="742"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -26840,7 +26780,7 @@ Subgoal 9 is:
 
 mall_cut < <b>rename M to UKK1.</b>
 </pre>
-<a name="744"></a>
+<a name="743"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -26896,7 +26836,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists UKK, merge U KK UKK.</b>
 </pre>
-<a name="745"></a>
+<a name="744"></a>
 <pre class="code">
 Subgoal 2.2.1.1:
 
@@ -26955,7 +26895,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H19.</b>
 </pre>
-<a name="746"></a>
+<a name="745"></a>
 <pre class="code">
 Subgoal 2.2.1.1:
 
@@ -27015,7 +26955,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="747"></a>
+<a name="746"></a>
 <pre class="code">
 Subgoal 2.2.1.1:
 
@@ -27076,7 +27016,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H22 H23.</b>
 </pre>
-<a name="748"></a>
+<a name="747"></a>
 <pre class="code">
 Subgoal 2.2.1.1:
 
@@ -27138,7 +27078,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="749"></a>
+<a name="748"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27195,7 +27135,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="750"></a>
+<a name="749"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27252,7 +27192,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</b>
 </pre>
-<a name="751"></a>
+<a name="750"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27310,7 +27250,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H22 H18.</b>
 </pre>
-<a name="752"></a>
+<a name="751"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27370,7 +27310,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge LL2 KK1 V.</b>
 </pre>
-<a name="753"></a>
+<a name="752"></a>
 <pre class="code">
 Subgoal 2.2.1.2:
 
@@ -27433,7 +27373,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H23.</b>
 </pre>
-<a name="754"></a>
+<a name="753"></a>
 <pre class="code">
 Subgoal 2.2.1.2:
 
@@ -27497,7 +27437,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H11.</b>
 </pre>
-<a name="755"></a>
+<a name="754"></a>
 <pre class="code">
 Subgoal 2.2.1.2:
 
@@ -27562,7 +27502,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H25 H26.</b>
 </pre>
-<a name="756"></a>
+<a name="755"></a>
 <pre class="code">
 Subgoal 2.2.1.2:
 
@@ -27628,7 +27568,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="757"></a>
+<a name="756"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27689,7 +27629,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="758"></a>
+<a name="757"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -27750,7 +27690,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</b>
 </pre>
-<a name="759"></a>
+<a name="758"></a>
 <pre class="code">
 Subgoal 2.2.1.3:
 
@@ -27814,7 +27754,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_3_is_list to H25.</b>
 </pre>
-<a name="760"></a>
+<a name="759"></a>
 <pre class="code">
 Subgoal 2.2.1.3:
 
@@ -27879,7 +27819,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_2_is_o to H7.</b>
 </pre>
-<a name="761"></a>
+<a name="760"></a>
 <pre class="code">
 Subgoal 2.2.1.3:
 
@@ -27945,7 +27885,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_exists to H27 H26.</b>
 </pre>
-<a name="762"></a>
+<a name="761"></a>
 <pre class="code">
 Subgoal 2.2.1.3:
 
@@ -28013,7 +27953,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="763"></a>
+<a name="762"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28075,7 +28015,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="764"></a>
+<a name="763"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28138,7 +28078,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert mall VT.</b>
 </pre>
-<a name="765"></a>
+<a name="764"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28202,7 +28142,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H14 H7.</b>
 </pre>
-<a name="766"></a>
+<a name="765"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28268,7 +28208,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to H2 *H29.</b>
 </pre>
-<a name="767"></a>
+<a name="766"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28334,7 +28274,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H30.</b>
 </pre>
-<a name="768"></a>
+<a name="767"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28399,7 +28339,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H31 H28.</b>
 </pre>
-<a name="769"></a>
+<a name="768"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -28466,7 +28406,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 perm VT LL.</b>
 </pre>
-<a name="770"></a>
+<a name="769"></a>
 <pre class="code">
 Subgoal 2.2.1.4:
 
@@ -28536,7 +28476,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="771"></a>
+<a name="770"></a>
 <pre class="code">
 Subgoal 2.2.1.4:
 
@@ -28606,7 +28546,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness tens A1 B1.</b>
 </pre>
-<a name="772"></a>
+<a name="771"></a>
 <pre class="code">
 Subgoal 2.2.1.4:
 
@@ -28677,7 +28617,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness V.</b>
 </pre>
-<a name="773"></a>
+<a name="772"></a>
 <pre class="code">
 Subgoal 2.2.1.4:
 
@@ -28747,7 +28687,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness LL3.</b>
 </pre>
-<a name="774"></a>
+<a name="773"></a>
 <pre class="code">
 Subgoal 2.2.1.4:
 
@@ -28817,7 +28757,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="775"></a>
+<a name="774"></a>
 <pre class="code">
 Subgoal 2.2.1.4.1:
 
@@ -28893,7 +28833,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="776"></a>
+<a name="775"></a>
 <pre class="code">
 Subgoal 2.2.1.4.2:
 
@@ -28966,7 +28906,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="777"></a>
+<a name="776"></a>
 <pre class="code">
 Subgoal 2.2.1.4.3:
 
@@ -29036,7 +28976,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert merge KK1 JJ2 KK2.</b>
 </pre>
-<a name="778"></a>
+<a name="777"></a>
 <pre class="code">
 Subgoal 2.2.1.4.3.1:
 
@@ -29109,7 +29049,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_sym.</b>
 </pre>
-<a name="779"></a>
+<a name="778"></a>
 <pre class="code">
 Subgoal 2.2.1.4.3:
 
@@ -29180,7 +29120,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert merge KK1 LL2 V.</b>
 </pre>
-<a name="780"></a>
+<a name="779"></a>
 <pre class="code">
 Subgoal 2.2.1.4.3.2:
 
@@ -29254,7 +29194,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_sym.</b>
 </pre>
-<a name="781"></a>
+<a name="780"></a>
 <pre class="code">
 Subgoal 2.2.1.4.3:
 
@@ -29326,7 +29266,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</b>
 </pre>
-<a name="782"></a>
+<a name="781"></a>
 <pre class="code">
 Subgoal 2.2.1:
 
@@ -29394,7 +29334,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = VT.</b>
 </pre>
-<a name="783"></a>
+<a name="782"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29443,7 +29383,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H16 H11.</b>
 </pre>
-<a name="784"></a>
+<a name="783"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29494,7 +29434,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply add_to_merge_right to H18 H17.</b>
 </pre>
-<a name="785"></a>
+<a name="784"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29547,7 +29487,7 @@ Subgoal 9 is:
 
 mall_cut < <b>rename M to UJJ1.</b>
 </pre>
-<a name="786"></a>
+<a name="785"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29600,7 +29540,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists UKK, merge U KK UKK.</b>
 </pre>
-<a name="787"></a>
+<a name="786"></a>
 <pre class="code">
 Subgoal 2.2.2.1:
 
@@ -29656,7 +29596,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H19.</b>
 </pre>
-<a name="788"></a>
+<a name="787"></a>
 <pre class="code">
 Subgoal 2.2.2.1:
 
@@ -29713,7 +29653,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="789"></a>
+<a name="788"></a>
 <pre class="code">
 Subgoal 2.2.2.1:
 
@@ -29771,7 +29711,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H22 H23.</b>
 </pre>
-<a name="790"></a>
+<a name="789"></a>
 <pre class="code">
 Subgoal 2.2.2.1:
 
@@ -29830,7 +29770,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="791"></a>
+<a name="790"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29884,7 +29824,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="792"></a>
+<a name="791"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29938,7 +29878,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</b>
 </pre>
-<a name="793"></a>
+<a name="792"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -29993,7 +29933,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H22 H18.</b>
 </pre>
-<a name="794"></a>
+<a name="793"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30050,7 +29990,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge JJ1 LL2 V.</b>
 </pre>
-<a name="795"></a>
+<a name="794"></a>
 <pre class="code">
 Subgoal 2.2.2.2:
 
@@ -30110,7 +30050,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H9.</b>
 </pre>
-<a name="796"></a>
+<a name="795"></a>
 <pre class="code">
 Subgoal 2.2.2.2:
 
@@ -30171,7 +30111,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H23.</b>
 </pre>
-<a name="797"></a>
+<a name="796"></a>
 <pre class="code">
 Subgoal 2.2.2.2:
 
@@ -30233,7 +30173,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H25 H26.</b>
 </pre>
-<a name="798"></a>
+<a name="797"></a>
 <pre class="code">
 Subgoal 2.2.2.2:
 
@@ -30296,7 +30236,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="799"></a>
+<a name="798"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30354,7 +30294,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="800"></a>
+<a name="799"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30412,7 +30352,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</b>
 </pre>
-<a name="801"></a>
+<a name="800"></a>
 <pre class="code">
 Subgoal 2.2.2.3:
 
@@ -30473,7 +30413,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_3_is_list to H25.</b>
 </pre>
-<a name="802"></a>
+<a name="801"></a>
 <pre class="code">
 Subgoal 2.2.2.3:
 
@@ -30535,7 +30475,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_2_is_o to H7.</b>
 </pre>
-<a name="803"></a>
+<a name="802"></a>
 <pre class="code">
 Subgoal 2.2.2.3:
 
@@ -30598,7 +30538,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_exists to H27 H26.</b>
 </pre>
-<a name="804"></a>
+<a name="803"></a>
 <pre class="code">
 Subgoal 2.2.2.3:
 
@@ -30663,7 +30603,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="805"></a>
+<a name="804"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30722,7 +30662,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="806"></a>
+<a name="805"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30782,7 +30722,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert mall VT.</b>
 </pre>
-<a name="807"></a>
+<a name="806"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30843,7 +30783,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H14 H7.</b>
 </pre>
-<a name="808"></a>
+<a name="807"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30906,7 +30846,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to H2 *H29.</b>
 </pre>
-<a name="809"></a>
+<a name="808"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -30969,7 +30909,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H30.</b>
 </pre>
-<a name="810"></a>
+<a name="809"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -31031,7 +30971,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H31 H28.</b>
 </pre>
-<a name="811"></a>
+<a name="810"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -31095,7 +31035,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 perm VT LL.</b>
 </pre>
-<a name="812"></a>
+<a name="811"></a>
 <pre class="code">
 Subgoal 2.2.2.4:
 
@@ -31162,7 +31102,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="813"></a>
+<a name="812"></a>
 <pre class="code">
 Subgoal 2.2.2.4:
 
@@ -31229,7 +31169,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness tens A1 B1.</b>
 </pre>
-<a name="814"></a>
+<a name="813"></a>
 <pre class="code">
 Subgoal 2.2.2.4:
 
@@ -31297,7 +31237,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness V.</b>
 </pre>
-<a name="815"></a>
+<a name="814"></a>
 <pre class="code">
 Subgoal 2.2.2.4:
 
@@ -31364,7 +31304,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness LL3.</b>
 </pre>
-<a name="816"></a>
+<a name="815"></a>
 <pre class="code">
 Subgoal 2.2.2.4:
 
@@ -31431,7 +31371,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="817"></a>
+<a name="816"></a>
 <pre class="code">
 Subgoal 2.2.2.4.1:
 
@@ -31504,7 +31444,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="818"></a>
+<a name="817"></a>
 <pre class="code">
 Subgoal 2.2.2.4.2:
 
@@ -31574,7 +31514,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="819"></a>
+<a name="818"></a>
 <pre class="code">
 Subgoal 2.2.2.4.3:
 
@@ -31641,7 +31581,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</b>
 </pre>
-<a name="820"></a>
+<a name="819"></a>
 <pre class="code">
 Subgoal 2.2.2:
 
@@ -31706,7 +31646,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = VT.</b>
 </pre>
-<a name="821"></a>
+<a name="820"></a>
 <pre class="code">
 Subgoal 3:
 
@@ -31743,7 +31683,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H2.</b>
 </pre>
-<a name="822"></a>
+<a name="821"></a>
 <pre class="code">
 Subgoal 3.1:
 
@@ -31784,7 +31724,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="823"></a>
+<a name="822"></a>
 <pre class="code">
 Subgoal 3.1:
 
@@ -31824,7 +31764,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_nil_perm to H6.</b>
 </pre>
-<a name="824"></a>
+<a name="823"></a>
 <pre class="code">
 Subgoal 3.1:
 
@@ -31865,7 +31805,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply bot_inv to H5 H4.</b>
 </pre>
-<a name="825"></a>
+<a name="824"></a>
 <pre class="code">
 Subgoal 3.1:
 
@@ -31907,7 +31847,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = KK.</b>
 </pre>
-<a name="826"></a>
+<a name="825"></a>
 <pre class="code">
 Subgoal 3.2:
 
@@ -31945,7 +31885,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H8.</b>
 </pre>
-<a name="827"></a>
+<a name="826"></a>
 <pre class="code">
 Subgoal 4:
 
@@ -31983,7 +31923,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="828"></a>
+<a name="827"></a>
 <pre class="code">
 Subgoal 4:
 
@@ -32022,7 +31962,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H11.</b>
 </pre>
-<a name="829"></a>
+<a name="828"></a>
 <pre class="code">
 Subgoal 4.1:
 
@@ -32064,7 +32004,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="830"></a>
+<a name="829"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32103,7 +32043,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H12 *H8.</b>
 </pre>
-<a name="831"></a>
+<a name="830"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32143,7 +32083,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to *H14 *H9.</b>
 </pre>
-<a name="832"></a>
+<a name="831"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32183,7 +32123,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge U1 KK V.</b>
 </pre>
-<a name="833"></a>
+<a name="832"></a>
 <pre class="code">
 Subgoal 4.2.1:
 
@@ -32226,7 +32166,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H16.</b>
 </pre>
-<a name="834"></a>
+<a name="833"></a>
 <pre class="code">
 Subgoal 4.2.1:
 
@@ -32270,7 +32210,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="835"></a>
+<a name="834"></a>
 <pre class="code">
 Subgoal 4.2.1:
 
@@ -32315,7 +32255,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H17 H18.</b>
 </pre>
-<a name="836"></a>
+<a name="835"></a>
 <pre class="code">
 Subgoal 4.2.1:
 
@@ -32361,7 +32301,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="837"></a>
+<a name="836"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32402,7 +32342,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="838"></a>
+<a name="837"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32443,7 +32383,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</b>
 </pre>
-<a name="839"></a>
+<a name="838"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32485,7 +32425,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to *H17 *H15.</b>
 </pre>
-<a name="840"></a>
+<a name="839"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32527,7 +32467,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to *H19 *H13.</b>
 </pre>
-<a name="841"></a>
+<a name="840"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32569,7 +32509,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists VV, adj LL3 (par A1 B1) VV.</b>
 </pre>
-<a name="842"></a>
+<a name="841"></a>
 <pre class="code">
 Subgoal 4.2.2:
 
@@ -32614,7 +32554,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H20.</b>
 </pre>
-<a name="843"></a>
+<a name="842"></a>
 <pre class="code">
 Subgoal 4.2.2:
 
@@ -32660,7 +32600,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_2_is_o to H7.</b>
 </pre>
-<a name="844"></a>
+<a name="843"></a>
 <pre class="code">
 Subgoal 4.2.2:
 
@@ -32707,7 +32647,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_exists to H23 H22.</b>
 </pre>
-<a name="845"></a>
+<a name="844"></a>
 <pre class="code">
 Subgoal 4.2.2:
 
@@ -32755,7 +32695,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="846"></a>
+<a name="845"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32798,7 +32738,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="847"></a>
+<a name="846"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32841,7 +32781,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert mall VV.</b>
 </pre>
-<a name="848"></a>
+<a name="847"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -32885,7 +32825,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 perm VV LL.</b>
 </pre>
-<a name="849"></a>
+<a name="848"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -32932,7 +32872,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to *H12 *H7.</b>
 </pre>
-<a name="850"></a>
+<a name="849"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -32979,7 +32919,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to *H2 *H25.</b>
 </pre>
-<a name="851"></a>
+<a name="850"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33025,7 +32965,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H26.</b>
 </pre>
-<a name="852"></a>
+<a name="851"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33070,7 +33010,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H27 H24.</b>
 </pre>
-<a name="853"></a>
+<a name="852"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33117,7 +33057,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="854"></a>
+<a name="853"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33164,7 +33104,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness par A1 B1.</b>
 </pre>
-<a name="855"></a>
+<a name="854"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33212,7 +33152,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness LL3.</b>
 </pre>
-<a name="856"></a>
+<a name="855"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33259,7 +33199,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness LL4.</b>
 </pre>
-<a name="857"></a>
+<a name="856"></a>
 <pre class="code">
 Subgoal 4.2.3:
 
@@ -33306,7 +33246,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="858"></a>
+<a name="857"></a>
 <pre class="code">
 Subgoal 4.2.3.1:
 
@@ -33359,7 +33299,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="859"></a>
+<a name="858"></a>
 <pre class="code">
 Subgoal 4.2.3.2:
 
@@ -33409,7 +33349,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="860"></a>
+<a name="859"></a>
 <pre class="code">
 Subgoal 4.2.3.3:
 
@@ -33456,7 +33396,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_perm_det.</b>
 </pre>
-<a name="861"></a>
+<a name="860"></a>
 <pre class="code">
 Subgoal 4.2:
 
@@ -33501,7 +33441,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = VV.</b>
 </pre>
-<a name="862"></a>
+<a name="861"></a>
 <pre class="code">
 Subgoal 5:
 
@@ -33534,7 +33474,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="863"></a>
+<a name="862"></a>
 <pre class="code">
 Subgoal 5:
 
@@ -33568,7 +33508,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H9.</b>
 </pre>
-<a name="864"></a>
+<a name="863"></a>
 <pre class="code">
 Subgoal 5.1:
 
@@ -33605,7 +33545,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="865"></a>
+<a name="864"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -33639,7 +33579,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge KK1 KK V.</b>
 </pre>
-<a name="866"></a>
+<a name="865"></a>
 <pre class="code">
 Subgoal 5.2.1:
 
@@ -33676,7 +33616,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H10.</b>
 </pre>
-<a name="867"></a>
+<a name="866"></a>
 <pre class="code">
 Subgoal 5.2.1:
 
@@ -33714,7 +33654,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="868"></a>
+<a name="867"></a>
 <pre class="code">
 Subgoal 5.2.1:
 
@@ -33753,7 +33693,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H11 H12.</b>
 </pre>
-<a name="869"></a>
+<a name="868"></a>
 <pre class="code">
 Subgoal 5.2.1:
 
@@ -33793,7 +33733,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="870"></a>
+<a name="869"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -33828,7 +33768,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="871"></a>
+<a name="870"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -33863,7 +33803,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</b>
 </pre>
-<a name="872"></a>
+<a name="871"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -33899,7 +33839,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists VV, adj V bot VV.</b>
 </pre>
-<a name="873"></a>
+<a name="872"></a>
 <pre class="code">
 Subgoal 5.2.2:
 
@@ -33938,7 +33878,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_3_is_list to H11.</b>
 </pre>
-<a name="874"></a>
+<a name="873"></a>
 <pre class="code">
 Subgoal 5.2.2:
 
@@ -33978,7 +33918,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_exists to _ H12 with A = bot.</b>
 </pre>
-<a name="875"></a>
+<a name="874"></a>
 <pre class="code">
 Subgoal 5.2.2:
 
@@ -34019,7 +33959,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="876"></a>
+<a name="875"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -34056,7 +33996,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="877"></a>
+<a name="876"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -34093,7 +34033,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert mall VV.</b>
 </pre>
-<a name="878"></a>
+<a name="877"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -34131,7 +34071,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 perm VV LL.</b>
 </pre>
-<a name="879"></a>
+<a name="878"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34172,7 +34112,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to *H10 *H7.</b>
 </pre>
-<a name="880"></a>
+<a name="879"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34213,7 +34153,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to *H2 *H15.</b>
 </pre>
-<a name="881"></a>
+<a name="880"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34253,7 +34193,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H16.</b>
 </pre>
-<a name="882"></a>
+<a name="881"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34292,7 +34232,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H17 H14.</b>
 </pre>
-<a name="883"></a>
+<a name="882"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34333,7 +34273,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="884"></a>
+<a name="883"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34374,7 +34314,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness bot.</b>
 </pre>
-<a name="885"></a>
+<a name="884"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34415,7 +34355,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness V.</b>
 </pre>
-<a name="886"></a>
+<a name="885"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34456,7 +34396,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness LL2.</b>
 </pre>
-<a name="887"></a>
+<a name="886"></a>
 <pre class="code">
 Subgoal 5.2.3:
 
@@ -34497,7 +34437,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="888"></a>
+<a name="887"></a>
 <pre class="code">
 Subgoal 5.2.3.1:
 
@@ -34544,7 +34484,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="889"></a>
+<a name="888"></a>
 <pre class="code">
 Subgoal 5.2.3.2:
 
@@ -34588,7 +34528,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="890"></a>
+<a name="889"></a>
 <pre class="code">
 Subgoal 5.2.3.3:
 
@@ -34629,7 +34569,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_perm_det.</b>
 </pre>
-<a name="891"></a>
+<a name="890"></a>
 <pre class="code">
 Subgoal 5.2:
 
@@ -34668,7 +34608,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = VV.</b>
 </pre>
-<a name="892"></a>
+<a name="891"></a>
 <pre class="code">
 Subgoal 6:
 
@@ -34701,7 +34641,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="893"></a>
+<a name="892"></a>
 <pre class="code">
 Subgoal 6:
 
@@ -34735,7 +34675,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H12.</b>
 </pre>
-<a name="894"></a>
+<a name="893"></a>
 <pre class="code">
 Subgoal 6.1:
 
@@ -34772,7 +34712,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="895"></a>
+<a name="894"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34806,7 +34746,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : apply adj_2_is_o to H7.</b>
 </pre>
-<a name="896"></a>
+<a name="895"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34841,7 +34781,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hfm1 : case Ht.</b>
 </pre>
-<a name="897"></a>
+<a name="896"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34877,7 +34817,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hfm1 : apply adj_2_is_o to H2.</b>
 </pre>
-<a name="898"></a>
+<a name="897"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34914,7 +34854,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hfm1 : apply adj_2_is_o to H4.</b>
 </pre>
-<a name="899"></a>
+<a name="898"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34952,7 +34892,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H13.</b>
 </pre>
-<a name="900"></a>
+<a name="899"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -34991,7 +34931,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="901"></a>
+<a name="900"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35031,7 +34971,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge KK1 KK V.</b>
 </pre>
-<a name="902"></a>
+<a name="901"></a>
 <pre class="code">
 Subgoal 6.2.1:
 
@@ -35074,7 +35014,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H14 H15.</b>
 </pre>
-<a name="903"></a>
+<a name="902"></a>
 <pre class="code">
 Subgoal 6.2.1:
 
@@ -35118,7 +35058,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="904"></a>
+<a name="903"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35159,7 +35099,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="905"></a>
+<a name="904"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35200,7 +35140,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_3_is_list to H16.</b>
 </pre>
-<a name="906"></a>
+<a name="905"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35242,7 +35182,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_refl to H17.</b>
 </pre>
-<a name="907"></a>
+<a name="906"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35285,7 +35225,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 mall (wth A1 B1 :: V).</b>
 </pre>
-<a name="908"></a>
+<a name="907"></a>
 <pre class="code">
 Subgoal 6.2.2:
 
@@ -35331,7 +35271,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H13 *H8.</b>
 </pre>
-<a name="909"></a>
+<a name="908"></a>
 <pre class="code">
 Subgoal 6.2.2:
 
@@ -35378,7 +35318,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply IH1 to H1 H20 *H9 H4 H5 _ with LL = A1 :: V.</b>
 </pre>
-<a name="910"></a>
+<a name="909"></a>
 <pre class="code">
 Subgoal 6.2.2:
 
@@ -35425,7 +35365,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H13 *H10.</b>
 </pre>
-<a name="911"></a>
+<a name="910"></a>
 <pre class="code">
 Subgoal 6.2.2:
 
@@ -35473,7 +35413,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply IH1 to H1 H23 *H11 H4 H5 _ with LL = B1 :: V.</b>
 </pre>
-<a name="912"></a>
+<a name="911"></a>
 <pre class="code">
 Subgoal 6.2.2:
 
@@ -35521,7 +35461,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="913"></a>
+<a name="912"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -35565,7 +35505,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert perm (wth A1 B1 :: V) LL.</b>
 </pre>
-<a name="914"></a>
+<a name="913"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35612,7 +35552,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H13 H7.</b>
 </pre>
-<a name="915"></a>
+<a name="914"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35661,7 +35601,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to *H2 *H21.</b>
 </pre>
-<a name="916"></a>
+<a name="915"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35709,7 +35649,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H22.</b>
 </pre>
-<a name="917"></a>
+<a name="916"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35756,7 +35696,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H23 H20.</b>
 </pre>
-<a name="918"></a>
+<a name="917"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35805,7 +35745,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="919"></a>
+<a name="918"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35854,7 +35794,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness wth A1 B1, V, LL2.</b>
 </pre>
-<a name="920"></a>
+<a name="919"></a>
 <pre class="code">
 Subgoal 6.2.3:
 
@@ -35903,7 +35843,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="921"></a>
+<a name="920"></a>
 <pre class="code">
 Subgoal 6.2.3.1:
 
@@ -35958,7 +35898,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="922"></a>
+<a name="921"></a>
 <pre class="code">
 Subgoal 6.2.3.2:
 
@@ -36010,7 +35950,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="923"></a>
+<a name="922"></a>
 <pre class="code">
 Subgoal 6.2.3.3:
 
@@ -36059,7 +35999,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_perm_det.</b>
 </pre>
-<a name="924"></a>
+<a name="923"></a>
 <pre class="code">
 Subgoal 6.2:
 
@@ -36104,7 +36044,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = wth A1 B1 :: V.</b>
 </pre>
-<a name="925"></a>
+<a name="924"></a>
 <pre class="code">
 Subgoal 7:
 
@@ -36130,7 +36070,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="926"></a>
+<a name="925"></a>
 <pre class="code">
 Subgoal 7:
 
@@ -36157,7 +36097,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H8.</b>
 </pre>
-<a name="927"></a>
+<a name="926"></a>
 <pre class="code">
 Subgoal 7.1:
 
@@ -36187,7 +36127,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="928"></a>
+<a name="927"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -36214,7 +36154,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H9 H7.</b>
 </pre>
-<a name="929"></a>
+<a name="928"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -36243,7 +36183,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to H2 H11.</b>
 </pre>
-<a name="930"></a>
+<a name="929"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -36273,7 +36213,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 H12.</b>
 </pre>
-<a name="931"></a>
+<a name="930"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -36303,7 +36243,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to *H13 *H10.</b>
 </pre>
-<a name="932"></a>
+<a name="931"></a>
 <pre class="code">
 Subgoal 7.2:
 
@@ -36333,7 +36273,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="933"></a>
+<a name="932"></a>
 <pre class="code">
 Subgoal 8:
 
@@ -36358,7 +36298,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="934"></a>
+<a name="933"></a>
 <pre class="code">
 Subgoal 8:
 
@@ -36384,7 +36324,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H10.</b>
 </pre>
-<a name="935"></a>
+<a name="934"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -36413,7 +36353,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="936"></a>
+<a name="935"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -36443,7 +36383,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply wth_inv to *H5 *H4.</b>
 </pre>
-<a name="937"></a>
+<a name="936"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -36475,7 +36415,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H11.</b>
 </pre>
-<a name="938"></a>
+<a name="937"></a>
 <pre class="code">
 Subgoal 8.1:
 
@@ -36506,7 +36446,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain IH.</b>
 </pre>
-<a name="939"></a>
+<a name="938"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36532,7 +36472,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H11.</b>
 </pre>
-<a name="940"></a>
+<a name="939"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36559,7 +36499,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="941"></a>
+<a name="940"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36587,7 +36527,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : assert 0 exists V, merge KK1 KK V.</b>
 </pre>
-<a name="942"></a>
+<a name="941"></a>
 <pre class="code">
 Subgoal 8.2.1:
 
@@ -36618,7 +36558,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_exists to H12 H13.</b>
 </pre>
-<a name="943"></a>
+<a name="942"></a>
 <pre class="code">
 Subgoal 8.2.1:
 
@@ -36650,7 +36590,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="944"></a>
+<a name="943"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36679,7 +36619,7 @@ Subgoal 9 is:
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="945"></a>
+<a name="944"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36708,7 +36648,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_3_is_list to H14.</b>
 </pre>
-<a name="946"></a>
+<a name="945"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36738,7 +36678,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_refl to H15.</b>
 </pre>
-<a name="947"></a>
+<a name="946"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36769,7 +36709,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Ht : apply adj_2_is_o to H7.</b>
 </pre>
-<a name="948"></a>
+<a name="947"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36801,7 +36741,7 @@ Subgoal 9 is:
 
 mall_cut < <b>Hfm1 : case Ht.</b>
 </pre>
-<a name="949"></a>
+<a name="948"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36834,7 +36774,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert 0 mall (plus A1 B1 :: V).</b>
 </pre>
-<a name="950"></a>
+<a name="949"></a>
 <pre class="code">
 Subgoal 8.2.2:
 
@@ -36870,7 +36810,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H11 *H8.</b>
 </pre>
-<a name="951"></a>
+<a name="950"></a>
 <pre class="code">
 Subgoal 8.2.2:
 
@@ -36907,7 +36847,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply IH1 to H1 H18 *H9 H4 H5 _ with LL = A1 :: V.</b>
 </pre>
-<a name="952"></a>
+<a name="951"></a>
 <pre class="code">
 Subgoal 8.2.2:
 
@@ -36944,7 +36884,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="953"></a>
+<a name="952"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -36978,7 +36918,7 @@ Subgoal 9 is:
 
 mall_cut < <b>assert perm (plus A1 B1 :: V) LL.</b>
 </pre>
-<a name="954"></a>
+<a name="953"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37015,7 +36955,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_swap to H11 H7.</b>
 </pre>
-<a name="955"></a>
+<a name="954"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37054,7 +36994,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply adj_same_result to *H2 *H19.</b>
 </pre>
-<a name="956"></a>
+<a name="955"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37092,7 +37032,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H20.</b>
 </pre>
-<a name="957"></a>
+<a name="956"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37129,7 +37069,7 @@ Subgoal 9 is:
 
 mall_cut < <b>apply merge_unadj_1 to H21 H18.</b>
 </pre>
-<a name="958"></a>
+<a name="957"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37168,7 +37108,7 @@ Subgoal 9 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="959"></a>
+<a name="958"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37207,7 +37147,7 @@ Subgoal 9 is:
 
 mall_cut < <b>witness plus A1 B1, V, LL2.</b>
 </pre>
-<a name="960"></a>
+<a name="959"></a>
 <pre class="code">
 Subgoal 8.2.3:
 
@@ -37247,7 +37187,7 @@ Subgoal 9 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="961"></a>
+<a name="960"></a>
 <pre class="code">
 Subgoal 8.2.3.1:
 
@@ -37292,7 +37232,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="962"></a>
+<a name="961"></a>
 <pre class="code">
 Subgoal 8.2.3.2:
 
@@ -37334,7 +37274,7 @@ Subgoal 9 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="963"></a>
+<a name="962"></a>
 <pre class="code">
 Subgoal 8.2.3.3:
 
@@ -37373,7 +37313,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain merge_perm_det.</b>
 </pre>
-<a name="964"></a>
+<a name="963"></a>
 <pre class="code">
 Subgoal 8.2:
 
@@ -37408,7 +37348,7 @@ Subgoal 9 is:
 
 mall_cut < <b>backchain mall_perm with K = plus A1 B1 :: V.</b>
 </pre>
-<a name="965"></a>
+<a name="964"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -37430,7 +37370,7 @@ H9 : mall J1 **
 
 mall_cut < <b>apply adj_same_result_diff to H2 H7.</b>
 </pre>
-<a name="966"></a>
+<a name="965"></a>
 <pre class="code">
 Subgoal 9:
 
@@ -37453,7 +37393,7 @@ H10 : A = plus A1 B1 /\ perm JJ LL1 \/ (exists KK, adj KK A LL1)
 
 mall_cut < <b>case H10.</b>
 </pre>
-<a name="967"></a>
+<a name="966"></a>
 <pre class="code">
 Subgoal 9.1:
 
@@ -37479,7 +37419,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>case H1.</b>
 </pre>
-<a name="968"></a>
+<a name="967"></a>
 <pre class="code">
 Subgoal 9.1:
 
@@ -37506,7 +37446,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply wth_inv to *H5 *H4.</b>
 </pre>
-<a name="969"></a>
+<a name="968"></a>
 <pre class="code">
 Subgoal 9.1:
 
@@ -37535,7 +37475,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H11.</b>
 </pre>
-<a name="970"></a>
+<a name="969"></a>
 <pre class="code">
 Subgoal 9.1:
 
@@ -37563,7 +37503,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>backchain IH with A = B1, B = BB.</b>
 </pre>
-<a name="971"></a>
+<a name="970"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37586,7 +37526,7 @@ H11 : adj KK1 A LL1
 
 mall_cut < <b>apply adj_1_is_list to H11.</b>
 </pre>
-<a name="972"></a>
+<a name="971"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37610,7 +37550,7 @@ H12 : is_list KK1
 
 mall_cut < <b>apply adj_1_is_list to H4.</b>
 </pre>
-<a name="973"></a>
+<a name="972"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37635,7 +37575,7 @@ H13 : is_list KK
 
 mall_cut < <b>Ht : assert 0 exists V, merge KK1 KK V.</b>
 </pre>
-<a name="974"></a>
+<a name="973"></a>
 <pre class="code">
 Subgoal 9.2.1:
 
@@ -37663,7 +37603,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply merge_exists to H12 H13.</b>
 </pre>
-<a name="975"></a>
+<a name="974"></a>
 <pre class="code">
 Subgoal 9.2.1:
 
@@ -37692,7 +37632,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="976"></a>
+<a name="975"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37718,7 +37658,7 @@ Ht : exists V, merge KK1 KK V
 
 mall_cut < <b>case Ht.</b>
 </pre>
-<a name="977"></a>
+<a name="976"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37744,7 +37684,7 @@ H14 : merge KK1 KK V
 
 mall_cut < <b>apply merge_3_is_list to H14.</b>
 </pre>
-<a name="978"></a>
+<a name="977"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37771,7 +37711,7 @@ H15 : is_list V
 
 mall_cut < <b>apply perm_refl to H15.</b>
 </pre>
-<a name="979"></a>
+<a name="978"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37799,7 +37739,7 @@ H16 : perm V V
 
 mall_cut < <b>Ht : apply adj_2_is_o to H7.</b>
 </pre>
-<a name="980"></a>
+<a name="979"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37828,7 +37768,7 @@ Ht : is_fm (plus A1 B1)
 
 mall_cut < <b>Hfm1 : case Ht.</b>
 </pre>
-<a name="981"></a>
+<a name="980"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37858,7 +37798,7 @@ Hfm2 : is_fm B1
 
 mall_cut < <b>assert 0 mall (plus A1 B1 :: V).</b>
 </pre>
-<a name="982"></a>
+<a name="981"></a>
 <pre class="code">
 Subgoal 9.2.2:
 
@@ -37891,7 +37831,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply adj_swap to H11 *H8.</b>
 </pre>
-<a name="983"></a>
+<a name="982"></a>
 <pre class="code">
 Subgoal 9.2.2:
 
@@ -37925,7 +37865,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply IH1 to H1 H18 *H9 H4 H5 _ with LL = B1 :: V.</b>
 </pre>
-<a name="984"></a>
+<a name="983"></a>
 <pre class="code">
 Subgoal 9.2.2:
 
@@ -37959,7 +37899,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="985"></a>
+<a name="984"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -37990,7 +37930,7 @@ H17 : mall (plus A1 B1 :: V)
 
 mall_cut < <b>assert perm (plus A1 B1 :: V) LL.</b>
 </pre>
-<a name="986"></a>
+<a name="985"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38024,7 +37964,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply adj_swap to H11 H7.</b>
 </pre>
-<a name="987"></a>
+<a name="986"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38060,7 +38000,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply adj_same_result to *H2 *H19.</b>
 </pre>
-<a name="988"></a>
+<a name="987"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38095,7 +38035,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply perm_merge_1 to *H6 *H20.</b>
 </pre>
-<a name="989"></a>
+<a name="988"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38129,7 +38069,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>apply merge_unadj_1 to H21 H18.</b>
 </pre>
-<a name="990"></a>
+<a name="989"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38165,7 +38105,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>unfold.</b>
 </pre>
-<a name="991"></a>
+<a name="990"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38201,7 +38141,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>witness plus A1 B1, V, LL2.</b>
 </pre>
-<a name="992"></a>
+<a name="991"></a>
 <pre class="code">
 Subgoal 9.2.3:
 
@@ -38238,7 +38178,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>split.</b>
 </pre>
-<a name="993"></a>
+<a name="992"></a>
 <pre class="code">
 Subgoal 9.2.3.1:
 
@@ -38280,7 +38220,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="994"></a>
+<a name="993"></a>
 <pre class="code">
 Subgoal 9.2.3.2:
 
@@ -38319,7 +38259,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>search.</b>
 </pre>
-<a name="995"></a>
+<a name="994"></a>
 <pre class="code">
 Subgoal 9.2.3.3:
 
@@ -38355,7 +38295,7 @@ Subgoal 9.2 is:
 
 mall_cut < <b>backchain merge_perm_det.</b>
 </pre>
-<a name="996"></a>
+<a name="995"></a>
 <pre class="code">
 Subgoal 9.2:
 
@@ -38388,7 +38328,7 @@ H18 : perm (plus A1 B1 :: V) LL
 mall_cut < <b>backchain mall_perm with K = plus A1 B1 :: V.</b>
 Proof completed.
 </pre>
-<a name="997"></a>
+<a name="996"></a>
 <pre class="code">
 Abella < 
 </pre>

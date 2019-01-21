@@ -86,7 +86,7 @@ induction on 1. intros. case H1.
   case H2. search.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Synthetic first-order MALL
+%% Synthetic MALL
 
 Define
   mall : olist -> prop,
@@ -221,6 +221,7 @@ Theorem $cut :
     merge J K L ->
     mallfoc L F).
 IHrank1 : induction on 1 1 1. IHht1 : induction on 3 3 3.
+%abbrev IHrank1 IHrank2 IHrank3 IHht1 IHht2 IHht3 "...".
 split.
 
 intros Hdual Hadj Hpos Hneg Hjk. Hpos1 : case Hpos.

@@ -876,296 +876,450 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="mallq-details.html#995" class="command">Theorem all_inv : forall L JJ A,
   mall L -> adj JJ (form (all A)) L ->
   nabla x, exists J, adj JJ (form (A x)) J /\ mall J.</a>
-<div class="proof"><a href="mallq-details.html#996" class="tactic">induction on 1.</a> <a href="mallq-details.html#997" class="tactic">intros.</a>
-<a href="mallq-details.html#998" class="tactic">skip.</a> <span class="comment">%% TODO</span></div>
+<div class="proof"><a href="mallq-details.html#996" class="tactic">induction on 1.</a> <a href="mallq-details.html#997" class="tactic">intros.</a> <a href="mallq-details.html#998" class="tactic">case H1.</a>
+  <a href="mallq-details.html#999" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1000" class="tactic">case H4.</a> <a href="mallq-details.html#1001" class="tactic">case H5.</a> <a href="mallq-details.html#1002" class="tactic">case H7.</a>
+
+  <a href="mallq-details.html#1003" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1004" class="tactic">case H9.</a>
+  <a href="mallq-details.html#1005" class="tactic">apply merge_unadj_3 to H4 H10.</a> <a href="mallq-details.html#1006" class="tactic">case H11.</a>
+    <a href="mallq-details.html#1007" class="tactic">apply adj_swap to H12 H5.</a> <a href="mallq-details.html#1008" class="tactic">apply IH to H6 H15.</a>
+     <a href="mallq-details.html#1009" class="tactic">apply adj_swap to H14 H16.</a>
+     <a href="mallq-details.html#1010" class="tactic">apply adj_1_is_list to H10.</a> <a href="mallq-details.html#1011" class="tactic">apply adj_2_is_o to H16.</a>
+     <a href="mallq-details.html#1012" class="tactic">assert merge (U1 n1) KK (form (A n1) :: KK1).</a>
+     <a href="mallq-details.html#1013" class="tactic">apply adj_2_is_o to H3.</a>
+     <a href="mallq-details.html#1014" class="tactic">assert mall (form (tens A1 B) :: form (A n1) :: KK1).</a>
+     <a href="mallq-details.html#1015" class="tactic">apply adj_swap to H10 H3.</a>
+     <a href="mallq-details.html#1016" class="tactic">apply adj_same_result to H26 H2.</a> <a href="mallq-details.html#1017" class="tactic">apply adj_perm_full to H27 H25.</a>
+     <a href="mallq-details.html#1018" class="tactic">apply adj_1_is_list to H2.</a>
+     <a href="mallq-details.html#1019" class="tactic">assert perm (form (tens A1 B) :: form (A n1) :: KK1) (form (A n1) :: JJ).</a>
+     <a href="mallq-details.html#1020" class="tactic">apply mall_perm to H24 H31.</a> <a href="mallq-details.html#1021" class="tactic">search.</a>
+
+    <a href="mallq-details.html#1022" class="tactic">apply adj_swap to H12 H7.</a> <a href="mallq-details.html#1023" class="tactic">apply IH to H8 H15.</a>
+     <a href="mallq-details.html#1024" class="tactic">apply adj_swap to H14 H16.</a>
+     <a href="mallq-details.html#1025" class="tactic">apply adj_1_is_list to H10.</a> <a href="mallq-details.html#1026" class="tactic">apply adj_2_is_o to H16.</a>
+     <a href="mallq-details.html#1027" class="tactic">assert merge JJ1 (U1 n1) (form (A n1) :: KK1).</a>
+     <a href="mallq-details.html#1028" class="tactic">apply adj_2_is_o to H3.</a>
+     <a href="mallq-details.html#1029" class="tactic">assert mall (form (tens A1 B) :: form (A n1) :: KK1).</a>
+     <a href="mallq-details.html#1030" class="tactic">apply adj_swap to H10 H3.</a>
+     <a href="mallq-details.html#1031" class="tactic">apply adj_same_result to H26 H2.</a> <a href="mallq-details.html#1032" class="tactic">apply adj_perm_full to H27 H25.</a>
+     <a href="mallq-details.html#1033" class="tactic">apply adj_1_is_list to H2.</a>
+     <a href="mallq-details.html#1034" class="tactic">assert perm (form (tens A1 B) :: form (A n1) :: KK1) (form (A n1) :: JJ).</a>
+     <a href="mallq-details.html#1035" class="tactic">apply mall_perm to H24 H31.</a> <a href="mallq-details.html#1036" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1037" class="tactic">case H2.</a> <a href="mallq-details.html#1038" class="tactic">case H4.</a>
+
+  <a href="mallq-details.html#1039" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1040" class="tactic">case H7.</a>
+  <a href="mallq-details.html#1041" class="tactic">apply adj_swap to H8 H4.</a> <a href="mallq-details.html#1042" class="tactic">apply adj_swap to H10 H5.</a>
+  <a href="mallq-details.html#1043" class="tactic">apply IH to H6 H12.</a>
+  <a href="mallq-details.html#1044" class="tactic">apply adj_swap to H11 H13.</a> <a href="mallq-details.html#1045" class="tactic">apply adj_swap to H9 H15.</a>
+  <a href="mallq-details.html#1046" class="tactic">apply adj_1_is_list to H18.</a> <a href="mallq-details.html#1047" class="tactic">apply adj_2_is_o to H3.</a>
+  <a href="mallq-details.html#1048" class="tactic">assert mall (form (par A1 B) :: U3 n1).</a>
+  <a href="mallq-details.html#1049" class="tactic">apply adj_1_is_list to H2.</a> <a href="mallq-details.html#1050" class="tactic">apply adj_2_is_o to H13.</a>
+  <a href="mallq-details.html#1051" class="tactic">assert perm (form (par A1 B) :: (U3 n1)) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1052" class="tactic">unfold.</a> <a href="mallq-details.html#1053" class="tactic">witness (form (A n1)).</a> <a href="mallq-details.html#1054" class="tactic">witness form (par A1 B) :: KK.</a>
+      <a href="mallq-details.html#1055" class="tactic">witness JJ.</a> <a href="mallq-details.html#1056" class="tactic">split.</a> <a href="mallq-details.html#1057" class="tactic">search.</a> <a href="mallq-details.html#1058" class="tactic">search.</a>
+    <a href="mallq-details.html#1059" class="tactic">apply adj_swap to H8 H3.</a> <a href="mallq-details.html#1060" class="tactic">apply adj_same_result to H25 H2.</a>
+    <a href="mallq-details.html#1061" class="tactic">backchain perm_trans with K = U4.</a>
+    <a href="mallq-details.html#1062" class="tactic">apply adj_1_is_list to H24.</a>
+    <a href="mallq-details.html#1063" class="tactic">unfold.</a> <a href="mallq-details.html#1064" class="tactic">witness form (par A1 B).</a> <a href="mallq-details.html#1065" class="tactic">witness KK.</a> <a href="mallq-details.html#1066" class="tactic">witness KK.</a>
+      <a href="mallq-details.html#1067" class="tactic">split.</a> <a href="mallq-details.html#1068" class="tactic">search.</a> <a href="mallq-details.html#1069" class="tactic">search.</a> <a href="mallq-details.html#1070" class="tactic">backchain perm_refl.</a>
+  <a href="mallq-details.html#1071" class="tactic">apply mall_perm to H21 H24.</a> <a href="mallq-details.html#1072" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1073" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1074" class="tactic">apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1075" class="tactic">case H6.</a> <a href="mallq-details.html#1076" class="tactic">case H5.</a>
+  <a href="mallq-details.html#1077" class="tactic">apply IH to H4 H8.</a>
+  <a href="mallq-details.html#1078" class="tactic">apply adj_3_is_list to H9.</a>
+  <a href="mallq-details.html#1079" class="tactic">assert mall (form bot :: (J n1)).</a>
+  <a href="mallq-details.html#1080" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1081" class="tactic">assert perm (form bot :: (J n1)) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1082" class="tactic">unfold.</a> <a href="mallq-details.html#1083" class="tactic">witness form (A n1).</a> <a href="mallq-details.html#1084" class="tactic">witness form bot :: KK.</a>
+      <a href="mallq-details.html#1085" class="tactic">witness JJ.</a> <a href="mallq-details.html#1086" class="tactic">split.</a> <a href="mallq-details.html#1087" class="tactic">search.</a> <a href="mallq-details.html#1088" class="tactic">search.</a>
+    <a href="mallq-details.html#1089" class="tactic">apply adj_swap to H8 H3.</a> <a href="mallq-details.html#1090" class="tactic">apply adj_same_result to H15 H2.</a>
+    <a href="mallq-details.html#1091" class="tactic">backchain perm_trans with K = U.</a>
+    <a href="mallq-details.html#1092" class="tactic">apply adj_1_is_list to H14.</a> <a href="mallq-details.html#1093" class="tactic">apply perm_refl to H17.</a> <a href="mallq-details.html#1094" class="tactic">search.</a>
+  <a href="mallq-details.html#1095" class="tactic">apply mall_perm to H12 H14.</a> <a href="mallq-details.html#1096" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1097" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1098" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1099" class="tactic">Ht : apply adj_2_is_o to H3.</a> <a href="mallq-details.html#1100" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1101" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1102" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1103" class="tactic">case H12.</a>
+  <a href="mallq-details.html#1104" class="tactic">apply adj_1_is_list to H13.</a>
+  <a href="mallq-details.html#1105" class="tactic">apply adj_swap to H13 H4.</a> <a href="mallq-details.html#1106" class="tactic">apply IH to H5 H16.</a>
+  <a href="mallq-details.html#1107" class="tactic">apply adj_swap to H13 H6.</a> <a href="mallq-details.html#1108" class="tactic">apply IH to H7 H20.</a>
+  <a href="mallq-details.html#1109" class="tactic">apply perm_refl to H14.</a>
+  <a href="mallq-details.html#1110" class="tactic">apply mall_perm to H18 _ with L = (form A1 :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1111" class="tactic">apply mall_perm to H22 _ with L = (form B :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1112" class="tactic">assert mall (form (wth A1 B) :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1113" class="tactic">assert perm (form (wth A1 B) :: form (A n1) :: KK) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1114" class="tactic">unfold.</a> <a href="mallq-details.html#1115" class="tactic">witness form (A n1).</a> <a href="mallq-details.html#1116" class="tactic">witness (form (wth A1 B) :: KK).</a> <a href="mallq-details.html#1117" class="tactic">witness JJ.</a>
+      <a href="mallq-details.html#1118" class="tactic">split.</a> <a href="mallq-details.html#1119" class="tactic">search.</a> <a href="mallq-details.html#1120" class="tactic">search.</a>
+    <a href="mallq-details.html#1121" class="tactic">apply adj_swap to H13 H3.</a> <a href="mallq-details.html#1122" class="tactic">apply adj_same_result to H28 H2.</a>
+    <a href="mallq-details.html#1123" class="tactic">backchain perm_trans with K = U2.</a>
+  <a href="mallq-details.html#1124" class="tactic">apply mall_perm to H26 H27.</a> <a href="mallq-details.html#1125" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1126" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1127" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1128" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1129" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1130" class="tactic">case H6.</a>
+  <a href="mallq-details.html#1131" class="tactic">apply adj_swap to H7 H3.</a> <a href="mallq-details.html#1132" class="tactic">apply adj_same_result to H9 H2.</a>
+  <a href="mallq-details.html#1133" class="tactic">apply adj_perm to H10 H8.</a>
+  <a href="mallq-details.html#1134" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1135" class="tactic">apply perm_refl to H12.</a>
+  <a href="mallq-details.html#1136" class="tactic">assert perm (form top :: form (A n1) :: KK1) (form (A n1) :: JJ).</a>
+  <a href="mallq-details.html#1137" class="tactic">apply mall_perm to _ H14.</a> <a href="mallq-details.html#1138" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1139" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1140" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1141" class="tactic">Ht : apply adj_2_is_o to H3.</a> <a href="mallq-details.html#1142" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1143" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1144" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1145" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1146" class="tactic">apply adj_1_is_list to H11.</a>
+  <a href="mallq-details.html#1147" class="tactic">apply adj_swap to H11 H4.</a> <a href="mallq-details.html#1148" class="tactic">apply IH to H5 H14.</a>
+  <a href="mallq-details.html#1149" class="tactic">apply perm_refl to H12.</a>
+  <a href="mallq-details.html#1150" class="tactic">apply mall_perm to H16 _ with L = (form A1 :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1151" class="tactic">assert mall (form (plus A1 B) :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1152" class="tactic">assert perm (form (plus A1 B) :: form (A n1) :: KK) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1153" class="tactic">unfold.</a> <a href="mallq-details.html#1154" class="tactic">witness form (A n1).</a> <a href="mallq-details.html#1155" class="tactic">witness (form (plus A1 B) :: KK).</a> <a href="mallq-details.html#1156" class="tactic">witness JJ.</a>
+      <a href="mallq-details.html#1157" class="tactic">split.</a> <a href="mallq-details.html#1158" class="tactic">search.</a> <a href="mallq-details.html#1159" class="tactic">search.</a>
+    <a href="mallq-details.html#1160" class="tactic">apply adj_swap to H11 H3.</a> <a href="mallq-details.html#1161" class="tactic">apply adj_same_result to H21 H2.</a>
+    <a href="mallq-details.html#1162" class="tactic">backchain perm_trans with K = U1.</a>
+  <a href="mallq-details.html#1163" class="tactic">apply mall_perm to H19 H20.</a> <a href="mallq-details.html#1164" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1165" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1166" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1167" class="tactic">Ht : apply adj_2_is_o to H3.</a> <a href="mallq-details.html#1168" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1169" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1170" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1171" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1172" class="tactic">apply adj_1_is_list to H11.</a>
+  <a href="mallq-details.html#1173" class="tactic">apply adj_swap to H11 H4.</a> <a href="mallq-details.html#1174" class="tactic">apply IH to H5 H14.</a>
+  <a href="mallq-details.html#1175" class="tactic">apply perm_refl to H12.</a>
+  <a href="mallq-details.html#1176" class="tactic">apply mall_perm to H16 _ with L = (form B :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1177" class="tactic">assert mall (form (plus A1 B) :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1178" class="tactic">assert perm (form (plus A1 B) :: form (A n1) :: KK) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1179" class="tactic">unfold.</a> <a href="mallq-details.html#1180" class="tactic">witness form (A n1).</a> <a href="mallq-details.html#1181" class="tactic">witness (form (plus A1 B) :: KK).</a> <a href="mallq-details.html#1182" class="tactic">witness JJ.</a>
+      <a href="mallq-details.html#1183" class="tactic">split.</a> <a href="mallq-details.html#1184" class="tactic">search.</a> <a href="mallq-details.html#1185" class="tactic">search.</a>
+    <a href="mallq-details.html#1186" class="tactic">apply adj_swap to H11 H3.</a> <a href="mallq-details.html#1187" class="tactic">apply adj_same_result to H21 H2.</a>
+    <a href="mallq-details.html#1188" class="tactic">backchain perm_trans with K = U1.</a>
+  <a href="mallq-details.html#1189" class="tactic">apply mall_perm to H19 H20.</a> <a href="mallq-details.html#1190" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1191" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1192" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1193" class="tactic">apply adj_2_is_o to H3.</a>
+  <a href="mallq-details.html#1194" class="tactic">apply adj_2_is_o to H4.</a>
+  <a href="mallq-details.html#1195" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1196" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1197" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1198" class="tactic">apply adj_1_is_list to H11.</a>
+  <a href="mallq-details.html#1199" class="tactic">apply adj_swap to H11 H4.</a> <a href="mallq-details.html#1200" class="tactic">apply IH to H5 H14.</a>
+  <a href="mallq-details.html#1201" class="tactic">apply perm_refl to H12.</a>
+  <a href="mallq-details.html#1202" class="tactic">apply mall_perm to H16 _ with L = (form (A1 x) :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1203" class="tactic">assert mall (form (exs A1) :: form (A n1) :: KK).</a>
+  <a href="mallq-details.html#1204" class="tactic">assert perm (form (exs A1) :: form (A n1) :: KK) (form (A n1) :: JJ).</a>
+    <a href="mallq-details.html#1205" class="tactic">unfold.</a> <a href="mallq-details.html#1206" class="tactic">witness form (A n1).</a> <a href="mallq-details.html#1207" class="tactic">witness form (exs A1) :: KK.</a> <a href="mallq-details.html#1208" class="tactic">witness JJ.</a>
+      <a href="mallq-details.html#1209" class="tactic">split.</a> <a href="mallq-details.html#1210" class="tactic">search.</a> <a href="mallq-details.html#1211" class="tactic">search.</a>
+    <a href="mallq-details.html#1212" class="tactic">apply adj_swap to H11 H3.</a> <a href="mallq-details.html#1213" class="tactic">apply adj_same_result to H21 H2.</a>
+    <a href="mallq-details.html#1214" class="tactic">backchain perm_trans with K = U1.</a>
+  <a href="mallq-details.html#1215" class="tactic">apply mall_perm to H19 H20.</a> <a href="mallq-details.html#1216" class="tactic">search.</a>
+
+  <a href="mallq-details.html#1217" class="tactic">Ht : apply adj_2_is_o to H2.</a> <a href="mallq-details.html#1218" class="tactic">case Ht.</a>
+  <a href="mallq-details.html#1219" class="tactic">apply adj_2_is_o to H3.</a>
+  <a href="mallq-details.html#1220" class="tactic">apply adj_2_is_o to H4.</a>
+  <a href="mallq-details.html#1221" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mallq-details.html#1222" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mallq-details.html#1223" class="tactic">case H10.</a>
+    <a href="mallq-details.html#1224" class="tactic">apply perm_sym to H11.</a>
+    <a href="mallq-details.html#1225" class="tactic">apply adj_perm_source to H12 H4.</a>
+    <a href="mallq-details.html#1226" class="tactic">apply mall_perm to H5 H14.</a> <a href="mallq-details.html#1227" class="tactic">search.</a>
+
+    <a href="mallq-details.html#1228" class="tactic">apply adj_1_is_list to H11.</a>
+    <a href="mallq-details.html#1229" class="tactic">apply adj_swap to H11 H4.</a> <a href="mallq-details.html#1230" class="tactic">apply IH to H5 H14.</a>
+    <a href="mallq-details.html#1231" class="tactic">apply perm_refl to H12.</a>
+    <a href="mallq-details.html#1232" class="tactic">apply mall_perm to H16 _ with L = (form (A1 n1) :: form (A n2) :: KK).</a>
+    <a href="mallq-details.html#1233" class="tactic">assert mall (form (all A1) :: form (A n2) :: KK).</a>
+    <a href="mallq-details.html#1234" class="tactic">assert perm (form (all A1) :: form (A n2) :: KK) (form (A n2) :: JJ).</a>
+      <a href="mallq-details.html#1235" class="tactic">unfold.</a> <a href="mallq-details.html#1236" class="tactic">witness form (A n2).</a> <a href="mallq-details.html#1237" class="tactic">witness form (all A1) :: KK.</a> <a href="mallq-details.html#1238" class="tactic">witness JJ.</a> <a href="mallq-details.html#1239" class="tactic">split.</a> <a href="mallq-details.html#1240" class="tactic">search.</a> <a href="mallq-details.html#1241" class="tactic">search.</a>
+      <a href="mallq-details.html#1242" class="tactic">apply adj_swap to H11 H3.</a> <a href="mallq-details.html#1243" class="tactic">apply adj_same_result to H21 H2.</a>
+      <a href="mallq-details.html#1244" class="tactic">backchain perm_trans with K = U1.</a>
+    <a href="mallq-details.html#1245" class="tactic">apply mall_perm to H19 H20.</a> <a href="mallq-details.html#1246" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<a href="mallq-details.html#999" class="command">Theorem mall_cut : forall A B JJ J KK K LL,
+<a href="mallq-details.html#1247" class="command">Theorem mall_cut : forall A B JJ J KK K LL,
   { dual A B } ->
   adj JJ (form A) J -> mall J ->
   adj KK (form B) K -> mall K ->
   merge JJ KK LL ->
   mall LL.</a>
-<div class="proof"><a href="mallq-details.html#1000" class="tactic">induction on 1.</a> <a href="mallq-details.html#1001" class="tactic">induction on 3.</a> <a href="mallq-details.html#1002" class="tactic">intros.</a> <a href="mallq-details.html#1003" class="tactic">case H3.</a>
+<div class="proof"><a href="mallq-details.html#1248" class="tactic">induction on 1.</a> <a href="mallq-details.html#1249" class="tactic">induction on 3.</a> <a href="mallq-details.html#1250" class="tactic">intros.</a> <a href="mallq-details.html#1251" class="tactic">case H3.</a>
   <span class="comment">%% identity</span>
-  <a href="mallq-details.html#1004" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1005" class="tactic">case H8.</a>
+  <a href="mallq-details.html#1252" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1253" class="tactic">case H8.</a>
     <span class="comment">%% Cut formula principal</span>
-    <a href="mallq-details.html#1006" class="tactic">case H1.</a> <a href="mallq-details.html#1007" class="tactic">case H9.</a> <a href="mallq-details.html#1008" class="tactic">case H11.</a>
-      <a href="mallq-details.html#1009" class="tactic">apply adj_same_result to H2 H7.</a> <a href="mallq-details.html#1010" class="tactic">case H15.</a> <a href="mallq-details.html#1011" class="tactic">case H12.</a>
-       <a href="mallq-details.html#1012" class="tactic">case H10.</a>
-       <a href="mallq-details.html#1013" class="tactic">apply merge_move_12 to _ H4 H6.</a>
-       <a href="mallq-details.html#1014" class="tactic">apply merge_nil_perm to H21.</a> <a href="mallq-details.html#1015" class="tactic">backchain mall_perm.</a>
-        <a href="mallq-details.html#1016" class="tactic">case H20.</a>
-      <a href="mallq-details.html#1017" class="tactic">case H14.</a>
+    <a href="mallq-details.html#1254" class="tactic">case H1.</a> <a href="mallq-details.html#1255" class="tactic">case H9.</a> <a href="mallq-details.html#1256" class="tactic">case H11.</a>
+      <a href="mallq-details.html#1257" class="tactic">apply adj_same_result to H2 H7.</a> <a href="mallq-details.html#1258" class="tactic">case H15.</a> <a href="mallq-details.html#1259" class="tactic">case H12.</a>
+       <a href="mallq-details.html#1260" class="tactic">case H10.</a>
+       <a href="mallq-details.html#1261" class="tactic">apply merge_move_12 to _ H4 H6.</a>
+       <a href="mallq-details.html#1262" class="tactic">apply merge_nil_perm to H21.</a> <a href="mallq-details.html#1263" class="tactic">backchain mall_perm.</a>
+        <a href="mallq-details.html#1264" class="tactic">case H20.</a>
+      <a href="mallq-details.html#1265" class="tactic">case H14.</a>
     <span class="comment">%% Cut formula is not principal -- impossible</span>
-    <a href="mallq-details.html#1018" class="tactic">case H9.</a> <a href="mallq-details.html#1019" class="tactic">case H1.</a> <a href="mallq-details.html#1020" class="tactic">case H11.</a>
+    <a href="mallq-details.html#1266" class="tactic">case H9.</a> <a href="mallq-details.html#1267" class="tactic">case H1.</a> <a href="mallq-details.html#1268" class="tactic">case H11.</a>
 
   <span class="comment">%% tensor</span>
-  <a href="mallq-details.html#1021" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1022" class="tactic">case H13.</a>
+  <a href="mallq-details.html#1269" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1270" class="tactic">case H13.</a>
     <span class="comment">%% cut formula is the tensor -- rank decreases</span>
-    <a href="mallq-details.html#1023" class="tactic">case H1.</a> <a href="mallq-details.html#1024" class="tactic">apply par_inv to H5 H4.</a>
-      <a href="mallq-details.html#1025" class="tactic">apply adj_1_is_list to H18.</a> <a href="mallq-details.html#1026" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1027" class="tactic">apply merge_exists to *H21 *H20.</a>
-      <a href="mallq-details.html#1028" class="tactic">apply IH to H16 H11 H12 H18 H19 H22.</a>
-      <a href="mallq-details.html#1029" class="tactic">apply merge_unadj_2 to H22 H17.</a>
-      <a href="mallq-details.html#1030" class="tactic">apply adj_1_is_list to H24.</a> <a href="mallq-details.html#1031" class="tactic">apply adj_1_is_list to H9.</a> <a href="mallq-details.html#1032" class="tactic">apply merge_exists to *H27 *H26.</a>
-      <a href="mallq-details.html#1033" class="tactic">apply IH to H15 H9 H10 H24 H23 H28.</a>
-      <a href="mallq-details.html#1034" class="tactic">apply perm_sym to *H14.</a> <a href="mallq-details.html#1035" class="tactic">apply perm_merge_3 to *H8 *H30.</a>
-      <a href="mallq-details.html#1036" class="tactic">apply merge_assoc to *H31 *H25 *H28 *H6.</a> <a href="mallq-details.html#1037" class="tactic">backchain mall_perm with K = L1.</a>
+    <a href="mallq-details.html#1271" class="tactic">case H1.</a> <a href="mallq-details.html#1272" class="tactic">apply par_inv to H5 H4.</a>
+      <a href="mallq-details.html#1273" class="tactic">apply adj_1_is_list to H18.</a> <a href="mallq-details.html#1274" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1275" class="tactic">apply merge_exists to *H21 *H20.</a>
+      <a href="mallq-details.html#1276" class="tactic">apply IH to H16 H11 H12 H18 H19 H22.</a>
+      <a href="mallq-details.html#1277" class="tactic">apply merge_unadj_2 to H22 H17.</a>
+      <a href="mallq-details.html#1278" class="tactic">apply adj_1_is_list to H24.</a> <a href="mallq-details.html#1279" class="tactic">apply adj_1_is_list to H9.</a> <a href="mallq-details.html#1280" class="tactic">apply merge_exists to *H27 *H26.</a>
+      <a href="mallq-details.html#1281" class="tactic">apply IH to H15 H9 H10 H24 H23 H28.</a>
+      <a href="mallq-details.html#1282" class="tactic">apply perm_sym to *H14.</a> <a href="mallq-details.html#1283" class="tactic">apply perm_merge_3 to *H8 *H30.</a>
+      <a href="mallq-details.html#1284" class="tactic">apply merge_assoc to *H31 *H25 *H28 *H6.</a> <a href="mallq-details.html#1285" class="tactic">backchain mall_perm with K = L1.</a>
    <span class="comment">%% cut formula is some other formula -- height decreases</span>
-   <a href="mallq-details.html#1038" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mallq-details.html#1039" class="tactic">case H15.</a>
+   <a href="mallq-details.html#1286" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mallq-details.html#1287" class="tactic">case H15.</a>
      <span class="comment">%% cut formula goes to left operand</span>
-     <a href="mallq-details.html#1040" class="tactic">apply adj_swap to H16 H9.</a>
-     <a href="mallq-details.html#1041" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mallq-details.html#1042" class="tactic">rename M to UKK1.</a>
-     <a href="mallq-details.html#1043" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mallq-details.html#1044" class="tactic">apply adj_1_is_list to H19.</a> <a href="mallq-details.html#1045" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mallq-details.html#1046" class="tactic">apply merge_exists to H22 H23.</a> <a href="mallq-details.html#1047" class="tactic">search.</a>
-       <a href="mallq-details.html#1048" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1049" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
-     <a href="mallq-details.html#1050" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mallq-details.html#1051" class="tactic">Ht : assert 0 exists V, merge LL2 KK1 V.</a>
-       <a href="mallq-details.html#1052" class="tactic">apply adj_1_is_list to H23.</a> <a href="mallq-details.html#1053" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1054" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mallq-details.html#1055" class="tactic">search.</a> <a href="mallq-details.html#1056" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1057" class="tactic">Ht : assert 0 exists VT, adj V (form (tens A1 B1)) VT.</a>
-       <a href="mallq-details.html#1058" class="tactic">apply merge_3_is_list to H25.</a> <a href="mallq-details.html#1059" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1060" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mallq-details.html#1061" class="tactic">search.</a> <a href="mallq-details.html#1062" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1063" class="tactic">assert mall VT.</a>
-     <a href="mallq-details.html#1064" class="tactic">apply adj_swap to H14 H7.</a> <a href="mallq-details.html#1065" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mallq-details.html#1066" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mallq-details.html#1067" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mallq-details.html#1068" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mallq-details.html#1069" class="tactic">unfold.</a> <a href="mallq-details.html#1070" class="tactic">witness form (tens A1 B1).</a> <a href="mallq-details.html#1071" class="tactic">witness V.</a> <a href="mallq-details.html#1072" class="tactic">witness LL3.</a> <a href="mallq-details.html#1073" class="tactic">split.</a> <a href="mallq-details.html#1074" class="tactic">search.</a> <a href="mallq-details.html#1075" class="tactic">search.</a>
-       <a href="mallq-details.html#1076" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mallq-details.html#1077" class="tactic">backchain merge_sym.</a>
-       <a href="mallq-details.html#1078" class="tactic">assert merge KK1 LL2 V.</a> <a href="mallq-details.html#1079" class="tactic">backchain merge_sym.</a>
-       <a href="mallq-details.html#1080" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mallq-details.html#1081" class="tactic">backchain mall_perm with K = VT.</a>
+     <a href="mallq-details.html#1288" class="tactic">apply adj_swap to H16 H9.</a>
+     <a href="mallq-details.html#1289" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mallq-details.html#1290" class="tactic">rename M to UKK1.</a>
+     <a href="mallq-details.html#1291" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mallq-details.html#1292" class="tactic">apply adj_1_is_list to H19.</a> <a href="mallq-details.html#1293" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mallq-details.html#1294" class="tactic">apply merge_exists to H22 H23.</a> <a href="mallq-details.html#1295" class="tactic">search.</a>
+       <a href="mallq-details.html#1296" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1297" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
+     <a href="mallq-details.html#1298" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mallq-details.html#1299" class="tactic">Ht : assert 0 exists V, merge LL2 KK1 V.</a>
+       <a href="mallq-details.html#1300" class="tactic">apply adj_1_is_list to H23.</a> <a href="mallq-details.html#1301" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1302" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mallq-details.html#1303" class="tactic">search.</a> <a href="mallq-details.html#1304" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1305" class="tactic">Ht : assert 0 exists VT, adj V (form (tens A1 B1)) VT.</a>
+       <a href="mallq-details.html#1306" class="tactic">apply merge_3_is_list to H25.</a> <a href="mallq-details.html#1307" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1308" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mallq-details.html#1309" class="tactic">search.</a> <a href="mallq-details.html#1310" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1311" class="tactic">assert mall VT.</a>
+     <a href="mallq-details.html#1312" class="tactic">apply adj_swap to H14 H7.</a> <a href="mallq-details.html#1313" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mallq-details.html#1314" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mallq-details.html#1315" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mallq-details.html#1316" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mallq-details.html#1317" class="tactic">unfold.</a> <a href="mallq-details.html#1318" class="tactic">witness form (tens A1 B1).</a> <a href="mallq-details.html#1319" class="tactic">witness V.</a> <a href="mallq-details.html#1320" class="tactic">witness LL3.</a> <a href="mallq-details.html#1321" class="tactic">split.</a> <a href="mallq-details.html#1322" class="tactic">search.</a> <a href="mallq-details.html#1323" class="tactic">search.</a>
+       <a href="mallq-details.html#1324" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mallq-details.html#1325" class="tactic">backchain merge_sym.</a>
+       <a href="mallq-details.html#1326" class="tactic">assert merge KK1 LL2 V.</a> <a href="mallq-details.html#1327" class="tactic">backchain merge_sym.</a>
+       <a href="mallq-details.html#1328" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mallq-details.html#1329" class="tactic">backchain mall_perm with K = VT.</a>
 
      <span class="comment">%% cut formula goes to the right operand</span>
-     <a href="mallq-details.html#1082" class="tactic">apply adj_swap to H16 H11.</a>
-     <a href="mallq-details.html#1083" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mallq-details.html#1084" class="tactic">rename M to UJJ1.</a>
-     <a href="mallq-details.html#1085" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mallq-details.html#1086" class="tactic">apply adj_1_is_list to H19.</a> <a href="mallq-details.html#1087" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mallq-details.html#1088" class="tactic">apply merge_exists to H22 H23.</a> <a href="mallq-details.html#1089" class="tactic">search.</a>
-       <a href="mallq-details.html#1090" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1091" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
-     <a href="mallq-details.html#1092" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mallq-details.html#1093" class="tactic">Ht : assert 0 exists V, merge JJ1 LL2 V.</a>
-       <a href="mallq-details.html#1094" class="tactic">apply adj_1_is_list to H9.</a> <a href="mallq-details.html#1095" class="tactic">apply adj_1_is_list to H23.</a> <a href="mallq-details.html#1096" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mallq-details.html#1097" class="tactic">search.</a> <a href="mallq-details.html#1098" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1099" class="tactic">Ht : assert 0 exists VT, adj V (form (tens A1 B1)) VT.</a>
-       <a href="mallq-details.html#1100" class="tactic">apply merge_3_is_list to H25.</a> <a href="mallq-details.html#1101" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1102" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mallq-details.html#1103" class="tactic">search.</a> <a href="mallq-details.html#1104" class="tactic">case Ht.</a>
-     <a href="mallq-details.html#1105" class="tactic">assert mall VT.</a>
-     <a href="mallq-details.html#1106" class="tactic">apply adj_swap to H14 H7.</a> <a href="mallq-details.html#1107" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mallq-details.html#1108" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mallq-details.html#1109" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mallq-details.html#1110" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mallq-details.html#1111" class="tactic">unfold.</a> <a href="mallq-details.html#1112" class="tactic">witness form (tens A1 B1).</a> <a href="mallq-details.html#1113" class="tactic">witness V.</a> <a href="mallq-details.html#1114" class="tactic">witness LL3.</a> <a href="mallq-details.html#1115" class="tactic">split.</a> <a href="mallq-details.html#1116" class="tactic">search.</a> <a href="mallq-details.html#1117" class="tactic">search.</a>
-       <a href="mallq-details.html#1118" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mallq-details.html#1119" class="tactic">backchain mall_perm with K = VT.</a>
+     <a href="mallq-details.html#1330" class="tactic">apply adj_swap to H16 H11.</a>
+     <a href="mallq-details.html#1331" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mallq-details.html#1332" class="tactic">rename M to UJJ1.</a>
+     <a href="mallq-details.html#1333" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mallq-details.html#1334" class="tactic">apply adj_1_is_list to H19.</a> <a href="mallq-details.html#1335" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mallq-details.html#1336" class="tactic">apply merge_exists to H22 H23.</a> <a href="mallq-details.html#1337" class="tactic">search.</a>
+       <a href="mallq-details.html#1338" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1339" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
+     <a href="mallq-details.html#1340" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mallq-details.html#1341" class="tactic">Ht : assert 0 exists V, merge JJ1 LL2 V.</a>
+       <a href="mallq-details.html#1342" class="tactic">apply adj_1_is_list to H9.</a> <a href="mallq-details.html#1343" class="tactic">apply adj_1_is_list to H23.</a> <a href="mallq-details.html#1344" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mallq-details.html#1345" class="tactic">search.</a> <a href="mallq-details.html#1346" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1347" class="tactic">Ht : assert 0 exists VT, adj V (form (tens A1 B1)) VT.</a>
+       <a href="mallq-details.html#1348" class="tactic">apply merge_3_is_list to H25.</a> <a href="mallq-details.html#1349" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1350" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mallq-details.html#1351" class="tactic">search.</a> <a href="mallq-details.html#1352" class="tactic">case Ht.</a>
+     <a href="mallq-details.html#1353" class="tactic">assert mall VT.</a>
+     <a href="mallq-details.html#1354" class="tactic">apply adj_swap to H14 H7.</a> <a href="mallq-details.html#1355" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mallq-details.html#1356" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mallq-details.html#1357" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mallq-details.html#1358" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mallq-details.html#1359" class="tactic">unfold.</a> <a href="mallq-details.html#1360" class="tactic">witness form (tens A1 B1).</a> <a href="mallq-details.html#1361" class="tactic">witness V.</a> <a href="mallq-details.html#1362" class="tactic">witness LL3.</a> <a href="mallq-details.html#1363" class="tactic">split.</a> <a href="mallq-details.html#1364" class="tactic">search.</a> <a href="mallq-details.html#1365" class="tactic">search.</a>
+       <a href="mallq-details.html#1366" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mallq-details.html#1367" class="tactic">backchain mall_perm with K = VT.</a>
 
   <span class="comment">%% one</span>
-  <a href="mallq-details.html#1120" class="tactic">case H2.</a>
-    <a href="mallq-details.html#1121" class="tactic">case H1.</a> <a href="mallq-details.html#1122" class="tactic">apply merge_nil_perm to H6.</a>
-    <a href="mallq-details.html#1123" class="tactic">apply bot_inv to H5 H4.</a>
-    <a href="mallq-details.html#1124" class="tactic">backchain mall_perm with K = KK.</a>
+  <a href="mallq-details.html#1368" class="tactic">case H2.</a>
+    <a href="mallq-details.html#1369" class="tactic">case H1.</a> <a href="mallq-details.html#1370" class="tactic">apply merge_nil_perm to H6.</a>
+    <a href="mallq-details.html#1371" class="tactic">apply bot_inv to H5 H4.</a>
+    <a href="mallq-details.html#1372" class="tactic">backchain mall_perm with K = KK.</a>
 
-    <a href="mallq-details.html#1125" class="tactic">case H8.</a>
+    <a href="mallq-details.html#1373" class="tactic">case H8.</a>
 
   <span class="comment">%% par</span>
-  <a href="mallq-details.html#1126" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1127" class="tactic">case H11.</a>
+  <a href="mallq-details.html#1374" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1375" class="tactic">case H11.</a>
     <span class="comment">%% left cut formula cannot be a par because it is positive</span>
-    <a href="mallq-details.html#1128" class="tactic">case H1.</a>
+    <a href="mallq-details.html#1376" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mallq-details.html#1129" class="tactic">apply adj_swap to H12 *H8.</a>
-    <a href="mallq-details.html#1130" class="tactic">apply adj_swap to *H14 *H9.</a>
-    <a href="mallq-details.html#1131" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
-      <a href="mallq-details.html#1132" class="tactic">apply adj_1_is_list to H16.</a> <a href="mallq-details.html#1133" class="tactic">apply adj_1_is_list to H4.</a> <a href="mallq-details.html#1134" class="tactic">apply merge_exists to H17 H18.</a>
-      <a href="mallq-details.html#1135" class="tactic">search.</a> <a href="mallq-details.html#1136" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1137" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
-    <a href="mallq-details.html#1138" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
-    <a href="mallq-details.html#1139" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
-    <a href="mallq-details.html#1140" class="tactic">Ht : assert 0 exists VV, adj LL3 (form (par A1 B1)) VV.</a>
-      <a href="mallq-details.html#1141" class="tactic">apply adj_1_is_list to H20.</a> <a href="mallq-details.html#1142" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1143" class="tactic">apply adj_exists to H23 H22.</a>
-      <a href="mallq-details.html#1144" class="tactic">search.</a> <a href="mallq-details.html#1145" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1146" class="tactic">assert mall VV.</a>
-    <a href="mallq-details.html#1147" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mallq-details.html#1148" class="tactic">apply adj_swap to *H12 *H7.</a>
-      <a href="mallq-details.html#1149" class="tactic">apply adj_same_result to *H2 *H25.</a>
-      <a href="mallq-details.html#1150" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
-      <a href="mallq-details.html#1151" class="tactic">apply merge_unadj_1 to H27 H24.</a>
-      <a href="mallq-details.html#1152" class="tactic">unfold.</a> <a href="mallq-details.html#1153" class="tactic">witness form (par A1 B1).</a> <a href="mallq-details.html#1154" class="tactic">witness LL3.</a> <a href="mallq-details.html#1155" class="tactic">witness LL4.</a> <a href="mallq-details.html#1156" class="tactic">split.</a> <a href="mallq-details.html#1157" class="tactic">search.</a> <a href="mallq-details.html#1158" class="tactic">search.</a>
-      <a href="mallq-details.html#1159" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1160" class="tactic">backchain mall_perm with K = VV.</a>
+    <a href="mallq-details.html#1377" class="tactic">apply adj_swap to H12 *H8.</a>
+    <a href="mallq-details.html#1378" class="tactic">apply adj_swap to *H14 *H9.</a>
+    <a href="mallq-details.html#1379" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
+      <a href="mallq-details.html#1380" class="tactic">apply adj_1_is_list to H16.</a> <a href="mallq-details.html#1381" class="tactic">apply adj_1_is_list to H4.</a> <a href="mallq-details.html#1382" class="tactic">apply merge_exists to H17 H18.</a>
+      <a href="mallq-details.html#1383" class="tactic">search.</a> <a href="mallq-details.html#1384" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1385" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
+    <a href="mallq-details.html#1386" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
+    <a href="mallq-details.html#1387" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
+    <a href="mallq-details.html#1388" class="tactic">Ht : assert 0 exists VV, adj LL3 (form (par A1 B1)) VV.</a>
+      <a href="mallq-details.html#1389" class="tactic">apply adj_1_is_list to H20.</a> <a href="mallq-details.html#1390" class="tactic">apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1391" class="tactic">apply adj_exists to H23 H22.</a>
+      <a href="mallq-details.html#1392" class="tactic">search.</a> <a href="mallq-details.html#1393" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1394" class="tactic">assert mall VV.</a>
+    <a href="mallq-details.html#1395" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mallq-details.html#1396" class="tactic">apply adj_swap to *H12 *H7.</a>
+      <a href="mallq-details.html#1397" class="tactic">apply adj_same_result to *H2 *H25.</a>
+      <a href="mallq-details.html#1398" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
+      <a href="mallq-details.html#1399" class="tactic">apply merge_unadj_1 to H27 H24.</a>
+      <a href="mallq-details.html#1400" class="tactic">unfold.</a> <a href="mallq-details.html#1401" class="tactic">witness form (par A1 B1).</a> <a href="mallq-details.html#1402" class="tactic">witness LL3.</a> <a href="mallq-details.html#1403" class="tactic">witness LL4.</a> <a href="mallq-details.html#1404" class="tactic">split.</a> <a href="mallq-details.html#1405" class="tactic">search.</a> <a href="mallq-details.html#1406" class="tactic">search.</a>
+      <a href="mallq-details.html#1407" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1408" class="tactic">backchain mall_perm with K = VV.</a>
 
   <span class="comment">%% bot</span>
-  <a href="mallq-details.html#1161" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1162" class="tactic">case H9.</a>
+  <a href="mallq-details.html#1409" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1410" class="tactic">case H9.</a>
     <span class="comment">%% left cut formula cannot be bot because it is positive.</span>
-    <a href="mallq-details.html#1163" class="tactic">case H1.</a>
+    <a href="mallq-details.html#1411" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mallq-details.html#1164" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1165" class="tactic">apply adj_1_is_list to H10.</a> <a href="mallq-details.html#1166" class="tactic">apply adj_1_is_list to H4.</a> <a href="mallq-details.html#1167" class="tactic">apply merge_exists to H11 H12.</a>
-      <a href="mallq-details.html#1168" class="tactic">search.</a> <a href="mallq-details.html#1169" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1170" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
-    <a href="mallq-details.html#1171" class="tactic">Ht : assert 0 exists VV, adj V (form bot) VV.</a>
-      <a href="mallq-details.html#1172" class="tactic">apply merge_3_is_list to H11.</a> <a href="mallq-details.html#1173" class="tactic">apply adj_exists to _ H12 with A = form bot.</a>
-      <a href="mallq-details.html#1174" class="tactic">search.</a> <a href="mallq-details.html#1175" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1176" class="tactic">assert mall VV.</a>
-    <a href="mallq-details.html#1177" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mallq-details.html#1178" class="tactic">apply adj_swap to *H10 *H7.</a>
-      <a href="mallq-details.html#1179" class="tactic">apply adj_same_result to *H2 *H15.</a>
-      <a href="mallq-details.html#1180" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
-      <a href="mallq-details.html#1181" class="tactic">apply merge_unadj_1 to H17 H14.</a>
-      <a href="mallq-details.html#1182" class="tactic">unfold.</a> <a href="mallq-details.html#1183" class="tactic">witness form bot.</a> <a href="mallq-details.html#1184" class="tactic">witness V.</a> <a href="mallq-details.html#1185" class="tactic">witness LL2.</a> <a href="mallq-details.html#1186" class="tactic">split.</a> <a href="mallq-details.html#1187" class="tactic">search.</a> <a href="mallq-details.html#1188" class="tactic">search.</a>
-      <a href="mallq-details.html#1189" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1190" class="tactic">backchain mall_perm with K = VV.</a>
+    <a href="mallq-details.html#1412" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1413" class="tactic">apply adj_1_is_list to H10.</a> <a href="mallq-details.html#1414" class="tactic">apply adj_1_is_list to H4.</a> <a href="mallq-details.html#1415" class="tactic">apply merge_exists to H11 H12.</a>
+      <a href="mallq-details.html#1416" class="tactic">search.</a> <a href="mallq-details.html#1417" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1418" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
+    <a href="mallq-details.html#1419" class="tactic">Ht : assert 0 exists VV, adj V (form bot) VV.</a>
+      <a href="mallq-details.html#1420" class="tactic">apply merge_3_is_list to H11.</a> <a href="mallq-details.html#1421" class="tactic">apply adj_exists to _ H12 with A = form bot.</a>
+      <a href="mallq-details.html#1422" class="tactic">search.</a> <a href="mallq-details.html#1423" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1424" class="tactic">assert mall VV.</a>
+    <a href="mallq-details.html#1425" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mallq-details.html#1426" class="tactic">apply adj_swap to *H10 *H7.</a>
+      <a href="mallq-details.html#1427" class="tactic">apply adj_same_result to *H2 *H15.</a>
+      <a href="mallq-details.html#1428" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
+      <a href="mallq-details.html#1429" class="tactic">apply merge_unadj_1 to H17 H14.</a>
+      <a href="mallq-details.html#1430" class="tactic">unfold.</a> <a href="mallq-details.html#1431" class="tactic">witness form bot.</a> <a href="mallq-details.html#1432" class="tactic">witness V.</a> <a href="mallq-details.html#1433" class="tactic">witness LL2.</a> <a href="mallq-details.html#1434" class="tactic">split.</a> <a href="mallq-details.html#1435" class="tactic">search.</a> <a href="mallq-details.html#1436" class="tactic">search.</a>
+      <a href="mallq-details.html#1437" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1438" class="tactic">backchain mall_perm with K = VV.</a>
 
   <span class="comment">%% with</span>
-  <a href="mallq-details.html#1191" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1192" class="tactic">case H12.</a>
+  <a href="mallq-details.html#1439" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1440" class="tactic">case H12.</a>
     <span class="comment">%% left cut formula cannot be with</span>
-    <a href="mallq-details.html#1193" class="tactic">case H1.</a>
+    <a href="mallq-details.html#1441" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mallq-details.html#1194" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1195" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mallq-details.html#1196" class="tactic">Hfm1 : apply adj_2_is_o to H2.</a>
-    <a href="mallq-details.html#1197" class="tactic">Hfm1 : apply adj_2_is_o to H4.</a>
-    <a href="mallq-details.html#1198" class="tactic">apply adj_1_is_list to H13.</a> <a href="mallq-details.html#1199" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mallq-details.html#1200" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1201" class="tactic">apply merge_exists to H14 H15.</a>
-      <a href="mallq-details.html#1202" class="tactic">search.</a> <a href="mallq-details.html#1203" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1204" class="tactic">apply merge_3_is_list to H16.</a> <a href="mallq-details.html#1205" class="tactic">apply perm_refl to H17.</a>
-    <a href="mallq-details.html#1206" class="tactic">assert 0 mall (form (wth A1 B1) :: V).</a>
-      <a href="mallq-details.html#1207" class="tactic">apply adj_swap to H13 *H8.</a>
-      <a href="mallq-details.html#1208" class="tactic">apply IH1 to H1 H20 *H9 H4 H5 _ with LL = form A1 :: V.</a>
-      <a href="mallq-details.html#1209" class="tactic">apply adj_swap to H13 *H10.</a>
-      <a href="mallq-details.html#1210" class="tactic">apply IH1 to H1 H23 *H11 H4 H5 _ with LL = form B1 :: V.</a>
-      <a href="mallq-details.html#1211" class="tactic">search.</a>
-    <a href="mallq-details.html#1212" class="tactic">assert perm (form (wth A1 B1) :: V) LL.</a>
-      <a href="mallq-details.html#1213" class="tactic">apply adj_swap to H13 H7.</a>
-      <a href="mallq-details.html#1214" class="tactic">apply adj_same_result to *H2 *H21.</a>
-      <a href="mallq-details.html#1215" class="tactic">apply perm_merge_1 to *H6 *H22.</a>
-      <a href="mallq-details.html#1216" class="tactic">apply merge_unadj_1 to H23 H20.</a>
-      <a href="mallq-details.html#1217" class="tactic">unfold.</a> <a href="mallq-details.html#1218" class="tactic">witness form (wth A1 B1), V, LL2.</a> <a href="mallq-details.html#1219" class="tactic">split.</a> <a href="mallq-details.html#1220" class="tactic">search.</a> <a href="mallq-details.html#1221" class="tactic">search.</a>
-      <a href="mallq-details.html#1222" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1223" class="tactic">backchain mall_perm with K = form (wth A1 B1) :: V.</a>
+    <a href="mallq-details.html#1442" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1443" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mallq-details.html#1444" class="tactic">Hfm1 : apply adj_2_is_o to H2.</a>
+    <a href="mallq-details.html#1445" class="tactic">Hfm1 : apply adj_2_is_o to H4.</a>
+    <a href="mallq-details.html#1446" class="tactic">apply adj_1_is_list to H13.</a> <a href="mallq-details.html#1447" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mallq-details.html#1448" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1449" class="tactic">apply merge_exists to H14 H15.</a>
+      <a href="mallq-details.html#1450" class="tactic">search.</a> <a href="mallq-details.html#1451" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1452" class="tactic">apply merge_3_is_list to H16.</a> <a href="mallq-details.html#1453" class="tactic">apply perm_refl to H17.</a>
+    <a href="mallq-details.html#1454" class="tactic">assert 0 mall (form (wth A1 B1) :: V).</a>
+      <a href="mallq-details.html#1455" class="tactic">apply adj_swap to H13 *H8.</a>
+      <a href="mallq-details.html#1456" class="tactic">apply IH1 to H1 H20 *H9 H4 H5 _ with LL = form A1 :: V.</a>
+      <a href="mallq-details.html#1457" class="tactic">apply adj_swap to H13 *H10.</a>
+      <a href="mallq-details.html#1458" class="tactic">apply IH1 to H1 H23 *H11 H4 H5 _ with LL = form B1 :: V.</a>
+      <a href="mallq-details.html#1459" class="tactic">search.</a>
+    <a href="mallq-details.html#1460" class="tactic">assert perm (form (wth A1 B1) :: V) LL.</a>
+      <a href="mallq-details.html#1461" class="tactic">apply adj_swap to H13 H7.</a>
+      <a href="mallq-details.html#1462" class="tactic">apply adj_same_result to *H2 *H21.</a>
+      <a href="mallq-details.html#1463" class="tactic">apply perm_merge_1 to *H6 *H22.</a>
+      <a href="mallq-details.html#1464" class="tactic">apply merge_unadj_1 to H23 H20.</a>
+      <a href="mallq-details.html#1465" class="tactic">unfold.</a> <a href="mallq-details.html#1466" class="tactic">witness form (wth A1 B1), V, LL2.</a> <a href="mallq-details.html#1467" class="tactic">split.</a> <a href="mallq-details.html#1468" class="tactic">search.</a> <a href="mallq-details.html#1469" class="tactic">search.</a>
+      <a href="mallq-details.html#1470" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1471" class="tactic">backchain mall_perm with K = form (wth A1 B1) :: V.</a>
 
   <span class="comment">%% top</span>
-  <a href="mallq-details.html#1224" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1225" class="tactic">case H8.</a> <a href="mallq-details.html#1226" class="tactic">case H1.</a>
-    <a href="mallq-details.html#1227" class="tactic">apply adj_swap to H9 H7.</a> <a href="mallq-details.html#1228" class="tactic">apply adj_same_result to H2 H11.</a>
-    <a href="mallq-details.html#1229" class="tactic">apply perm_merge_1 to *H6 H12.</a>
-    <a href="mallq-details.html#1230" class="tactic">apply merge_unadj_1 to *H13 *H10.</a>
-    <a href="mallq-details.html#1231" class="tactic">search.</a>
+  <a href="mallq-details.html#1472" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1473" class="tactic">case H8.</a> <a href="mallq-details.html#1474" class="tactic">case H1.</a>
+    <a href="mallq-details.html#1475" class="tactic">apply adj_swap to H9 H7.</a> <a href="mallq-details.html#1476" class="tactic">apply adj_same_result to H2 H11.</a>
+    <a href="mallq-details.html#1477" class="tactic">apply perm_merge_1 to *H6 H12.</a>
+    <a href="mallq-details.html#1478" class="tactic">apply merge_unadj_1 to *H13 *H10.</a>
+    <a href="mallq-details.html#1479" class="tactic">search.</a>
 
   <span class="comment">%% plus_1</span>
-  <a href="mallq-details.html#1232" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1233" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1480" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1481" class="tactic">case H10.</a>
     <span class="comment">%% cut formula is A1 + B1</span>
-    <a href="mallq-details.html#1234" class="tactic">case H1.</a> <a href="mallq-details.html#1235" class="tactic">apply wth_inv to *H5 *H4.</a>
-    <a href="mallq-details.html#1236" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
-    <a href="mallq-details.html#1237" class="tactic">backchain IH.</a>
+    <a href="mallq-details.html#1482" class="tactic">case H1.</a> <a href="mallq-details.html#1483" class="tactic">apply wth_inv to *H5 *H4.</a>
+    <a href="mallq-details.html#1484" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
+    <a href="mallq-details.html#1485" class="tactic">backchain IH.</a>
 
     <span class="comment">%% left cut formula moves up</span>
-    <a href="mallq-details.html#1238" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1239" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mallq-details.html#1240" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1241" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1242" class="tactic">search.</a>
-      <a href="mallq-details.html#1243" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1244" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1245" class="tactic">apply perm_refl to H15.</a>
-    <a href="mallq-details.html#1246" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1247" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mallq-details.html#1248" class="tactic">assert 0 mall (form (plus A1 B1) :: V).</a>
-      <a href="mallq-details.html#1249" class="tactic">apply adj_swap to H11 *H8.</a>
-      <a href="mallq-details.html#1250" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = form A1 :: V.</a>
-      <a href="mallq-details.html#1251" class="tactic">search.</a>
-    <a href="mallq-details.html#1252" class="tactic">assert perm (form (plus A1 B1) :: V) LL.</a>
-      <a href="mallq-details.html#1253" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mallq-details.html#1254" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mallq-details.html#1255" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mallq-details.html#1256" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mallq-details.html#1257" class="tactic">unfold.</a> <a href="mallq-details.html#1258" class="tactic">witness form (plus A1 B1), V, LL2.</a> <a href="mallq-details.html#1259" class="tactic">split.</a> <a href="mallq-details.html#1260" class="tactic">search.</a> <a href="mallq-details.html#1261" class="tactic">search.</a>
-      <a href="mallq-details.html#1262" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1263" class="tactic">backchain mall_perm with K = form (plus A1 B1) :: V.</a>
+    <a href="mallq-details.html#1486" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1487" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mallq-details.html#1488" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1489" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1490" class="tactic">search.</a>
+      <a href="mallq-details.html#1491" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1492" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1493" class="tactic">apply perm_refl to H15.</a>
+    <a href="mallq-details.html#1494" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1495" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mallq-details.html#1496" class="tactic">assert 0 mall (form (plus A1 B1) :: V).</a>
+      <a href="mallq-details.html#1497" class="tactic">apply adj_swap to H11 *H8.</a>
+      <a href="mallq-details.html#1498" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = form A1 :: V.</a>
+      <a href="mallq-details.html#1499" class="tactic">search.</a>
+    <a href="mallq-details.html#1500" class="tactic">assert perm (form (plus A1 B1) :: V) LL.</a>
+      <a href="mallq-details.html#1501" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mallq-details.html#1502" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mallq-details.html#1503" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mallq-details.html#1504" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mallq-details.html#1505" class="tactic">unfold.</a> <a href="mallq-details.html#1506" class="tactic">witness form (plus A1 B1), V, LL2.</a> <a href="mallq-details.html#1507" class="tactic">split.</a> <a href="mallq-details.html#1508" class="tactic">search.</a> <a href="mallq-details.html#1509" class="tactic">search.</a>
+      <a href="mallq-details.html#1510" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1511" class="tactic">backchain mall_perm with K = form (plus A1 B1) :: V.</a>
 
   <span class="comment">%% plus_2</span>
-  <a href="mallq-details.html#1264" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1265" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1512" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1513" class="tactic">case H10.</a>
     <span class="comment">%% cut formula is A1 + B1</span>
-    <a href="mallq-details.html#1266" class="tactic">case H1.</a> <a href="mallq-details.html#1267" class="tactic">apply wth_inv to *H5 *H4.</a>
-    <a href="mallq-details.html#1268" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
-    <a href="mallq-details.html#1269" class="tactic">backchain IH with A = B1, B = BB.</a>
+    <a href="mallq-details.html#1514" class="tactic">case H1.</a> <a href="mallq-details.html#1515" class="tactic">apply wth_inv to *H5 *H4.</a>
+    <a href="mallq-details.html#1516" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
+    <a href="mallq-details.html#1517" class="tactic">backchain IH with A = B1, B = BB.</a>
 
     <span class="comment">%% left cut formula moves up</span>
-    <a href="mallq-details.html#1270" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1271" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mallq-details.html#1272" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1273" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1274" class="tactic">search.</a>
-      <a href="mallq-details.html#1275" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1276" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1277" class="tactic">apply perm_refl to H15.</a>
-    <a href="mallq-details.html#1278" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1279" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mallq-details.html#1280" class="tactic">assert 0 mall (form (plus A1 B1) :: V).</a>
-      <a href="mallq-details.html#1281" class="tactic">apply adj_swap to H11 *H8.</a>
-      <a href="mallq-details.html#1282" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = form B1 :: V.</a>
-      <a href="mallq-details.html#1283" class="tactic">search.</a>
-    <a href="mallq-details.html#1284" class="tactic">assert perm (form (plus A1 B1) :: V) LL.</a>
-      <a href="mallq-details.html#1285" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mallq-details.html#1286" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mallq-details.html#1287" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mallq-details.html#1288" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mallq-details.html#1289" class="tactic">unfold.</a> <a href="mallq-details.html#1290" class="tactic">witness form (plus A1 B1), V, LL2.</a> <a href="mallq-details.html#1291" class="tactic">split.</a> <a href="mallq-details.html#1292" class="tactic">search.</a> <a href="mallq-details.html#1293" class="tactic">search.</a>
-      <a href="mallq-details.html#1294" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1295" class="tactic">backchain mall_perm with K = form (plus A1 B1) :: V.</a>
+    <a href="mallq-details.html#1518" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1519" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mallq-details.html#1520" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1521" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1522" class="tactic">search.</a>
+      <a href="mallq-details.html#1523" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1524" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1525" class="tactic">apply perm_refl to H15.</a>
+    <a href="mallq-details.html#1526" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1527" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mallq-details.html#1528" class="tactic">assert 0 mall (form (plus A1 B1) :: V).</a>
+      <a href="mallq-details.html#1529" class="tactic">apply adj_swap to H11 *H8.</a>
+      <a href="mallq-details.html#1530" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = form B1 :: V.</a>
+      <a href="mallq-details.html#1531" class="tactic">search.</a>
+    <a href="mallq-details.html#1532" class="tactic">assert perm (form (plus A1 B1) :: V) LL.</a>
+      <a href="mallq-details.html#1533" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mallq-details.html#1534" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mallq-details.html#1535" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mallq-details.html#1536" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mallq-details.html#1537" class="tactic">unfold.</a> <a href="mallq-details.html#1538" class="tactic">witness form (plus A1 B1), V, LL2.</a> <a href="mallq-details.html#1539" class="tactic">split.</a> <a href="mallq-details.html#1540" class="tactic">search.</a> <a href="mallq-details.html#1541" class="tactic">search.</a>
+      <a href="mallq-details.html#1542" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1543" class="tactic">backchain mall_perm with K = form (plus A1 B1) :: V.</a>
 
   <span class="comment">%% exists</span>
-  <a href="mallq-details.html#1296" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1297" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1544" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1545" class="tactic">case H10.</a>
     <span class="comment">%% cut formula is exs A1</span>
-    <a href="mallq-details.html#1298" class="tactic">case H1.</a> <a href="mallq-details.html#1299" class="tactic">apply all_inv to H5 H4.</a>
-    <a href="mallq-details.html#1300" class="tactic">apply perm_merge_1 to H6 H11.</a>
-    <a href="mallq-details.html#1301" class="tactic">inst H12 with n1 = x.</a> <span class="comment">%% THIS IS THE TRICK :)</span>
-    <a href="mallq-details.html#1302" class="tactic">apply adj_inst to H13.</a> <a href="mallq-details.html#1303" class="tactic">apply *H17 with t = x.</a>
-    <a href="mallq-details.html#1304" class="tactic">apply mall_inst to H14.</a> <a href="mallq-details.html#1305" class="tactic">apply *H19 with t = x.</a>
-    <a href="mallq-details.html#1306" class="tactic">backchain IH with A = A1 x, B = B1 x.</a>
+    <a href="mallq-details.html#1546" class="tactic">case H1.</a> <a href="mallq-details.html#1547" class="tactic">apply all_inv to H5 H4.</a>
+    <a href="mallq-details.html#1548" class="tactic">apply perm_merge_1 to H6 H11.</a>
+    <a href="mallq-details.html#1549" class="tactic">inst H12 with n1 = x.</a> <span class="comment">%% THIS IS THE TRICK :)</span>
+    <a href="mallq-details.html#1550" class="tactic">apply adj_inst to H13.</a> <a href="mallq-details.html#1551" class="tactic">apply *H17 with t = x.</a>
+    <a href="mallq-details.html#1552" class="tactic">apply mall_inst to H14.</a> <a href="mallq-details.html#1553" class="tactic">apply *H19 with t = x.</a>
+    <a href="mallq-details.html#1554" class="tactic">backchain IH with A = A1 x, B = B1 x.</a>
   
     <span class="comment">%% cut moves up the left branch</span>
-    <a href="mallq-details.html#1307" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1308" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mallq-details.html#1309" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1310" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1311" class="tactic">search.</a>
-      <a href="mallq-details.html#1312" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1313" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1314" class="tactic">apply perm_refl to H15.</a>
-    <a href="mallq-details.html#1315" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1316" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mallq-details.html#1317" class="tactic">Hfm2 : apply is_fm_inst to Hfm1.</a> <a href="mallq-details.html#1318" class="tactic">Hfmx : apply *Hfm2 with t = x.</a>
-    <a href="mallq-details.html#1319" class="tactic">assert 0 mall (form (exs A1) :: V).</a>
-      <a href="mallq-details.html#1320" class="tactic">apply adj_swap to H11 H8.</a>
-      <a href="mallq-details.html#1321" class="tactic">apply IH1 to H1 H18 H9 H4 H5 _ with LL = form (A1 x) :: V.</a>
-      <a href="mallq-details.html#1322" class="tactic">search.</a>
-    <a href="mallq-details.html#1323" class="tactic">assert perm (form (exs A1) :: V) LL.</a>
-      <a href="mallq-details.html#1324" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mallq-details.html#1325" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mallq-details.html#1326" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mallq-details.html#1327" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mallq-details.html#1328" class="tactic">unfold.</a> <a href="mallq-details.html#1329" class="tactic">witness form (exs A1), V, LL2.</a> <a href="mallq-details.html#1330" class="tactic">split.</a> <a href="mallq-details.html#1331" class="tactic">search.</a> <a href="mallq-details.html#1332" class="tactic">search.</a>
-      <a href="mallq-details.html#1333" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1334" class="tactic">backchain mall_perm with K = form (exs A1) :: V.</a>
+    <a href="mallq-details.html#1555" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1556" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mallq-details.html#1557" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1558" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1559" class="tactic">search.</a>
+      <a href="mallq-details.html#1560" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1561" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1562" class="tactic">apply perm_refl to H15.</a>
+    <a href="mallq-details.html#1563" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1564" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mallq-details.html#1565" class="tactic">Hfm2 : apply is_fm_inst to Hfm1.</a> <a href="mallq-details.html#1566" class="tactic">Hfmx : apply *Hfm2 with t = x.</a>
+    <a href="mallq-details.html#1567" class="tactic">assert 0 mall (form (exs A1) :: V).</a>
+      <a href="mallq-details.html#1568" class="tactic">apply adj_swap to H11 H8.</a>
+      <a href="mallq-details.html#1569" class="tactic">apply IH1 to H1 H18 H9 H4 H5 _ with LL = form (A1 x) :: V.</a>
+      <a href="mallq-details.html#1570" class="tactic">search.</a>
+    <a href="mallq-details.html#1571" class="tactic">assert perm (form (exs A1) :: V) LL.</a>
+      <a href="mallq-details.html#1572" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mallq-details.html#1573" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mallq-details.html#1574" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mallq-details.html#1575" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mallq-details.html#1576" class="tactic">unfold.</a> <a href="mallq-details.html#1577" class="tactic">witness form (exs A1), V, LL2.</a> <a href="mallq-details.html#1578" class="tactic">split.</a> <a href="mallq-details.html#1579" class="tactic">search.</a> <a href="mallq-details.html#1580" class="tactic">search.</a>
+      <a href="mallq-details.html#1581" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1582" class="tactic">backchain mall_perm with K = form (exs A1) :: V.</a>
 
   <span class="comment">%% forall</span>
-  <a href="mallq-details.html#1335" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1336" class="tactic">case H10.</a>
+  <a href="mallq-details.html#1583" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mallq-details.html#1584" class="tactic">case H10.</a>
     <span class="comment">% left cut-formula cannot be forall</span>
-    <a href="mallq-details.html#1337" class="tactic">case H1.</a>
+    <a href="mallq-details.html#1585" class="tactic">case H1.</a>
 
     <span class="comment">% cut moves up the left branch</span>
-    <a href="mallq-details.html#1338" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1339" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mallq-details.html#1340" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mallq-details.html#1341" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1342" class="tactic">search.</a>
-      <a href="mallq-details.html#1343" class="tactic">case Ht.</a>
-    <a href="mallq-details.html#1344" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1345" class="tactic">apply perm_refl to H15.</a>
-    <a href="mallq-details.html#1346" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1347" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mallq-details.html#1348" class="tactic">assert 0 mall (form (all A1) :: V).</a>
-      <a href="mallq-details.html#1349" class="tactic">apply adj_swap to H11 H8.</a>
-      <a href="mallq-details.html#1350" class="tactic">apply IH1 to H1 H18 H9 H4 H5 _ with LL = form (A1 n1) :: V.</a>
-      <a href="mallq-details.html#1351" class="tactic">search.</a>
-    <a href="mallq-details.html#1352" class="tactic">assert perm (form (all A1) :: V) LL.</a>
-      <a href="mallq-details.html#1353" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mallq-details.html#1354" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mallq-details.html#1355" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mallq-details.html#1356" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mallq-details.html#1357" class="tactic">unfold.</a> <a href="mallq-details.html#1358" class="tactic">witness form (all A1), V, LL2.</a> <a href="mallq-details.html#1359" class="tactic">split.</a> <a href="mallq-details.html#1360" class="tactic">search.</a> <a href="mallq-details.html#1361" class="tactic">search.</a>
-      <a href="mallq-details.html#1362" class="tactic">backchain merge_perm_det.</a>
-    <a href="mallq-details.html#1363" class="tactic">backchain mall_perm with K = form (all A1) :: V.</a></div>
+    <a href="mallq-details.html#1586" class="tactic">apply adj_1_is_list to H11.</a> <a href="mallq-details.html#1587" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mallq-details.html#1588" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mallq-details.html#1589" class="tactic">apply merge_exists to H12 H13.</a> <a href="mallq-details.html#1590" class="tactic">search.</a>
+      <a href="mallq-details.html#1591" class="tactic">case Ht.</a>
+    <a href="mallq-details.html#1592" class="tactic">apply merge_3_is_list to H14.</a> <a href="mallq-details.html#1593" class="tactic">apply perm_refl to H15.</a>
+    <a href="mallq-details.html#1594" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mallq-details.html#1595" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mallq-details.html#1596" class="tactic">assert 0 mall (form (all A1) :: V).</a>
+      <a href="mallq-details.html#1597" class="tactic">apply adj_swap to H11 H8.</a>
+      <a href="mallq-details.html#1598" class="tactic">apply IH1 to H1 H18 H9 H4 H5 _ with LL = form (A1 n1) :: V.</a>
+      <a href="mallq-details.html#1599" class="tactic">search.</a>
+    <a href="mallq-details.html#1600" class="tactic">assert perm (form (all A1) :: V) LL.</a>
+      <a href="mallq-details.html#1601" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mallq-details.html#1602" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mallq-details.html#1603" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mallq-details.html#1604" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mallq-details.html#1605" class="tactic">unfold.</a> <a href="mallq-details.html#1606" class="tactic">witness form (all A1), V, LL2.</a> <a href="mallq-details.html#1607" class="tactic">split.</a> <a href="mallq-details.html#1608" class="tactic">search.</a> <a href="mallq-details.html#1609" class="tactic">search.</a>
+      <a href="mallq-details.html#1610" class="tactic">backchain merge_perm_det.</a>
+    <a href="mallq-details.html#1611" class="tactic">backchain mall_perm with K = form (all A1) :: V.</a></div>
 </pre>
 </div>
 

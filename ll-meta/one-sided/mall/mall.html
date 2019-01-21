@@ -102,7 +102,7 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="mall-details.html#19" class="tactic">apply IH to *H2.</a> <a href="mall-details.html#20" class="tactic">apply IH to *H3.</a> <a href="mall-details.html#21" class="tactic">search.</a>
   <a href="mall-details.html#22" class="tactic">search.</a>
 
-<a href="mall-details.html#23" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mall-details.html#24" class="tactic">./lib/merge" with is_o := is_fm.
+<a href="mall-details.html#23" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mall-details.html#24" class="tactic">./../lib/merge" with is_o := is_fm.
 
 </a></div><a href="mall-details.html#25" class="command">Define mall : olist -> prop by
 ; mall L :=
@@ -470,7 +470,7 @@ Click on a command or tactic to see a detailed view of its use.
     <a href="mall-details.html#515" class="tactic">apply mall_perm to *H26 *H35.</a>
     <a href="mall-details.html#516" class="tactic">search.</a>
 
-    <span class="comment">% with in left branch of tensor</span>
+    <span class="comment">% with in right branch of tensor</span>
     <a href="mall-details.html#517" class="tactic">apply adj_swap to H12 H7.</a> <a href="mall-details.html#518" class="tactic">apply IH to *H8 *H15.</a>
     <a href="mall-details.html#519" class="tactic">apply adj_1_is_list to H14.</a> <a href="mall-details.html#520" class="tactic">apply perm_refl to H20.</a>
     <a href="mall-details.html#521" class="tactic">apply mall_perm to *H17 _ with L = (D :: A :: KK2).</a>
@@ -629,207 +629,208 @@ Click on a command or tactic to see a detailed view of its use.
       <a href="mall-details.html#731" class="tactic">apply merge_unadj_2 to H22 H17.</a>
       <a href="mall-details.html#732" class="tactic">apply adj_1_is_list to H24.</a> <a href="mall-details.html#733" class="tactic">apply adj_1_is_list to H9.</a> <a href="mall-details.html#734" class="tactic">apply merge_exists to *H27 *H26.</a>
       <a href="mall-details.html#735" class="tactic">apply IH to H15 H9 H10 H24 H23 H28.</a>
-      <a href="mall-details.html#736" class="tactic">apply perm_sym to *H14.</a> <a href="mall-details.html#737" class="tactic">apply perm_merge_3 to *H8 *H30.</a>
-      <a href="mall-details.html#738" class="tactic">apply merge_assoc to *H31 *H25 *H28 *H6.</a> <a href="mall-details.html#739" class="tactic">backchain mall_perm with K = L1.</a>
+      <a href="mall-details.html#736" class="tactic">apply perm_merge_1 to *H6 *H14.</a>
+      <a href="mall-details.html#737" class="tactic">apply merge_assoc to *H8 *H25 *H28 *H30.</a>
+      <a href="mall-details.html#738" class="tactic">backchain mall_perm with K = L1.</a>
    <span class="comment">%% cut formula is some other formula -- height decreases</span>
-   <a href="mall-details.html#740" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mall-details.html#741" class="tactic">case H15.</a>
+   <a href="mall-details.html#739" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mall-details.html#740" class="tactic">case H15.</a>
      <span class="comment">%% cut formula goes to left operand</span>
-     <a href="mall-details.html#742" class="tactic">apply adj_swap to H16 H9.</a>
-     <a href="mall-details.html#743" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mall-details.html#744" class="tactic">rename M to UKK1.</a>
-     <a href="mall-details.html#745" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mall-details.html#746" class="tactic">apply adj_1_is_list to H19.</a> <a href="mall-details.html#747" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mall-details.html#748" class="tactic">apply merge_exists to H22 H23.</a> <a href="mall-details.html#749" class="tactic">search.</a>
-       <a href="mall-details.html#750" class="tactic">case Ht.</a>
-     <a href="mall-details.html#751" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
-     <a href="mall-details.html#752" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mall-details.html#753" class="tactic">Ht : assert 0 exists V, merge LL2 KK1 V.</a>
-       <a href="mall-details.html#754" class="tactic">apply adj_1_is_list to H23.</a> <a href="mall-details.html#755" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#756" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mall-details.html#757" class="tactic">search.</a> <a href="mall-details.html#758" class="tactic">case Ht.</a>
-     <a href="mall-details.html#759" class="tactic">Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
-       <a href="mall-details.html#760" class="tactic">apply merge_3_is_list to H25.</a> <a href="mall-details.html#761" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#762" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mall-details.html#763" class="tactic">search.</a> <a href="mall-details.html#764" class="tactic">case Ht.</a>
-     <a href="mall-details.html#765" class="tactic">assert mall VT.</a>
-     <a href="mall-details.html#766" class="tactic">apply adj_swap to H14 H7.</a> <a href="mall-details.html#767" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mall-details.html#768" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mall-details.html#769" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mall-details.html#770" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mall-details.html#771" class="tactic">unfold.</a> <a href="mall-details.html#772" class="tactic">witness tens A1 B1.</a> <a href="mall-details.html#773" class="tactic">witness V.</a> <a href="mall-details.html#774" class="tactic">witness LL3.</a> <a href="mall-details.html#775" class="tactic">split.</a> <a href="mall-details.html#776" class="tactic">search.</a> <a href="mall-details.html#777" class="tactic">search.</a>
-       <a href="mall-details.html#778" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mall-details.html#779" class="tactic">backchain merge_sym.</a>
-       <a href="mall-details.html#780" class="tactic">assert merge KK1 LL2 V.</a> <a href="mall-details.html#781" class="tactic">backchain merge_sym.</a>
-       <a href="mall-details.html#782" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mall-details.html#783" class="tactic">backchain mall_perm with K = VT.</a>
+     <a href="mall-details.html#741" class="tactic">apply adj_swap to H16 H9.</a>
+     <a href="mall-details.html#742" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mall-details.html#743" class="tactic">rename M to UKK1.</a>
+     <a href="mall-details.html#744" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mall-details.html#745" class="tactic">apply adj_1_is_list to H19.</a> <a href="mall-details.html#746" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mall-details.html#747" class="tactic">apply merge_exists to H22 H23.</a> <a href="mall-details.html#748" class="tactic">search.</a>
+       <a href="mall-details.html#749" class="tactic">case Ht.</a>
+     <a href="mall-details.html#750" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
+     <a href="mall-details.html#751" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mall-details.html#752" class="tactic">Ht : assert 0 exists V, merge LL2 KK1 V.</a>
+       <a href="mall-details.html#753" class="tactic">apply adj_1_is_list to H23.</a> <a href="mall-details.html#754" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#755" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mall-details.html#756" class="tactic">search.</a> <a href="mall-details.html#757" class="tactic">case Ht.</a>
+     <a href="mall-details.html#758" class="tactic">Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
+       <a href="mall-details.html#759" class="tactic">apply merge_3_is_list to H25.</a> <a href="mall-details.html#760" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#761" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mall-details.html#762" class="tactic">search.</a> <a href="mall-details.html#763" class="tactic">case Ht.</a>
+     <a href="mall-details.html#764" class="tactic">assert mall VT.</a>
+     <a href="mall-details.html#765" class="tactic">apply adj_swap to H14 H7.</a> <a href="mall-details.html#766" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mall-details.html#767" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mall-details.html#768" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mall-details.html#769" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mall-details.html#770" class="tactic">unfold.</a> <a href="mall-details.html#771" class="tactic">witness tens A1 B1.</a> <a href="mall-details.html#772" class="tactic">witness V.</a> <a href="mall-details.html#773" class="tactic">witness LL3.</a> <a href="mall-details.html#774" class="tactic">split.</a> <a href="mall-details.html#775" class="tactic">search.</a> <a href="mall-details.html#776" class="tactic">search.</a>
+       <a href="mall-details.html#777" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mall-details.html#778" class="tactic">backchain merge_sym.</a>
+       <a href="mall-details.html#779" class="tactic">assert merge KK1 LL2 V.</a> <a href="mall-details.html#780" class="tactic">backchain merge_sym.</a>
+       <a href="mall-details.html#781" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mall-details.html#782" class="tactic">backchain mall_perm with K = VT.</a>
 
      <span class="comment">%% cut formula goes to the right operand</span>
-     <a href="mall-details.html#784" class="tactic">apply adj_swap to H16 H11.</a>
-     <a href="mall-details.html#785" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mall-details.html#786" class="tactic">rename M to UJJ1.</a>
-     <a href="mall-details.html#787" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mall-details.html#788" class="tactic">apply adj_1_is_list to H19.</a> <a href="mall-details.html#789" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mall-details.html#790" class="tactic">apply merge_exists to H22 H23.</a> <a href="mall-details.html#791" class="tactic">search.</a>
-       <a href="mall-details.html#792" class="tactic">case Ht.</a>
-     <a href="mall-details.html#793" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
-     <a href="mall-details.html#794" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mall-details.html#795" class="tactic">Ht : assert 0 exists V, merge JJ1 LL2 V.</a>
-       <a href="mall-details.html#796" class="tactic">apply adj_1_is_list to H9.</a> <a href="mall-details.html#797" class="tactic">apply adj_1_is_list to H23.</a> <a href="mall-details.html#798" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mall-details.html#799" class="tactic">search.</a> <a href="mall-details.html#800" class="tactic">case Ht.</a>
-     <a href="mall-details.html#801" class="tactic">Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
-       <a href="mall-details.html#802" class="tactic">apply merge_3_is_list to H25.</a> <a href="mall-details.html#803" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#804" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mall-details.html#805" class="tactic">search.</a> <a href="mall-details.html#806" class="tactic">case Ht.</a>
-     <a href="mall-details.html#807" class="tactic">assert mall VT.</a>
-     <a href="mall-details.html#808" class="tactic">apply adj_swap to H14 H7.</a> <a href="mall-details.html#809" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mall-details.html#810" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mall-details.html#811" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mall-details.html#812" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mall-details.html#813" class="tactic">unfold.</a> <a href="mall-details.html#814" class="tactic">witness tens A1 B1.</a> <a href="mall-details.html#815" class="tactic">witness V.</a> <a href="mall-details.html#816" class="tactic">witness LL3.</a> <a href="mall-details.html#817" class="tactic">split.</a> <a href="mall-details.html#818" class="tactic">search.</a> <a href="mall-details.html#819" class="tactic">search.</a>
-       <a href="mall-details.html#820" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mall-details.html#821" class="tactic">backchain mall_perm with K = VT.</a>
+     <a href="mall-details.html#783" class="tactic">apply adj_swap to H16 H11.</a>
+     <a href="mall-details.html#784" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mall-details.html#785" class="tactic">rename M to UJJ1.</a>
+     <a href="mall-details.html#786" class="tactic">Ht : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mall-details.html#787" class="tactic">apply adj_1_is_list to H19.</a> <a href="mall-details.html#788" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mall-details.html#789" class="tactic">apply merge_exists to H22 H23.</a> <a href="mall-details.html#790" class="tactic">search.</a>
+       <a href="mall-details.html#791" class="tactic">case Ht.</a>
+     <a href="mall-details.html#792" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
+     <a href="mall-details.html#793" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mall-details.html#794" class="tactic">Ht : assert 0 exists V, merge JJ1 LL2 V.</a>
+       <a href="mall-details.html#795" class="tactic">apply adj_1_is_list to H9.</a> <a href="mall-details.html#796" class="tactic">apply adj_1_is_list to H23.</a> <a href="mall-details.html#797" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mall-details.html#798" class="tactic">search.</a> <a href="mall-details.html#799" class="tactic">case Ht.</a>
+     <a href="mall-details.html#800" class="tactic">Ht : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
+       <a href="mall-details.html#801" class="tactic">apply merge_3_is_list to H25.</a> <a href="mall-details.html#802" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#803" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mall-details.html#804" class="tactic">search.</a> <a href="mall-details.html#805" class="tactic">case Ht.</a>
+     <a href="mall-details.html#806" class="tactic">assert mall VT.</a>
+     <a href="mall-details.html#807" class="tactic">apply adj_swap to H14 H7.</a> <a href="mall-details.html#808" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mall-details.html#809" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mall-details.html#810" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mall-details.html#811" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mall-details.html#812" class="tactic">unfold.</a> <a href="mall-details.html#813" class="tactic">witness tens A1 B1.</a> <a href="mall-details.html#814" class="tactic">witness V.</a> <a href="mall-details.html#815" class="tactic">witness LL3.</a> <a href="mall-details.html#816" class="tactic">split.</a> <a href="mall-details.html#817" class="tactic">search.</a> <a href="mall-details.html#818" class="tactic">search.</a>
+       <a href="mall-details.html#819" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mall-details.html#820" class="tactic">backchain mall_perm with K = VT.</a>
 
   <span class="comment">%% one</span>
-  <a href="mall-details.html#822" class="tactic">case H2.</a>
-    <a href="mall-details.html#823" class="tactic">case H1.</a> <a href="mall-details.html#824" class="tactic">apply merge_nil_perm to H6.</a>
-    <a href="mall-details.html#825" class="tactic">apply bot_inv to H5 H4.</a>
-    <a href="mall-details.html#826" class="tactic">backchain mall_perm with K = KK.</a>
+  <a href="mall-details.html#821" class="tactic">case H2.</a>
+    <a href="mall-details.html#822" class="tactic">case H1.</a> <a href="mall-details.html#823" class="tactic">apply merge_nil_perm to H6.</a>
+    <a href="mall-details.html#824" class="tactic">apply bot_inv to H5 H4.</a>
+    <a href="mall-details.html#825" class="tactic">backchain mall_perm with K = KK.</a>
 
-    <a href="mall-details.html#827" class="tactic">case H8.</a>
+    <a href="mall-details.html#826" class="tactic">case H8.</a>
 
   <span class="comment">%% par</span>
-  <a href="mall-details.html#828" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#829" class="tactic">case H11.</a>
+  <a href="mall-details.html#827" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#828" class="tactic">case H11.</a>
     <span class="comment">%% left cut formula cannot be a par because it is positive</span>
-    <a href="mall-details.html#830" class="tactic">case H1.</a>
+    <a href="mall-details.html#829" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mall-details.html#831" class="tactic">apply adj_swap to H12 *H8.</a>
-    <a href="mall-details.html#832" class="tactic">apply adj_swap to *H14 *H9.</a>
-    <a href="mall-details.html#833" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
-      <a href="mall-details.html#834" class="tactic">apply adj_1_is_list to H16.</a> <a href="mall-details.html#835" class="tactic">apply adj_1_is_list to H4.</a> <a href="mall-details.html#836" class="tactic">apply merge_exists to H17 H18.</a>
-      <a href="mall-details.html#837" class="tactic">search.</a> <a href="mall-details.html#838" class="tactic">case Ht.</a>
-    <a href="mall-details.html#839" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
-    <a href="mall-details.html#840" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
-    <a href="mall-details.html#841" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
-    <a href="mall-details.html#842" class="tactic">Ht : assert 0 exists VV, adj LL3 (par A1 B1) VV.</a>
-      <a href="mall-details.html#843" class="tactic">apply adj_1_is_list to H20.</a> <a href="mall-details.html#844" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#845" class="tactic">apply adj_exists to H23 H22.</a>
-      <a href="mall-details.html#846" class="tactic">search.</a> <a href="mall-details.html#847" class="tactic">case Ht.</a>
-    <a href="mall-details.html#848" class="tactic">assert mall VV.</a>
-    <a href="mall-details.html#849" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mall-details.html#850" class="tactic">apply adj_swap to *H12 *H7.</a>
-      <a href="mall-details.html#851" class="tactic">apply adj_same_result to *H2 *H25.</a>
-      <a href="mall-details.html#852" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
-      <a href="mall-details.html#853" class="tactic">apply merge_unadj_1 to H27 H24.</a>
-      <a href="mall-details.html#854" class="tactic">unfold.</a> <a href="mall-details.html#855" class="tactic">witness par A1 B1.</a> <a href="mall-details.html#856" class="tactic">witness LL3.</a> <a href="mall-details.html#857" class="tactic">witness LL4.</a> <a href="mall-details.html#858" class="tactic">split.</a> <a href="mall-details.html#859" class="tactic">search.</a> <a href="mall-details.html#860" class="tactic">search.</a>
-      <a href="mall-details.html#861" class="tactic">backchain merge_perm_det.</a>
-    <a href="mall-details.html#862" class="tactic">backchain mall_perm with K = VV.</a>
+    <a href="mall-details.html#830" class="tactic">apply adj_swap to H12 *H8.</a>
+    <a href="mall-details.html#831" class="tactic">apply adj_swap to *H14 *H9.</a>
+    <a href="mall-details.html#832" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
+      <a href="mall-details.html#833" class="tactic">apply adj_1_is_list to H16.</a> <a href="mall-details.html#834" class="tactic">apply adj_1_is_list to H4.</a> <a href="mall-details.html#835" class="tactic">apply merge_exists to H17 H18.</a>
+      <a href="mall-details.html#836" class="tactic">search.</a> <a href="mall-details.html#837" class="tactic">case Ht.</a>
+    <a href="mall-details.html#838" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
+    <a href="mall-details.html#839" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
+    <a href="mall-details.html#840" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
+    <a href="mall-details.html#841" class="tactic">Ht : assert 0 exists VV, adj LL3 (par A1 B1) VV.</a>
+      <a href="mall-details.html#842" class="tactic">apply adj_1_is_list to H20.</a> <a href="mall-details.html#843" class="tactic">apply adj_2_is_o to H7.</a> <a href="mall-details.html#844" class="tactic">apply adj_exists to H23 H22.</a>
+      <a href="mall-details.html#845" class="tactic">search.</a> <a href="mall-details.html#846" class="tactic">case Ht.</a>
+    <a href="mall-details.html#847" class="tactic">assert mall VV.</a>
+    <a href="mall-details.html#848" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mall-details.html#849" class="tactic">apply adj_swap to *H12 *H7.</a>
+      <a href="mall-details.html#850" class="tactic">apply adj_same_result to *H2 *H25.</a>
+      <a href="mall-details.html#851" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
+      <a href="mall-details.html#852" class="tactic">apply merge_unadj_1 to H27 H24.</a>
+      <a href="mall-details.html#853" class="tactic">unfold.</a> <a href="mall-details.html#854" class="tactic">witness par A1 B1.</a> <a href="mall-details.html#855" class="tactic">witness LL3.</a> <a href="mall-details.html#856" class="tactic">witness LL4.</a> <a href="mall-details.html#857" class="tactic">split.</a> <a href="mall-details.html#858" class="tactic">search.</a> <a href="mall-details.html#859" class="tactic">search.</a>
+      <a href="mall-details.html#860" class="tactic">backchain merge_perm_det.</a>
+    <a href="mall-details.html#861" class="tactic">backchain mall_perm with K = VV.</a>
 
   <span class="comment">%% bot</span>
-  <a href="mall-details.html#863" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#864" class="tactic">case H9.</a>
+  <a href="mall-details.html#862" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#863" class="tactic">case H9.</a>
     <span class="comment">%% left cut formula cannot be bot because it is positive.</span>
-    <a href="mall-details.html#865" class="tactic">case H1.</a>
+    <a href="mall-details.html#864" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mall-details.html#866" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mall-details.html#867" class="tactic">apply adj_1_is_list to H10.</a> <a href="mall-details.html#868" class="tactic">apply adj_1_is_list to H4.</a> <a href="mall-details.html#869" class="tactic">apply merge_exists to H11 H12.</a>
-      <a href="mall-details.html#870" class="tactic">search.</a> <a href="mall-details.html#871" class="tactic">case Ht.</a>
-    <a href="mall-details.html#872" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
-    <a href="mall-details.html#873" class="tactic">Ht : assert 0 exists VV, adj V bot VV.</a>
-      <a href="mall-details.html#874" class="tactic">apply merge_3_is_list to H11.</a> <a href="mall-details.html#875" class="tactic">apply adj_exists to _ H12 with A = bot.</a>
-      <a href="mall-details.html#876" class="tactic">search.</a> <a href="mall-details.html#877" class="tactic">case Ht.</a>
-    <a href="mall-details.html#878" class="tactic">assert mall VV.</a>
-    <a href="mall-details.html#879" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mall-details.html#880" class="tactic">apply adj_swap to *H10 *H7.</a>
-      <a href="mall-details.html#881" class="tactic">apply adj_same_result to *H2 *H15.</a>
-      <a href="mall-details.html#882" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
-      <a href="mall-details.html#883" class="tactic">apply merge_unadj_1 to H17 H14.</a>
-      <a href="mall-details.html#884" class="tactic">unfold.</a> <a href="mall-details.html#885" class="tactic">witness bot.</a> <a href="mall-details.html#886" class="tactic">witness V.</a> <a href="mall-details.html#887" class="tactic">witness LL2.</a> <a href="mall-details.html#888" class="tactic">split.</a> <a href="mall-details.html#889" class="tactic">search.</a> <a href="mall-details.html#890" class="tactic">search.</a>
-      <a href="mall-details.html#891" class="tactic">backchain merge_perm_det.</a>
-    <a href="mall-details.html#892" class="tactic">backchain mall_perm with K = VV.</a>
+    <a href="mall-details.html#865" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mall-details.html#866" class="tactic">apply adj_1_is_list to H10.</a> <a href="mall-details.html#867" class="tactic">apply adj_1_is_list to H4.</a> <a href="mall-details.html#868" class="tactic">apply merge_exists to H11 H12.</a>
+      <a href="mall-details.html#869" class="tactic">search.</a> <a href="mall-details.html#870" class="tactic">case Ht.</a>
+    <a href="mall-details.html#871" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
+    <a href="mall-details.html#872" class="tactic">Ht : assert 0 exists VV, adj V bot VV.</a>
+      <a href="mall-details.html#873" class="tactic">apply merge_3_is_list to H11.</a> <a href="mall-details.html#874" class="tactic">apply adj_exists to _ H12 with A = bot.</a>
+      <a href="mall-details.html#875" class="tactic">search.</a> <a href="mall-details.html#876" class="tactic">case Ht.</a>
+    <a href="mall-details.html#877" class="tactic">assert mall VV.</a>
+    <a href="mall-details.html#878" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mall-details.html#879" class="tactic">apply adj_swap to *H10 *H7.</a>
+      <a href="mall-details.html#880" class="tactic">apply adj_same_result to *H2 *H15.</a>
+      <a href="mall-details.html#881" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
+      <a href="mall-details.html#882" class="tactic">apply merge_unadj_1 to H17 H14.</a>
+      <a href="mall-details.html#883" class="tactic">unfold.</a> <a href="mall-details.html#884" class="tactic">witness bot.</a> <a href="mall-details.html#885" class="tactic">witness V.</a> <a href="mall-details.html#886" class="tactic">witness LL2.</a> <a href="mall-details.html#887" class="tactic">split.</a> <a href="mall-details.html#888" class="tactic">search.</a> <a href="mall-details.html#889" class="tactic">search.</a>
+      <a href="mall-details.html#890" class="tactic">backchain merge_perm_det.</a>
+    <a href="mall-details.html#891" class="tactic">backchain mall_perm with K = VV.</a>
 
   <span class="comment">%% with</span>
-  <a href="mall-details.html#893" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#894" class="tactic">case H12.</a>
+  <a href="mall-details.html#892" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#893" class="tactic">case H12.</a>
     <span class="comment">%% left cut formula cannot be with</span>
-    <a href="mall-details.html#895" class="tactic">case H1.</a>
+    <a href="mall-details.html#894" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mall-details.html#896" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#897" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mall-details.html#898" class="tactic">Hfm1 : apply adj_2_is_o to H2.</a>
-    <a href="mall-details.html#899" class="tactic">Hfm1 : apply adj_2_is_o to H4.</a>
-    <a href="mall-details.html#900" class="tactic">apply adj_1_is_list to H13.</a> <a href="mall-details.html#901" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mall-details.html#902" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mall-details.html#903" class="tactic">apply merge_exists to H14 H15.</a>
-      <a href="mall-details.html#904" class="tactic">search.</a> <a href="mall-details.html#905" class="tactic">case Ht.</a>
-    <a href="mall-details.html#906" class="tactic">apply merge_3_is_list to H16.</a> <a href="mall-details.html#907" class="tactic">apply perm_refl to H17.</a>
-    <a href="mall-details.html#908" class="tactic">assert 0 mall (wth A1 B1 :: V).</a>
-      <a href="mall-details.html#909" class="tactic">apply adj_swap to H13 *H8.</a>
-      <a href="mall-details.html#910" class="tactic">apply IH1 to H1 H20 *H9 H4 H5 _ with LL = A1 :: V.</a>
-      <a href="mall-details.html#911" class="tactic">apply adj_swap to H13 *H10.</a>
-      <a href="mall-details.html#912" class="tactic">apply IH1 to H1 H23 *H11 H4 H5 _ with LL = B1 :: V.</a>
-      <a href="mall-details.html#913" class="tactic">search.</a>
-    <a href="mall-details.html#914" class="tactic">assert perm (wth A1 B1 :: V) LL.</a>
-      <a href="mall-details.html#915" class="tactic">apply adj_swap to H13 H7.</a>
-      <a href="mall-details.html#916" class="tactic">apply adj_same_result to *H2 *H21.</a>
-      <a href="mall-details.html#917" class="tactic">apply perm_merge_1 to *H6 *H22.</a>
-      <a href="mall-details.html#918" class="tactic">apply merge_unadj_1 to H23 H20.</a>
-      <a href="mall-details.html#919" class="tactic">unfold.</a> <a href="mall-details.html#920" class="tactic">witness wth A1 B1, V, LL2.</a> <a href="mall-details.html#921" class="tactic">split.</a> <a href="mall-details.html#922" class="tactic">search.</a> <a href="mall-details.html#923" class="tactic">search.</a>
-      <a href="mall-details.html#924" class="tactic">backchain merge_perm_det.</a>
-    <a href="mall-details.html#925" class="tactic">backchain mall_perm with K = wth A1 B1 :: V.</a>
+    <a href="mall-details.html#895" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#896" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mall-details.html#897" class="tactic">Hfm1 : apply adj_2_is_o to H2.</a>
+    <a href="mall-details.html#898" class="tactic">Hfm1 : apply adj_2_is_o to H4.</a>
+    <a href="mall-details.html#899" class="tactic">apply adj_1_is_list to H13.</a> <a href="mall-details.html#900" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mall-details.html#901" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mall-details.html#902" class="tactic">apply merge_exists to H14 H15.</a>
+      <a href="mall-details.html#903" class="tactic">search.</a> <a href="mall-details.html#904" class="tactic">case Ht.</a>
+    <a href="mall-details.html#905" class="tactic">apply merge_3_is_list to H16.</a> <a href="mall-details.html#906" class="tactic">apply perm_refl to H17.</a>
+    <a href="mall-details.html#907" class="tactic">assert 0 mall (wth A1 B1 :: V).</a>
+      <a href="mall-details.html#908" class="tactic">apply adj_swap to H13 *H8.</a>
+      <a href="mall-details.html#909" class="tactic">apply IH1 to H1 H20 *H9 H4 H5 _ with LL = A1 :: V.</a>
+      <a href="mall-details.html#910" class="tactic">apply adj_swap to H13 *H10.</a>
+      <a href="mall-details.html#911" class="tactic">apply IH1 to H1 H23 *H11 H4 H5 _ with LL = B1 :: V.</a>
+      <a href="mall-details.html#912" class="tactic">search.</a>
+    <a href="mall-details.html#913" class="tactic">assert perm (wth A1 B1 :: V) LL.</a>
+      <a href="mall-details.html#914" class="tactic">apply adj_swap to H13 H7.</a>
+      <a href="mall-details.html#915" class="tactic">apply adj_same_result to *H2 *H21.</a>
+      <a href="mall-details.html#916" class="tactic">apply perm_merge_1 to *H6 *H22.</a>
+      <a href="mall-details.html#917" class="tactic">apply merge_unadj_1 to H23 H20.</a>
+      <a href="mall-details.html#918" class="tactic">unfold.</a> <a href="mall-details.html#919" class="tactic">witness wth A1 B1, V, LL2.</a> <a href="mall-details.html#920" class="tactic">split.</a> <a href="mall-details.html#921" class="tactic">search.</a> <a href="mall-details.html#922" class="tactic">search.</a>
+      <a href="mall-details.html#923" class="tactic">backchain merge_perm_det.</a>
+    <a href="mall-details.html#924" class="tactic">backchain mall_perm with K = wth A1 B1 :: V.</a>
 
   <span class="comment">%% top</span>
-  <a href="mall-details.html#926" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#927" class="tactic">case H8.</a> <a href="mall-details.html#928" class="tactic">case H1.</a>
-    <a href="mall-details.html#929" class="tactic">apply adj_swap to H9 H7.</a> <a href="mall-details.html#930" class="tactic">apply adj_same_result to H2 H11.</a>
-    <a href="mall-details.html#931" class="tactic">apply perm_merge_1 to *H6 H12.</a>
-    <a href="mall-details.html#932" class="tactic">apply merge_unadj_1 to *H13 *H10.</a>
-    <a href="mall-details.html#933" class="tactic">search.</a>
+  <a href="mall-details.html#925" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#926" class="tactic">case H8.</a> <a href="mall-details.html#927" class="tactic">case H1.</a>
+    <a href="mall-details.html#928" class="tactic">apply adj_swap to H9 H7.</a> <a href="mall-details.html#929" class="tactic">apply adj_same_result to H2 H11.</a>
+    <a href="mall-details.html#930" class="tactic">apply perm_merge_1 to *H6 H12.</a>
+    <a href="mall-details.html#931" class="tactic">apply merge_unadj_1 to *H13 *H10.</a>
+    <a href="mall-details.html#932" class="tactic">search.</a>
 
   <span class="comment">%% plus_1</span>
-  <a href="mall-details.html#934" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#935" class="tactic">case H10.</a>
+  <a href="mall-details.html#933" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#934" class="tactic">case H10.</a>
     <span class="comment">%% cut formula is A1 + B1</span>
-    <a href="mall-details.html#936" class="tactic">case H1.</a> <a href="mall-details.html#937" class="tactic">apply wth_inv to *H5 *H4.</a>
-    <a href="mall-details.html#938" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
-    <a href="mall-details.html#939" class="tactic">backchain IH.</a>
+    <a href="mall-details.html#935" class="tactic">case H1.</a> <a href="mall-details.html#936" class="tactic">apply wth_inv to *H5 *H4.</a>
+    <a href="mall-details.html#937" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
+    <a href="mall-details.html#938" class="tactic">backchain IH.</a>
 
     <span class="comment">%% left cut formula moves up</span>
-    <a href="mall-details.html#940" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#941" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mall-details.html#942" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mall-details.html#943" class="tactic">apply merge_exists to H12 H13.</a> <a href="mall-details.html#944" class="tactic">search.</a>
-      <a href="mall-details.html#945" class="tactic">case Ht.</a>
-    <a href="mall-details.html#946" class="tactic">apply merge_3_is_list to H14.</a> <a href="mall-details.html#947" class="tactic">apply perm_refl to H15.</a>
-    <a href="mall-details.html#948" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#949" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mall-details.html#950" class="tactic">assert 0 mall (plus A1 B1 :: V).</a>
-      <a href="mall-details.html#951" class="tactic">apply adj_swap to H11 *H8.</a>
-      <a href="mall-details.html#952" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = A1 :: V.</a>
-      <a href="mall-details.html#953" class="tactic">search.</a>
-    <a href="mall-details.html#954" class="tactic">assert perm (plus A1 B1 :: V) LL.</a>
-      <a href="mall-details.html#955" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mall-details.html#956" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mall-details.html#957" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mall-details.html#958" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mall-details.html#959" class="tactic">unfold.</a> <a href="mall-details.html#960" class="tactic">witness plus A1 B1, V, LL2.</a> <a href="mall-details.html#961" class="tactic">split.</a> <a href="mall-details.html#962" class="tactic">search.</a> <a href="mall-details.html#963" class="tactic">search.</a>
-      <a href="mall-details.html#964" class="tactic">backchain merge_perm_det.</a>
-    <a href="mall-details.html#965" class="tactic">backchain mall_perm with K = plus A1 B1 :: V.</a>
+    <a href="mall-details.html#939" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#940" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mall-details.html#941" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mall-details.html#942" class="tactic">apply merge_exists to H12 H13.</a> <a href="mall-details.html#943" class="tactic">search.</a>
+      <a href="mall-details.html#944" class="tactic">case Ht.</a>
+    <a href="mall-details.html#945" class="tactic">apply merge_3_is_list to H14.</a> <a href="mall-details.html#946" class="tactic">apply perm_refl to H15.</a>
+    <a href="mall-details.html#947" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#948" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mall-details.html#949" class="tactic">assert 0 mall (plus A1 B1 :: V).</a>
+      <a href="mall-details.html#950" class="tactic">apply adj_swap to H11 *H8.</a>
+      <a href="mall-details.html#951" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = A1 :: V.</a>
+      <a href="mall-details.html#952" class="tactic">search.</a>
+    <a href="mall-details.html#953" class="tactic">assert perm (plus A1 B1 :: V) LL.</a>
+      <a href="mall-details.html#954" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mall-details.html#955" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mall-details.html#956" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mall-details.html#957" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mall-details.html#958" class="tactic">unfold.</a> <a href="mall-details.html#959" class="tactic">witness plus A1 B1, V, LL2.</a> <a href="mall-details.html#960" class="tactic">split.</a> <a href="mall-details.html#961" class="tactic">search.</a> <a href="mall-details.html#962" class="tactic">search.</a>
+      <a href="mall-details.html#963" class="tactic">backchain merge_perm_det.</a>
+    <a href="mall-details.html#964" class="tactic">backchain mall_perm with K = plus A1 B1 :: V.</a>
 
   <span class="comment">%% plus_2</span>
-  <a href="mall-details.html#966" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#967" class="tactic">case H10.</a>
+  <a href="mall-details.html#965" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mall-details.html#966" class="tactic">case H10.</a>
     <span class="comment">%% cut formula is A1 + B1</span>
-    <a href="mall-details.html#968" class="tactic">case H1.</a> <a href="mall-details.html#969" class="tactic">apply wth_inv to *H5 *H4.</a>
-    <a href="mall-details.html#970" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
-    <a href="mall-details.html#971" class="tactic">backchain IH with A = B1, B = BB.</a>
+    <a href="mall-details.html#967" class="tactic">case H1.</a> <a href="mall-details.html#968" class="tactic">apply wth_inv to *H5 *H4.</a>
+    <a href="mall-details.html#969" class="tactic">apply perm_merge_1 to *H6 *H11.</a>
+    <a href="mall-details.html#970" class="tactic">backchain IH with A = B1, B = BB.</a>
 
     <span class="comment">%% left cut formula moves up</span>
-    <a href="mall-details.html#972" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#973" class="tactic">apply adj_1_is_list to H4.</a>
-    <a href="mall-details.html#974" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mall-details.html#975" class="tactic">apply merge_exists to H12 H13.</a> <a href="mall-details.html#976" class="tactic">search.</a>
-      <a href="mall-details.html#977" class="tactic">case Ht.</a>
-    <a href="mall-details.html#978" class="tactic">apply merge_3_is_list to H14.</a> <a href="mall-details.html#979" class="tactic">apply perm_refl to H15.</a>
-    <a href="mall-details.html#980" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#981" class="tactic">Hfm1 : case Ht.</a>
-    <a href="mall-details.html#982" class="tactic">assert 0 mall (plus A1 B1 :: V).</a>
-      <a href="mall-details.html#983" class="tactic">apply adj_swap to H11 *H8.</a>
-      <a href="mall-details.html#984" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = B1 :: V.</a>
-      <a href="mall-details.html#985" class="tactic">search.</a>
-    <a href="mall-details.html#986" class="tactic">assert perm (plus A1 B1 :: V) LL.</a>
-      <a href="mall-details.html#987" class="tactic">apply adj_swap to H11 H7.</a>
-      <a href="mall-details.html#988" class="tactic">apply adj_same_result to *H2 *H19.</a>
-      <a href="mall-details.html#989" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
-      <a href="mall-details.html#990" class="tactic">apply merge_unadj_1 to H21 H18.</a>
-      <a href="mall-details.html#991" class="tactic">unfold.</a> <a href="mall-details.html#992" class="tactic">witness plus A1 B1, V, LL2.</a> <a href="mall-details.html#993" class="tactic">split.</a> <a href="mall-details.html#994" class="tactic">search.</a> <a href="mall-details.html#995" class="tactic">search.</a>
-      <a href="mall-details.html#996" class="tactic">backchain merge_perm_det.</a>
-    <a href="mall-details.html#997" class="tactic">backchain mall_perm with K = plus A1 B1 :: V.</a></div>
+    <a href="mall-details.html#971" class="tactic">apply adj_1_is_list to H11.</a> <a href="mall-details.html#972" class="tactic">apply adj_1_is_list to H4.</a>
+    <a href="mall-details.html#973" class="tactic">Ht : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mall-details.html#974" class="tactic">apply merge_exists to H12 H13.</a> <a href="mall-details.html#975" class="tactic">search.</a>
+      <a href="mall-details.html#976" class="tactic">case Ht.</a>
+    <a href="mall-details.html#977" class="tactic">apply merge_3_is_list to H14.</a> <a href="mall-details.html#978" class="tactic">apply perm_refl to H15.</a>
+    <a href="mall-details.html#979" class="tactic">Ht : apply adj_2_is_o to H7.</a> <a href="mall-details.html#980" class="tactic">Hfm1 : case Ht.</a>
+    <a href="mall-details.html#981" class="tactic">assert 0 mall (plus A1 B1 :: V).</a>
+      <a href="mall-details.html#982" class="tactic">apply adj_swap to H11 *H8.</a>
+      <a href="mall-details.html#983" class="tactic">apply IH1 to H1 H18 *H9 H4 H5 _ with LL = B1 :: V.</a>
+      <a href="mall-details.html#984" class="tactic">search.</a>
+    <a href="mall-details.html#985" class="tactic">assert perm (plus A1 B1 :: V) LL.</a>
+      <a href="mall-details.html#986" class="tactic">apply adj_swap to H11 H7.</a>
+      <a href="mall-details.html#987" class="tactic">apply adj_same_result to *H2 *H19.</a>
+      <a href="mall-details.html#988" class="tactic">apply perm_merge_1 to *H6 *H20.</a>
+      <a href="mall-details.html#989" class="tactic">apply merge_unadj_1 to H21 H18.</a>
+      <a href="mall-details.html#990" class="tactic">unfold.</a> <a href="mall-details.html#991" class="tactic">witness plus A1 B1, V, LL2.</a> <a href="mall-details.html#992" class="tactic">split.</a> <a href="mall-details.html#993" class="tactic">search.</a> <a href="mall-details.html#994" class="tactic">search.</a>
+      <a href="mall-details.html#995" class="tactic">backchain merge_perm_det.</a>
+    <a href="mall-details.html#996" class="tactic">backchain mall_perm with K = plus A1 B1 :: V.</a></div>
 </pre>
 </div>
 
