@@ -65,7 +65,7 @@ Click on a command or tactic to see a detailed view of its use.
 <a href="mell-details.html#1" class="command">Kind nat type.</a>
 <a href="mell-details.html#2" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mell-details.html#3" class="tactic">./../lib/nat".
 
-</a></div><a href="mell-details.html#4" class="command">Kind atm type.</a>
+</a><a href="mell-details.html#4" class="command">Kind atm type.</a>
 <a href="mell-details.html#5" class="command">Type a, b, c, d, e, f atm.</a>
 
 <span class="comment">%% We reuse the o type to define LL formulas</span>
@@ -98,10 +98,11 @@ Click on a command or tactic to see a detailed view of its use.
   <a href="mell-details.html#17" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#18" class="tactic">apply IH to *H3.</a> <a href="mell-details.html#19" class="tactic">search.</a>
   <a href="mell-details.html#20" class="tactic">search.</a>
   <a href="mell-details.html#21" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#22" class="tactic">search.</a>
+</div>
 
-<a href="mell-details.html#23" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mell-details.html#24" class="tactic">./../lib/merge" with is_o := is_fm.
+<a href="mell-details.html#22" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mell-details.html#24" class="tactic">./../lib/merge" with is_o := is_fm.
 
-</a><span class="comment">Define mell : olist -> olist -> prop by
+</a><a href="mell-details.html#23" class="command">Define mell : olist -> olist -> prop by
 %% 1
 ; mell QL L :=
     is_list QL /\
@@ -144,7 +145,7 @@ Click on a command or tactic to see a detailed view of its use.
     exists A QK, adj QK A QL /\
     exists J, adj L A J /\
     mell QL J
-</span></div>
+</a>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Structure</span>
