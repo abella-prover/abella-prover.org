@@ -125,7 +125,7 @@ Click on a command or tactic to see a detailed view of its use.
 
 <a href="mallf-details.html#5" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mallf-details.html#6" class="tactic">./../lib/merge" with is_o := is_fm.
 
-</a><a href="mallf-details.html#7" class="command">Theorem $dual_det :
+</a></div><a href="mallf-details.html#7" class="command">Theorem $dual_det :
   (forall P1 P2 N, {dual P1 N} -> {dual P2 N} -> P1 = P2)
 /\
   (forall P N1 N2, {dual P N1} -> {dual P N2} -> N1 = N2).</a>
@@ -199,7 +199,7 @@ Click on a command or tactic to see a detailed view of its use.
    <a href="mallf-details.html#97" class="tactic">backchain merge_perm_det.</a>
   <a href="mallf-details.html#98" class="tactic">case H2.</a> <a href="mallf-details.html#99" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
-<span class="comment">%% Synthetic first-order MALL</span>
+<span class="comment">%% Synthetic MALL</span>
 
 <a href="mallf-details.html#100" class="command">Define
   mall : olist -> prop,
@@ -329,6 +329,7 @@ by
     merge J K L ->
     mallfoc L F).</a>
 <div class="proof"><a href="mallf-details.html#238" class="tactic">IHrank1 : induction on 1 1 1.</a> <a href="mallf-details.html#239" class="tactic">IHht1 : induction on 3 3 3.</a>
+<span class="comment">%abbrev IHrank1 IHrank2 IHrank3 IHht1 IHht2 IHht3 "...".</span>
 <a href="mallf-details.html#240" class="tactic">split.</a>
 
 <a href="mallf-details.html#241" class="tactic">intros Hdual Hadj Hpos Hneg Hjk.</a> <a href="mallf-details.html#242" class="tactic">Hpos1 : case Hpos.</a>
