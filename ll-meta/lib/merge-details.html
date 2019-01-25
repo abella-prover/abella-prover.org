@@ -5376,36 +5376,17 @@ Proof completed.
 </pre>
 <a name="340"></a>
 <pre class="code">
-Abella < <b>Theorem merge_split : 
-forall J K L LL A, merge LL (A :: nil) L -> merge J K L ->
-  (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
-  (exists KK, merge KK (A :: nil) K /\ merge J KK LL).</b>
-
-</pre>
-<a name="341"></a>
-<pre class="code">
-
-============================
- forall J K L LL A, merge LL (A :: nil) L -> merge J K L ->
-   (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
-   (exists KK, merge KK (A :: nil) K /\ merge J KK LL)
-
-merge_split < <b>skip.</b>
-Proof completed.
-</pre>
-<a name="342"></a>
-<pre class="code">
 Abella < <b>Define subset : (list o) -> (list o) -> prop by 
 subset J L := exists K, merge J K L.</b>
 
 </pre>
-<a name="343"></a>
+<a name="341"></a>
 <pre class="code">
 Abella < <b>Theorem subset_1_is_list : 
 forall J K, subset J K -> is_list J.</b>
 
 </pre>
-<a name="344"></a>
+<a name="342"></a>
 <pre class="code">
 
 ============================
@@ -5413,7 +5394,7 @@ forall J K, subset J K -> is_list J.</b>
 
 subset_1_is_list < <b>intros.</b>
 </pre>
-<a name="345"></a>
+<a name="343"></a>
 <pre class="code">
 
 Variables: J K
@@ -5423,7 +5404,7 @@ H1 : subset J K
 
 subset_1_is_list < <b>case H1.</b>
 </pre>
-<a name="346"></a>
+<a name="344"></a>
 <pre class="code">
 
 Variables: J K K1
@@ -5434,13 +5415,13 @@ H2 : merge J K1 K
 subset_1_is_list < <b>backchain merge_1_is_list.</b>
 Proof completed.
 </pre>
-<a name="347"></a>
+<a name="345"></a>
 <pre class="code">
 Abella < <b>Theorem subset_2_is_list : 
 forall J K, subset J K -> is_list K.</b>
 
 </pre>
-<a name="348"></a>
+<a name="346"></a>
 <pre class="code">
 
 ============================
@@ -5448,7 +5429,7 @@ forall J K, subset J K -> is_list K.</b>
 
 subset_2_is_list < <b>intros.</b>
 </pre>
-<a name="349"></a>
+<a name="347"></a>
 <pre class="code">
 
 Variables: J K
@@ -5458,7 +5439,7 @@ H1 : subset J K
 
 subset_2_is_list < <b>case H1.</b>
 </pre>
-<a name="350"></a>
+<a name="348"></a>
 <pre class="code">
 
 Variables: J K K1
@@ -5469,7 +5450,7 @@ H2 : merge J K1 K
 subset_2_is_list < <b>backchain merge_3_is_list.</b>
 Proof completed.
 </pre>
-<a name="351"></a>
+<a name="349"></a>
 <pre class="code">
 Abella < 
 </pre>

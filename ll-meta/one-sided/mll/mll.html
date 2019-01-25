@@ -90,11 +90,10 @@ Click on a command or tactic to see a detailed view of its use.
 <div class="proof"><a href="mll-details.html#9" class="tactic">induction on 1.</a> <a href="mll-details.html#10" class="tactic">intros.</a> <a href="mll-details.html#11" class="tactic">case H1.</a>
   <a href="mll-details.html#12" class="tactic">search.</a>
   <a href="mll-details.html#13" class="tactic">apply IH to *H2.</a> <a href="mll-details.html#14" class="tactic">apply IH to *H3.</a> <a href="mll-details.html#15" class="tactic">search.</a>
-  <a href="mll-details.html#16" class="tactic">search.</a>
+  <a href="mll-details.html#16" class="tactic">search.</a></div>
+<a href="mll-details.html#17" class="command">Import "../../lib/merge" with is_o := is_fm.</a> <a class="import-link" href="../../lib/merge.html">[View ../../lib/merge]</a>
 
-<a href="mll-details.html#17" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mll-details.html#18" class="tactic">./../lib/merge" with is_o := is_fm.
-
-</a></div><a href="mll-details.html#19" class="command">Define mll : olist -> prop by
+<a href="mll-details.html#18" class="command">Define mll : olist -> prop by
 ; mll L :=
     exists A, adj (natom A :: nil) (atom A) L
 
@@ -119,328 +118,329 @@ Click on a command or tactic to see a detailed view of its use.
       adj LL bot L /\
       mll LL
 .</a>
+
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<a href="mll-details.html#20" class="command">Theorem generalized_id : forall A B, dual A B -> mll (A :: B :: nil).</a>
-<div class="proof"><a href="mll-details.html#21" class="tactic">induction on 1.</a> <a href="mll-details.html#22" class="tactic">intros.</a> <a href="mll-details.html#23" class="tactic">case H1.</a>
-  <a href="mll-details.html#24" class="tactic">search.</a>
-  <a href="mll-details.html#25" class="tactic">apply IH to H2.</a> <a href="mll-details.html#26" class="tactic">apply IH to H3.</a>
-   <a href="mll-details.html#27" class="tactic">apply dual_is to H2.</a> <a href="mll-details.html#28" class="tactic">apply dual_is to H3.</a>
-   <a href="mll-details.html#29" class="tactic">unfold 4.</a> <a href="mll-details.html#30" class="tactic">witness AA.</a> <a href="mll-details.html#31" class="tactic">witness BB.</a> <a href="mll-details.html#32" class="tactic">witness tens A1 B1 :: nil.</a>
-   <a href="mll-details.html#33" class="tactic">witness tens A1 B1 :: AA :: nil.</a>
-   <a href="mll-details.html#34" class="tactic">witness tens A1 B1 :: AA :: BB :: nil.</a>
-   <a href="mll-details.html#35" class="tactic">split.</a> <a href="mll-details.html#36" class="tactic">search.</a> <a href="mll-details.html#37" class="tactic">search.</a> <a href="mll-details.html#38" class="tactic">search.</a>
-   <a href="mll-details.html#39" class="tactic">unfold 2.</a> <a href="mll-details.html#40" class="tactic">witness A1.</a> <a href="mll-details.html#41" class="tactic">witness B1.</a>
-   <a href="mll-details.html#42" class="tactic">witness AA :: BB :: nil.</a>
-   <a href="mll-details.html#43" class="tactic">witness AA :: nil.</a> <a href="mll-details.html#44" class="tactic">witness BB :: nil.</a>
-   <a href="mll-details.html#45" class="tactic">witness A1 :: AA :: nil.</a> <a href="mll-details.html#46" class="tactic">witness B1 :: BB :: nil.</a>
-   <a href="mll-details.html#47" class="tactic">search.</a>
-  <a href="mll-details.html#48" class="tactic">search.</a></div>
+<a href="mll-details.html#19" class="command">Theorem generalized_id : forall A B, dual A B -> mll (A :: B :: nil).</a>
+<div class="proof"><a href="mll-details.html#20" class="tactic">induction on 1.</a> <a href="mll-details.html#21" class="tactic">intros.</a> <a href="mll-details.html#22" class="tactic">case H1.</a>
+  <a href="mll-details.html#23" class="tactic">search.</a>
+  <a href="mll-details.html#24" class="tactic">apply IH to H2.</a> <a href="mll-details.html#25" class="tactic">apply IH to H3.</a>
+   <a href="mll-details.html#26" class="tactic">apply dual_is to H2.</a> <a href="mll-details.html#27" class="tactic">apply dual_is to H3.</a>
+   <a href="mll-details.html#28" class="tactic">unfold 4.</a> <a href="mll-details.html#29" class="tactic">witness AA.</a> <a href="mll-details.html#30" class="tactic">witness BB.</a> <a href="mll-details.html#31" class="tactic">witness tens A1 B1 :: nil.</a>
+   <a href="mll-details.html#32" class="tactic">witness tens A1 B1 :: AA :: nil.</a>
+   <a href="mll-details.html#33" class="tactic">witness tens A1 B1 :: AA :: BB :: nil.</a>
+   <a href="mll-details.html#34" class="tactic">split.</a> <a href="mll-details.html#35" class="tactic">search.</a> <a href="mll-details.html#36" class="tactic">search.</a> <a href="mll-details.html#37" class="tactic">search.</a>
+   <a href="mll-details.html#38" class="tactic">unfold 2.</a> <a href="mll-details.html#39" class="tactic">witness A1.</a> <a href="mll-details.html#40" class="tactic">witness B1.</a>
+   <a href="mll-details.html#41" class="tactic">witness AA :: BB :: nil.</a>
+   <a href="mll-details.html#42" class="tactic">witness AA :: nil.</a> <a href="mll-details.html#43" class="tactic">witness BB :: nil.</a>
+   <a href="mll-details.html#44" class="tactic">witness A1 :: AA :: nil.</a> <a href="mll-details.html#45" class="tactic">witness B1 :: BB :: nil.</a>
+   <a href="mll-details.html#46" class="tactic">search.</a>
+  <a href="mll-details.html#47" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<a href="mll-details.html#49" class="command">Theorem mll_perm : forall K L,
+<a href="mll-details.html#48" class="command">Theorem mll_perm : forall K L,
   mll K -> perm K L -> mll L.</a>
-<div class="proof"><a href="mll-details.html#50" class="tactic">induction on 1.</a> <a href="mll-details.html#51" class="tactic">intros.</a> <a href="mll-details.html#52" class="tactic">case H1.</a>
-  <a href="mll-details.html#53" class="tactic">case H3.</a>
-    <a href="mll-details.html#54" class="tactic">apply perm_cons_1 to *H2.</a>
-     <a href="mll-details.html#55" class="tactic">apply perm_cons_1 to *H7.</a> <a href="mll-details.html#56" class="tactic">case H9.</a> <a href="mll-details.html#57" class="tactic">case H8.</a> <a href="mll-details.html#58" class="tactic">search.</a> <a href="mll-details.html#59" class="tactic">case H10.</a>
-    <a href="mll-details.html#60" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mll-details.html#61" class="tactic">apply adj_nil_1 to *H5.</a>
-     <a href="mll-details.html#62" class="tactic">apply perm_cons_1 to *H7.</a> <a href="mll-details.html#63" class="tactic">apply adj_swap to *H8 *H6.</a>
-     <a href="mll-details.html#64" class="tactic">apply perm_nil_1 to *H9.</a> <a href="mll-details.html#65" class="tactic">apply adj_nil_1 to *H10.</a>
-     <a href="mll-details.html#66" class="tactic">unfold 1.</a> <a href="mll-details.html#67" class="tactic">search.</a>
+<div class="proof"><a href="mll-details.html#49" class="tactic">induction on 1.</a> <a href="mll-details.html#50" class="tactic">intros.</a> <a href="mll-details.html#51" class="tactic">case H1.</a>
+  <a href="mll-details.html#52" class="tactic">case H3.</a>
+    <a href="mll-details.html#53" class="tactic">apply perm_cons_1 to *H2.</a>
+     <a href="mll-details.html#54" class="tactic">apply perm_cons_1 to *H7.</a> <a href="mll-details.html#55" class="tactic">case H9.</a> <a href="mll-details.html#56" class="tactic">case H8.</a> <a href="mll-details.html#57" class="tactic">search.</a> <a href="mll-details.html#58" class="tactic">case H10.</a>
+    <a href="mll-details.html#59" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mll-details.html#60" class="tactic">apply adj_nil_1 to *H5.</a>
+     <a href="mll-details.html#61" class="tactic">apply perm_cons_1 to *H7.</a> <a href="mll-details.html#62" class="tactic">apply adj_swap to *H8 *H6.</a>
+     <a href="mll-details.html#63" class="tactic">apply perm_nil_1 to *H9.</a> <a href="mll-details.html#64" class="tactic">apply adj_nil_1 to *H10.</a>
+     <a href="mll-details.html#65" class="tactic">unfold 1.</a> <a href="mll-details.html#66" class="tactic">search.</a>
 
-  <a href="mll-details.html#68" class="tactic">apply adj_2_is_o to H5.</a> <a href="mll-details.html#69" class="tactic">apply adj_1_is_list to H5.</a>
-   <a href="mll-details.html#70" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#71" class="tactic">apply adj_1_is_list to H7.</a>
-   <a href="mll-details.html#72" class="tactic">assert perm J (A :: JJ).</a>
-     <a href="mll-details.html#73" class="tactic">apply perm_refl to H10.</a> <a href="mll-details.html#74" class="tactic">search.</a>
-   <a href="mll-details.html#75" class="tactic">assert perm K1 (B :: KK).</a>
-     <a href="mll-details.html#76" class="tactic">apply perm_refl to H12.</a> <a href="mll-details.html#77" class="tactic">search.</a>
-   <a href="mll-details.html#78" class="tactic">apply IH to *H6 *H13.</a>
-   <a href="mll-details.html#79" class="tactic">apply IH to *H8 *H14.</a>
-   <a href="mll-details.html#80" class="tactic">apply adj_perm_full to H2 H3.</a> <a href="mll-details.html#81" class="tactic">apply perm_merge_3 to *H4 *H18.</a>
-   <a href="mll-details.html#82" class="tactic">unfold 2.</a> <a href="mll-details.html#83" class="tactic">search.</a>
+  <a href="mll-details.html#67" class="tactic">apply adj_2_is_o to H5.</a> <a href="mll-details.html#68" class="tactic">apply adj_1_is_list to H5.</a>
+   <a href="mll-details.html#69" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#70" class="tactic">apply adj_1_is_list to H7.</a>
+   <a href="mll-details.html#71" class="tactic">assert perm J (A :: JJ).</a>
+     <a href="mll-details.html#72" class="tactic">apply perm_refl to H10.</a> <a href="mll-details.html#73" class="tactic">search.</a>
+   <a href="mll-details.html#74" class="tactic">assert perm K1 (B :: KK).</a>
+     <a href="mll-details.html#75" class="tactic">apply perm_refl to H12.</a> <a href="mll-details.html#76" class="tactic">search.</a>
+   <a href="mll-details.html#77" class="tactic">apply IH to *H6 *H13.</a>
+   <a href="mll-details.html#78" class="tactic">apply IH to *H8 *H14.</a>
+   <a href="mll-details.html#79" class="tactic">apply adj_perm_full to H2 H3.</a> <a href="mll-details.html#80" class="tactic">apply perm_merge_3 to *H4 *H18.</a>
+   <a href="mll-details.html#81" class="tactic">unfold 2.</a> <a href="mll-details.html#82" class="tactic">search.</a>
 
-  <a href="mll-details.html#84" class="tactic">case H2.</a> <a href="mll-details.html#85" class="tactic">case H3.</a>
-    <a href="mll-details.html#86" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mll-details.html#87" class="tactic">apply adj_nil_1 to *H4.</a> <a href="mll-details.html#88" class="tactic">search.</a>
-    <a href="mll-details.html#89" class="tactic">case H7.</a>
+  <a href="mll-details.html#83" class="tactic">case H2.</a> <a href="mll-details.html#84" class="tactic">case H3.</a>
+    <a href="mll-details.html#85" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mll-details.html#86" class="tactic">apply adj_nil_1 to *H4.</a> <a href="mll-details.html#87" class="tactic">search.</a>
+    <a href="mll-details.html#88" class="tactic">case H7.</a>
 
-  <a href="mll-details.html#90" class="tactic">apply adj_perm_full to *H2 *H3.</a>
-   <a href="mll-details.html#91" class="tactic">assert perm J (A :: KK).</a>
-     <a href="mll-details.html#92" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#93" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#94" class="tactic">search.</a>
-   <a href="mll-details.html#95" class="tactic">assert perm K1 (B :: A :: KK).</a>
-     <a href="mll-details.html#96" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#97" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#98" class="tactic">apply adj_2_is_o to H5.</a>
-      <a href="mll-details.html#99" class="tactic">search.</a>
-   <a href="mll-details.html#100" class="tactic">apply IH to *H6 *H10.</a>
-   <a href="mll-details.html#101" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#102" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#103" class="tactic">apply adj_2_is_o to H5.</a>
-   <a href="mll-details.html#104" class="tactic">unfold 4.</a> <a href="mll-details.html#105" class="tactic">search.</a>
+  <a href="mll-details.html#89" class="tactic">apply adj_perm_full to *H2 *H3.</a>
+   <a href="mll-details.html#90" class="tactic">assert perm J (A :: KK).</a>
+     <a href="mll-details.html#91" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#92" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#93" class="tactic">search.</a>
+   <a href="mll-details.html#94" class="tactic">assert perm K1 (B :: A :: KK).</a>
+     <a href="mll-details.html#95" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#96" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#97" class="tactic">apply adj_2_is_o to H5.</a>
+      <a href="mll-details.html#98" class="tactic">search.</a>
+   <a href="mll-details.html#99" class="tactic">apply IH to *H6 *H10.</a>
+   <a href="mll-details.html#100" class="tactic">apply adj_1_is_list to H7.</a> <a href="mll-details.html#101" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#102" class="tactic">apply adj_2_is_o to H5.</a>
+   <a href="mll-details.html#103" class="tactic">unfold 4.</a> <a href="mll-details.html#104" class="tactic">search.</a>
 
-  <a href="mll-details.html#106" class="tactic">apply adj_perm_full to *H2 *H3.</a>
-   <a href="mll-details.html#107" class="tactic">apply IH to *H4 *H6.</a>
-   <a href="mll-details.html#108" class="tactic">unfold 5.</a> <a href="mll-details.html#109" class="tactic">search.</a></div>
+  <a href="mll-details.html#105" class="tactic">apply adj_perm_full to *H2 *H3.</a>
+   <a href="mll-details.html#106" class="tactic">apply IH to *H4 *H6.</a>
+   <a href="mll-details.html#107" class="tactic">unfold 5.</a> <a href="mll-details.html#108" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Inversion theorems</span>
 
-<a href="mll-details.html#110" class="command">Theorem bot_inv : forall J L,
+<a href="mll-details.html#109" class="command">Theorem bot_inv : forall J L,
   mll L -> adj J bot L -> mll J.</a>
-<div class="proof"><a href="mll-details.html#111" class="tactic">induction on 1.</a> <a href="mll-details.html#112" class="tactic">intros.</a> <a href="mll-details.html#113" class="tactic">case H1.</a>
-  <a href="mll-details.html#114" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#115" class="tactic">case H4.</a>
-   <a href="mll-details.html#116" class="tactic">case H5.</a> <a href="mll-details.html#117" class="tactic">case H7.</a>
+<div class="proof"><a href="mll-details.html#110" class="tactic">induction on 1.</a> <a href="mll-details.html#111" class="tactic">intros.</a> <a href="mll-details.html#112" class="tactic">case H1.</a>
+  <a href="mll-details.html#113" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#114" class="tactic">case H4.</a>
+   <a href="mll-details.html#115" class="tactic">case H5.</a> <a href="mll-details.html#116" class="tactic">case H7.</a>
 
-  <a href="mll-details.html#118" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#119" class="tactic">case H9.</a>
-   <a href="mll-details.html#120" class="tactic">apply merge_unadj_3 to H4 H10.</a> <a href="mll-details.html#121" class="tactic">case H11.</a>
-    <a href="mll-details.html#122" class="tactic">apply adj_swap to H12 H5.</a> <a href="mll-details.html#123" class="tactic">apply IH to *H6 H15.</a>
-     <a href="mll-details.html#124" class="tactic">apply merge_unadj_1 to H4 H12.</a>
-     <a href="mll-details.html#125" class="tactic">apply adj_swap to H17 H3.</a>
-     <a href="mll-details.html#126" class="tactic">assert mll U1.</a> <a href="mll-details.html#127" class="tactic">apply adj_same_result to H20 H2.</a> <a href="mll-details.html#128" class="tactic">backchain mll_perm with K = U1.</a>
+  <a href="mll-details.html#117" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#118" class="tactic">case H9.</a>
+   <a href="mll-details.html#119" class="tactic">apply merge_unadj_3 to H4 H10.</a> <a href="mll-details.html#120" class="tactic">case H11.</a>
+    <a href="mll-details.html#121" class="tactic">apply adj_swap to H12 H5.</a> <a href="mll-details.html#122" class="tactic">apply IH to *H6 H15.</a>
+     <a href="mll-details.html#123" class="tactic">apply merge_unadj_1 to H4 H12.</a>
+     <a href="mll-details.html#124" class="tactic">apply adj_swap to H17 H3.</a>
+     <a href="mll-details.html#125" class="tactic">assert mll U1.</a> <a href="mll-details.html#126" class="tactic">apply adj_same_result to H20 H2.</a> <a href="mll-details.html#127" class="tactic">backchain mll_perm with K = U1.</a>
 
-    <a href="mll-details.html#129" class="tactic">apply merge_unadj_2 to *H4 H12.</a> <a href="mll-details.html#130" class="tactic">apply adj_same_result to H14 H10.</a>
-     <a href="mll-details.html#131" class="tactic">apply perm_merge_3 to *H15 *H16.</a>
-     <a href="mll-details.html#132" class="tactic">apply adj_swap to H12 H7.</a> <a href="mll-details.html#133" class="tactic">apply IH to *H8 H19.</a>
-     <a href="mll-details.html#134" class="tactic">apply adj_swap to H10 H3.</a> <a href="mll-details.html#135" class="tactic">assert mll U1.</a>
-     <a href="mll-details.html#136" class="tactic">apply adj_same_result to H22 H2.</a> <a href="mll-details.html#137" class="tactic">backchain mll_perm with K = U1.</a>
+    <a href="mll-details.html#128" class="tactic">apply merge_unadj_2 to *H4 H12.</a> <a href="mll-details.html#129" class="tactic">apply adj_same_result to H14 H10.</a>
+     <a href="mll-details.html#130" class="tactic">apply perm_merge_3 to *H15 *H16.</a>
+     <a href="mll-details.html#131" class="tactic">apply adj_swap to H12 H7.</a> <a href="mll-details.html#132" class="tactic">apply IH to *H8 H19.</a>
+     <a href="mll-details.html#133" class="tactic">apply adj_swap to H10 H3.</a> <a href="mll-details.html#134" class="tactic">assert mll U1.</a>
+     <a href="mll-details.html#135" class="tactic">apply adj_same_result to H22 H2.</a> <a href="mll-details.html#136" class="tactic">backchain mll_perm with K = U1.</a>
 
-  <a href="mll-details.html#138" class="tactic">case H2.</a> <a href="mll-details.html#139" class="tactic">case H4.</a>
+  <a href="mll-details.html#137" class="tactic">case H2.</a> <a href="mll-details.html#138" class="tactic">case H4.</a>
 
-  <a href="mll-details.html#140" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#141" class="tactic">case H7.</a>
-   <a href="mll-details.html#142" class="tactic">apply adj_swap to H8 H4.</a>  <a href="mll-details.html#143" class="tactic">apply adj_swap to H10 H5.</a>
-   <a href="mll-details.html#144" class="tactic">apply IH to *H6 H12.</a>
-   <a href="mll-details.html#145" class="tactic">apply adj_swap to H8 H3.</a> <a href="mll-details.html#146" class="tactic">assert mll U2.</a>
-   <a href="mll-details.html#147" class="tactic">apply adj_same_result to H15 H2.</a> <a href="mll-details.html#148" class="tactic">backchain mll_perm with K = U2.</a>
+  <a href="mll-details.html#139" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#140" class="tactic">case H7.</a>
+   <a href="mll-details.html#141" class="tactic">apply adj_swap to H8 H4.</a>  <a href="mll-details.html#142" class="tactic">apply adj_swap to H10 H5.</a>
+   <a href="mll-details.html#143" class="tactic">apply IH to *H6 H12.</a>
+   <a href="mll-details.html#144" class="tactic">apply adj_swap to H8 H3.</a> <a href="mll-details.html#145" class="tactic">assert mll U2.</a>
+   <a href="mll-details.html#146" class="tactic">apply adj_same_result to H15 H2.</a> <a href="mll-details.html#147" class="tactic">backchain mll_perm with K = U2.</a>
 
-  <a href="mll-details.html#149" class="tactic">apply adj_same_result to H3 H2.</a> <a href="mll-details.html#150" class="tactic">backchain mll_perm.</a></div>
-<a href="mll-details.html#151" class="command">Theorem adj_sequence : forall J A K B L,
+  <a href="mll-details.html#148" class="tactic">apply adj_same_result to H3 H2.</a> <a href="mll-details.html#149" class="tactic">backchain mll_perm.</a></div>
+<a href="mll-details.html#150" class="command">Theorem adj_sequence : forall J A K B L,
   adj J A K ->
   adj J B L ->
   exists KK LL, adj L A LL /\ adj K B KK /\ perm KK LL.</a>
-<div class="proof"><a href="mll-details.html#152" class="tactic">induction on 1.</a> <a href="mll-details.html#153" class="tactic">intros.</a> <a href="mll-details.html#154" class="tactic">case H1.</a>
-  <a href="mll-details.html#155" class="tactic">apply adj_3_is_list to H2.</a> <a href="mll-details.html#156" class="tactic">apply adj_exists to H3 H5.</a>
-   <a href="mll-details.html#157" class="tactic">witness A :: L.</a> <a href="mll-details.html#158" class="tactic">witness M.</a> <a href="mll-details.html#159" class="tactic">split.</a> <a href="mll-details.html#160" class="tactic">search.</a> <a href="mll-details.html#161" class="tactic">search.</a>
-   <a href="mll-details.html#162" class="tactic">apply adj_3_is_list to H6.</a> <a href="mll-details.html#163" class="tactic">apply perm_refl to H5.</a> <a href="mll-details.html#164" class="tactic">search.</a>
+<div class="proof"><a href="mll-details.html#151" class="tactic">induction on 1.</a> <a href="mll-details.html#152" class="tactic">intros.</a> <a href="mll-details.html#153" class="tactic">case H1.</a>
+  <a href="mll-details.html#154" class="tactic">apply adj_3_is_list to H2.</a> <a href="mll-details.html#155" class="tactic">apply adj_exists to H3 H5.</a>
+   <a href="mll-details.html#156" class="tactic">witness A :: L.</a> <a href="mll-details.html#157" class="tactic">witness M.</a> <a href="mll-details.html#158" class="tactic">split.</a> <a href="mll-details.html#159" class="tactic">search.</a> <a href="mll-details.html#160" class="tactic">search.</a>
+   <a href="mll-details.html#161" class="tactic">apply adj_3_is_list to H6.</a> <a href="mll-details.html#162" class="tactic">apply perm_refl to H5.</a> <a href="mll-details.html#163" class="tactic">search.</a>
 
-  <a href="mll-details.html#165" class="tactic">case H2.</a>
-    <a href="mll-details.html#166" class="tactic">case H6.</a> <a href="mll-details.html#167" class="tactic">apply adj_3_is_list to H4.</a> <a href="mll-details.html#168" class="tactic">witness B :: B1 :: L1.</a> <a href="mll-details.html#169" class="tactic">witness B :: B1 :: L1.</a>
-     <a href="mll-details.html#170" class="tactic">apply perm_refl to _ with L = B :: B1 :: L1.</a> <a href="mll-details.html#171" class="tactic">search.</a>
+  <a href="mll-details.html#164" class="tactic">case H2.</a>
+    <a href="mll-details.html#165" class="tactic">case H6.</a> <a href="mll-details.html#166" class="tactic">apply adj_3_is_list to H4.</a> <a href="mll-details.html#167" class="tactic">witness B :: B1 :: L1.</a> <a href="mll-details.html#168" class="tactic">witness B :: B1 :: L1.</a>
+     <a href="mll-details.html#169" class="tactic">apply perm_refl to _ with L = B :: B1 :: L1.</a> <a href="mll-details.html#170" class="tactic">search.</a>
 
-    <a href="mll-details.html#172" class="tactic">apply IH to *H4 *H6.</a> <a href="mll-details.html#173" class="tactic">witness B1 :: KK.</a> <a href="mll-details.html#174" class="tactic">witness B1 :: LL.</a> <a href="mll-details.html#175" class="tactic">split.</a> <a href="mll-details.html#176" class="tactic">search.</a> <a href="mll-details.html#177" class="tactic">search.</a>
-     <a href="mll-details.html#178" class="tactic">apply perm_1_is_list to H9.</a> <a href="mll-details.html#179" class="tactic">apply perm_2_is_list to H9.</a> <a href="mll-details.html#180" class="tactic">search.</a></div>
-<a href="mll-details.html#181" class="command">Theorem par_inv : forall L JJ A B,
+    <a href="mll-details.html#171" class="tactic">apply IH to *H4 *H6.</a> <a href="mll-details.html#172" class="tactic">witness B1 :: KK.</a> <a href="mll-details.html#173" class="tactic">witness B1 :: LL.</a> <a href="mll-details.html#174" class="tactic">split.</a> <a href="mll-details.html#175" class="tactic">search.</a> <a href="mll-details.html#176" class="tactic">search.</a>
+     <a href="mll-details.html#177" class="tactic">apply perm_1_is_list to H9.</a> <a href="mll-details.html#178" class="tactic">apply perm_2_is_list to H9.</a> <a href="mll-details.html#179" class="tactic">search.</a></div>
+<a href="mll-details.html#180" class="command">Theorem par_inv : forall L JJ A B,
   mll L -> adj JJ (par A B) L ->
   exists KK LL, adj JJ A KK /\ adj KK B LL /\ mll LL.</a>
-<div class="proof"><a href="mll-details.html#182" class="tactic">induction on 1.</a> <a href="mll-details.html#183" class="tactic">intros.</a> <a href="mll-details.html#184" class="tactic">case H1.</a>
-  <a href="mll-details.html#185" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#186" class="tactic">case H4.</a>
-   <a href="mll-details.html#187" class="tactic">case H5.</a> <a href="mll-details.html#188" class="tactic">case H7.</a>
+<div class="proof"><a href="mll-details.html#181" class="tactic">induction on 1.</a> <a href="mll-details.html#182" class="tactic">intros.</a> <a href="mll-details.html#183" class="tactic">case H1.</a>
+  <a href="mll-details.html#184" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#185" class="tactic">case H4.</a>
+   <a href="mll-details.html#186" class="tactic">case H5.</a> <a href="mll-details.html#187" class="tactic">case H7.</a>
 
-  <a href="mll-details.html#189" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#190" class="tactic">case H9.</a>
-  <a href="mll-details.html#191" class="tactic">apply merge_unadj_3 to *H4 H10.</a> <a href="mll-details.html#192" class="tactic">case H11.</a>
-    <a href="mll-details.html#193" class="tactic">apply adj_swap to H12 *H5.</a> <a href="mll-details.html#194" class="tactic">apply IH to *H6 *H15.</a>
-     <a href="mll-details.html#195" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#196" class="tactic">apply adj_swap to *H20 *H17.</a>
-     <a href="mll-details.html#197" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#198" class="tactic">apply adj_2_is_o to H19.</a> <a href="mll-details.html#199" class="tactic">apply adj_2_is_o to H21.</a>
-     <a href="mll-details.html#200" class="tactic">assert merge U2 KK (A :: B :: KK1).</a>
-     <a href="mll-details.html#201" class="tactic">apply adj_2_is_o to H3.</a>
-     <a href="mll-details.html#202" class="tactic">assert mll (tens A1 B1 :: A :: B :: KK1).</a>
-     <a href="mll-details.html#203" class="tactic">apply adj_swap to *H10 *H3.</a>
-     <a href="mll-details.html#204" class="tactic">apply adj_same_result to H30 H2.</a> <a href="mll-details.html#205" class="tactic">apply adj_perm_full to H31 H29.</a>
-     <a href="mll-details.html#206" class="tactic">apply adj_1_is_list to *H2.</a>
-     <a href="mll-details.html#207" class="tactic">assert perm (tens A1 B1 :: A :: B :: KK1) (A :: B :: JJ).</a>
-     <a href="mll-details.html#208" class="tactic">apply mll_perm to H28 H35.</a>
-     <a href="mll-details.html#209" class="tactic">assert adj JJ A (A :: JJ).</a>
-     <a href="mll-details.html#210" class="tactic">assert adj (A :: JJ) B (A :: B :: JJ).</a>
-     <a href="mll-details.html#211" class="tactic">search.</a>
+  <a href="mll-details.html#188" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#189" class="tactic">case H9.</a>
+  <a href="mll-details.html#190" class="tactic">apply merge_unadj_3 to *H4 H10.</a> <a href="mll-details.html#191" class="tactic">case H11.</a>
+    <a href="mll-details.html#192" class="tactic">apply adj_swap to H12 *H5.</a> <a href="mll-details.html#193" class="tactic">apply IH to *H6 *H15.</a>
+     <a href="mll-details.html#194" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#195" class="tactic">apply adj_swap to *H20 *H17.</a>
+     <a href="mll-details.html#196" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#197" class="tactic">apply adj_2_is_o to H19.</a> <a href="mll-details.html#198" class="tactic">apply adj_2_is_o to H21.</a>
+     <a href="mll-details.html#199" class="tactic">assert merge U2 KK (A :: B :: KK1).</a>
+     <a href="mll-details.html#200" class="tactic">apply adj_2_is_o to H3.</a>
+     <a href="mll-details.html#201" class="tactic">assert mll (tens A1 B1 :: A :: B :: KK1).</a>
+     <a href="mll-details.html#202" class="tactic">apply adj_swap to *H10 *H3.</a>
+     <a href="mll-details.html#203" class="tactic">apply adj_same_result to H30 H2.</a> <a href="mll-details.html#204" class="tactic">apply adj_perm_full to H31 H29.</a>
+     <a href="mll-details.html#205" class="tactic">apply adj_1_is_list to *H2.</a>
+     <a href="mll-details.html#206" class="tactic">assert perm (tens A1 B1 :: A :: B :: KK1) (A :: B :: JJ).</a>
+     <a href="mll-details.html#207" class="tactic">apply mll_perm to H28 H35.</a>
+     <a href="mll-details.html#208" class="tactic">assert adj JJ A (A :: JJ).</a>
+     <a href="mll-details.html#209" class="tactic">assert adj (A :: JJ) B (A :: B :: JJ).</a>
+     <a href="mll-details.html#210" class="tactic">search.</a>
 
     <span class="comment">%% symmetric case</span>
-    <a href="mll-details.html#212" class="tactic">apply adj_swap to *H12 *H7.</a> <a href="mll-details.html#213" class="tactic">apply IH to *H8 *H15.</a>
-     <a href="mll-details.html#214" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#215" class="tactic">apply adj_swap to *H20 *H17.</a>
-     <a href="mll-details.html#216" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#217" class="tactic">apply adj_2_is_o to H19.</a> <a href="mll-details.html#218" class="tactic">apply adj_2_is_o to H21.</a>
-     <a href="mll-details.html#219" class="tactic">assert merge JJ1 U2 (A :: B :: KK1).</a>
-     <a href="mll-details.html#220" class="tactic">apply adj_2_is_o to H3.</a>
-     <a href="mll-details.html#221" class="tactic">assert mll (tens A1 B1 :: A :: B :: KK1).</a>
-     <a href="mll-details.html#222" class="tactic">apply adj_swap to *H10 *H3.</a>
-     <a href="mll-details.html#223" class="tactic">apply adj_same_result to H30 H2.</a> <a href="mll-details.html#224" class="tactic">apply adj_perm_full to H31 H29.</a>
-     <a href="mll-details.html#225" class="tactic">apply adj_1_is_list to *H2.</a>
-     <a href="mll-details.html#226" class="tactic">assert perm (tens A1 B1 :: A :: B :: KK1) (A :: B :: JJ).</a>
-     <a href="mll-details.html#227" class="tactic">apply mll_perm to *H28 *H35.</a>
-     <a href="mll-details.html#228" class="tactic">assert adj JJ A (A :: JJ).</a>
-     <a href="mll-details.html#229" class="tactic">assert adj (A :: JJ) B (A :: B :: JJ).</a>
-     <a href="mll-details.html#230" class="tactic">search.</a>
+    <a href="mll-details.html#211" class="tactic">apply adj_swap to *H12 *H7.</a> <a href="mll-details.html#212" class="tactic">apply IH to *H8 *H15.</a>
+     <a href="mll-details.html#213" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#214" class="tactic">apply adj_swap to *H20 *H17.</a>
+     <a href="mll-details.html#215" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#216" class="tactic">apply adj_2_is_o to H19.</a> <a href="mll-details.html#217" class="tactic">apply adj_2_is_o to H21.</a>
+     <a href="mll-details.html#218" class="tactic">assert merge JJ1 U2 (A :: B :: KK1).</a>
+     <a href="mll-details.html#219" class="tactic">apply adj_2_is_o to H3.</a>
+     <a href="mll-details.html#220" class="tactic">assert mll (tens A1 B1 :: A :: B :: KK1).</a>
+     <a href="mll-details.html#221" class="tactic">apply adj_swap to *H10 *H3.</a>
+     <a href="mll-details.html#222" class="tactic">apply adj_same_result to H30 H2.</a> <a href="mll-details.html#223" class="tactic">apply adj_perm_full to H31 H29.</a>
+     <a href="mll-details.html#224" class="tactic">apply adj_1_is_list to *H2.</a>
+     <a href="mll-details.html#225" class="tactic">assert perm (tens A1 B1 :: A :: B :: KK1) (A :: B :: JJ).</a>
+     <a href="mll-details.html#226" class="tactic">apply mll_perm to *H28 *H35.</a>
+     <a href="mll-details.html#227" class="tactic">assert adj JJ A (A :: JJ).</a>
+     <a href="mll-details.html#228" class="tactic">assert adj (A :: JJ) B (A :: B :: JJ).</a>
+     <a href="mll-details.html#229" class="tactic">search.</a>
 
-  <a href="mll-details.html#231" class="tactic">case H2.</a> <a href="mll-details.html#232" class="tactic">case H4.</a>
+  <a href="mll-details.html#230" class="tactic">case H2.</a> <a href="mll-details.html#231" class="tactic">case H4.</a>
 
-  <a href="mll-details.html#233" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#234" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#235" class="tactic">apply adj_2_is_o to H5.</a> <a href="mll-details.html#236" class="tactic">apply adj_1_is_list to H2.</a>
-  <a href="mll-details.html#237" class="tactic">case H7.</a>
-    <a href="mll-details.html#238" class="tactic">assert perm (A1 :: B1 :: JJ) K.</a>
-     <a href="mll-details.html#239" class="tactic">apply perm_sym to *H12.</a> <a href="mll-details.html#240" class="tactic">apply mll_perm to *H6 *H13.</a>
-     <a href="mll-details.html#241" class="tactic">search.</a>
+  <a href="mll-details.html#232" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#233" class="tactic">apply adj_2_is_o to H4.</a> <a href="mll-details.html#234" class="tactic">apply adj_2_is_o to H5.</a> <a href="mll-details.html#235" class="tactic">apply adj_1_is_list to H2.</a>
+  <a href="mll-details.html#236" class="tactic">case H7.</a>
+    <a href="mll-details.html#237" class="tactic">assert perm (A1 :: B1 :: JJ) K.</a>
+     <a href="mll-details.html#238" class="tactic">apply perm_sym to *H12.</a> <a href="mll-details.html#239" class="tactic">apply mll_perm to *H6 *H13.</a>
+     <a href="mll-details.html#240" class="tactic">search.</a>
 
-   <a href="mll-details.html#242" class="tactic">apply adj_swap to H11 *H4.</a> <a href="mll-details.html#243" class="tactic">apply adj_swap to *H13 *H5.</a> <a href="mll-details.html#244" class="tactic">apply IH to *H6 *H15.</a>
-     <a href="mll-details.html#245" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#246" class="tactic">apply adj_swap to *H20 *H17.</a>
-     <a href="mll-details.html#247" class="tactic">apply adj_swap to *H12 *H19.</a> <a href="mll-details.html#248" class="tactic">apply adj_swap to *H24 *H21.</a>
-     <a href="mll-details.html#249" class="tactic">apply adj_1_is_list to H26.</a> <a href="mll-details.html#250" class="tactic">assert mll (par A1 B1 :: U5).</a>
-     <a href="mll-details.html#251" class="tactic">apply adj_2_is_o to H23.</a> <a href="mll-details.html#252" class="tactic">apply adj_2_is_o to H25.</a>
-     <a href="mll-details.html#253" class="tactic">assert perm (par A1 B1 :: U5) (A :: B :: JJ).</a>
-       <a href="mll-details.html#254" class="tactic">unfold.</a> <a href="mll-details.html#255" class="tactic">witness B.</a> <a href="mll-details.html#256" class="tactic">witness par A1 B1 :: U4.</a> <a href="mll-details.html#257" class="tactic">witness A :: JJ.</a> <a href="mll-details.html#258" class="tactic">split.</a> <a href="mll-details.html#259" class="tactic">search.</a> <a href="mll-details.html#260" class="tactic">search.</a>
-       <a href="mll-details.html#261" class="tactic">unfold.</a> <a href="mll-details.html#262" class="tactic">witness A.</a> <a href="mll-details.html#263" class="tactic">witness par A1 B1 :: KK.</a> <a href="mll-details.html#264" class="tactic">witness JJ.</a> <a href="mll-details.html#265" class="tactic">split.</a> <a href="mll-details.html#266" class="tactic">search.</a> <a href="mll-details.html#267" class="tactic">search.</a>
-       <a href="mll-details.html#268" class="tactic">apply adj_swap to *H11 *H3.</a> <a href="mll-details.html#269" class="tactic">apply adj_same_result to *H32 *H2.</a>
-       <a href="mll-details.html#270" class="tactic">backchain perm_trans with K = U6.</a>
-       <a href="mll-details.html#271" class="tactic">apply adj_1_is_list to H31.</a>
-       <a href="mll-details.html#272" class="tactic">unfold.</a> <a href="mll-details.html#273" class="tactic">witness par A1 B1.</a> <a href="mll-details.html#274" class="tactic">witness KK.</a> <a href="mll-details.html#275" class="tactic">witness KK.</a> <a href="mll-details.html#276" class="tactic">split.</a> <a href="mll-details.html#277" class="tactic">search.</a> <a href="mll-details.html#278" class="tactic">search.</a> <a href="mll-details.html#279" class="tactic">backchain perm_refl.</a>
-     <a href="mll-details.html#280" class="tactic">apply mll_perm to *H28 *H31.</a>
-     <a href="mll-details.html#281" class="tactic">search.</a>
+   <a href="mll-details.html#241" class="tactic">apply adj_swap to H11 *H4.</a> <a href="mll-details.html#242" class="tactic">apply adj_swap to *H13 *H5.</a> <a href="mll-details.html#243" class="tactic">apply IH to *H6 *H15.</a>
+     <a href="mll-details.html#244" class="tactic">apply adj_swap to *H14 *H16.</a> <a href="mll-details.html#245" class="tactic">apply adj_swap to *H20 *H17.</a>
+     <a href="mll-details.html#246" class="tactic">apply adj_swap to *H12 *H19.</a> <a href="mll-details.html#247" class="tactic">apply adj_swap to *H24 *H21.</a>
+     <a href="mll-details.html#248" class="tactic">apply adj_1_is_list to H26.</a> <a href="mll-details.html#249" class="tactic">assert mll (par A1 B1 :: U5).</a>
+     <a href="mll-details.html#250" class="tactic">apply adj_2_is_o to H23.</a> <a href="mll-details.html#251" class="tactic">apply adj_2_is_o to H25.</a>
+     <a href="mll-details.html#252" class="tactic">assert perm (par A1 B1 :: U5) (A :: B :: JJ).</a>
+       <a href="mll-details.html#253" class="tactic">unfold.</a> <a href="mll-details.html#254" class="tactic">witness B.</a> <a href="mll-details.html#255" class="tactic">witness par A1 B1 :: U4.</a> <a href="mll-details.html#256" class="tactic">witness A :: JJ.</a> <a href="mll-details.html#257" class="tactic">split.</a> <a href="mll-details.html#258" class="tactic">search.</a> <a href="mll-details.html#259" class="tactic">search.</a>
+       <a href="mll-details.html#260" class="tactic">unfold.</a> <a href="mll-details.html#261" class="tactic">witness A.</a> <a href="mll-details.html#262" class="tactic">witness par A1 B1 :: KK.</a> <a href="mll-details.html#263" class="tactic">witness JJ.</a> <a href="mll-details.html#264" class="tactic">split.</a> <a href="mll-details.html#265" class="tactic">search.</a> <a href="mll-details.html#266" class="tactic">search.</a>
+       <a href="mll-details.html#267" class="tactic">apply adj_swap to *H11 *H3.</a> <a href="mll-details.html#268" class="tactic">apply adj_same_result to *H32 *H2.</a>
+       <a href="mll-details.html#269" class="tactic">backchain perm_trans with K = U6.</a>
+       <a href="mll-details.html#270" class="tactic">apply adj_1_is_list to H31.</a>
+       <a href="mll-details.html#271" class="tactic">unfold.</a> <a href="mll-details.html#272" class="tactic">witness par A1 B1.</a> <a href="mll-details.html#273" class="tactic">witness KK.</a> <a href="mll-details.html#274" class="tactic">witness KK.</a> <a href="mll-details.html#275" class="tactic">split.</a> <a href="mll-details.html#276" class="tactic">search.</a> <a href="mll-details.html#277" class="tactic">search.</a> <a href="mll-details.html#278" class="tactic">backchain perm_refl.</a>
+     <a href="mll-details.html#279" class="tactic">apply mll_perm to *H28 *H31.</a>
+     <a href="mll-details.html#280" class="tactic">search.</a>
 
-  <a href="mll-details.html#282" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#283" class="tactic">apply adj_2_is_o to H2.</a> <a href="mll-details.html#284" class="tactic">case H6.</a> <a href="mll-details.html#285" class="tactic">case H5.</a>
-    <a href="mll-details.html#286" class="tactic">apply IH to *H4 H9.</a>
-    <a href="mll-details.html#287" class="tactic">apply adj_3_is_list to H11.</a>
-    <a href="mll-details.html#288" class="tactic">assert mll (bot :: LL1).</a>
-    <a href="mll-details.html#289" class="tactic">apply adj_1_is_list to H2.</a>
-    <a href="mll-details.html#290" class="tactic">assert perm (bot :: LL1) (A :: B :: JJ).</a>
-      <a href="mll-details.html#291" class="tactic">unfold.</a> <a href="mll-details.html#292" class="tactic">witness B.</a> <a href="mll-details.html#293" class="tactic">witness bot :: KK1.</a> <a href="mll-details.html#294" class="tactic">witness A :: JJ.</a> <a href="mll-details.html#295" class="tactic">split.</a> <a href="mll-details.html#296" class="tactic">search.</a> <a href="mll-details.html#297" class="tactic">search.</a>
-      <a href="mll-details.html#298" class="tactic">unfold.</a> <a href="mll-details.html#299" class="tactic">witness A.</a> <a href="mll-details.html#300" class="tactic">witness bot :: KK.</a> <a href="mll-details.html#301" class="tactic">witness JJ.</a> <a href="mll-details.html#302" class="tactic">split.</a> <a href="mll-details.html#303" class="tactic">search.</a> <a href="mll-details.html#304" class="tactic">search.</a>
-      <a href="mll-details.html#305" class="tactic">apply adj_swap to *H9 *H3.</a> <a href="mll-details.html#306" class="tactic">apply adj_same_result to *H17 H2.</a>
-      <a href="mll-details.html#307" class="tactic">backchain perm_trans with K = U.</a>
-      <a href="mll-details.html#308" class="tactic">apply adj_1_is_list to H16.</a> <a href="mll-details.html#309" class="tactic">apply perm_refl to H19.</a> <a href="mll-details.html#310" class="tactic">search.</a>
-    <a href="mll-details.html#311" class="tactic">apply mll_perm to *H14 *H16.</a>
-    <a href="mll-details.html#312" class="tactic">search.</a></div>
+  <a href="mll-details.html#281" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mll-details.html#282" class="tactic">apply adj_2_is_o to H2.</a> <a href="mll-details.html#283" class="tactic">case H6.</a> <a href="mll-details.html#284" class="tactic">case H5.</a>
+    <a href="mll-details.html#285" class="tactic">apply IH to *H4 H9.</a>
+    <a href="mll-details.html#286" class="tactic">apply adj_3_is_list to H11.</a>
+    <a href="mll-details.html#287" class="tactic">assert mll (bot :: LL1).</a>
+    <a href="mll-details.html#288" class="tactic">apply adj_1_is_list to H2.</a>
+    <a href="mll-details.html#289" class="tactic">assert perm (bot :: LL1) (A :: B :: JJ).</a>
+      <a href="mll-details.html#290" class="tactic">unfold.</a> <a href="mll-details.html#291" class="tactic">witness B.</a> <a href="mll-details.html#292" class="tactic">witness bot :: KK1.</a> <a href="mll-details.html#293" class="tactic">witness A :: JJ.</a> <a href="mll-details.html#294" class="tactic">split.</a> <a href="mll-details.html#295" class="tactic">search.</a> <a href="mll-details.html#296" class="tactic">search.</a>
+      <a href="mll-details.html#297" class="tactic">unfold.</a> <a href="mll-details.html#298" class="tactic">witness A.</a> <a href="mll-details.html#299" class="tactic">witness bot :: KK.</a> <a href="mll-details.html#300" class="tactic">witness JJ.</a> <a href="mll-details.html#301" class="tactic">split.</a> <a href="mll-details.html#302" class="tactic">search.</a> <a href="mll-details.html#303" class="tactic">search.</a>
+      <a href="mll-details.html#304" class="tactic">apply adj_swap to *H9 *H3.</a> <a href="mll-details.html#305" class="tactic">apply adj_same_result to *H17 H2.</a>
+      <a href="mll-details.html#306" class="tactic">backchain perm_trans with K = U.</a>
+      <a href="mll-details.html#307" class="tactic">apply adj_1_is_list to H16.</a> <a href="mll-details.html#308" class="tactic">apply perm_refl to H19.</a> <a href="mll-details.html#309" class="tactic">search.</a>
+    <a href="mll-details.html#310" class="tactic">apply mll_perm to *H14 *H16.</a>
+    <a href="mll-details.html#311" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<a href="mll-details.html#313" class="command">Theorem cut : forall A B JJ J KK K LL,
+<a href="mll-details.html#312" class="command">Theorem cut : forall A B JJ J KK K LL,
   dual A B ->
   adj JJ A J -> mll J ->
   adj KK B K -> mll K ->
   merge JJ KK LL ->
   mll LL.</a>
-<div class="proof"><a href="mll-details.html#314" class="tactic">induction on 1.</a> <a href="mll-details.html#315" class="tactic">induction on 3.</a> <a href="mll-details.html#316" class="tactic">intros.</a> <a href="mll-details.html#317" class="tactic">case H3.</a>
+<div class="proof"><a href="mll-details.html#313" class="tactic">induction on 1.</a> <a href="mll-details.html#314" class="tactic">induction on 3.</a> <a href="mll-details.html#315" class="tactic">intros.</a> <a href="mll-details.html#316" class="tactic">case H3.</a>
   <span class="comment">%% identity</span>
-  <a href="mll-details.html#318" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#319" class="tactic">case H8.</a>
+  <a href="mll-details.html#317" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#318" class="tactic">case H8.</a>
     <span class="comment">%% Cut formula principal</span>
-    <a href="mll-details.html#320" class="tactic">case H1.</a> <a href="mll-details.html#321" class="tactic">case H9.</a> <a href="mll-details.html#322" class="tactic">case H11.</a>
-      <a href="mll-details.html#323" class="tactic">apply adj_same_result to H2 H7.</a> <a href="mll-details.html#324" class="tactic">case H15.</a> <a href="mll-details.html#325" class="tactic">case H12.</a>
-       <a href="mll-details.html#326" class="tactic">case H10.</a>
-       <a href="mll-details.html#327" class="tactic">apply merge_move_12 to _ H4 H6.</a>
-       <a href="mll-details.html#328" class="tactic">apply merge_nil_perm to H21.</a> <a href="mll-details.html#329" class="tactic">backchain mll_perm.</a>
-        <a href="mll-details.html#330" class="tactic">case H20.</a>
-      <a href="mll-details.html#331" class="tactic">case H14.</a>
+    <a href="mll-details.html#319" class="tactic">case H1.</a> <a href="mll-details.html#320" class="tactic">case H9.</a> <a href="mll-details.html#321" class="tactic">case H11.</a>
+      <a href="mll-details.html#322" class="tactic">apply adj_same_result to H2 H7.</a> <a href="mll-details.html#323" class="tactic">case H15.</a> <a href="mll-details.html#324" class="tactic">case H12.</a>
+       <a href="mll-details.html#325" class="tactic">case H10.</a>
+       <a href="mll-details.html#326" class="tactic">apply merge_move_12 to _ H4 H6.</a>
+       <a href="mll-details.html#327" class="tactic">apply merge_nil_perm to H21.</a> <a href="mll-details.html#328" class="tactic">backchain mll_perm.</a>
+        <a href="mll-details.html#329" class="tactic">case H20.</a>
+      <a href="mll-details.html#330" class="tactic">case H14.</a>
     <span class="comment">%% Cut formula is not principal -- impossible</span>
-    <a href="mll-details.html#332" class="tactic">case H9.</a> <a href="mll-details.html#333" class="tactic">case H1.</a> <a href="mll-details.html#334" class="tactic">case H11.</a>
+    <a href="mll-details.html#331" class="tactic">case H9.</a> <a href="mll-details.html#332" class="tactic">case H1.</a> <a href="mll-details.html#333" class="tactic">case H11.</a>
 
   <span class="comment">%% tensor</span>
-  <a href="mll-details.html#335" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#336" class="tactic">case H13.</a>
+  <a href="mll-details.html#334" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#335" class="tactic">case H13.</a>
     <span class="comment">%% cut formula is the tensor -- rank decreases</span>
-    <a href="mll-details.html#337" class="tactic">case H1.</a> <a href="mll-details.html#338" class="tactic">apply par_inv to H5 H4.</a>
-      <a href="mll-details.html#339" class="tactic">apply adj_1_is_list to H18.</a> <a href="mll-details.html#340" class="tactic">apply adj_1_is_list to H11.</a> <a href="mll-details.html#341" class="tactic">apply merge_exists to *H21 *H20.</a>
-      <a href="mll-details.html#342" class="tactic">apply IH to H16 H11 H12 H18 H19 H22.</a>
-      <a href="mll-details.html#343" class="tactic">apply merge_unadj_2 to H22 H17.</a>
-      <a href="mll-details.html#344" class="tactic">apply adj_1_is_list to H24.</a> <a href="mll-details.html#345" class="tactic">apply adj_1_is_list to H9.</a> <a href="mll-details.html#346" class="tactic">apply merge_exists to *H27 *H26.</a>
-      <a href="mll-details.html#347" class="tactic">apply IH to H15 H9 H10 H24 H23 H28.</a>
-      <a href="mll-details.html#348" class="tactic">apply perm_sym to *H14.</a> <a href="mll-details.html#349" class="tactic">apply perm_merge_3 to *H8 *H30.</a>
-      <a href="mll-details.html#350" class="tactic">apply merge_assoc to *H31 *H25 *H28 *H6.</a> <a href="mll-details.html#351" class="tactic">backchain mll_perm with K = L1.</a>
+    <a href="mll-details.html#336" class="tactic">case H1.</a> <a href="mll-details.html#337" class="tactic">apply par_inv to H5 H4.</a>
+      <a href="mll-details.html#338" class="tactic">apply adj_1_is_list to H18.</a> <a href="mll-details.html#339" class="tactic">apply adj_1_is_list to H11.</a> <a href="mll-details.html#340" class="tactic">apply merge_exists to *H21 *H20.</a>
+      <a href="mll-details.html#341" class="tactic">apply IH to H16 H11 H12 H18 H19 H22.</a>
+      <a href="mll-details.html#342" class="tactic">apply merge_unadj_2 to H22 H17.</a>
+      <a href="mll-details.html#343" class="tactic">apply adj_1_is_list to H24.</a> <a href="mll-details.html#344" class="tactic">apply adj_1_is_list to H9.</a> <a href="mll-details.html#345" class="tactic">apply merge_exists to *H27 *H26.</a>
+      <a href="mll-details.html#346" class="tactic">apply IH to H15 H9 H10 H24 H23 H28.</a>
+      <a href="mll-details.html#347" class="tactic">apply perm_sym to *H14.</a> <a href="mll-details.html#348" class="tactic">apply perm_merge_3 to *H8 *H30.</a>
+      <a href="mll-details.html#349" class="tactic">apply merge_assoc to *H31 *H25 *H28 *H6.</a> <a href="mll-details.html#350" class="tactic">backchain mll_perm with K = L1.</a>
    <span class="comment">%% cut formula is some other formula -- height decreases</span>
-   <a href="mll-details.html#352" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mll-details.html#353" class="tactic">case H15.</a>
+   <a href="mll-details.html#351" class="tactic">apply merge_unadj_3 to H8 H14.</a> <a href="mll-details.html#352" class="tactic">case H15.</a>
      <span class="comment">%% cut formula goes to left operand</span>
-     <a href="mll-details.html#354" class="tactic">apply adj_swap to H16 H9.</a>
-     <a href="mll-details.html#355" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mll-details.html#356" class="tactic">rename M to UKK1.</a>
-     <a href="mll-details.html#357" class="tactic">ass : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mll-details.html#358" class="tactic">apply adj_1_is_list to H19.</a> <a href="mll-details.html#359" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mll-details.html#360" class="tactic">apply merge_exists to H22 H23.</a> <a href="mll-details.html#361" class="tactic">search.</a>
-       <a href="mll-details.html#362" class="tactic">case ass.</a>
-     <a href="mll-details.html#363" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
-     <a href="mll-details.html#364" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mll-details.html#365" class="tactic">ass : assert 0 exists V, merge LL2 KK1 V.</a>
-       <a href="mll-details.html#366" class="tactic">apply adj_1_is_list to H23.</a> <a href="mll-details.html#367" class="tactic">apply adj_1_is_list to H11.</a> <a href="mll-details.html#368" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mll-details.html#369" class="tactic">search.</a> <a href="mll-details.html#370" class="tactic">case ass.</a>
-     <a href="mll-details.html#371" class="tactic">ass : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
-       <a href="mll-details.html#372" class="tactic">apply merge_3_is_list to H25.</a> <a href="mll-details.html#373" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#374" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mll-details.html#375" class="tactic">search.</a> <a href="mll-details.html#376" class="tactic">case ass.</a>
-     <a href="mll-details.html#377" class="tactic">assert mll VT.</a>
-     <a href="mll-details.html#378" class="tactic">apply adj_swap to H14 H7.</a> <a href="mll-details.html#379" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mll-details.html#380" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mll-details.html#381" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mll-details.html#382" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mll-details.html#383" class="tactic">unfold.</a> <a href="mll-details.html#384" class="tactic">witness tens A1 B1.</a> <a href="mll-details.html#385" class="tactic">witness V.</a> <a href="mll-details.html#386" class="tactic">witness LL3.</a> <a href="mll-details.html#387" class="tactic">split.</a> <a href="mll-details.html#388" class="tactic">search.</a> <a href="mll-details.html#389" class="tactic">search.</a>
-       <a href="mll-details.html#390" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mll-details.html#391" class="tactic">backchain merge_sym.</a>
-       <a href="mll-details.html#392" class="tactic">assert merge KK1 LL2 V.</a> <a href="mll-details.html#393" class="tactic">backchain merge_sym.</a>
-       <a href="mll-details.html#394" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mll-details.html#395" class="tactic">backchain mll_perm with K = VT.</a>
+     <a href="mll-details.html#353" class="tactic">apply adj_swap to H16 H9.</a>
+     <a href="mll-details.html#354" class="tactic">apply add_to_merge_left to H18 H17.</a> <a href="mll-details.html#355" class="tactic">rename M to UKK1.</a>
+     <a href="mll-details.html#356" class="tactic">ass : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mll-details.html#357" class="tactic">apply adj_1_is_list to H19.</a> <a href="mll-details.html#358" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mll-details.html#359" class="tactic">apply merge_exists to H22 H23.</a> <a href="mll-details.html#360" class="tactic">search.</a>
+       <a href="mll-details.html#361" class="tactic">case ass.</a>
+     <a href="mll-details.html#362" class="tactic">Hi : apply IH1 to H1 H19 H10 H4 H5 H22.</a>
+     <a href="mll-details.html#363" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mll-details.html#364" class="tactic">ass : assert 0 exists V, merge LL2 KK1 V.</a>
+       <a href="mll-details.html#365" class="tactic">apply adj_1_is_list to H23.</a> <a href="mll-details.html#366" class="tactic">apply adj_1_is_list to H11.</a> <a href="mll-details.html#367" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mll-details.html#368" class="tactic">search.</a> <a href="mll-details.html#369" class="tactic">case ass.</a>
+     <a href="mll-details.html#370" class="tactic">ass : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
+       <a href="mll-details.html#371" class="tactic">apply merge_3_is_list to H25.</a> <a href="mll-details.html#372" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#373" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mll-details.html#374" class="tactic">search.</a> <a href="mll-details.html#375" class="tactic">case ass.</a>
+     <a href="mll-details.html#376" class="tactic">assert mll VT.</a>
+     <a href="mll-details.html#377" class="tactic">apply adj_swap to H14 H7.</a> <a href="mll-details.html#378" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mll-details.html#379" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mll-details.html#380" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mll-details.html#381" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mll-details.html#382" class="tactic">unfold.</a> <a href="mll-details.html#383" class="tactic">witness tens A1 B1.</a> <a href="mll-details.html#384" class="tactic">witness V.</a> <a href="mll-details.html#385" class="tactic">witness LL3.</a> <a href="mll-details.html#386" class="tactic">split.</a> <a href="mll-details.html#387" class="tactic">search.</a> <a href="mll-details.html#388" class="tactic">search.</a>
+       <a href="mll-details.html#389" class="tactic">assert merge KK1 JJ2 KK2.</a> <a href="mll-details.html#390" class="tactic">backchain merge_sym.</a>
+       <a href="mll-details.html#391" class="tactic">assert merge KK1 LL2 V.</a> <a href="mll-details.html#392" class="tactic">backchain merge_sym.</a>
+       <a href="mll-details.html#393" class="tactic">backchain merge_assoc with J = KK1, K = JJ2, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mll-details.html#394" class="tactic">backchain mll_perm with K = VT.</a>
 
      <span class="comment">%% cut formula goes to the right operand</span>
-     <a href="mll-details.html#396" class="tactic">apply adj_swap to H16 H11.</a>
-     <a href="mll-details.html#397" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mll-details.html#398" class="tactic">rename M to UJJ1.</a>
-     <a href="mll-details.html#399" class="tactic">ass : assert 0 exists UKK, merge U KK UKK.</a>
-       <a href="mll-details.html#400" class="tactic">apply adj_1_is_list to H19.</a> <a href="mll-details.html#401" class="tactic">apply adj_1_is_list to H4.</a>
-       <a href="mll-details.html#402" class="tactic">apply merge_exists to H22 H23.</a> <a href="mll-details.html#403" class="tactic">search.</a>
-       <a href="mll-details.html#404" class="tactic">case ass.</a>
-     <a href="mll-details.html#405" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
-     <a href="mll-details.html#406" class="tactic">apply merge_unadj_1 to H22 H18.</a>
-     <a href="mll-details.html#407" class="tactic">ass : assert 0 exists V, merge JJ1 LL2 V.</a>
-       <a href="mll-details.html#408" class="tactic">apply adj_1_is_list to H9.</a> <a href="mll-details.html#409" class="tactic">apply adj_1_is_list to H23.</a> <a href="mll-details.html#410" class="tactic">apply merge_exists to H25 H26.</a>
-       <a href="mll-details.html#411" class="tactic">search.</a> <a href="mll-details.html#412" class="tactic">case ass.</a>
-     <a href="mll-details.html#413" class="tactic">ass : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
-       <a href="mll-details.html#414" class="tactic">apply merge_3_is_list to H25.</a> <a href="mll-details.html#415" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#416" class="tactic">apply adj_exists to H27 H26.</a>
-       <a href="mll-details.html#417" class="tactic">search.</a> <a href="mll-details.html#418" class="tactic">case ass.</a>
-     <a href="mll-details.html#419" class="tactic">assert mll VT.</a>
-     <a href="mll-details.html#420" class="tactic">apply adj_swap to H14 H7.</a> <a href="mll-details.html#421" class="tactic">apply adj_same_result to H2 *H29.</a>
-     <a href="mll-details.html#422" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
-     <a href="mll-details.html#423" class="tactic">apply merge_unadj_1 to H31 H28.</a>
-     <a href="mll-details.html#424" class="tactic">assert 0 perm VT LL.</a>
-       <a href="mll-details.html#425" class="tactic">unfold.</a> <a href="mll-details.html#426" class="tactic">witness tens A1 B1.</a> <a href="mll-details.html#427" class="tactic">witness V.</a> <a href="mll-details.html#428" class="tactic">witness LL3.</a> <a href="mll-details.html#429" class="tactic">split.</a> <a href="mll-details.html#430" class="tactic">search.</a> <a href="mll-details.html#431" class="tactic">search.</a>
-       <a href="mll-details.html#432" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
-     <a href="mll-details.html#433" class="tactic">backchain mll_perm with K = VT.</a>
+     <a href="mll-details.html#395" class="tactic">apply adj_swap to H16 H11.</a>
+     <a href="mll-details.html#396" class="tactic">apply add_to_merge_right to H18 H17.</a> <a href="mll-details.html#397" class="tactic">rename M to UJJ1.</a>
+     <a href="mll-details.html#398" class="tactic">ass : assert 0 exists UKK, merge U KK UKK.</a>
+       <a href="mll-details.html#399" class="tactic">apply adj_1_is_list to H19.</a> <a href="mll-details.html#400" class="tactic">apply adj_1_is_list to H4.</a>
+       <a href="mll-details.html#401" class="tactic">apply merge_exists to H22 H23.</a> <a href="mll-details.html#402" class="tactic">search.</a>
+       <a href="mll-details.html#403" class="tactic">case ass.</a>
+     <a href="mll-details.html#404" class="tactic">Hi : apply IH1 to H1 H19 H12 H4 H5 H22.</a>
+     <a href="mll-details.html#405" class="tactic">apply merge_unadj_1 to H22 H18.</a>
+     <a href="mll-details.html#406" class="tactic">ass : assert 0 exists V, merge JJ1 LL2 V.</a>
+       <a href="mll-details.html#407" class="tactic">apply adj_1_is_list to H9.</a> <a href="mll-details.html#408" class="tactic">apply adj_1_is_list to H23.</a> <a href="mll-details.html#409" class="tactic">apply merge_exists to H25 H26.</a>
+       <a href="mll-details.html#410" class="tactic">search.</a> <a href="mll-details.html#411" class="tactic">case ass.</a>
+     <a href="mll-details.html#412" class="tactic">ass : assert 0 exists VT, adj V (tens A1 B1) VT.</a>
+       <a href="mll-details.html#413" class="tactic">apply merge_3_is_list to H25.</a> <a href="mll-details.html#414" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#415" class="tactic">apply adj_exists to H27 H26.</a>
+       <a href="mll-details.html#416" class="tactic">search.</a> <a href="mll-details.html#417" class="tactic">case ass.</a>
+     <a href="mll-details.html#418" class="tactic">assert mll VT.</a>
+     <a href="mll-details.html#419" class="tactic">apply adj_swap to H14 H7.</a> <a href="mll-details.html#420" class="tactic">apply adj_same_result to H2 *H29.</a>
+     <a href="mll-details.html#421" class="tactic">apply perm_merge_1 to *H6 *H30.</a>
+     <a href="mll-details.html#422" class="tactic">apply merge_unadj_1 to H31 H28.</a>
+     <a href="mll-details.html#423" class="tactic">assert 0 perm VT LL.</a>
+       <a href="mll-details.html#424" class="tactic">unfold.</a> <a href="mll-details.html#425" class="tactic">witness tens A1 B1.</a> <a href="mll-details.html#426" class="tactic">witness V.</a> <a href="mll-details.html#427" class="tactic">witness LL3.</a> <a href="mll-details.html#428" class="tactic">split.</a> <a href="mll-details.html#429" class="tactic">search.</a> <a href="mll-details.html#430" class="tactic">search.</a>
+       <a href="mll-details.html#431" class="tactic">backchain merge_assoc with J = JJ1, K = KK3, L = KK, JK = KK2, KL = LL2.</a>
+     <a href="mll-details.html#432" class="tactic">backchain mll_perm with K = VT.</a>
 
   <span class="comment">%% one</span>
-  <a href="mll-details.html#434" class="tactic">case H2.</a>
-    <a href="mll-details.html#435" class="tactic">case H1.</a> <a href="mll-details.html#436" class="tactic">apply merge_nil_perm to H6.</a>
-    <a href="mll-details.html#437" class="tactic">apply bot_inv to H5 H4.</a>
-    <a href="mll-details.html#438" class="tactic">backchain mll_perm with K = KK.</a>
+  <a href="mll-details.html#433" class="tactic">case H2.</a>
+    <a href="mll-details.html#434" class="tactic">case H1.</a> <a href="mll-details.html#435" class="tactic">apply merge_nil_perm to H6.</a>
+    <a href="mll-details.html#436" class="tactic">apply bot_inv to H5 H4.</a>
+    <a href="mll-details.html#437" class="tactic">backchain mll_perm with K = KK.</a>
 
-    <a href="mll-details.html#439" class="tactic">case H8.</a>
+    <a href="mll-details.html#438" class="tactic">case H8.</a>
 
   <span class="comment">%% par</span>
-  <a href="mll-details.html#440" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#441" class="tactic">case H11.</a>
+  <a href="mll-details.html#439" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#440" class="tactic">case H11.</a>
     <span class="comment">%% left cut formula cannot be a par because it is positive</span>
-    <a href="mll-details.html#442" class="tactic">case H1.</a>
+    <a href="mll-details.html#441" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mll-details.html#443" class="tactic">apply adj_swap to H12 *H8.</a>
-    <a href="mll-details.html#444" class="tactic">apply adj_swap to *H14 *H9.</a>
-    <a href="mll-details.html#445" class="tactic">ass : assert 0 exists V, merge U1 KK V.</a>
-      <a href="mll-details.html#446" class="tactic">apply adj_1_is_list to H16.</a> <a href="mll-details.html#447" class="tactic">apply adj_1_is_list to H4.</a> <a href="mll-details.html#448" class="tactic">apply merge_exists to H17 H18.</a>
-      <a href="mll-details.html#449" class="tactic">search.</a> <a href="mll-details.html#450" class="tactic">case ass.</a>
-    <a href="mll-details.html#451" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
-    <a href="mll-details.html#452" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
-    <a href="mll-details.html#453" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
-    <a href="mll-details.html#454" class="tactic">ass : assert 0 exists VV, adj LL3 (par A1 B1) VV.</a>
-      <a href="mll-details.html#455" class="tactic">apply adj_1_is_list to H20.</a> <a href="mll-details.html#456" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#457" class="tactic">apply adj_exists to H23 H22.</a>
-      <a href="mll-details.html#458" class="tactic">search.</a> <a href="mll-details.html#459" class="tactic">case ass.</a>
-    <a href="mll-details.html#460" class="tactic">assert mll VV.</a>
-    <a href="mll-details.html#461" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mll-details.html#462" class="tactic">apply adj_swap to *H12 *H7.</a>
-      <a href="mll-details.html#463" class="tactic">apply adj_same_result to *H2 *H25.</a>
-      <a href="mll-details.html#464" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
-      <a href="mll-details.html#465" class="tactic">apply merge_unadj_1 to H27 H24.</a>
-      <a href="mll-details.html#466" class="tactic">unfold.</a> <a href="mll-details.html#467" class="tactic">witness par A1 B1.</a> <a href="mll-details.html#468" class="tactic">witness LL3.</a> <a href="mll-details.html#469" class="tactic">witness LL4.</a> <a href="mll-details.html#470" class="tactic">split.</a> <a href="mll-details.html#471" class="tactic">search.</a> <a href="mll-details.html#472" class="tactic">search.</a>
-      <a href="mll-details.html#473" class="tactic">backchain merge_perm_det.</a>
-    <a href="mll-details.html#474" class="tactic">backchain mll_perm with K = VV.</a>
+    <a href="mll-details.html#442" class="tactic">apply adj_swap to H12 *H8.</a>
+    <a href="mll-details.html#443" class="tactic">apply adj_swap to *H14 *H9.</a>
+    <a href="mll-details.html#444" class="tactic">ass : assert 0 exists V, merge U1 KK V.</a>
+      <a href="mll-details.html#445" class="tactic">apply adj_1_is_list to H16.</a> <a href="mll-details.html#446" class="tactic">apply adj_1_is_list to H4.</a> <a href="mll-details.html#447" class="tactic">apply merge_exists to H17 H18.</a>
+      <a href="mll-details.html#448" class="tactic">search.</a> <a href="mll-details.html#449" class="tactic">case ass.</a>
+    <a href="mll-details.html#450" class="tactic">Hi : apply IH1 to H1 H16 H10 H4 H5 H17.</a>
+    <a href="mll-details.html#451" class="tactic">apply merge_unadj_1 to *H17 *H15.</a>
+    <a href="mll-details.html#452" class="tactic">apply merge_unadj_1 to *H19 *H13.</a>
+    <a href="mll-details.html#453" class="tactic">ass : assert 0 exists VV, adj LL3 (par A1 B1) VV.</a>
+      <a href="mll-details.html#454" class="tactic">apply adj_1_is_list to H20.</a> <a href="mll-details.html#455" class="tactic">apply adj_2_is_o to H7.</a> <a href="mll-details.html#456" class="tactic">apply adj_exists to H23 H22.</a>
+      <a href="mll-details.html#457" class="tactic">search.</a> <a href="mll-details.html#458" class="tactic">case ass.</a>
+    <a href="mll-details.html#459" class="tactic">assert mll VV.</a>
+    <a href="mll-details.html#460" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mll-details.html#461" class="tactic">apply adj_swap to *H12 *H7.</a>
+      <a href="mll-details.html#462" class="tactic">apply adj_same_result to *H2 *H25.</a>
+      <a href="mll-details.html#463" class="tactic">apply perm_merge_1 to *H6 *H26.</a>
+      <a href="mll-details.html#464" class="tactic">apply merge_unadj_1 to H27 H24.</a>
+      <a href="mll-details.html#465" class="tactic">unfold.</a> <a href="mll-details.html#466" class="tactic">witness par A1 B1.</a> <a href="mll-details.html#467" class="tactic">witness LL3.</a> <a href="mll-details.html#468" class="tactic">witness LL4.</a> <a href="mll-details.html#469" class="tactic">split.</a> <a href="mll-details.html#470" class="tactic">search.</a> <a href="mll-details.html#471" class="tactic">search.</a>
+      <a href="mll-details.html#472" class="tactic">backchain merge_perm_det.</a>
+    <a href="mll-details.html#473" class="tactic">backchain mll_perm with K = VV.</a>
 
   <span class="comment">%% bot</span>
-  <a href="mll-details.html#475" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#476" class="tactic">case H9.</a>
+  <a href="mll-details.html#474" class="tactic">apply adj_same_result_diff to H2 H7.</a> <a href="mll-details.html#475" class="tactic">case H9.</a>
     <span class="comment">%% left cut formula cannot be bot because it is positive.</span>
-    <a href="mll-details.html#477" class="tactic">case H1.</a>
+    <a href="mll-details.html#476" class="tactic">case H1.</a>
 
     <span class="comment">%% cut formula goes up in left premise</span>
-    <a href="mll-details.html#478" class="tactic">ass : assert 0 exists V, merge KK1 KK V.</a>
-      <a href="mll-details.html#479" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#480" class="tactic">apply adj_1_is_list to H4.</a> <a href="mll-details.html#481" class="tactic">apply merge_exists to H11 H12.</a>
-      <a href="mll-details.html#482" class="tactic">search.</a> <a href="mll-details.html#483" class="tactic">case ass.</a>
-    <a href="mll-details.html#484" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
-    <a href="mll-details.html#485" class="tactic">ass : assert 0 exists VV, adj V bot VV.</a>
-      <a href="mll-details.html#486" class="tactic">apply merge_3_is_list to H11.</a> <a href="mll-details.html#487" class="tactic">apply adj_exists to _ H12 with A = bot.</a>
-      <a href="mll-details.html#488" class="tactic">search.</a> <a href="mll-details.html#489" class="tactic">case ass.</a>
-    <a href="mll-details.html#490" class="tactic">assert mll VV.</a>
-    <a href="mll-details.html#491" class="tactic">assert 0 perm VV LL.</a>
-      <a href="mll-details.html#492" class="tactic">apply adj_swap to *H10 *H7.</a>
-      <a href="mll-details.html#493" class="tactic">apply adj_same_result to *H2 *H15.</a>
-      <a href="mll-details.html#494" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
-      <a href="mll-details.html#495" class="tactic">apply merge_unadj_1 to H17 H14.</a>
-      <a href="mll-details.html#496" class="tactic">unfold.</a> <a href="mll-details.html#497" class="tactic">witness bot.</a> <a href="mll-details.html#498" class="tactic">witness V.</a> <a href="mll-details.html#499" class="tactic">witness LL2.</a> <a href="mll-details.html#500" class="tactic">split.</a> <a href="mll-details.html#501" class="tactic">search.</a> <a href="mll-details.html#502" class="tactic">search.</a>
-      <a href="mll-details.html#503" class="tactic">backchain merge_perm_det.</a>
-    <a href="mll-details.html#504" class="tactic">backchain mll_perm with K = VV.</a></div>
+    <a href="mll-details.html#477" class="tactic">ass : assert 0 exists V, merge KK1 KK V.</a>
+      <a href="mll-details.html#478" class="tactic">apply adj_1_is_list to H10.</a> <a href="mll-details.html#479" class="tactic">apply adj_1_is_list to H4.</a> <a href="mll-details.html#480" class="tactic">apply merge_exists to H11 H12.</a>
+      <a href="mll-details.html#481" class="tactic">search.</a> <a href="mll-details.html#482" class="tactic">case ass.</a>
+    <a href="mll-details.html#483" class="tactic">Hi : apply IH1 to H1 H10 H8 H4 H5 H11.</a>
+    <a href="mll-details.html#484" class="tactic">ass : assert 0 exists VV, adj V bot VV.</a>
+      <a href="mll-details.html#485" class="tactic">apply merge_3_is_list to H11.</a> <a href="mll-details.html#486" class="tactic">apply adj_exists to _ H12 with A = bot.</a>
+      <a href="mll-details.html#487" class="tactic">search.</a> <a href="mll-details.html#488" class="tactic">case ass.</a>
+    <a href="mll-details.html#489" class="tactic">assert mll VV.</a>
+    <a href="mll-details.html#490" class="tactic">assert 0 perm VV LL.</a>
+      <a href="mll-details.html#491" class="tactic">apply adj_swap to *H10 *H7.</a>
+      <a href="mll-details.html#492" class="tactic">apply adj_same_result to *H2 *H15.</a>
+      <a href="mll-details.html#493" class="tactic">apply perm_merge_1 to *H6 *H16.</a>
+      <a href="mll-details.html#494" class="tactic">apply merge_unadj_1 to H17 H14.</a>
+      <a href="mll-details.html#495" class="tactic">unfold.</a> <a href="mll-details.html#496" class="tactic">witness bot.</a> <a href="mll-details.html#497" class="tactic">witness V.</a> <a href="mll-details.html#498" class="tactic">witness LL2.</a> <a href="mll-details.html#499" class="tactic">split.</a> <a href="mll-details.html#500" class="tactic">search.</a> <a href="mll-details.html#501" class="tactic">search.</a>
+      <a href="mll-details.html#502" class="tactic">backchain merge_perm_det.</a>
+    <a href="mll-details.html#503" class="tactic">backchain mll_perm with K = VV.</a></div>
 </pre>
 </div>
 

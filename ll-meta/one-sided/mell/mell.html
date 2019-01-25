@@ -63,18 +63,19 @@ Click on a command or tactic to see a detailed view of its use.
 </p>
 <pre>
 <a href="mell-details.html#1" class="command">Kind nat type.</a>
-<a href="mell-details.html#2" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mell-details.html#3" class="tactic">./../lib/nat".
+<a href="mell-details.html#2" class="command">Import "../../lib/nat".</a> <a class="import-link" href="../../lib/nat.html">[View ../../lib/nat]</a>
 
-</a><a href="mell-details.html#4" class="command">Kind atm type.</a>
-<a href="mell-details.html#5" class="command">Type a, b, c, d, e, f atm.</a>
+<a href="mell-details.html#3" class="command">Kind atm type.</a>
+
+<a href="mell-details.html#4" class="command">Type a, b, c, d, e, f atm.</a>
 
 <span class="comment">%% We reuse the o type to define LL formulas</span>
-<a href="mell-details.html#6" class="command">Type atom, natom   atm -> o.</a>
-<a href="mell-details.html#7" class="command">Type tens, par     o -> o -> o.</a>
-<a href="mell-details.html#8" class="command">Type one, bot      o.</a>
-<a href="mell-details.html#9" class="command">Type bang, qm      o -> o.</a>
+<a href="mell-details.html#5" class="command">Type atom, natom   atm -> o.</a>
+<a href="mell-details.html#6" class="command">Type tens, par     o -> o -> o.</a>
+<a href="mell-details.html#7" class="command">Type one, bot      o.</a>
+<a href="mell-details.html#8" class="command">Type bang, qm      o -> o.</a>
 
-<a href="mell-details.html#10" class="command">Define is_fm : o -> prop by
+<a href="mell-details.html#9" class="command">Define is_fm : o -> prop by
 ; is_fm (atom A)
 ; is_fm (natom A)
 ; is_fm (tens A B) := is_fm A /\ is_fm B
@@ -85,24 +86,22 @@ Click on a command or tactic to see a detailed view of its use.
 ; is_fm (qm A) := is_fm A
 .</a>
 
-<a href="mell-details.html#11" class="command">Define dual : o -> o -> prop by
+<a href="mell-details.html#10" class="command">Define dual : o -> o -> prop by
 ; dual (atom A) (natom A)
 ; dual (tens A B) (par AA BB) := dual A AA /\ dual B BB
 ; dual one bot
 ; dual (bang A) (qm AA) := dual A AA
 .</a>
 
-<a href="mell-details.html#12" class="command">Theorem dual_is : forall A B, dual A B -> is_fm A /\ is_fm B.</a>
-<div class="proof"><a href="mell-details.html#13" class="tactic">induction on 1.</a> <a href="mell-details.html#14" class="tactic">intros.</a> <a href="mell-details.html#15" class="tactic">case H1.</a>
-  <a href="mell-details.html#16" class="tactic">search.</a>
-  <a href="mell-details.html#17" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#18" class="tactic">apply IH to *H3.</a> <a href="mell-details.html#19" class="tactic">search.</a>
-  <a href="mell-details.html#20" class="tactic">search.</a>
-  <a href="mell-details.html#21" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#22" class="tactic">search.</a>
-</div>
+<a href="mell-details.html#11" class="command">Theorem dual_is : forall A B, dual A B -> is_fm A /\ is_fm B.</a>
+<div class="proof"><a href="mell-details.html#12" class="tactic">induction on 1.</a> <a href="mell-details.html#13" class="tactic">intros.</a> <a href="mell-details.html#14" class="tactic">case H1.</a>
+  <a href="mell-details.html#15" class="tactic">search.</a>
+  <a href="mell-details.html#16" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#17" class="tactic">apply IH to *H3.</a> <a href="mell-details.html#18" class="tactic">search.</a>
+  <a href="mell-details.html#19" class="tactic">search.</a>
+  <a href="mell-details.html#20" class="tactic">apply IH to *H2.</a> <a href="mell-details.html#21" class="tactic">search.</a></div>
+<a href="mell-details.html#22" class="command">Import "../../lib/merge" with is_o := is_fm.</a> <a class="import-link" href="../../lib/merge.html">[View ../../lib/merge]</a>
 
-<a href="mell-details.html#22" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mell-details.html#24" class="tactic">./../lib/merge" with is_o := is_fm.
-
-</a><a href="mell-details.html#23" class="command">Define mell : olist -> olist -> prop by
+<span class="comment">Define mell : olist -> olist -> prop by
 %% 1
 ; mell QL L :=
     is_list QL /\
@@ -145,372 +144,373 @@ Click on a command or tactic to see a detailed view of its use.
     exists A QK, adj QK A QL /\
     exists J, adj L A J /\
     mell QL J
-</a>
+</span>
+
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Structure</span>
 
-<a href="mell-details.html#25" class="command">Theorem mell_is : forall QL L,
+<a href="mell-details.html#23" class="command">Theorem mell_is : forall QL L,
   mell QL L ->
   is_list QL /\ is_list L.</a>
-<div class="proof"><a href="mell-details.html#26" class="tactic">induction on 1.</a> <a href="mell-details.html#27" class="tactic">intros.</a> <a href="mell-details.html#28" class="tactic">case H1.</a>
-  <a href="mell-details.html#29" class="tactic">apply adj_3_is_list to H3.</a> <a href="mell-details.html#30" class="tactic">search.</a>
-  <a href="mell-details.html#31" class="tactic">apply IH to H5.</a> <a href="mell-details.html#32" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#33" class="tactic">search.</a>
-  <a href="mell-details.html#34" class="tactic">search.</a>
-  <a href="mell-details.html#35" class="tactic">apply IH to H5.</a> <a href="mell-details.html#36" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#37" class="tactic">search.</a>
-  <a href="mell-details.html#38" class="tactic">apply IH to H3.</a> <a href="mell-details.html#39" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#40" class="tactic">search.</a>
-  <a href="mell-details.html#41" class="tactic">apply IH to H2.</a> <a href="mell-details.html#42" class="tactic">case H4.</a> <a href="mell-details.html#43" class="tactic">search.</a>
-  <a href="mell-details.html#44" class="tactic">apply IH to H4.</a> <a href="mell-details.html#45" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#46" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#47" class="tactic">search.</a>
-  <a href="mell-details.html#48" class="tactic">apply IH to H4.</a> <a href="mell-details.html#49" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#50" class="tactic">search.</a></div>
+<div class="proof"><a href="mell-details.html#24" class="tactic">induction on 1.</a> <a href="mell-details.html#25" class="tactic">intros.</a> <a href="mell-details.html#26" class="tactic">case H1.</a>
+  <a href="mell-details.html#27" class="tactic">apply adj_3_is_list to H3.</a> <a href="mell-details.html#28" class="tactic">search.</a>
+  <a href="mell-details.html#29" class="tactic">apply IH to H5.</a> <a href="mell-details.html#30" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#31" class="tactic">search.</a>
+  <a href="mell-details.html#32" class="tactic">search.</a>
+  <a href="mell-details.html#33" class="tactic">apply IH to H5.</a> <a href="mell-details.html#34" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#35" class="tactic">search.</a>
+  <a href="mell-details.html#36" class="tactic">apply IH to H3.</a> <a href="mell-details.html#37" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#38" class="tactic">search.</a>
+  <a href="mell-details.html#39" class="tactic">apply IH to H2.</a> <a href="mell-details.html#40" class="tactic">case H4.</a> <a href="mell-details.html#41" class="tactic">search.</a>
+  <a href="mell-details.html#42" class="tactic">apply IH to H4.</a> <a href="mell-details.html#43" class="tactic">apply adj_3_is_list to H2.</a> <a href="mell-details.html#44" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#45" class="tactic">search.</a>
+  <a href="mell-details.html#46" class="tactic">apply IH to H4.</a> <a href="mell-details.html#47" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#48" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Unbounded context weakening</span>
 
-<a href="mell-details.html#51" class="command">Theorem mell_weaken_q : forall QJ QK QL J,
+<a href="mell-details.html#49" class="command">Theorem mell_weaken_q : forall QJ QK QL J,
   mell QJ J ->
   merge QJ QK QL ->
   mell QL J.</a>
-<div class="proof"><a href="mell-details.html#52" class="tactic">induction on 1.</a> <a href="mell-details.html#53" class="tactic">intros.</a> <a href="mell-details.html#54" class="tactic">apply merge_3_is_list to H2.</a> <a href="mell-details.html#55" class="tactic">case H1.</a>
-  <a href="mell-details.html#56" class="tactic">search.</a>
-  <a href="mell-details.html#57" class="tactic">apply IH to *H7 H2.</a> <a href="mell-details.html#58" class="tactic">apply IH to *H9 H2.</a> <a href="mell-details.html#59" class="tactic">search.</a>
-  <a href="mell-details.html#60" class="tactic">search.</a>
-  <a href="mell-details.html#61" class="tactic">apply IH to *H7 H2.</a> <a href="mell-details.html#62" class="tactic">search.</a>
-  <a href="mell-details.html#63" class="tactic">apply IH to *H5 H2.</a> <a href="mell-details.html#64" class="tactic">search.</a>
-  <a href="mell-details.html#65" class="tactic">apply IH to *H4 H2.</a> <a href="mell-details.html#66" class="tactic">search.</a>
-  <a href="mell-details.html#67" class="tactic">apply adj_2_is_o to H5.</a> <a href="mell-details.html#68" class="tactic">apply adj_exists to H7 H3.</a>
-   <a href="mell-details.html#69" class="tactic">assert merge QK1 QK M.</a>
-   <a href="mell-details.html#70" class="tactic">apply IH to *H6 H9.</a>
-   <a href="mell-details.html#71" class="tactic">search.</a>
-  <a href="mell-details.html#72" class="tactic">apply IH to *H6 H2.</a> <a href="mell-details.html#73" class="tactic">apply merge_unadj_1 to H2 H4.</a>
-   <a href="mell-details.html#74" class="tactic">search.</a></div>
-<a href="mell-details.html#75" class="command">Theorem mell_weaken_q1 : forall QJ J A QL,
+<div class="proof"><a href="mell-details.html#50" class="tactic">induction on 1.</a> <a href="mell-details.html#51" class="tactic">intros.</a> <a href="mell-details.html#52" class="tactic">apply merge_3_is_list to H2.</a> <a href="mell-details.html#53" class="tactic">case H1.</a>
+  <a href="mell-details.html#54" class="tactic">search.</a>
+  <a href="mell-details.html#55" class="tactic">apply IH to *H7 H2.</a> <a href="mell-details.html#56" class="tactic">apply IH to *H9 H2.</a> <a href="mell-details.html#57" class="tactic">search.</a>
+  <a href="mell-details.html#58" class="tactic">search.</a>
+  <a href="mell-details.html#59" class="tactic">apply IH to *H7 H2.</a> <a href="mell-details.html#60" class="tactic">search.</a>
+  <a href="mell-details.html#61" class="tactic">apply IH to *H5 H2.</a> <a href="mell-details.html#62" class="tactic">search.</a>
+  <a href="mell-details.html#63" class="tactic">apply IH to *H4 H2.</a> <a href="mell-details.html#64" class="tactic">search.</a>
+  <a href="mell-details.html#65" class="tactic">apply adj_2_is_o to H5.</a> <a href="mell-details.html#66" class="tactic">apply adj_exists to H7 H3.</a>
+   <a href="mell-details.html#67" class="tactic">assert merge QK1 QK M.</a>
+   <a href="mell-details.html#68" class="tactic">apply IH to *H6 H9.</a>
+   <a href="mell-details.html#69" class="tactic">search.</a>
+  <a href="mell-details.html#70" class="tactic">apply IH to *H6 H2.</a> <a href="mell-details.html#71" class="tactic">apply merge_unadj_1 to H2 H4.</a>
+   <a href="mell-details.html#72" class="tactic">search.</a></div>
+<a href="mell-details.html#73" class="command">Theorem mell_weaken_q1 : forall QJ J A QL,
   mell QJ J ->
   adj QJ A QL ->
   mell QL J.</a>
-<div class="proof"><a href="mell-details.html#76" class="tactic">intros.</a> <a href="mell-details.html#77" class="tactic">assert merge QJ (A :: nil) QL.</a>
-  <a href="mell-details.html#78" class="tactic">apply adj_2_is_o to H2.</a>
-   <a href="mell-details.html#79" class="tactic">apply adj_1_is_list to H2.</a>
-   <a href="mell-details.html#80" class="tactic">apply merge_nil_equal to H4.</a> <a href="mell-details.html#81" class="tactic">apply merge_sym to *H5.</a>
-   <a href="mell-details.html#82" class="tactic">search.</a>
-  <a href="mell-details.html#83" class="tactic">backchain mell_weaken_q.</a></div>
+<div class="proof"><a href="mell-details.html#74" class="tactic">intros.</a> <a href="mell-details.html#75" class="tactic">assert merge QJ (A :: nil) QL.</a>
+  <a href="mell-details.html#76" class="tactic">apply adj_2_is_o to H2.</a>
+   <a href="mell-details.html#77" class="tactic">apply adj_1_is_list to H2.</a>
+   <a href="mell-details.html#78" class="tactic">apply merge_nil_equal to H4.</a> <a href="mell-details.html#79" class="tactic">apply merge_sym to *H5.</a>
+   <a href="mell-details.html#80" class="tactic">search.</a>
+  <a href="mell-details.html#81" class="tactic">backchain mell_weaken_q.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
-<a href="mell-details.html#84" class="command">Theorem mell_perm_q : forall QK QL L,
+<a href="mell-details.html#82" class="command">Theorem mell_perm_q : forall QK QL L,
   mell QK L ->
   perm QK QL ->
   mell QL L.</a>
-<div class="proof"><a href="mell-details.html#85" class="tactic">induction on 1.</a> <a href="mell-details.html#86" class="tactic">intros.</a> <a href="mell-details.html#87" class="tactic">case H1.</a>
-  <a href="mell-details.html#88" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#89" class="tactic">search.</a>
-  <a href="mell-details.html#90" class="tactic">apply IH to H6 H2.</a> <a href="mell-details.html#91" class="tactic">apply IH to H8 H2.</a> <a href="mell-details.html#92" class="tactic">search.</a>
-  <a href="mell-details.html#93" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#94" class="tactic">search.</a>
-  <a href="mell-details.html#95" class="tactic">apply IH to H6 H2.</a> <a href="mell-details.html#96" class="tactic">search.</a>
-  <a href="mell-details.html#97" class="tactic">apply IH to H4 H2.</a> <a href="mell-details.html#98" class="tactic">search.</a>
-  <a href="mell-details.html#99" class="tactic">apply IH to H3 H2.</a> <a href="mell-details.html#100" class="tactic">search.</a>
-  <a href="mell-details.html#101" class="tactic">Ht : assert 0 exists QL1, adj QL A QL1.</a>
-    <a href="mell-details.html#102" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#103" class="tactic">apply adj_2_is_o to H4.</a>
-    <a href="mell-details.html#104" class="tactic">apply adj_exists to H7 H6.</a> <a href="mell-details.html#105" class="tactic">search.</a>
-    <a href="mell-details.html#106" class="tactic">case Ht.</a>
-   <a href="mell-details.html#107" class="tactic">apply adj_preserves_perm to H4 H6 H2.</a>
-   <a href="mell-details.html#108" class="tactic">apply IH to H5 H7.</a> <a href="mell-details.html#109" class="tactic">search.</a>
-  <a href="mell-details.html#110" class="tactic">apply IH to H5 H2.</a>
-   <a href="mell-details.html#111" class="tactic">apply adj_perm to H2 H3.</a> <a href="mell-details.html#112" class="tactic">search.</a></div>
-<a href="mell-details.html#113" class="command">Theorem mell_perm_l : forall QL K L,
+<div class="proof"><a href="mell-details.html#83" class="tactic">induction on 1.</a> <a href="mell-details.html#84" class="tactic">intros.</a> <a href="mell-details.html#85" class="tactic">case H1.</a>
+  <a href="mell-details.html#86" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#87" class="tactic">search.</a>
+  <a href="mell-details.html#88" class="tactic">apply IH to H6 H2.</a> <a href="mell-details.html#89" class="tactic">apply IH to H8 H2.</a> <a href="mell-details.html#90" class="tactic">search.</a>
+  <a href="mell-details.html#91" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#92" class="tactic">search.</a>
+  <a href="mell-details.html#93" class="tactic">apply IH to H6 H2.</a> <a href="mell-details.html#94" class="tactic">search.</a>
+  <a href="mell-details.html#95" class="tactic">apply IH to H4 H2.</a> <a href="mell-details.html#96" class="tactic">search.</a>
+  <a href="mell-details.html#97" class="tactic">apply IH to H3 H2.</a> <a href="mell-details.html#98" class="tactic">search.</a>
+  <a href="mell-details.html#99" class="tactic">Ht : assert 0 exists QL1, adj QL A QL1.</a>
+    <a href="mell-details.html#100" class="tactic">apply perm_2_is_list to H2.</a> <a href="mell-details.html#101" class="tactic">apply adj_2_is_o to H4.</a>
+    <a href="mell-details.html#102" class="tactic">apply adj_exists to H7 H6.</a> <a href="mell-details.html#103" class="tactic">search.</a>
+    <a href="mell-details.html#104" class="tactic">case Ht.</a>
+   <a href="mell-details.html#105" class="tactic">apply adj_preserves_perm to H4 H6 H2.</a>
+   <a href="mell-details.html#106" class="tactic">apply IH to H5 H7.</a> <a href="mell-details.html#107" class="tactic">search.</a>
+  <a href="mell-details.html#108" class="tactic">apply IH to H5 H2.</a>
+   <a href="mell-details.html#109" class="tactic">apply adj_perm to H2 H3.</a> <a href="mell-details.html#110" class="tactic">search.</a></div>
+<a href="mell-details.html#111" class="command">Theorem mell_perm_l : forall QL K L,
   mell QL K ->
   perm K L ->
   mell QL L.</a>
-<div class="proof"><a href="mell-details.html#114" class="tactic">induction on 1.</a> <a href="mell-details.html#115" class="tactic">intros.</a> <a href="mell-details.html#116" class="tactic">case H1.</a>
-  <a href="mell-details.html#117" class="tactic">apply adj_perm_full to H2 H4.</a>
-   <a href="mell-details.html#118" class="tactic">apply perm_cons_1 to *H6.</a> <a href="mell-details.html#119" class="tactic">apply perm_nil_1 to *H8.</a> <a href="mell-details.html#120" class="tactic">case H7.</a>
-   <a href="mell-details.html#121" class="tactic">search.</a>
+<div class="proof"><a href="mell-details.html#112" class="tactic">induction on 1.</a> <a href="mell-details.html#113" class="tactic">intros.</a> <a href="mell-details.html#114" class="tactic">case H1.</a>
+  <a href="mell-details.html#115" class="tactic">apply adj_perm_full to H2 H4.</a>
+   <a href="mell-details.html#116" class="tactic">apply perm_cons_1 to *H6.</a> <a href="mell-details.html#117" class="tactic">apply perm_nil_1 to *H8.</a> <a href="mell-details.html#118" class="tactic">case H7.</a>
+   <a href="mell-details.html#119" class="tactic">search.</a>
 
-  <a href="mell-details.html#122" class="tactic">apply adj_perm_full to *H2 *H3.</a>
-   <a href="mell-details.html#123" class="tactic">apply perm_merge_3 to *H4 H10.</a>
-   <a href="mell-details.html#124" class="tactic">search.</a>
+  <a href="mell-details.html#120" class="tactic">apply adj_perm_full to *H2 *H3.</a>
+   <a href="mell-details.html#121" class="tactic">apply perm_merge_3 to *H4 H10.</a>
+   <a href="mell-details.html#122" class="tactic">search.</a>
 
-  <a href="mell-details.html#125" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mell-details.html#126" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mell-details.html#127" class="tactic">case H4.</a>
-    <a href="mell-details.html#128" class="tactic">search.</a>
+  <a href="mell-details.html#123" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mell-details.html#124" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mell-details.html#125" class="tactic">case H4.</a>
+    <a href="mell-details.html#126" class="tactic">search.</a>
 
-  <a href="mell-details.html#129" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#130" class="tactic">unfold 4.</a>
-    <a href="mell-details.html#131" class="tactic">witness A, B, KK.</a> <a href="mell-details.html#132" class="tactic">split.</a> <a href="mell-details.html#133" class="tactic">search.</a>
-    <a href="mell-details.html#134" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#135" class="tactic">apply adj_1_is_list to H7.</a>
-    <a href="mell-details.html#136" class="tactic">apply adj_exists to *H9 *H10.</a>
-    <a href="mell-details.html#137" class="tactic">witness M.</a> <a href="mell-details.html#138" class="tactic">split.</a> <a href="mell-details.html#139" class="tactic">search.</a>
-    <a href="mell-details.html#140" class="tactic">apply adj_preserves_perm to *H4 H11 *H8.</a>
-    <a href="mell-details.html#141" class="tactic">apply adj_2_is_o to H5.</a> <a href="mell-details.html#142" class="tactic">apply perm_2_is_list to H12.</a>
-    <a href="mell-details.html#143" class="tactic">apply adj_exists to *H13 *H14.</a>
-    <a href="mell-details.html#144" class="tactic">witness M1.</a> <a href="mell-details.html#145" class="tactic">split.</a> <a href="mell-details.html#146" class="tactic">search.</a>
-    <a href="mell-details.html#147" class="tactic">apply adj_preserves_perm to *H5 H15 *H12.</a>
-    <a href="mell-details.html#148" class="tactic">backchain IH.</a>
+  <a href="mell-details.html#127" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#128" class="tactic">unfold 4.</a>
+    <a href="mell-details.html#129" class="tactic">witness A, B, KK.</a> <a href="mell-details.html#130" class="tactic">split.</a> <a href="mell-details.html#131" class="tactic">search.</a>
+    <a href="mell-details.html#132" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#133" class="tactic">apply adj_1_is_list to H7.</a>
+    <a href="mell-details.html#134" class="tactic">apply adj_exists to *H9 *H10.</a>
+    <a href="mell-details.html#135" class="tactic">witness M.</a> <a href="mell-details.html#136" class="tactic">split.</a> <a href="mell-details.html#137" class="tactic">search.</a>
+    <a href="mell-details.html#138" class="tactic">apply adj_preserves_perm to *H4 H11 *H8.</a>
+    <a href="mell-details.html#139" class="tactic">apply adj_2_is_o to H5.</a> <a href="mell-details.html#140" class="tactic">apply perm_2_is_list to H12.</a>
+    <a href="mell-details.html#141" class="tactic">apply adj_exists to *H13 *H14.</a>
+    <a href="mell-details.html#142" class="tactic">witness M1.</a> <a href="mell-details.html#143" class="tactic">split.</a> <a href="mell-details.html#144" class="tactic">search.</a>
+    <a href="mell-details.html#145" class="tactic">apply adj_preserves_perm to *H5 H15 *H12.</a>
+    <a href="mell-details.html#146" class="tactic">backchain IH.</a>
 
-  <a href="mell-details.html#149" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#150" class="tactic">unfold 5.</a>
-    <a href="mell-details.html#151" class="tactic">witness KK.</a> <a href="mell-details.html#152" class="tactic">split.</a> <a href="mell-details.html#153" class="tactic">search.</a>
-    <a href="mell-details.html#154" class="tactic">backchain IH.</a>
+  <a href="mell-details.html#147" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#148" class="tactic">unfold 5.</a>
+    <a href="mell-details.html#149" class="tactic">witness KK.</a> <a href="mell-details.html#150" class="tactic">split.</a> <a href="mell-details.html#151" class="tactic">search.</a>
+    <a href="mell-details.html#152" class="tactic">backchain IH.</a>
 
-  <a href="mell-details.html#155" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mell-details.html#156" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mell-details.html#157" class="tactic">case H4.</a>
-   <a href="mell-details.html#158" class="tactic">search.</a>
+  <a href="mell-details.html#153" class="tactic">apply perm_cons_1 to *H2.</a> <a href="mell-details.html#154" class="tactic">apply perm_nil_1 to *H5.</a> <a href="mell-details.html#155" class="tactic">case H4.</a>
+   <a href="mell-details.html#156" class="tactic">search.</a>
 
-  <a href="mell-details.html#159" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#160" class="tactic">unfold 7.</a>
-    <a href="mell-details.html#161" class="tactic">witness A, KK.</a> <a href="mell-details.html#162" class="tactic">split.</a> <a href="mell-details.html#163" class="tactic">search.</a>
-    <a href="mell-details.html#164" class="tactic">witness QK.</a> <a href="mell-details.html#165" class="tactic">split.</a> <a href="mell-details.html#166" class="tactic">search.</a>
-    <a href="mell-details.html#167" class="tactic">backchain IH.</a>
+  <a href="mell-details.html#157" class="tactic">apply adj_perm_full to *H2 *H3.</a> <a href="mell-details.html#158" class="tactic">unfold 7.</a>
+    <a href="mell-details.html#159" class="tactic">witness A, KK.</a> <a href="mell-details.html#160" class="tactic">split.</a> <a href="mell-details.html#161" class="tactic">search.</a>
+    <a href="mell-details.html#162" class="tactic">witness QK.</a> <a href="mell-details.html#163" class="tactic">split.</a> <a href="mell-details.html#164" class="tactic">search.</a>
+    <a href="mell-details.html#165" class="tactic">backchain IH.</a>
 
-  <a href="mell-details.html#168" class="tactic">unfold 8.</a> <a href="mell-details.html#169" class="tactic">witness A, QK.</a> <a href="mell-details.html#170" class="tactic">split.</a> <a href="mell-details.html#171" class="tactic">search.</a>
-    <a href="mell-details.html#172" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#173" class="tactic">apply perm_2_is_list to H2.</a>
-    <a href="mell-details.html#174" class="tactic">apply adj_exists to *H6 *H7.</a>
-    <a href="mell-details.html#175" class="tactic">apply adj_preserves_perm to *H4 H8 *H2.</a>
-    <a href="mell-details.html#176" class="tactic">witness M.</a> <a href="mell-details.html#177" class="tactic">split.</a> <a href="mell-details.html#178" class="tactic">search.</a>
-    <a href="mell-details.html#179" class="tactic">backchain IH.</a></div>
+  <a href="mell-details.html#166" class="tactic">unfold 8.</a> <a href="mell-details.html#167" class="tactic">witness A, QK.</a> <a href="mell-details.html#168" class="tactic">split.</a> <a href="mell-details.html#169" class="tactic">search.</a>
+    <a href="mell-details.html#170" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#171" class="tactic">apply perm_2_is_list to H2.</a>
+    <a href="mell-details.html#172" class="tactic">apply adj_exists to *H6 *H7.</a>
+    <a href="mell-details.html#173" class="tactic">apply adj_preserves_perm to *H4 H8 *H2.</a>
+    <a href="mell-details.html#174" class="tactic">witness M.</a> <a href="mell-details.html#175" class="tactic">split.</a> <a href="mell-details.html#176" class="tactic">search.</a>
+    <a href="mell-details.html#177" class="tactic">backchain IH.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Inversion Lemmas</span>
 
-<a href="mell-details.html#180" class="command">Theorem bot_inv : forall QL J L,
+<a href="mell-details.html#178" class="command">Theorem bot_inv : forall QL J L,
   mell QL L -> adj J bot L ->
   mell QL J.</a>
-<div class="proof"><a href="mell-details.html#181" class="tactic">induction on 1.</a> <a href="mell-details.html#182" class="tactic">intros.</a> <a href="mell-details.html#183" class="tactic">case H1.</a>
+<div class="proof"><a href="mell-details.html#179" class="tactic">induction on 1.</a> <a href="mell-details.html#180" class="tactic">intros.</a> <a href="mell-details.html#181" class="tactic">case H1.</a>
   <span class="comment">%% atom (impossible)</span>
-  <a href="mell-details.html#184" class="tactic">case H4.</a> <a href="mell-details.html#185" class="tactic">case H2.</a> <a href="mell-details.html#186" class="tactic">case H8.</a> <a href="mell-details.html#187" class="tactic">case H10.</a>
-    <a href="mell-details.html#188" class="tactic">case H2.</a> <a href="mell-details.html#189" class="tactic">case H6.</a> <a href="mell-details.html#190" class="tactic">case H8.</a> <a href="mell-details.html#191" class="tactic">case H12.</a>
+  <a href="mell-details.html#182" class="tactic">case H4.</a> <a href="mell-details.html#183" class="tactic">case H2.</a> <a href="mell-details.html#184" class="tactic">case H8.</a> <a href="mell-details.html#185" class="tactic">case H10.</a>
+    <a href="mell-details.html#186" class="tactic">case H2.</a> <a href="mell-details.html#187" class="tactic">case H6.</a> <a href="mell-details.html#188" class="tactic">case H8.</a> <a href="mell-details.html#189" class="tactic">case H12.</a>
   <span class="comment">%% tensor</span>
-  <a href="mell-details.html#192" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#193" class="tactic">case H9.</a>
-  <a href="mell-details.html#194" class="tactic">apply merge_unadj_3 to *H4 H10.</a> <a href="mell-details.html#195" class="tactic">case H11.</a>
-    <a href="mell-details.html#196" class="tactic">apply adj_swap to *H12 *H5.</a>
-     <a href="mell-details.html#197" class="tactic">apply IH to *H6 *H15.</a>
-     <a href="mell-details.html#198" class="tactic">apply adj_swap to *H10 *H3.</a>
-     <a href="mell-details.html#199" class="tactic">apply adj_same_result to *H18 *H2.</a>
-     <a href="mell-details.html#200" class="tactic">backchain mell_perm_l with K = U1.</a>
-    <a href="mell-details.html#201" class="tactic">apply adj_swap to *H12 *H7.</a>
-     <a href="mell-details.html#202" class="tactic">apply IH to *H8 *H15.</a>
-     <a href="mell-details.html#203" class="tactic">apply adj_swap to *H10 *H3.</a>
-     <a href="mell-details.html#204" class="tactic">apply adj_same_result to *H18 *H2.</a>
-     <a href="mell-details.html#205" class="tactic">backchain mell_perm_l with K = U1.</a>
+  <a href="mell-details.html#190" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#191" class="tactic">case H9.</a>
+  <a href="mell-details.html#192" class="tactic">apply merge_unadj_3 to *H4 H10.</a> <a href="mell-details.html#193" class="tactic">case H11.</a>
+    <a href="mell-details.html#194" class="tactic">apply adj_swap to *H12 *H5.</a>
+     <a href="mell-details.html#195" class="tactic">apply IH to *H6 *H15.</a>
+     <a href="mell-details.html#196" class="tactic">apply adj_swap to *H10 *H3.</a>
+     <a href="mell-details.html#197" class="tactic">apply adj_same_result to *H18 *H2.</a>
+     <a href="mell-details.html#198" class="tactic">backchain mell_perm_l with K = U1.</a>
+    <a href="mell-details.html#199" class="tactic">apply adj_swap to *H12 *H7.</a>
+     <a href="mell-details.html#200" class="tactic">apply IH to *H8 *H15.</a>
+     <a href="mell-details.html#201" class="tactic">apply adj_swap to *H10 *H3.</a>
+     <a href="mell-details.html#202" class="tactic">apply adj_same_result to *H18 *H2.</a>
+     <a href="mell-details.html#203" class="tactic">backchain mell_perm_l with K = U1.</a>
   <span class="comment">%% one (impossible)</span>
-  <a href="mell-details.html#206" class="tactic">case H2.</a> <a href="mell-details.html#207" class="tactic">case H5.</a>
+  <a href="mell-details.html#204" class="tactic">case H2.</a> <a href="mell-details.html#205" class="tactic">case H5.</a>
   <span class="comment">%% par</span>
-  <a href="mell-details.html#208" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#209" class="tactic">case H7.</a>
-  <a href="mell-details.html#210" class="tactic">apply adj_swap to H8 *H4.</a> <a href="mell-details.html#211" class="tactic">apply adj_swap to *H10 *H5.</a>
-  <a href="mell-details.html#212" class="tactic">apply IH to *H6 *H12.</a>
-  <a href="mell-details.html#213" class="tactic">apply adj_swap to *H8 *H3.</a>
-  <a href="mell-details.html#214" class="tactic">apply adj_same_result to *H15 *H2.</a>
-  <a href="mell-details.html#215" class="tactic">backchain mell_perm_l with K = U2.</a>
+  <a href="mell-details.html#206" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#207" class="tactic">case H7.</a>
+  <a href="mell-details.html#208" class="tactic">apply adj_swap to H8 *H4.</a> <a href="mell-details.html#209" class="tactic">apply adj_swap to *H10 *H5.</a>
+  <a href="mell-details.html#210" class="tactic">apply IH to *H6 *H12.</a>
+  <a href="mell-details.html#211" class="tactic">apply adj_swap to *H8 *H3.</a>
+  <a href="mell-details.html#212" class="tactic">apply adj_same_result to *H15 *H2.</a>
+  <a href="mell-details.html#213" class="tactic">backchain mell_perm_l with K = U2.</a>
   <span class="comment">%% bot</span>
-  <a href="mell-details.html#216" class="tactic">apply adj_same_result to *H3 *H2.</a>
-  <a href="mell-details.html#217" class="tactic">apply mell_is to H4.</a>
-  <a href="mell-details.html#218" class="tactic">backchain mell_perm_l with K = LL.</a>
+  <a href="mell-details.html#214" class="tactic">apply adj_same_result to *H3 *H2.</a>
+  <a href="mell-details.html#215" class="tactic">apply mell_is to H4.</a>
+  <a href="mell-details.html#216" class="tactic">backchain mell_perm_l with K = LL.</a>
   <span class="comment">%% bang (impossible)</span>
-  <a href="mell-details.html#219" class="tactic">case H2.</a> <a href="mell-details.html#220" class="tactic">case H5.</a>
+  <a href="mell-details.html#217" class="tactic">case H2.</a> <a href="mell-details.html#218" class="tactic">case H5.</a>
   <span class="comment">%% qm</span>
-  <a href="mell-details.html#221" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#222" class="tactic">case H6.</a>
-  <a href="mell-details.html#223" class="tactic">apply IH to *H5 H7.</a>
-  <a href="mell-details.html#224" class="tactic">apply adj_swap to H7 H3.</a> <a href="mell-details.html#225" class="tactic">apply adj_same_result to H10 H2.</a>
-  <a href="mell-details.html#226" class="tactic">backchain mell_perm_l with K = U.</a>
+  <a href="mell-details.html#219" class="tactic">apply adj_same_result_diff to H2 H3.</a> <a href="mell-details.html#220" class="tactic">case H6.</a>
+  <a href="mell-details.html#221" class="tactic">apply IH to *H5 H7.</a>
+  <a href="mell-details.html#222" class="tactic">apply adj_swap to H7 H3.</a> <a href="mell-details.html#223" class="tactic">apply adj_same_result to H10 H2.</a>
+  <a href="mell-details.html#224" class="tactic">backchain mell_perm_l with K = U.</a>
   <span class="comment">%% dl</span>
-  <a href="mell-details.html#227" class="tactic">apply adj_swap to H2 H4.</a>
-  <a href="mell-details.html#228" class="tactic">apply IH to H5 H7.</a>
-  <a href="mell-details.html#229" class="tactic">search.</a></div>
-<a href="mell-details.html#230" class="command">Theorem par_inv : forall A B QL L J KA KAB,
+  <a href="mell-details.html#225" class="tactic">apply adj_swap to H2 H4.</a>
+  <a href="mell-details.html#226" class="tactic">apply IH to H5 H7.</a>
+  <a href="mell-details.html#227" class="tactic">search.</a></div>
+<a href="mell-details.html#228" class="command">Theorem par_inv : forall A B QL L J KA KAB,
   mell QL L -> adj J (par A B) L ->
   adj J A KA -> adj KA B KAB ->
   mell QL KAB.</a>
-<div class="proof"><a href="mell-details.html#231" class="tactic">induction on 1.</a> <a href="mell-details.html#232" class="tactic">intros.</a> <a href="mell-details.html#233" class="tactic">case H1.</a>
+<div class="proof"><a href="mell-details.html#229" class="tactic">induction on 1.</a> <a href="mell-details.html#230" class="tactic">intros.</a> <a href="mell-details.html#231" class="tactic">case H1.</a>
   <span class="comment">%% atom (impossible)</span>
-  <a href="mell-details.html#234" class="tactic">case H6.</a> <a href="mell-details.html#235" class="tactic">case H2.</a> <a href="mell-details.html#236" class="tactic">case H10.</a> <a href="mell-details.html#237" class="tactic">case H12.</a>
-    <a href="mell-details.html#238" class="tactic">case H2.</a> <a href="mell-details.html#239" class="tactic">case H8.</a> <a href="mell-details.html#240" class="tactic">case H10.</a> <a href="mell-details.html#241" class="tactic">case H14.</a>
+  <a href="mell-details.html#232" class="tactic">case H6.</a> <a href="mell-details.html#233" class="tactic">case H2.</a> <a href="mell-details.html#234" class="tactic">case H10.</a> <a href="mell-details.html#235" class="tactic">case H12.</a>
+    <a href="mell-details.html#236" class="tactic">case H2.</a> <a href="mell-details.html#237" class="tactic">case H8.</a> <a href="mell-details.html#238" class="tactic">case H10.</a> <a href="mell-details.html#239" class="tactic">case H14.</a>
   <span class="comment">%% tensor</span>
-  <a href="mell-details.html#242" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#243" class="tactic">case H11.</a>
-  <a href="mell-details.html#244" class="tactic">apply adj_swap to H12 *H5.</a> <a href="mell-details.html#245" class="tactic">apply adj_same_result to *H14 *H2.</a>
-  <a href="mell-details.html#246" class="tactic">apply merge_unadj_3 to *H6 *H12.</a> <a href="mell-details.html#247" class="tactic">case H16.</a>
+  <a href="mell-details.html#240" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#241" class="tactic">case H11.</a>
+  <a href="mell-details.html#242" class="tactic">apply adj_swap to H12 *H5.</a> <a href="mell-details.html#243" class="tactic">apply adj_same_result to *H14 *H2.</a>
+  <a href="mell-details.html#244" class="tactic">apply merge_unadj_3 to *H6 *H12.</a> <a href="mell-details.html#245" class="tactic">case H16.</a>
     <span class="comment">%% par in left branch</span>
-    <a href="mell-details.html#248" class="tactic">apply adj_swap to *H17 *H7.</a>
-     <a href="mell-details.html#249" class="tactic">Ht : assert 0 exists UA UAB, adj U1 A UA /\ adj UA B UAB.</a>
-       <a href="mell-details.html#250" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#251" class="tactic">apply adj_1_is_list to H20.</a>
-       <a href="mell-details.html#252" class="tactic">apply adj_exists to H21 H22.</a> <a href="mell-details.html#253" class="tactic">apply adj_3_is_list to H23.</a>
-       <a href="mell-details.html#254" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#255" class="tactic">apply adj_exists to H25 H24.</a>
-       <a href="mell-details.html#256" class="tactic">search.</a> <a href="mell-details.html#257" class="tactic">case Ht.</a>
-     <a href="mell-details.html#258" class="tactic">apply IH to *H8 *H20 H21 H22.</a>
-     <a href="mell-details.html#259" class="tactic">apply adj_swap to *H19 *H21.</a> <a href="mell-details.html#260" class="tactic">apply adj_swap to *H25 *H22.</a>
-     <a href="mell-details.html#261" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK1 A KKA /\ adj KKA B KKAB /\ merge U3 KK KKAB.</a>
-       <a href="mell-details.html#262" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#263" class="tactic">apply merge_3_is_list to H18.</a>
-       <a href="mell-details.html#264" class="tactic">apply adj_exists to H28 H29.</a> <a href="mell-details.html#265" class="tactic">apply adj_3_is_list to H30.</a>
-       <a href="mell-details.html#266" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#267" class="tactic">apply adj_exists to H32 H31.</a>
-       <a href="mell-details.html#268" class="tactic">search.</a> <a href="mell-details.html#269" class="tactic">case Ht.</a>
-     <a href="mell-details.html#270" class="tactic">Ht : assert 0 exists KKABU, adj KKAB (tens A1 B1) KKABU.</a>
-       <a href="mell-details.html#271" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#272" class="tactic">apply merge_3_is_list to H30.</a>
-       <a href="mell-details.html#273" class="tactic">apply adj_exists to H31 H32.</a> <a href="mell-details.html#274" class="tactic">search.</a> <a href="mell-details.html#275" class="tactic">case Ht.</a>
-     <a href="mell-details.html#276" class="tactic">assert perm KKABU KAB.</a>
-       <a href="mell-details.html#277" class="tactic">apply adj_perm_full to *H15 *H13.</a>
-       <a href="mell-details.html#278" class="tactic">apply adj_swap to *H32 *H3.</a> <a href="mell-details.html#279" class="tactic">apply adj_swap to *H35 *H4.</a>
-       <a href="mell-details.html#280" class="tactic">search.</a>
-     <a href="mell-details.html#281" class="tactic">backchain mell_perm_l with K = KKABU.</a>
+    <a href="mell-details.html#246" class="tactic">apply adj_swap to *H17 *H7.</a>
+     <a href="mell-details.html#247" class="tactic">Ht : assert 0 exists UA UAB, adj U1 A UA /\ adj UA B UAB.</a>
+       <a href="mell-details.html#248" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#249" class="tactic">apply adj_1_is_list to H20.</a>
+       <a href="mell-details.html#250" class="tactic">apply adj_exists to H21 H22.</a> <a href="mell-details.html#251" class="tactic">apply adj_3_is_list to H23.</a>
+       <a href="mell-details.html#252" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#253" class="tactic">apply adj_exists to H25 H24.</a>
+       <a href="mell-details.html#254" class="tactic">search.</a> <a href="mell-details.html#255" class="tactic">case Ht.</a>
+     <a href="mell-details.html#256" class="tactic">apply IH to *H8 *H20 H21 H22.</a>
+     <a href="mell-details.html#257" class="tactic">apply adj_swap to *H19 *H21.</a> <a href="mell-details.html#258" class="tactic">apply adj_swap to *H25 *H22.</a>
+     <a href="mell-details.html#259" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK1 A KKA /\ adj KKA B KKAB /\ merge U3 KK KKAB.</a>
+       <a href="mell-details.html#260" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#261" class="tactic">apply merge_3_is_list to H18.</a>
+       <a href="mell-details.html#262" class="tactic">apply adj_exists to H28 H29.</a> <a href="mell-details.html#263" class="tactic">apply adj_3_is_list to H30.</a>
+       <a href="mell-details.html#264" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#265" class="tactic">apply adj_exists to H32 H31.</a>
+       <a href="mell-details.html#266" class="tactic">search.</a> <a href="mell-details.html#267" class="tactic">case Ht.</a>
+     <a href="mell-details.html#268" class="tactic">Ht : assert 0 exists KKABU, adj KKAB (tens A1 B1) KKABU.</a>
+       <a href="mell-details.html#269" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#270" class="tactic">apply merge_3_is_list to H30.</a>
+       <a href="mell-details.html#271" class="tactic">apply adj_exists to H31 H32.</a> <a href="mell-details.html#272" class="tactic">search.</a> <a href="mell-details.html#273" class="tactic">case Ht.</a>
+     <a href="mell-details.html#274" class="tactic">assert perm KKABU KAB.</a>
+       <a href="mell-details.html#275" class="tactic">apply adj_perm_full to *H15 *H13.</a>
+       <a href="mell-details.html#276" class="tactic">apply adj_swap to *H32 *H3.</a> <a href="mell-details.html#277" class="tactic">apply adj_swap to *H35 *H4.</a>
+       <a href="mell-details.html#278" class="tactic">search.</a>
+     <a href="mell-details.html#279" class="tactic">backchain mell_perm_l with K = KKABU.</a>
     <span class="comment">%% par in right branch</span>
-    <a href="mell-details.html#282" class="tactic">apply adj_swap to *H17 *H9.</a>
-     <a href="mell-details.html#283" class="tactic">Ht : assert 0 exists UA UAB, adj U1 A UA /\ adj UA B UAB.</a>
-       <a href="mell-details.html#284" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#285" class="tactic">apply adj_1_is_list to H20.</a>
-       <a href="mell-details.html#286" class="tactic">apply adj_exists to H21 H22.</a> <a href="mell-details.html#287" class="tactic">apply adj_3_is_list to H23.</a>
-       <a href="mell-details.html#288" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#289" class="tactic">apply adj_exists to H25 H24.</a>
-       <a href="mell-details.html#290" class="tactic">search.</a> <a href="mell-details.html#291" class="tactic">case Ht.</a>
-     <a href="mell-details.html#292" class="tactic">apply IH to *H10 *H20 H21 H22.</a>
-     <a href="mell-details.html#293" class="tactic">apply adj_swap to *H19 *H21.</a> <a href="mell-details.html#294" class="tactic">apply adj_swap to *H25 *H22.</a>
-     <a href="mell-details.html#295" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK1 A KKA /\ adj KKA B KKAB /\ merge JJ U3 KKAB.</a>
-       <a href="mell-details.html#296" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#297" class="tactic">apply merge_3_is_list to H18.</a>
-       <a href="mell-details.html#298" class="tactic">apply adj_exists to H28 H29.</a> <a href="mell-details.html#299" class="tactic">apply adj_3_is_list to H30.</a>
-       <a href="mell-details.html#300" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#301" class="tactic">apply adj_exists to H32 H31.</a>
-       <a href="mell-details.html#302" class="tactic">search.</a> <a href="mell-details.html#303" class="tactic">case Ht.</a>
-     <a href="mell-details.html#304" class="tactic">Ht : assert 0 exists KKABU, adj KKAB (tens A1 B1) KKABU.</a>
-       <a href="mell-details.html#305" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#306" class="tactic">apply merge_3_is_list to H30.</a>
-       <a href="mell-details.html#307" class="tactic">apply adj_exists to H31 H32.</a> <a href="mell-details.html#308" class="tactic">search.</a> <a href="mell-details.html#309" class="tactic">case Ht.</a>
-     <a href="mell-details.html#310" class="tactic">assert perm KKABU KAB.</a>
-       <a href="mell-details.html#311" class="tactic">apply adj_perm_full to *H15 *H13.</a>
-       <a href="mell-details.html#312" class="tactic">apply adj_swap to *H32 *H3.</a> <a href="mell-details.html#313" class="tactic">apply adj_swap to *H35 *H4.</a>
-       <a href="mell-details.html#314" class="tactic">search.</a>
-     <a href="mell-details.html#315" class="tactic">backchain mell_perm_l with K = KKABU.</a>
+    <a href="mell-details.html#280" class="tactic">apply adj_swap to *H17 *H9.</a>
+     <a href="mell-details.html#281" class="tactic">Ht : assert 0 exists UA UAB, adj U1 A UA /\ adj UA B UAB.</a>
+       <a href="mell-details.html#282" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#283" class="tactic">apply adj_1_is_list to H20.</a>
+       <a href="mell-details.html#284" class="tactic">apply adj_exists to H21 H22.</a> <a href="mell-details.html#285" class="tactic">apply adj_3_is_list to H23.</a>
+       <a href="mell-details.html#286" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#287" class="tactic">apply adj_exists to H25 H24.</a>
+       <a href="mell-details.html#288" class="tactic">search.</a> <a href="mell-details.html#289" class="tactic">case Ht.</a>
+     <a href="mell-details.html#290" class="tactic">apply IH to *H10 *H20 H21 H22.</a>
+     <a href="mell-details.html#291" class="tactic">apply adj_swap to *H19 *H21.</a> <a href="mell-details.html#292" class="tactic">apply adj_swap to *H25 *H22.</a>
+     <a href="mell-details.html#293" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK1 A KKA /\ adj KKA B KKAB /\ merge JJ U3 KKAB.</a>
+       <a href="mell-details.html#294" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#295" class="tactic">apply merge_3_is_list to H18.</a>
+       <a href="mell-details.html#296" class="tactic">apply adj_exists to H28 H29.</a> <a href="mell-details.html#297" class="tactic">apply adj_3_is_list to H30.</a>
+       <a href="mell-details.html#298" class="tactic">apply adj_2_is_o to H4.</a> <a href="mell-details.html#299" class="tactic">apply adj_exists to H32 H31.</a>
+       <a href="mell-details.html#300" class="tactic">search.</a> <a href="mell-details.html#301" class="tactic">case Ht.</a>
+     <a href="mell-details.html#302" class="tactic">Ht : assert 0 exists KKABU, adj KKAB (tens A1 B1) KKABU.</a>
+       <a href="mell-details.html#303" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#304" class="tactic">apply merge_3_is_list to H30.</a>
+       <a href="mell-details.html#305" class="tactic">apply adj_exists to H31 H32.</a> <a href="mell-details.html#306" class="tactic">search.</a> <a href="mell-details.html#307" class="tactic">case Ht.</a>
+     <a href="mell-details.html#308" class="tactic">assert perm KKABU KAB.</a>
+       <a href="mell-details.html#309" class="tactic">apply adj_perm_full to *H15 *H13.</a>
+       <a href="mell-details.html#310" class="tactic">apply adj_swap to *H32 *H3.</a> <a href="mell-details.html#311" class="tactic">apply adj_swap to *H35 *H4.</a>
+       <a href="mell-details.html#312" class="tactic">search.</a>
+     <a href="mell-details.html#313" class="tactic">backchain mell_perm_l with K = KKABU.</a>
   <span class="comment">%% one (impossible)</span>
-  <a href="mell-details.html#316" class="tactic">case H2.</a> <a href="mell-details.html#317" class="tactic">case H7.</a>
+  <a href="mell-details.html#314" class="tactic">case H2.</a> <a href="mell-details.html#315" class="tactic">case H7.</a>
   <span class="comment">%% par</span>
-  <a href="mell-details.html#318" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#319" class="tactic">case H9.</a>
+  <a href="mell-details.html#316" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#317" class="tactic">case H9.</a>
     <span class="comment">%% same par</span>
-    <a href="mell-details.html#320" class="tactic">apply perm_sym to *H10.</a>
-    <a href="mell-details.html#321" class="tactic">apply adj_preserves_perm to *H6 *H3 *H11.</a>
-    <a href="mell-details.html#322" class="tactic">apply adj_preserves_perm to *H7 *H4 *H12.</a>
-    <a href="mell-details.html#323" class="tactic">apply mell_perm_l to *H8 *H13.</a>
-    <a href="mell-details.html#324" class="tactic">apply mell_is to H14.</a> <a href="mell-details.html#325" class="tactic">search.</a>
+    <a href="mell-details.html#318" class="tactic">apply perm_sym to *H10.</a>
+    <a href="mell-details.html#319" class="tactic">apply adj_preserves_perm to *H6 *H3 *H11.</a>
+    <a href="mell-details.html#320" class="tactic">apply adj_preserves_perm to *H7 *H4 *H12.</a>
+    <a href="mell-details.html#321" class="tactic">apply mell_perm_l to *H8 *H13.</a>
+    <a href="mell-details.html#322" class="tactic">apply mell_is to H14.</a> <a href="mell-details.html#323" class="tactic">search.</a>
     <span class="comment">%% different par</span>
-    <a href="mell-details.html#326" class="tactic">apply adj_swap to H10 *H5.</a> <a href="mell-details.html#327" class="tactic">apply adj_same_result to *H12 *H2.</a>
-    <a href="mell-details.html#328" class="tactic">apply adj_swap to *H10 *H6.</a> <a href="mell-details.html#329" class="tactic">apply adj_swap to *H15 *H7.</a>
-    <a href="mell-details.html#330" class="tactic">Ht : assert 0 exists UA UAB, adj U2 A UA /\ adj UA B UAB.</a>
-      <a href="mell-details.html#331" class="tactic">apply adj_2_is_o to H17.</a> <a href="mell-details.html#332" class="tactic">case H18.</a>
-      <a href="mell-details.html#333" class="tactic">apply adj_1_is_list to H17.</a> <a href="mell-details.html#334" class="tactic">apply adj_exists to H19 H21.</a>
-      <a href="mell-details.html#335" class="tactic">apply adj_3_is_list to H22.</a> <a href="mell-details.html#336" class="tactic">apply adj_exists to H20 H23.</a>
-      <a href="mell-details.html#337" class="tactic">search.</a> <a href="mell-details.html#338" class="tactic">case Ht.</a>
-    <a href="mell-details.html#339" class="tactic">apply IH to *H8 *H17 H18 H19.</a>
-    <a href="mell-details.html#340" class="tactic">apply adj_swap to *H16 *H18.</a> <a href="mell-details.html#341" class="tactic">apply adj_swap to *H22 *H19.</a>
-    <a href="mell-details.html#342" class="tactic">apply adj_swap to *H14 *H21.</a> <a href="mell-details.html#343" class="tactic">apply adj_swap to *H26 *H23.</a>
-    <a href="mell-details.html#344" class="tactic">Ht : assert 0 exists V, adj U6 (par A1 B1) V.</a>
-      <a href="mell-details.html#345" class="tactic">apply adj_2_is_o to H11.</a> <a href="mell-details.html#346" class="tactic">apply adj_1_is_list to H28.</a>
-      <a href="mell-details.html#347" class="tactic">apply adj_exists to H29 H30.</a> <a href="mell-details.html#348" class="tactic">search.</a> <a href="mell-details.html#349" class="tactic">case Ht.</a>
-    <a href="mell-details.html#350" class="tactic">assert perm V KAB.</a>
-      <a href="mell-details.html#351" class="tactic">apply adj_perm_full to *H13 *H11.</a>
-      <a href="mell-details.html#352" class="tactic">apply adj_swap to *H30 *H3.</a> <a href="mell-details.html#353" class="tactic">apply adj_swap to *H33 *H4.</a>
-      <a href="mell-details.html#354" class="tactic">search.</a>
-    <a href="mell-details.html#355" class="tactic">backchain mell_perm_l with K = V.</a>
+    <a href="mell-details.html#324" class="tactic">apply adj_swap to H10 *H5.</a> <a href="mell-details.html#325" class="tactic">apply adj_same_result to *H12 *H2.</a>
+    <a href="mell-details.html#326" class="tactic">apply adj_swap to *H10 *H6.</a> <a href="mell-details.html#327" class="tactic">apply adj_swap to *H15 *H7.</a>
+    <a href="mell-details.html#328" class="tactic">Ht : assert 0 exists UA UAB, adj U2 A UA /\ adj UA B UAB.</a>
+      <a href="mell-details.html#329" class="tactic">apply adj_2_is_o to H17.</a> <a href="mell-details.html#330" class="tactic">case H18.</a>
+      <a href="mell-details.html#331" class="tactic">apply adj_1_is_list to H17.</a> <a href="mell-details.html#332" class="tactic">apply adj_exists to H19 H21.</a>
+      <a href="mell-details.html#333" class="tactic">apply adj_3_is_list to H22.</a> <a href="mell-details.html#334" class="tactic">apply adj_exists to H20 H23.</a>
+      <a href="mell-details.html#335" class="tactic">search.</a> <a href="mell-details.html#336" class="tactic">case Ht.</a>
+    <a href="mell-details.html#337" class="tactic">apply IH to *H8 *H17 H18 H19.</a>
+    <a href="mell-details.html#338" class="tactic">apply adj_swap to *H16 *H18.</a> <a href="mell-details.html#339" class="tactic">apply adj_swap to *H22 *H19.</a>
+    <a href="mell-details.html#340" class="tactic">apply adj_swap to *H14 *H21.</a> <a href="mell-details.html#341" class="tactic">apply adj_swap to *H26 *H23.</a>
+    <a href="mell-details.html#342" class="tactic">Ht : assert 0 exists V, adj U6 (par A1 B1) V.</a>
+      <a href="mell-details.html#343" class="tactic">apply adj_2_is_o to H11.</a> <a href="mell-details.html#344" class="tactic">apply adj_1_is_list to H28.</a>
+      <a href="mell-details.html#345" class="tactic">apply adj_exists to H29 H30.</a> <a href="mell-details.html#346" class="tactic">search.</a> <a href="mell-details.html#347" class="tactic">case Ht.</a>
+    <a href="mell-details.html#348" class="tactic">assert perm V KAB.</a>
+      <a href="mell-details.html#349" class="tactic">apply adj_perm_full to *H13 *H11.</a>
+      <a href="mell-details.html#350" class="tactic">apply adj_swap to *H30 *H3.</a> <a href="mell-details.html#351" class="tactic">apply adj_swap to *H33 *H4.</a>
+      <a href="mell-details.html#352" class="tactic">search.</a>
+    <a href="mell-details.html#353" class="tactic">backchain mell_perm_l with K = V.</a>
   <span class="comment">%% bot</span>
-  <a href="mell-details.html#356" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#357" class="tactic">case H7.</a>
-  <a href="mell-details.html#358" class="tactic">apply adj_swap to H8 *H5.</a> <a href="mell-details.html#359" class="tactic">apply adj_same_result to *H10 *H2.</a>
-  <a href="mell-details.html#360" class="tactic">apply adj_perm_full to *H11 *H9.</a>
-  <a href="mell-details.html#361" class="tactic">apply adj_swap to *H12 *H3.</a> <a href="mell-details.html#362" class="tactic">apply adj_swap to *H15 *H4.</a>
-  <a href="mell-details.html#363" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK A KKA /\ adj KKA B KKAB.</a>
-    <a href="mell-details.html#364" class="tactic">apply adj_2_is_o to H8.</a> <a href="mell-details.html#365" class="tactic">case H18.</a>
-    <a href="mell-details.html#366" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#367" class="tactic">apply adj_exists to *H19 H21.</a>
-    <a href="mell-details.html#368" class="tactic">apply adj_3_is_list to H22.</a> <a href="mell-details.html#369" class="tactic">apply adj_exists to *H20 *H23.</a>
-    <a href="mell-details.html#370" class="tactic">search.</a> <a href="mell-details.html#371" class="tactic">case Ht.</a>
-  <a href="mell-details.html#372" class="tactic">apply IH to *H6 H8 H18 H19.</a>
-  <a href="mell-details.html#373" class="tactic">Ht : assert 0 exists V, adj KKAB bot V.</a>
-    <a href="mell-details.html#374" class="tactic">apply adj_3_is_list to H19.</a>
-    <a href="mell-details.html#375" class="tactic">apply adj_exists to _ H21 with A = bot.</a> <a href="mell-details.html#376" class="tactic">search.</a> <a href="mell-details.html#377" class="tactic">case Ht.</a>
-  <a href="mell-details.html#378" class="tactic">assert perm V KAB.</a>
-  <a href="mell-details.html#379" class="tactic">backchain mell_perm_l with K = V.</a>
+  <a href="mell-details.html#354" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#355" class="tactic">case H7.</a>
+  <a href="mell-details.html#356" class="tactic">apply adj_swap to H8 *H5.</a> <a href="mell-details.html#357" class="tactic">apply adj_same_result to *H10 *H2.</a>
+  <a href="mell-details.html#358" class="tactic">apply adj_perm_full to *H11 *H9.</a>
+  <a href="mell-details.html#359" class="tactic">apply adj_swap to *H12 *H3.</a> <a href="mell-details.html#360" class="tactic">apply adj_swap to *H15 *H4.</a>
+  <a href="mell-details.html#361" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK A KKA /\ adj KKA B KKAB.</a>
+    <a href="mell-details.html#362" class="tactic">apply adj_2_is_o to H8.</a> <a href="mell-details.html#363" class="tactic">case H18.</a>
+    <a href="mell-details.html#364" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#365" class="tactic">apply adj_exists to *H19 H21.</a>
+    <a href="mell-details.html#366" class="tactic">apply adj_3_is_list to H22.</a> <a href="mell-details.html#367" class="tactic">apply adj_exists to *H20 *H23.</a>
+    <a href="mell-details.html#368" class="tactic">search.</a> <a href="mell-details.html#369" class="tactic">case Ht.</a>
+  <a href="mell-details.html#370" class="tactic">apply IH to *H6 H8 H18 H19.</a>
+  <a href="mell-details.html#371" class="tactic">Ht : assert 0 exists V, adj KKAB bot V.</a>
+    <a href="mell-details.html#372" class="tactic">apply adj_3_is_list to H19.</a>
+    <a href="mell-details.html#373" class="tactic">apply adj_exists to _ H21 with A = bot.</a> <a href="mell-details.html#374" class="tactic">search.</a> <a href="mell-details.html#375" class="tactic">case Ht.</a>
+  <a href="mell-details.html#376" class="tactic">assert perm V KAB.</a>
+  <a href="mell-details.html#377" class="tactic">backchain mell_perm_l with K = V.</a>
   <span class="comment">%% bang (impossible)</span>
-  <a href="mell-details.html#380" class="tactic">case H2.</a> <a href="mell-details.html#381" class="tactic">case H7.</a>
+  <a href="mell-details.html#378" class="tactic">case H2.</a> <a href="mell-details.html#379" class="tactic">case H7.</a>
   <span class="comment">%% qm</span>
-  <a href="mell-details.html#382" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#383" class="tactic">case H8.</a>
-  <a href="mell-details.html#384" class="tactic">apply adj_swap to H9 *H5.</a> <a href="mell-details.html#385" class="tactic">apply adj_same_result to *H11 *H2.</a>
-  <a href="mell-details.html#386" class="tactic">apply adj_perm_full to *H12 *H10.</a>
-  <a href="mell-details.html#387" class="tactic">apply adj_swap to *H13 *H3.</a> <a href="mell-details.html#388" class="tactic">apply adj_swap to *H16 *H4.</a>
-  <a href="mell-details.html#389" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK A KKA /\ adj KKA B KKAB.</a>
-    <a href="mell-details.html#390" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#391" class="tactic">case H19.</a>
-    <a href="mell-details.html#392" class="tactic">apply adj_1_is_list to H9.</a> <a href="mell-details.html#393" class="tactic">apply adj_exists to H20 H22.</a>
-    <a href="mell-details.html#394" class="tactic">apply adj_3_is_list to H23.</a> <a href="mell-details.html#395" class="tactic">apply adj_exists to H21 H24.</a>
-    <a href="mell-details.html#396" class="tactic">search.</a> <a href="mell-details.html#397" class="tactic">case Ht.</a>
-  <a href="mell-details.html#398" class="tactic">apply IH to *H7 H9 H19 H20.</a>
-  <a href="mell-details.html#399" class="tactic">Ht : assert 0 exists V, adj KKAB (qm A1) V.</a>
-    <a href="mell-details.html#400" class="tactic">apply adj_3_is_list to H20.</a> <a href="mell-details.html#401" class="tactic">apply adj_2_is_o to H18.</a>
-    <a href="mell-details.html#402" class="tactic">apply adj_exists to H23 H22.</a> <a href="mell-details.html#403" class="tactic">search.</a> <a href="mell-details.html#404" class="tactic">case Ht.</a>
-  <a href="mell-details.html#405" class="tactic">assert perm V KAB.</a>
-  <a href="mell-details.html#406" class="tactic">backchain mell_perm_l with K = V.</a>
+  <a href="mell-details.html#380" class="tactic">apply adj_same_result_diff to H2 H5.</a> <a href="mell-details.html#381" class="tactic">case H8.</a>
+  <a href="mell-details.html#382" class="tactic">apply adj_swap to H9 *H5.</a> <a href="mell-details.html#383" class="tactic">apply adj_same_result to *H11 *H2.</a>
+  <a href="mell-details.html#384" class="tactic">apply adj_perm_full to *H12 *H10.</a>
+  <a href="mell-details.html#385" class="tactic">apply adj_swap to *H13 *H3.</a> <a href="mell-details.html#386" class="tactic">apply adj_swap to *H16 *H4.</a>
+  <a href="mell-details.html#387" class="tactic">Ht : assert 0 exists KKA KKAB, adj KK A KKA /\ adj KKA B KKAB.</a>
+    <a href="mell-details.html#388" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#389" class="tactic">case H19.</a>
+    <a href="mell-details.html#390" class="tactic">apply adj_1_is_list to H9.</a> <a href="mell-details.html#391" class="tactic">apply adj_exists to H20 H22.</a>
+    <a href="mell-details.html#392" class="tactic">apply adj_3_is_list to H23.</a> <a href="mell-details.html#393" class="tactic">apply adj_exists to H21 H24.</a>
+    <a href="mell-details.html#394" class="tactic">search.</a> <a href="mell-details.html#395" class="tactic">case Ht.</a>
+  <a href="mell-details.html#396" class="tactic">apply IH to *H7 H9 H19 H20.</a>
+  <a href="mell-details.html#397" class="tactic">Ht : assert 0 exists V, adj KKAB (qm A1) V.</a>
+    <a href="mell-details.html#398" class="tactic">apply adj_3_is_list to H20.</a> <a href="mell-details.html#399" class="tactic">apply adj_2_is_o to H18.</a>
+    <a href="mell-details.html#400" class="tactic">apply adj_exists to H23 H22.</a> <a href="mell-details.html#401" class="tactic">search.</a> <a href="mell-details.html#402" class="tactic">case Ht.</a>
+  <a href="mell-details.html#403" class="tactic">assert perm V KAB.</a>
+  <a href="mell-details.html#404" class="tactic">backchain mell_perm_l with K = V.</a>
   <span class="comment">%% dl</span>
-  <a href="mell-details.html#407" class="tactic">apply adj_swap to *H2 *H6.</a>
-  <a href="mell-details.html#408" class="tactic">Ht : assert 0 exists UA UAB, adj U A UA /\ adj UA B UAB.</a>
-    <a href="mell-details.html#409" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#410" class="tactic">case H10.</a> <a href="mell-details.html#411" class="tactic">apply adj_1_is_list to H9.</a>
-    <a href="mell-details.html#412" class="tactic">apply adj_exists to H11 H13.</a> <a href="mell-details.html#413" class="tactic">apply adj_3_is_list to H14.</a>
-    <a href="mell-details.html#414" class="tactic">apply adj_exists to H12 H15.</a> <a href="mell-details.html#415" class="tactic">search.</a> <a href="mell-details.html#416" class="tactic">case Ht.</a>
-  <a href="mell-details.html#417" class="tactic">apply IH to *H7 H9 H10 H11.</a>
-  <a href="mell-details.html#418" class="tactic">apply adj_swap to *H8 *H10.</a> <a href="mell-details.html#419" class="tactic">apply adj_swap to *H14 *H11.</a>
-  <a href="mell-details.html#420" class="tactic">assert perm U2 KAB.</a>
-    <a href="mell-details.html#421" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#422" class="tactic">apply perm_refl to H17.</a>
-    <a href="mell-details.html#423" class="tactic">search.</a>
-  <a href="mell-details.html#424" class="tactic">backchain mell_perm_l with K = U2.</a></div>
-<a href="mell-details.html#425" class="command">Theorem qm_inv : forall A QL L J QK,
+  <a href="mell-details.html#405" class="tactic">apply adj_swap to *H2 *H6.</a>
+  <a href="mell-details.html#406" class="tactic">Ht : assert 0 exists UA UAB, adj U A UA /\ adj UA B UAB.</a>
+    <a href="mell-details.html#407" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#408" class="tactic">case H10.</a> <a href="mell-details.html#409" class="tactic">apply adj_1_is_list to H9.</a>
+    <a href="mell-details.html#410" class="tactic">apply adj_exists to H11 H13.</a> <a href="mell-details.html#411" class="tactic">apply adj_3_is_list to H14.</a>
+    <a href="mell-details.html#412" class="tactic">apply adj_exists to H12 H15.</a> <a href="mell-details.html#413" class="tactic">search.</a> <a href="mell-details.html#414" class="tactic">case Ht.</a>
+  <a href="mell-details.html#415" class="tactic">apply IH to *H7 H9 H10 H11.</a>
+  <a href="mell-details.html#416" class="tactic">apply adj_swap to *H8 *H10.</a> <a href="mell-details.html#417" class="tactic">apply adj_swap to *H14 *H11.</a>
+  <a href="mell-details.html#418" class="tactic">assert perm U2 KAB.</a>
+    <a href="mell-details.html#419" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#420" class="tactic">apply perm_refl to H17.</a>
+    <a href="mell-details.html#421" class="tactic">search.</a>
+  <a href="mell-details.html#422" class="tactic">backchain mell_perm_l with K = U2.</a></div>
+<a href="mell-details.html#423" class="command">Theorem qm_inv : forall A QL L J QK,
   mell QL L -> adj J (qm A) L -> adj QL A QK ->
   mell QK J.</a>
-<div class="proof"><a href="mell-details.html#426" class="tactic">induction on 1.</a> <a href="mell-details.html#427" class="tactic">intros.</a> <a href="mell-details.html#428" class="tactic">case H1.</a>
+<div class="proof"><a href="mell-details.html#424" class="tactic">induction on 1.</a> <a href="mell-details.html#425" class="tactic">intros.</a> <a href="mell-details.html#426" class="tactic">case H1.</a>
   <span class="comment">%% atom (impossible)</span>
-  <a href="mell-details.html#429" class="tactic">case H5.</a> <a href="mell-details.html#430" class="tactic">case H2.</a> <a href="mell-details.html#431" class="tactic">case H9.</a> <a href="mell-details.html#432" class="tactic">case H11.</a>
-    <a href="mell-details.html#433" class="tactic">case H2.</a> <a href="mell-details.html#434" class="tactic">case H7.</a> <a href="mell-details.html#435" class="tactic">case H9.</a> <a href="mell-details.html#436" class="tactic">case H13.</a>
+  <a href="mell-details.html#427" class="tactic">case H5.</a> <a href="mell-details.html#428" class="tactic">case H2.</a> <a href="mell-details.html#429" class="tactic">case H9.</a> <a href="mell-details.html#430" class="tactic">case H11.</a>
+    <a href="mell-details.html#431" class="tactic">case H2.</a> <a href="mell-details.html#432" class="tactic">case H7.</a> <a href="mell-details.html#433" class="tactic">case H9.</a> <a href="mell-details.html#434" class="tactic">case H13.</a>
   <span class="comment">%% tensor</span>
-  <a href="mell-details.html#437" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#438" class="tactic">case H10.</a>
-  <a href="mell-details.html#439" class="tactic">apply adj_swap to H11 *H4.</a> <a href="mell-details.html#440" class="tactic">apply adj_same_result to *H13 *H2.</a>
-  <a href="mell-details.html#441" class="tactic">apply merge_unadj_3 to *H5 *H11.</a> <a href="mell-details.html#442" class="tactic">case H15.</a>
-    <a href="mell-details.html#443" class="tactic">apply adj_swap to *H16 *H6.</a>
-     <a href="mell-details.html#444" class="tactic">apply IH to *H7 *H19 H3.</a>
-     <a href="mell-details.html#445" class="tactic">apply mell_weaken_q1 to *H9 *H3.</a>
-     <a href="mell-details.html#446" class="tactic">backchain mell_perm_l with K = U.</a>
-    <a href="mell-details.html#447" class="tactic">apply adj_swap to *H16 *H8.</a>
-     <a href="mell-details.html#448" class="tactic">apply IH to *H9 *H19 H3.</a>
-     <a href="mell-details.html#449" class="tactic">apply mell_weaken_q1 to *H7 *H3.</a>
-     <a href="mell-details.html#450" class="tactic">backchain mell_perm_l with K = U.</a>
+  <a href="mell-details.html#435" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#436" class="tactic">case H10.</a>
+  <a href="mell-details.html#437" class="tactic">apply adj_swap to H11 *H4.</a> <a href="mell-details.html#438" class="tactic">apply adj_same_result to *H13 *H2.</a>
+  <a href="mell-details.html#439" class="tactic">apply merge_unadj_3 to *H5 *H11.</a> <a href="mell-details.html#440" class="tactic">case H15.</a>
+    <a href="mell-details.html#441" class="tactic">apply adj_swap to *H16 *H6.</a>
+     <a href="mell-details.html#442" class="tactic">apply IH to *H7 *H19 H3.</a>
+     <a href="mell-details.html#443" class="tactic">apply mell_weaken_q1 to *H9 *H3.</a>
+     <a href="mell-details.html#444" class="tactic">backchain mell_perm_l with K = U.</a>
+    <a href="mell-details.html#445" class="tactic">apply adj_swap to *H16 *H8.</a>
+     <a href="mell-details.html#446" class="tactic">apply IH to *H9 *H19 H3.</a>
+     <a href="mell-details.html#447" class="tactic">apply mell_weaken_q1 to *H7 *H3.</a>
+     <a href="mell-details.html#448" class="tactic">backchain mell_perm_l with K = U.</a>
   <span class="comment">%% one (impossible)</span>
-  <a href="mell-details.html#451" class="tactic">case H2.</a> <a href="mell-details.html#452" class="tactic">case H6.</a>
+  <a href="mell-details.html#449" class="tactic">case H2.</a> <a href="mell-details.html#450" class="tactic">case H6.</a>
   <span class="comment">%% par</span>
-  <a href="mell-details.html#453" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#454" class="tactic">case H8.</a>
-  <a href="mell-details.html#455" class="tactic">apply adj_swap to H9 *H4.</a> <a href="mell-details.html#456" class="tactic">apply adj_same_result to *H11 *H2.</a>
-  <a href="mell-details.html#457" class="tactic">apply adj_swap to *H9 *H5.</a> <a href="mell-details.html#458" class="tactic">apply adj_swap to *H14 *H6.</a>
-  <a href="mell-details.html#459" class="tactic">apply IH to *H7 *H16 *H3.</a>
-  <a href="mell-details.html#460" class="tactic">backchain mell_perm_l with K = U.</a>
+  <a href="mell-details.html#451" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#452" class="tactic">case H8.</a>
+  <a href="mell-details.html#453" class="tactic">apply adj_swap to H9 *H4.</a> <a href="mell-details.html#454" class="tactic">apply adj_same_result to *H11 *H2.</a>
+  <a href="mell-details.html#455" class="tactic">apply adj_swap to *H9 *H5.</a> <a href="mell-details.html#456" class="tactic">apply adj_swap to *H14 *H6.</a>
+  <a href="mell-details.html#457" class="tactic">apply IH to *H7 *H16 *H3.</a>
+  <a href="mell-details.html#458" class="tactic">backchain mell_perm_l with K = U.</a>
   <span class="comment">%% bot</span>
-  <a href="mell-details.html#461" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#462" class="tactic">case H6.</a>
-  <a href="mell-details.html#463" class="tactic">apply adj_swap to H7 *H4.</a> <a href="mell-details.html#464" class="tactic">apply adj_same_result to *H9 *H2.</a>
-  <a href="mell-details.html#465" class="tactic">apply IH to *H5 *H7 *H3.</a>
-  <a href="mell-details.html#466" class="tactic">backchain mell_perm_l with K = U.</a>
+  <a href="mell-details.html#459" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#460" class="tactic">case H6.</a>
+  <a href="mell-details.html#461" class="tactic">apply adj_swap to H7 *H4.</a> <a href="mell-details.html#462" class="tactic">apply adj_same_result to *H9 *H2.</a>
+  <a href="mell-details.html#463" class="tactic">apply IH to *H5 *H7 *H3.</a>
+  <a href="mell-details.html#464" class="tactic">backchain mell_perm_l with K = U.</a>
   <span class="comment">%% bang (impossible)</span>
-  <a href="mell-details.html#467" class="tactic">case H2.</a> <a href="mell-details.html#468" class="tactic">case H6.</a>
+  <a href="mell-details.html#465" class="tactic">case H2.</a> <a href="mell-details.html#466" class="tactic">case H6.</a>
   <span class="comment">%% qm</span>
-  <a href="mell-details.html#469" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#470" class="tactic">case H7.</a>
+  <a href="mell-details.html#467" class="tactic">apply adj_same_result_diff to H2 H4.</a> <a href="mell-details.html#468" class="tactic">case H7.</a>
     <span class="comment">%% inverted formula is principal</span>
-    <a href="mell-details.html#471" class="tactic">apply perm_sym to *H8.</a> <a href="mell-details.html#472" class="tactic">apply mell_perm_l to *H6 *H9.</a>
-     <a href="mell-details.html#473" class="tactic">assert perm QK1 QK.</a>
-       <a href="mell-details.html#474" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#475" class="tactic">apply perm_refl to H11.</a> <a href="mell-details.html#476" class="tactic">search.</a>
-     <a href="mell-details.html#477" class="tactic">apply mell_perm_q to *H10 *H11.</a>
-     <a href="mell-details.html#478" class="tactic">search.</a>
+    <a href="mell-details.html#469" class="tactic">apply perm_sym to *H8.</a> <a href="mell-details.html#470" class="tactic">apply mell_perm_l to *H6 *H9.</a>
+     <a href="mell-details.html#471" class="tactic">assert perm QK1 QK.</a>
+       <a href="mell-details.html#472" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#473" class="tactic">apply perm_refl to H11.</a> <a href="mell-details.html#474" class="tactic">search.</a>
+     <a href="mell-details.html#475" class="tactic">apply mell_perm_q to *H10 *H11.</a>
+     <a href="mell-details.html#476" class="tactic">search.</a>
     <span class="comment">%% inverted formula is not principal</span>
-    <a href="mell-details.html#479" class="tactic">apply adj_swap to H8 *H4.</a> <a href="mell-details.html#480" class="tactic">apply adj_same_result to *H10 *H2.</a>
-     <a href="mell-details.html#481" class="tactic">Ht : assert 0 exists QK2, adj QK1 A QK2.</a>
-       <a href="mell-details.html#482" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#483" class="tactic">apply adj_3_is_list to H5.</a>
-       <a href="mell-details.html#484" class="tactic">apply adj_exists to *H12 *H13.</a> <a href="mell-details.html#485" class="tactic">search.</a> <a href="mell-details.html#486" class="tactic">case Ht.</a>
-     <a href="mell-details.html#487" class="tactic">apply IH to *H6 *H8 H12.</a>
-     <a href="mell-details.html#488" class="tactic">apply adj_swap to *H5 *H12.</a>
-     <a href="mell-details.html#489" class="tactic">assert mell U1 U.</a>
-     <a href="mell-details.html#490" class="tactic">apply mell_perm_l to *H16 *H11.</a>
-     <a href="mell-details.html#491" class="tactic">assert 0 perm U1 QK.</a>
-       <a href="mell-details.html#492" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#493" class="tactic">apply perm_refl to H18.</a> <a href="mell-details.html#494" class="tactic">search.</a>
-     <a href="mell-details.html#495" class="tactic">backchain mell_perm_q.</a>
+    <a href="mell-details.html#477" class="tactic">apply adj_swap to H8 *H4.</a> <a href="mell-details.html#478" class="tactic">apply adj_same_result to *H10 *H2.</a>
+     <a href="mell-details.html#479" class="tactic">Ht : assert 0 exists QK2, adj QK1 A QK2.</a>
+       <a href="mell-details.html#480" class="tactic">apply adj_2_is_o to H3.</a> <a href="mell-details.html#481" class="tactic">apply adj_3_is_list to H5.</a>
+       <a href="mell-details.html#482" class="tactic">apply adj_exists to *H12 *H13.</a> <a href="mell-details.html#483" class="tactic">search.</a> <a href="mell-details.html#484" class="tactic">case Ht.</a>
+     <a href="mell-details.html#485" class="tactic">apply IH to *H6 *H8 H12.</a>
+     <a href="mell-details.html#486" class="tactic">apply adj_swap to *H5 *H12.</a>
+     <a href="mell-details.html#487" class="tactic">assert mell U1 U.</a>
+     <a href="mell-details.html#488" class="tactic">apply mell_perm_l to *H16 *H11.</a>
+     <a href="mell-details.html#489" class="tactic">assert 0 perm U1 QK.</a>
+       <a href="mell-details.html#490" class="tactic">apply adj_1_is_list to H3.</a> <a href="mell-details.html#491" class="tactic">apply perm_refl to H18.</a> <a href="mell-details.html#492" class="tactic">search.</a>
+     <a href="mell-details.html#493" class="tactic">backchain mell_perm_q.</a>
   <span class="comment">%% dl</span>
-  <a href="mell-details.html#496" class="tactic">apply adj_swap to *H2 *H5.</a>
-  <a href="mell-details.html#497" class="tactic">apply IH to *H6 *H8 H3.</a>
-  <a href="mell-details.html#498" class="tactic">apply adj_swap to *H4 *H3.</a>
-  <a href="mell-details.html#499" class="tactic">search.</a></div>
+  <a href="mell-details.html#494" class="tactic">apply adj_swap to *H2 *H5.</a>
+  <a href="mell-details.html#495" class="tactic">apply IH to *H6 *H8 H3.</a>
+  <a href="mell-details.html#496" class="tactic">apply adj_swap to *H4 *H3.</a>
+  <a href="mell-details.html#497" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Nested induction</span>
 
-<a href="mell-details.html#500" class="command">Kind weight type.</a>
+<a href="mell-details.html#498" class="command">Kind weight type.</a>
 
-<a href="mell-details.html#501" class="command">Type heavy, light weight.</a>
+<a href="mell-details.html#499" class="command">Type heavy, light weight.</a>
 
-<a href="mell-details.html#502" class="command">Define is_weight : weight -> prop by
+<a href="mell-details.html#500" class="command">Define is_weight : weight -> prop by
 ; is_weight light
 ; is_weight heavy := is_weight light.</a>
 
-<a href="mell-details.html#503" class="command">Define incl : olist -> olist -> prop by
+<a href="mell-details.html#501" class="command">Define incl : olist -> olist -> prop by
 incl J L := exists K, merge J K L.</a>
 
-<a href="mell-details.html#504" class="command">Theorem $cut_admit : forall A B QL J W,
+<a href="mell-details.html#502" class="command">Theorem $cut_admit : forall A B QL J W,
   dual A B -> mell QL J -> is_weight W ->
      (W = light /\
       forall QQL JJ KK K LL,
@@ -524,222 +524,222 @@ incl J L := exists K, merge J K L.</a>
       forall QQL QQ K,
         J = A :: nil -> incl QL QQL -> adj QQL B QQ -> mell QQ K ->
         mell QQL K).</a>
-<div class="proof"><a href="mell-details.html#505" class="tactic">IHrk : induction on 1.</a>
-<a href="mell-details.html#506" class="tactic">IHht : induction on 2.</a>
-<a href="mell-details.html#507" class="tactic">IHwt : induction on 3.</a>
+<div class="proof"><a href="mell-details.html#503" class="tactic">IHrk : induction on 1.</a>
+<a href="mell-details.html#504" class="tactic">IHht : induction on 2.</a>
+<a href="mell-details.html#505" class="tactic">IHwt : induction on 3.</a>
 <span class="comment">%abbrev IHrk IHht IHwt "...".</span>
-<a href="mell-details.html#508" class="tactic">intros.</a> <a href="mell-details.html#509" class="tactic">case H3.</a><a href="mell-details.html#510" class="tactic"> left. </a><a href="mell-details.html#511" class="tactic">split.</a> <a href="mell-details.html#512" class="tactic">search.</a>
-<a href="mell-details.html#513" class="tactic">intros.</a> <a href="mell-details.html#514" class="tactic">case H2 (keep).</a>
+<a href="mell-details.html#506" class="tactic">intros.</a> <a href="mell-details.html#507" class="tactic">case H3.</a><a href="mell-details.html#508" class="tactic"> left. </a><a href="mell-details.html#509" class="tactic">split.</a> <a href="mell-details.html#510" class="tactic">search.</a>
+<a href="mell-details.html#511" class="tactic">intros.</a> <a href="mell-details.html#512" class="tactic">case H2 (keep).</a>
   <span class="comment">% id</span>
-  <a href="mell-details.html#515" class="tactic">apply adj_same_result_diff to H5 H10.</a> <a href="mell-details.html#516" class="tactic">case H11.</a>
+  <a href="mell-details.html#513" class="tactic">apply adj_same_result_diff to H5 H10.</a> <a href="mell-details.html#514" class="tactic">case H11.</a>
     <span class="comment">%% cut formula is part of the identity rule.</span>
-    <a href="mell-details.html#517" class="tactic">case H1.</a> <a href="mell-details.html#518" class="tactic">apply perm_cons_2 to *H12.</a> <a href="mell-details.html#519" class="tactic">apply perm_sym to *H14.</a> <a href="mell-details.html#520" class="tactic">apply perm_nil_1 to *H15.</a> <a href="mell-details.html#521" class="tactic">case H13.</a>
-    <a href="mell-details.html#522" class="tactic">apply merge_unadj_1 to *H8 _.</a> <a href="mell-details.html#523" class="tactic">apply merge_nil_perm to *H19.</a>
-    <a href="mell-details.html#524" class="tactic">assert perm K LL.</a> <a href="mell-details.html#525" class="tactic">apply mell_perm_l to *H7 *H21.</a> <a href="mell-details.html#526" class="tactic">search.</a>
+    <a href="mell-details.html#515" class="tactic">case H1.</a> <a href="mell-details.html#516" class="tactic">apply perm_cons_2 to *H12.</a> <a href="mell-details.html#517" class="tactic">apply perm_sym to *H14.</a> <a href="mell-details.html#518" class="tactic">apply perm_nil_1 to *H15.</a> <a href="mell-details.html#519" class="tactic">case H13.</a>
+    <a href="mell-details.html#520" class="tactic">apply merge_unadj_1 to *H8 _.</a> <a href="mell-details.html#521" class="tactic">apply merge_nil_perm to *H19.</a>
+    <a href="mell-details.html#522" class="tactic">assert perm K LL.</a> <a href="mell-details.html#523" class="tactic">apply mell_perm_l to *H7 *H21.</a> <a href="mell-details.html#524" class="tactic">search.</a>
     <span class="comment">%% cut formula is not part of the identity</span>
-    <a href="mell-details.html#527" class="tactic">case H12.</a> <a href="mell-details.html#528" class="tactic">case H1.</a> <a href="mell-details.html#529" class="tactic">case H14.</a>
+    <a href="mell-details.html#525" class="tactic">case H12.</a> <a href="mell-details.html#526" class="tactic">case H1.</a> <a href="mell-details.html#527" class="tactic">case H14.</a>
   <span class="comment">% tensor</span>
-  <a href="mell-details.html#530" class="tactic">IHht1 : apply IHht to H1 H12 _ with W = light.</a> <a href="mell-details.html#531" class="tactic">IHht1 : case IHht1.</a>
-  <a href="mell-details.html#532" class="tactic">IHht2 : apply IHht to H1 H14 _ with W = light.</a> <a href="mell-details.html#533" class="tactic">IHht2 : case IHht2.</a>
-  <a href="mell-details.html#534" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#535" class="tactic">case H15.</a>
+  <a href="mell-details.html#528" class="tactic">IHht1 : apply IHht to H1 H12 _ with W = light.</a> <a href="mell-details.html#529" class="tactic">IHht1 : case IHht1.</a>
+  <a href="mell-details.html#530" class="tactic">IHht2 : apply IHht to H1 H14 _ with W = light.</a> <a href="mell-details.html#531" class="tactic">IHht2 : case IHht2.</a>
+  <a href="mell-details.html#532" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#533" class="tactic">case H15.</a>
     <span class="comment">% cut formula is the tensor</span>
-    <a href="mell-details.html#536" class="tactic">case H1.</a>
-    <a href="mell-details.html#537" class="tactic">IHrk1 : apply IHrk to *H17 H12 _ with W = light.</a> <a href="mell-details.html#538" class="tactic">IHrk1 : case IHrk1.</a>
-    <a href="mell-details.html#539" class="tactic">IHrk2 : apply IHrk to *H18 H14 _ with W = light.</a> <a href="mell-details.html#540" class="tactic">IHrk2 : case IHrk2.</a>
-    <a href="mell-details.html#541" class="tactic">Ht : assert 0 exists KKA KKB, adj KK AA KKA /\ adj KKA BB KKB /\ mell QQL KKB.</a>
-      <a href="mell-details.html#542" class="tactic">apply adj_2_is_o to H6.</a> <a href="mell-details.html#543" class="tactic">case H19.</a>
-      <a href="mell-details.html#544" class="tactic">apply merge_2_is_list to H8.</a>
-      <a href="mell-details.html#545" class="tactic">apply adj_exists to *H20 *H22.</a> <a href="mell-details.html#546" class="tactic">apply adj_3_is_list to H23.</a>
-      <a href="mell-details.html#547" class="tactic">apply adj_exists to *H21 *H24.</a>
-      <a href="mell-details.html#548" class="tactic">apply par_inv to H7 H6 H23 H25.</a>
-      <a href="mell-details.html#549" class="tactic">search.</a> <a href="mell-details.html#550" class="tactic">case Ht.</a>
-    <a href="mell-details.html#551" class="tactic">apply perm_merge_1 to *H8 H16.</a>
-    <a href="mell-details.html#552" class="tactic">Ht : assert 0 exists U, merge KK1 KKA U.</a>
-      <a href="mell-details.html#553" class="tactic">apply adj_1_is_list to H13.</a> <a href="mell-details.html#554" class="tactic">apply adj_3_is_list to H19.</a> <a href="mell-details.html#555" class="tactic">apply merge_exists to H23 H24.</a>
-      <a href="mell-details.html#556" class="tactic">search.</a> <a href="mell-details.html#557" class="tactic">case Ht.</a>
-    <a href="mell-details.html#558" class="tactic">apply *IHrk2 to H4 H13 H20 H21 H23.</a>
-    <a href="mell-details.html#559" class="tactic">apply merge_unadj_2 to H23 H19.</a>
-    <a href="mell-details.html#560" class="tactic">Ht : assert exists V, merge JJ1 LL2 V.</a>
-      <a href="mell-details.html#561" class="tactic">apply adj_1_is_list to H11.</a> <a href="mell-details.html#562" class="tactic">apply merge_3_is_list to H26.</a>
-      <a href="mell-details.html#563" class="tactic">apply merge_exists to H27 H28.</a> <a href="mell-details.html#564" class="tactic">search.</a> <a href="mell-details.html#565" class="tactic">case Ht.</a>
-    <a href="mell-details.html#566" class="tactic">apply *IHrk1 to H4 H11 H25 H24 H27.</a>
-    <a href="mell-details.html#567" class="tactic">apply merge_assoc to *H10 *H26 *H27 *H22.</a>
-    <a href="mell-details.html#568" class="tactic">backchain mell_perm_l with K = V.</a>
+    <a href="mell-details.html#534" class="tactic">case H1.</a>
+    <a href="mell-details.html#535" class="tactic">IHrk1 : apply IHrk to *H17 H12 _ with W = light.</a> <a href="mell-details.html#536" class="tactic">IHrk1 : case IHrk1.</a>
+    <a href="mell-details.html#537" class="tactic">IHrk2 : apply IHrk to *H18 H14 _ with W = light.</a> <a href="mell-details.html#538" class="tactic">IHrk2 : case IHrk2.</a>
+    <a href="mell-details.html#539" class="tactic">Ht : assert 0 exists KKA KKB, adj KK AA KKA /\ adj KKA BB KKB /\ mell QQL KKB.</a>
+      <a href="mell-details.html#540" class="tactic">apply adj_2_is_o to H6.</a> <a href="mell-details.html#541" class="tactic">case H19.</a>
+      <a href="mell-details.html#542" class="tactic">apply merge_2_is_list to H8.</a>
+      <a href="mell-details.html#543" class="tactic">apply adj_exists to *H20 *H22.</a> <a href="mell-details.html#544" class="tactic">apply adj_3_is_list to H23.</a>
+      <a href="mell-details.html#545" class="tactic">apply adj_exists to *H21 *H24.</a>
+      <a href="mell-details.html#546" class="tactic">apply par_inv to H7 H6 H23 H25.</a>
+      <a href="mell-details.html#547" class="tactic">search.</a> <a href="mell-details.html#548" class="tactic">case Ht.</a>
+    <a href="mell-details.html#549" class="tactic">apply perm_merge_1 to *H8 H16.</a>
+    <a href="mell-details.html#550" class="tactic">Ht : assert 0 exists U, merge KK1 KKA U.</a>
+      <a href="mell-details.html#551" class="tactic">apply adj_1_is_list to H13.</a> <a href="mell-details.html#552" class="tactic">apply adj_3_is_list to H19.</a> <a href="mell-details.html#553" class="tactic">apply merge_exists to H23 H24.</a>
+      <a href="mell-details.html#554" class="tactic">search.</a> <a href="mell-details.html#555" class="tactic">case Ht.</a>
+    <a href="mell-details.html#556" class="tactic">apply *IHrk2 to H4 H13 H20 H21 H23.</a>
+    <a href="mell-details.html#557" class="tactic">apply merge_unadj_2 to H23 H19.</a>
+    <a href="mell-details.html#558" class="tactic">Ht : assert exists V, merge JJ1 LL2 V.</a>
+      <a href="mell-details.html#559" class="tactic">apply adj_1_is_list to H11.</a> <a href="mell-details.html#560" class="tactic">apply merge_3_is_list to H26.</a>
+      <a href="mell-details.html#561" class="tactic">apply merge_exists to H27 H28.</a> <a href="mell-details.html#562" class="tactic">search.</a> <a href="mell-details.html#563" class="tactic">case Ht.</a>
+    <a href="mell-details.html#564" class="tactic">apply *IHrk1 to H4 H11 H25 H24 H27.</a>
+    <a href="mell-details.html#565" class="tactic">apply merge_assoc to *H10 *H26 *H27 *H22.</a>
+    <a href="mell-details.html#566" class="tactic">backchain mell_perm_l with K = V.</a>
     <span class="comment">% cut formula is not the tensor</span>
-    <a href="mell-details.html#569" class="tactic">apply adj_swap to H16 H9.</a> <a href="mell-details.html#570" class="tactic">apply adj_same_result to H5 H18.</a>
-    <a href="mell-details.html#571" class="tactic">apply perm_merge_1 to *H8 *H19.</a>
-    <a href="mell-details.html#572" class="tactic">apply merge_unadj_1 to H20 H17.</a>
-    <a href="mell-details.html#573" class="tactic">apply merge_unadj_3 to H10 H16.</a> <a href="mell-details.html#574" class="tactic">case H23.</a>
+    <a href="mell-details.html#567" class="tactic">apply adj_swap to H16 H9.</a> <a href="mell-details.html#568" class="tactic">apply adj_same_result to H5 H18.</a>
+    <a href="mell-details.html#569" class="tactic">apply perm_merge_1 to *H8 *H19.</a>
+    <a href="mell-details.html#570" class="tactic">apply merge_unadj_1 to H20 H17.</a>
+    <a href="mell-details.html#571" class="tactic">apply merge_unadj_3 to H10 H16.</a> <a href="mell-details.html#572" class="tactic">case H23.</a>
       <span class="comment">% cut formula goes to the left</span>
-      <a href="mell-details.html#575" class="tactic">apply adj_swap to *H24 *H11.</a>
-      <a href="mell-details.html#576" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
-        <a href="mell-details.html#577" class="tactic">apply adj_1_is_list to H27.</a> <a href="mell-details.html#578" class="tactic">apply adj_1_is_list to H6.</a>
-        <a href="mell-details.html#579" class="tactic">apply merge_exists to H28 H29.</a> <a href="mell-details.html#580" class="tactic">search.</a> <a href="mell-details.html#581" class="tactic">case Ht.</a>
-      <a href="mell-details.html#582" class="tactic">apply IHht1 to H4 H27 H6 H7 H28.</a>
-      <a href="mell-details.html#583" class="tactic">apply merge_unadj_1 to H28 H26.</a>
-      <a href="mell-details.html#584" class="tactic">assert 0 merge LL3 KK1 LL2.</a>
-        <a href="mell-details.html#585" class="tactic">apply merge_sym to *H25.</a>
-        <a href="mell-details.html#586" class="tactic">apply merge_1_is_list to H32.</a> <a href="mell-details.html#587" class="tactic">apply merge_3_is_list to H31.</a>
-        <a href="mell-details.html#588" class="tactic">apply merge_exists to *H33 *H34.</a>
-        <a href="mell-details.html#589" class="tactic">apply merge_assoc to *H32 *H31 H35 *H22.</a>
-        <a href="mell-details.html#590" class="tactic">apply merge_sym to *H35.</a> <a href="mell-details.html#591" class="tactic">backchain perm_merge_3.</a>
-      <a href="mell-details.html#592" class="tactic">assert mell QQL K1.</a> <a href="mell-details.html#593" class="tactic">case H4.</a> <a href="mell-details.html#594" class="tactic">backchain mell_weaken_q.</a>
-      <a href="mell-details.html#595" class="tactic">search.</a>
+      <a href="mell-details.html#573" class="tactic">apply adj_swap to *H24 *H11.</a>
+      <a href="mell-details.html#574" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
+        <a href="mell-details.html#575" class="tactic">apply adj_1_is_list to H27.</a> <a href="mell-details.html#576" class="tactic">apply adj_1_is_list to H6.</a>
+        <a href="mell-details.html#577" class="tactic">apply merge_exists to H28 H29.</a> <a href="mell-details.html#578" class="tactic">search.</a> <a href="mell-details.html#579" class="tactic">case Ht.</a>
+      <a href="mell-details.html#580" class="tactic">apply IHht1 to H4 H27 H6 H7 H28.</a>
+      <a href="mell-details.html#581" class="tactic">apply merge_unadj_1 to H28 H26.</a>
+      <a href="mell-details.html#582" class="tactic">assert 0 merge LL3 KK1 LL2.</a>
+        <a href="mell-details.html#583" class="tactic">apply merge_sym to *H25.</a>
+        <a href="mell-details.html#584" class="tactic">apply merge_1_is_list to H32.</a> <a href="mell-details.html#585" class="tactic">apply merge_3_is_list to H31.</a>
+        <a href="mell-details.html#586" class="tactic">apply merge_exists to *H33 *H34.</a>
+        <a href="mell-details.html#587" class="tactic">apply merge_assoc to *H32 *H31 H35 *H22.</a>
+        <a href="mell-details.html#588" class="tactic">apply merge_sym to *H35.</a> <a href="mell-details.html#589" class="tactic">backchain perm_merge_3.</a>
+      <a href="mell-details.html#590" class="tactic">assert mell QQL K1.</a> <a href="mell-details.html#591" class="tactic">case H4.</a> <a href="mell-details.html#592" class="tactic">backchain mell_weaken_q.</a>
+      <a href="mell-details.html#593" class="tactic">search.</a>
       <span class="comment">% cut formula goes to the right</span>
-      <a href="mell-details.html#596" class="tactic">apply adj_swap to *H24 *H13.</a>
-      <a href="mell-details.html#597" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
-        <a href="mell-details.html#598" class="tactic">apply adj_1_is_list to H27.</a> <a href="mell-details.html#599" class="tactic">apply adj_1_is_list to H6.</a>
-        <a href="mell-details.html#600" class="tactic">apply merge_exists to H28 H29.</a> <a href="mell-details.html#601" class="tactic">search.</a> <a href="mell-details.html#602" class="tactic">case Ht.</a>
-      <a href="mell-details.html#603" class="tactic">apply IHht2 to H4 H27 H6 H7 H28.</a>
-      <a href="mell-details.html#604" class="tactic">apply merge_unadj_1 to H28 H26.</a>
-      <a href="mell-details.html#605" class="tactic">assert 0 merge JJ1 LL3 LL2.</a>
-        <a href="mell-details.html#606" class="tactic">apply merge_1_is_list to H25.</a> <a href="mell-details.html#607" class="tactic">apply merge_3_is_list to H31.</a>
-        <a href="mell-details.html#608" class="tactic">apply merge_exists to *H32 *H33.</a>
-        <a href="mell-details.html#609" class="tactic">apply merge_assoc to *H25 *H31 H34 *H22.</a>
-        <a href="mell-details.html#610" class="tactic">backchain perm_merge_3.</a>
-      <a href="mell-details.html#611" class="tactic">assert mell QQL J1.</a> <a href="mell-details.html#612" class="tactic">case H4.</a> <a href="mell-details.html#613" class="tactic">backchain mell_weaken_q.</a>
-      <a href="mell-details.html#614" class="tactic">search.</a>
+      <a href="mell-details.html#594" class="tactic">apply adj_swap to *H24 *H13.</a>
+      <a href="mell-details.html#595" class="tactic">Ht : assert 0 exists V, merge U1 KK V.</a>
+        <a href="mell-details.html#596" class="tactic">apply adj_1_is_list to H27.</a> <a href="mell-details.html#597" class="tactic">apply adj_1_is_list to H6.</a>
+        <a href="mell-details.html#598" class="tactic">apply merge_exists to H28 H29.</a> <a href="mell-details.html#599" class="tactic">search.</a> <a href="mell-details.html#600" class="tactic">case Ht.</a>
+      <a href="mell-details.html#601" class="tactic">apply IHht2 to H4 H27 H6 H7 H28.</a>
+      <a href="mell-details.html#602" class="tactic">apply merge_unadj_1 to H28 H26.</a>
+      <a href="mell-details.html#603" class="tactic">assert 0 merge JJ1 LL3 LL2.</a>
+        <a href="mell-details.html#604" class="tactic">apply merge_1_is_list to H25.</a> <a href="mell-details.html#605" class="tactic">apply merge_3_is_list to H31.</a>
+        <a href="mell-details.html#606" class="tactic">apply merge_exists to *H32 *H33.</a>
+        <a href="mell-details.html#607" class="tactic">apply merge_assoc to *H25 *H31 H34 *H22.</a>
+        <a href="mell-details.html#608" class="tactic">backchain perm_merge_3.</a>
+      <a href="mell-details.html#609" class="tactic">assert mell QQL J1.</a> <a href="mell-details.html#610" class="tactic">case H4.</a> <a href="mell-details.html#611" class="tactic">backchain mell_weaken_q.</a>
+      <a href="mell-details.html#612" class="tactic">search.</a>
   <span class="comment">% one</span>
-  <a href="mell-details.html#615" class="tactic">case H5.</a>
+  <a href="mell-details.html#613" class="tactic">case H5.</a>
     <span class="comment">% cut formula is the one</span>
-    <a href="mell-details.html#616" class="tactic">case H1.</a>
-    <a href="mell-details.html#617" class="tactic">apply merge_nil_perm to *H8.</a>
-    <a href="mell-details.html#618" class="tactic">apply bot_inv to *H7 *H6.</a>
-    <a href="mell-details.html#619" class="tactic">backchain mell_perm_l.</a>
+    <a href="mell-details.html#614" class="tactic">case H1.</a>
+    <a href="mell-details.html#615" class="tactic">apply merge_nil_perm to *H8.</a>
+    <a href="mell-details.html#616" class="tactic">apply bot_inv to *H7 *H6.</a>
+    <a href="mell-details.html#617" class="tactic">backchain mell_perm_l.</a>
     <span class="comment">% cut formula is not the one</span>
-    <a href="mell-details.html#620" class="tactic">case H11.</a>
+    <a href="mell-details.html#618" class="tactic">case H11.</a>
   <span class="comment">% par</span>
-  <a href="mell-details.html#621" class="tactic">IH : apply IHht to H1 *H12 _ with W = light.</a> <a href="mell-details.html#622" class="tactic">IH : case IH.</a>
-  <a href="mell-details.html#623" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#624" class="tactic">case H13.</a> <a href="mell-details.html#625" class="tactic">case H1.</a>
+  <a href="mell-details.html#619" class="tactic">IH : apply IHht to H1 *H12 _ with W = light.</a> <a href="mell-details.html#620" class="tactic">IH : case IH.</a>
+  <a href="mell-details.html#621" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#622" class="tactic">case H13.</a> <a href="mell-details.html#623" class="tactic">case H1.</a>
     <span class="comment">% negative cut formula cannot be principal in the other branch</span>
-    <a href="mell-details.html#626" class="tactic">apply adj_swap to H14 H9.</a>
-    <a href="mell-details.html#627" class="tactic">apply adj_same_result to H5 H16.</a>
-    <a href="mell-details.html#628" class="tactic">apply perm_merge_1 to *H8 *H17.</a>
-    <a href="mell-details.html#629" class="tactic">apply merge_unadj_1 to H18 H15.</a>
-    <a href="mell-details.html#630" class="tactic">apply adj_swap to *H14 *H10.</a> <a href="mell-details.html#631" class="tactic">apply adj_swap to *H22 *H11.</a>
-    <a href="mell-details.html#632" class="tactic">Ht : assert exists LL3, adj LL2 A1 LL3.</a>
-      <a href="mell-details.html#633" class="tactic">apply adj_2_is_o to H21.</a> <a href="mell-details.html#634" class="tactic">apply merge_3_is_list to H20.</a> <a href="mell-details.html#635" class="tactic">backchain adj_exists.</a>
-      <a href="mell-details.html#636" class="tactic">case Ht.</a>
-    <a href="mell-details.html#637" class="tactic">Ht : assert exists LL4, adj LL3 B1 LL4.</a>
-      <a href="mell-details.html#638" class="tactic">apply adj_2_is_o to H23.</a> <a href="mell-details.html#639" class="tactic">apply adj_3_is_list to H25.</a> <a href="mell-details.html#640" class="tactic">backchain adj_exists.</a>
-      <a href="mell-details.html#641" class="tactic">case Ht.</a>
-    <a href="mell-details.html#642" class="tactic">assert merge U2 KK LL4.</a>
-    <a href="mell-details.html#643" class="tactic">apply IH to _ H24 H6 H7 H27.</a>
-    <a href="mell-details.html#644" class="tactic">search.</a>
+    <a href="mell-details.html#624" class="tactic">apply adj_swap to H14 H9.</a>
+    <a href="mell-details.html#625" class="tactic">apply adj_same_result to H5 H16.</a>
+    <a href="mell-details.html#626" class="tactic">apply perm_merge_1 to *H8 *H17.</a>
+    <a href="mell-details.html#627" class="tactic">apply merge_unadj_1 to H18 H15.</a>
+    <a href="mell-details.html#628" class="tactic">apply adj_swap to *H14 *H10.</a> <a href="mell-details.html#629" class="tactic">apply adj_swap to *H22 *H11.</a>
+    <a href="mell-details.html#630" class="tactic">Ht : assert exists LL3, adj LL2 A1 LL3.</a>
+      <a href="mell-details.html#631" class="tactic">apply adj_2_is_o to H21.</a> <a href="mell-details.html#632" class="tactic">apply merge_3_is_list to H20.</a> <a href="mell-details.html#633" class="tactic">backchain adj_exists.</a>
+      <a href="mell-details.html#634" class="tactic">case Ht.</a>
+    <a href="mell-details.html#635" class="tactic">Ht : assert exists LL4, adj LL3 B1 LL4.</a>
+      <a href="mell-details.html#636" class="tactic">apply adj_2_is_o to H23.</a> <a href="mell-details.html#637" class="tactic">apply adj_3_is_list to H25.</a> <a href="mell-details.html#638" class="tactic">backchain adj_exists.</a>
+      <a href="mell-details.html#639" class="tactic">case Ht.</a>
+    <a href="mell-details.html#640" class="tactic">assert merge U2 KK LL4.</a>
+    <a href="mell-details.html#641" class="tactic">apply IH to _ H24 H6 H7 H27.</a>
+    <a href="mell-details.html#642" class="tactic">search.</a>
   <span class="comment">% bot</span>
-  <a href="mell-details.html#645" class="tactic">IH : apply IHht to H1 *H10 _ with W = light.</a> <a href="mell-details.html#646" class="tactic">IH : case IH.</a>
-  <a href="mell-details.html#647" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#648" class="tactic">case H11.</a> <a href="mell-details.html#649" class="tactic">case H1.</a>
+  <a href="mell-details.html#643" class="tactic">IH : apply IHht to H1 *H10 _ with W = light.</a> <a href="mell-details.html#644" class="tactic">IH : case IH.</a>
+  <a href="mell-details.html#645" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#646" class="tactic">case H11.</a> <a href="mell-details.html#647" class="tactic">case H1.</a>
     <span class="comment">% negative cut formula cannot be principal in the other branch</span>
-    <a href="mell-details.html#650" class="tactic">apply adj_swap to H12 H9.</a> <a href="mell-details.html#651" class="tactic">apply adj_same_result to H5 H14.</a>
-    <a href="mell-details.html#652" class="tactic">apply perm_merge_1 to *H8 *H15.</a>
-    <a href="mell-details.html#653" class="tactic">apply merge_unadj_1 to H16 H13.</a>
-    <a href="mell-details.html#654" class="tactic">apply IH to H4 H12 H6 H7 H18.</a> <a href="mell-details.html#655" class="tactic">search.</a>
+    <a href="mell-details.html#648" class="tactic">apply adj_swap to H12 H9.</a> <a href="mell-details.html#649" class="tactic">apply adj_same_result to H5 H14.</a>
+    <a href="mell-details.html#650" class="tactic">apply perm_merge_1 to *H8 *H15.</a>
+    <a href="mell-details.html#651" class="tactic">apply merge_unadj_1 to H16 H13.</a>
+    <a href="mell-details.html#652" class="tactic">apply IH to H4 H12 H6 H7 H18.</a> <a href="mell-details.html#653" class="tactic">search.</a>
   <span class="comment">% bang</span>
-  <a href="mell-details.html#656" class="tactic">Ht : assert JJ = nil.</a>
-    <a href="mell-details.html#657" class="tactic">case H5.</a> <a href="mell-details.html#658" class="tactic">search.</a> <a href="mell-details.html#659" class="tactic">case H11.</a>
-    <a href="mell-details.html#660" class="tactic">case Ht.</a>
-  <a href="mell-details.html#661" class="tactic">case H5.</a> <a href="mell-details.html#662" class="tactic">case H1.</a> <a href="mell-details.html#663" class="tactic">rename AA to B1.</a>
-  <a href="mell-details.html#664" class="tactic">IH : apply IHrk to H12 H9 _ with W = heavy.</a> <a href="mell-details.html#665" class="tactic">IH : case IH.</a>
-  <a href="mell-details.html#666" class="tactic">Ht : assert exists QQ, adj QQL B1 QQ /\ mell QQ KK.</a>
-    <a href="mell-details.html#667" class="tactic">apply dual_is to H12.</a> <a href="mell-details.html#668" class="tactic">apply mell_is to H7.</a>
-    <a href="mell-details.html#669" class="tactic">apply adj_exists to H14 H15.</a>
-    <a href="mell-details.html#670" class="tactic">apply qm_inv to H7 H6 H17.</a>
-    <a href="mell-details.html#671" class="tactic">search.</a> <a href="mell-details.html#672" class="tactic">case Ht.</a>
-  <a href="mell-details.html#673" class="tactic">apply IH to _ *H4 *H13 *H14.</a>
-  <a href="mell-details.html#674" class="tactic">apply merge_nil_perm to *H8.</a> <a href="mell-details.html#675" class="tactic">backchain mell_perm_l with K = KK.</a>
+  <a href="mell-details.html#654" class="tactic">Ht : assert JJ = nil.</a>
+    <a href="mell-details.html#655" class="tactic">case H5.</a> <a href="mell-details.html#656" class="tactic">search.</a> <a href="mell-details.html#657" class="tactic">case H11.</a>
+    <a href="mell-details.html#658" class="tactic">case Ht.</a>
+  <a href="mell-details.html#659" class="tactic">case H5.</a> <a href="mell-details.html#660" class="tactic">case H1.</a> <a href="mell-details.html#661" class="tactic">rename AA to B1.</a>
+  <a href="mell-details.html#662" class="tactic">IH : apply IHrk to H12 H9 _ with W = heavy.</a> <a href="mell-details.html#663" class="tactic">IH : case IH.</a>
+  <a href="mell-details.html#664" class="tactic">Ht : assert exists QQ, adj QQL B1 QQ /\ mell QQ KK.</a>
+    <a href="mell-details.html#665" class="tactic">apply dual_is to H12.</a> <a href="mell-details.html#666" class="tactic">apply mell_is to H7.</a>
+    <a href="mell-details.html#667" class="tactic">apply adj_exists to H14 H15.</a>
+    <a href="mell-details.html#668" class="tactic">apply qm_inv to H7 H6 H17.</a>
+    <a href="mell-details.html#669" class="tactic">search.</a> <a href="mell-details.html#670" class="tactic">case Ht.</a>
+  <a href="mell-details.html#671" class="tactic">apply IH to _ *H4 *H13 *H14.</a>
+  <a href="mell-details.html#672" class="tactic">apply merge_nil_perm to *H8.</a> <a href="mell-details.html#673" class="tactic">backchain mell_perm_l with K = KK.</a>
   <span class="comment">% qm</span>
-  <a href="mell-details.html#676" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#677" class="tactic">case H12.</a> <a href="mell-details.html#678" class="tactic">case H1.</a>
+  <a href="mell-details.html#674" class="tactic">apply adj_same_result_diff to H5 H9.</a> <a href="mell-details.html#675" class="tactic">case H12.</a> <a href="mell-details.html#676" class="tactic">case H1.</a>
     <span class="comment">% negative cut formula cannot be principal in the other branch</span>
-    <a href="mell-details.html#679" class="tactic">apply adj_swap to H13 H9.</a> <a href="mell-details.html#680" class="tactic">apply adj_same_result to H5 H15.</a>
-    <a href="mell-details.html#681" class="tactic">apply perm_merge_1 to *H8 H16.</a>
-    <a href="mell-details.html#682" class="tactic">IH : apply IHht to H1 H11 _ with W = light.</a> <a href="mell-details.html#683" class="tactic">IH : case IH.</a>
-    <a href="mell-details.html#684" class="tactic">apply merge_unadj_1 to H17 H14.</a>
-    <a href="mell-details.html#685" class="tactic">Ht : assert exists QQK, adj QQL A1 QQK /\ incl QK QQK.</a>
-      <a href="mell-details.html#686" class="tactic">apply adj_2_is_o to H10.</a> <a href="mell-details.html#687" class="tactic">case H4.</a> <a href="mell-details.html#688" class="tactic">apply merge_3_is_list to H21.</a>
-      <a href="mell-details.html#689" class="tactic">apply adj_exists to H20 H22.</a>
-      <a href="mell-details.html#690" class="tactic">search.</a> <a href="mell-details.html#691" class="tactic">case Ht.</a>
-    <a href="mell-details.html#692" class="tactic">apply mell_weaken_q1 to *H7 H20.</a>
-    <a href="mell-details.html#693" class="tactic">IH : apply *IH to *H21 H13 H6 H22 H19.</a>
-    <a href="mell-details.html#694" class="tactic">search.</a>
+    <a href="mell-details.html#677" class="tactic">apply adj_swap to H13 H9.</a> <a href="mell-details.html#678" class="tactic">apply adj_same_result to H5 H15.</a>
+    <a href="mell-details.html#679" class="tactic">apply perm_merge_1 to *H8 H16.</a>
+    <a href="mell-details.html#680" class="tactic">IH : apply IHht to H1 H11 _ with W = light.</a> <a href="mell-details.html#681" class="tactic">IH : case IH.</a>
+    <a href="mell-details.html#682" class="tactic">apply merge_unadj_1 to H17 H14.</a>
+    <a href="mell-details.html#683" class="tactic">Ht : assert exists QQK, adj QQL A1 QQK /\ incl QK QQK.</a>
+      <a href="mell-details.html#684" class="tactic">apply adj_2_is_o to H10.</a> <a href="mell-details.html#685" class="tactic">case H4.</a> <a href="mell-details.html#686" class="tactic">apply merge_3_is_list to H21.</a>
+      <a href="mell-details.html#687" class="tactic">apply adj_exists to H20 H22.</a>
+      <a href="mell-details.html#688" class="tactic">search.</a> <a href="mell-details.html#689" class="tactic">case Ht.</a>
+    <a href="mell-details.html#690" class="tactic">apply mell_weaken_q1 to *H7 H20.</a>
+    <a href="mell-details.html#691" class="tactic">IH : apply *IH to *H21 H13 H6 H22 H19.</a>
+    <a href="mell-details.html#692" class="tactic">search.</a>
   <span class="comment">% dl</span>
-  <a href="mell-details.html#695" class="tactic">IH : apply IHht to H1 *H11 _ with W = light.</a> <a href="mell-details.html#696" class="tactic">IH : case IH.</a>
-    <a href="mell-details.html#697" class="tactic">apply adj_swap to H5 H10.</a>
-    <a href="mell-details.html#698" class="tactic">Ht : assert 0 exists LLA1, adj LL A1 LLA1.</a>
-      <a href="mell-details.html#699" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#700" class="tactic">apply merge_3_is_list to H8.</a>
-      <a href="mell-details.html#701" class="tactic">backchain adj_exists.</a> <a href="mell-details.html#702" class="tactic">case Ht.</a>
-    <a href="mell-details.html#703" class="tactic">assert merge U KK LLA1.</a>
-    <a href="mell-details.html#704" class="tactic">apply IH to H4 H13 H6 H7 H15.</a>
-    <a href="mell-details.html#705" class="tactic">Ht : assert exists QQ, adj QQ A1 QQL.</a>
-      <a href="mell-details.html#706" class="tactic">case H4.</a> <a href="mell-details.html#707" class="tactic">apply merge_unadj_1 to H17 H9.</a>
-      <a href="mell-details.html#708" class="tactic">search.</a> <a href="mell-details.html#709" class="tactic">case Ht.</a>
-    <a href="mell-details.html#710" class="tactic">search.</a><a href="mell-details.html#711" class="tactic">
+  <a href="mell-details.html#693" class="tactic">IH : apply IHht to H1 *H11 _ with W = light.</a> <a href="mell-details.html#694" class="tactic">IH : case IH.</a>
+    <a href="mell-details.html#695" class="tactic">apply adj_swap to H5 H10.</a>
+    <a href="mell-details.html#696" class="tactic">Ht : assert 0 exists LLA1, adj LL A1 LLA1.</a>
+      <a href="mell-details.html#697" class="tactic">apply adj_2_is_o to H9.</a> <a href="mell-details.html#698" class="tactic">apply merge_3_is_list to H8.</a>
+      <a href="mell-details.html#699" class="tactic">backchain adj_exists.</a> <a href="mell-details.html#700" class="tactic">case Ht.</a>
+    <a href="mell-details.html#701" class="tactic">assert merge U KK LLA1.</a>
+    <a href="mell-details.html#702" class="tactic">apply IH to H4 H13 H6 H7 H15.</a>
+    <a href="mell-details.html#703" class="tactic">Ht : assert exists QQ, adj QQ A1 QQL.</a>
+      <a href="mell-details.html#704" class="tactic">case H4.</a> <a href="mell-details.html#705" class="tactic">apply merge_unadj_1 to H17 H9.</a>
+      <a href="mell-details.html#706" class="tactic">search.</a> <a href="mell-details.html#707" class="tactic">case Ht.</a>
+    <a href="mell-details.html#708" class="tactic">search.</a><a href="mell-details.html#709" class="tactic">
 
-right. </a><a href="mell-details.html#712" class="tactic">split.</a> <a href="mell-details.html#713" class="tactic">search.</a>
-<a href="mell-details.html#714" class="tactic">apply *IHwt to H1 H2 *H4.</a> <a href="mell-details.html#715" class="tactic">Hc : case H5.</a>
-<a href="mell-details.html#716" class="tactic">IHqc : induction on 4.</a> <a href="mell-details.html#717" class="tactic">intros.</a> <a href="mell-details.html#718" class="tactic">case H6.</a> <a href="mell-details.html#719" class="tactic">case H9.</a>
+right. </a><a href="mell-details.html#710" class="tactic">split.</a> <a href="mell-details.html#711" class="tactic">search.</a>
+<a href="mell-details.html#712" class="tactic">apply *IHwt to H1 H2 *H4.</a> <a href="mell-details.html#713" class="tactic">Hc : case H5.</a>
+<a href="mell-details.html#714" class="tactic">IHqc : induction on 4.</a> <a href="mell-details.html#715" class="tactic">intros.</a> <a href="mell-details.html#716" class="tactic">case H6.</a> <a href="mell-details.html#717" class="tactic">case H9.</a>
   <span class="comment">% id</span>
-  <a href="mell-details.html#720" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#721" class="tactic">search.</a>
+  <a href="mell-details.html#718" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#719" class="tactic">search.</a>
   <span class="comment">% tensor</span>
-  <a href="mell-details.html#722" class="tactic">apply IHqc to _ H7 H8 *H13.</a> <a href="mell-details.html#723" class="tactic">apply IHqc to _ H7 H8 *H15.</a> <a href="mell-details.html#724" class="tactic">search.</a>
+  <a href="mell-details.html#720" class="tactic">apply IHqc to _ H7 H8 *H13.</a> <a href="mell-details.html#721" class="tactic">apply IHqc to _ H7 H8 *H15.</a> <a href="mell-details.html#722" class="tactic">search.</a>
   <span class="comment">% one</span>
-  <a href="mell-details.html#725" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#726" class="tactic">search.</a>
+  <a href="mell-details.html#723" class="tactic">apply adj_1_is_list to H8.</a> <a href="mell-details.html#724" class="tactic">search.</a>
   <span class="comment">% par</span>
-  <a href="mell-details.html#727" class="tactic">apply IHqc to _ H7 H8 *H13.</a> <a href="mell-details.html#728" class="tactic">search.</a>
+  <a href="mell-details.html#725" class="tactic">apply IHqc to _ H7 H8 *H13.</a> <a href="mell-details.html#726" class="tactic">search.</a>
   <span class="comment">% bot</span>
-  <a href="mell-details.html#729" class="tactic">apply IHqc to _ H7 H8 *H11.</a> <a href="mell-details.html#730" class="tactic">search.</a>
+  <a href="mell-details.html#727" class="tactic">apply IHqc to _ H7 H8 *H11.</a> <a href="mell-details.html#728" class="tactic">search.</a>
   <span class="comment">% bang</span>
-  <a href="mell-details.html#731" class="tactic">apply IHqc to _ H7 H8 *H10.</a> <a href="mell-details.html#732" class="tactic">search.</a>
+  <a href="mell-details.html#729" class="tactic">apply IHqc to _ H7 H8 *H10.</a> <a href="mell-details.html#730" class="tactic">search.</a>
   <span class="comment">% qm</span>
-  <a href="mell-details.html#733" class="tactic">apply adj_swap to *H8 *H11.</a>
-   <a href="mell-details.html#734" class="tactic">assert incl QL U.</a> <a href="mell-details.html#735" class="tactic">unfold.</a> <a href="mell-details.html#736" class="tactic">case H7.</a>
-   <a href="mell-details.html#737" class="tactic">Hkk : assert exists KK, adj K1 A1 KK.</a>
-     <a href="mell-details.html#738" class="tactic">apply merge_2_is_list to H15.</a> <a href="mell-details.html#739" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#740" class="tactic">search.</a>
-     <a href="mell-details.html#741" class="tactic">Hkk : case Hkk.</a>
-   <a href="mell-details.html#742" class="tactic">search.</a>
-   <a href="mell-details.html#743" class="tactic">apply IHqc to _ H15 H14 *H12.</a>
-   <a href="mell-details.html#744" class="tactic">assert mell QQL (A :: nil).</a> <a href="mell-details.html#745" class="tactic">case H7.</a>
-     <a href="mell-details.html#746" class="tactic">apply mell_weaken_q to *H2 *H17.</a> <a href="mell-details.html#747" class="tactic">search.</a>
-   <a href="mell-details.html#748" class="tactic">search.</a>
+  <a href="mell-details.html#731" class="tactic">apply adj_swap to *H8 *H11.</a>
+   <a href="mell-details.html#732" class="tactic">assert incl QL U.</a> <a href="mell-details.html#733" class="tactic">unfold.</a> <a href="mell-details.html#734" class="tactic">case H7.</a>
+   <a href="mell-details.html#735" class="tactic">Hkk : assert exists KK, adj K1 A1 KK.</a>
+     <a href="mell-details.html#736" class="tactic">apply merge_2_is_list to H15.</a> <a href="mell-details.html#737" class="tactic">apply adj_2_is_o to H13.</a> <a href="mell-details.html#738" class="tactic">search.</a>
+     <a href="mell-details.html#739" class="tactic">Hkk : case Hkk.</a>
+   <a href="mell-details.html#740" class="tactic">search.</a>
+   <a href="mell-details.html#741" class="tactic">apply IHqc to _ H15 H14 *H12.</a>
+   <a href="mell-details.html#742" class="tactic">assert mell QQL (A :: nil).</a> <a href="mell-details.html#743" class="tactic">case H7.</a>
+     <a href="mell-details.html#744" class="tactic">apply mell_weaken_q to *H2 *H17.</a> <a href="mell-details.html#745" class="tactic">search.</a>
+   <a href="mell-details.html#746" class="tactic">search.</a>
   <span class="comment">% dl</span>
-  <a href="mell-details.html#749" class="tactic">apply adj_same_result_diff to H8 H10.</a> <a href="mell-details.html#750" class="tactic">case H13.</a>
+  <a href="mell-details.html#747" class="tactic">apply adj_same_result_diff to H8 H10.</a> <a href="mell-details.html#748" class="tactic">case H13.</a>
     <span class="comment">% the cut formula is also derelicted</span>
-    <a href="mell-details.html#751" class="tactic">apply IHqc to _ H7 H8 *H12.</a>
-    <a href="mell-details.html#752" class="tactic">apply dual_is to H1.</a>
-    <a href="mell-details.html#753" class="tactic">assert adj nil A (A :: nil).</a>
-    <a href="mell-details.html#754" class="tactic">assert merge nil K K.</a>
-      <a href="mell-details.html#755" class="tactic">apply adj_1_is_list to H11.</a> <a href="mell-details.html#756" class="tactic">backchain merge_nil_equal.</a>
-    <a href="mell-details.html#757" class="tactic">apply Hc to H7 H18 H11 H15 H19.</a>
-    <a href="mell-details.html#758" class="tactic">search.</a>
+    <a href="mell-details.html#749" class="tactic">apply IHqc to _ H7 H8 *H12.</a>
+    <a href="mell-details.html#750" class="tactic">apply dual_is to H1.</a>
+    <a href="mell-details.html#751" class="tactic">assert adj nil A (A :: nil).</a>
+    <a href="mell-details.html#752" class="tactic">assert merge nil K K.</a>
+      <a href="mell-details.html#753" class="tactic">apply adj_1_is_list to H11.</a> <a href="mell-details.html#754" class="tactic">backchain merge_nil_equal.</a>
+    <a href="mell-details.html#755" class="tactic">apply Hc to H7 H18 H11 H15 H19.</a>
+    <a href="mell-details.html#756" class="tactic">search.</a>
     <span class="comment">% the cut formula is not derelicted</span>
-    <a href="mell-details.html#759" class="tactic">rename KK to QKK.</a> <a href="mell-details.html#760" class="tactic">apply adj_swap to *H14 *H10.</a>
-    <a href="mell-details.html#761" class="tactic">apply adj_same_result to H8 H16.</a>
-    <a href="mell-details.html#762" class="tactic">case H7 (keep).</a> <a href="mell-details.html#763" class="tactic">apply mell_weaken_q to *H2 *H18.</a>
-    <a href="mell-details.html#764" class="tactic">apply mell_perm_q to *H19 H17.</a>
-    <a href="mell-details.html#765" class="tactic">apply 0 IHqc to _ _ H16 H12 with QQL = U.</a>
-      <a href="mell-details.html#766" class="tactic">case H7.</a> <a href="mell-details.html#767" class="tactic">unfold.</a> <a href="mell-details.html#768" class="tactic">apply perm_merge_3 to H21 H17.</a> <a href="mell-details.html#769" class="tactic">search.</a>
-    <a href="mell-details.html#770" class="tactic">apply perm_sym to *H17.</a> <a href="mell-details.html#771" class="tactic">apply mell_perm_q to *H21 H22.</a>
-    <a href="mell-details.html#772" class="tactic">apply adj_perm to *H22 *H15.</a> <a href="mell-details.html#773" class="tactic">search.</a></div>
-<a href="mell-details.html#774" class="command">Theorem cut_admit_linear : forall A B JJ J KK K QL LL,
+    <a href="mell-details.html#757" class="tactic">rename KK to QKK.</a> <a href="mell-details.html#758" class="tactic">apply adj_swap to *H14 *H10.</a>
+    <a href="mell-details.html#759" class="tactic">apply adj_same_result to H8 H16.</a>
+    <a href="mell-details.html#760" class="tactic">case H7 (keep).</a> <a href="mell-details.html#761" class="tactic">apply mell_weaken_q to *H2 *H18.</a>
+    <a href="mell-details.html#762" class="tactic">apply mell_perm_q to *H19 H17.</a>
+    <a href="mell-details.html#763" class="tactic">apply 0 IHqc to _ _ H16 H12 with QQL = U.</a>
+      <a href="mell-details.html#764" class="tactic">case H7.</a> <a href="mell-details.html#765" class="tactic">unfold.</a> <a href="mell-details.html#766" class="tactic">apply perm_merge_3 to H21 H17.</a> <a href="mell-details.html#767" class="tactic">search.</a>
+    <a href="mell-details.html#768" class="tactic">apply perm_sym to *H17.</a> <a href="mell-details.html#769" class="tactic">apply mell_perm_q to *H21 H22.</a>
+    <a href="mell-details.html#770" class="tactic">apply adj_perm to *H22 *H15.</a> <a href="mell-details.html#771" class="tactic">search.</a></div>
+<a href="mell-details.html#772" class="command">Theorem cut_admit_linear : forall A B JJ J KK K QL LL,
   dual A B ->
   adj JJ A J -> mell QL J ->
   adj KK B K -> mell QL K ->
   merge JJ KK LL ->
   mell QL LL.</a>
-<div class="proof"><a href="mell-details.html#775" class="tactic">intros.</a> <a href="mell-details.html#776" class="tactic">apply mell_is to H3.</a>
-<a href="mell-details.html#777" class="tactic">apply $cut_admit to H1 H3 _ with W = light.</a> <a href="mell-details.html#778" class="tactic">case H9.</a>
-<a href="mell-details.html#779" class="tactic">assert incl QL QL.</a> <a href="mell-details.html#780" class="tactic">unfold.</a> <a href="mell-details.html#781" class="tactic">witness nil.</a>
-<a href="mell-details.html#782" class="tactic">backchain merge_sym.</a> <a href="mell-details.html#783" class="tactic">backchain merge_nil_equal.</a>
-<a href="mell-details.html#784" class="tactic">backchain H10.</a></div>
-<a href="mell-details.html#785" class="command">Theorem cut_admit_exponential : forall A B QL QQ K,
+<div class="proof"><a href="mell-details.html#773" class="tactic">intros.</a> <a href="mell-details.html#774" class="tactic">apply mell_is to H3.</a>
+<a href="mell-details.html#775" class="tactic">apply $cut_admit to H1 H3 _ with W = light.</a> <a href="mell-details.html#776" class="tactic">case H9.</a>
+<a href="mell-details.html#777" class="tactic">assert incl QL QL.</a> <a href="mell-details.html#778" class="tactic">unfold.</a> <a href="mell-details.html#779" class="tactic">witness nil.</a>
+<a href="mell-details.html#780" class="tactic">backchain merge_sym.</a> <a href="mell-details.html#781" class="tactic">backchain merge_nil_equal.</a>
+<a href="mell-details.html#782" class="tactic">backchain H10.</a></div>
+<a href="mell-details.html#783" class="command">Theorem cut_admit_exponential : forall A B QL QQ K,
   dual A B ->
   mell QL (A :: nil) ->
   adj QL B QQ -> mell QQ K ->
   mell QL K.</a>
-<div class="proof"><a href="mell-details.html#786" class="tactic">intros.</a> <a href="mell-details.html#787" class="tactic">apply mell_is to H2.</a>
-<a href="mell-details.html#788" class="tactic">apply $cut_admit to H1 H2 _ with W = heavy.</a> <a href="mell-details.html#789" class="tactic">case H7.</a>
-<a href="mell-details.html#790" class="tactic">assert incl QL QL.</a> <a href="mell-details.html#791" class="tactic">unfold.</a> <a href="mell-details.html#792" class="tactic">witness nil.</a>
-<a href="mell-details.html#793" class="tactic">backchain merge_sym.</a> <a href="mell-details.html#794" class="tactic">backchain merge_nil_equal.</a>
-<a href="mell-details.html#795" class="tactic">backchain H8.</a></div>
+<div class="proof"><a href="mell-details.html#784" class="tactic">intros.</a> <a href="mell-details.html#785" class="tactic">apply mell_is to H2.</a>
+<a href="mell-details.html#786" class="tactic">apply $cut_admit to H1 H2 _ with W = heavy.</a> <a href="mell-details.html#787" class="tactic">case H7.</a>
+<a href="mell-details.html#788" class="tactic">assert incl QL QL.</a> <a href="mell-details.html#789" class="tactic">unfold.</a> <a href="mell-details.html#790" class="tactic">witness nil.</a>
+<a href="mell-details.html#791" class="tactic">backchain merge_sym.</a> <a href="mell-details.html#792" class="tactic">backchain merge_nil_equal.</a>
+<a href="mell-details.html#793" class="tactic">backchain H8.</a></div>
 </pre>
 </div>
 

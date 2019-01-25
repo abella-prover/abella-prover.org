@@ -123,35 +123,35 @@ Click on a command or tactic to see a detailed view of its use.
 ; is_fm ($pf P) := exists N, {dual P N}
 ; is_fm ($natom A).</a>
 
-<a href="mallf-details.html#5" class="command">Import ".</a> <a class="import-link" href=".html">[View ]</a><a href="mallf-details.html#6" class="tactic">./../lib/merge" with is_o := is_fm.
+<a href="mallf-details.html#5" class="command">Import "../../lib/merge" with is_o := is_fm.</a> <a class="import-link" href="../../lib/merge.html">[View ../../lib/merge]</a>
 
-</a><a href="mallf-details.html#7" class="command">Theorem $dual_det :
+<a href="mallf-details.html#6" class="command">Theorem $dual_det :
   (forall P1 P2 N, {dual P1 N} -> {dual P2 N} -> P1 = P2)
 /\
   (forall P N1 N2, {dual P N1} -> {dual P N2} -> N1 = N2).</a>
-<div class="proof"><a href="mallf-details.html#8" class="tactic">IH1 : induction on 1 1.</a> <a href="mallf-details.html#9" class="tactic">split.</a>
-<a href="mallf-details.html#10" class="tactic">intros.</a> <a href="mallf-details.html#11" class="tactic">case H1.</a>
-  <a href="mallf-details.html#12" class="tactic">case H2.</a> <a href="mallf-details.html#13" class="tactic">search.</a>
-  <a href="mallf-details.html#14" class="tactic">case H2.</a> <a href="mallf-details.html#15" class="tactic">apply IH1 to *H3 *H5.</a> <a href="mallf-details.html#16" class="tactic">apply *IH1 to *H4 *H6.</a> <a href="mallf-details.html#17" class="tactic">search.</a>
-  <a href="mallf-details.html#18" class="tactic">case H2.</a> <a href="mallf-details.html#19" class="tactic">search.</a>
-  <a href="mallf-details.html#20" class="tactic">case H2.</a> <a href="mallf-details.html#21" class="tactic">apply IH1 to *H3 *H5.</a> <a href="mallf-details.html#22" class="tactic">apply *IH1 to *H4 *H6.</a> <a href="mallf-details.html#23" class="tactic">search.</a>
-  <a href="mallf-details.html#24" class="tactic">case H2.</a> <a href="mallf-details.html#25" class="tactic">search.</a>
-  <a href="mallf-details.html#26" class="tactic">case H2.</a> <a href="mallf-details.html#27" class="tactic">apply IH1 to *H3 *H4.</a> <a href="mallf-details.html#28" class="tactic">search.</a>
-  <a href="mallf-details.html#29" class="tactic">case H2.</a> <a href="mallf-details.html#30" class="tactic">apply IH2 to *H3 *H4.</a> <a href="mallf-details.html#31" class="tactic">search.</a>
-<a href="mallf-details.html#32" class="tactic">intros.</a> <a href="mallf-details.html#33" class="tactic">case H1.</a>
-  <a href="mallf-details.html#34" class="tactic">case H2.</a> <a href="mallf-details.html#35" class="tactic">search.</a>
-  <a href="mallf-details.html#36" class="tactic">case H2.</a> <a href="mallf-details.html#37" class="tactic">apply IH2 to *H3 H5.</a> <a href="mallf-details.html#38" class="tactic">apply *IH2 to *H4 *H6.</a> <a href="mallf-details.html#39" class="tactic">search.</a>
-  <a href="mallf-details.html#40" class="tactic">case H2.</a> <a href="mallf-details.html#41" class="tactic">search.</a>
-  <a href="mallf-details.html#42" class="tactic">case H2.</a> <a href="mallf-details.html#43" class="tactic">apply IH2 to *H3 H5.</a> <a href="mallf-details.html#44" class="tactic">apply *IH2 to *H4 *H6.</a> <a href="mallf-details.html#45" class="tactic">search.</a>
-  <a href="mallf-details.html#46" class="tactic">case H2.</a> <a href="mallf-details.html#47" class="tactic">search.</a>
-  <a href="mallf-details.html#48" class="tactic">case H2.</a> <a href="mallf-details.html#49" class="tactic">apply IH2 to *H3 *H4.</a> <a href="mallf-details.html#50" class="tactic">search.</a>
-  <a href="mallf-details.html#51" class="tactic">case H2.</a> <a href="mallf-details.html#52" class="tactic">apply IH1 to *H3 *H4.</a> <a href="mallf-details.html#53" class="tactic">search.</a></div>
-<a href="mallf-details.html#54" class="command">Split $dual_det as dual_det_1, dual_det_2.</a>
+<div class="proof"><a href="mallf-details.html#7" class="tactic">IH1 : induction on 1 1.</a> <a href="mallf-details.html#8" class="tactic">split.</a>
+<a href="mallf-details.html#9" class="tactic">intros.</a> <a href="mallf-details.html#10" class="tactic">case H1.</a>
+  <a href="mallf-details.html#11" class="tactic">case H2.</a> <a href="mallf-details.html#12" class="tactic">search.</a>
+  <a href="mallf-details.html#13" class="tactic">case H2.</a> <a href="mallf-details.html#14" class="tactic">apply IH1 to *H3 *H5.</a> <a href="mallf-details.html#15" class="tactic">apply *IH1 to *H4 *H6.</a> <a href="mallf-details.html#16" class="tactic">search.</a>
+  <a href="mallf-details.html#17" class="tactic">case H2.</a> <a href="mallf-details.html#18" class="tactic">search.</a>
+  <a href="mallf-details.html#19" class="tactic">case H2.</a> <a href="mallf-details.html#20" class="tactic">apply IH1 to *H3 *H5.</a> <a href="mallf-details.html#21" class="tactic">apply *IH1 to *H4 *H6.</a> <a href="mallf-details.html#22" class="tactic">search.</a>
+  <a href="mallf-details.html#23" class="tactic">case H2.</a> <a href="mallf-details.html#24" class="tactic">search.</a>
+  <a href="mallf-details.html#25" class="tactic">case H2.</a> <a href="mallf-details.html#26" class="tactic">apply IH1 to *H3 *H4.</a> <a href="mallf-details.html#27" class="tactic">search.</a>
+  <a href="mallf-details.html#28" class="tactic">case H2.</a> <a href="mallf-details.html#29" class="tactic">apply IH2 to *H3 *H4.</a> <a href="mallf-details.html#30" class="tactic">search.</a>
+<a href="mallf-details.html#31" class="tactic">intros.</a> <a href="mallf-details.html#32" class="tactic">case H1.</a>
+  <a href="mallf-details.html#33" class="tactic">case H2.</a> <a href="mallf-details.html#34" class="tactic">search.</a>
+  <a href="mallf-details.html#35" class="tactic">case H2.</a> <a href="mallf-details.html#36" class="tactic">apply IH2 to *H3 H5.</a> <a href="mallf-details.html#37" class="tactic">apply *IH2 to *H4 *H6.</a> <a href="mallf-details.html#38" class="tactic">search.</a>
+  <a href="mallf-details.html#39" class="tactic">case H2.</a> <a href="mallf-details.html#40" class="tactic">search.</a>
+  <a href="mallf-details.html#41" class="tactic">case H2.</a> <a href="mallf-details.html#42" class="tactic">apply IH2 to *H3 H5.</a> <a href="mallf-details.html#43" class="tactic">apply *IH2 to *H4 *H6.</a> <a href="mallf-details.html#44" class="tactic">search.</a>
+  <a href="mallf-details.html#45" class="tactic">case H2.</a> <a href="mallf-details.html#46" class="tactic">search.</a>
+  <a href="mallf-details.html#47" class="tactic">case H2.</a> <a href="mallf-details.html#48" class="tactic">apply IH2 to *H3 *H4.</a> <a href="mallf-details.html#49" class="tactic">search.</a>
+  <a href="mallf-details.html#50" class="tactic">case H2.</a> <a href="mallf-details.html#51" class="tactic">apply IH1 to *H3 *H4.</a> <a href="mallf-details.html#52" class="tactic">search.</a></div>
+<a href="mallf-details.html#53" class="command">Split $dual_det as dual_det_1, dual_det_2.</a>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Context extensions based on focusing patterns</span>
 
-<a href="mallf-details.html#55" class="command">Define subf : foc -> pf -> prop by
+<a href="mallf-details.html#54" class="command">Define subf : foc -> pf -> prop by
 ; subf (fatom A) (atom A)
 ; subf (fshift N) (shp N) := exists P, {dual P N}
 ; subf (fjoin F1 F2) (tens P Q) := subf F1 P /\ subf F2 Q
@@ -161,7 +161,7 @@ Click on a command or tactic to see a detailed view of its use.
 ; subf femp one
 .</a>
 
-<a href="mallf-details.html#56" class="command">Define extension : foc -> olist -> prop by
+<a href="mallf-details.html#55" class="command">Define extension : foc -> olist -> prop by
 ; extension (fatom A) ($natom A :: nil) := is_fm ($pf (atom A))
 ; extension (fshift N)($pf P :: nil) := {dual P N} /\ is_fm ($pf P)
 ; extension (fjoin F1 F2) L :=
@@ -171,37 +171,37 @@ Click on a command or tactic to see a detailed view of its use.
       merge L1 L2 L
 ; extension femp nil.</a>
 
-<a href="mallf-details.html#57" class="command">Theorem extension_is : forall F L, extension F L -> is_list L.</a>
-<div class="proof"><a href="mallf-details.html#58" class="tactic">intros.</a> <a href="mallf-details.html#59" class="tactic">case H1.</a>
+<a href="mallf-details.html#56" class="command">Theorem extension_is : forall F L, extension F L -> is_list L.</a>
+<div class="proof"><a href="mallf-details.html#57" class="tactic">intros.</a> <a href="mallf-details.html#58" class="tactic">case H1.</a>
+  <a href="mallf-details.html#59" class="tactic">search.</a>
   <a href="mallf-details.html#60" class="tactic">search.</a>
-  <a href="mallf-details.html#61" class="tactic">search.</a>
-  <a href="mallf-details.html#62" class="tactic">backchain merge_3_is_list.</a>
-  <a href="mallf-details.html#63" class="tactic">search.</a></div>
-<a href="mallf-details.html#64" class="command">Theorem extension_exists : forall F P,
+  <a href="mallf-details.html#61" class="tactic">backchain merge_3_is_list.</a>
+  <a href="mallf-details.html#62" class="tactic">search.</a></div>
+<a href="mallf-details.html#63" class="command">Theorem extension_exists : forall F P,
   subf F P -> exists L, extension F L.</a>
-<div class="proof"><a href="mallf-details.html#65" class="tactic">induction on 1.</a> <a href="mallf-details.html#66" class="tactic">intros.</a> <a href="mallf-details.html#67" class="tactic">case H1.</a>
+<div class="proof"><a href="mallf-details.html#64" class="tactic">induction on 1.</a> <a href="mallf-details.html#65" class="tactic">intros.</a> <a href="mallf-details.html#66" class="tactic">case H1.</a>
+  <a href="mallf-details.html#67" class="tactic">search.</a>
   <a href="mallf-details.html#68" class="tactic">search.</a>
-  <a href="mallf-details.html#69" class="tactic">search.</a>
-  <a href="mallf-details.html#70" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#71" class="tactic">apply IH to *H3.</a>
-   <a href="mallf-details.html#72" class="tactic">apply extension_is to H4.</a> <a href="mallf-details.html#73" class="tactic">apply extension_is to H5.</a>
-   <a href="mallf-details.html#74" class="tactic">apply merge_exists to *H6 *H7.</a> <a href="mallf-details.html#75" class="tactic">search.</a>
-  <a href="mallf-details.html#76" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#77" class="tactic">search.</a>
-  <a href="mallf-details.html#78" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#79" class="tactic">search.</a>
-  <a href="mallf-details.html#80" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#81" class="tactic">search.</a>
-  <a href="mallf-details.html#82" class="tactic">search.</a></div>
-<a href="mallf-details.html#83" class="command">Theorem extension_det : forall F L1 L2,
+  <a href="mallf-details.html#69" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#70" class="tactic">apply IH to *H3.</a>
+   <a href="mallf-details.html#71" class="tactic">apply extension_is to H4.</a> <a href="mallf-details.html#72" class="tactic">apply extension_is to H5.</a>
+   <a href="mallf-details.html#73" class="tactic">apply merge_exists to *H6 *H7.</a> <a href="mallf-details.html#74" class="tactic">search.</a>
+  <a href="mallf-details.html#75" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#76" class="tactic">search.</a>
+  <a href="mallf-details.html#77" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#78" class="tactic">search.</a>
+  <a href="mallf-details.html#79" class="tactic">apply IH to *H2.</a> <a href="mallf-details.html#80" class="tactic">search.</a>
+  <a href="mallf-details.html#81" class="tactic">search.</a></div>
+<a href="mallf-details.html#82" class="command">Theorem extension_det : forall F L1 L2,
   extension F L1 -> extension F L2 -> perm L1 L2.</a>
-<div class="proof"><a href="mallf-details.html#84" class="tactic">induction on 1.</a> <a href="mallf-details.html#85" class="tactic">intros.</a> <a href="mallf-details.html#86" class="tactic">case H1.</a>
-  <a href="mallf-details.html#87" class="tactic">case H2.</a> <a href="mallf-details.html#88" class="tactic">search.</a>
-  <a href="mallf-details.html#89" class="tactic">case H2.</a> <a href="mallf-details.html#90" class="tactic">apply dual_det_1 to *H5 H3.</a> <a href="mallf-details.html#91" class="tactic">search.</a>
-  <a href="mallf-details.html#92" class="tactic">case H2.</a> <a href="mallf-details.html#93" class="tactic">apply IH to *H3 *H6.</a> <a href="mallf-details.html#94" class="tactic">apply IH to *H4 *H7.</a>
-   <a href="mallf-details.html#95" class="tactic">apply perm_merge_1 to *H5 *H9.</a> <a href="mallf-details.html#96" class="tactic">apply perm_merge_2 to *H11 *H10.</a>
-   <a href="mallf-details.html#97" class="tactic">backchain merge_perm_det.</a>
-  <a href="mallf-details.html#98" class="tactic">case H2.</a> <a href="mallf-details.html#99" class="tactic">search.</a></div>
+<div class="proof"><a href="mallf-details.html#83" class="tactic">induction on 1.</a> <a href="mallf-details.html#84" class="tactic">intros.</a> <a href="mallf-details.html#85" class="tactic">case H1.</a>
+  <a href="mallf-details.html#86" class="tactic">case H2.</a> <a href="mallf-details.html#87" class="tactic">search.</a>
+  <a href="mallf-details.html#88" class="tactic">case H2.</a> <a href="mallf-details.html#89" class="tactic">apply dual_det_1 to *H5 H3.</a> <a href="mallf-details.html#90" class="tactic">search.</a>
+  <a href="mallf-details.html#91" class="tactic">case H2.</a> <a href="mallf-details.html#92" class="tactic">apply IH to *H3 *H6.</a> <a href="mallf-details.html#93" class="tactic">apply IH to *H4 *H7.</a>
+   <a href="mallf-details.html#94" class="tactic">apply perm_merge_1 to *H5 *H9.</a> <a href="mallf-details.html#95" class="tactic">apply perm_merge_2 to *H11 *H10.</a>
+   <a href="mallf-details.html#96" class="tactic">backchain merge_perm_det.</a>
+  <a href="mallf-details.html#97" class="tactic">case H2.</a> <a href="mallf-details.html#98" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Synthetic MALL</span>
 
-<a href="mallf-details.html#100" class="command">Define
+<a href="mallf-details.html#99" class="command">Define
   mall : olist -> prop,
   mallfoc : olist -> foc -> prop
 by
@@ -229,81 +229,81 @@ by
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% inversion</span>
 
-<a href="mallf-details.html#101" class="command">Theorem $mall_is :
+<a href="mallf-details.html#100" class="command">Theorem $mall_is :
   (forall L, mall L -> is_list L)
 /\
   (forall L F, mallfoc L F -> is_list L /\ exists P, is_fm ($pf P) /\ subf F P).</a>
-<div class="proof"><a href="mallf-details.html#102" class="tactic">IH1 : induction on 1 1.</a> <a href="mallf-details.html#103" class="tactic">split.</a>
-<a href="mallf-details.html#104" class="tactic">intros.</a> <a href="mallf-details.html#105" class="tactic">case H1.</a> <a href="mallf-details.html#106" class="tactic">apply IH2 to *H4.</a> <a href="mallf-details.html#107" class="tactic">apply adj_3_is_list to *H2.</a> <a href="mallf-details.html#108" class="tactic">search.</a>
-<a href="mallf-details.html#109" class="tactic">intros.</a> <a href="mallf-details.html#110" class="tactic">case H1.</a>
-  <a href="mallf-details.html#111" class="tactic">search.</a>
-  <a href="mallf-details.html#112" class="tactic">split.</a> <a href="mallf-details.html#113" class="tactic">search.</a> <a href="mallf-details.html#114" class="tactic">witness shp N.</a> <a href="mallf-details.html#115" class="tactic">split.</a> <a href="mallf-details.html#116" class="tactic">search.</a> <a href="mallf-details.html#117" class="tactic">search.</a>
-  <a href="mallf-details.html#118" class="tactic">apply IH2 to *H3.</a> <a href="mallf-details.html#119" class="tactic">apply IH2 to *H4.</a> <a href="mallf-details.html#120" class="tactic">apply merge_3_is_list to *H2.</a>
-   <a href="mallf-details.html#121" class="tactic">split.</a> <a href="mallf-details.html#122" class="tactic">search.</a> <a href="mallf-details.html#123" class="tactic">witness tens P P1.</a>
-   <a href="mallf-details.html#124" class="tactic">case H6.</a> <a href="mallf-details.html#125" class="tactic">case H9.</a> <a href="mallf-details.html#126" class="tactic">search.</a>
-  <a href="mallf-details.html#127" class="tactic">split.</a> <a href="mallf-details.html#128" class="tactic">search.</a> <a href="mallf-details.html#129" class="tactic">witness one.</a> <a href="mallf-details.html#130" class="tactic">search.</a></div>
-<a href="mallf-details.html#131" class="command">Split $mall_is as mall_is, mallfoc_is.</a>
+<div class="proof"><a href="mallf-details.html#101" class="tactic">IH1 : induction on 1 1.</a> <a href="mallf-details.html#102" class="tactic">split.</a>
+<a href="mallf-details.html#103" class="tactic">intros.</a> <a href="mallf-details.html#104" class="tactic">case H1.</a> <a href="mallf-details.html#105" class="tactic">apply IH2 to *H4.</a> <a href="mallf-details.html#106" class="tactic">apply adj_3_is_list to *H2.</a> <a href="mallf-details.html#107" class="tactic">search.</a>
+<a href="mallf-details.html#108" class="tactic">intros.</a> <a href="mallf-details.html#109" class="tactic">case H1.</a>
+  <a href="mallf-details.html#110" class="tactic">search.</a>
+  <a href="mallf-details.html#111" class="tactic">split.</a> <a href="mallf-details.html#112" class="tactic">search.</a> <a href="mallf-details.html#113" class="tactic">witness shp N.</a> <a href="mallf-details.html#114" class="tactic">split.</a> <a href="mallf-details.html#115" class="tactic">search.</a> <a href="mallf-details.html#116" class="tactic">search.</a>
+  <a href="mallf-details.html#117" class="tactic">apply IH2 to *H3.</a> <a href="mallf-details.html#118" class="tactic">apply IH2 to *H4.</a> <a href="mallf-details.html#119" class="tactic">apply merge_3_is_list to *H2.</a>
+   <a href="mallf-details.html#120" class="tactic">split.</a> <a href="mallf-details.html#121" class="tactic">search.</a> <a href="mallf-details.html#122" class="tactic">witness tens P P1.</a>
+   <a href="mallf-details.html#123" class="tactic">case H6.</a> <a href="mallf-details.html#124" class="tactic">case H9.</a> <a href="mallf-details.html#125" class="tactic">search.</a>
+  <a href="mallf-details.html#126" class="tactic">split.</a> <a href="mallf-details.html#127" class="tactic">search.</a> <a href="mallf-details.html#128" class="tactic">witness one.</a> <a href="mallf-details.html#129" class="tactic">search.</a></div>
+<a href="mallf-details.html#130" class="command">Split $mall_is as mall_is, mallfoc_is.</a>
 
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Generalized identity</span>
 
-<a href="mallf-details.html#132" class="command">Theorem gid_lemma : forall P N F L,
+<a href="mallf-details.html#131" class="command">Theorem gid_lemma : forall P N F L,
   {dual P N} -> subf F P -> extension F L ->
   mallfoc L F.</a>
-<div class="proof"><a href="mallf-details.html#133" class="tactic">induction on 1.</a> <a href="mallf-details.html#134" class="tactic">intros.</a> <a href="mallf-details.html#135" class="tactic">case H1.</a>
+<div class="proof"><a href="mallf-details.html#132" class="tactic">induction on 1.</a> <a href="mallf-details.html#133" class="tactic">intros.</a> <a href="mallf-details.html#134" class="tactic">case H1.</a>
   <span class="comment">% atoms</span>
-  <a href="mallf-details.html#136" class="tactic">case H2.</a> <a href="mallf-details.html#137" class="tactic">case H3.</a> <a href="mallf-details.html#138" class="tactic">case H4.</a> <a href="mallf-details.html#139" class="tactic">search.</a>
+  <a href="mallf-details.html#135" class="tactic">case H2.</a> <a href="mallf-details.html#136" class="tactic">case H3.</a> <a href="mallf-details.html#137" class="tactic">case H4.</a> <a href="mallf-details.html#138" class="tactic">search.</a>
   <span class="comment">% tensor</span>
-  <a href="mallf-details.html#140" class="tactic">case H2.</a> <a href="mallf-details.html#141" class="tactic">case H3.</a>
-  <a href="mallf-details.html#142" class="tactic">apply IH to *H4 *H6 *H8.</a> <a href="mallf-details.html#143" class="tactic">apply IH to *H5 *H7 *H9.</a>
-  <a href="mallf-details.html#144" class="tactic">search.</a>
+  <a href="mallf-details.html#139" class="tactic">case H2.</a> <a href="mallf-details.html#140" class="tactic">case H3.</a>
+  <a href="mallf-details.html#141" class="tactic">apply IH to *H4 *H6 *H8.</a> <a href="mallf-details.html#142" class="tactic">apply IH to *H5 *H7 *H9.</a>
+  <a href="mallf-details.html#143" class="tactic">search.</a>
   <span class="comment">% one</span>
-  <a href="mallf-details.html#145" class="tactic">case H2.</a> <a href="mallf-details.html#146" class="tactic">case H3.</a> <a href="mallf-details.html#147" class="tactic">search.</a>
+  <a href="mallf-details.html#144" class="tactic">case H2.</a> <a href="mallf-details.html#145" class="tactic">case H3.</a> <a href="mallf-details.html#146" class="tactic">search.</a>
   <span class="comment">% plus</span>
-  <a href="mallf-details.html#148" class="tactic">case H2.</a>
-    <a href="mallf-details.html#149" class="tactic">backchain IH with P = P1.</a>
-    <a href="mallf-details.html#150" class="tactic">backchain IH with P = Q.</a>
+  <a href="mallf-details.html#147" class="tactic">case H2.</a>
+    <a href="mallf-details.html#148" class="tactic">backchain IH with P = P1.</a>
+    <a href="mallf-details.html#149" class="tactic">backchain IH with P = Q.</a>
   <span class="comment">% zero</span>
-  <a href="mallf-details.html#151" class="tactic">case H2.</a>
+  <a href="mallf-details.html#150" class="tactic">case H2.</a>
   <span class="comment">% fex</span>
-  <a href="mallf-details.html#152" class="tactic">case H2.</a> <a href="mallf-details.html#153" class="tactic">permute (n1 n2) H3.</a> <a href="mallf-details.html#154" class="tactic">apply IH to *H4 *H5 *H3.</a> <a href="mallf-details.html#155" class="tactic">search.</a>
+  <a href="mallf-details.html#151" class="tactic">case H2.</a> <a href="mallf-details.html#152" class="tactic">permute (n1 n2) H3.</a> <a href="mallf-details.html#153" class="tactic">apply IH to *H4 *H5 *H3.</a> <a href="mallf-details.html#154" class="tactic">search.</a>
   <span class="comment">% shift</span>
-  <a href="mallf-details.html#156" class="tactic">case H2.</a> <a href="mallf-details.html#157" class="tactic">case H3.</a> <a href="mallf-details.html#158" class="tactic">apply dual_det_1 to *H6 H4.</a> <a href="mallf-details.html#159" class="tactic">apply dual_det_1 to *H5 H4.</a>
-  <a href="mallf-details.html#160" class="tactic">unfold.</a> <a href="mallf-details.html#161" class="tactic">search.</a> <a href="mallf-details.html#162" class="tactic">witness P1.</a> <a href="mallf-details.html#163" class="tactic">split.</a> <a href="mallf-details.html#164" class="tactic">search.</a> <a href="mallf-details.html#165" class="tactic">intros.</a>
-  <a href="mallf-details.html#166" class="tactic">apply extension_exists to H8.</a> <a href="mallf-details.html#167" class="tactic">witness L1.</a> <a href="mallf-details.html#168" class="tactic">split.</a> <a href="mallf-details.html#169" class="tactic">search.</a>
-  <a href="mallf-details.html#170" class="tactic">apply IH to H4 H8 H9.</a>
-  <a href="mallf-details.html#171" class="tactic">witness $pf P1 :: L1.</a> <a href="mallf-details.html#172" class="tactic">split.</a> <a href="mallf-details.html#173" class="tactic">apply extension_is to H9.</a> <a href="mallf-details.html#174" class="tactic">apply merge_nil_equal to H11.</a> <a href="mallf-details.html#175" class="tactic">search.</a>
-  <a href="mallf-details.html#176" class="tactic">unfold.</a> <a href="mallf-details.html#177" class="tactic">witness P1, L1.</a> <a href="mallf-details.html#178" class="tactic">split.</a> <a href="mallf-details.html#179" class="tactic">apply extension_is to H9.</a> <a href="mallf-details.html#180" class="tactic">apply merge_nil_equal to H11.</a> <a href="mallf-details.html#181" class="tactic">search.</a>
-  <a href="mallf-details.html#182" class="tactic">search.</a></div>
-<a href="mallf-details.html#183" class="command">Theorem gid : forall P N, {dual P N} -> mall ($pf P :: $pf (shp N) :: nil).</a>
-<div class="proof"><a href="mallf-details.html#184" class="tactic">intros.</a> <a href="mallf-details.html#185" class="tactic">unfold.</a> <a href="mallf-details.html#186" class="tactic">witness shp N, $pf P :: nil.</a> <a href="mallf-details.html#187" class="tactic">split.</a> <a href="mallf-details.html#188" class="tactic">search.</a>
-<a href="mallf-details.html#189" class="tactic">witness fshift N.</a> <a href="mallf-details.html#190" class="tactic">split.</a> <a href="mallf-details.html#191" class="tactic">search.</a> <a href="mallf-details.html#192" class="tactic">unfold.</a> <a href="mallf-details.html#193" class="tactic">search.</a>
-<a href="mallf-details.html#194" class="tactic">witness P.</a> <a href="mallf-details.html#195" class="tactic">split.</a> <a href="mallf-details.html#196" class="tactic">search.</a> <a href="mallf-details.html#197" class="tactic">intros.</a>
-<a href="mallf-details.html#198" class="tactic">apply extension_exists to H2.</a>
-<a href="mallf-details.html#199" class="tactic">witness L.</a> <a href="mallf-details.html#200" class="tactic">split.</a> <a href="mallf-details.html#201" class="tactic">search.</a>
-<a href="mallf-details.html#202" class="tactic">witness $pf P :: L.</a> <a href="mallf-details.html#203" class="tactic">apply extension_is to H3.</a> <a href="mallf-details.html#204" class="tactic">apply merge_nil_equal to H4.</a>
-<a href="mallf-details.html#205" class="tactic">split.</a> <a href="mallf-details.html#206" class="tactic">search.</a>
-<a href="mallf-details.html#207" class="tactic">apply gid_lemma to H1 H2 H3.</a> <a href="mallf-details.html#208" class="tactic">search.</a></div>
+  <a href="mallf-details.html#155" class="tactic">case H2.</a> <a href="mallf-details.html#156" class="tactic">case H3.</a> <a href="mallf-details.html#157" class="tactic">apply dual_det_1 to *H6 H4.</a> <a href="mallf-details.html#158" class="tactic">apply dual_det_1 to *H5 H4.</a>
+  <a href="mallf-details.html#159" class="tactic">unfold.</a> <a href="mallf-details.html#160" class="tactic">search.</a> <a href="mallf-details.html#161" class="tactic">witness P1.</a> <a href="mallf-details.html#162" class="tactic">split.</a> <a href="mallf-details.html#163" class="tactic">search.</a> <a href="mallf-details.html#164" class="tactic">intros.</a>
+  <a href="mallf-details.html#165" class="tactic">apply extension_exists to H8.</a> <a href="mallf-details.html#166" class="tactic">witness L1.</a> <a href="mallf-details.html#167" class="tactic">split.</a> <a href="mallf-details.html#168" class="tactic">search.</a>
+  <a href="mallf-details.html#169" class="tactic">apply IH to H4 H8 H9.</a>
+  <a href="mallf-details.html#170" class="tactic">witness $pf P1 :: L1.</a> <a href="mallf-details.html#171" class="tactic">split.</a> <a href="mallf-details.html#172" class="tactic">apply extension_is to H9.</a> <a href="mallf-details.html#173" class="tactic">apply merge_nil_equal to H11.</a> <a href="mallf-details.html#174" class="tactic">search.</a>
+  <a href="mallf-details.html#175" class="tactic">unfold.</a> <a href="mallf-details.html#176" class="tactic">witness P1, L1.</a> <a href="mallf-details.html#177" class="tactic">split.</a> <a href="mallf-details.html#178" class="tactic">apply extension_is to H9.</a> <a href="mallf-details.html#179" class="tactic">apply merge_nil_equal to H11.</a> <a href="mallf-details.html#180" class="tactic">search.</a>
+  <a href="mallf-details.html#181" class="tactic">search.</a></div>
+<a href="mallf-details.html#182" class="command">Theorem gid : forall P N, {dual P N} -> mall ($pf P :: $pf (shp N) :: nil).</a>
+<div class="proof"><a href="mallf-details.html#183" class="tactic">intros.</a> <a href="mallf-details.html#184" class="tactic">unfold.</a> <a href="mallf-details.html#185" class="tactic">witness shp N, $pf P :: nil.</a> <a href="mallf-details.html#186" class="tactic">split.</a> <a href="mallf-details.html#187" class="tactic">search.</a>
+<a href="mallf-details.html#188" class="tactic">witness fshift N.</a> <a href="mallf-details.html#189" class="tactic">split.</a> <a href="mallf-details.html#190" class="tactic">search.</a> <a href="mallf-details.html#191" class="tactic">unfold.</a> <a href="mallf-details.html#192" class="tactic">search.</a>
+<a href="mallf-details.html#193" class="tactic">witness P.</a> <a href="mallf-details.html#194" class="tactic">split.</a> <a href="mallf-details.html#195" class="tactic">search.</a> <a href="mallf-details.html#196" class="tactic">intros.</a>
+<a href="mallf-details.html#197" class="tactic">apply extension_exists to H2.</a>
+<a href="mallf-details.html#198" class="tactic">witness L.</a> <a href="mallf-details.html#199" class="tactic">split.</a> <a href="mallf-details.html#200" class="tactic">search.</a>
+<a href="mallf-details.html#201" class="tactic">witness $pf P :: L.</a> <a href="mallf-details.html#202" class="tactic">apply extension_is to H3.</a> <a href="mallf-details.html#203" class="tactic">apply merge_nil_equal to H4.</a>
+<a href="mallf-details.html#204" class="tactic">split.</a> <a href="mallf-details.html#205" class="tactic">search.</a>
+<a href="mallf-details.html#206" class="tactic">apply gid_lemma to H1 H2 H3.</a> <a href="mallf-details.html#207" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Permutations</span>
 
-<a href="mallf-details.html#209" class="command">Theorem mallfoc_perm : forall J F K,
+<a href="mallf-details.html#208" class="command">Theorem mallfoc_perm : forall J F K,
   mallfoc J F -> perm J K -> mallfoc K F.</a>
-<div class="proof"><a href="mallf-details.html#210" class="tactic">intros.</a> <a href="mallf-details.html#211" class="tactic">case H1.</a>
-  <a href="mallf-details.html#212" class="tactic">apply perm_cons_1 to H2.</a> <a href="mallf-details.html#213" class="tactic">case H4.</a> <a href="mallf-details.html#214" class="tactic">case H3.</a> <a href="mallf-details.html#215" class="tactic">search.</a>
-   <a href="mallf-details.html#216" class="tactic">case H5.</a>
-  <a href="mallf-details.html#217" class="tactic">unfold.</a> <a href="mallf-details.html#218" class="tactic">backchain perm_2_is_list.</a> <a href="mallf-details.html#219" class="tactic">witness P.</a> <a href="mallf-details.html#220" class="tactic">split.</a> <a href="mallf-details.html#221" class="tactic">search.</a> <a href="mallf-details.html#222" class="tactic">intros.</a>
-   <a href="mallf-details.html#223" class="tactic">apply *H5 to *H6.</a> <a href="mallf-details.html#224" class="tactic">apply perm_merge_1 to *H8 *H2.</a> <a href="mallf-details.html#225" class="tactic">search.</a>
-  <a href="mallf-details.html#226" class="tactic">apply perm_merge_3 to *H3 *H2.</a> <a href="mallf-details.html#227" class="tactic">search.</a>
-  <a href="mallf-details.html#228" class="tactic">case H2.</a> <a href="mallf-details.html#229" class="tactic">search.</a> <a href="mallf-details.html#230" class="tactic">case H3.</a></div>
-<a href="mallf-details.html#231" class="command">Theorem mall_perm : forall J K,
+<div class="proof"><a href="mallf-details.html#209" class="tactic">intros.</a> <a href="mallf-details.html#210" class="tactic">case H1.</a>
+  <a href="mallf-details.html#211" class="tactic">apply perm_cons_1 to H2.</a> <a href="mallf-details.html#212" class="tactic">case H4.</a> <a href="mallf-details.html#213" class="tactic">case H3.</a> <a href="mallf-details.html#214" class="tactic">search.</a>
+   <a href="mallf-details.html#215" class="tactic">case H5.</a>
+  <a href="mallf-details.html#216" class="tactic">unfold.</a> <a href="mallf-details.html#217" class="tactic">backchain perm_2_is_list.</a> <a href="mallf-details.html#218" class="tactic">witness P.</a> <a href="mallf-details.html#219" class="tactic">split.</a> <a href="mallf-details.html#220" class="tactic">search.</a> <a href="mallf-details.html#221" class="tactic">intros.</a>
+   <a href="mallf-details.html#222" class="tactic">apply *H5 to *H6.</a> <a href="mallf-details.html#223" class="tactic">apply perm_merge_1 to *H8 *H2.</a> <a href="mallf-details.html#224" class="tactic">search.</a>
+  <a href="mallf-details.html#225" class="tactic">apply perm_merge_3 to *H3 *H2.</a> <a href="mallf-details.html#226" class="tactic">search.</a>
+  <a href="mallf-details.html#227" class="tactic">case H2.</a> <a href="mallf-details.html#228" class="tactic">search.</a> <a href="mallf-details.html#229" class="tactic">case H3.</a></div>
+<a href="mallf-details.html#230" class="command">Theorem mall_perm : forall J K,
   mall J -> perm J K -> mall K.</a>
-<div class="proof"><a href="mallf-details.html#232" class="tactic">intros.</a> <a href="mallf-details.html#233" class="tactic">case H1.</a> <a href="mallf-details.html#234" class="tactic">apply adj_perm_full to H2 H3.</a>
-<a href="mallf-details.html#235" class="tactic">apply mallfoc_perm to *H5 H7.</a> <a href="mallf-details.html#236" class="tactic">search.</a></div>
+<div class="proof"><a href="mallf-details.html#231" class="tactic">intros.</a> <a href="mallf-details.html#232" class="tactic">case H1.</a> <a href="mallf-details.html#233" class="tactic">apply adj_perm_full to H2 H3.</a>
+<a href="mallf-details.html#234" class="tactic">apply mallfoc_perm to *H5 H7.</a> <a href="mallf-details.html#235" class="tactic">search.</a></div>
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% Full cut-elimination</span>
 
-<a href="mallf-details.html#237" class="command">Theorem $cut :
+<a href="mallf-details.html#236" class="command">Theorem $cut :
   (forall P N J JP K L,
     {dual P N} ->
     adj J ($pf P) JP -> mall JP ->
@@ -328,116 +328,116 @@ by
      mall KN) ->
     merge J K L ->
     mallfoc L F).</a>
-<div class="proof"><a href="mallf-details.html#238" class="tactic">IHrank1 : induction on 1 1 1.</a> <a href="mallf-details.html#239" class="tactic">IHht1 : induction on 3 3 3.</a>
+<div class="proof"><a href="mallf-details.html#237" class="tactic">IHrank1 : induction on 1 1 1.</a> <a href="mallf-details.html#238" class="tactic">IHht1 : induction on 3 3 3.</a>
 <span class="comment">%abbrev IHrank1 IHrank2 IHrank3 IHht1 IHht2 IHht3 "...".</span>
-<a href="mallf-details.html#240" class="tactic">split.</a>
+<a href="mallf-details.html#239" class="tactic">split.</a>
 
-<a href="mallf-details.html#241" class="tactic">intros Hdual Hadj Hpos Hneg Hjk.</a> <a href="mallf-details.html#242" class="tactic">Hpos1 : case Hpos.</a>
-<a href="mallf-details.html#243" class="tactic">Hdiff : apply adj_same_result_diff_both to *Hadj *Hpos1.</a> <a href="mallf-details.html#244" class="tactic">Hdiff1 : case Hdiff.</a>
-   <a href="mallf-details.html#245" class="tactic">Hex : apply extension_exists to Hpos2.</a>
-   <a href="mallf-details.html#246" class="tactic">Ht1 : apply merge_2_is_list to Hjk.</a> <a href="mallf-details.html#247" class="tactic">Ht2 : apply extension_is to Hex.</a>
-   <a href="mallf-details.html#248" class="tactic">Hmr : apply merge_exists to *Ht1 *Ht2.</a>
-   <a href="mallf-details.html#249" class="tactic">Hn : apply *Hneg to Hpos2 Hex Hmr.</a>
-   <a href="mallf-details.html#250" class="tactic">Hperm : apply perm_merge_1 to *Hjk *Hdiff1.</a>
-   <a href="mallf-details.html#251" class="tactic">backchain IHht2.</a>
+<a href="mallf-details.html#240" class="tactic">intros Hdual Hadj Hpos Hneg Hjk.</a> <a href="mallf-details.html#241" class="tactic">Hpos1 : case Hpos.</a>
+<a href="mallf-details.html#242" class="tactic">Hdiff : apply adj_same_result_diff_both to *Hadj *Hpos1.</a> <a href="mallf-details.html#243" class="tactic">Hdiff1 : case Hdiff.</a>
+   <a href="mallf-details.html#244" class="tactic">Hex : apply extension_exists to Hpos2.</a>
+   <a href="mallf-details.html#245" class="tactic">Ht1 : apply merge_2_is_list to Hjk.</a> <a href="mallf-details.html#246" class="tactic">Ht2 : apply extension_is to Hex.</a>
+   <a href="mallf-details.html#247" class="tactic">Hmr : apply merge_exists to *Ht1 *Ht2.</a>
+   <a href="mallf-details.html#248" class="tactic">Hn : apply *Hneg to Hpos2 Hex Hmr.</a>
+   <a href="mallf-details.html#249" class="tactic">Hperm : apply perm_merge_1 to *Hjk *Hdiff1.</a>
+   <a href="mallf-details.html#250" class="tactic">backchain IHht2.</a>
 
-   <a href="mallf-details.html#252" class="tactic">Hmr1 : apply merge_unadj_1 to *Hjk *Hdiff1.</a>
-   <a href="mallf-details.html#253" class="tactic">Hp1 : apply perm_merge_1 to *Hmr2 *Hdiff3.</a>
-   <a href="mallf-details.html#254" class="tactic">apply IHht3 to *Hdual *Hdiff2 *Hpos3 *Hneg *Hp1.</a>
-   <a href="mallf-details.html#255" class="tactic">search.</a>
+   <a href="mallf-details.html#251" class="tactic">Hmr1 : apply merge_unadj_1 to *Hjk *Hdiff1.</a>
+   <a href="mallf-details.html#252" class="tactic">Hp1 : apply perm_merge_1 to *Hmr2 *Hdiff3.</a>
+   <a href="mallf-details.html#253" class="tactic">apply IHht3 to *Hdual *Hdiff2 *Hpos3 *Hneg *Hp1.</a>
+   <a href="mallf-details.html#254" class="tactic">search.</a>
 
-<a href="mallf-details.html#256" class="tactic">intros Hdual Hsubf Hpos Hex Hexmr Hneg Hmr.</a> <a href="mallf-details.html#257" class="tactic">Hdual1 : case Hdual.</a>
-  <a href="mallf-details.html#258" class="tactic">case Hsubf.</a> <a href="mallf-details.html#259" class="tactic">case Hpos.</a> <a href="mallf-details.html#260" class="tactic">case Hex.</a>
-    <a href="mallf-details.html#261" class="tactic">Hmr : apply merge_sym to *Hmr.</a>
-    <a href="mallf-details.html#262" class="tactic">apply merge_perm_det to *Hexmr *Hmr.</a>
-    <a href="mallf-details.html#263" class="tactic">backchain mall_perm.</a>
+<a href="mallf-details.html#255" class="tactic">intros Hdual Hsubf Hpos Hex Hexmr Hneg Hmr.</a> <a href="mallf-details.html#256" class="tactic">Hdual1 : case Hdual.</a>
+  <a href="mallf-details.html#257" class="tactic">case Hsubf.</a> <a href="mallf-details.html#258" class="tactic">case Hpos.</a> <a href="mallf-details.html#259" class="tactic">case Hex.</a>
+    <a href="mallf-details.html#260" class="tactic">Hmr : apply merge_sym to *Hmr.</a>
+    <a href="mallf-details.html#261" class="tactic">apply merge_perm_det to *Hexmr *Hmr.</a>
+    <a href="mallf-details.html#262" class="tactic">backchain mall_perm.</a>
 
-  <a href="mallf-details.html#264" class="tactic">Hsubf1 : case Hsubf.</a> <a href="mallf-details.html#265" class="tactic">Hpos : case Hpos.</a> <a href="mallf-details.html#266" class="tactic">Hex1 : case Hex.</a> <a href="mallf-details.html#267" class="tactic">rename Hex3 to Hex.</a>
-  <a href="mallf-details.html#268" class="tactic">Hn : assert 0 exists U, merge K L2 U /\ merge U L3 KN.</a>
-    <a href="mallf-details.html#269" class="tactic">apply merge_2_is_list to Hmr.</a> <a href="mallf-details.html#270" class="tactic">apply merge_1_is_list to Hex.</a>
-    <a href="mallf-details.html#271" class="tactic">apply merge_exists to *H1 *H2.</a> <a href="mallf-details.html#272" class="tactic">witness L1.</a> <a href="mallf-details.html#273" class="tactic">split.</a> <a href="mallf-details.html#274" class="tactic">search.</a>
-    <a href="mallf-details.html#275" class="tactic">backchain change_merge_order2.</a> <a href="mallf-details.html#276" class="tactic">Hmr1 : case Hn.</a>
-  <a href="mallf-details.html#277" class="tactic">Hn : assert 0 exists V, merge K1 U V.</a> <a href="mallf-details.html#278" class="tactic">backchain merge_exists.</a>
-    <a href="mallf-details.html#279" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#280" class="tactic">backchain merge_1_is_list.</a> <a href="mallf-details.html#281" class="tactic">Hmr1 : case Hn.</a>
-  <a href="mallf-details.html#282" class="tactic">Hneg : apply IHrank2 to *Hdual2 *Hsubf2 *Hpos2 *Hex2 Hmr2 *Hneg Hmr3.</a>
-  <a href="mallf-details.html#283" class="tactic">Hn : assert 0 exists W, merge K1 K W /\ merge J1 W L.</a>
-     <a href="mallf-details.html#284" class="tactic">Hl1 : apply merge_2_is_list to Hpos.</a>
-     <a href="mallf-details.html#285" class="tactic">Hl1 : apply merge_1_is_list to Hmr1.</a>
-     <a href="mallf-details.html#286" class="tactic">Hn : apply merge_exists to *Hl1 *Hl2.</a>
-     <a href="mallf-details.html#287" class="tactic">witness L1.</a> <a href="mallf-details.html#288" class="tactic">split.</a> <a href="mallf-details.html#289" class="tactic">search.</a>
-     <a href="mallf-details.html#290" class="tactic">backchain change_merge_order.</a>
-     <a href="mallf-details.html#291" class="tactic">Hmr1 : case Hn.</a>
-  <a href="mallf-details.html#292" class="tactic">Hmr1 : assert 0 merge W L2 V.</a> <a href="mallf-details.html#293" class="tactic">backchain change_merge_order2.</a>
-  <a href="mallf-details.html#294" class="tactic">Hneg : apply IHrank2 to *Hdual1 *Hsubf1 *Hpos1 *Hex1 Hmr6 *Hneg Hmr5.</a>
-  <a href="mallf-details.html#295" class="tactic">search.</a>
+  <a href="mallf-details.html#263" class="tactic">Hsubf1 : case Hsubf.</a> <a href="mallf-details.html#264" class="tactic">Hpos : case Hpos.</a> <a href="mallf-details.html#265" class="tactic">Hex1 : case Hex.</a> <a href="mallf-details.html#266" class="tactic">rename Hex3 to Hex.</a>
+  <a href="mallf-details.html#267" class="tactic">Hn : assert 0 exists U, merge K L2 U /\ merge U L3 KN.</a>
+    <a href="mallf-details.html#268" class="tactic">apply merge_2_is_list to Hmr.</a> <a href="mallf-details.html#269" class="tactic">apply merge_1_is_list to Hex.</a>
+    <a href="mallf-details.html#270" class="tactic">apply merge_exists to *H1 *H2.</a> <a href="mallf-details.html#271" class="tactic">witness L1.</a> <a href="mallf-details.html#272" class="tactic">split.</a> <a href="mallf-details.html#273" class="tactic">search.</a>
+    <a href="mallf-details.html#274" class="tactic">backchain change_merge_order2.</a> <a href="mallf-details.html#275" class="tactic">Hmr1 : case Hn.</a>
+  <a href="mallf-details.html#276" class="tactic">Hn : assert 0 exists V, merge K1 U V.</a> <a href="mallf-details.html#277" class="tactic">backchain merge_exists.</a>
+    <a href="mallf-details.html#278" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#279" class="tactic">backchain merge_1_is_list.</a> <a href="mallf-details.html#280" class="tactic">Hmr1 : case Hn.</a>
+  <a href="mallf-details.html#281" class="tactic">Hneg : apply IHrank2 to *Hdual2 *Hsubf2 *Hpos2 *Hex2 Hmr2 *Hneg Hmr3.</a>
+  <a href="mallf-details.html#282" class="tactic">Hn : assert 0 exists W, merge K1 K W /\ merge J1 W L.</a>
+     <a href="mallf-details.html#283" class="tactic">Hl1 : apply merge_2_is_list to Hpos.</a>
+     <a href="mallf-details.html#284" class="tactic">Hl1 : apply merge_1_is_list to Hmr1.</a>
+     <a href="mallf-details.html#285" class="tactic">Hn : apply merge_exists to *Hl1 *Hl2.</a>
+     <a href="mallf-details.html#286" class="tactic">witness L1.</a> <a href="mallf-details.html#287" class="tactic">split.</a> <a href="mallf-details.html#288" class="tactic">search.</a>
+     <a href="mallf-details.html#289" class="tactic">backchain change_merge_order.</a>
+     <a href="mallf-details.html#290" class="tactic">Hmr1 : case Hn.</a>
+  <a href="mallf-details.html#291" class="tactic">Hmr1 : assert 0 merge W L2 V.</a> <a href="mallf-details.html#292" class="tactic">backchain change_merge_order2.</a>
+  <a href="mallf-details.html#293" class="tactic">Hneg : apply IHrank2 to *Hdual1 *Hsubf1 *Hpos1 *Hex1 Hmr6 *Hneg Hmr5.</a>
+  <a href="mallf-details.html#294" class="tactic">search.</a>
 
-  <a href="mallf-details.html#296" class="tactic">case Hsubf.</a> <a href="mallf-details.html#297" class="tactic">case Hpos.</a> <a href="mallf-details.html#298" class="tactic">case Hex.</a> <a href="mallf-details.html#299" class="tactic">Hexmr : apply merge_sym to *Hexmr.</a>
-  <a href="mallf-details.html#300" class="tactic">Hp : apply merge_nil_perm to *Hmr.</a> <a href="mallf-details.html#301" class="tactic">Hmr : apply perm_merge_2 to *Hexmr *Hp.</a>
-  <a href="mallf-details.html#302" class="tactic">Hp : apply merge_nil_perm to *Hmr.</a> <a href="mallf-details.html#303" class="tactic">Hp : apply perm_sym to *Hp.</a>
-  <a href="mallf-details.html#304" class="tactic">backchain mall_perm.</a>
+  <a href="mallf-details.html#295" class="tactic">case Hsubf.</a> <a href="mallf-details.html#296" class="tactic">case Hpos.</a> <a href="mallf-details.html#297" class="tactic">case Hex.</a> <a href="mallf-details.html#298" class="tactic">Hexmr : apply merge_sym to *Hexmr.</a>
+  <a href="mallf-details.html#299" class="tactic">Hp : apply merge_nil_perm to *Hmr.</a> <a href="mallf-details.html#300" class="tactic">Hmr : apply perm_merge_2 to *Hexmr *Hp.</a>
+  <a href="mallf-details.html#301" class="tactic">Hp : apply merge_nil_perm to *Hmr.</a> <a href="mallf-details.html#302" class="tactic">Hp : apply perm_sym to *Hp.</a>
+  <a href="mallf-details.html#303" class="tactic">backchain mall_perm.</a>
 
-  <a href="mallf-details.html#305" class="tactic">Hsubf : case Hsubf.</a>
-  <a href="mallf-details.html#306" class="tactic">backchain IHrank2.</a>
-  <a href="mallf-details.html#307" class="tactic">backchain IHrank2 with P = Q.</a>
+  <a href="mallf-details.html#304" class="tactic">Hsubf : case Hsubf.</a>
+  <a href="mallf-details.html#305" class="tactic">backchain IHrank2.</a>
+  <a href="mallf-details.html#306" class="tactic">backchain IHrank2 with P = Q.</a>
 
-  <a href="mallf-details.html#308" class="tactic">case Hsubf.</a>
+  <a href="mallf-details.html#307" class="tactic">case Hsubf.</a>
 
-  <a href="mallf-details.html#309" class="tactic">Hsubf : case Hsubf.</a>
-  <a href="mallf-details.html#310" class="tactic">permute (n1 n2) Hdual1.</a> <a href="mallf-details.html#311" class="tactic">permute (n1 n2) Hsubf.</a>
-  <a href="mallf-details.html#312" class="tactic">apply IHrank2 to *Hdual1 *Hsubf *Hpos *Hex *Hexmr *Hneg *Hmr.</a>
-  <a href="mallf-details.html#313" class="tactic">search.</a>
+  <a href="mallf-details.html#308" class="tactic">Hsubf : case Hsubf.</a>
+  <a href="mallf-details.html#309" class="tactic">permute (n1 n2) Hdual1.</a> <a href="mallf-details.html#310" class="tactic">permute (n1 n2) Hsubf.</a>
+  <a href="mallf-details.html#311" class="tactic">apply IHrank2 to *Hdual1 *Hsubf *Hpos *Hex *Hexmr *Hneg *Hmr.</a>
+  <a href="mallf-details.html#312" class="tactic">search.</a>
 
-  <a href="mallf-details.html#314" class="tactic">Hsubf : case Hsubf.</a>
-  <a href="mallf-details.html#315" class="tactic">Hpos : case Hpos.</a> <a href="mallf-details.html#316" class="tactic">Hex : case Hex.</a>
-  <a href="mallf-details.html#317" class="tactic">apply dual_det_1 to *Hsubf Hdual1.</a> <a href="mallf-details.html#318" class="tactic">apply dual_det_1 to *Hpos1 Hdual1.</a> <a href="mallf-details.html#319" class="tactic">apply dual_det_1 to *Hex Hdual1.</a>
-  <a href="mallf-details.html#320" class="tactic">Hadj : assert 0 exists U, adj K ($pf P1) U /\ perm KN U.</a>
-     <a href="mallf-details.html#321" class="tactic">Hn1 : apply merge_unadj_2 to Hexmr _.</a>
-     <a href="mallf-details.html#322" class="tactic">Hn1 : apply merge_sym to *Hn2.</a> <a href="mallf-details.html#323" class="tactic">Hp : apply merge_nil_perm to *Hn2.</a>
-     <a href="mallf-details.html#324" class="tactic">Hp : apply perm_sym to *Hp.</a>
-     <a href="mallf-details.html#325" class="tactic">Hp : apply adj_perm_source to *Hp *Hn1.</a> <a href="mallf-details.html#326" class="tactic">search.</a>
-  <a href="mallf-details.html#327" class="tactic">Hadj : case Hadj.</a> <a href="mallf-details.html#328" class="tactic">Hneg : apply mall_perm to *Hneg *Hadj1.</a>
-  <a href="mallf-details.html#329" class="tactic">Hmr : apply merge_sym to *Hmr.</a>
-  <a href="mallf-details.html#330" class="tactic">Hfa : assert forall F KE KN, subf F P1 -> extension F KE -> merge J KE KN -> mall KN.</a>
-    <a href="mallf-details.html#331" class="tactic">intros Hsubf Hex Hmr.</a>
-    <a href="mallf-details.html#332" class="tactic">Hpos1 : apply *Hpos2 to *Hsubf.</a> <a href="mallf-details.html#333" class="tactic">Hp : apply extension_det to *Hex *Hpos1.</a>
-    <a href="mallf-details.html#334" class="tactic">Hmr1 : apply perm_merge_2 to *Hmr1 *Hp.</a>
-    <a href="mallf-details.html#335" class="tactic">Hp : apply merge_perm_det to *Hpos2 *Hmr1.</a>
-    <a href="mallf-details.html#336" class="tactic">clear Hneg.</a> <a href="mallf-details.html#337" class="tactic">backchain mall_perm.</a>
-  <a href="mallf-details.html#338" class="tactic">apply IHrank1 to *Hdual1 *Hadj *Hneg *Hfa *Hmr.</a>
-  <a href="mallf-details.html#339" class="tactic">search.</a>
+  <a href="mallf-details.html#313" class="tactic">Hsubf : case Hsubf.</a>
+  <a href="mallf-details.html#314" class="tactic">Hpos : case Hpos.</a> <a href="mallf-details.html#315" class="tactic">Hex : case Hex.</a>
+  <a href="mallf-details.html#316" class="tactic">apply dual_det_1 to *Hsubf Hdual1.</a> <a href="mallf-details.html#317" class="tactic">apply dual_det_1 to *Hpos1 Hdual1.</a> <a href="mallf-details.html#318" class="tactic">apply dual_det_1 to *Hex Hdual1.</a>
+  <a href="mallf-details.html#319" class="tactic">Hadj : assert 0 exists U, adj K ($pf P1) U /\ perm KN U.</a>
+     <a href="mallf-details.html#320" class="tactic">Hn1 : apply merge_unadj_2 to Hexmr _.</a>
+     <a href="mallf-details.html#321" class="tactic">Hn1 : apply merge_sym to *Hn2.</a> <a href="mallf-details.html#322" class="tactic">Hp : apply merge_nil_perm to *Hn2.</a>
+     <a href="mallf-details.html#323" class="tactic">Hp : apply perm_sym to *Hp.</a>
+     <a href="mallf-details.html#324" class="tactic">Hp : apply adj_perm_source to *Hp *Hn1.</a> <a href="mallf-details.html#325" class="tactic">search.</a>
+  <a href="mallf-details.html#326" class="tactic">Hadj : case Hadj.</a> <a href="mallf-details.html#327" class="tactic">Hneg : apply mall_perm to *Hneg *Hadj1.</a>
+  <a href="mallf-details.html#328" class="tactic">Hmr : apply merge_sym to *Hmr.</a>
+  <a href="mallf-details.html#329" class="tactic">Hfa : assert forall F KE KN, subf F P1 -> extension F KE -> merge J KE KN -> mall KN.</a>
+    <a href="mallf-details.html#330" class="tactic">intros Hsubf Hex Hmr.</a>
+    <a href="mallf-details.html#331" class="tactic">Hpos1 : apply *Hpos2 to *Hsubf.</a> <a href="mallf-details.html#332" class="tactic">Hp : apply extension_det to *Hex *Hpos1.</a>
+    <a href="mallf-details.html#333" class="tactic">Hmr1 : apply perm_merge_2 to *Hmr1 *Hp.</a>
+    <a href="mallf-details.html#334" class="tactic">Hp : apply merge_perm_det to *Hpos2 *Hmr1.</a>
+    <a href="mallf-details.html#335" class="tactic">clear Hneg.</a> <a href="mallf-details.html#336" class="tactic">backchain mall_perm.</a>
+  <a href="mallf-details.html#337" class="tactic">apply IHrank1 to *Hdual1 *Hadj *Hneg *Hfa *Hmr.</a>
+  <a href="mallf-details.html#338" class="tactic">search.</a>
 
-<a href="mallf-details.html#340" class="tactic">intros Hdual Hadj Hpos Hneg Hmr.</a> <a href="mallf-details.html#341" class="tactic">Hpos : case Hpos.</a>
-  <a href="mallf-details.html#342" class="tactic">Hadj : case Hadj.</a> <a href="mallf-details.html#343" class="tactic">case Hadj1.</a>
+<a href="mallf-details.html#339" class="tactic">intros Hdual Hadj Hpos Hneg Hmr.</a> <a href="mallf-details.html#340" class="tactic">Hpos : case Hpos.</a>
+  <a href="mallf-details.html#341" class="tactic">Hadj : case Hadj.</a> <a href="mallf-details.html#342" class="tactic">case Hadj1.</a>
 
-  <a href="mallf-details.html#344" class="tactic">unfold 3.</a> <a href="mallf-details.html#345" class="tactic">backchain merge_3_is_list.</a>
-  <a href="mallf-details.html#346" class="tactic">witness P1.</a> <a href="mallf-details.html#347" class="tactic">split.</a> <a href="mallf-details.html#348" class="tactic">search.</a> <a href="mallf-details.html#349" class="tactic">intros Hsubf.</a>
-  <a href="mallf-details.html#350" class="tactic">Hpos1 : apply *Hpos2 to *Hsubf.</a>
-  <a href="mallf-details.html#351" class="tactic">witness LE.</a> <a href="mallf-details.html#352" class="tactic">split.</a> <a href="mallf-details.html#353" class="tactic">search.</a>
-  <a href="mallf-details.html#354" class="tactic">Hpos1 : apply merge_unadj_1 to *Hpos3 *Hadj.</a>
-  <a href="mallf-details.html#355" class="tactic">Hn : assert 0 exists U, merge LL1 K U.</a> <a href="mallf-details.html#356" class="tactic">backchain merge_exists.</a>
-    <a href="mallf-details.html#357" class="tactic">backchain merge_3_is_list.</a> <a href="mallf-details.html#358" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#359" class="tactic">Hmr1 : case Hn.</a>
-  <a href="mallf-details.html#360" class="tactic">apply IHht1 to *Hdual *Hpos3 *Hpos4 *Hneg Hmr1.</a>
-  <a href="mallf-details.html#361" class="tactic">witness U.</a> <a href="mallf-details.html#362" class="tactic">split.</a>
-  <a href="mallf-details.html#363" class="tactic">Hmr : apply merge_sym to *Hmr.</a> <a href="mallf-details.html#364" class="tactic">Hmr1 : apply merge_sym to *Hmr1.</a>
-  <a href="mallf-details.html#365" class="tactic">backchain change_merge_order2.</a>
-  <a href="mallf-details.html#366" class="tactic">search.</a>
+  <a href="mallf-details.html#343" class="tactic">unfold 3.</a> <a href="mallf-details.html#344" class="tactic">backchain merge_3_is_list.</a>
+  <a href="mallf-details.html#345" class="tactic">witness P1.</a> <a href="mallf-details.html#346" class="tactic">split.</a> <a href="mallf-details.html#347" class="tactic">search.</a> <a href="mallf-details.html#348" class="tactic">intros Hsubf.</a>
+  <a href="mallf-details.html#349" class="tactic">Hpos1 : apply *Hpos2 to *Hsubf.</a>
+  <a href="mallf-details.html#350" class="tactic">witness LE.</a> <a href="mallf-details.html#351" class="tactic">split.</a> <a href="mallf-details.html#352" class="tactic">search.</a>
+  <a href="mallf-details.html#353" class="tactic">Hpos1 : apply merge_unadj_1 to *Hpos3 *Hadj.</a>
+  <a href="mallf-details.html#354" class="tactic">Hn : assert 0 exists U, merge LL1 K U.</a> <a href="mallf-details.html#355" class="tactic">backchain merge_exists.</a>
+    <a href="mallf-details.html#356" class="tactic">backchain merge_3_is_list.</a> <a href="mallf-details.html#357" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#358" class="tactic">Hmr1 : case Hn.</a>
+  <a href="mallf-details.html#359" class="tactic">apply IHht1 to *Hdual *Hpos3 *Hpos4 *Hneg Hmr1.</a>
+  <a href="mallf-details.html#360" class="tactic">witness U.</a> <a href="mallf-details.html#361" class="tactic">split.</a>
+  <a href="mallf-details.html#362" class="tactic">Hmr : apply merge_sym to *Hmr.</a> <a href="mallf-details.html#363" class="tactic">Hmr1 : apply merge_sym to *Hmr1.</a>
+  <a href="mallf-details.html#364" class="tactic">backchain change_merge_order2.</a>
+  <a href="mallf-details.html#365" class="tactic">search.</a>
 
-  <a href="mallf-details.html#367" class="tactic">Hadj1 : apply merge_unadj_3 to *Hpos *Hadj.</a> <a href="mallf-details.html#368" class="tactic">Hadj1 : case Hadj1.</a>
-    <a href="mallf-details.html#369" class="tactic">Hn : assert 0 exists U, merge JJ K U.</a> <a href="mallf-details.html#370" class="tactic">backchain merge_exists.</a>
-       <a href="mallf-details.html#371" class="tactic">backchain merge_1_is_list.</a> <a href="mallf-details.html#372" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#373" class="tactic">Hmr1 : case Hn.</a>
-    <a href="mallf-details.html#374" class="tactic">apply IHht3 to *Hdual *Hadj1 *Hpos1 *Hneg Hmr1.</a>
-    <a href="mallf-details.html#375" class="tactic">assert merge U K1 L.</a>
-    <a href="mallf-details.html#376" class="tactic">Hmr1 : apply merge_sym to *Hmr1.</a> <a href="mallf-details.html#377" class="tactic">apply merge_sym to *Hmr.</a> <a href="mallf-details.html#378" class="tactic">backchain change_merge_order2.</a>
-    <a href="mallf-details.html#379" class="tactic">search.</a>
+  <a href="mallf-details.html#366" class="tactic">Hadj1 : apply merge_unadj_3 to *Hpos *Hadj.</a> <a href="mallf-details.html#367" class="tactic">Hadj1 : case Hadj1.</a>
+    <a href="mallf-details.html#368" class="tactic">Hn : assert 0 exists U, merge JJ K U.</a> <a href="mallf-details.html#369" class="tactic">backchain merge_exists.</a>
+       <a href="mallf-details.html#370" class="tactic">backchain merge_1_is_list.</a> <a href="mallf-details.html#371" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#372" class="tactic">Hmr1 : case Hn.</a>
+    <a href="mallf-details.html#373" class="tactic">apply IHht3 to *Hdual *Hadj1 *Hpos1 *Hneg Hmr1.</a>
+    <a href="mallf-details.html#374" class="tactic">assert merge U K1 L.</a>
+    <a href="mallf-details.html#375" class="tactic">Hmr1 : apply merge_sym to *Hmr1.</a> <a href="mallf-details.html#376" class="tactic">apply merge_sym to *Hmr.</a> <a href="mallf-details.html#377" class="tactic">backchain change_merge_order2.</a>
+    <a href="mallf-details.html#378" class="tactic">search.</a>
 
-    <a href="mallf-details.html#380" class="tactic">Hn : assert exists U, merge KK K U.</a> <a href="mallf-details.html#381" class="tactic">backchain merge_exists.</a>
-       <a href="mallf-details.html#382" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#383" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#384" class="tactic">Hmr1 : case Hn.</a>
-    <a href="mallf-details.html#385" class="tactic">apply IHht3 to *Hdual *Hadj1 *Hpos2 *Hneg Hmr1.</a>
-    <a href="mallf-details.html#386" class="tactic">assert merge J1 U L.</a> <a href="mallf-details.html#387" class="tactic">backchain change_merge_order.</a>
-    <a href="mallf-details.html#388" class="tactic">search.</a>
+    <a href="mallf-details.html#379" class="tactic">Hn : assert exists U, merge KK K U.</a> <a href="mallf-details.html#380" class="tactic">backchain merge_exists.</a>
+       <a href="mallf-details.html#381" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#382" class="tactic">backchain merge_2_is_list.</a> <a href="mallf-details.html#383" class="tactic">Hmr1 : case Hn.</a>
+    <a href="mallf-details.html#384" class="tactic">apply IHht3 to *Hdual *Hadj1 *Hpos2 *Hneg Hmr1.</a>
+    <a href="mallf-details.html#385" class="tactic">assert merge J1 U L.</a> <a href="mallf-details.html#386" class="tactic">backchain change_merge_order.</a>
+    <a href="mallf-details.html#387" class="tactic">search.</a>
 
-  <a href="mallf-details.html#389" class="tactic">case Hadj.</a></div>
-<a href="mallf-details.html#390" class="command">Split $cut as cut_main, cut_principal, cut_commutative.</a>
+  <a href="mallf-details.html#388" class="tactic">case Hadj.</a></div>
+<a href="mallf-details.html#389" class="command">Split $cut as cut_main, cut_principal, cut_commutative.</a>
 </pre>
 </div>
 
