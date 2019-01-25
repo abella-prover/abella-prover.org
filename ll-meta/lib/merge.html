@@ -400,23 +400,16 @@ Click on a command or tactic to see a detailed view of its use.
      <a href="merge-details.html#334" class="tactic">apply perm_trans to H9 H10.</a> <a href="merge-details.html#335" class="tactic">search.</a>
     <a href="merge-details.html#336" class="tactic">apply adj_implies_merge to H8.</a> <a href="merge-details.html#337" class="tactic">apply perm_sym to H5.</a>
      <a href="merge-details.html#338" class="tactic">apply perm_merge_3 to H9 H10.</a> <a href="merge-details.html#339" class="tactic">search.</a></div>
-<a href="merge-details.html#340" class="command">Theorem merge_split : forall J K L LL A,
-  merge LL (A :: nil) L ->
-  merge J K L ->
-  (exists JJ, merge JJ (A :: nil) J /\ merge JJ K LL) \/
-  (exists KK, merge KK (A :: nil) K /\ merge J KK LL).</a>
-<div class="proof"><a href="merge-details.html#341" class="tactic">skip.</a></div>
-
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 <span class="comment">%% subsets via merge</span>
 
-<a href="merge-details.html#342" class="command">Define subset : olist -> olist -> prop by
+<a href="merge-details.html#340" class="command">Define subset : olist -> olist -> prop by
   subset J L := exists K, merge J K L.</a>
 
-<a href="merge-details.html#343" class="command">Theorem subset_1_is_list : forall J K, subset J K -> is_list J.</a>
-<div class="proof"><a href="merge-details.html#344" class="tactic">intros.</a> <a href="merge-details.html#345" class="tactic">case H1.</a> <a href="merge-details.html#346" class="tactic">backchain merge_1_is_list.</a></div>
-<a href="merge-details.html#347" class="command">Theorem subset_2_is_list : forall J K, subset J K -> is_list K.</a>
-<div class="proof"><a href="merge-details.html#348" class="tactic">intros.</a> <a href="merge-details.html#349" class="tactic">case H1.</a> <a href="merge-details.html#350" class="tactic">backchain merge_3_is_list.</a></div>
+<a href="merge-details.html#341" class="command">Theorem subset_1_is_list : forall J K, subset J K -> is_list J.</a>
+<div class="proof"><a href="merge-details.html#342" class="tactic">intros.</a> <a href="merge-details.html#343" class="tactic">case H1.</a> <a href="merge-details.html#344" class="tactic">backchain merge_1_is_list.</a></div>
+<a href="merge-details.html#345" class="command">Theorem subset_2_is_list : forall J K, subset J K -> is_list K.</a>
+<div class="proof"><a href="merge-details.html#346" class="tactic">intros.</a> <a href="merge-details.html#347" class="tactic">case H1.</a> <a href="merge-details.html#348" class="tactic">backchain merge_3_is_list.</a></div>
 </pre>
 </div>
 
