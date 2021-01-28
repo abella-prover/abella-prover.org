@@ -22,6 +22,24 @@
 <h1 id="main">Changelog</h1>
 </div>
 
+<div class="section">
+<h2>Version 2.0.7</h2>
+<p>This release adds no functionality, but fixes a number of minor bugs. It also makes Abella compilable with OCaml versions 4.08.0 and higher.</p>
+<p>Bugfixes</p>
+<ul>
+<li>Import statements with file paths containing . no longer break the HTML exporter</li>
+<li>Quote filenames when making shell calls<br />
+(#115, reported by <span class="citation" data-cites="JimmyZJX">@JimmyZJX</span>)</li>
+<li>Asserting trivial facts incorrectly left variables instantiated<br />
+(#113, reported by Jinxu Zhao)</li>
+<li>Fully check that types are well-formed<br />
+(#128, reported by <span class="citation" data-cites="RandomActsOfGrammar">@RandomActsOfGrammar</span>)</li>
+<li>Case for async object sequents should normalize before clause selection<br />
+(#129, reported by Guillaume Melquiond)</li>
+<li>Monotone for backchaining sequents should preserve backchaining<br />
+(Related to #129, formally justified by conjunct 2 of logic/hh_meta.thm)</li>
+</ul>
+</div>
 
 <div class="section">
 <h2>Version 2.0.6</h2>
