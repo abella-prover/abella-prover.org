@@ -23,6 +23,88 @@
 </div>
 
 <div class="section">
+<h2>Version 2.0.8</h2>
+<p>Possibly breaking changes</p>
+<ul>
+<li>Abella now uses <a href="https://dune.build">Dune</a> instead of <a
+href="https://github.com/ocaml/ocamlbuild/">ocamlbuild</a>.<br />
+(#138, additional contributions: Chase Johnson)</li>
+<li>The command line for the <code>abella</code> command has slightly
+changed.
+<ul>
+<li>The old <code>-v</code> option is removed; use
+<code>--version</code> instead.</li>
+<li>The old <code>-nr</code> option is removed; use
+<code>--non-recursive</code> instead.</li>
+</ul></li>
+<li>In batch mode, Abella always produces <code>file.thc</code> from
+<code>file.thm</code>.</li>
+<li>Abella’s parser changed from <a
+href="https://v2.ocaml.org/manual/lexyacc.html#s%3Aocamlyacc-overview">ocamlyacc</a>
+to <a href="http://gallium.inria.fr/~fpottier/menhir/">Menhir</a></li>
+<li>Abella’s annotation mode (<code>-a</code>) now produces annotations
+in JSON format instead of in HTML fragments. The JSON schema should be
+seen as experimental for now and subject to change in the future.</li>
+<li>Abella’s dependency generator option (<code>-M</code>) has now been
+moved to a separate program (see “Additions” below).</li>
+</ul>
+<p>Additions</p>
+<ul>
+<li><p><strong>Documentation Generation
+(<code>abella_doc</code>)</strong>: There is now a special program
+called <code>abella_doc</code> that can be used to convert a collection
+of Abella sources into HTML pages that resemble the Abella examples on
+the web-site: https://abella-prover.org/examples/</p>
+<p>Run <code>abella_doc --help</code> for usage instructions.</p></li>
+<li><p><strong>Dependency Generation (<code>abella_dep</code>)</strong>:
+There is now a special program called <code>abella_dep</code> that can
+be used to generate a <code>Makefile</code>-based dependency graph.
+Executing <code>make</code> on that <code>Makefile</code> will recompile
+all the Abella sources specified to <code>abella_dep</code>. This
+<code>Makefile</code> can be used in parallel (i.e.,
+<code>make -j</code>) mode.</p></li>
+<li><p>Mention that a proof contained “skip” during interactive mode,
+and a summary of skipped theorems in batch mode.<br />
+(#137, reported by Farah Al Wardani)</p></li>
+<li><p>The <code>types</code> flag when set to <code>on</code> will now
+print the types of quantified variables as well.</p></li>
+</ul>
+<p>Bugfixes</p>
+<ul>
+<li>Automatic compilation in <code>Import</code> statements now does not
+clobber existing partial compilation results. This improves the support
+for multiple runs of Abella in parallel using the same source
+files.</li>
+<li>The <em>first</em> Type or Kind declaration was accidentally being
+added to the specification signature.<br />
+(Identified by Farah Al Wardani, <span class="citation"
+data-cites="innofarah">@innofarah</span>)</li>
+<li>Unification of reasoning-level formulas attempts type unification
+instead of assuming ground types. (#143, reported by <span
+class="citation"
+data-cites="RandomActsOfGrammar">@RandomActsOfGrammar</span>)</li>
+<li>Hypothesis name hints that match generated hypothesis names should
+update the generator count. (#145, reported by Todd Wilson <span
+class="citation"
+data-cites="lambdacalculator">@lambdacalculator</span>)</li>
+<li>Apply with unknowns now requires each computed subgoal to fully
+instantiate logic variables. <strong><em>SOUNDNESS BUG</em></strong>
+(#146, reported by <span class="citation"
+data-cites="Chen-PL">@Chen-PL</span>, <span class="citation"
+data-cites="jiangsy">@jiangsy</span>)</li>
+<li>Apply with unknowns now undoes variable instantiations on failed
+search for generated logic variables. <strong><em>SOUNDNESS
+BUG</em></strong> (related to #146)</li>
+<li>Definitional clauses with higher-order parameters now trigger a
+non-well-formedness warning because they can be used to prove
+<code>false</code>. <strong><em>SOUNDNESS BUG</em></strong> (#147,
+discovered by Sebastiaan Joosten, reported by Gopalan Nadathur)</li>
+<li>Backchaining specification clauses now respects subordination when
+raising newly introduced variables.</li>
+</ul>
+</div>
+
+<div class="section">
 <h2>Version 2.0.7</h2>
 <p>This release adds no functionality, but fixes a number of minor bugs. It also makes Abella compilable with OCaml versions 4.08.0 and higher.</p>
 <p>Bugfixes</p>
