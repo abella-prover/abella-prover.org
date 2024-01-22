@@ -156,18 +156,37 @@ See <a href="examples/lambda-calculus/type-uniq/type-uniq.html">here</a>
 for an example.
 
 <br/><br/>
+In order to guarantee that the logic underlying Abella is consistent,
+definitions must be stratified in some sense.  Stratification is only
+a concern when definitions have an implication in their body.  If
+there is such an implication, then the predicates occurring in the
+premise of such an implication are said to occur negatively in that
+definition.  Stratification implies that before one defined predicate,
+say <tt>P</tt>, can be used in a negative fashion in the definition of
+another predicate, say <tt>Q</tt>, it should be the case
+that <tt>P</tt> has been completely defined before using it in the
+definition of <tt>Q</tt>.  For example, if the body of the definition
+of <tt>P</tt> contains a negative occurrence of <tt>P</tt>, this
+definition would not be stratified.  Similarly, if
+predicates <tt>P</tt> and <tt>Q</tt> are defined by a mutual
+recursion, and one of these predicates is used negatively in the body
+of either predicate definition, then this definition would not be
+stratified.  While various stratification conditions are possible, the
+system does not currently enforce any of these conditions since most
+conditions seem too restrictive in some settings.  Abella will attempt
+a simple check for the stratification of definitions and if that
+simple check does not succeed, the definition will be allowed, but a
+warning will be printed.  For more about stratification, see the paper
+<a href="http://arxiv.org/abs/0908.1390">Nominal abstraction</a>,
+where a simple stratification condition is defined and shown to lead
+to a consistent (but constrained) logic.  See page 16
+of <a href="https://jfr.unibo.it/article/view/4650">the overview
+article</a> for a proof in Abella of <tt>false</tt> if one ignores
+stratification warnings. Tait's logical relation argument uses a 
+ <a href="https://abella-prover.org/examples/lambda-calculus/normalization/stlc-weak-norm.html">definition</a>
+that does not satisfy Abella's current stratification checker but
+can be considered stratified by more sophisticated criteria.
 
-The Abella logic requires that all definitions satisfy a
-stratification condition. Various stratification conditions, all of
-which ensure the consistency of the Abella logic, are possible. The
-system does not current enforce any of these conditions since we are
-still experimenting with the best possible choice. Stratification is
-only a concern when definitions have an implication in their body.
-Thus, specific stratification conditions are noted with each such
-definition in the examples suite accompanying this distribution. The
-user is encouraged do identify, document, and adhere to such
-conditions in their own developments. A later version of the system
-will automate conformity to such conditions.
 </blockquote>
 </td></tr>
 
