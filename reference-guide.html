@@ -162,13 +162,13 @@ a concern when definitions have an implication in their body.  If
 there is such an implication, then the predicates occurring in the
 premise of such an implication are said to occur negatively in that
 definition.  Stratification implies that before one defined predicate,
-say <tt>P</tt>, can be used in a negative fashion in the definition of
-another predicate, say <tt>Q</tt>, it should be the case
-that <tt>P</tt> has been completely defined before using it in the
-definition of <tt>Q</tt>.  For example, if the body of the definition
-of <tt>P</tt> contains a negative occurrence of <tt>P</tt>, this
+say <code>P</code>, can be used in a negative fashion in the definition of
+another predicate, say <code>Q</code>, it should be the case
+that <code>P</code> has been completely defined before using it in the
+definition of <code>Q</code>.  For example, if the body of the definition
+of <code>P</code> contains a negative occurrence of <code>P</code>, this
 definition would not be stratified.  Similarly, if
-predicates <tt>P</tt> and <tt>Q</tt> are defined by a mutual
+predicates <code>P</code> and <code>Q</code> are defined by a mutual
 recursion, and one of these predicates is used negatively in the body
 of either predicate definition, then this definition would not be
 stratified.  While various stratification conditions are possible, the
@@ -181,7 +181,7 @@ warning will be printed.  For more about stratification, see the paper
 where a simple stratification condition is defined and shown to lead
 to a consistent (but constrained) logic.  See page 16
 of <a href="https://jfr.unibo.it/article/view/4650">the overview
-article</a> for a proof in Abella of <tt>false</tt> if one ignores
+article</a> for a proof in Abella of <code>false</code> if one ignores
 stratification warnings. Tait's logical relation argument uses a 
  <a href="https://abella-prover.org/examples/lambda-calculus/normalization/stlc-weak-norm.html">definition</a>
 that does not satisfy Abella's current stratification checker but
@@ -636,14 +636,19 @@ the need for this tactic.
 </td></tr>
 <tr><td>&nbsp;</td></tr>
 <tr><td>
+  <code>witness &lt;TERM&gt;.</code>
+</td></tr>
+<tr><td>
   <code>exists &lt;TERM&gt;.</code>
 </td></tr>
 <tr><td>
 
 <blockquote>
 Given a goal of the form <code>exists A, ...</code> the
-<code>exists</code> tactic instantiates <code>A</code> with the given
-term.
+<code>witness</code> tactic instantiates <code>A</code> with the given
+term.  Historically, this tactic has also been
+called <code>exists</code> but it seems better to eventually deprecate
+that name since it is also the name of the logical quantifier.
 </blockquote>
 
 </td></tr>
