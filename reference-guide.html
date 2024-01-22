@@ -830,10 +830,30 @@ returns the user to the top-level.
   <code>clear &lt;HYP NAME&gt; ... &lt;HYP NAME&gt;.</code>
 </td></tr>
 <tr><td>
+  <code>clear -&gt; &lt;HYP NAME&gt; ... &lt;HYP NAME&gt; &lt;VAR NAME&gt; ... &lt;VAR NAME&gt;.
+</code>
+</td></tr>
+<tr><td>
 
 <blockquote>
-Removes the given hypotheses.
+  In the form of the first line, <code>clear</code> simply removes the
+  given hypotheses. In the form of the second line, 
+  the named hypotheses and the named variables are returned to the
+  goal as universally quantified implications.  For example, if the
+  proof state is 
 </blockquote>
+<pre>
+Variables: X Y
+H1 : X = Y
+============================
+ Y = X
+</pre>
+then the tactic <code>clear -> H1 Y.</code> yields the following proof state.
+<pre>
+Variables: X
+============================
+ forall Y, X = Y -> Y = X
+</pre>
 
 </td></tr>
 
