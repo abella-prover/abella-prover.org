@@ -1,0 +1,135 @@
+% The only theorems in his file that are not guaranteed to be safe-for-saturation are
+% times-total, inv-total.
+% The latter can be replaced with times-assoc-left if it is proceeded
+% by an application of times-total.
+
+% The only axioms here (Theorems with proofs skipped) are
+% Semigroup: times-types times-total times-determ times-assoc
+% Monoid:    unit-types  unit-total  unit-rule
+% Group:     inv-types   inv-total   inv-rule
+
+Kind carrier  type. % we have no constructors of this type in this file
+Type carrier  carrier -> prop.  % Needed to ensure clauses are *allowed*.
+
+% Semigroup structure
+Type times    carrier -> carrier -> carrier -> prop.
+
+Theorem times-types : forall x y z,
+  times x y z -> (carrier x /\ carrier y /\ carrier z).
+skip.
+
+Theorem times-total : forall x y,
+  carrier x -> carrier y -> exists u, carrier u /\ times x y u.
+skip.
+
+Theorem times-determ : forall x y u v,
+  times x y u -> times x y v -> u = v.
+skip.
+
+Theorem times-assoc : forall x y xy u xyu yu,
+  times x y xy -> times xy u xyu -> times y u yu -> times x yu xyu.
+skip.
+
+Theorem times-assoc-right : forall x y u xy xyu,
+  times x y xy -> times xy u xyu ->
+  exists yu, times y u yu /\ times x yu xyu.
+intros. saturate times-types.
+apply times-total to _ _ with x = y, y = u.
+saturate times-assoc. search.
+
+Theorem times-assoc-alternative : forall x y xy u yu xyu xyu',
+  times x y xy -> times xy u xyu -> times y u yu -> times x yu xyu' ->
+  xyu = xyu'.
+intros. saturate 2 times-assoc times-determ. search.
+
+Theorem times-assoc-left : forall x y u yu xyu xy,
+  times y u yu -> times x yu xyu -> times x y xy -> times xy u xyu.
+intros.
+saturate times-types.
+apply times-total to _ _ with x = xy, y = u.
+saturate 2 times-assoc times-determ. search.
+
+% Monoid structure
+Type unit     carrier -> prop.
+
+Theorem unit-total : exists u, carrier u /\ unit u.
+skip.
+
+Theorem unit-types : forall u, unit u -> carrier u.
+skip.
+
+Theorem unit-rule : forall u x,
+  unit u -> carrier x -> times x u x /\ times u x x.
+skip.
+
+Theorem unit-determ : forall u v, unit u -> unit v -> u = v.
+intros. saturate 3 unit-types unit-rule times-determ. search.
+
+% Group structure
+Type inv  carrier -> carrier -> prop.
+
+Theorem inv-types : forall x i, inv x i -> carrier x /\ carrier i.
+skip.
+
+Theorem inv-total : forall x, carrier x -> exists i, carrier i /\ inv x i.
+skip.
+
+Theorem inv-rule : forall u x y, unit u -> inv x y -> times x y u /\ times y x u.
+skip.
+
+Theorem non-bipolar1 : forall u, unit u ->
+  forall y, carrier y -> (forall x, carrier x -> times x y x) -> y = u.
+intros. saturate 3 unit-types H3 unit-rule times-determ. search.
+
+Theorem inv-unit : forall u v, unit u -> inv u v -> unit v.
+ intros. saturate 3 inv-types inv-rule unit-rule times-determ. search.
+
+Theorem inv-determ : forall x i j, inv x i -> inv x j -> i = j.
+intros.
+saturate 4 unit-total inv-types inv-rule unit-rule times-assoc times-determ.
+search.
+
+Theorem cancellation-left : forall x a b y, times x a y -> times x b y -> a = b.
+intros. saturate 2 unit-total times-types.
+apply inv-total to _ with x = x.
+saturate inv-rule.
+apply times-total to _ _ with x = i, y = y.
+apply times-total to _ _ with x = u, y = a.
+apply times-total to _ _ with x = u, y = b.
+saturate 2 times-determ inv-rule times-determ unit-rule times-assoc.
+search.
+
+Theorem cancellation-right : forall x a b y, times a x y -> times b x y -> a = b.
+intros. saturate 2 unit-total times-types.
+apply inv-total to _ with x = x.
+apply times-total to _ _ with x = y, y = i.
+apply times-total to _ _ with x = x, y = i.
+saturate 3 times-assoc inv-rule times-determ unit-rule.
+search.
+
+Theorem times-is-unit :  forall u x y, unit u -> times x y u -> inv x y.
+intros.
+saturate times-types.
+apply inv-total to _ with x = x.
+saturate 2 inv-rule cancellation-left. search.
+
+Theorem inv-of-times : forall x y xy i xi yi j,
+  times x y xy -> inv xy i -> inv x xi -> inv y yi -> times yi xi j -> i = j.
+intros.
+saturate 3 unit-total times-types times-types inv-rule.
+apply times-total to _ _ with x = xy, y = j.
+apply times-total to _ _ with x = y, y = j.
+apply times-total to _ _ with x = xy, y = yi.
+clear. % this clears all duplicates (expensive!)
+saturate 1 times-assoc-left times-assoc times-assoc-left
+           unit-rule times-determ cancellation-left.
+saturate 3 times-determ cancellation-left.
+clear.
+saturate 1 times-assoc-left times-assoc times-assoc-left
+           unit-rule times-determ cancellation-left.
+search.
+
+Theorem inv-symmetric : forall x y, inv x y -> inv y x.
+intros.
+saturate 3 unit-total inv-types inv-rule times-is-unit.
+search.
