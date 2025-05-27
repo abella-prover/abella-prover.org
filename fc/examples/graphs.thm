@@ -1,0 +1,23 @@
+Kind g          type.
+Type node       g -> prop.
+Type adj, path  g -> g -> prop.
+
+% Introduce the structure of graphs as a collection of axioms (theorems with skips).
+
+Theorem refl : forall n, node n -> path n n. skip.
+Theorem trans : forall x y z, adj x y -> path y z -> path x z. skip.
+
+Type a,b,c,d,e,f g.
+Theorem nodes : node a /\ node b /\ node c /\ node d /\ node e /\ node f. skip.
+Theorem adjs : adj a b /\ adj a c /\ adj b c /\ adj b e /\ adj c e /\ adj d f. skip.
+
+Theorem example1 : path a e.
+apply nodes. apply adjs.
+apply refl to H5.
+apply trans to H10 H13.
+apply trans to H7 H14.
+search.
+
+Theorem example1_fchain : path a e.
+fchain 6 nodes adjs refl trans.
+search.
